@@ -299,6 +299,67 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
 @keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
 .map{position:relative;background:#ece7df;overflow:hidden}
 .map::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--light) 1px,transparent 1px),linear-gradient(90deg,var(--light) 1px,transparent 1px);background-size:34px 34px;opacity:.5}
+
+/* ============ VARIANT: LIQUID GLASS (html[data-style="glass"]) ============ */
+html[data-style="glass"]{--glass-bg:rgba(250,247,242,.58);--glass-bd:rgba(255,255,255,.75);--glass-hi:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(30,26,23,.04);--glass-sh:0 12px 32px rgba(30,26,23,.16),0 2px 6px rgba(30,26,23,.06);--tab-h:72px}
+html[data-style="glass"] .app{background:radial-gradient(900px 500px at 15% -10%,#f7e6e4 0,transparent 60%),radial-gradient(700px 400px at 110% 20%,#eef0e9 0,transparent 55%),var(--paper)}
+html[data-style="glass"] .scr{background:transparent}
+html[data-style="glass"] .tabbar{left:14px;right:14px;bottom:calc(10px + var(--safe-b));height:64px;padding:6px;border-radius:999px;border:1px solid var(--glass-bd);background:var(--glass-bg);backdrop-filter:blur(28px) saturate(1.7);-webkit-backdrop-filter:blur(28px) saturate(1.7);box-shadow:var(--glass-sh),var(--glass-hi);gap:2px}
+html[data-style="glass"] .tabbar.hide{transform:translateY(140%)}
+html[data-style="glass"] .tab{border-radius:999px;position:relative;isolation:isolate;transition:color var(--m-fast)}
+html[data-style="glass"] .tab::before{content:"";position:absolute;inset:0;border-radius:999px;background:var(--ink);opacity:0;transform:scale(.7);transition:opacity var(--m-base) var(--m-ease),transform var(--m-base) var(--m-ease);z-index:-1}
+html[data-style="glass"] .tab.on{color:var(--paper)}
+html[data-style="glass"] .tab.on::before{opacity:1;transform:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 4px 12px rgba(30,26,23,.25)}
+html[data-style="glass"] .tab .dot{top:6px;left:calc(50% + 8px);border-radius:999px;box-shadow:0 0 0 2px var(--paper)}
+html[data-style="glass"] .scr-body.has-tab{padding-bottom:calc(var(--tab-h) + var(--safe-b) + 28px)}
+html[data-style="glass"] .cta-bar{left:14px;right:14px;bottom:calc(10px + var(--safe-b));padding:8px;border-radius:999px;border:1px solid var(--glass-bd);background:var(--glass-bg);backdrop-filter:blur(28px) saturate(1.7);-webkit-backdrop-filter:blur(28px) saturate(1.7);box-shadow:var(--glass-sh),var(--glass-hi)}
+html[data-style="glass"] .cta-bar .btn,html[data-style="glass"] .cta-bar .qty,html[data-style="glass"] .cta-bar .ib{border-radius:999px}
+html[data-style="glass"] .cta-bar .qty button:first-child{border-radius:999px 0 0 999px}html[data-style="glass"] .cta-bar .qty button:last-child{border-radius:0 999px 999px 0}
+html[data-style="glass"] .cta-bar .btn{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 16px rgba(30,26,23,.22)}
+html[data-style="glass"] #s-bag .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b) + 22px)!important;border-radius:28px}
+html[data-style="glass"] .scr-body.has-cta{padding-bottom:calc(var(--btn-h) + 56px + var(--safe-b))}
+html[data-style="glass"] .toast{border-radius:999px;bottom:calc(var(--tab-h) + var(--safe-b) + 26px);background:rgba(30,26,23,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:var(--glass-sh)}
+html[data-style="glass"] .toast img{border-radius:999px;width:34px;height:34px}
+html[data-style="glass"] .sheet{border-radius:28px 28px 0 0;background:rgba(250,247,242,.86);backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);border-top:1px solid var(--glass-bd);box-shadow:var(--glass-sh),var(--glass-hi)}
+html[data-style="glass"] .sheet .grab{border-radius:999px}
+html[data-style="glass"] .scrim{background:rgba(30,26,23,.28);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+html[data-style="glass"] .appbar{background:transparent}
+html[data-style="glass"] .appbar .ib,html[data-style="glass"] .ib.glass{border-radius:999px}
+html[data-style="glass"] .appbar .ib:active{background:rgba(30,26,23,.06)}
+html[data-style="glass"] .search{border-radius:999px;background:rgba(255,255,255,.55);border:1px solid var(--glass-bd);box-shadow:var(--glass-hi),0 4px 14px rgba(30,26,23,.06)}
+html[data-style="glass"] .chip{border-radius:999px;background:rgba(255,255,255,.5);border-color:rgba(30,26,23,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+html[data-style="glass"] .chip.on{background:var(--ink);border-color:var(--ink);box-shadow:0 4px 12px rgba(30,26,23,.2)}
+html[data-style="glass"] .tag{border-radius:999px;padding:0 9px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html[data-style="glass"] .tag.--soft{background:rgba(250,247,242,.7)}
+html[data-style="glass"] .panel{border-radius:20px;background:rgba(255,255,255,.5);border:1px solid var(--glass-bd);box-shadow:var(--glass-hi),0 8px 24px rgba(30,26,23,.07)}
+html[data-style="glass"] .panel.--accent{background:rgba(247,222,227,.6)}
+html[data-style="glass"] .panel.--ok{background:rgba(238,240,233,.7)}
+html[data-style="glass"] .panel.--ink{background:linear-gradient(160deg,#2a2521,#1e1a17);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 12px 28px rgba(30,26,23,.28)}
+html[data-style="glass"] .card .ph,html[data-style="glass"] .banner,html[data-style="glass"] .mini img,html[data-style="glass"] .tile,html[data-style="glass"] .map{border-radius:18px;overflow:hidden}
+html[data-style="glass"] .card .ph{box-shadow:0 10px 24px rgba(30,26,23,.1)}
+html[data-style="glass"] .card .fav{background:rgba(250,247,242,.6);border-radius:999px;width:34px;height:34px;right:8px;top:8px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+html[data-style="glass"] .card .add{border-radius:999px}
+html[data-style="glass"] .usp{border-radius:20px;overflow:hidden;background:rgba(255,255,255,.45);border-color:var(--glass-bd);box-shadow:var(--glass-hi)}
+html[data-style="glass"] .input,html[data-style="glass"] textarea.input{border-radius:16px;background:rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+html[data-style="glass"] .seg{border-radius:999px;overflow:hidden;background:rgba(255,255,255,.45);border-color:rgba(30,26,23,.12)}
+html[data-style="glass"] .seg button.on{border-radius:999px;box-shadow:0 2px 8px rgba(30,26,23,.25)}
+html[data-style="glass"] .switch,html[data-style="glass"] .switch::after{border-radius:999px}
+html[data-style="glass"] .switch::after{box-shadow:0 1px 3px rgba(30,26,23,.3)}
+html[data-style="glass"] .radio .rd,html[data-style="glass"] .radio .rd::after{border-radius:999px}
+html[data-style="glass"] .qty{border-radius:999px}
+html[data-style="glass"] .tl-step .ind i{border-radius:999px}
+html[data-style="glass"] .progress,html[data-style="glass"] .progress>i{border-radius:999px}
+html[data-style="glass"] .btn.--block:not(.--secondary):not(.--ghost){border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 6px 16px rgba(30,26,23,.18)}
+html[data-style="glass"] .btn.--secondary.--block,html[data-style="glass"] .btn.--ghost.--block,html[data-style="glass"] .btn.--sm,html[data-style="glass"] .btn.--xs{border-radius:999px}
+html[data-style="glass"] .push{border-radius:22px}
+html[data-style="glass"] .push-l{border-radius:10px}
+html[data-style="glass"] .nav-list button.on{border-radius:8px}
+/* style toggle (desktop gutter + tiny mobile pill) */
+.style-toggle{display:inline-grid;grid-auto-flow:column;border:1px solid var(--light);margin:0 0 18px}
+.style-toggle button{padding:8px 14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.style-toggle button.on{background:var(--ink);color:var(--paper)}
+.style-toggle-m{display:none}
+@media (max-width:520px){.style-toggle-m{display:flex;position:fixed;top:calc(8px + var(--safe-t));right:10px;z-index:200;gap:0;border:1px solid rgba(30,26,23,.25);background:rgba(250,247,242,.85);backdrop-filter:blur(10px);font-size:10px;letter-spacing:.06em;text-transform:uppercase}.style-toggle-m button{padding:6px 9px}.style-toggle-m button.on{background:var(--ink);color:var(--paper)}}
 </style>
 </head>
 <body>
@@ -307,9 +368,11 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
     <img src="logo.svg" alt="Floritta" style="width:160px;margin-bottom:22px">
     <h1 class="stage-title">Client app<br>mockup</h1>
     <p class="stage-sub">iOS / Android · Brandbook 2026-10 · Ivory · Square</p>
+    <div class="eyebrow" style="margin-bottom:8px">Style</div>
+    <div class="style-toggle" id="style-toggle"><button data-style="flat">Flat</button><button data-style="glass">Liquid Glass</button></div>
     <div class="eyebrow" style="margin-bottom:8px">Screens</div>
     <ul class="nav-list" id="nav-list"></ul>
-    <p class="stage-sub" style="margin-top:20px;font-size:12px">Кликабельный прототип: все переходы, корзина, чекаут и трекинг работают. Откройте на телефоне – будет во весь экран.</p>
+    <p class="stage-sub" style="margin-top:20px;font-size:12px">Кликабельный прототип: все переходы, корзина, чекаут, платёжный шлюз и трекинг работают. На телефоне – во весь экран: <a class="link-u" href="?style=flat">?style=flat</a> · <a class="link-u" href="?style=glass">?style=glass</a></p>
   </aside>
 
   <div class="phone">
@@ -751,9 +814,11 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
 #s-pdp .dnote{font-size:12px;color:var(--grey);padding:10px var(--gutter) 0;display:flex;gap:6px;align-items:center}
 #s-pdp .dnote svg{width:14px;height:14px;stroke:var(--ok);fill:none;stroke-width:1.8}
 /* add-ons */
-#s-pdp .ad{width:132px;border:1px solid var(--hair);padding:10px;display:flex;flex-direction:column;gap:6px;transition:border-color var(--m-fast)}
+#s-pdp .ad{width:140px;border:1px solid var(--hair);padding:10px;display:flex;flex-direction:column;gap:6px;transition:border-color var(--m-fast)}
 #s-pdp .ad.on{border-color:var(--ink)}
-#s-pdp .ad .ic{width:100%;aspect-ratio:1;background:var(--silver);display:grid;place-items:center;color:var(--graphite)}
+#s-pdp .ad .ic{width:100%;aspect-ratio:1;background:var(--silver);display:grid;place-items:center;color:var(--graphite);overflow:hidden;position:relative}
+#s-pdp .ad .ic img{width:100%;height:100%;object-fit:cover}
+#s-pdp .ad.on .ic::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 2px var(--ink)}
 #s-pdp .ad .ic svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
 #s-pdp .ad .nm{font-size:13px;line-height:1.3;min-height:2.6em;color:var(--ink)}
 #s-pdp .ad .pr{font-size:12px;color:var(--grey)}
@@ -848,7 +913,8 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
 #s-bag .promo .input{flex:1;text-transform:uppercase;letter-spacing:.06em}
 #s-bag .promo .btn{flex:none;height:52px}
 #s-bag .promo-msg{font-size:13px;margin-top:8px;min-height:1.4em}
-#s-bag .addon{width:150px;border:1px solid var(--hair);padding:12px;display:flex;flex-direction:column;gap:4px;min-height:132px}
+#s-bag .addon{width:140px;border:1px solid var(--hair);padding:10px;display:flex;flex-direction:column;gap:4px;min-height:132px}
+#s-bag .addon img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--silver);margin-bottom:6px}
 #s-bag .addon .n{font-size:13px;line-height:1.3;min-height:2.6em}
 #s-bag .addon .d{font-size:11px;color:var(--grey);line-height:1.35}
 #s-bag .addon .b{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:13px}
@@ -892,6 +958,28 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
 #s-checkout .paper{aspect-ratio:1;background:#fdfbf7;border:1px solid var(--hair);padding:18px;font-family:var(--f-display);font-style:italic;font-weight:300;font-size:17px;line-height:1.35;color:var(--graphite);overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 1px 0 var(--hair)}
 #s-checkout .paper.empty{color:var(--light)}
 #s-checkout .photo{display:flex;gap:14px;align-items:flex-start}
+.gw{padding:8px var(--gutter) 20px}
+.gw-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.gw-logo{display:inline-flex;align-items:center;gap:4px;font-size:22px;font-weight:500;letter-spacing:-.02em}
+.gw-logo svg{width:22px;height:22px}
+.gw-bank{font-size:15px;letter-spacing:.04em;text-transform:uppercase;font-weight:400;border:1px solid var(--light);padding:6px 10px}
+.gw-card{display:flex;gap:14px;align-items:center;padding:14px;border:1px solid var(--hair);background:var(--silver)}
+.gw-chip{width:52px;height:34px;background:linear-gradient(135deg,#1e1a17,#5c5450);flex:none;position:relative}
+.gw-chip::after{content:"";position:absolute;right:8px;top:8px;width:16px;height:12px;border:1px solid rgba(250,247,242,.6)}
+.gw-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.gw-row b{font-weight:500}
+.gw-foot{display:grid;grid-template-columns:8px 1fr 48px;align-items:center;gap:14px;margin-top:22px}
+.gw-side{width:4px;height:44px;background:var(--ink);justify-self:end;animation:gw-press 1.2s .4s both}
+@keyframes gw-press{0%,100%{transform:scaleY(1)}40%{transform:scaleY(.86)}}
+.gw-side-t{font-size:13px;color:var(--graphite)}
+.gw-face{width:48px;height:48px;border:1.5px solid var(--ink);position:relative}
+.gw-face::before{content:"";position:absolute;inset:12px;border:1.5px solid var(--ink);border-radius:50%;transition:all .3s}
+.gw-face.ok::before{border-radius:0;inset:16px 14px;border:0;border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg) translate(2px,-4px);width:18px;height:9px}
+.gw-otp{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.gw-otp i{height:52px;border:1px solid var(--light);display:grid;place-items:center;font-style:normal;font-size:20px;transition:border-color .2s}
+.gw-otp i.on{border-color:var(--ink)}
+.gw-stripe{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--grey)}
+.gw-stripe svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
 #s-checkout .photo svg{width:26px;height:26px;flex:none;stroke:var(--ink);fill:none;stroke-width:1.5;margin-top:2px}
 #s-checkout .pay-f{overflow:hidden;max-height:0;transition:max-height .35s var(--m-ease)}
 #s-checkout .pay-f.open{max-height:300px}
@@ -967,6 +1055,10 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
 #s-tracking .eta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
 #s-tracking .timeline{padding:0 var(--gutter)}
 #s-tracking .photo-card{border:1px solid var(--hair);margin:8px 0 12px;background:var(--paper)}
+.push{position:absolute;left:12px;right:12px;top:calc(58px + var(--safe-t));z-index:120;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:rgba(250,247,242,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(30,26,23,.08);box-shadow:0 10px 30px rgba(30,26,23,.18);transform:translateY(-140%);transition:transform .45s var(--m-ease);cursor:pointer}
+.push.on{transform:none}
+.push-l{width:36px;height:36px;object-fit:contain;padding:8px;background:var(--ink);flex:none;filter:invert(1)}
+.push-t{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
 #s-tracking .photo-card img{width:100%;aspect-ratio:4/3;object-fit:cover}
 #s-tracking .photo-card .pc-b{padding:12px}
 #s-tracking .photo-card .pc-a{display:flex;gap:8px;margin-top:10px}
@@ -1395,6 +1487,12 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
   </div>
 
   <aside class="gutter-r notes" id="notes">
+<h4>Два варианта стиля</h4>
+<ul>
+<li><b>Flat</b> – как в брендбуке сайта: square, плоско, тихо. Переключатель слева («Style»).</li>
+<li><b>Liquid Glass</b> – плавающие стеклянные слои в духе iOS 26: нижнее меню-капсула с размытием и бликом, плавающая кнопка «Add to bag», стеклянные шторки и чипы, карточки с мягкой тенью. Палитра та же, Ivory.</li>
+<li><b>Рекомендация:</b> для приложения взять Glass, но только для «плавающих» слоёв (меню, CTA, шторки, тосты, пуши) – так делает сама Apple; контент (карточки, заголовки, фото) оставить спокойным. Так приложение выглядит дороже и нативнее на iOS 26, а сайт остаётся square и не спорит с ним. На Android стекло рендерится проще, но смотрится тоже нормально.</li>
+</ul>
 <h4>Что взято у лучших приложений</h4>
 <ul>
 <li><b>Bloom &amp; Wild</b> – напоминания о датах: добавить день рождения или годовщину и получить напоминание заранее (панель на Home и экран Reminders).</li>
@@ -1454,12 +1552,13 @@ window.PRODUCTS=[
  {id:13,n:"Lilac daydream",p:72,img:"img/lilac-dream.webp",t:[],cat:"roses",r:4.8,rc:29}
 ];
 window.ADDONS=[
- {id:"card",n:"Handwritten card",p:0,d:"Free · written by our florist"},
- {id:"vase",n:"Glass vase",p:18,d:"Fits every size"},
- {id:"choc",n:"Charbonnel et Walker truffles",p:16,d:"Pink Marc de Champagne"},
- {id:"balloon",n:"Helium balloon",p:7,d:"“Happy Birthday” · 18″"},
- {id:"candle",n:"Scented candle",p:24,d:"Fig & cassis · 40 h"},
- {id:"bear",n:"Teddy bear",p:14,d:"Small · cream"}
+ {id:"card",n:"Handwritten card",p:0,d:"Free · written by our florist",img:"img/addon-card.webp"},
+ {id:"vase",n:"Clear glass vase 25 cm",p:18,d:"Fits every size",img:"img/addon-vase.webp"},
+ {id:"choc",n:"Lindt Lindor truffles 200 g",p:16,d:"Milk chocolate",img:"img/addon-choc.webp"},
+ {id:"berries",n:"Chocolate-dipped strawberries",p:29,d:"Box of 12 · made today",img:"img/addon-berries.webp"},
+ {id:"balloon",n:"Happy Birthday balloons",p:19,d:"Set of 5 · helium",img:"img/addon-balloon.webp"},
+ {id:"ferrero",n:"Ferrero Rocher 24 pcs",p:18,d:"Gold gift box",img:"img/addon-ferrero.webp"},
+ {id:"bear",n:"Teddy bear",p:14,d:"Small · caramel",img:"img/addon-bear.webp"}
 ];
 
 /* ============ APP RUNTIME ============ */
@@ -1629,8 +1728,11 @@ const App=(()=>{
     scr.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
     scr.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx,dy=Math.abs(e.changedTouches[0].clientY-sy);if(sx<28&&dx>70&&dy<60&&state.history.length)back()},{passive:true});
   }
+  function setStyle(v,save=true){document.documentElement.dataset.style=v;$$("#style-toggle button,#style-toggle-m button").forEach(b=>b.classList.toggle("on",b.dataset.style===v));if(save){try{localStorage.setItem("fl_style",v)}catch(e){}}}
+  (function(){let v="flat";try{v=localStorage.getItem("fl_style")||v}catch(e){}const q=new URLSearchParams(location.search).get("style");if(q)v=q;document.documentElement.dataset.style=v})();
+  document.addEventListener("DOMContentLoaded",()=>{setStyle(document.documentElement.dataset.style||"flat",false);$$("#style-toggle button,#style-toggle-m button").forEach(b=>b.onclick=()=>{setStyle(b.dataset.style);haptic()})});
   document.addEventListener("DOMContentLoaded",init);
-  return {state,go,back,tab,sheet,closeSheet,toast,confirm,addToBag,setQty,removeLine,bagCount,lineTotal,subtotal,deliveryFee,discount,total,clearBag,toggleFav,fmt,product,card,miniCard,tags,stars,icon,nextDays,dateLabel,haptic,$,$$};
+  return {setStyle,state,go,back,tab,sheet,closeSheet,toast,confirm,addToBag,setQty,removeLine,bagCount,lineTotal,subtotal,deliveryFee,discount,total,clearBag,toggleFav,fmt,product,card,miniCard,tags,stars,icon,nextDays,dateLabel,haptic,$,$$};
 })();
 window.App=App;
 </script>
@@ -2000,7 +2102,7 @@ window.PDP=(()=>{
     <div class="dnote" id="pdp-dnote"></div>
 
     <div class="sec-head"><div class="h2">Make it special</div></div>
-    <div class="hscroll" id="pdp-addons">${ADDONS.map(a=>`<div class="ad ${S.addons.has(a.id)?"on":""}" data-ad="${a.id}"><div class="ic">${ADICON[a.id]||App.icon("gift")}</div><div class="nm">${a.n}</div><div class="pr">${a.p?"+"+App.fmt(a.p):"Free"}</div><button class="ab" onclick="PDP.addon('${a.id}')">${S.addons.has(a.id)?"Added ✓":"+ Add"}</button></div>`).join("")}</div>
+    <div class="hscroll" id="pdp-addons">${ADDONS.map(a=>`<div class="ad ${S.addons.has(a.id)?"on":""}" data-ad="${a.id}"><div class="ic">${a.img?`<img src="${a.img}" alt="" loading="lazy">`:(ADICON[a.id]||App.icon("gift"))}</div><div class="nm">${a.n}</div><div class="pr">${a.p?"+"+App.fmt(a.p):"Free"}</div><button class="ab" onclick="PDP.addon('${a.id}')">${S.addons.has(a.id)?"Added ✓":"+ Add"}</button></div>`).join("")}</div>
 
     <div class="sec-head"><div class="h2">The details</div></div>
     <div class="acc pad">
@@ -2140,7 +2242,7 @@ function bagRender(){
     </div>`}).join("");
   const firstAds=App.state.bag[0].addons;
   const addons=ADDONS.filter(a=>a.id!=="card").map(a=>{const inb=firstAds.includes(a.id);return `<div class="addon ${inb?"in":""}" data-addon="${a.id}">
-      <div class="n">${a.n}</div><div class="d">${a.d}</div>
+      ${a.img?`<img src="${a.img}" alt="" loading="lazy">`:""}<div class="n">${a.n}</div><div class="d">${a.d}</div>
       <div class="b"><span>${a.p?App.fmt(a.p):"Free"}</span><button>${inb?"Added":"+ Add"}</button></div></div>`}).join("");
   body.innerHTML=`
     <div class="pad">${lines}</div>
@@ -2194,7 +2296,7 @@ let ck=null;
 function ckInit(params){
   const days=App.nextDays(7);
   ck={who:"other",name:"Anna",phone:"7700 900123",anon:false,addr:0,postcode:"SE1 5SY",door:"",notes:"",save:false,
-      day:0,win:2,precise:false,msg:"",hide:true,photo:true,chan:"WhatsApp",pay:params.express?"apple":"card",bill:true,tip:0,days,busy:false};
+      day:0,win:2,precise:false,msg:"",hide:true,photo:true,chan:"In the app",pay:params.express?"apple":"card",bill:true,tip:0,days,busy:false};
 }
 function ckTotal(){return App.total()+(ck.precise?6:0)+ck.tip}
 function ckRender(){
@@ -2244,8 +2346,9 @@ function ckRender(){
   </div>
   <!-- photo -->
   <div class="sec">
-    <div class="panel"><div class="photo">${App.icon("camera")}<div class="f1"><div class="sm">We'll send you a photo of the bouquet before it leaves the shop</div>
-      <div class="chips mt12" style="padding:0">${["WhatsApp","SMS","Email"].map(c=>`<button class="chip ${ck.chan===c?"on":""}" data-chan="${c}">${c}</button>`).join("")}</div></div>
+    <div class="panel"><div class="photo">${App.icon("camera")}<div class="f1"><div class="sm">We'll send a photo of the bouquet to the app before it leaves the shop – approve it or ask for a change</div>
+      <div class="xs muted mt4">Push notification · also in Orders</div>
+      <div class="chips mt12" style="padding:0">${["In the app","+ WhatsApp","+ Email"].map(c=>`<button class="chip ${ck.chan===c?"on":""}" data-chan="${c}">${c}</button>`).join("")}</div></div>
       <button class="switch ${ck.photo?"on":""}" data-sw="photo"></button></div></div>
   </div>
   <!-- payment -->
@@ -2317,7 +2420,7 @@ function ckPay(){
   if(ck.pay==="new"){const n=$("#ck-newcard input").value.replace(/\s/g,"");if(n.length<16){App.toast("Please enter a full card number");$("#ck-newcard input").focus();return}}
   if(!ck.name.trim()){App.toast("Who is it for? Add a recipient name");$("#ck-body").scrollTop=0;$("#ck-name").focus();return}
   ck.busy=true;App.haptic();ckCta();
-  setTimeout(()=>{
+  const finish=()=>{
     const d=ck.days[ck.day];
     const win=ck.win===4?"ASAP · ~3 h":ck.precise?WINDOWS[ck.win].slice(0,5)+"–"+(("0"+(+WINDOWS[ck.win].slice(0,2)+1)).slice(-2))+":00":WINDOWS[ck.win];
     const addr=ck.addr>=0?SAVED[ck.addr]:{l:ck.door||ck.postcode,d:"London "+ck.postcode};
@@ -2325,8 +2428,39 @@ function ckPay(){
       total:ckTotal(),subtotal:App.subtotal(),tip:ck.tip,date:d.d,dateLabel:ck.day===0?"Today":ck.day===1?"Tomorrow":App.dateLabel(d.d),window:win,
       recipient:ck.name.trim(),anon:ck.anon,postcode:(addr.d.match(/SE\d\w*/)||[ck.postcode.split(" ")[0]])[0].split(" ")[0],address:addr.l+", "+addr.d,message:ck.msg,photo:ck.photo,chan:ck.chan,pay:ck.pay,placed:new Date()};
     ck.busy=false;App.clearBag();App.go("success",{},{replace:true});
-  },1200);
+  };
+  const t=App.fmt(ckTotal());
+  if(ck.pay==="apple"){
+    App.sheet(`<div class="gw apple"><div class="gw-h"><span class="gw-logo">${App.icon("apple")} Pay</span><button class="ib" onclick="App.closeSheet();window.ckAbort()">${App.icon("close")}</button></div>
+      <div class="gw-card"><div class="gw-chip"></div><div><div class="sm">Visa ending 4421</div><div class="xs muted">Tatiana Sergeenko</div></div></div>
+      <div class="gw-row"><span>Pay Floritta</span><b>${t}</b></div>
+      <div class="gw-row"><span>Deliver to</span><span class="tr">${ck.name.trim()||"Anna"} · ${ck.postcode}</span></div>
+      <div class="gw-row"><span>Contact</span><span>tatiana@floritta.uk</span></div>
+      <div class="gw-foot"><div class="gw-side"></div><div class="gw-side-t">Confirm with side button</div><div class="gw-face" id="gw-face"></div></div></div>`,{onOpen:()=>{
+        setTimeout(()=>{const f=$("#gw-face");if(f)f.classList.add("ok");$(".gw-side-t")&&($(".gw-side-t").textContent="Done")},1500);
+        setTimeout(()=>{if(!ck||!ck.busy)return;App.closeSheet();finish()},2300)}});
+    return;
+  }
+  if(ck.pay==="klarna"){
+    App.sheet(`<div class="gw"><div class="gw-h"><span class="gw-logo" style="background:#ffb3c7;color:#0e0e0e;padding:4px 10px;font-weight:500">Klarna.</span><button class="ib" onclick="App.closeSheet();window.ckAbort()">${App.icon("close")}</button></div>
+      <div class="h3" style="margin:8px 0 4px">Pay in 3 · ${App.fmt(ckTotal()/3)} today</div><div class="sm soft">Then ${App.fmt(ckTotal()/3)} in 30 and 60 days. No interest, no fees.</div>
+      <div class="gw-row mt16"><span>Mobile</span><span>+44 7700 900123</span></div><div class="gw-row"><span>Email</span><span>tatiana@floritta.uk</span></div>
+      <button class="btn --block mt16" style="background:#0e0e0e;border-color:#0e0e0e" onclick="App.closeSheet();window.ckGwDone()">Continue</button><div class="xs muted tc mt12">Secured by Klarna · you'll return to Floritta</div></div>`);
+    window.ckGwDone=()=>{setTimeout(finish,700)};
+    return;
+  }
+  // card → Stripe-style 3-D Secure
+  const last=ck.pay==="new"?($("#ck-newcard input").value.replace(/\s/g,"").slice(-4)):"4421";
+  App.sheet(`<div class="gw"><div class="gw-h"><span class="gw-logo gw-bank">Visa Secure</span><button class="ib" onclick="App.closeSheet();window.ckAbort()">${App.icon("close")}</button></div>
+    <div class="caps muted">Confirm your payment</div><div class="h3 mt4">${t} to Floritta Ltd</div>
+    <div class="sm soft mt8">Visa •••• ${last} · we've sent a code to +44 ••••• 123</div>
+    <div class="gw-otp mt16" id="gw-otp">${[0,1,2,3,4,5].map(()=>`<i></i>`).join("")}</div>
+    <div class="xs muted mt12">Auto-filled from Messages</div>
+    <div class="gw-stripe mt24">${App.icon("lock")} Secured by <b>Stripe</b> · 3-D Secure 2</div></div>`,{onOpen:()=>{
+      const code="482913";[...code].forEach((c,i)=>setTimeout(()=>{const el=$$("#gw-otp i")[i];if(el){el.textContent=c;el.classList.add("on")}},500+i*140));
+      setTimeout(()=>{if(!ck||!ck.busy)return;App.closeSheet();finish()},2300)}});
 }
+window.ckAbort=function(){if(ck){ck.busy=false;ckCta()}}
 function ckSteps(){
   const body=$("#ck-body"),steps=$$("#ck-steps button");
   const y=body.scrollTop+body.clientHeight*0.4;
@@ -2335,7 +2469,7 @@ function ckSteps(){
   steps.forEach((s,i)=>{s.classList.toggle("on",i===act);s.classList.toggle("done",i<act)});
 }
 window.mount_checkout=function(params){
-  if(!App.state.bag.length){App.go("bag",{},{replace:true});return}
+  if(!App.state.bag.length){App.addToBag(2,{silent:true});App.addToBag(6,{size:"Deluxe",extra:25,addons:["vase","card"],silent:true})}
   if(!ck||params.express!==undefined)ckInit(params);else ck.days=App.nextDays(7);
   ckRender();ckSteps();
   const body=$("#ck-body");body.onscroll=ckSteps;
@@ -2345,13 +2479,13 @@ document.addEventListener("screen",e=>{if(e.detail.id!=="checkout")ck=null});
 
 /* ======================= SUCCESS ======================= */
 window.mount_success=function(){
-  const o=App.state.order||{id:"#482910",total:0,dateLabel:"Today",window:"15:00–18:00",recipient:"Anna",postcode:"SE1",lines:[],photo:true,chan:"WhatsApp"};
+  const o=App.state.order||{id:"#482910",total:0,dateLabel:"Today",window:"15:00–18:00",recipient:"Anna",postcode:"SE1",lines:[],photo:true,chan:"In the app"};
   const body=$("#su-body");
   body.innerHTML=`
     <svg class="mark" viewBox="0 0 88 88"><rect x=".5" y=".5" width="87" height="87"/><path d="M27 45l11 11 23-25"/></svg>
     <div class="h1 fade-up">Thank you,<br>${esc(App.state.user.name)}</div>
     <p class="soft fade-up" style="margin:14px 0 0;animation-delay:.1s">Your order <b>${o.id}</b> is with our florists. ${o.dateLabel}, ${o.window} to ${esc(o.recipient)}, ${o.postcode}.</p>
-    ${o.photo?`<div class="panel --ok mt24 fade-up" style="animation-delay:.2s;display:flex;gap:12px;align-items:center">${App.icon("camera").replace("<svg",'<svg style="width:22px;height:22px;stroke:var(--ok);fill:none;stroke-width:1.5;flex:none"')}<span class="sm">We'll message you a photo before it leaves${o.chan?` · ${o.chan}`:""}</span></div>`:""}
+    ${o.photo?`<div class="panel --ok mt24 fade-up" style="animation-delay:.2s;display:flex;gap:12px;align-items:center">${App.icon("camera").replace("<svg",'<svg style="width:22px;height:22px;stroke:var(--ok);fill:none;stroke-width:1.5;flex:none"')}<div class="f1"><div class="sm">We'll send a photo of the bouquet here, in the app, before it leaves the shop</div><div class="xs muted mt4">You'll get a push · approve it or ask for a change in one tap</div></div></div>`:""}
     <div class="nxt fade-up" style="animation-delay:.3s">
       <div>${App.icon("flower")}<b>Next</b>Florist crafting your bouquet</div>
       <div>${App.icon("camera")}<b>Then</b>Photo sent for your approval</div>
@@ -2415,7 +2549,7 @@ const TRK={step:4,rating:0,photoOk:null,past:false};
 window.TRK=TRK;
 let CUR=TRK; /* view being rendered: active (TRK) or a past-order view */
 const HEAD=[
- ["We have your order","Our florists start at 12:30. We'll send a photo before it leaves."],
+ ["We have your order","Our florists start at 12:30. We'll send a photo to the app before it leaves."],
  ["Svetlana is crafting your bouquet","Hand-tied at 80 Willow Walk. Photo coming within the hour."],
  ["Your bouquet is ready","Have a look at the photo below. Happy? We'll pack it."],
  ["Packed and waiting for the courier","Delivery window 15:00–18:00. Live tracking starts soon."],
@@ -2423,7 +2557,10 @@ const HEAD=[
  ["Delivered to Anna","Handed over at the door at 16:38. We hope she loves them."]
 ];
 
-window.trkNext=function(){if(CUR.past)return;TRK.step=(TRK.step+1)%6;if(TRK.step===0){TRK.rating=0;TRK.photoOk=null}renderTracking();App.haptic()};
+window.trkNext=function(){if(CUR.past)return;TRK.step=(TRK.step+1)%6;if(TRK.step===0){TRK.rating=0;TRK.photoOk=null}renderTracking();App.haptic();if(TRK.step===2)window.trkPush("Your bouquet is ready – have a look","Svetlana just photographed it. Approve or ask for a change.")};
+window.trkPush=function(t,d){let el=document.getElementById("push");if(!el){el=document.createElement("div");el.id="push";el.className="push";document.querySelector(".screen-wrap").appendChild(el)}
+  el.innerHTML=`<img src="logo.svg" alt="" class="push-l"><div class="f1"><div class="push-t"><span>Floritta</span><span class="muted">now</span></div><div class="sm">${t}</div><div class="xs soft">${d}</div></div>`;
+  el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove("on"),4500);el.onclick=()=>{el.classList.remove("on")}};
 
 function renderTracking(){
   const s=CUR.step, o=CUR.past?CUR.o:activeOrder(), p=P(o.pid)||P(1);
