@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Floritta Team – схемы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#faf7f2;--ink:#1e1a17;--graphite:#5c5450;--grey:#8b8378;--light:#d9d2c7;--silver:#f1ece4;--accent:#b4595f;--ok:#7a8a6b;--warn:#b8862e}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif;font-weight:300;font-size:16px;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 16px 72px}
+h1{font-family:'Cormorant Infant',serif;font-weight:300;font-size:44px;line-height:1.1;margin:4px 0 8px}
+h2{font-family:'Cormorant Infant',serif;font-weight:300;font-size:30px;line-height:1.15;margin:0 0 6px}
+.caps{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.lead{color:var(--graphite);max-width:760px;margin:0 0 44px}
+figure{margin:0 0 56px;padding:28px 0 0;border-top:1px solid var(--light)}
+.fig{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px}
+.fig svg{width:100%;height:auto;display:block}
+@media(max-width:720px){.fig svg{min-width:880px}h1{font-size:36px}}
+figcaption{margin-top:12px;color:var(--graphite);font-size:14px;max-width:860px}
+figcaption b{font-weight:500;color:var(--ink)}
+.legend{display:flex;gap:18px 24px;flex-wrap:wrap;font-size:13px;color:var(--graphite);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{display:inline-block;width:22px;height:12px;border:1.5px solid var(--ink);background:var(--paper)}
+.legend i.new{border-color:var(--accent)}
+.legend i.dash{border-style:dashed}
+.legend i.newdash{border-color:var(--accent);border-style:dashed}
+svg text{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:var(--ink);font-weight:400}
+svg .t{font-weight:500;font-size:14px}
+svg .h{font-family:'Cormorant Infant',serif;font-size:22px;font-weight:300}
+svg .s{font-size:12px;fill:var(--graphite)}
+svg .a{fill:var(--accent)}
+svg .g{fill:var(--grey)}
+svg .m{text-anchor:middle}
+svg .e{text-anchor:end}
+svg .box{fill:var(--paper);stroke:var(--ink);stroke-width:1.3}
+svg .box.new{stroke:var(--accent);stroke-width:1.5}
+svg .box.sil{fill:var(--silver)}
+svg .chip{fill:var(--paper);stroke:var(--accent);stroke-width:1.2}
+svg .dash{stroke-dasharray:5 4}
+svg .ln{fill:none;stroke:var(--ink);stroke-width:1.3}
+svg .ln.new{stroke:var(--accent);stroke-width:1.5}
+svg .ln.soft{stroke:var(--grey)}
+.foot{color:var(--grey);font-size:13px;border-top:1px solid var(--light);padding-top:16px}
+</style>
+</head>
+<body><nav class="docnav" style="max-width:1100px;margin:24px auto 0;padding:0 20px;display:flex;gap:18px;font:400 12px/1 Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase"><a href="index.html" style="color:#1e1a17;text-decoration:none;border-bottom:1px solid #d9d2c7;padding-bottom:2px">Прототип</a><a href="concept.html" style="color:#1e1a17;text-decoration:none;border-bottom:1px solid #d9d2c7;padding-bottom:2px">Концепция</a></nav>
+<div class="wrap">
+<div class="caps">Floritta Team · редизайн приложения для сотрудников · 20.10.2026</div>
+<h1>Четыре схемы к концепции</h1>
+<p class="lead">Архитектура, жизненный цикл задачи, петля обучения и карта экранов. Чёрный контур – то, что уже есть в CRM и приложении; винный контур – то, что добавляем. Текст концепции – в файле «Концепция_Floritta_Team_2026-10-20.md» рядом.</p>
+
+<!-- ============ 1. АРХИТЕКТУРА ============ -->
+<figure>
+<h2>1. Архитектура</h2>
+<div class="legend"><span><i></i>есть</span><span><i class="new"></i>новое</span><span><i class="dash"></i>нативная сборка (Ф4)</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 740" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Архитектура Floritta Team">
+<defs>
+<marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e1a17"/></marker>
+<marker id="a1n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b4595f"/></marker>
+</defs>
+
+<!-- CRM -->
+<rect class="box" x="20" y="20" width="320" height="600"/>
+<rect class="box sil" x="20" y="20" width="320" height="46"/>
+<text class="h" x="36" y="51">CRM – Laravel</text>
+<text class="s e" x="324" y="49">крон · очереди</text>
+
+<rect class="box" x="36" y="84" width="288" height="110"/>
+<text class="t" x="48" y="104">Tasks</text>
+<text class="s" x="48" y="122">Task · TaskTemplate · ChecklistItem · Comment</text>
+<text class="s" x="48" y="138">TaskPolicy · ShiftDistributor · ReviewStrata 72 ч</text>
+<rect class="chip" x="48" y="148" width="64" height="20"/><text class="s a" x="80" y="162" text-anchor="middle">seen_at</text>
+<rect class="chip" x="118" y="148" width="128" height="20"/><text class="s a" x="182" y="162" text-anchor="middle">board для всех kind</text>
+<rect class="chip" x="252" y="148" width="66" height="20"/><text class="s a" x="285" y="162" text-anchor="middle">эскалация</text>
+<rect class="chip" x="48" y="172" width="162" height="18"/><text class="s a" x="129" y="185" text-anchor="middle">пункт чеклиста: кто / срок</text>
+<rect class="chip" x="216" y="172" width="102" height="18"/><text class="s a" x="267" y="185" text-anchor="middle">requires_review</text>
+
+<rect class="box new" x="36" y="206" width="288" height="58"/>
+<text class="t a" x="48" y="226">Announcements</text>
+<text class="s" x="48" y="244">announcements · announcement_acks · аудитория</text>
+<text class="s" x="48" y="258">requires_ack · pinned_until · lesson_id</text>
+
+<rect class="box" x="36" y="276" width="288" height="110"/>
+<text class="t" x="48" y="296">Learning</text>
+<text class="s" x="48" y="314">Lesson · Assignment · Attempt · QuizItem</text>
+<text class="s" x="48" y="330">Buddy 1/3/7/14 · Matrix · Plan · Glossary</text>
+<rect class="chip" x="48" y="340" width="150" height="20"/><text class="s a" x="123" y="354" text-anchor="middle">body markdown + медиа</text>
+<rect class="chip" x="204" y="340" width="114" height="20"/><text class="s a" x="261" y="354" text-anchor="middle">сертификат PDF</text>
+<rect class="chip" x="48" y="364" width="100" height="18"/><text class="s a" x="98" y="377" text-anchor="middle">push «learning»</text>
+<rect class="chip" x="154" y="364" width="164" height="18"/><text class="s a" x="236" y="377" text-anchor="middle">review · buddy · paths в API</text>
+
+<rect class="box" x="36" y="398" width="288" height="56"/>
+<text class="t" x="48" y="418">Orders · Production</text>
+<text class="s" x="48" y="436">Order · ProductionJob to_make / in_progress / ready</text>
+<text class="s" x="48" y="450">маршрут курьера · подтверждение доставки</text>
+
+<rect class="box" x="36" y="466" width="288" height="56"/>
+<text class="t" x="48" y="486">Timeclock · Schedule</text>
+<text class="s" x="48" y="504">TimeEntry: чек-ин, геофенс, перерывы</text>
+<text class="s" x="48" y="518">→ дайджест в начале смены, тишина вне смены</text>
+
+<rect class="box" x="36" y="534" width="288" height="72"/>
+<text class="t" x="48" y="554">Notifications</text>
+<text class="s" x="48" y="572">PushNotifier · ExpoPushGateway · Telegram</text>
+<rect class="chip" x="48" y="582" width="118" height="18"/><text class="s a" x="107" y="595" text-anchor="middle">тип learning</text>
+<rect class="chip" x="172" y="582" width="70" height="18"/><text class="s a" x="207" y="595" text-anchor="middle">priority</text>
+<rect class="chip" x="248" y="582" width="70" height="18"/><text class="s a" x="283" y="595" text-anchor="middle">дайджест</text>
+
+<!-- API -->
+<rect class="box" x="390" y="20" width="220" height="600"/>
+<rect class="box sil" x="390" y="20" width="220" height="46"/>
+<text class="h" x="406" y="51">REST API</text>
+<text class="s e" x="594" y="49">/api/v1</text>
+<text x="406" y="98">/tasks · store · claim · start</text>
+<text x="406" y="124">/tasks · done (фото) · comments</text>
+<text x="406" y="150">/tasks · steps · undone · cancel</text>
+<text class="a" x="406" y="176">/tasks/{id}/approve · reopen</text>
+<text class="a" x="406" y="202">PATCH /tasks/{id} · /seen</text>
+<text class="a" x="406" y="228">PUT /tasks/board/order</text>
+<text class="a" x="406" y="254">/attention</text>
+<text class="a" x="406" y="280">/announcements · ack · acks</text>
+<text x="406" y="306">/task-templates/{t}/take</text>
+<text class="a" x="406" y="332">/templates/{t}/assign</text>
+<text x="406" y="358">/learning · submit · acknowledge</text>
+<text x="406" y="384">/glossary · /development</text>
+<text class="a" x="406" y="410">/learning/review · certificates</text>
+<text class="a" x="406" y="436">/learning/buddy · paths</text>
+<text x="406" y="462">/orders/queue · /production</text>
+<text x="406" y="488">/delivery · route · stop · proof</text>
+<text x="406" y="514">/timeclock · clock · breaks</text>
+<text x="406" y="540">/push/register</text>
+<text class="s" x="406" y="580">Новые – винным. Остальное</text>
+<text class="s" x="406" y="596">уже есть и переиспользуется.</text>
+
+<!-- App -->
+<rect class="box" x="660" y="20" width="250" height="600"/>
+<rect class="box sil" x="660" y="20" width="250" height="46"/>
+<text class="h" x="676" y="51">Floritta Team</text>
+<text class="s e" x="894" y="49">Expo</text>
+
+<rect class="box" x="676" y="84" width="218" height="92"/>
+<text class="t" x="688" y="104">Today</text>
+<text class="s" x="688" y="122">home · inbox · announcement</text>
+<text class="s" x="688" y="138">«сейчас / дальше» · урок дня</text>
+<rect class="chip" x="688" y="148" width="110" height="20"/><text class="s a" x="743" y="162" text-anchor="middle">Нужно внимание</text>
+<rect class="chip" x="804" y="148" width="78" height="20"/><text class="s a" x="843" y="162" text-anchor="middle">дайджест</text>
+
+<rect class="box" x="676" y="188" width="218" height="92"/>
+<text class="t" x="688" y="208">Tasks</text>
+<text class="s" x="688" y="226">tasks (Mine / Board / Pool) · task</text>
+<text class="s" x="688" y="242">task-new · team · templates</text>
+<rect class="chip" x="688" y="252" width="100" height="20"/><text class="s a" x="738" y="266" text-anchor="middle">доска всех kind</text>
+<rect class="chip" x="794" y="252" width="88" height="20"/><text class="s a" x="838" y="266" text-anchor="middle">seen · approve</text>
+
+<rect class="box" x="676" y="292" width="218" height="92"/>
+<text class="t" x="688" y="312">Work</text>
+<text class="s" x="688" y="330">work · order · route · stop</text>
+<text class="s" x="688" y="346">очередь · произв. доска · склад</text>
+<rect class="chip dash" x="688" y="356" width="130" height="20"/><text class="s a" x="753" y="370" text-anchor="middle">Live Activity (Ф4)</text>
+
+<rect class="box" x="676" y="396" width="218" height="92"/>
+<text class="t" x="688" y="416">Learn</text>
+<text class="s" x="688" y="434">learn · path · lesson · quiz · review</text>
+<text class="s" x="688" y="450">certificates · mentor · glossary</text>
+<rect class="chip" x="688" y="460" width="56" height="20"/><text class="s a" x="716" y="474" text-anchor="middle">review</text>
+<rect class="chip" x="750" y="460" width="82" height="20"/><text class="s a" x="791" y="474" text-anchor="middle">сертификаты</text>
+<rect class="chip" x="838" y="460" width="44" height="20"/><text class="s a" x="860" y="474" text-anchor="middle">медиа</text>
+
+<rect class="box" x="676" y="500" width="218" height="92"/>
+<text class="t" x="688" y="520">Me</text>
+<text class="s" x="688" y="538">me · schedule · timeclock · bonus</text>
+<text class="s" x="688" y="554">leave · settings · help · «смотреть как»</text>
+<rect class="chip" x="688" y="564" width="92" height="20"/><text class="s a" x="734" y="578" text-anchor="middle">тихие часы</text>
+<rect class="chip dash" x="786" y="564" width="96" height="20"/><text class="s a" x="834" y="578" text-anchor="middle">Face ID (Ф4)</text>
+
+<!-- links CRM <-> API <-> App -->
+<line class="ln" x1="342" y1="330" x2="388" y2="330" marker-start="url(#a1)" marker-end="url(#a1)"/>
+<text class="s m" x="365" y="320">JSON</text>
+<line class="ln" x1="612" y1="330" x2="658" y2="330" marker-start="url(#a1)" marker-end="url(#a1)"/>
+<text class="s m" x="635" y="320">HTTPS</text>
+
+<!-- bottom row -->
+<rect class="box" x="20" y="672" width="320" height="52"/>
+<text class="t" x="36" y="693">Telegram ops-chat</text>
+<text class="s" x="36" y="711">дайджесты · watchdog · <tspan class="a">эскалация уровня 2</tspan></text>
+<line class="ln" x1="180" y1="620" x2="180" y2="670" marker-end="url(#a1)"/>
+
+<rect class="box" x="390" y="672" width="220" height="52"/>
+<text class="t" x="406" y="693">Expo Push → APNs / FCM</text>
+<text class="s" x="406" y="711">normal · <tspan class="a">priority</tspan> · <tspan class="a">кнопки в пуше</tspan></text>
+<path class="ln" d="M300 620 V646 H430 V670" marker-end="url(#a1)"/>
+<path class="ln" d="M570 672 V646 H720 V622" marker-end="url(#a1)"/>
+
+<rect class="box dash" x="660" y="672" width="250" height="52"/>
+<text class="t" x="676" y="693">EAS Update (OTA) · EAS Build</text>
+<text class="s" x="676" y="711">Ф0–Ф3 – JS · Ф4 – нативная сборка</text>
+<line class="ln" x1="840" y1="670" x2="840" y2="622" marker-end="url(#a1)"/>
+
+<!-- right note -->
+<text class="s" x="930" y="100">Правило:</text>
+<text class="s" x="930" y="118">runtimeVersion =</text>
+<text class="s" x="930" y="134">fingerprint. Любое</text>
+<text class="s" x="930" y="150">нативное изменение</text>
+<text class="s" x="930" y="166">отрезает OTA от</text>
+<text class="s" x="930" y="182">старых билдов –</text>
+<text class="s" x="930" y="198">поэтому нативное</text>
+<text class="s" x="930" y="214">собираем одним</text>
+<text class="s" x="930" y="230">заходом в Ф4:</text>
+<text class="s" x="930" y="250">· Live Activity</text>
+<text class="s" x="930" y="266">· Live Updates</text>
+<text class="s" x="930" y="282">· виджеты</text>
+<text class="s" x="930" y="298">· Liquid Glass</text>
+<text class="s" x="930" y="314">· react-native-svg</text>
+<text class="s" x="930" y="330">· Face ID</text>
+</svg>
+</div>
+<figcaption><b>Как связано.</b> CRM остаётся единственным источником правды: задачи, обучение, заказы, табель и уведомления живут в Laravel и отдаются приложению через существующий REST API. Приложение – пять табов поверх тех же данных. Новые части (винным) – таблицы объявлений и подтверждений, отметка «увидел», порядок доски для всех видов задач, эскалация, тело урока с медиа, сертификаты и push-тип learning – это дополнения к существующим моделям, а не параллельная система.</figcaption>
+</figure>
+
+<!-- ============ 2. ЖИЗНЕННЫЙ ЦИКЛ ЗАДАЧИ ============ -->
+<figure>
+<h2>2. Жизненный цикл задачи</h2>
+<div class="legend"><span><i></i>есть в CRM</span><span><i class="new"></i>новое</span><span><i class="dash"></i>условный переход</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Жизненный цикл задачи">
+<defs>
+<marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e1a17"/></marker>
+<marker id="a2n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b4595f"/></marker>
+</defs>
+
+<!-- escalation loop -->
+<rect class="box new" x="40" y="28" width="440" height="104"/>
+<text class="t a" x="56" y="50">Эскалация просрочки – due_at прошёл</text>
+<text x="56" y="72">+15 мин → push priority исполнителю · escalation_level 1</text>
+<text x="56" y="92">+45 мин → push priority менеджеру на смене + Telegram ops</text>
+<text x="56" y="112">→ экран «Нужно внимание» · escalation_level 2 · только 8–22</text>
+<path class="ln new dash" d="M115 248 V134" marker-end="url(#a2n)"/>
+<text class="s a" x="124" y="200">просрочена</text>
+<path class="ln new dash" d="M400 134 V246" marker-end="url(#a2n)"/>
+<text class="s a" x="300" y="200">напоминание</text>
+
+<!-- reopen arc -->
+<path class="ln new dash" d="M985 248 Q720 110 455 246" marker-end="url(#a2n)"/>
+<text class="s a m" x="720" y="168">Reopen (менеджер) · новое в API</text>
+
+<!-- entry -->
+<line class="ln" x1="6" y1="288" x2="38" y2="288" marker-end="url(#a2)"/>
+<text class="s" x="40" y="348">назначена · push normal</text>
+<text class="s" x="40" y="364">«New task for you» (есть)</text>
+
+<!-- nodes -->
+<rect class="box" x="40" y="250" width="150" height="76"/>
+<text class="t m" x="115" y="274">To do</text>
+<text class="s m" x="115" y="292">ждёт исполнителя</text>
+<text class="s m g" x="115" y="312">CRM: open</text>
+
+<rect class="box" x="330" y="250" width="150" height="76"/>
+<text class="t m" x="405" y="274">Doing</text>
+<text class="s m" x="405" y="292">в работе</text>
+<text class="s m g" x="405" y="312">CRM: in_progress</text>
+
+<rect class="box" x="620" y="250" width="150" height="76"/>
+<text class="t m" x="695" y="274">Review</text>
+<text class="s m" x="695" y="292">на проверке</text>
+<text class="s m g" x="695" y="312">done, approved_at = null</text>
+
+<rect class="box" x="910" y="250" width="150" height="76"/>
+<text class="t m" x="985" y="274">Done</text>
+<text class="s m" x="985" y="292">закрыта</text>
+<text class="s m g" x="985" y="312">done + approved_at</text>
+
+<rect class="box" x="40" y="560" width="150" height="56"/>
+<text class="t m" x="115" y="584">Cancelled</text>
+<text class="s m g" x="115" y="602">CRM: cancelled</text>
+
+<!-- forward edges -->
+<line class="ln" x1="192" y1="288" x2="328" y2="288" marker-end="url(#a2)"/>
+<text class="s m" x="260" y="262">Start</text>
+<text class="s m a" x="260" y="278">seen_at · «Seen by…»</text>
+<text class="s m" x="260" y="308">без push менеджеру</text>
+
+<line class="ln" x1="482" y1="288" x2="618" y2="288" marker-end="url(#a2)"/>
+<text class="s m" x="550" y="262">Send to check</text>
+<text class="s m" x="550" y="278">с фото, если нужно</text>
+<text class="s m" x="550" y="308">push менеджеру</text>
+
+<line class="ln" x1="772" y1="288" x2="908" y2="288" marker-end="url(#a2)"/>
+<text class="s m" x="840" y="262">Approve &amp; close</text>
+<text class="s m a" x="840" y="278">approve – новое в API</text>
+<text class="s m" x="840" y="308">push «Thank you»</text>
+
+<!-- sent back arc -->
+<path class="ln" d="M640 328 Q550 445 460 330" marker-end="url(#a2)"/>
+<text class="s m" x="550" y="410">Send back + причина (есть)</text>
+<text class="s m" x="550" y="426">push priority исполнителю «Sent back»</text>
+
+<!-- mark as done without review -->
+<path class="ln dash" d="M420 328 V470 H985 V330" marker-end="url(#a2)"/>
+<text class="s m" x="700" y="492">Mark as done без проверки – requires_review = false</text>
+<text class="s m" x="700" y="508">или автоодобрение через 72 ч (ReviewStrata, есть)</text>
+
+<!-- cancel edges -->
+<line class="ln" x1="175" y1="328" x2="175" y2="558" marker-end="url(#a2)"/>
+<path class="ln" d="M345 328 V588 H192" marker-end="url(#a2)"/>
+<text class="s" x="186" y="440">Cancel (менеджер)</text>
+<text class="s" x="186" y="456">cancel request</text>
+<text class="s" x="186" y="472">(исполнитель, есть)</text>
+<text class="s" x="186" y="488">push «Task cancelled»</text>
+
+<!-- footnote -->
+<text class="s" x="620" y="566">Тихие часы: normal-пуши вне смены копятся в дайджест</text>
+<text class="s" x="620" y="582">к чек-ину; priority и urgent – всегда в смене (8–22).</text>
+<text class="s" x="620" y="606">kind = ask сохраняет свои +1 / +3 дня (tasks:asks-nudge).</text>
+</svg>
+</div>
+<figcaption><b>Четыре состояния в приложении, ноль новых статусов в базе.</b> To do = open, Doing = in_progress, Review = done без approved_at, Done = done с approved_at. Новое – отметка «увидел», мобильные approve / reopen / update и таймер эскалации, который напоминает исполнителю через 15 минут после срока и поднимает задачу менеджеру через 45.</figcaption>
+</figure>
+
+<!-- ============ 3. ПЕТЛЯ ОБУЧЕНИЯ ============ -->
+<figure>
+<h2>3. Петля обучения</h2>
+<div class="legend"><span><i></i>есть целиком</span><span><i class="newdash"></i>есть в CRM, нет в приложении</span><span><i class="new"></i>новое</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Петля обучения">
+<defs>
+<marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e1a17"/></marker>
+<marker id="a3n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b4595f"/></marker>
+</defs>
+
+<!-- row 1 -->
+<rect class="box" x="20" y="60" width="180" height="92"/>
+<text class="t" x="32" y="82">1 · Чек-ин</text>
+<text class="s" x="32" y="102">TimeEntry, геофенс</text>
+<text class="s" x="32" y="118">начало смены</text>
+<text class="s g" x="32" y="140">есть</text>
+
+<line class="ln" x1="202" y1="106" x2="228" y2="106" marker-end="url(#a3)"/>
+
+<rect class="box new dash" x="230" y="60" width="180" height="92"/>
+<text class="t" x="242" y="82">2 · Урок дня · 3 мин</text>
+<text class="s" x="242" y="102">первый LearningAssignment</text>
+<text class="s" x="242" y="118">по сроку → Today + push</text>
+<text class="s a" x="242" y="140">место показа и push – новое</text>
+
+<line class="ln" x1="412" y1="106" x2="438" y2="106" marker-end="url(#a3)"/>
+
+<rect class="box" x="440" y="60" width="180" height="92"/>
+<text class="t" x="452" y="82">3 · Главная мысль</text>
+<text class="s" x="452" y="102">своими словами, ≥ 5 слов</text>
+<text class="s" x="452" y="118">main_idea обязательна</text>
+<text class="s g" x="452" y="140">есть</text>
+
+<line class="ln" x1="622" y1="106" x2="648" y2="106" marker-end="url(#a3)"/>
+
+<rect class="box" x="650" y="60" width="180" height="92"/>
+<text class="t" x="662" y="82">4 · Квиз · фото · подпись</text>
+<text class="s" x="662" y="102">SubmitAttempt → Grade</text>
+<text class="s" x="662" y="118">фото → needs_review</text>
+<text class="s g" x="662" y="140">есть</text>
+
+<line class="ln" x1="832" y1="106" x2="858" y2="106" marker-end="url(#a3)"/>
+
+<rect class="box new dash" x="860" y="60" width="180" height="92"/>
+<text class="t" x="872" y="82">5 · Повтор +1 +3 +7 +30</text>
+<text class="s" x="872" y="102">LearningQuizItem, крон 10:00</text>
+<text class="s" x="872" y="118">Знаю / Не знаю</text>
+<text class="s a" x="872" y="140">экран review – новый</text>
+<!-- self loop -->
+<path class="ln" d="M1000 58 Q1000 20 950 20 Q900 20 900 58" marker-end="url(#a3)"/>
+<text class="s m" x="950" y="14">ошибка → завтра</text>
+
+<!-- elbow row1 -> row2 -->
+<path class="ln new" d="M950 154 V200 H950 V228" marker-end="url(#a3n)"/>
+<text class="s a" x="962" y="194">пройдено → практика</text>
+
+<!-- row 2 (right to left) -->
+<rect class="box new" x="860" y="230" width="180" height="92"/>
+<text class="t a" x="872" y="252">6 · Практика на заказе</text>
+<text class="s" x="872" y="272">урок observation создаёт</text>
+<text class="s" x="872" y="288">задачу-практику (task)</text>
+<text class="s a" x="872" y="310">связка урок → задача – новая</text>
+
+<line class="ln" x1="858" y1="276" x2="832" y2="276" marker-end="url(#a3)"/>
+
+<rect class="box new dash" x="650" y="230" width="180" height="92"/>
+<text class="t" x="662" y="252">7 · Sign-off наставника</text>
+<text class="s" x="662" y="272">LearningBuddy, чекпоинты</text>
+<text class="s" x="662" y="288">1 / 3 / 7 / 14 день</text>
+<text class="s a" x="662" y="310">в приложении – новое</text>
+
+<line class="ln" x1="648" y1="276" x2="622" y2="276" marker-end="url(#a3)"/>
+
+<rect class="box new dash" x="440" y="230" width="180" height="92"/>
+<text class="t" x="452" y="252">8 · Допуск / сертификат</text>
+<text class="s" x="452" y="272">Matrix человек × станция</text>
+<text class="s" x="452" y="288">expires_at, can_teach</text>
+<text class="s a" x="452" y="310">экран + PDF – новое</text>
+
+<line class="ln" x1="438" y1="276" x2="412" y2="276" marker-end="url(#a3)"/>
+
+<rect class="box" x="230" y="230" width="180" height="92"/>
+<text class="t" x="242" y="252">9 · Ре-аттестация</text>
+<text class="s" x="242" y="272">learning:attestation (квартал)</text>
+<text class="s" x="242" y="288">expire-certifications (день)</text>
+<text class="s g" x="242" y="310">есть</text>
+
+<!-- loop back to lesson of the day -->
+<path class="ln dash" d="M320 228 V154" marker-end="url(#a3)"/>
+<text class="s" x="330" y="196">срок истёк → снова урок</text>
+
+<!-- side notes -->
+<rect class="box" x="20" y="230" width="180" height="92"/>
+<text class="t" x="32" y="252">Рамка</text>
+<text class="s" x="32" y="272">всё время в уроках –</text>
+<text class="s" x="32" y="288">оплачиваемое (табель, бонус)</text>
+<text class="s g" x="32" y="310">есть</text>
+
+<!-- bottom: UX layer -->
+<rect class="box new" x="20" y="372" width="1020" height="130"/>
+<text class="t a" x="36" y="394">Слой приложения поверх петли</text>
+<text x="36" y="418">Кольцо недели «3 урока + 1 практика» · недельный streak с заморозкой · пути по ролям поверх категорий AUDIENCE</text>
+<text x="36" y="440">Плеер урока: markdown + фото + видео (сейчас HTML → текст) · язык EN / RU / UK · «Что изменилось» = объявление со ссылкой на урок</text>
+<text x="36" y="462">Push-тип learning: урок дня · срок · повтор · подпись наставника (сейчас напоминания только в ops-Telegram)</text>
+<text class="s" x="36" y="488">Бэкенд: body_format, learning_lesson_media, PDF сертификата, API review / certificates / buddy / paths. Остальное – уже есть.</text>
+</svg>
+</div>
+<figcaption><b>Петля замкнута.</b> Чек-ин запускает урок дня, урок заканчивается квизом, вопросы квиза возвращаются карточками повтора через 1, 3, 7 и 30 дней, затем знание проверяется на реальном заказе и подписывается наставником – это даёт допуск или сертификат со сроком, после которого круг повторяется. Чёрные шаги уже работают в CRM; винные пунктирные есть в бэкенде, но не видны в приложении; сплошной винный – новая связка «урок → задача-практика».</figcaption>
+</figure>
+
+<!-- ============ 4. КАРТА ЭКРАНОВ ============ -->
+<figure>
+<h2>4. Карта экранов</h2>
+<div class="legend"><span><i></i>для всех ролей</span><span><i class="dash"></i>только для роли (подпись справа)</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Карта экранов Floritta Team">
+<!-- column headers -->
+<rect class="box sil" x="20" y="20" width="196" height="48"/><text class="h" x="36" y="52">Today</text><text class="s e" x="204" y="50">home</text>
+<rect class="box sil" x="236" y="20" width="196" height="48"/><text class="h" x="252" y="52">Tasks</text><text class="s e" x="420" y="50">tasks</text>
+<rect class="box sil" x="452" y="20" width="196" height="48"/><text class="h" x="468" y="52">Work</text><text class="s e" x="636" y="50">work</text>
+<rect class="box sil" x="668" y="20" width="196" height="48"/><text class="h" x="684" y="52">Learn</text><text class="s e" x="852" y="50">learn</text>
+<rect class="box sil" x="884" y="20" width="196" height="48"/><text class="h" x="900" y="52">Me</text><text class="s e" x="1068" y="50">me</text>
+
+<!-- Today -->
+<rect class="box" x="20" y="88" width="196" height="44"/><text x="32" y="107">Today – лента</text><text class="s" x="32" y="123">смена · «нужно сейчас» · дальше</text>
+<rect class="box dash" x="20" y="142" width="196" height="44"/><text x="32" y="161">Нужно внимание</text><text class="s" x="32" y="177">не на смене · просрочено</text><text class="s e" x="204" y="161">manager</text>
+<rect class="box dash" x="20" y="196" width="196" height="44"/><text x="32" y="215">Следующая точка</text><text class="s" x="32" y="231">Live Activity · прогресс маршрута</text><text class="s e" x="204" y="215">courier</text>
+<rect class="box" x="20" y="250" width="196" height="44"/><text x="32" y="269">inbox</text><text class="s" x="32" y="285">Задачи · Обучение · Объявления</text>
+<rect class="box" x="20" y="304" width="196" height="44"/><text x="32" y="323">announcement</text><text class="s" x="32" y="339">текст · «Понял»</text>
+<rect class="box dash" x="20" y="358" width="196" height="44"/><text x="32" y="377">announcement › acks</text><text class="s" x="32" y="393">кто подтвердил · напомнить</text><text class="s e" x="204" y="377">manager</text>
+
+<!-- Tasks -->
+<rect class="box" x="236" y="88" width="196" height="44"/><text x="248" y="107">tasks · Mine</text><text class="s" x="248" y="123">Overdue · Today · Shift · Later</text>
+<rect class="box" x="236" y="142" width="196" height="44"/><text x="248" y="161">tasks · Board</text><text class="s" x="248" y="177">To do · Doing · Review · Done</text>
+<rect class="box" x="236" y="196" width="196" height="44"/><text x="248" y="215">tasks · Pool</text><text class="s" x="248" y="231">свободные · «Взять»</text>
+<rect class="box" x="236" y="250" width="196" height="44"/><text x="248" y="269">task</text><text class="s" x="248" y="285">чеклист · фото · Seen</text>
+<rect class="box" x="236" y="304" width="196" height="44"/><text x="248" y="323">task-new</text><text class="s" x="248" y="339">шаблон · кому · срок · фото</text>
+<rect class="box dash" x="236" y="358" width="196" height="44"/><text x="248" y="377">team</text><text class="s" x="248" y="393">нагрузка по людям</text><text class="s e" x="420" y="377">manager</text>
+<rect class="box dash" x="236" y="412" width="196" height="44"/><text x="248" y="431">templates</text><text class="s" x="248" y="447">повторы · Взять / Назначить</text><text class="s e" x="420" y="431">manager</text>
+
+<!-- Work -->
+<rect class="box" x="452" y="88" width="196" height="44"/><text x="464" y="107">work · My queue</text><text class="s" x="464" y="123">Queue · Making · Ready · Take next</text>
+<rect class="box dash" x="452" y="142" width="196" height="44"/><text x="464" y="161">work · Route</text><text class="s" x="464" y="177">точки · Navigate · Delivered</text><text class="s e" x="636" y="161">courier</text>
+<rect class="box dash" x="452" y="196" width="196" height="44"/><text x="464" y="215">work · Production</text><text class="s" x="464" y="231">назначить · вызвать курьера</text><text class="s e" x="636" y="215">manager</text>
+<rect class="box" x="452" y="250" width="196" height="44"/><text x="464" y="269">order</text><text class="s" x="464" y="285">таймлайн · фото перед упаковкой</text>
+<rect class="box dash" x="452" y="304" width="196" height="44"/><text x="464" y="323">route</text><text class="s" x="464" y="339">карта · Start route</text><text class="s e" x="636" y="323">courier</text>
+<rect class="box dash" x="452" y="358" width="196" height="44"/><text x="464" y="377">stop</text><text class="s" x="464" y="393">адрес · окно · proof-фото</text><text class="s e" x="636" y="377">courier</text>
+<rect class="box" x="452" y="412" width="196" height="44"/><text x="464" y="431">inventory › …</text><text class="s" x="464" y="447">12 экранов склада, стек</text>
+<rect class="box dash" x="452" y="466" width="196" height="44"/><text x="464" y="485">order (read-only)</text><text class="s" x="464" y="501">без действий</text><text class="s e" x="636" y="485">trainee</text>
+
+<!-- Learn -->
+<rect class="box" x="668" y="88" width="196" height="44"/><text x="680" y="107">learn</text><text class="s" x="680" y="123">кольцо недели · streak · урок дня</text>
+<rect class="box" x="668" y="142" width="196" height="44"/><text x="680" y="161">path</text><text class="s" x="680" y="177">путь по роли · прогресс</text>
+<rect class="box" x="668" y="196" width="196" height="44"/><text x="680" y="215">lesson</text><text class="s" x="680" y="231">шаги · фото / видео · мысль</text>
+<rect class="box" x="668" y="250" width="196" height="44"/><text x="680" y="269">quiz</text><text class="s" x="680" y="285">вопрос на экран · результат</text>
+<rect class="box" x="668" y="304" width="196" height="44"/><text x="680" y="323">review</text><text class="s" x="680" y="339">карточки +1/+3/+7/+30</text>
+<rect class="box" x="668" y="358" width="196" height="44"/><text x="680" y="377">certificates</text><text class="s" x="680" y="393">сертификаты · допуски · сроки</text>
+<rect class="box" x="668" y="412" width="196" height="44"/><text x="680" y="431">glossary</text><text class="s" x="680" y="447">Азбука · колода дня · фото-тест</text>
+<rect class="box dash" x="668" y="466" width="196" height="44"/><text x="680" y="485">mentor</text><text class="s" x="680" y="501">чекпоинты · практика · sign-off</text><text class="s e" x="852" y="485">trainee / buddy</text>
+
+<!-- Me -->
+<rect class="box" x="884" y="88" width="196" height="44"/><text x="896" y="107">me</text><text class="s" x="896" y="123">профиль · смена · часы недели</text>
+<rect class="box" x="884" y="142" width="196" height="44"/><text x="896" y="161">schedule</text><text class="s" x="896" y="177">2 недели · кто на смене · swap</text>
+<rect class="box" x="884" y="196" width="196" height="44"/><text x="896" y="215">timeclock</text><text class="s" x="896" y="231">записи · перерыв · геофенс</text>
+<rect class="box dash" x="884" y="250" width="196" height="44"/><text x="896" y="269">bonus</text><text class="s" x="896" y="285">букеты · бонус · «Thank you»</text><text class="s e" x="1068" y="269">florist</text>
+<rect class="box" x="884" y="304" width="196" height="44"/><text x="896" y="323">leave</text><text class="s" x="896" y="339">заявка на отпуск</text>
+<rect class="box" x="884" y="358" width="196" height="44"/><text x="896" y="377">settings</text><text class="s" x="896" y="393">пуши · тихие часы · язык · стиль</text>
+<rect class="box" x="884" y="412" width="196" height="44"/><text x="896" y="431">help</text><text class="s" x="896" y="447">FAQ · позвонить в магазин</text>
+<rect class="box dash" x="884" y="466" width="196" height="44"/><text x="896" y="485">«Смотреть как»</text><text class="s" x="896" y="501">персона · прочие пункты «Ещё»</text><text class="s e" x="1068" y="485">admin</text>
+
+<!-- footnote -->
+<text class="s" x="20" y="548">Старые табы: Главная (доска заказов) и Доставки → Work · График и Смена → Today / Me · Учёба и задачи → Tasks + Learn ·</text>
+<text class="s" x="20" y="566">Чаты → из карточки заказа и inbox · Склад → Work › inventory (стек) · Ещё (12 пунктов) → Me. Параметры экранов – как в прототипе.</text>
+<text class="s" x="20" y="590">Экраны без таб-бара (splash, lesson, quiz, review, stop) открываются поверх и закрываются крестиком.</text>
+</svg>
+</div>
+<figcaption><b>Пять колонок вместо девяти табов.</b> Главные экраны каждого таба – сплошные рамки, доступны всем. Пунктир – экраны или варианты, которые видит только роль из подписи: менеджер получает «Нужно внимание», team, templates и производственную доску; курьер – маршрут, точку и Live Activity; стажёр – наставника и заказы без действий; флорист – бонус.</figcaption>
+</figure>
+
+<p class="foot">Floritta Team · схемы к концепции от 20.10.2026 · палитра Ivory, Cormorant Infant + Jost, квадратные углы по брендбуку 2026-10. Mermaid-версии схем 2 и 3 – в конце файла концепции.</p>
+</div>
+</body>
+</html>

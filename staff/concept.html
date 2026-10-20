@@ -1,0 +1,571 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Концепция Floritta Team – 2026-10-20</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#faf7f2;--ink:#1e1a17;--graphite:#5c5450;--grey:#8b8378;--light:#d9d2c7;--hair:#e4ddd3;--silver:#f1ece4;--accent:#b4595f;--ok:#7a8a6b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif;font-weight:300;font-size:16px;line-height:1.55}
+main{max-width:880px;margin:0 auto;padding:48px 20px 96px}
+h1,h2,h3{font-family:"Cormorant Infant",Georgia,serif;font-weight:300;line-height:1.1;margin:1.6em 0 .5em}h1{font-size:44px;margin-top:0}h2{font-size:32px;border-top:1px solid var(--hair);padding-top:28px}h3{font-size:24px}
+p,li{color:var(--graphite)}strong{font-weight:500;color:var(--ink)}a{color:var(--ink)}code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:var(--silver);padding:1px 5px}pre{background:var(--silver);padding:14px;overflow:auto;font-size:13px}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px}th,td{border:1px solid var(--hair);padding:8px 10px;text-align:left;vertical-align:top}th{background:var(--silver);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite)}
+.nav{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:40px}.nav a{text-decoration:none;border-bottom:1px solid var(--light);padding-bottom:2px}
+pre.mermaid{background:transparent;padding:0}
+@media(max-width:640px){h1{font-size:34px}h2{font-size:26px}table{display:block;overflow-x:auto}}
+</style></head><body><main>
+<nav class="nav"><a href="index.html">Прототип</a><a href="diagrams.html">Схемы</a><a href="concept.html">Концепция</a></nav>
+<h1 id="floritta-team">Концепция Floritta Team – редизайн приложения для сотрудников</h1>
+<p>Дата: 20.10.2026. Для: Tatiana, Лиза. Статус: предложение к обсуждению. Схемы – в файле <code>Схема_Floritta_Team_2026-10-20.html</code> рядом; Mermaid-версии двух схем – в конце этого документа.</p>
+<h2 id="1">1. Резюме</h2>
+<p>Предлагаем перезапустить внутреннее приложение как <strong>Floritta Team</strong>: пять табов вместо восьми–девяти, экран Today как лента «сейчас / дальше», доска задач в духе Trello и обучение по 3 минуты в смену – всё в утверждённом стиле брендбука (палитра Ivory, квадратные углы, Cormorant Infant + Jost). Цель – убрать «передай второму сотруднику»: каждое поручение становится задачей с исполнителем, сроком, отметкой «увидел» и доказательством, а каждое новое правило – объявлением с кнопкой «Понял» или уроком дня.</p>
+<p>Главный вывод аудита: <strong>это апгрейд и объединение, а не новая система.</strong> В CRM уже есть <code>Task</code> (routine / project / ask; open / in_progress / done / cancelled + <code>approved_at</code>), <code>TaskTemplate</code> с повторами, доска проектов queue / doing / review / done, пул, пуши «New task for you» / «Sent back» / «Thank you»; в обучении – уроки пяти типов, интервальное повторение +1 / +3 / +7 / +30, наставник с чекпоинтами, планы развития, глоссарий, оплачиваемое время. Не хватает: отметки «увидел», объявлений с подтверждением, доски для всех видов задач, эскалации просрочки, мобильных approve / reopen / update, тела урока с фото и видео, сертификатов и push-типа learning. План – шесть фаз (Ф0–Ф5); первые четыре едут OTA без новой нативной сборки.</p>
+<h2 id="2">2. Принципы дизайна</h2>
+<ol>
+<li>Один вопрос на экран – «что мне делать сейчас?». Today – лента «сейчас / дальше», а не сетка модулей (паттерн Target myDay, Asana My Tasks).</li>
+<li>Пять табов: <strong>Today · Tasks · Work · Learn · Me</strong>. Остальное – стековые экраны или строки в Me.</li>
+<li>Брендбук без исключений: Ivory, radius 0 везде; круги только у аватаров, точек статуса и колец прогресса. Акцент #b4595f – только просрочка и тревога, sage #7a8a6b – сделано, warn #b8862e – на проверке.</li>
+<li>Типографика: Cormorant Infant 300 – заголовки и большие числа, Jost 300 / 400 / 500 – текст, кнопки Jost 13 px uppercase. Системные шрифты и Ionicons уходят.</li>
+<li>Native-ощущение: цели касания ≥ 44 pt, липкая нижняя кнопка действия, bottom-sheets вместо модалок, pull-to-refresh, хаптика при смене статуса и чек-ине.</li>
+<li>Стекло (Liquid Glass, iOS 26) только на навигационном слое – таб-бар и appbar; контент матовый; таб-бар сжимается при скролле (Apple HIG).</li>
+<li>Уведомления с приоритетом: срочное – отдельный канал; остальное – дайджест в начале смены; тишина вне смены.</li>
+<li>Доказательство вместо «на словах»: фото перед упаковкой, фото при закрытии задачи, «Понял» под объявлением.</li>
+<li>Без конфетти: недельное кольцо и командная цель смены вместо личного рейтинга (лидерборды демотивируют нижнюю половину).</li>
+</ol>
+<h2 id="3">3. Информационная архитектура</h2>
+<table>
+<thead>
+<tr>
+<th>Таб</th>
+<th>Экраны</th>
+<th>Флорист</th>
+<th>Курьер</th>
+<th>Менеджер</th>
+<th>Сезонный</th>
+<th>Стажёр</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Today</strong></td>
+<td>home, inbox, announcement</td>
+<td>смена, «нужно сейчас», урок дня, мои заказы</td>
+<td>следующая точка (Live Activity), маршрут, задачи курьера</td>
+<td>«Нужно внимание», статистика, быстрые действия</td>
+<td>как флорист, без склада</td>
+<td>урок первым, затем задачи наставника</td>
+</tr>
+<tr>
+<td><strong>Tasks</strong></td>
+<td>tasks (Mine / Board / Pool), task, task-new, team, templates</td>
+<td>Mine + Board (свои)</td>
+<td>Mine (задачи доставки)</td>
+<td>Board всех, team, templates, создать / назначить, проверить и закрыть</td>
+<td>Mine</td>
+<td>Mine, практика от наставника</td>
+</tr>
+<tr>
+<td><strong>Work</strong></td>
+<td>work, order, route, stop</td>
+<td>очередь заказов, «Взять следующий», фото перед упаковкой</td>
+<td>route, stop, подтверждение доставки</td>
+<td>производственная доска, назначение флориста, «Вызвать курьера»</td>
+<td>очередь (упрощённо)</td>
+<td>заказы только для чтения</td>
+</tr>
+<tr>
+<td><strong>Learn</strong></td>
+<td>learn, path, lesson, quiz, review, certificates, mentor, glossary</td>
+<td>пути floristry + handover + base</td>
+<td>путь delivery + base</td>
+<td>обзор команды (веб остаётся основным)</td>
+<td>base + law</td>
+<td>base + floristry + mentor (наставник)</td>
+</tr>
+<tr>
+<td><strong>Me</strong></td>
+<td>me, schedule, timeclock, bonus, leave, settings, help</td>
+<td>все</td>
+<td>все, без bonus</td>
+<td>все + «Смотреть как»</td>
+<td>все, без bonus</td>
+<td>все, без bonus</td>
+</tr>
+</tbody>
+</table>
+<p>Куда уехали старые табы: <strong>Главная (доска заказов)</strong> → Work; <strong>Доставки</strong> → Work (route / stop для курьера); <strong>График</strong> → Me › Schedule и строка «Смена» на Today; <strong>Учёба и задачи</strong> → разделены на Tasks и Learn; <strong>Обучение</strong> → Learn; <strong>Смена</strong> → блок на Today и Me › Timeclock; <strong>Чаты</strong> → стековый экран из карточки заказа (Order › Chat) и из inbox, без своего таба; <strong>Склад</strong> → Work › «…» (12 экранов inventory остаются стековыми, вход через меню Work и поиск); <strong>Ещё</strong> (12 пунктов) → Me: табель, неоплаченные, лиды, звонки, кандидаты – как строки для менеджера, остальное скрыто. Колокольчик уведомлений появляется впервые: inbox в Today с фильтрами Задачи / Обучение / Объявления.</p>
+<h2 id="4-floritta-tasks">4. Задачи (Floritta Tasks)</h2>
+<p><strong>Цель</strong> – снять с менеджеров роль ретранслятора. Поручение один раз записывается в задачу; дальше система сама показывает её исполнителю, фиксирует «увидел», напоминает, эскалирует просрочку и приносит менеджеру результат на проверку. Обсуждение – в карточке задачи, не в мессенджере.</p>
+<h3 id="_1">Модель задачи</h3>
+<table>
+<thead>
+<tr>
+<th>Поле / сущность</th>
+<th>Есть в CRM</th>
+<th>Добавить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title, body, photos, kind, priority, category (зона), points, order_id</td>
+<td>да</td>
+<td>–</td>
+</tr>
+<tr>
+<td>status open / in_progress / done / cancelled + approved_at</td>
+<td>да</td>
+<td>–</td>
+</tr>
+<tr>
+<td>proof_type photo / comment / none (= «фото обязательно»)</td>
+<td>да</td>
+<td>–</td>
+</tr>
+<tr>
+<td>исполнители (pivot task_user), claimed_by, due_at, shift_date, anchor</td>
+<td>да</td>
+<td><code>task_user.seen_at</code> – когда исполнитель открыл задачу</td>
+</tr>
+<tr>
+<td>TaskChecklistItem</td>
+<td>да (текст, done)</td>
+<td><code>assignee_id</code>, <code>due_at</code> на пункт (Trello advanced checklists)</td>
+</tr>
+<tr>
+<td>TaskComment</td>
+<td>да, только текст</td>
+<td><code>photo</code> в комментарии (одним полем, как в Task.photos)</td>
+</tr>
+<tr>
+<td>TaskTemplate: recurrence, target_role, per_person, due_time, why_matters</td>
+<td>да</td>
+<td><code>requires_review</code> (bool) – нужна ли проверка менеджером</td>
+</tr>
+<tr>
+<td>board_position</td>
+<td>да, только kind=project</td>
+<td>использовать для всех kind</td>
+</tr>
+<tr>
+<td>nudged_at, escalated_at</td>
+<td>да (только ask, +1 / +3 дня)</td>
+<td><code>escalation_level</code> 0 / 1 / 2, <code>escalated_to_id</code> – для просрочки любого вида</td>
+</tr>
+<tr>
+<td>Объявления</td>
+<td>нет (ближе всего «Что изменилось» в обучении)</td>
+<td>таблица <code>announcements</code> (title, body, photo, created_by, audience roles / users, requires_ack, pinned_until, lesson_id) + <code>announcement_acks</code> (announcement_id, user_id, acked_at)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_2">Статусы и переходы</h3>
+<p>Приложение показывает четыре состояния; они однозначно ложатся на существующие поля, миграция статусов не нужна.</p>
+<table>
+<thead>
+<tr>
+<th>В приложении</th>
+<th>В CRM</th>
+<th>Кто переводит</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>To do</td>
+<td>open</td>
+<td>создатель / ShiftDistributor / claim из пула</td>
+</tr>
+<tr>
+<td>Doing</td>
+<td>in_progress (started_at)</td>
+<td>исполнитель – «Start»</td>
+</tr>
+<tr>
+<td>Review («на проверке»)</td>
+<td>done, approved_at = null</td>
+<td>исполнитель – «Send to check»; при proof_type = photo без фото кнопка неактивна</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>done + approved_at</td>
+<td>менеджер – «Approve &amp; close»; ReviewStrata автоодобряет через 72 ч (есть)</td>
+</tr>
+<tr>
+<td>Sent back</td>
+<td>in_progress + rejection (есть)</td>
+<td>менеджер – «Send back» с причиной</td>
+</tr>
+<tr>
+<td>Cancelled</td>
+<td>cancelled</td>
+<td>менеджер; исполнитель – только запрос отмены (есть)</td>
+</tr>
+</tbody>
+</table>
+<p>Задачи с <code>requires_review = false</code> (например, «Вернуть вёдра RFH в фургон») закрываются в Done сразу по «Mark as done».</p>
+<h3 id="_3">Доска</h3>
+<p>Одна доска для всех видов задач, не только project: колонки To do / Doing / Review / Done, порядок – <code>board_position</code> (эндпоинт <code>PUT /tasks/board/order</code> уже есть в вебе, выносим в API). Менеджер видит всех с фильтром по человеку (ряд аватаров), сотрудник – своё. Pool – отдельный сегмент (есть <code>scope=pool</code>). Застой 7 / 14 дней подсвечиваем, как в ProjectBoard.</p>
+<h3 id="_4">Шаблоны и повторы</h3>
+<p>Уже есть: TaskTemplate с daily / weekly / monthly, <code>recurrence_days</code>, роль, <code>per_person</code>, время, «зачем это важно», <code>take</code> из приложения, раздача ShiftDistributor в 04:20 и ежечасно. Добавляем только <code>requires_review</code> и экран templates в приложении (список, «Взять» / «Назначить»).</p>
+<h3 id="_5">Правила уведомлений</h3>
+<table>
+<thead>
+<tr>
+<th>Событие</th>
+<th>Кому</th>
+<th>Канал</th>
+<th>Тихие часы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Назначена задача</td>
+<td>исполнителю</td>
+<td>push normal «New task for you» (есть)</td>
+<td>в дайджест, если вне смены; urgent – сразу</td>
+</tr>
+<tr>
+<td>Срочная задача (priority = urgent)</td>
+<td>исполнителю</td>
+<td>push priority (отдельный канал, звук)</td>
+<td>всегда</td>
+</tr>
+<tr>
+<td>Исполнитель открыл задачу (seen_at)</td>
+<td>менеджеру</td>
+<td>без push – строка «Seen by Kamila 9:34» в карточке</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Send to check</td>
+<td>менеджеру / создателю</td>
+<td>push normal «To check: …»</td>
+<td>в дайджест</td>
+</tr>
+<tr>
+<td>Approve &amp; close</td>
+<td>исполнителю</td>
+<td>push normal «Thank you» (есть)</td>
+<td>в дайджест</td>
+</tr>
+<tr>
+<td>Send back</td>
+<td>исполнителю</td>
+<td>push priority «Sent back» + причина (есть, поднять приоритет)</td>
+<td>всегда в смене, иначе на начало смены</td>
+</tr>
+<tr>
+<td>Комментарий</td>
+<td>участникам карточки</td>
+<td>push normal (есть)</td>
+<td>в дайджест</td>
+</tr>
+<tr>
+<td>Просрочка +15 мин</td>
+<td>исполнителю</td>
+<td>push priority</td>
+<td>только в смене</td>
+</tr>
+<tr>
+<td>Просрочка +45 мин</td>
+<td>менеджеру на смене</td>
+<td>push priority + Telegram ops</td>
+<td>только в часы работы 8–22</td>
+</tr>
+<tr>
+<td>Объявление requires_ack</td>
+<td>аудитории</td>
+<td>push normal; не подтверждено за 2 ч – повтор</td>
+<td>в начало смены</td>
+</tr>
+<tr>
+<td>Начало смены (чек-ин)</td>
+<td>сотруднику</td>
+<td>дайджест: задачи на смену, урок дня, объявления без «Понял»</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p>Дайджест и тишина вне смены опираются на TimeEntry (чек-ин) и SCHEDULE – данные уже есть.</p>
+<h3 id="_6">Эскалация просрочки</h3>
+<p>Предложение (подтвердить у Tatiana): <code>due_at</code> прошёл → через 15 мин push priority исполнителю «Opening checklist is overdue», <code>escalation_level = 1</code>; ещё через 30 мин (+45 от срока) – push менеджеру на смене и строка в Telegram ops-чат, <code>escalation_level = 2</code>, задача попадает в «Нужно внимание». Один проход крона каждые 5 мин поверх существующего <code>tasks:asks-nudge</code>. Для <code>kind = ask</code> оставляем текущие +1 / +3 дня.</p>
+<h3 id="_7">Объявления с «Понял»</h3>
+<p>Менеджер пишет объявление, выбирает аудиторию (роли или люди), включает «нужно подтверждение», опционально привязывает урок. Сотрудник видит объявление первым блоком на Today и в inbox, жмёт «Понял» → <code>announcement_acks</code>. Менеджер на экране объявления видит два списка – подтвердили / ещё нет – и кнопку «Напомнить остальным» (повторный push). Паттерн Blink Mandatory Reads / WorkJam attestation. «Что изменилось» в обучении остаётся: объявление со ссылкой на урок открывает урок после «Понял».</p>
+<h3 id="_8">Экран менеджера «Нужно внимание»</h3>
+<p>Первый блок Today для роли manager / admin: не отметились на смене по графику; просроченные задачи с именами; задачи на проверке (счётчик и список); объявления, которые не подтвердили N человек; заказы без флориста за 30 мин до слота. Ниже – статистика дня (заказы / открытые задачи / просроченные уроки) и быстрые действия: New task, Announce, Who's on. Источник – существующие Tasks / Health и Huddle из веба, собранные в один мобильный ответ <code>GET /api/v1/attention</code>.</p>
+<h3 id="api-apiv1">Что нужно в API (/api/v1)</h3>
+<p>Добавить: <code>POST /tasks/{id}/approve</code>, <code>POST /tasks/{id}/reopen</code>, <code>PATCH /tasks/{id}</code> (title, due, assignees, priority), <code>POST /tasks/{id}/seen</code>, <code>PUT /tasks/board/order</code>, <code>GET /tasks?scope=all</code> (менеджер), <code>GET /attention</code>, <code>GET /announcements</code>, <code>POST /announcements</code>, <code>POST /announcements/{id}/ack</code>, <code>GET /announcements/{id}/acks</code>, <code>GET /templates</code>, <code>POST /templates/{id}/assign</code>. Остальное (store, claim, start, done с фото, comments, undone, steps, cancel-request, take) уже есть.</p>
+<h2 id="5-floritta-learn">5. Обучение (Floritta Learn)</h2>
+<h3 id="_9">Что есть</h3>
+<p>Категории с ролями (AUDIENCE), уроки пяти типов (quiz, photo, link_proof, flashcards, observation), главная мысль своими словами, подпись под декларацией, назначения по ролям с <code>due_days</code> и <code>expires_at</code>, интервальное повторение LearningQuizItem +1 / +3 / +7 / +30, LearningBuddy с чекпоинтами 1 / 3 / 7 / 14 день, планы развития, глоссарий с колодой дня, матрица человек × станция, квартальная аттестация, оплачиваемое время в табеле. Мобильный API покрывает список, урок, submit, acknowledge, глоссарий, план развития.</p>
+<h3 id="ux">Что меняем в UX</h3>
+<ul>
+<li><strong>Урок дня после чек-ина</strong>: 3 минуты, первым в дайджесте и на Today; это первый <code>LearningAssignment</code> по сроку – данные уже есть, меняется место показа.</li>
+<li><strong>Кольцо недели</strong> вместо месячного: «3 урока + 1 практика», цель корректируется по графику смен (Apple Fitness).</li>
+<li><strong>Недельный streak с заморозкой</strong>: считаем недели, а не дни – смены плавают; одна заморозка в месяц.</li>
+<li><strong>Review-карточки</strong> из существующих LearningQuizItem: экран «Повторить 5 карточек», Знаю / Не знаю, ошибка – завтра (SM-2-подобно, как в бэке).</li>
+<li><strong>Пути по ролям</strong> поверх категорий AUDIENCE: Base &amp; compliance, Handover &amp; client standard, Floristry craft, Delivery – с прогресс-барами; новых таблиц не нужно, путь = категория верхнего уровня + роль.</li>
+<li><strong>Практика на реальном заказе</strong>: урок типа observation создаёт задачу-практику («Собрать 2 спирали на реальных заказах», task 110 в прототипе), наставник подписывает в приложении – это LearningBuddy sign-off и <code>requires_countersign</code>, которых сейчас нет в мобильном API.</li>
+<li><strong>Сертификаты и допуски</strong> из Matrix в приложении: Challenge 25, Fire safety, Pet-safe, станции с датой истечения и кнопкой «Пройти заново».</li>
+<li><strong>Тело урока</strong>: markdown + фото + видео (сейчас HTML превращается в текст и картинки теряются).</li>
+<li><strong>Push-тип learning</strong>: урок дня, срок, повтор, sign-off наставника – сейчас напоминания только в ops-Telegram.</li>
+<li><strong>Язык EN / RU / UK</strong>: переводы уже есть в LearningLessonTranslation, добавляем uk и переключатель на уроке.</li>
+</ul>
+<h3 id="_10">Что нужно в бэке</h3>
+<p><code>learning_lessons.body_format</code> (text | markdown) и таблица <code>learning_lesson_media</code> (lesson_id, kind photo | video, url, caption, position; видео – ссылка на R2 / YouTube unlisted); генерация PDF сертификата при pass урока с <code>is_certificate = true</code> (DomPDF, в хранилище, ссылка в API); push-тип learning в PushNotifier с четырьмя подтипами; API: <code>GET /learning/review</code> и <code>POST /learning/review/{item}</code> (из LearningQuizItem), <code>GET /learning/certificates</code>, <code>GET /learning/buddy</code>, <code>POST /learning/buddy/{checkpoint}/sign</code>, <code>GET /learning/paths</code>. Глоссарий, квиз-сабмит, план развития – уже в API.</p>
+<h2 id="6">6. Нативные возможности</h2>
+<table>
+<thead>
+<tr>
+<th>Возможность</th>
+<th>Зачем</th>
+<th>Как</th>
+<th>OTA или сборка</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Live Activity / Dynamic Island (iOS)</td>
+<td>маршрут курьера: время до точки, номер, прогресс; смена: «на смене 3 ч 14 мин»</td>
+<td>нативный модуль (ActivityKit) + push-to-start с сервера</td>
+<td><strong>новая сборка</strong>, нельзя OTA</td>
+</tr>
+<tr>
+<td>Live Updates (Android 16)</td>
+<td>то же для Android: progress-centric уведомление</td>
+<td>expo-notifications с ProgressStyle</td>
+<td>сборка (новый SDK-таргет)</td>
+</tr>
+<tr>
+<td>Виджеты экрана блокировки / главного</td>
+<td>следующая задача, урок дня, кольцо недели</td>
+<td>WidgetKit / Glance через нативный модуль</td>
+<td>сборка</td>
+</tr>
+<tr>
+<td>Liquid Glass на таб-баре и appbar</td>
+<td>native-ощущение iOS 26</td>
+<td>expo-glass-effect уже установлен, не используется</td>
+<td>сборка (нужен native-линк), фолбэк матовый – OTA</td>
+</tr>
+<tr>
+<td>Кольца и иконки</td>
+<td>кольца сейчас бордерами, иконки Ionicons + эмодзи</td>
+<td>react-native-svg + собственный набор тонких иконок</td>
+<td><strong>react-native-svg нет – добавить в ту же сборку</strong>; до неё кольца остаются бордерами</td>
+</tr>
+<tr>
+<td>Категории уведомлений с кнопками</td>
+<td>«Понял» и «Start» прямо из пуша</td>
+<td>категории expo-notifications</td>
+<td>конфигурация – OTA; кнопки в Android-канале – сборка</td>
+</tr>
+<tr>
+<td>Хаптика, bottom-sheets, pull-to-refresh, pinned CTA</td>
+<td>базовый native-слой</td>
+<td>expo-haptics уже в зависимостях, reanimated 4.5</td>
+<td>OTA</td>
+</tr>
+<tr>
+<td>Face ID вход</td>
+<td>splash «Sign in with Face ID»</td>
+<td>expo-local-authentication</td>
+<td>сборка, если модуля нет в текущем бандле</td>
+</tr>
+</tbody>
+</table>
+<p>Правило: всё нативное – <strong>одним заходом</strong> в Ф4. <code>runtimeVersion = fingerprint</code>: любое нативное изменение меняет fingerprint и отрезает OTA от всех предыдущих билдов, поэтому Ф0–Ф3 трогают только JS, а Ф4 собирается один раз и раздаётся через TestFlight / Play.</p>
+<h2 id="7">7. План внедрения по фазам</h2>
+<table>
+<thead>
+<tr>
+<th>Фаза</th>
+<th>Что входит</th>
+<th>Backend</th>
+<th>Mobile</th>
+<th>Доставка</th>
+<th>Оценка</th>
+<th>Зависимость</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ф0</strong> Токены + 5 табов</td>
+<td>theme.ts по брендбуку (Ivory, radius 0, шрифты Cormorant / Jost через expo-font), 5 табов, перенос старых экранов в стеки, Today как лента, inbox</td>
+<td>–</td>
+<td>да</td>
+<td>OTA</td>
+<td>4–5 дней</td>
+<td>брендбук утверждён (есть)</td>
+</tr>
+<tr>
+<td><strong>Ф1</strong> Tasks board</td>
+<td>seen_at, checklist assignee / due, requires_review, доска для всех kind, approve / reopen / update / seen / order в API, правила пушей, эскалация +15 / +45</td>
+<td>да</td>
+<td>да</td>
+<td>OTA</td>
+<td>6–8 дней</td>
+<td>Ф0; решение по таймерам (вопрос 1)</td>
+</tr>
+<tr>
+<td><strong>Ф2</strong> Announcements + Needs attention</td>
+<td>таблицы announcements / acks, экраны объявления и ack-списка, «Напомнить остальным», <code>GET /attention</code>, дайджест при чек-ине, тихие часы</td>
+<td>да</td>
+<td>да</td>
+<td>OTA</td>
+<td>4–5 дней</td>
+<td>Ф1 (общий inbox)</td>
+</tr>
+<tr>
+<td><strong>Ф3</strong> Learn</td>
+<td>learn home (кольцо недели, streak), lesson player с markdown / фото / видео, review из LearningQuizItem, пути, certificates (PDF), mentor sign-off, push learning, UK-локаль</td>
+<td>да</td>
+<td>да</td>
+<td>OTA</td>
+<td>7–9 дней</td>
+<td>Ф0; контент уроков – менеджеры</td>
+</tr>
+<tr>
+<td><strong>Ф4</strong> Нативная сборка</td>
+<td>Live Activity + Live Updates для маршрута и смены, виджеты, Liquid Glass, react-native-svg + иконки, категории пушей, Face ID</td>
+<td>push-to-start для Live Activity</td>
+<td>да</td>
+<td><strong>сборка</strong> (EAS build, TestFlight / Play)</td>
+<td>6–8 дней + ревью сторов</td>
+<td>Ф1–Ф3 в проде; все нативные правки собраны</td>
+</tr>
+<tr>
+<td><strong>Ф5</strong> Polish + аналитика</td>
+<td>события в Sentry / PostHog-подобный трекинг, замер метрик §8, онбординг для сезонных, A / B дайджеста, устранение хвостов</td>
+<td>частично</td>
+<td>да</td>
+<td>OTA</td>
+<td>3–4 дня</td>
+<td>Ф4</td>
+</tr>
+</tbody>
+</table>
+<p>Итого ~30–39 дней агентской работы при последовательном выполнении; Ф1 и Ф3 независимы и могут идти параллельно в разных worktree. Релизы CRM – по схеме feature → develop → release; мобильные – OTA-каналы preview / production.</p>
+<p><strong>Риски.</strong> (1) Фингерпринт OTA: одно случайное нативное изменение в Ф0–Ф3 отрежет обновления от текущих билдов – проверять <code>npx expo-updates fingerprint</code> в CI. (2) Параллельные сессии: backend и mobile разных фаз в отдельных worktree; API-контракт фиксируем в начале фазы. (3) Нагрузка на менеджеров при настройке шаблонов и аудиторий объявлений – в Ф1 завести 6 шаблонов из прототипа заранее, остальные через <code>why_matters</code>-мастер. (4) Контент уроков с фото и видео требует времени Светланы и менеджеров – закладываем отдельно, не в оценку кода. (5) Усталость от пушей – следим за долей отключивших уведомления.</p>
+<h2 id="8">8. Метрики успеха</h2>
+<table>
+<thead>
+<tr>
+<th>Метрика</th>
+<th>Сейчас</th>
+<th>Цель через 3 месяца после Ф2 / Ф3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Время менеджера на ретрансляцию поручений (самооценка, мин / смена)</td>
+<td>не измеряется, оценочно 60–90</td>
+<td>−50 %; измеряем опросом раз в 2 недели</td>
+</tr>
+<tr>
+<td>Доля задач, закрытых до <code>due_at</code></td>
+<td>есть в Tasks / Health</td>
+<td>≥ 85 %</td>
+</tr>
+<tr>
+<td>Доля задач с «увидел» в течение 30 мин от назначения в смене</td>
+<td>–</td>
+<td>≥ 90 %</td>
+</tr>
+<tr>
+<td>Доля «Понял» под объявлением за 2 ч (в смене)</td>
+<td>–</td>
+<td>≥ 80 %; 100 % за сутки</td>
+</tr>
+<tr>
+<td>Эскалации уровня 2 (менеджеру) в неделю</td>
+<td>–</td>
+<td>тренд вниз после 4-й недели</td>
+</tr>
+<tr>
+<td>Completion уроков в срок</td>
+<td>есть в Learning / Review</td>
+<td>≥ 85 %; повторы – ≥ 70 % карточек в день</td>
+</tr>
+<tr>
+<td>Время до первого самостоятельного букета стажёра</td>
+<td>по LearningBuddy чекпоинтам</td>
+<td>≤ 14 дней, с sign-off наставника</td>
+</tr>
+<tr>
+<td>Доля сотрудников с включёнными пушами</td>
+<td>–</td>
+<td>≥ 90 %</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-tatiana">9. Открытые вопросы для Tatiana</h2>
+<ol>
+<li><strong>Таймеры эскалации +15 / +45 мин</strong> – оставить или мягче (+30 / +90)? Рекомендация: начать с +15 / +45 только в часы 8–22 и смотреть число эскалаций уровня 2.</li>
+<li><strong>Кто получает эскалацию уровня 2</strong> – менеджер на смене, оба менеджера или ещё и Tatiana? Рекомендация: менеджер на смене + Telegram ops; Tatiana – только дневной дайджест.</li>
+<li><strong>Проверка менеджером по умолчанию</strong> – все задачи через Review или только с фото / по шаблону? Рекомендация: <code>requires_review</code> включён у шаблонов с фото и у разовых задач от менеджера; рутина вроде «вернуть вёдра» – закрывается сразу.</li>
+<li><strong>Объявления</strong>: нужна ли возможность писать их не только менеджерам (например, Светлане как head florist)? Рекомендация: менеджеры и admin; остальные – через задачу-ask.</li>
+<li><strong>Склад и Чаты без своих табов</strong> – допустимо ли, что они живут внутри Work и карточки заказа? Рекомендация: да; на складе работают 2–3 человека, им оставляем ярлык на Today.</li>
+<li><strong>Недельный streak и кольцо</strong> вместо месячного кольца и личного рейтинга – согласны убрать рейтинг из бонуса? Рекомендация: оставить топ-3 в Bonus как «тихий» список без мест, streak – недельный.</li>
+<li><strong>Сертификаты в PDF</strong> – нужны ли юридически подписанные (как SignedDocument) или достаточно экрана в приложении? Рекомендация: PDF с подписью только для деклараций (Challenge 25, Fire safety), остальное – экран.</li>
+<li><strong>Ф4 нативная сборка</strong> – делать после Ф3 или раньше ради Live Activity курьерам? Рекомендация: после Ф3, одним заходом; до этого курьер получает «липкое» уведомление маршрута через обычный push.</li>
+</ol>
+<h2 id="10">10. Ссылки</h2>
+<ul>
+<li>Прототип: <code>~/Documents/Claude/Floritta_Brain_Main/Дизайн-и-брендинг/Staff_App_Mockup_2026-10/index.html</code> (локально <code>python3 -m http.server 8765</code>, персоны <code>?who=manager|courier|trainee</code>, стиль <code>?style=glass</code>); публикация планируется на GitHub Pages по пути <code>/staff/</code> рядом с клиентским прототипом <code>/app/</code>.</li>
+<li>Схемы: <code>Схема_Floritta_Team_2026-10-20.html</code> (эта папка).</li>
+<li>Исследование: <code>research/01_audit_mobile_current.md</code> (текущее Expo-приложение), <code>research/02_audit_crm_backend.md</code> (Laravel CRM: Task, TaskTemplate, ProjectBoard, Learning, push), <code>research/03_benchmark_patterns.md</code> (паттерны Target, Walmart, Blink, Deliveroo, Uber, Trello, 7shifts, Axonify, Duolingo; Top-10).</li>
+<li>Брендбук: <code>~/Documents/Claude/Floritta_Brain_Main/Дизайн-и-брендинг/Brandbook_2026-10/Floritta_Brandbook_2026-10.html</code> и <code>План_внедрения_брендбука_2026-10-20.md</code>.</li>
+<li>Клиентский прототип (те же токены): <code>~/Documents/Claude/Floritta_Brain_Main/Дизайн-и-брендинг/App_Mockup_2026-10/</code>.</li>
+</ul>
+<h2 id="mermaid">Приложение – схемы в Mermaid</h2>
+<h3 id="_11">Жизненный цикл задачи</h3>
+<pre class="mermaid">stateDiagram-v2
+    direction LR
+    [*] --> ToDo : назначена · push исполнителю «New task for you»
+    ToDo --> Doing : Start · seen_at · менеджеру строка «Seen»
+    Doing --> Review : Send to check · push менеджеру «To check»
+    Doing --> Done : Mark as done (requires_review = false) · автоодобрение 72 ч
+    Review --> Done : Approve & close · push исполнителю «Thank you»
+    Review --> Doing : Send back + причина · push priority исполнителю
+    Done --> Doing : Reopen (менеджер)
+    ToDo --> Cancelled : Cancel · push «Task cancelled»
+    Doing --> Cancelled : Cancel request → менеджер
+    Done --> [*]
+    Cancelled --> [*]
+
+    state "Просрочка (due_at прошёл)" as Late {
+        direction LR
+        L1 : +15 мин · push priority исполнителю
+        L2 : +45 мин · push менеджеру + Telegram ops · «Нужно внимание»
+        L1 --> L2
+    }
+    ToDo --> Late
+    Doing --> Late
+    Late --> Doing : сделано
+
+    note right of ToDo : CRM open
+    note right of Doing : CRM in_progress
+    note right of Review : CRM done, approved_at = null
+    note right of Done : CRM done + approved_at
+</pre>
+
+<h3 id="_12">Петля обучения</h3>
+<pre class="mermaid">flowchart LR
+    A[Чек-ин&lt;br/>TimeEntry · есть] --> B[Урок дня 3 мин&lt;br/>после чек-ина · новое место показа]
+    B --> C[Главная мысль&lt;br/>своими словами · есть]
+    C --> D[Квиз / фото / декларация&lt;br/>есть]
+    D --> E[Повтор +1 / +3 / +7 / +30&lt;br/>LearningQuizItem · есть в бэке,&lt;br/>экран review – новый]
+    E --> F[Практика на реальном заказе&lt;br/>observation → задача · связка новая]
+    F --> G[Sign-off наставника&lt;br/>LearningBuddy · есть в вебе,&lt;br/>в приложении – новое]
+    G --> H[Допуск / сертификат&lt;br/>Matrix · есть; PDF – новое]
+    H --> I[Ре-аттестация&lt;br/>learning:attestation · есть]
+    I -.срок истёк.-> B
+    E -.ошибка → завтра.-> E
+
+    classDef old fill:#faf7f2,stroke:#1e1a17,color:#1e1a17;
+    classDef new fill:#faf7f2,stroke:#b4595f,color:#1e1a17,stroke-width:2px;
+    class A,C,D,I old;
+    class B,E,F,G,H new;
+</pre>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.1/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:'neutral',themeVariables:{fontFamily:'Jost',primaryColor:'#f1ece4',primaryBorderColor:'#1e1a17',lineColor:'#5c5450'}});</script>
+</body></html>
