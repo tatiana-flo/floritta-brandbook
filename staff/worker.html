@@ -4099,7 +4099,8 @@ S.report=function(){
       <div class="wk-kv">
         <span class="soft">Notice of a shift</span><span>at least ${W.notice} h before it starts</span>
         <span class="soft">If we cancel late</span><span>we pay part of the shift</span>
-        <span class="soft">If you release late</span><span>nothing – we just re-open it</span>
+        <span class="soft">Releasing a shift</span><span>please 24 h before – or offer it to a colleague</span>
+        <span class="soft">If you release late</span><span>no fee, no mark – it goes back on the board as urgent</span>
         <span class="soft">Pay</span><span>hourly, never below £12.71, + bouquet bonus</span>
         <span class="soft">Holiday</span><span>12.07 % on every statement</span>
       </div>
@@ -4109,8 +4110,8 @@ S.report=function(){
   W.skip=id=>{const o=W.offers.find(x=>x.id===id);o.status='skipped';A.haptic();A.toast('Skipped – no effect on future offers');window.mount_schedule()};
   W.unskip=id=>{const o=W.offers.find(x=>x.id===id);o.status='open';window.mount_schedule()};
   W.release=id=>{const o=W.offers.find(x=>x.id===id);
-    A.sheet(`<div class="sh-head"><div class="h3">Release this shift?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(o.off)} · ${o.hrs}. It goes back to the open list. No note, no rating, no effect on what we offer you next.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();WK.releaseDo(${o.id})">Release</button></div>`)};
-  W.releaseDo=id=>{const o=W.offers.find(x=>x.id===id);o.status='open';o.taken--;A.toast('Released – shift is open again');window.mount_schedule()};
+    A.sheet(`<div class="sh-head"><div class="h3">Release this shift?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(o.off)} · ${o.hrs}. It goes back to the open list. No fee, no note, no effect on what we offer you next. We ask for 24 h notice when you can – or pass it to a colleague who wants it.</p><div class="caps muted" style="margin:18px 0 6px">Offer it to a colleague</div><button class="radio" onclick="App.closeSheet();App.toast('Offered to Max – he gets one push');WK.releaseDo(${o.id},'max')"><span class="rd"></span><span class="f1"><span class="sm">Max</span> <span class="xs muted">· casual courier, free that day</span></span></button></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();WK.releaseDo(${o.id})">Release to the board</button></div>`)};
+  W.releaseDo=(id,to)=>{const o=W.offers.find(x=>x.id===id);o.status='open';o.taken--;if(to){o.note='Offered to '+to.charAt(0).toUpperCase()+to.slice(1)+' first'}else{const soon=o.off<=1;if(soon){o.note='Urgent · +£1/h';o.pub=1}A.toast('Released – shift is open again')}window.mount_schedule()};
 
   /* ---- Guaranteed-hours offer (ERA 2025, from 2027) ---- */
   const screens=document.querySelector('.screens');
