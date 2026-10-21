@@ -4,12 +4,12 @@
 #s-team .sched td:first-child,#s-team .sched th:first-child{text-align:left;padding:0 12px;width:190px}
 #s-team .sched th.today{color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink)}
 #s-team .sched td.today{background:var(--paper-2)}
-#s-team tr.me td:first-child,#s-learning tr.me td:first-child{box-shadow:inset 3px 0 0 var(--ink)}
+#s-team tr.me td:first-child,#s-learning tr.me td:first-child{box-shadow:inset 3px 0 0 var(--sel)}
 #s-team .sched td.grp{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);height:30px;background:var(--paper-2);text-align:left}
 #s-team .cell{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:68px;height:34px;font-size:12px;line-height:1.1;cursor:pointer;border:1px solid transparent;color:var(--ink)}
 #s-team .cell small{font-size:10px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase}
 #s-team .cell.--E{background:var(--ok-bg);color:var(--ok)}#s-team .cell.--E small{color:var(--ok)}
-#s-team .cell.--L{background:var(--ink);color:var(--paper)}#s-team .cell.--L small{color:var(--paper);opacity:.7}
+#s-team .cell.--L{background:var(--sel);color:var(--paper)}#s-team .cell.--L small{color:var(--paper);opacity:.7}
 #s-team .cell.--D,#s-team .cell.--M,#s-team .cell.--N,#s-team .cell.--F{background:var(--silver)}
 #s-team .cell.--O{color:var(--grey)}#s-team .cell.--H{background:var(--warn-bg);color:var(--warn)}#s-team .cell.--H small{color:var(--warn)}
 #s-team .cell:hover{border-color:var(--grey)}
@@ -32,17 +32,17 @@
 #s-learning .bd{border:1px solid var(--hair);padding:8px;font-size:11px;min-height:64px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
 #s-learning .bd b{font-weight:500;font-size:12px}
 #s-learning .bd.done{background:var(--ok-bg);border-color:transparent;color:var(--ok)}
-#s-learning .bd.today{border-color:var(--ink)}
+#s-learning .bd.today{border-color:var(--sel)}
 #s-learning .bd.ro{cursor:default}
 #s-growth .bar{height:120px;gap:10px;align-items:flex-end}
 #s-growth .bar>div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;font-size:11px;color:var(--grey)}
 #s-growth .bar>div i{width:100%;background:var(--light);display:block;flex:none}
-#s-growth .bar>div i.on{background:var(--ink)}
+#s-growth .bar>div i.on{background:var(--sel)}
 #s-growth .bar>div b{font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
 #s-settings .set{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:start}
 #s-settings .set-nav{display:flex;flex-direction:column;gap:2px}
 #s-settings .set-nav button{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;font-size:14px;color:var(--graphite)}
-#s-settings .set-nav button.on{background:var(--ink);color:var(--paper)}
+#s-settings .set-nav button.on{background:var(--sel);color:var(--paper)}
 #s-settings .set-nav button:hover:not(.on){background:var(--silver)}
 #s-settings .frow{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:center;min-height:52px;border-bottom:1px solid var(--hair);padding:8px 0}
 #s-settings .frow .lbl{color:var(--ink);letter-spacing:0;text-transform:none;font-size:14px}
@@ -149,7 +149,7 @@ function schedule(){
     ${T7_SHIFTS[s.id].map((c,d)=>`<td class="${d===TODAY?"today":""}"><button class="cell --${c} ${ro?"ro":""}" data-s="${s.id}" data-d="${d}">${SH[c][0]}${SH[c][1]?`<small>${SH[c][1]}</small>`:""}</button></td>`).join("")}
     <td class="num">${hrs} h</td></tr>`}).join("")).join("");
   const html=`<div class="tbl-wrap"><table class="tbl sched"><thead><tr><th>Who</th>${DAYS.map((d,i)=>`<th class="${i===TODAY?"today":""}">${d} ${DATES[i]}<div>${cover(i)}</div></th>`).join("")}<th class="num">Hours</th></tr></thead><tbody>${rows}</tbody></table></div>
-  <div class="legend"><span><i style="background:var(--ok-bg)"></i>Early 08–17 · florists</span><span><i style="background:var(--ink)"></i>Late 13–22 · florists</span><span><i style="background:var(--silver)"></i>Line 10–19 · seasonal & trainee</span><span><i style="background:var(--warn-bg)"></i>Holiday</span><span class="muted">${canEdit()?"Click a cell to change a shift or swap.":"You can change only your own row; ask a manager for the rest."}</span></div>`;
+  <div class="legend"><span><i style="background:var(--ok-bg)"></i>Early 08–17 · florists</span><span><i style="background:var(--sel)"></i>Late 13–22 · florists</span><span><i style="background:var(--silver)"></i>Line 10–19 · seasonal & trainee</span><span><i style="background:var(--warn-bg)"></i>Holiday</span><span class="muted">${canEdit()?"Click a cell to change a shift or swap.":"You can change only your own row; ask a manager for the rest."}</span></div>`;
   return html;
 }
 function cellPop(ev,sid,d){

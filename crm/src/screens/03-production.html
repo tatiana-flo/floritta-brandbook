@@ -5,7 +5,7 @@
 #s-production .p3-who::-webkit-scrollbar{display:none}
 #s-production .p3-f{display:flex;align-items:center;gap:10px;min-width:196px;padding:8px 12px;border:1px solid var(--hair);background:var(--paper);cursor:pointer;transition:border-color var(--m-fast);flex:none}
 #s-production .p3-f:hover{border-color:var(--grey)}
-#s-production .p3-f.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+#s-production .p3-f.on{border-color:var(--sel);box-shadow:inset 0 0 0 1px var(--ink)}
 #s-production .p3-f.off{opacity:.55}
 #s-production .p3-f .t{flex:1;min-width:0}
 #s-production .p3-f .t b{display:block;font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -13,6 +13,20 @@
 #s-production .p3-f .progress{margin-top:5px}
 #s-production .p3-f .n{font-family:var(--f-display);font-size:24px;line-height:1;font-variant-numeric:tabular-nums;font-weight:300}
 #s-production .p3-board{flex:1;min-height:0}
+/* card: mini photo 44×44 left, content right */
+#s-production .kcard .p3-row{display:flex;gap:10px;align-items:flex-start;min-width:0}
+#s-production .kcard .p3-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#s-production .kcard .p3-th{position:relative;transition:opacity var(--m-fast)}
+#s-production .kcard .p3-th.--ref img{opacity:.7}
+#s-production .kcard .p3-th.--shot::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px var(--ok);pointer-events:none}/* ring above the img */
+#s-production .kcard .p3-th .bdg{position:absolute;right:0;bottom:0;width:16px;height:16px;display:flex;align-items:center;justify-content:center;background:var(--paper);color:var(--grey)}
+#s-production .kcard .p3-th .bdg svg{width:11px;height:11px}
+#s-production .kcard .p3-th.--shot .bdg{color:var(--ok)}
+[data-density="compact"] #s-production .kcard .p3-th{width:32px;height:32px}
+[data-density="compact"] #s-production .kcard .p3-th .bdg{width:13px;height:13px}
+[data-density="compact"] #s-production .kcard .p3-th .bdg svg{width:9px;height:9px}
+[data-density="compact"] #s-production .kcard .p3-row{gap:8px}
+[data-size="phone"] #s-production .kcard .p3-th{width:40px;height:40px}
 #s-production .kcard .k-acts{display:flex;gap:6px;margin-top:2px;flex-wrap:wrap}
 #s-production .kcard .k-acts .btn{flex:1;min-width:0;padding:0 8px}
 #s-production .kcard .k-foot svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
@@ -25,7 +39,7 @@
 #s-production .p3-ph{border:1px solid var(--hair);background:var(--paper);display:flex;flex-direction:column}
 #s-production .p3-ph.--late{box-shadow:inset 3px 0 0 var(--accent)}
 #s-production .p3-ph .photo{cursor:pointer}
-#s-production .p3-ph .photo .ovl{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:var(--ink);color:var(--paper);font-size:12px;display:flex;justify-content:space-between;opacity:.92}
+#s-production .p3-ph .photo .ovl{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:var(--sel);color:var(--paper);font-size:12px;display:flex;justify-content:space-between;opacity:.92}
 #s-production .p3-ph .pb{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
 #s-production .p3-ph .pb .btn-row{margin-top:4px}
 #s-production .p3-ph .pb .btn-row .btn{flex:1;padding:0 8px}
@@ -59,7 +73,7 @@
 #s-ready-now .p3-b .bb .by{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--graphite)}
 #s-ready-now .p3-b .bb .by .ib{margin-left:auto;width:28px;height:28px}
 #s-ready-now .p3-new{border:1px dashed var(--light);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--grey);cursor:pointer;min-height:240px;transition:border-color var(--m-fast)}
-#s-ready-now .p3-new:hover{border-color:var(--ink);color:var(--ink)}
+#s-ready-now .p3-new:hover{border-color:var(--sel);color:var(--ink)}
 #s-ready-now .p3-new svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.2}
 .p3-pick{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 .p3-pick .photo{cursor:pointer;box-shadow:inset 0 0 0 1px var(--hair)}
@@ -111,13 +125,20 @@ function p3Acts(o){
   if(o.status==="ready")return o.type==="collection"?`<button class="btn --ok --sm" onclick="${stop}App.setOrderStatus(${o.id},'delivered',{note:'Collected in shop'})">${App.icon("check")} Collected</button>`:(mgr?`<button class="btn --sm" onclick="${stop}P3_hand(event,${o.id})">${App.icon("truck")} Hand over</button>`:`<span class="wait">${App.icon("truck")} Awaiting courier</span>`);
   return "";
 }
+function p3Thumb(o,p){
+  const sent=o.status==="ready"&&o.photoSent;
+  const cls=o.photo?"--shot":"--ref",ttl=o.photo?(sent?"Photo sent to customer":"Photo taken on the bench"):"Catalogue reference · photo not taken yet";
+  return `<div class="thumb p3-th ${cls}" title="${ttl}"><img src="${p.img}" alt=""><span class="bdg">${App.icon(o.photo?(sent?"send":"check"):"photo")}</span></div>`;
+}
 function p3Card(o){
   const p=App.product(o.product),late=App.isLate(o);
   return `<div class="kcard ${late?"--late":""}" onclick="App.openOrder(${o.id})">
+    <div class="p3-row">${p3Thumb(o,p)}<div class="p3-main">
     <div class="k-top"><b class="tnum" style="color:var(--ink)">#${o.id}</b><span class="${late?"accent":""}">${App.esc(o.slot)}</span><span class="sp"></span>${o.type==="collection"?`<span class="tag">Collect</span>`:""}${o.chan==="Deliveroo"||o.chan==="Uber Eats"?App.chanTag(o.chan):""}${o.florist?App.avatar(o.florist,"--s"):""}</div>
     <div class="k-title">${App.esc(p.name)} <span class="muted">· ${App.esc(o.size)}</span></div>
     <div class="k-foot">${p3Icons(o)}<span class="sp"></span>${late?App.orderPill(o):""}</div>
     <div class="k-acts">${p3Acts(o)}</div>
+    </div></div>
   </div>`;
 }
 function p3Head(){
