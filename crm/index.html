@@ -203,6 +203,10 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 [data-btn="rose2"]{--btn-c:#ad7076;--btn-h:#9c646b}
 [data-btn="rose3"]{--btn-c:#a86f76;--btn-h:#95616a}
 [data-btn="rose4"]{--btn-c:#a06a77;--btn-h:#8c5c68}
+[data-btn="rose5"]{--btn-c:#bd7f85;--btn-h:#ad7076}
+[data-btn="rose6"]{--btn-c:#c28186;--btn-h:#b4767c}
+[data-btn="rose7"]{--btn-c:#c98c91;--btn-h:#bd7f85}
+[data-btn="rose8"]{--btn-c:#d0989d;--btn-h:#c28186}
 [data-btn^="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent){background:var(--btn-c);border-color:var(--btn-c);color:#fff}
 [data-btn^="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent):hover{background:var(--btn-h);border-color:var(--btn-h)}
 [data-btn^="rose"] .sb-item.on{background:var(--btn-c);color:#fff}
@@ -469,7 +473,7 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
     <div class="eyebrow">Theme</div>
     <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Ivory</button></div>
     <div class="eyebrow">Buttons</div>
-    <div class="seg" id="tg-btn" style="flex-wrap:wrap"><button data-v="ink" class="on">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Dusty</button><button data-v="rose2">Clay</button><button data-v="rose3">Old rose</button><button data-v="rose4">Mauve</button></div>
+    <div class="seg" id="tg-btn" style="flex-wrap:wrap"><button data-v="ink" class="on">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Dusty</button><button data-v="rose2">Clay</button><button data-v="rose3">Old rose</button><button data-v="rose4">Mauve</button><button data-v="rose5">Blush</button><button data-v="rose6">Canon</button><button data-v="rose7">Petal</button><button data-v="rose8">Powder</button></div>
     <div class="eyebrow">Density</div>
     <div class="seg" id="tg-density"><button data-v="comfortable" class="on">Comfortable</button><button data-v="compact">Compact</button></div>
     <div class="eyebrow">Role</div>
@@ -1151,6 +1155,22 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .c6-steps span.done{background:var(--silver);color:var(--graphite)}
 .c6-steps span.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .c6-flo .li{cursor:default}
+.c6-kp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+[data-size="phone"] .c6-kp{grid-template-columns:repeat(2,minmax(0,1fr))}
+.c6-kp .kpi-card{cursor:default;padding:10px 12px;gap:4px}
+.c6-kp .kpi-card .kpi-s{font-size:24px}
+.c6-sp{display:flex;align-items:flex-end;gap:16px;border:1px solid var(--hair);padding:12px 14px}
+.c6-sp .spark{flex:1;height:48px;gap:4px}.c6-sp .spark i{flex:1;width:auto}
+.c6-rv{border:1px solid var(--hair);padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.c6-rv+.c6-rv{border-top:0}
+.c6-rv .c6-rh{display:flex;align-items:center;gap:8px}
+.c6-rv .c6-rh .sp{flex:1}
+.c6-st{display:inline-flex;align-items:center;gap:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.c6-st svg{width:12px;height:12px}
+.c6-ch{display:flex;flex-direction:column;gap:8px}
+.c6-ch .c6-cl{display:grid;grid-template-columns:96px minmax(0,1fr) 44px;align-items:center;gap:10px;font-size:13px}
+.c6-ch .c6-cl .num{text-align:right}
+#s-catalog .c6-card .c6-sl{font-size:12px;color:var(--grey);display:flex;gap:6px;align-items:center}
 </style>
 
 <section class="scr" id="s-catalog" data-nav="Catalog" data-group="Catalog & Stock" data-title="Catalog" data-sub="floritta.uk">
@@ -2836,9 +2856,16 @@ const bomQty=(l,size)=>isStem(l[0])?Math.round(l[1]*(FACTOR[size]||1)):l[1];
 const cost=(p,size="Standard")=>(p.bom||[]).reduce((s,l)=>s+bomQty(l,size)*unitCost(l[0]),0);
 const margin=(p,size="Standard")=>{const pr=prices(p)[size]||p.price;const ex=pr/1.2;return ex?Math.round((ex-cost(p,size))/ex*100):0};
 const mCls=m=>m>=60?"ok":m>=40?"warn":"accent";
-const sold=id=>A.data.orders.filter(o=>o.product===id||o.addons.includes(id)).length;
 const slug=n=>n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const num=v=>Math.max(0,Math.round(Number(String(v).replace(/[^0-9.]/g,""))||0));
+/* product stats (from shell) + fictional reviews / channels, deterministic by id */
+const st=p=>p.stats||{views30:0,carts30:0,orders30:0,revenue30:0,rating:null,reviews:0,returns:0,conv:0,trend:[],rank:0,posViews:0,margin:0};
+const star=(r,n)=>r?`<span class="c6-st">${icon("star")}<b class="tnum">${r.toFixed(1)}</b>${n!==undefined?`<span class="muted">(${n})</span>`:""}</span>`:`<span class="muted">–</span>`;
+const RV_NAMES=["Hannah W.","Oliver B.","Priya S.","James T.","Chloe M.","Daniel K.","Sophie R.","Tom H.","Amelia F.","Lucas P."];
+const RV_TXT=["Arrived on time and looked exactly like the photo. My mum was thrilled.","Beautiful, fresh and still going strong a week later.","Lovely bouquet, slightly smaller than I expected for the price.","Ordered at 2pm, delivered by 6 – brilliant for a last-minute birthday.","Gorgeous colours. The handwritten card was a nice touch.","Nice flowers but the courier left them with a neighbour without telling me.","Second time ordering – consistent quality, will be back.","Stunning. Office was impressed."];
+const reviews=p=>{const s=st(p);if(!s.reviews)return[];return[0,1,2].map(i=>{const k=(p.id*7+i*3)%RV_TXT.length;const r=k===2||k===5?(i?3:4):5;return{who:RV_NAMES[(p.id+i*4)%RV_NAMES.length],rating:Math.min(5,Math.max(3,Math.round(s.rating+(r-4)))),at:A.T(9+i*3,15,-(2+i*6+p.id%5)),txt:RV_TXT[k]}})};
+const channels=p=>{const a=30+(p.id*7)%31,b=15+(p.id*5)%21,c=5+(p.id*3)%16,d=Math.max(0,100-a-b-c);return[["Website",a],["WhatsApp",b],["Instagram",c],["Deliveroo",d]]};
+const catAvg=(p,k)=>{const l=prods().filter(x=>x.cat===p.cat&&!x.addon);return l.length?l.reduce((s,x)=>s+(st(x)[k]||0),0)/l.length:0};
 
 /* ---- demo data (fictional) ---- */
 const MOVES={};const WHO=["svetlana","marina","anna","lina","valeria"];
@@ -2878,28 +2905,41 @@ window.mount_catalog=function(params){
  if(mgr)A.registerCommands([{g:"Actions",t:"Add a product to the catalogue",ic:"catalog",fn:()=>{A.go("catalog");C6.addProduct()}}]);
  if(params&&params.open&&!params._o){params._o=1;openProduct(params.open)}
 };
-const catList=()=>prods().filter(p=>(cs.cat==="All"||p.cat===cs.cat)&&(!cs.hidden||!p.active)&&(!cs.q||(p.name+" "+p.sku).toLowerCase().includes(cs.q.toLowerCase()))).sort((a,b)=>{if(cs.sort==="name"&&!!a.addon!==!!b.addon)return a.addon?1:-1;const va=a[cs.sort],vb=b[cs.sort];return(typeof va==="string"?va.localeCompare(vb):va-vb)*cs.dir});
+const catList=()=>prods().filter(p=>(cs.cat==="All"||p.cat===cs.cat)&&(!cs.hidden||!p.active)&&(!cs.q||(p.name+" "+p.sku).toLowerCase().includes(cs.q.toLowerCase()))).sort((a,b)=>{if(cs.sort==="name"&&!!a.addon!==!!b.addon)return a.addon?1:-1;const g=x=>cs.sort.startsWith("s.")?(st(x)[cs.sort.slice(2)]??-1):x[cs.sort];const va=g(a),vb=g(b);return(typeof va==="string"?va.localeCompare(vb):va-vb)*cs.dir});
 function renderCat(){
  const b=$("#c6-cat-body"),list=catList(),mgr=A.isMgr();
  if(!list.length){b.innerHTML=`<div class="empty">${icon("catalog")}<div class="h3">No products match</div><button class="textbtn" onclick="C6.catReset()">Clear filters</button></div>`;return}
  const sw=p=>`<span class="switch ${p.active?"on":""}" title="${p.active?"On site · click to hide":"Hidden · click to show"}" onclick="event.stopPropagation();C6.toggleActive(${p.id})"></span>`;
  if(cs.view==="grid"){
-  b.innerHTML=`<div class="c6-grid">${list.map(p=>`<div class="c6-card ${p.active?"":"off"}" onclick="C6.openProduct(${p.id})"><div class="photo --4x5"><img src="${p.img}" alt="" loading="lazy"></div>${p.active?"":`<span class="tag c6-badge">Hidden</span>`}<div class="c6-ci"><div class="c6-nm">${esc(p.name)}</div><div class="xs muted">${esc(p.cat)} · ${esc(p.sku)}</div><div class="row" style="gap:8px"><b class="tnum">${fmt(p.price)}</b>${p.sizes.length>1?`<span class="xs muted">to ${fmt(prices(p).Grand)}</span>`:""}</div><div class="c6-ft"><span class="tnum">${p.stock?p.stock+" on shelf":"made to order"}</span>${sw(p)}</div></div></div>`).join("")}</div>`;
+  b.innerHTML=`<div class="c6-grid">${list.map(p=>`<div class="c6-card ${p.active?"":"off"}" onclick="C6.openProduct(${p.id})"><div class="photo --4x5"><img src="${p.img}" alt="" loading="lazy"></div>${p.active?"":`<span class="tag c6-badge">Hidden</span>`}<div class="c6-ci"><div class="c6-nm">${esc(p.name)}</div><div class="xs muted">${esc(p.cat)} · ${esc(p.sku)}</div><div class="row" style="gap:8px"><b class="tnum">${fmt(p.price)}</b>${p.sizes.length>1?`<span class="xs muted">to ${fmt(prices(p).Grand)}</span>`:""}</div><div class="c6-sl">${mgr?`<span class="tnum">${st(p).orders30} sold</span>${st(p).rating?" · ":""}`:""}${star(st(p).rating)}</div><div class="c6-ft"><span class="tnum">${p.stock?p.stock+" on shelf":"made to order"}</span>${sw(p)}</div></div></div>`).join("")}</div>`;
  }else{
   const th=(k,l,c="")=>`<th class="sort ${c}" onclick="C6.catSort('${k}')">${l}${cs.sort===k?(cs.dir>0?" ↑":" ↓"):""}</th>`;
-  b.innerHTML=`<div class="tbl-wrap"><table class="tbl"><thead><tr><th style="width:44px"></th>${th("name","Product")}<th class="c6-hp">Category</th>${th("price","Price","num")}<th class="c6-hp">Sizes</th>${th("stock","On shelf","num c6-hp")}${mgr?`<th class="num c6-hp">Margin</th>`:""}<th>On site</th><th class="c6-hp"></th></tr></thead><tbody>${list.map(p=>`<tr class="r" onclick="C6.openProduct(${p.id})"><td style="padding-right:0"><span class="thumb --s"><img src="${p.img}" alt=""></span></td><td>${esc(p.name)}<span class="sub">${esc(p.sku)}</span></td><td class="c6-hp muted">${esc(p.cat)}</td><td class="num">${fmt(p.price)}${p.sizes.length>1?`<span class="sub">to ${fmt(prices(p).Grand)}</span>`:""}</td><td class="c6-hp">${p.sizes.length?p.sizes.map(s=>`<span class="tag --line" style="margin-right:4px">${s[0]}</span>`).join(""):`<span class="muted">–</span>`}</td><td class="num c6-hp">${p.stock||"–"}</td>${mgr?`<td class="num c6-hp ${p.bom?mCls(margin(p)):"muted"}">${p.bom?margin(p)+"%":"–"}</td>`:""}<td onclick="event.stopPropagation()">${sw(p)}</td><td class="c6-hp" onclick="event.stopPropagation()"><span class="acts">${mgr?`<button class="ib" title="Duplicate" onclick="C6.dup(${p.id})">${icon("copy")}</button>`:""}<button class="ib" title="Recipe" onclick="C6.openProduct(${p.id},'recipe')">${icon("production")}</button></span></td></tr>`).join("")}</tbody><tfoot><tr><td colspan="9">${list.length} products · ${list.filter(p=>p.active).length} on site</td></tr></tfoot></table></div>`;
+  b.innerHTML=`<div class="tbl-wrap"><table class="tbl"><thead><tr><th style="width:44px"></th>${th("name","Product")}<th class="c6-hp">Category</th>${th("price","Price","num")}<th class="c6-hp">Sizes</th>${th("stock","On shelf","num c6-hp")}${mgr?`${th("s.orders30","Orders 30d","num")}${th("s.views30","Views 30d","num c6-hp")}`:""}${th("s.rating","Rating","num")}${mgr?`<th class="num c6-hp">Margin</th>`:""}<th>On site</th><th class="c6-hp"></th></tr></thead><tbody>${list.map(p=>`<tr class="r" onclick="C6.openProduct(${p.id})"><td style="padding-right:0"><span class="thumb --s"><img src="${p.img}" alt=""></span></td><td>${esc(p.name)}<span class="sub">${esc(p.sku)}</span></td><td class="c6-hp muted">${esc(p.cat)}</td><td class="num">${fmt(p.price)}${p.sizes.length>1?`<span class="sub">to ${fmt(prices(p).Grand)}</span>`:""}</td><td class="c6-hp">${p.sizes.length?p.sizes.map(s=>`<span class="tag --line" style="margin-right:4px">${s[0]}</span>`).join(""):`<span class="muted">–</span>`}</td><td class="num c6-hp">${p.stock||"–"}</td>${mgr?`<td class="num">${st(p).orders30}</td><td class="num c6-hp muted">${st(p).views30.toLocaleString("en-GB")}</td>`:""}<td class="num">${star(st(p).rating)}</td>${mgr?`<td class="num c6-hp ${p.bom?mCls(margin(p)):"muted"}">${p.bom?margin(p)+"%":"–"}</td>`:""}<td onclick="event.stopPropagation()">${sw(p)}</td><td class="c6-hp" onclick="event.stopPropagation()"><span class="acts">${mgr?`<button class="ib" title="Duplicate" onclick="C6.dup(${p.id})">${icon("copy")}</button>`:""}<button class="ib" title="Recipe" onclick="C6.openProduct(${p.id},'recipe')">${icon("production")}</button></span></td></tr>`).join("")}</tbody><tfoot><tr><td colspan="9">${list.length} products · ${list.filter(p=>p.active).length} on site</td></tr></tfoot></table></div>`;
  }
 }
 function openProduct(id,tab="details"){
  const p=A.product(id);if(!p){A.toast("Product not found");return}
  const mgr=A.isMgr(),pr=prices(p),sizes=p.sizes.length?p.sizes:["Standard"];
- const tabs=`<button class="${tab==="details"?"on":""}" onclick="C6.openProduct(${id},'details')">Details</button><button class="${tab==="recipe"?"on":""}" onclick="C6.openProduct(${id},'recipe')">Recipe & cost</button>`;
+ const tabs=`<button class="${tab==="details"?"on":""}" onclick="C6.openProduct(${id},'details')">Details</button><button class="${tab==="recipe"?"on":""}" onclick="C6.openProduct(${id},'recipe')">Recipe & cost</button><button class="${tab==="stats"?"on":""}" onclick="C6.openProduct(${id},'stats')">Stats</button>`;
  let body;
- if(tab==="details"){
+ if(tab==="stats"){
+  const s=st(p),rv=reviews(p),nAct=prods().filter(x=>!x.addon).length,mx=Math.max(1,...s.trend),ch=channels(p);
+  const kp=(l,v,sub,c="")=>`<div class="kpi-card"><span class="caps">${l}</span><span class="kpi-s ${c}">${v}</span>${sub?`<span class="xs muted">${sub}</span>`:""}</div>`;
+  const cmp=(l,v,avg,f=x=>x)=>{const d=avg?Math.round((v-avg)/avg*100):0;return`<tr><td>${l}</td><td class="num">${f(v)}</td><td class="num muted">${f(avg)}</td><td class="num ${d>=0?"ok":"accent"}">${d>=0?"+":""}${d}%</td></tr>`};
+  body=`${mgr?`<div class="c6-kp">${kp("Views",s.views30.toLocaleString("en-GB"),"site · 30 days")}${kp("Add to cart",s.carts30,s.views30?Math.round(s.carts30/s.views30*100)+"% of views":"")}${kp("Orders",s.orders30,"paid · 30 days")}${kp("Conversion",s.conv+"%","views → orders",s.conv>=1?"ok":"")}${kp("Revenue",fmt(s.revenue30),"inc. VAT")}${kp("Rank",s.rank?"#"+s.rank:"–",s.rank?"of "+nAct+" in catalogue":"add-on")}${kp("Rating",s.rating?`<span class="c6-st">${icon("star")}${s.rating.toFixed(1)}</span>`:"–",s.reviews+" reviews")}${kp("Returns",s.returns,"refund or remake",s.returns?"accent":"")}</div>
+  <div class="sec-head"><div class="h3">Orders by week</div><span class="xs muted">last 12 weeks</span></div>
+  <div class="c6-sp"><div class="spark">${s.trend.map((v,i)=>`<i class="${i===s.trend.length-1?"on":""}" style="height:${Math.max(6,Math.round(v/mx*100))}%" title="week ${i+1}"></i>`).join("")}</div><div class="col" style="gap:2px;min-width:70px"><span class="kpi-s">${s.trend[11]>s.trend[10]?"+":""}${s.trend[10]?Math.round((s.trend[11]-s.trend[10])/s.trend[10]*100):0}%</span><span class="xs muted">vs last week</span></div></div>
+  <div class="sec-head"><div class="h3">Where it sells</div><span class="xs muted">share of orders · 30 days</span></div>
+  <div class="c6-ch">${ch.map(([n,v])=>`<div class="c6-cl"><span>${n}</span><span class="progress"><i style="width:${v}%"></i></span><span class="num tnum">${v}%</span></div>`).join("")}</div>
+  <div class="sec-head"><div class="h3">Compare with ${esc(p.cat)} average</div></div>
+  <table class="tbl"><thead><tr><th>Metric</th><th class="num">This</th><th class="num">Avg</th><th class="num">Diff</th></tr></thead><tbody>${cmp("Orders · 30d",s.orders30,catAvg(p,"orders30"),x=>Math.round(x))}${cmp("Conversion",s.conv,catAvg(p,"conv"),x=>(+x).toFixed(1)+"%")}${cmp("Rating",s.rating||0,catAvg(p,"rating"),x=>(+x).toFixed(1))}</tbody></table>`:`<div class="note-box">${icon("lock")} Sales figures are for managers. Here is what customers say about this one.</div><div class="row mt16" style="gap:12px">${star(s.rating,s.reviews)}<span class="xs muted">${s.reviews} reviews on floritta.uk</span></div>`}
+  <div class="sec-head"><div class="h3">Latest reviews</div><span class="xs muted">${s.reviews?s.reviews+" total":"none yet"}</span></div>
+  ${rv.length?rv.map((r,i)=>`<div class="c6-rv"><div class="c6-rh"><b>${esc(r.who)}</b>${star(r.rating)}<span class="sp"></span><span class="xs muted">${A.fmtDay(r.at)}</span></div><div class="soft">${esc(r.txt)}</div><div><button class="textbtn" onclick="App.toast('Reply to ${esc(r.who)} sent (demo)')">Reply</button></div></div>`).join(""):`<div class="muted sm">No reviews for this product yet.</div>`}`;
+ }else if(tab==="details"){
   body=`<div class="row" style="align-items:flex-start;gap:16px"><div class="photo --4x5" style="width:150px;flex:none"><img src="${p.img}" alt=""></div><div style="flex:1;min-width:0">
    <div class="h3">${esc(p.name)}</div><div class="sm muted" style="margin-top:4px">${esc(p.cat)} · ${esc(p.sku)}</div>
    <div class="row mt8" style="gap:6px;flex-wrap:wrap">${p.active?`<span class="pill --ready">On site</span>`:`<span class="pill --queue">Hidden</span>`}${p.addon?`<span class="tag">Add-on</span>`:""}${p.stock?`<span class="tag --line">${p.stock} on shelf</span>`:`<span class="tag --line">Made to order</span>`}</div>
-   <div class="grid g2 mt16" style="gap:10px"><div class="kpi-card" style="cursor:default;padding:10px 12px"><span class="caps">Orders · demo set</span><span class="kpi-s">${sold(id)}</span></div><div class="kpi-card" style="cursor:default;padding:10px 12px"><span class="caps">Margin ex VAT</span><span class="kpi-s ${p.bom?mCls(margin(p)):""}">${p.bom?margin(p)+"%":"–"}</span></div></div>
+   <div class="grid g2 mt16" style="gap:10px"><div class="kpi-card" style="padding:10px 12px" onclick="C6.openProduct(${id},'stats')"><span class="caps">${mgr?"Orders · 30 days":"Rating"}</span><span class="kpi-s">${mgr?st(p).orders30:(st(p).rating?st(p).rating.toFixed(1)+" ★":"–")}</span></div><div class="kpi-card" style="cursor:default;padding:10px 12px"><span class="caps">Margin ex VAT</span><span class="kpi-s ${p.bom?mCls(margin(p)):""}">${p.bom?margin(p)+"%":"–"}</span></div></div>
   </div></div>
   <div class="sec-head"><div class="h3">Prices</div><span class="xs muted">${mgr?"Click a price to edit · ":""}inc. VAT</span></div>
   <table class="tbl"><thead><tr><th>Size</th><th class="num">Price</th><th class="num">Cost</th><th class="num">Margin</th></tr></thead><tbody>${sizes.map(s=>`<tr><td>${s}${s==="Deluxe"?`<span class="sub">× 1.3 stems</span>`:s==="Grand"?`<span class="sub">× 1.7 stems</span>`:""}</td><td class="num">${mgr?`<span class="muted">£</span><input class="input --inline tnum" style="width:72px;text-align:right" value="${pr[s]}" onchange="C6.setPrice(${id},'${s}',this.value)">`:fmt(pr[s])}</td><td class="num muted">${p.bom?fmt(cost(p,s)):"–"}</td><td class="num ${p.bom?mCls(margin(p,s)):"muted"}">${p.bom?margin(p,s)+"%":"–"}</td></tr>`).join("")}</tbody></table>
@@ -2916,7 +2956,7 @@ function openProduct(id,tab="details"){
   ${shorts.length?`<div class="note-box --accent mt16">${icon("alert")} Short for this size: ${shorts.map(l=>esc(l[0])).join(", ")} ${mgr?`· <button class="textbtn --accent" onclick="App.go('purchasing')">order</button>`:"· tell a manager"}</div>`:`<div class="note-box --ok mt16">${icon("check")} Everything for ${sizes.length>1?"a "+size:"this"} is in stock today.</div>`}
   <div class="xs muted mt16">Labour and wrap are not in the cost. Margin target 60 % ex VAT.</div>`}`;
  }
- const foot=mgr?`<button class="ib" title="More" onclick="C6.prodMenu(event,${id})">${icon("dots")}</button><span class="sp"></span><button class="btn --ghost --sm" onclick="C6.dup(${id})">${icon("copy")} Duplicate</button><button class="btn --sm" onclick="C6.toggleActive(${id});C6.openProduct(${id},'${tab}')">${icon(p.active?"eye":"globe")} ${p.active?"Hide from site":"Show on site"}</button>`
+ const foot=mgr?`<button class="ib" title="More" onclick="C6.prodMenu(event,${id})">${icon("dots")}</button><span class="sp"></span>${tab==="stats"?`<button class="btn --ghost --sm" onclick="App.go('analytics',{tab:'products',product:${id}})">${icon("growth")} Open in Analytics</button>`:`<button class="btn --ghost --sm" onclick="C6.dup(${id})">${icon("copy")} Duplicate</button>`}<button class="btn --sm" onclick="C6.toggleActive(${id});C6.openProduct(${id},'${tab}')">${icon(p.active?"eye":"globe")} ${p.active?"Hide from site":"Show on site"}</button>`
   :`<span class="muted sm row" style="gap:6px">${icon("lock")} Read only · a manager edits prices and recipes</span>`;
  A.sheet({eyebrow:`Product · ${esc(p.sku)}`,title:esc(p.name),tabs,body,foot,_replace:$("#sheet").classList.contains("on")});
 }
@@ -2925,7 +2965,7 @@ function setPrice(id,s,v){const p=A.product(id),n=num(v);if(!n){A.toast("Enter a
 function setQty(id,i,v){const p=A.product(id);p.bom[i][1]=num(v)||1;openProduct(id,"recipe");A.toast("Recipe updated")}
 function rmLine(id,i){const p=A.product(id);const l=p.bom.splice(i,1)[0];openProduct(id,"recipe");A.toast(`${l[0]} removed`,"Undo",()=>{p.bom.splice(i,0,l);openProduct(id,"recipe")})}
 function addLine(ev,id){const p=A.product(id);const have=new Set((p.bom||[]).map(l=>l[0]));const items=inv().filter(i=>!have.has(i.name));A.pop(ev,["Add from stock",...items.slice(0,12).map(i=>({t:`${i.name} · ${i.qty} ${i.unit}`,ic:kind(i)==="flowers"?"production":"box",fn:()=>{if(!p.bom)p.bom=[];p.bom.push([i.name,kind(i)==="flowers"?5:1]);openProduct(id,"recipe");A.toast(i.name+" added")}}))])}
-function dup(id){const p=A.product(id);const n=Object.assign({},p,{id:Math.max(...prods().map(x=>x.id))+1,sku:p.sku+"-C",name:p.name+" · copy",active:false,stock:0,prices:null,bom:p.bom?p.bom.map(l=>l.slice()):undefined});prods().push(n);renderCat();A.toast(`Duplicated as ${n.sku} · hidden until you show it`);openProduct(n.id)}
+function dup(id){const p=A.product(id);const n=Object.assign({},p,{id:Math.max(...prods().map(x=>x.id))+1,sku:p.sku+"-C",name:p.name+" · copy",active:false,stock:0,prices:null,stats:null,bom:p.bom?p.bom.map(l=>l.slice()):undefined});prods().push(n);renderCat();A.toast(`Duplicated as ${n.sku} · hidden until you show it`);openProduct(n.id)}
 function pickCat(ev,id){const p=A.product(id);A.pop(ev,["Category",...CATS.filter(c=>c!=="Add-ons").map(c=>({t:c,ic:c===p.cat?"check":"tag",fn:()=>{p.cat=c;renderCat();openProduct(id);A.toast("Category · "+c)}}))])}
 function prodMenu(ev,id){const p=A.product(id);A.pop(ev,[{t:"Open on floritta.uk",ic:"globe",fn:()=>A.toast(`floritta.uk/${slug(p.name)} (demo)`)},{t:"Print recipe card",ic:"printer",fn:()=>A.toast("Sent to printer · recipe card")},{t:"Change category",ic:"tag",fn:()=>openProduct(id)},{t:"Publish as Ready now",ic:"photo",fn:()=>A.go("ready-now",{new:true})},"-",{t:"Archive product",ic:"trash",cls:"--accent",fn:()=>A.confirm("Archive "+p.name+"?","It disappears from the site and the catalogue; past orders keep it.","Archive",()=>{p.active=false;p.archived=true;const i=prods().indexOf(p);prods().splice(i,1);A.closeSheet();renderCat();A.toast(p.name+" archived","Undo",()=>{prods().splice(i,0,p);renderCat()})},{danger:true})}])}
 function addProduct(){
