@@ -1,0 +1,295 @@
+<style>
+/* ===== 03 · Production + Ready now (scoped) ===== */
+#s-production .scr-body{display:flex;flex-direction:column;gap:16px}
+#s-production .p3-who{display:flex;gap:8px;overflow-x:auto;flex:none;scrollbar-width:none;padding-bottom:2px}
+#s-production .p3-who::-webkit-scrollbar{display:none}
+#s-production .p3-f{display:flex;align-items:center;gap:10px;min-width:196px;padding:8px 12px;border:1px solid var(--hair);background:var(--paper);cursor:pointer;transition:border-color var(--m-fast);flex:none}
+#s-production .p3-f:hover{border-color:var(--grey)}
+#s-production .p3-f.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+#s-production .p3-f.off{opacity:.55}
+#s-production .p3-f .t{flex:1;min-width:0}
+#s-production .p3-f .t b{display:block;font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-production .p3-f .t small{display:block;font-size:11.5px;color:var(--grey);white-space:nowrap}
+#s-production .p3-f .progress{margin-top:5px}
+#s-production .p3-f .n{font-family:var(--f-display);font-size:24px;line-height:1;font-variant-numeric:tabular-nums;font-weight:300}
+#s-production .p3-board{flex:1;min-height:0}
+#s-production .kcard .k-acts{display:flex;gap:6px;margin-top:2px;flex-wrap:wrap}
+#s-production .kcard .k-acts .btn{flex:1;min-width:0;padding:0 8px}
+#s-production .kcard .k-foot svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-production .kcard .k-foot .ic{display:inline-flex;align-items:center;gap:3px;color:var(--grey)}
+#s-production .kcard .k-foot .ic.--accent{color:var(--accent)}
+#s-production .kcard .k-foot .wait{font-size:11.5px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase}
+#s-production .kcol.--photo .k-head{color:var(--warn)}
+#s-production .kcol.--ready .k-head{color:var(--ok)}
+#s-production .p3-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+#s-production .p3-ph{border:1px solid var(--hair);background:var(--paper);display:flex;flex-direction:column}
+#s-production .p3-ph.--late{box-shadow:inset 3px 0 0 var(--accent)}
+#s-production .p3-ph .photo{cursor:pointer}
+#s-production .p3-ph .photo .ovl{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:var(--ink);color:var(--paper);font-size:12px;display:flex;justify-content:space-between;opacity:.92}
+#s-production .p3-ph .pb{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+#s-production .p3-ph .pb .btn-row{margin-top:4px}
+#s-production .p3-ph .pb .btn-row .btn{flex:1;padding:0 8px}
+#s-production .p3-ph .card-msg{font-size:12.5px;color:var(--graphite);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* florist at the bench: bigger targets */
+[data-role="florist"] #s-production .kcard .k-acts .btn,[data-role="florist"] #s-production .p3-ph .btn{height:44px;font-size:12px}
+[data-size="ipad"] #s-production .kcard .k-acts .btn,[data-size="ipad"] #s-production .p3-ph .btn{height:48px;font-size:12px}
+[data-size="ipad"] #s-production .kanban{grid-auto-columns:minmax(200px,1fr)}
+[data-size="ipad"] #s-production .chip{height:36px}
+[data-size="phone"] #s-production .scr-body{gap:12px}
+[data-size="phone"] #s-production .kanban{grid-auto-columns:86%;scroll-snap-type:x mandatory}
+[data-size="phone"] #s-production .kcol{scroll-snap-align:start}
+[data-size="phone"] #s-production .p3-f{min-width:160px}
+[data-size="phone"] #s-production .p3-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+[data-size="phone"] #s-production .p3-slots{width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+[data-size="phone"] #s-production .p3-print{display:none}
+
+/* ---- Ready now ---- */
+#s-ready-now .p3-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}
+[data-size="ipad"] #s-ready-now .p3-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+[data-size="phone"] #s-ready-now .p3-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#s-ready-now .p3-shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+[data-size="phone"] #s-ready-now .p3-shelf{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#s-ready-now .p3-b{border:1px solid var(--hair);background:var(--paper);display:flex;flex-direction:column;cursor:pointer;transition:border-color var(--m-fast);min-width:0}
+#s-ready-now .p3-b:hover{border-color:var(--grey)}
+#s-ready-now .p3-b.--sold .photo img,#s-ready-now .p3-b.--hidden .photo img,#s-ready-now .p3-b.--off .photo img{opacity:.45}
+#s-ready-now .p3-b .photo .pr{position:absolute;left:0;bottom:0;padding:5px 10px;background:var(--paper);color:var(--ink);font-family:var(--f-display);font-size:20px;line-height:1;font-variant-numeric:tabular-nums}
+#s-ready-now .p3-b .photo .st{position:absolute;right:8px;top:8px}
+#s-ready-now .p3-b .bb{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+#s-ready-now .p3-b .bb .nm{font-size:13.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-ready-now .p3-b .bb .by{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--graphite)}
+#s-ready-now .p3-b .bb .by .ib{margin-left:auto;width:28px;height:28px}
+#s-ready-now .p3-new{border:1px dashed var(--light);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--grey);cursor:pointer;min-height:240px;transition:border-color var(--m-fast)}
+#s-ready-now .p3-new:hover{border-color:var(--ink);color:var(--ink)}
+#s-ready-now .p3-new svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.2}
+.p3-pick{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.p3-pick .photo{cursor:pointer;box-shadow:inset 0 0 0 1px var(--hair)}
+.p3-pick .photo.on{box-shadow:inset 0 0 0 2px var(--ink)}
+.p3-pick .photo img{transition:opacity var(--m-fast)}
+.p3-pick .photo:not(.on) img{opacity:.75}
+[data-size="phone"] .p3-pick{grid-template-columns:repeat(4,minmax(0,1fr))}
+.p3-lines td:last-child,.p3-lines th:last-child{text-align:right}
+</style>
+
+<section class="scr" id="s-production" data-nav="Production board" data-group="Production" data-title="Production" data-sub="Tue 20 Oct">
+  <div class="scr-head" id="p3-head"></div>
+  <div class="scr-body" id="p3-body"></div>
+</section>
+
+<section class="scr" id="s-ready-now" data-nav="Ready now" data-group="Production" data-title="Ready now" data-sub="floritta.uk/ready-now" data-parent="production">
+  <div class="scr-head" id="rn-head"></div>
+  <div class="scr-body" id="rn-body"></div>
+</section>
+
+<script>
+/* ===================== 03 · PRODUCTION ===================== */
+const P3={tab:"board",slot:"",florist:"",mine:false,lastParams:null,roleSeen:null,CAP:5};
+const P3_COLS=[["queue","Queue",""],["making","Making",""],["photo","Photo","--photo"],["ready","Ready","--ready"]];
+const p3Active=o=>o.n===0&&["queue","making","photo","ready"].includes(o.status);
+function p3Filtered(){
+  const me=App.me().id;
+  return App.data.orders.filter(o=>p3Active(o)
+    &&(!P3.slot||o.slot===P3.slot)
+    &&(!P3.florist||o.florist===P3.florist)
+    &&(!P3.mine||o.florist===me||(o.status==="queue"&&!o.florist)))
+    .sort((a,b)=>(App.isLate(b)-App.isLate(a))||a.slot.localeCompare(b.slot)||a.id-b.id);
+}
+function p3Icons(o){
+  const p=App.product;let h="";
+  if(o.addons.length)h+=`<span class="ic" title="${App.esc(o.addons.map(a=>p(a).name).join(", "))}">${App.icon("gift")}<span class="tnum">${o.addons.length}</span></span>`;
+  if(o.card&&o.card.trim())h+=`<span class="ic" title="Card message">${App.icon("card")}</span>`;
+  if(o.notes)h+=`<span class="ic" title="${App.esc(o.notes)}">${App.icon("info")}</span>`;
+  if(o.problem)h+=`<span class="ic --accent" title="${App.esc(o.problem)}">${App.icon("alert")}</span>`;
+  if(o.paid!=="paid")h+=`<span class="ic --accent" title="Not paid yet">${App.icon("pound")}</span>`;
+  return h;
+}
+function p3Acts(o){
+  const me=App.me(),mgr=App.isMgr(),mine=o.florist===me.id;
+  const stop="event.stopPropagation();";
+  if(o.status==="queue")return mgr?`<button class="btn --sm" onclick="${stop}P3_assign(event,${o.id})">${App.icon("user")} Assign</button><button class="btn --ghost --sm" title="Make it yourself" onclick="${stop}App.assignFlorist(${o.id},'${me.id}')">${App.icon("play")} Take</button>`:`<button class="btn --sm" onclick="${stop}App.assignFlorist(${o.id},'${me.id}')">${App.icon("play")} Take</button>`;
+  if(o.status==="making")return `<button class="btn --sm" onclick="${stop}App.setOrderStatus(${o.id},'photo')">${App.icon("photo")} Photo</button>`+(mgr&&!mine?`<button class="btn --ghost --sm" onclick="${stop}P3_assign(event,${o.id})">${App.icon("user")}</button>`:"");
+  if(o.status==="photo")return `<button class="btn --sm" onclick="${stop}App.sendPhoto(${o.id})">${App.icon("send")} Ready</button><button class="btn --ghost --sm" onclick="${stop}P3_retake(${o.id})">${App.icon("refresh")}</button>`;
+  if(o.status==="ready")return o.type==="collection"?`<button class="btn --ok --sm" onclick="${stop}App.setOrderStatus(${o.id},'delivered',{note:'Collected in shop'})">${App.icon("check")} Collected</button>`:(mgr?`<button class="btn --sm" onclick="${stop}P3_hand(event,${o.id})">${App.icon("truck")} Hand over</button>`:`<span class="wait">${App.icon("truck")} Awaiting courier</span>`);
+  return "";
+}
+function p3Card(o){
+  const p=App.product(o.product),late=App.isLate(o);
+  return `<div class="kcard ${late?"--late":""}" onclick="App.openOrder(${o.id})">
+    <div class="k-top"><b class="tnum" style="color:var(--ink)">#${o.id}</b><span class="${late?"accent":""}">${App.esc(o.slot)}</span><span class="sp"></span>${o.type==="collection"?`<span class="tag">Collect</span>`:""}${o.chan==="Deliveroo"||o.chan==="Uber Eats"?App.chanTag(o.chan):""}${o.florist?App.avatar(o.florist,"--s"):""}</div>
+    <div class="k-title">${App.esc(p.name)} <span class="muted">· ${App.esc(o.size)}</span></div>
+    <div class="k-foot">${p3Icons(o)}<span class="sp"></span>${late?App.orderPill(o):""}</div>
+    <div class="k-acts">${p3Acts(o)}</div>
+  </div>`;
+}
+function p3Head(){
+  const today=App.data.orders.filter(p3Active);
+  const photoN=App.data.orders.filter(o=>o.n===0&&o.status==="photo").length;
+  const slotN=s=>today.filter(o=>o.slot===s).length;
+  const florists=App.data.staff.filter(s=>s.role==="florist");
+  const fl=P3.florist?App.user(P3.florist):null;
+  App.$("#p3-head").innerHTML=`
+    <div class="seg-ctl"><button class="${P3.tab==="board"?"on":""}" onclick="P3_tab('board')">${App.icon("board")} Board</button><button class="${P3.tab==="photo"?"on":""}" onclick="P3_tab('photo')">${App.icon("photo")} Photo check ${photoN?`<span class="n" style="color:${P3.tab==="photo"?"inherit":"var(--warn)"}">${photoN}</span>`:""}</button></div>
+    <div class="chips p3-slots"><button class="chip ${!P3.slot?"on":""}" onclick="P3_slot('')">All slots <span class="n">${today.length}</span></button>${App.SLOTS.map(s=>`<button class="chip ${P3.slot===s?"on":""}" onclick="P3_slot('${s}')">${s.split("–")[0]} <span class="n">${slotN(s)}</span></button>`).join("")}</div>
+    <button class="chip ${P3.mine?"on":""}" onclick="P3_mine()">${App.icon("user")} Mine</button>
+    <button class="chip ${P3.florist?"on":""}" onclick="P3_floristPop(event)">${fl?App.avatar(fl.id,"--s")+" "+App.esc(fl.n):App.icon("filter")+" Florist"} ${App.icon("down")}</button>
+    <span class="sp"></span>
+    <button class="btn --ghost --sm p3-print" onclick="App.toast('Sent to printer · ${p3Filtered().length} tickets')">${App.icon("printer")} Print tickets</button>
+    <button class="btn --ghost --sm" onclick="App.go('ready-now')">${App.icon("photo")} Ready now</button>`;
+}
+function p3Who(){
+  const fl=App.data.staff.filter(s=>s.role==="florist");
+  const inWork=f=>App.data.orders.filter(o=>o.n===0&&o.florist===f.id&&["making","photo"].includes(o.status)).length;
+  const done=f=>App.data.orders.filter(o=>o.n===0&&o.florist===f.id&&["ready","out","delivered"].includes(o.status)).length;
+  const q=App.data.orders.filter(o=>o.n===0&&o.status==="queue").length;
+  return `<div class="p3-who">
+    ${fl.map(f=>{const w=inWork(f),pc=Math.min(100,Math.round(w/P3.CAP*100));return `<div class="p3-f ${P3.florist===f.id?"on":""} ${f.on?"":"off"}" onclick="P3_florist('${f.id}')" title="${f.on?"On shift "+f.shift:"Off shift"}">${App.avatar(f.id)}<div class="t"><b>${App.esc(f.n)}${f.staff_type?` <span class="muted xs">· ${f.staff_type}</span>`:""}</b><small>${f.on?`${w} in work · ${done(f)} done`:"off shift · "+f.shift}</small><div class="progress ${pc>=100?"--accent":pc>=60?"--warn":""}"><i style="width:${f.on?pc:0}%"></i></div></div><span class="n ${w>=P3.CAP?"accent":""}">${f.on?w:"–"}</span></div>`}).join("")}
+    <div class="p3-f" style="cursor:default;min-width:150px" title="Nobody has started these yet"><div class="t"><b>Unassigned</b><small>in queue</small><div class="progress"><i style="width:${Math.min(100,q*10)}%"></i></div></div><span class="n ${q>8?"accent":""}">${q}</span></div>
+  </div>`;
+}
+function p3Board(){
+  const list=p3Filtered();
+  return `<div class="kanban p3-board">${P3_COLS.map(([st,lbl,cls])=>{const os=list.filter(o=>o.status===st);const late=os.filter(App.isLate).length;
+    return `<div class="kcol ${cls}"><div class="k-head">${lbl}${late?` <span class="accent">· ${late} late</span>`:""}<span class="n">${os.length}</span></div><div class="k-body">${os.map(p3Card).join("")||`<div class="empty" style="padding:28px 8px">${App.icon(st==="queue"?"check":st==="making"?"production":st==="photo"?"photo":"truck")}<span class="sm">${st==="queue"?"Queue is clear":st==="making"?"Nothing on the bench":st==="photo"?"No photos to check":"Nothing waiting"}</span></div>`}</div></div>`}).join("")}</div>`;
+}
+function p3Photos(){
+  const list=p3Filtered().filter(o=>o.status==="photo");
+  if(!list.length)return `<div class="empty">${App.icon("photo")}<div class="h3">No photos to check</div><div class="sm">Florists send a photo here before the bouquet is marked ready.</div><button class="btn --ghost --sm mt8" onclick="P3_tab('board')">Back to board</button></div>`;
+  return `<div class="p3-grid">${list.map(o=>{const p=App.product(o.product),c=App.customer(o.customer),late=App.isLate(o);const shot=o.log.filter(l=>/Photo uploaded/.test(l.t)).pop();
+    return `<div class="p3-ph ${late?"--late":""}"><div class="photo --4x5" onclick="App.openOrder(${o.id})"><img src="${p.img}" alt=""><div class="ovl"><span class="tnum">#${o.id}</span><span>${App.esc(o.slot)}</span></div></div>
+      <div class="pb"><div class="row" style="gap:8px"><div style="flex:1;min-width:0"><div class="h4" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${App.esc(p.name)} · ${App.esc(o.size)}</div><div class="xs muted">${o.addons.length?"+ "+o.addons.map(a=>App.esc(App.product(a).name)).join(", "):"no add-ons"} · for ${App.esc(c.first)}</div></div>${App.avatar(o.florist||"","--s")}</div>
+      ${o.card&&o.card.trim()?`<div class="card-msg" title="${App.esc(o.card)}">“${App.esc(o.card)}”</div>`:""}
+      <div class="xs muted">${shot?"Photo "+App.timeAgo(shot.at)+" ago":"Photo just uploaded"}${late?` · <span class="accent">slot passed</span>`:""}</div>
+      <div class="btn-row"><button class="btn --sm" onclick="App.sendPhoto(${o.id})">${App.icon("send")} Approve &amp; send</button><button class="btn --ghost --sm" onclick="P3_retake(${o.id})" title="Back to making with a note">${App.icon("refresh")} Retake</button></div></div></div>`}).join("")}</div>`;
+}
+window.mount_production=function(params){
+  params=params||{};
+  const role=App.role();
+  if(P3.roleSeen!==role){P3.roleSeen=role;P3.mine=role==="florist";P3.florist=""}
+  if(params!==P3.lastParams){P3.lastParams=params;if(params.slot!==undefined)P3.slot=params.slot||"";if(params.florist!==undefined){P3.florist=params.florist||"";P3.mine=false}if(params.tab)P3.tab=params.tab;if(params.mine!==undefined)P3.mine=!!params.mine}
+  p3Head();
+  App.$("#p3-body").innerHTML=p3Who()+(P3.tab==="photo"?p3Photos():p3Board());
+  App.registerCommands([
+    {g:"Actions",t:"Take next in queue",ic:"play",fn:P3_takeNext},
+    {g:"Actions",t:"Photo check",ic:"photo",fn:()=>App.go("production",{tab:"photo"})},
+    {g:"Actions",t:"Show my bench only",ic:"user",fn:()=>App.go("production",{mine:true})}
+  ]);
+};
+function P3_tab(t){P3.tab=t;window.mount_production(P3.lastParams)}
+function P3_slot(s){P3.slot=s;window.mount_production(P3.lastParams)}
+function P3_mine(){P3.mine=!P3.mine;if(P3.mine)P3.florist="";window.mount_production(P3.lastParams)}
+function P3_florist(id){P3.florist=P3.florist===id?"":id;if(P3.florist)P3.mine=false;window.mount_production(P3.lastParams)}
+function P3_floristPop(ev){App.pop(ev,["Filter by florist",{t:"Everyone",ic:"customers",fn:()=>P3_florist("")},...App.data.staff.filter(s=>s.role==="florist").map(s=>({t:s.n+(s.on?"":" · off shift"),ic:"user",fn:()=>{P3.florist=s.id;P3.mine=false;window.mount_production(P3.lastParams)}}))])}
+function P3_assign(ev,id){App.pop(ev,["Assign to",...App.data.staff.filter(s=>s.role==="florist").map(s=>({t:s.n+(s.on?"":" · off shift"),ic:"user",fn:()=>App.assignFlorist(id,s.id)}))])}
+function P3_retake(id){
+  const o=App.order(id);
+  App.modal({title:"Retake photo · #"+id,body:`<div class="sm soft mb8">Goes back to <b>Making</b> for ${o.florist?App.esc(App.user(o.florist).n):"the florist"}. Tell them what to fix.</div><div class="chips mb8" id="p3-rt">${["Too dark","Wrap creased","Show the card","Different angle","Add the ribbon"].map(t=>`<button class="chip" onclick="document.getElementById('p3-rt-in').value=this.textContent.trim()">${t}</button>`).join("")}</div><input class="input" id="p3-rt-in" placeholder="Note for the florist…">`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.setOrderStatus(${id},'making',{note:'Retake · '+(document.getElementById('p3-rt-in').value||'see manager')});App.push('Retake requested','#${id} · '+(document.getElementById('p3-rt-in').value||'see manager'),{icon:'photo',type:'order',go:['production',{tab:'board'}]})">${App.icon("refresh")} Send back</button>`,
+    onMount:b=>setTimeout(()=>b.querySelector("#p3-rt-in")?.focus(),60)});
+}
+function P3_hand(ev,id){App.pop(ev,["Hand to",...App.data.staff.filter(s=>s.role==="courier").map(s=>({t:s.n+" · "+s.title.split("·")[1].trim()+(s.on?"":" · off"),ic:"user",fn:()=>{App.assignCourier(id,s.id);App.setOrderStatus(id,"out",{silent:true,courier:s.id});App.push("Pickup · "+s.n,"#"+id+" is ready at the counter",{icon:"truck",type:"order",go:["delivery",{open:id}]})}})),"-",{t:"Call Uber Direct · ~£9",ic:"truck",fn:()=>App.go("delivery",{uber:true,open:id})}])}
+function P3_takeNext(){const me=App.me();const q=App.data.orders.filter(o=>o.n===0&&o.status==="queue"&&!o.florist).sort((a,b)=>(App.isLate(b)-App.isLate(a))||a.slot.localeCompare(b.slot));if(!q.length){App.toast("Queue is clear");return}if(App.state.current!=="production")App.go("production",{tab:"board"});App.assignFlorist(q[0].id,me.id)}
+document.addEventListener("orders",()=>{if(App.state.current==="production")window.mount_production(P3.lastParams)});
+
+/* ===================== 03 · READY NOW ===================== */
+const RN={view:"open",lastParams:null,seq:9110};
+const RN_IMGS=["pink-garden","peach-posy","white-spray","lilac-dream","red-roses","charmingly","poem-petals","powdered-rose","veronica","belgravia","hero-white","daydream-basket"];
+const RN_STATUS={open:["ready","On site"],sold:["out","Sold"],hidden:["queue","Hidden"],off:["cancelled","Written off"]};
+const RN_ITEMS=[
+  {id:9101,name:"Autumn garden · hand-tied",price:65,img:"img/pink-garden.webp",by:"svetlana",status:"open",qty:1,at:App.T(8,50),views:38,lines:[["Rose Quicksand 50cm",9],["Eucalyptus cinerea",3],["Ruscus",2],["Wrap · ivory",1]]},
+  {id:9102,name:"Peach posy · small",price:45,img:"img/peach-posy.webp",by:"marina",status:"open",qty:2,at:App.T(9,10),views:21,lines:[["Ranunculus mix",12],["Eucalyptus cinerea",2],["Ribbon · satin ivory",1]]},
+  {id:9103,name:"White spray · tall",price:95,img:"img/white-spray.webp",by:"svetlana",status:"sold",qty:1,at:App.T(8,20),soldAt:App.T(10,5),views:54,lines:[["Lisianthus white",15],["Hydrangea white",3],["Ruscus",4]]},
+  {id:9104,name:"Lilac dream",price:70,img:"img/lilac-dream.webp",by:"anna",status:"open",qty:1,at:App.T(9,35),views:12,lines:[["Lisianthus white",8],["Garden rose Juliet",5],["Eucalyptus cinerea",3]]},
+  {id:9105,name:"Red roses · dozen",price:85,img:"img/red-roses.webp",by:"marina",status:"hidden",qty:1,at:App.T(17,40,-1),views:91,lines:[["Rose Red Naomi 60cm",12],["Ruscus",3],["Wrap · ivory",1]]},
+  {id:9106,name:"Charmingly · pastel",price:60,img:"img/charmingly.webp",by:"lina",status:"sold",qty:1,at:App.T(8,45),soldAt:App.T(9,52),views:33,lines:[["Ranunculus mix",10],["Rose Quicksand 50cm",5],["Eucalyptus cinerea",2]]},
+  {id:9107,name:"Poem of petals · mini",price:38,img:"img/poem-petals.webp",by:"anna",status:"open",qty:3,at:App.T(10,20),views:6,lines:[["Ranunculus mix",8],["Ruscus",2]]},
+  {id:9108,name:"Powdered rose · wrap",price:55,img:"img/powdered-rose.webp",by:"svetlana",status:"off",qty:1,at:App.T(9,0,-1),views:40,lines:[["Rose Quicksand 50cm",10],["Eucalyptus cinerea",3]]}
+];
+const rnMgr=()=>App.isMgr();
+const rnSoldToday=()=>RN_ITEMS.filter(b=>b.status==="sold"&&b.soldAt&&b.soldAt.slice(0,10)===App.NOW.toISOString().slice(0,10));
+function rnList(){
+  const v=RN.view;let l=RN_ITEMS.filter(b=>v==="all"||(v==="sold"?b.status==="sold":v==="hidden"?(b.status==="hidden"||b.status==="off"):b.status===v));
+  return l.sort((a,b)=>(a.status==="open"?0:1)-(b.status==="open"?0:1)||new Date(b.at)-new Date(a.at));
+}
+function rnCard(b){
+  const [pc,pl]=RN_STATUS[b.status];const u=App.user(b.by);
+  return `<div class="p3-b --${b.status}" onclick="RN_open(${b.id})"><div class="photo --4x5"><img src="${b.img}" alt=""><span class="pr">${App.fmt(b.price)}</span><span class="st">${App.pill(pc,pl)}</span></div>
+    <div class="bb"><div class="nm" title="${App.esc(b.name)}">${App.esc(b.name)}${b.qty>1?` <span class="muted">× ${b.qty}</span>`:""}</div>
+    <div class="by">${App.avatar(b.by,"--s")}<span>${u?App.esc(u.n.split(" ")[0]):"–"}</span><span class="muted">· ${b.status==="sold"?"sold "+App.fmtTime(b.soldAt):App.timeAgo(b.at)+" on site"}</span><button class="ib" title="More" onclick="event.stopPropagation();RN_menu(event,${b.id})">${App.icon("dots")}</button></div></div></div>`;
+}
+window.mount_ready_now=function(params){
+  params=params||{};
+  const counts={open:RN_ITEMS.filter(b=>b.status==="open").length,sold:RN_ITEMS.filter(b=>b.status==="sold").length,hidden:RN_ITEMS.filter(b=>b.status==="hidden"||b.status==="off").length,all:RN_ITEMS.length};
+  const sold=rnSoldToday(),soldSum=sold.reduce((s,b)=>s+b.price*1,0);
+  const avgMin=sold.length?Math.round(sold.reduce((s,b)=>s+(new Date(b.soldAt)-new Date(b.at))/6e4,0)/sold.length):0;
+  const onSite=RN_ITEMS.filter(b=>b.status==="open").reduce((s,b)=>s+b.qty,0);
+  App.$("#rn-head").innerHTML=`<div class="views" style="margin:0;border:0">${[["open","On site"],["sold","Sold"],["hidden","Hidden"],["all","All"]].map(([k,l])=>`<button class="${RN.view===k?"on":""}" onclick="RN_view('${k}')">${l} <span class="n">${counts[k]}</span></button>`).join("")}</div><span class="sp"></span>
+    <button class="btn --ghost --sm" onclick="App.toast('Opened floritta.uk/ready-now in a new tab (demo)')">${App.icon("globe")} View on site</button>
+    <button class="btn --sm" onclick="RN_publish()">${App.icon("plus")} Publish a bouquet</button>`;
+  const list=rnList();
+  App.$("#rn-body").innerHTML=`<div class="p3-kpis">
+      <div class="kpi-card" onclick="RN_view('open')"><span class="caps">On the shelf</span><span class="kpi">${onSite}</span><span class="delta">${counts.open} listings live on floritta.uk</span></div>
+      <div class="kpi-card" onclick="RN_view('sold')"><span class="caps">Sold today</span><span class="kpi">${sold.length}</span><span class="delta up">${App.fmt(soldSum)} · bonus to makers</span></div>
+      <div class="kpi-card" style="cursor:default"><span class="caps">Time to sell</span><span class="kpi">${avgMin?Math.round(avgMin/60*10)/10+" h":"–"}</span><span class="delta">average today</span></div>
+      <div class="kpi-card" onclick="App.toast('Page views come from the site counter (demo)')"><span class="caps">Page views</span><span class="kpi">${RN_ITEMS.reduce((s,b)=>s+b.views,0)}</span><span class="delta">floritta.uk/ready-now · today</span></div>
+    </div>
+    <div class="sec-head"><div class="h2">${{open:"On the shelf",sold:"Sold",hidden:"Hidden & written off",all:"All listings"}[RN.view]}</div><span class="muted sm">Unsold by 20:00 → tomorrow's price drops 20 %</span></div>
+    ${list.length||RN.view==="open"?`<div class="p3-shelf">${list.map(rnCard).join("")}${RN.view==="open"?`<div class="p3-new" onclick="RN_publish()">${App.icon("plus")}<span class="caps" style="color:inherit">Publish a bouquet</span><span class="xs">photo · name · price</span></div>`:""}</div>`:`<div class="empty">${App.icon("photo")}<div class="h3">Nothing here</div><div class="sm">No ${RN.view} bouquets.</div><button class="btn --ghost --sm mt8" onclick="RN_view('open')">Show the shelf</button></div>`}`;
+  App.registerCommands([{g:"Actions",t:"Mark a Ready-now bouquet sold",ic:"pound",fn:()=>{App.go("ready-now",{view:"open"});App.toast("Pick the bouquet from the shelf · ··· → Sold")}}]);
+  if(params!==RN.lastParams){RN.lastParams=params;if(params.view){RN.view=params.view;window.mount_ready_now(params);return}if(params.new)setTimeout(RN_publish,120)}
+};
+function RN_view(v){RN.view=v;window.mount_ready_now(RN.lastParams)}
+function RN_find(id){return RN_ITEMS.find(b=>b.id===id)}
+function RN_sold(id){const b=RN_find(id);if(b.qty>1){b.qty--;App.toast(`${b.name} · 1 sold · ${b.qty} left on the shelf`)}else{b.status="sold";b.soldAt=App.NOW.toISOString();App.toast(`Sold · ${App.fmt(b.price)} · bonus to ${App.user(b.by).n}`,"Undo",()=>{b.status="open";delete b.soldAt;window.mount_ready_now(RN.lastParams)})}App.closeSheet();window.mount_ready_now(RN.lastParams)}
+function RN_toggleHide(id){const b=RN_find(id);b.status=b.status==="hidden"?"open":"hidden";App.toast(b.status==="hidden"?"Hidden from floritta.uk":"Back on floritta.uk");App.closeSheet();window.mount_ready_now(RN.lastParams)}
+function RN_writeOff(id){const b=RN_find(id);App.confirm("Write off “"+App.esc(b.name)+"”?","Stems go to waste and the listing leaves the site. The maker's bonus is not affected.","Write off",()=>{b.status="off";App.closeSheet();App.toast("Written off · stock adjusted");window.mount_ready_now(RN.lastParams)},{danger:true})}
+function RN_dismantle(id){const b=RN_find(id);App.confirm("Dismantle “"+App.esc(b.name)+"”?","Usable stems return to stock; the listing leaves the site.","Dismantle",()=>{b.status="off";App.closeSheet();App.toast("Dismantled · "+b.lines.reduce((s,l)=>s+l[1],0)+" stems back to stock");window.mount_ready_now(RN.lastParams)})}
+function RN_price(id,v){const b=RN_find(id);const n=Number(String(v).replace(/[^\d.]/g,""));if(n>0){b.price=n;App.toast("Price updated on floritta.uk · "+App.fmt(n));window.mount_ready_now(RN.lastParams)}}
+function RN_menu(ev,id){const b=RN_find(id);const items=["“"+b.name+"”"];
+  if(b.status==="open")items.push({t:"Mark sold · "+App.fmt(b.price),ic:"pound",fn:()=>RN_sold(id)},{t:"Hide from site",ic:"eye",fn:()=>RN_toggleHide(id)},{t:"Copy link",ic:"link",fn:()=>App.toast("Copied floritta.uk/ready-now/"+id)});
+  if(b.status==="hidden")items.push({t:"Show on site",ic:"eye",fn:()=>RN_toggleHide(id)});
+  if(b.status==="sold")items.push({t:"Undo sale",ic:"undo",fn:()=>{b.status="open";delete b.soldAt;App.toast("Back on the shelf");window.mount_ready_now(RN.lastParams)}});
+  items.push({t:"Share to Instagram",ic:"photo",fn:()=>App.toast("Photo added to the Instagram queue")});
+  if(rnMgr()&&(b.status==="open"||b.status==="hidden"))items.push("-",{t:"Dismantle · stems to stock",ic:"refresh",fn:()=>RN_dismantle(id)},{t:"Write off",ic:"trash",cls:"--accent",fn:()=>RN_writeOff(id)});
+  App.pop(ev,items)}
+function RN_open(id){const b=RN_find(id);const [pc,pl]=RN_STATUS[b.status];const u=App.user(b.by);const cost=b.lines.reduce((s,l)=>{const inv=App.data.inventory.find(i=>i.name===l[0]);return s+(inv?inv.cost:1)*l[1]},0);
+  const body=`<div class="row" style="align-items:flex-start;gap:16px"><div class="photo --4x5" style="width:160px;flex:none"><img src="${b.img}" alt=""></div><div style="flex:1;min-width:0">
+      <div class="h3">${App.esc(b.name)}</div>
+      <div class="row mt8" style="gap:8px;flex-wrap:wrap">${App.pill(pc,pl)}${b.qty>1?`<span class="tag">× ${b.qty}</span>`:""}<span class="tag --line">${b.views} views</span></div>
+      <div class="kpi-s mt16"><input class="input --inline tnum" style="width:110px;font:inherit" value="${App.fmt(b.price)}" ${b.status==="open"?`onchange="RN_price(${b.id},this.value)"`:"disabled"}></div>
+      <div class="xs muted">cost ≈ ${App.fmt(Math.round(cost))} · margin ${Math.round((1-cost/b.price)*100)} %${b.status==="open"?" · click the price to change it":""}</div>
+    </div></div>
+    <div class="hr"></div>
+    <dl class="kv"><dt>Made by</dt><dd>${App.avatar(b.by,"--s")} ${u?App.esc(u.n):"–"} · ${App.fmtTime(b.at)}</dd>
+      <dt>Link</dt><dd><code style="font-size:12px">floritta.uk/ready-now/${b.id}</code> <button class="textbtn" onclick="App.toast('Copied')">copy</button></dd>
+      ${b.soldAt?`<dt>Sold</dt><dd>${App.fmtDay(b.soldAt)} ${App.fmtTime(b.soldAt)} · in shop · bonus ${App.fmt(Math.round(b.price*0.05))} to ${u?App.esc(u.n.split(" ")[0]):"maker"}</dd>`:""}
+      <dt>Price rule</dt><dd>−20 % if unsold by 20:00 · written off after 48 h</dd></dl>
+    <div class="sec-head"><div class="h3">Composition</div>${rnMgr()?`<button class="textbtn" onclick="App.toast('Line editing (demo)')">edit</button>`:""}</div>
+    <div class="tbl-wrap"><table class="tbl p3-lines"><thead><tr><th>Stem</th><th class="num">Qty</th></tr></thead><tbody>${b.lines.map(l=>`<tr><td>${App.esc(l[0])}</td><td class="num">${l[1]}</td></tr>`).join("")}</tbody><tfoot><tr><td>${b.lines.reduce((s,l)=>s+l[1],0)} stems · stock ${b.status==="off"?"returned":"deducted"} on publish</td><td class="num">≈ ${App.fmt(Math.round(cost))}</td></tr></tfoot></table></div>`;
+  const foot=`<button class="ib" title="More" onclick="RN_menu(event,${b.id})">${App.icon("dots")}</button>${b.status==="open"?`<button class="btn --ghost --sm" onclick="RN_toggleHide(${b.id})">${App.icon("eye")} Hide</button>`:b.status==="hidden"?`<button class="btn --ghost --sm" onclick="RN_toggleHide(${b.id})">${App.icon("eye")} Show on site</button>`:""}<span class="sp"></span>${b.status==="open"?`<button class="btn --sm" onclick="RN_sold(${b.id})">${App.icon("pound")} Mark sold · ${App.fmt(b.price)}</button>`:b.status==="sold"?`<span class="pill --delivered">Sold</span>`:`<span class="muted sm">${pl}</span>`}`;
+  App.sheet({eyebrow:"Ready now · #"+b.id,title:App.esc(b.name),body,foot});
+}
+function RN_publish(){
+  const me=App.me();const fl=App.data.staff.filter(s=>s.role==="florist");
+  const by=me.role==="florist"?me.id:(fl.find(f=>f.on)||fl[0]).id;
+  App.modal({title:"Publish a bouquet",wide:true,body:`
+    <div class="field mb16"><label>Photo · 4:5 from the bench camera</label><div class="p3-pick" id="rn-pick">${RN_IMGS.map((im,i)=>`<div class="photo --4x5 ${i===0?"on":""}" data-img="img/${im}.webp" onclick="RN_pick(this)"><img src="img/${im}.webp" alt=""></div>`).join("")}</div><div class="xs muted mt8">${App.icon("photo")} Take a new one from the iPad camera (demo) · the photo is sent to the site as is</div></div>
+    <div class="grid g2" style="gap:12px"><div class="field"><label>Name on the site</label><input class="input" id="rn-name" placeholder="e.g. Autumn garden · hand-tied" value="Autumn garden · hand-tied"></div>
+      <div class="field"><label>Made by</label><select class="select" id="rn-by" ${rnMgr()?"":"disabled"}>${fl.map(f=>`<option value="${f.id}" ${f.id===by?"selected":""}>${App.esc(f.n)}${f.on?"":" · off shift"}</option>`).join("")}</select></div>
+      <div class="field"><label>Price</label><div class="chips" id="rn-pr">${[35,45,55,65,85].map(p=>`<button class="chip ${p===65?"on":""}" onclick="RN_pricePick(this,${p})">£${p}</button>`).join("")}<input class="input" id="rn-price" value="65" style="width:84px" type="number" min="1"></div></div>
+      <div class="field"><label>Quantity on the shelf</label><div class="seg-ctl" id="rn-qty">${[1,2,3].map(q=>`<button class="${q===1?"on":""}" data-q="${q}" onclick="RN_qtyPick(this)">${q}</button>`).join("")}</div></div></div>
+    <div class="note-box mt16">${App.icon("globe")} Goes live on <b>floritta.uk/ready-now</b> within seconds · collection in SE1 or same-day delivery · stems are deducted from stock.</div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="RN_create()">${App.icon("upload")} Publish to floritta.uk</button>`,
+    onMount:b=>setTimeout(()=>b.querySelector("#rn-name")?.select(),60)});
+}
+function RN_pick(el){App.$$("#rn-pick .photo").forEach(p=>p.classList.toggle("on",p===el))}
+function RN_pricePick(el,p){App.$$("#rn-pr .chip").forEach(c=>c.classList.toggle("on",c===el));App.$("#rn-price").value=p}
+function RN_qtyPick(el){App.$$("#rn-qty button").forEach(c=>c.classList.toggle("on",c===el))}
+function RN_create(){
+  const name=(App.$("#rn-name").value||"").trim(),price=Number(App.$("#rn-price").value),img=App.$("#rn-pick .photo.on")?.dataset.img||"img/"+RN_IMGS[0]+".webp",by=App.$("#rn-by").value,qty=Number(App.$("#rn-qty button.on")?.dataset.q||1);
+  if(!name){App.toast("Give it a name first");App.$("#rn-name").focus();return}
+  if(!(price>0)){App.toast("Price must be above £0");App.$("#rn-price").focus();return}
+  const b={id:++RN.seq,name,price,img,by,status:"open",qty,at:App.NOW.toISOString(),views:0,lines:[["Mixed stems",12],["Eucalyptus cinerea",3],["Wrap · ivory",1]]};
+  RN_ITEMS.unshift(b);App.closeModal();RN.view="open";window.mount_ready_now(RN.lastParams);
+  App.toast("Published to floritta.uk","View",()=>RN_open(b.id));
+  App.push("Ready now · live","“"+name+"” · "+App.fmt(price)+" · by "+App.user(by).n,{icon:"photo",type:"info",go:["ready-now",{}]});
+}
+</script>

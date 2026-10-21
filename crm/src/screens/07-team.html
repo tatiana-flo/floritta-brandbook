@@ -1,0 +1,369 @@
+<style>
+/* ===== 07 · Team & Business (team, tasks, learning, growth, settings) ===== */
+#s-team .sched td,#s-team .sched th{text-align:center;padding:0 4px}
+#s-team .sched td:first-child,#s-team .sched th:first-child{text-align:left;padding:0 12px;width:190px}
+#s-team .sched th.today{color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink)}
+#s-team .sched td.today{background:var(--paper-2)}
+#s-team tr.me td:first-child,#s-learning tr.me td:first-child{box-shadow:inset 3px 0 0 var(--ink)}
+#s-team .sched td.grp{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);height:30px;background:var(--paper-2);text-align:left}
+#s-team .cell{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:68px;height:34px;font-size:12px;line-height:1.1;cursor:pointer;border:1px solid transparent;color:var(--ink)}
+#s-team .cell small{font-size:10px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase}
+#s-team .cell.--E{background:var(--ok-bg);color:var(--ok)}#s-team .cell.--E small{color:var(--ok)}
+#s-team .cell.--L{background:var(--ink);color:var(--paper)}#s-team .cell.--L small{color:var(--paper);opacity:.7}
+#s-team .cell.--D,#s-team .cell.--M,#s-team .cell.--N,#s-team .cell.--F{background:var(--silver)}
+#s-team .cell.--O{color:var(--grey)}#s-team .cell.--H{background:var(--warn-bg);color:var(--warn)}#s-team .cell.--H small{color:var(--warn)}
+#s-team .cell:hover{border-color:var(--grey)}
+#s-team .cell.ro{cursor:default}#s-team .cell.ro:hover{border-color:transparent}
+#s-team .cover{display:flex;gap:4px;justify-content:center;font-size:11px;color:var(--grey)}
+#s-team .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--graphite);margin-top:12px}
+#s-team .legend i{display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-right:6px}
+#s-tasks .kanban{height:auto;min-height:100%}
+#s-tasks .kcard .chk{font-size:11px;color:var(--grey);display:inline-flex;align-items:center;gap:4px}
+#s-tasks .kcard .kind{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+#sheet .t7-ck{display:flex;align-items:center;gap:10px;min-height:36px;border-bottom:1px solid var(--hair);font-size:13.5px;cursor:pointer}
+#sheet .t7-ck.done{color:var(--grey);text-decoration:line-through}
+#s-learning .mx td,#s-learning .mx th{text-align:center;padding:0 6px}
+#s-learning .mx td:first-child,#s-learning .mx th:first-child{text-align:left;padding:0 12px}
+#s-learning .sk{display:inline-grid;place-items:center;width:30px;height:30px;cursor:pointer}
+#s-learning .sk i{width:12px;height:12px;border-radius:50%;background:var(--hair);display:block}
+#s-learning .sk.--1 i{background:var(--ok)}#s-learning .sk.--2 i{background:var(--warn)}
+#s-learning .sk:hover i{box-shadow:0 0 0 3px var(--silver)}
+#s-learning .buddy{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+#s-learning .bd{border:1px solid var(--hair);padding:8px;font-size:11px;min-height:64px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+#s-learning .bd b{font-weight:500;font-size:12px}
+#s-learning .bd.done{background:var(--ok-bg);border-color:transparent;color:var(--ok)}
+#s-learning .bd.today{border-color:var(--ink)}
+#s-learning .bd.ro{cursor:default}
+#s-growth .bar{height:120px;gap:10px;align-items:flex-end}
+#s-growth .bar>div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;font-size:11px;color:var(--grey)}
+#s-growth .bar>div i{width:100%;background:var(--light);display:block;flex:none}
+#s-growth .bar>div i.on{background:var(--ink)}
+#s-growth .bar>div b{font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
+#s-settings .set{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:start}
+#s-settings .set-nav{display:flex;flex-direction:column;gap:2px}
+#s-settings .set-nav button{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;font-size:14px;color:var(--graphite)}
+#s-settings .set-nav button.on{background:var(--ink);color:var(--paper)}
+#s-settings .set-nav button:hover:not(.on){background:var(--silver)}
+#s-settings .frow{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:center;min-height:52px;border-bottom:1px solid var(--hair);padding:8px 0}
+#s-settings .frow .lbl{color:var(--ink);letter-spacing:0;text-transform:none;font-size:14px}
+#s-settings .frow .lbl small{display:block;color:var(--grey);font-size:12px}
+#s-settings .frow .input,#s-settings .frow .select{max-width:360px}
+#s-settings .intg{display:flex;align-items:center;gap:12px;min-height:56px;border-bottom:1px solid var(--hair)}
+#s-settings .intg .t{flex:1;min-width:0}#s-settings .intg .t b{display:block;font-weight:400}#s-settings .intg .t small{color:var(--grey);font-size:12px}
+[data-size="phone"] #s-settings .set{grid-template-columns:1fr}
+[data-size="phone"] #s-settings .set-nav{flex-direction:row;overflow-x:auto;scrollbar-width:none}
+[data-size="phone"] #s-settings .set-nav button{white-space:nowrap}
+[data-size="phone"] #s-settings .frow{grid-template-columns:1fr;gap:6px}
+[data-size="phone"] #s-tasks .kanban{grid-auto-columns:82%}
+[data-size="phone"] #s-learning .buddy{grid-template-columns:repeat(4,minmax(0,1fr))}
+[data-size="phone"] #s-team .sched td:first-child,[data-size="phone"] #s-team .sched th:first-child{width:120px}
+</style>
+
+<section class="scr" id="s-team" data-nav="Team · schedule" data-group="Team &amp; Business" data-title="Team" data-sub="Week 43 · 19–25 Oct">
+  <div class="scr-head" id="t7-team-head"></div>
+  <div class="scr-body" id="t7-team-body"></div>
+</section>
+
+<section class="scr" id="s-tasks" data-nav="Tasks" data-group="Team &amp; Business" data-title="Tasks" data-parent="tasks">
+  <div class="scr-head" id="t7-tasks-head"></div>
+  <div class="scr-body flush" id="t7-tasks-body" style="padding:var(--pad)"></div>
+</section>
+
+<section class="scr" id="s-learning" data-nav="Learning" data-group="Team &amp; Business" data-title="Learning" data-sub="Skills · lessons · buddy">
+  <div class="scr-head" id="t7-learn-head"></div>
+  <div class="scr-body" id="t7-learn-body"></div>
+</section>
+
+<section class="scr" id="s-growth" data-nav="Growth (owner)" data-group="Team &amp; Business" data-title="Growth" data-roles="owner" data-sub="Last 7 days">
+  <div class="scr-head" id="t7-growth-head"></div>
+  <div class="scr-body" id="t7-growth-body"></div>
+</section>
+
+<section class="scr" id="s-settings" data-nav="Settings (owner)" data-group="Team &amp; Business" data-title="Settings" data-roles="owner">
+  <div class="scr-body" id="t7-set-body"></div>
+</section>
+
+<script>
+(()=>{
+const A=App,E=s=>A.esc(s),I=n=>A.icon(n);
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],DATES=[19,20,21,22,23,24,25],TODAY=2;
+const SH={E:["08–17","Early"],L:["13–22","Late"],D:["10–19","Line"],M:["09–18","Day"],N:["12–22","Late"],F:["14–22","Eve"],O:["Off",""],H:["Holiday",""]};
+const HRS={E:8,L:8,D:8,M:8,N:9,F:7,O:0,H:0};
+const T7_SHIFTS={tatiana:"MMMMMOO",valeria:"EEEEEOO",kamila:"OOLLLLL",svetlana:"EEEEOOE",marina:"EEOEEEO",olesya:"LLLLOOL",anna:"DDDDDOO",lina:"DDDDOOD",eliza:"MMMMMOO",daniel:"MMMMMMO",george:"ONNNNNN",omar:"OOFFFFF"};
+Object.keys(T7_SHIFTS).forEach(k=>T7_SHIFTS[k]=T7_SHIFTS[k].split(""));
+const T7_TIME=[
+ {id:1,who:"valeria",d:0,i:"07:52",o:"17:06",b:30,st:"approved"},{id:2,who:"svetlana",d:0,i:"07:58",o:"17:11",b:30,st:"pending"},{id:3,who:"marina",d:0,i:"08:03",o:null,b:30,st:"flagged"},
+ {id:4,who:"anna",d:0,i:"09:57",o:"19:02",b:30,st:"pending"},{id:5,who:"lina",d:0,i:"10:04",o:"18:58",b:30,st:"pending"},{id:6,who:"daniel",d:0,i:"08:49",o:"18:20",b:45,st:"pending"},{id:7,who:"eliza",d:0,i:"09:01",o:"18:00",b:30,st:"approved"},
+ {id:8,who:"valeria",d:1,i:"07:55",o:null,b:0,st:"open"},{id:9,who:"svetlana",d:1,i:"08:02",o:null,b:0,st:"open"},{id:10,who:"marina",d:1,i:"08:10",o:null,b:0,st:"open"},{id:11,who:"anna",d:1,i:"09:58",o:null,b:0,st:"open"},{id:12,who:"lina",d:1,i:"10:06",o:null,b:0,st:"open"},{id:13,who:"daniel",d:1,i:"08:51",o:null,b:0,st:"open"}
+];
+const T7_BONUS=[{who:"svetlana",b:142,p:1,r:4.9},{who:"marina",b:118,p:3,r:4.6},{who:"olesya",b:96,p:0,r:4.8},{who:"anna",b:61,p:2,r:4.3}];
+const T7_CHECK={302:["Steam backdrop, ivory sheet","Shoot 12 bouquets · 4:5","Upload to Catalog drafts"],303:["Sketch with Valeria","Pumpkins & dried stems from RFH","Build Thu evening"],304:["Count ribbon reels","Count wrap sheets","Enter in Stock"],305:["Read fridge 1","Read fridge 2","Write in log"],306:["Confirm peonies substitute","Confirm Thu van slot"],307:["12 kits · 15 stems each","Scissors & wire","Name cards"],308:["Load 7 vases","Get signed note"],301:["Lights & music","Water buckets","Till float £100"]};
+const KIND={shop:"routine",stock:"routine",website:"project",workshops:"project",purchasing:"ask",delivery:"routine"};
+const T7_SKILLS=["Wrap","Hand-tied","Sympathy","Helium","Till","Van"];
+const T7_MATRIX={svetlana:"111111",marina:"111100",olesya:"112110",anna:"110000",lina:"200000",valeria:"101111",eliza:"100110",kamila:"101111",daniel:"000001",george:"000000",omar:"000000"};
+Object.keys(T7_MATRIX).forEach(k=>T7_MATRIX[k]=T7_MATRIX[k].split("").map(Number));
+const T7_LESSONS=[
+ {id:1,t:"Peonies are out – what to offer instead",min:3,who:["svetlana","marina","anna","lina","olesya"],done:["svetlana"],body:"From this week peonies are out of season. Offer the garden-rose version (Juliet) at the same price. Say it before the customer asks and attach a photo.",q:[["Customer asks for the Peony Basket today. You…",["Say it is sold out","Offer the garden-rose version with a photo","Order peonies from RFH"],1],["Price of the substitute?",["Same as peonies","£10 less","£10 more"],0],["Where do you note the swap?",["Nowhere","Order notes","Card message"],1]]},
+ {id:2,t:"Same-day cut-off and last slot",min:3,who:["marina","anna","lina","eliza"],done:[],body:"Same-day is available until 22:00. The last slot 20:00–22:00 closes for new orders at 19:00. Collection is possible until closing.",q:[["Last same-day slot?",["18:00–20:00","20:00–22:00","16:00–18:00"],1],["Order at 19:20 for tonight?",["Yes, last slot","Tomorrow morning or collection","Uber Direct only"],1],["Collection until?",["19:00","22:00","20:00"],1]]},
+ {id:3,t:"Helium balloons · safety and sizing",min:3,who:["lina","anna"],done:[],body:"Latex 12-inch takes about 14 litres. Never fill near the fridge compressor. Check the regulator gauge before each set.",q:[["Litres for a 12-inch latex?",["7","14","28"],1],["Where not to fill?",["Near the fridge compressor","At the till","By the door"],0],["Before each set you check…",["Ribbon stock","Regulator gauge","Weather"],1]]}
+];
+const T7_BUDDY=["Shop tour & fridge","Wrap · ivory standard","Till basics","Hand-tied 12 stems","Watch a delivery","Card messages & spelling","Photo station","Hand-tied 25 stems","Phone order with Valeria","Sympathy basics","Marketplace tickets","Helium 101","Solo wrap check","Two-week review"];
+let T7_BUDDY_DONE=[1,1,1,1,1,1,1,0,0,0,0,0,0,0];
+const T7_WEEK=[["Wed",1840],["Thu",2210],["Fri",2960],["Sat",3410],["Sun",1720],["Mon",1980],["Tue",1260]];
+const T7_CHAN=[["Website",41,4120,"112"],["WhatsApp",19,2610,"137"],["Phone",11,1540,"140"],["Deliveroo",17,980,"58"],["Uber Eats",14,760,"54"],["Instagram",6,870,"145"],["Walk-in",9,520,"58"]];
+const T7_UPSELL=[["Greeting card at checkout","on",38,"£4 · 62% of web orders"],["Chocolates · Charbonnel","on",9,"£24 · 7%"],["Vase · glass","off",0,"£28 · not shown"],["Balloon · helium","on",4,"£12 · 3%"],["Bundle: bouquet + berries box","off",0,"Save £5 · draft"]];
+const T7_PROMO=[["WELCOME15","15% first order",214,"£9 120",true],["OCTBLOOM","£10 off £80+",37,"£3 480",true],["CORP20","20% corporate",12,"£2 960",true],["SUMMER10","expired 31 Aug",402,"£18 300",false]];
+const T7_SEO=[["/flowers/same-day-delivery-london",1240,38100,3.2],["/flowers/bermondsey",610,12400,2.1],["/roses/red-roses",480,21900,6.8],["/baskets/peony-basket",390,9800,4.4],["/sympathy",270,7200,5.1]];
+const T7_INT=[["Stripe","ok","Payments · webhook OK · 2 min ago"],["WhatsApp · Wazzup","ok","Instagram DMs via the same channel"],["Deliveroo","ok","Menu synced 06:00"],["Uber Eats","warn","Menu sync failed 08:12 · retry"],["Uber Direct","ok","Courier API · quotes OK"],["Xero","warn","Last sync 3 days ago"],["Expo push","ok","Staff & courier apps"],["Telegram","ok","Pager · Floritta Team"],["Google Maps","ok","Routes & ETA"],["Ringover","off","Calls & SMS · not connected"]];
+const T7_BETA={tatiana:true,valeria:true,svetlana:true,marina:false,kamila:false,olesya:false,anna:false,lina:true,daniel:false,george:false,omar:false,eliza:true};
+const ROLE_LBL={owner:"Admin",manager:"Manager",florist:"Florist",courier:"Courier"};
+const st={teamTab:"schedule",tasksView:"team",tasksKind:"all",learnTab:"matrix",growthTab:"analytics",setTab:"general",shiftSwap:null};
+const S=A.data.staff,U=id=>A.user(id),ME=()=>A.me();
+const name=id=>U(id)?U(id).n:id;
+const canEdit=()=>A.isMgr();
+const tt=A.toast;
+
+/* ================= TEAM ================= */
+function mountTeam(p){
+  if(p&&p.tab)st.teamTab=p.tab;
+  const h=A.$("#t7-team-head");
+  h.innerHTML=`<div class="seg-ctl">${["schedule","timesheet","bonus"].map(t=>`<button class="${st.teamTab===t?"on":""}" data-t="${t}">${t[0].toUpperCase()+t.slice(1)}</button>`).join("")}</div>
+   <span class="sp"></span>
+   ${st.teamTab==="schedule"?`<div class="row" style="gap:4px"><button class="ib" onclick="T7.tt('Week 42 · 12–18 Oct (demo shows one week)')">${I("back")}</button><span class="sm">Mon 19 – Sun 25 Oct</span><button class="ib" onclick="T7.tt('Week 44 is not planned yet')">${I("chev")}</button></div>
+   <button class="btn --ghost --sm" onclick="T7.leave()">${I("calendar")} Request leave</button>
+   ${canEdit()?`<button class="btn --sm" onclick="T7.genWeek()">${I("sparkle")} Generate next week</button>`:""}`:""}
+   ${st.teamTab==="timesheet"&&canEdit()?`<button class="btn --ghost --sm" onclick="T7.tt('Timesheet exported · CSV')">${I("download")} Export</button><button class="btn --sm" onclick="T7.approveAll()">${I("check")} Approve all</button>`:""}
+   ${st.teamTab==="bonus"&&canEdit()?`<button class="btn --ghost --sm" onclick="T7.tt('Payroll export · October · sent to Xero')">${I("pound")} Export payroll</button>`:""}`;
+  A.$$(".seg-ctl button",h).forEach(b=>b.onclick=()=>{st.teamTab=b.dataset.t;mountTeam()});
+  const b=A.$("#t7-team-body");
+  b.innerHTML=st.teamTab==="schedule"?schedule():st.teamTab==="timesheet"?timesheet():bonus();
+  A.$$("#s-team .cell").forEach(c=>c.onclick=ev=>cellPop(ev,c.dataset.s,+c.dataset.d));
+}
+function schedule(){
+  const groups=[["Florists",S.filter(s=>s.role==="florist")],["Managers",S.filter(s=>s.role!=="florist"&&s.role!=="courier")],["Couriers",S.filter(s=>s.role==="courier")]];
+  const cover=d=>{const f=S.filter(s=>s.role==="florist"&&T7_SHIFTS[s.id][d]!=="O"&&T7_SHIFTS[s.id][d]!=="H").length;const m=S.filter(s=>s.role==="manager"&&!["O","H"].includes(T7_SHIFTS[s.id][d])).length;return `<span class="cover">${f} fl · ${m} mg</span>`};
+  const rows=groups.map(([g,list])=>`<tr><td class="grp" colspan="9">${g}</td></tr>`+list.map(s=>{
+    const own=s.id===ME().id;const ro=!(canEdit()||own);
+    const hrs=T7_SHIFTS[s.id].reduce((a,c)=>a+HRS[c],0);
+    return `<tr class="${own?"me":""}"><td><div class="row" style="gap:10px">${A.avatar(s.id,"--s")}<div><b style="font-weight:400">${E(s.n)}</b><span class="sub">${E(s.title)}</span></div></div></td>
+    ${T7_SHIFTS[s.id].map((c,d)=>`<td class="${d===TODAY?"today":""}"><button class="cell --${c} ${ro?"ro":""}" data-s="${s.id}" data-d="${d}">${SH[c][0]}${SH[c][1]?`<small>${SH[c][1]}</small>`:""}</button></td>`).join("")}
+    <td class="num">${hrs} h</td></tr>`}).join("")).join("");
+  const html=`<div class="tbl-wrap"><table class="tbl sched"><thead><tr><th>Who</th>${DAYS.map((d,i)=>`<th class="${i===TODAY?"today":""}">${d} ${DATES[i]}<div>${cover(i)}</div></th>`).join("")}<th class="num">Hours</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="legend"><span><i style="background:var(--ok-bg)"></i>Early 08–17 · florists</span><span><i style="background:var(--ink)"></i>Late 13–22 · florists</span><span><i style="background:var(--silver)"></i>Line 10–19 · seasonal & trainee</span><span><i style="background:var(--warn-bg)"></i>Holiday</span><span class="muted">${canEdit()?"Click a cell to change a shift or swap.":"You can change only your own row; ask a manager for the rest."}</span></div>`;
+  return html;
+}
+function cellPop(ev,sid,d){
+  const own=sid===ME().id;
+  if(!(canEdit()||own)){tt("Only managers can change other people's shifts");return}
+  const u=U(sid);const set=c=>{T7_SHIFTS[sid][d]=c;mountTeam();tt(`${u.n} · ${DAYS[d]} ${DATES[d]} · ${SH[c][1]||SH[c][0]} ${SH[c][1]?SH[c][0]:""}`.trim());if(!own)A.push("Shift changed",`${u.n} · ${DAYS[d]} ${DATES[d]} · ${SH[c][0]}`,{icon:"calendar",type:"info"})};
+  const opts=u.role==="florist"?[["E","Early 08–17"],["L","Late 13–22"],["D","Line 10–19"]]:u.role==="courier"?[["M","Van 09–18"],["N","Bike 12–22"],["F","Evening 14–22"]]:[["M","Day 09–18"],["E","Early 08–17"],["L","Late 13–22"]];
+  A.pop(ev,[`${u.n} · ${DAYS[d]} ${DATES[d]}`,...opts.map(o=>({t:o[1],ic:"clock",fn:()=>set(o[0])})),"-",{t:"Day off",ic:"moon",fn:()=>set("O")},{t:"Holiday",ic:"sun",fn:()=>set("H")},"-",{t:"Swap with…",ic:"refresh",fn:()=>swap(sid,d)}]);
+}
+function swap(sid,d){
+  const u=U(sid);const others=S.filter(s=>s.id!==sid&&s.role===u.role);
+  A.modal({title:"Swap shift",body:`<div class="sm mb16">${E(u.n)} · ${DAYS[d]} ${DATES[d]} · ${SH[T7_SHIFTS[sid][d]][0]}. Pick who takes it; their shift that day goes to ${E(u.first||u.n)}.</div><div class="list" style="border:1px solid var(--hair)">${others.map(o=>`<div class="li" data-o="${o.id}">${A.avatar(o.id,"--s")}<div class="t"><b>${E(o.n)}</b><small>${DAYS[d]}: ${SH[T7_SHIFTS[o.id][d]][0]}</small></div>${I("chev")}</div>`).join("")}</div>`,
+   onMount:box=>A.$$(".li",box).forEach(li=>li.onclick=()=>{const o=li.dataset.o;const a=T7_SHIFTS[sid][d];T7_SHIFTS[sid][d]=T7_SHIFTS[o][d];T7_SHIFTS[o][d]=a;A.closeModal();mountTeam();tt(`Swapped · ${u.n} ↔ ${name(o)} · ${DAYS[d]}`);A.push("Shift swap",`${u.n} ↔ ${name(o)} · ${DAYS[d]} ${DATES[d]}`,{icon:"refresh"})})});
+}
+function leave(){
+  A.modal({title:"Request leave",body:`<div class="grid g2"><div class="field"><label>From</label><input class="input" type="date" value="2026-11-02"></div><div class="field"><label>To</label><input class="input" type="date" value="2026-11-06"></div></div><div class="field mt16"><label>Type</label><select class="select"><option>Holiday</option><option>Unpaid</option><option>Sick</option></select></div><div class="field mt16"><label>Note</label><textarea class="textarea" placeholder="Optional"></textarea></div><div class="note-box mt16">Goes to Valeria for approval. Holiday left this year: 9 days.</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('Leave request sent to Valeria');App.push('Leave request','${E(ME().n)} · 2–6 Nov · Holiday',{icon:'calendar'})">${I("send")} Send request</button>`});
+}
+function genWeek(){
+  A.confirm("Generate week 44?","Uses the florist grids 08–17 / 13–22, line 10–19, Saturday peak and approved leave. Edit any cell afterwards.","Generate",()=>{tt("Week 44 drafted · 11 shifts · review before publishing","Publish",()=>tt("Week 44 published · staff notified"))});
+}
+function timesheet(){
+  const mine=!canEdit();const list=T7_TIME.filter(e=>!mine||e.who===ME().id);
+  const hrs=e=>{if(!e.o)return"–";const [a,b]=[e.i,e.o].map(t=>{const[h,m]=t.split(":").map(Number);return h*60+m});return((b-a-e.b)/60).toFixed(1)+" h"};
+  const pl=s=>s==="approved"?A.pill("done","Approved"):s==="flagged"?A.pill("late","No clock-out"):s==="open"?A.pill("doing","On shift"):A.pill("todo","Pending");
+  const pend=list.filter(e=>e.st==="pending").length,fl=list.filter(e=>e.st==="flagged").length;
+  return `<div class="grid g4 mb16"><div class="kpi-card" style="cursor:default"><span class="caps">This week</span><span class="kpi-s">${list.filter(e=>e.o).reduce((a,e)=>a+parseFloat(hrs(e)),0).toFixed(0)} h</span><span class="delta">closed entries</span></div><div class="kpi-card" style="cursor:default"><span class="caps">On shift now</span><span class="kpi-s">${list.filter(e=>e.st==="open").length}</span><span class="delta">clocked in · geofence The Willows</span></div><div class="kpi-card" style="cursor:default"><span class="caps">To approve</span><span class="kpi-s">${pend}</span><span class="delta">${mine?"waiting for Valeria":"pending entries"}</span></div><div class="kpi-card" style="cursor:default"><span class="caps ${fl?"accent":""}">Flagged</span><span class="kpi-s ${fl?"accent":""}">${fl}</span><span class="delta">missing clock-out</span></div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Who</th><th>Day</th><th>In</th><th>Out</th><th class="num">Break</th><th class="num">Hours</th><th>Status</th><th style="width:150px"></th></tr></thead><tbody>
+  ${list.map(e=>`<tr class="r ${e.st==="flagged"?"--late":""}"><td><div class="row" style="gap:8px">${A.avatar(e.who,"--s")}${E(name(e.who))}</div></td><td>${DAYS[e.d]} ${DATES[e.d]}</td><td class="tnum">${e.i}</td><td class="tnum">${e.o||"<span class='muted'>–</span>"}</td><td class="num">${e.b?e.b+" min":"–"}</td><td class="num">${hrs(e)}</td><td>${pl(e.st)}</td><td style="text-align:right">
+   ${e.st==="flagged"?`<button class="textbtn --accent" onclick="T7.fixOut(${e.id})">set clock-out</button>`:e.st==="pending"&&canEdit()?`<button class="textbtn" onclick="T7.approve(${e.id})">approve</button>`:e.st==="open"&&e.who===ME().id?`<button class="textbtn" onclick="T7.clockOut(${e.id})">clock out</button>`:""}</td></tr>`).join("")}
+  </tbody></table></div>`;
+}
+function approve(id){const e=T7_TIME.find(x=>x.id===id);e.st="approved";mountTeam();tt(`${name(e.who)} · ${DAYS[e.d]} approved`)}
+function approveAll(){const n=T7_TIME.filter(e=>e.st==="pending").length;if(!n){tt("Nothing pending");return}A.confirm(`Approve ${n} entries?`,"Flagged entries stay until the clock-out is set.","Approve all",()=>{T7_TIME.forEach(e=>{if(e.st==="pending")e.st="approved"});mountTeam();tt(`${n} entries approved`)})}
+function fixOut(id){const e=T7_TIME.find(x=>x.id===id);A.modal({title:"Set clock-out · "+name(e.who),body:`<div class="sm mb16">${DAYS[e.d]} ${DATES[e.d]} · clocked in ${e.i}, shift ${U(e.who).shift}. Marina says she left on time.</div><div class="field"><label>Clock-out</label><input class="input" id="t7-out" value="17:05"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="t7-out-ok">Save</button>`,onMount:b=>A.$("#t7-out-ok",b).onclick=()=>{e.o=A.$("#t7-out",b).value||"17:00";e.st="pending";A.closeModal();mountTeam();tt("Clock-out set · entry back to pending")}})}
+function clockOut(id){const e=T7_TIME.find(x=>x.id===id);e.o=A.fmtTime(A.NOW.toISOString());e.b=30;e.st="pending";mountTeam();tt("Clocked out · "+e.o)}
+function bonus(){
+  const mine=!canEdit();const pot=1200,close=17,days=20;const tot=T7_BONUS.reduce((a,b)=>a+b.b,0);
+  const row=b=>{const sh=Math.round(pot*b.b/tot-b.p*15);return `<tr class="r ${b.who===ME().id?"on":""}"><td><div class="row" style="gap:8px">${A.avatar(b.who,"--s")}${E(name(b.who))}</div></td><td class="num">${b.b}</td><td class="num ${b.p?"accent":""}">${b.p}</td><td class="num">${b.r.toFixed(1)}</td><td class="num">${A.fmt(sh)}</td><td style="text-align:right">${canEdit()?`<button class="textbtn" onclick="T7.bonusDetail('${b.who}')">details</button>`:""}</td></tr>`};
+  const list=T7_BONUS.filter(b=>!mine||b.who===ME().id);
+  return `<div class="grid g4 mb16"><div class="kpi-card" style="cursor:default"><span class="caps">Team pot · October</span><span class="kpi-s">${A.fmt(pot)}</span><span class="delta up">on track · 21 of 31 days</span></div><div class="kpi-card" onclick="App.toast('Day close: 17 of 20 days had all 4 ticks')"><span class="caps">Day close 4 of 4</span><span class="kpi-s">${close}/${days}</span><div class="progress --ok"><i style="width:${close/days*100}%"></i></div></div><div class="kpi-card" onclick="App.toast('6 bouquet problems this month · 2 remakes, 4 late')"><span class="caps">Bouquet problems</span><span class="kpi-s">6</span><span class="delta">−£15 each from the maker's share</span></div><div class="kpi-card" style="cursor:default"><span class="caps">Points this week</span><span class="kpi-s">${mine?"38":"214"}</span><span class="delta">${mine?"you · 3rd in team":"team · goal 300"}</span></div></div>
+  ${mine?`<div class="note-box mb16">${I("info")} You see your own line. The pot is shared by bouquets made, minus £15 per bouquet problem.</div>`:""}
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Florist</th><th class="num">Bouquets</th><th class="num">Problems</th><th class="num">Rating</th><th class="num">Bonus est.</th><th style="width:90px"></th></tr></thead><tbody>${list.map(row).join("")}</tbody>
+  ${mine?"":`<tfoot><tr><td colspan="6">Estimate until month end. Payroll is exported to Xero on the 1st; points and rewards are separate (Active).</td></tr></tfoot>`}</table></div>
+  <div class="sec-head"><div class="h3">Rewards & kudos</div><button class="textbtn" onclick="App.toast('Kudos sent to the team channel')">give kudos</button></div>
+  <div class="grid g3"><div class="card"><span class="caps">Team goal</span><div class="h3">300 points · week 43</div><div class="progress mt8"><i style="width:71%"></i></div><div class="xs muted mt8">214 so far · ends Sunday</div></div><div class="card"><span class="caps">Top kudos</span><div class="row mt8">${A.avatar("svetlana","--s")}<div class="sm">Svetlana · “Saved the Saturday wedding”</div></div><div class="row mt8">${A.avatar("daniel","--s")}<div class="sm">Daniel · 41 stops, zero late</div></div></div><div class="card"><span class="caps">Rewards shop</span><div class="sm mt8">Half-day off · 120 pts<br>Flowers home · 60 pts<br>Coffee for the team · 40 pts</div><button class="textbtn mt8" onclick="App.toast('Redeemed · Flowers home · 60 pts')">redeem</button></div></div>`;
+}
+function bonusDetail(who){const b=T7_BONUS.find(x=>x.who===who);A.sheet({eyebrow:"Bonus · October",title:E(name(who)),narrow:true,body:`<dl class="kv"><dt>Bouquets</dt><dd>${b.b}</dd><dt>Problems</dt><dd>${b.p} · ${b.p?"remake 1, late "+(b.p-1):"none"}</dd><dt>Rating</dt><dd>${b.r.toFixed(1)} / 5 · from managers' marks</dd><dt>Day close</dt><dd>14 of 15 shifts</dd></dl><div class="sec-head"><div class="h3">Problems</div></div>${b.p?`<div class="timeline">${Array.from({length:b.p}).map((_,i)=>`<div class="tl">${i===0?"Remake · wilted hydrangea":"Late · slot missed by 25 min"}<small>${DAYS[i%5]} · marked by Valeria</small></div>`).join("")}</div>`:`<div class="muted sm">No problems this month.</div>`}`,foot:`<button class="btn --ghost --sm" onclick="App.toast('Problem added · −£15')">${I("alert")} Add problem</button><span class="sp"></span><button class="btn --sm" onclick="App.closeSheet();App.toast('Rating mark saved')">${I("star")} Rate this week</button>`})}
+
+/* ================= TASKS ================= */
+const TK=()=>A.data.tasks;
+function mountTasks(p){
+  if(p&&p.mine)st.tasksView="mine";if(p&&p.new){setTimeout(newTask,50);p.new=false}
+  if(!canEdit())st.tasksView="mine";
+  const h=A.$("#t7-tasks-head");
+  h.innerHTML=`<div class="seg-ctl"><button class="${st.tasksView==="mine"?"on":""}" data-v="mine">Mine</button>${canEdit()?`<button class="${st.tasksView==="team"?"on":""}" data-v="team">Team</button>`:""}</div>
+  <div class="chips">${["all","routine","project","ask"].map(k=>`<button class="chip ${st.tasksKind===k?"on":""}" data-k="${k}">${k==="all"?"All kinds":k[0].toUpperCase()+k.slice(1)}</button>`).join("")}</div><span class="sp"></span>
+  <button class="btn --ghost --sm" onclick="T7.huddle()">${I("book")} Huddle</button><button class="btn --sm" onclick="T7.newTask()">${I("plus")} New task</button>`;
+  A.$$(".seg-ctl button",h).forEach(b=>b.onclick=()=>{st.tasksView=b.dataset.v;mountTasks()});
+  A.$$(".chip",h).forEach(b=>b.onclick=()=>{st.tasksKind=b.dataset.k;mountTasks()});
+  const list=TK().filter(t=>(st.tasksView==="team"||t.who===ME().id||t.by===ME().id)&&(st.tasksKind==="all"||(KIND[t.tags[0]]||"routine")===st.tasksKind));
+  const cols=[["todo","To do"],["doing","In progress"],["review","To check"],["done","Done"]];
+  const late=t=>t.status!=="done"&&(t.late||new Date(t.due)<A.NOW);
+  const card=t=>{const ck=T7_CHECK[t.id]||[];const done=(t.ck||[]).filter(Boolean).length;return `<div class="kcard ${late(t)?"--late":""}" data-id="${t.id}"><div class="k-top"><span class="kind">${KIND[t.tags[0]]||"routine"}</span><span class="sp"></span><span class="${late(t)?"accent":""}">${late(t)?"overdue · ":""}${A.fmtDay(t.due)} ${A.fmtTime(t.due)}</span></div><div class="k-title">${E(t.t)}</div><div class="k-foot">${A.avatar(t.who,"--s")}<span>${E(name(t.who))}</span><span class="sp"></span>${ck.length?`<span class="chk">${I("check")}${done}/${ck.length}</span>`:""}${t.tags.map(x=>`<span class="tag">${x}</span>`).join("")}</div>${t.status!=="done"?`<div class="btn-row" style="margin-top:4px"><button class="btn --ghost --sm" data-next="${t.id}" style="height:28px;font-size:10.5px;padding:0 10px">${t.status==="todo"?"Start":t.status==="doing"?"Done · to check":canEdit()?"Approve":"Waiting for check"}</button></div>`:""}</div>`};
+  A.$("#t7-tasks-body").innerHTML=list.length?`<div class="kanban">${cols.map(([s,l])=>{const cs=list.filter(t=>t.status===s);return `<div class="kcol"><div class="k-head">${l}<span class="n">${cs.length}</span></div><div class="k-body">${cs.map(card).join("")||`<div class="empty" style="padding:24px 8px"><span class="sm">Nothing here</span></div>`}</div></div>`}).join("")}</div>`:`<div class="empty">${I("check")}<div class="h3">No tasks for you today</div><button class="btn --sm" onclick="T7.newTask()">New task</button></div>`;
+  A.$$("#s-tasks .kcard").forEach(c=>c.onclick=()=>openTask(+c.dataset.id));
+  A.$$("#s-tasks [data-next]").forEach(b=>b.onclick=e=>{e.stopPropagation();advance(+b.dataset.next)});
+  A.registerCommands([{g:"Actions",t:"Open my tasks",ic:"check",fn:()=>A.go("tasks",{mine:true})}]);
+}
+function advance(id){const t=TK().find(x=>x.id===id);const prev=t.status;
+  if(t.status==="todo")t.status="doing";else if(t.status==="doing")t.status="review";else if(t.status==="review"){if(!canEdit()){tt("A manager checks this one");return}t.status="done";A.push("Task approved",t.t+" · "+name(t.who),{icon:"check",type:"task"})}
+  t.late=false;A.emit("tasks");mountTasks();tt(`${t.t.slice(0,32)} · ${A.STATUS_LBL[t.status]}`,"Undo",()=>{t.status=prev;A.emit("tasks");mountTasks()});if(A.$("#sheet").classList.contains("on"))openTask(id)}
+function openTask(id){
+  const t=TK().find(x=>x.id===id);const ck=T7_CHECK[t.id]||["Do it","Tell the manager"];t.ck=t.ck||ck.map(()=>false);t.comments=t.comments||[];
+  const late=t.status!=="done"&&(t.late||new Date(t.due)<A.NOW);
+  const body=`${late?`<div class="note-box --accent mb16">${I("clock")} Due ${A.fmtDay(t.due)} ${A.fmtTime(t.due)} – overdue.</div>`:""}
+  <div class="row" style="gap:8px;flex-wrap:wrap">${A.pill(t.status)}<span class="tag">${KIND[t.tags[0]]||"routine"}</span>${t.tags.map(x=>`<span class="tag --line">${x}</span>`).join("")}</div>
+  <dl class="kv mt16"><dt>Assignee</dt><dd>${A.avatar(t.who,"--s")} ${E(name(t.who))} ${canEdit()?`<button class="textbtn" style="margin-left:8px" onclick="T7.reassign(event,${id})">change</button>`:""}</dd><dt>Set by</dt><dd>${E(name(t.by))}</dd><dt>Due</dt><dd>${A.fmtDay(t.due)} · ${A.fmtTime(t.due)}</dd><dt>Zone</dt><dd>${E(t.tags[0]||"shop")}</dd></dl>
+  <div class="sec-head"><div class="h3">Checklist</div><span class="xs muted">${t.ck.filter(Boolean).length}/${t.ck.length}</span></div>
+  ${ck.map((c,i)=>`<label class="t7-ck ${t.ck[i]?"done":""}"><span class="check"><input type="checkbox" ${t.ck[i]?"checked":""} data-i="${i}"></span>${E(c)}</label>`).join("")}
+  <div class="sec-head"><div class="h3">Photo</div></div>
+  <div class="row" style="gap:10px">${t.photo?`<div class="thumb --l"><img src="${t.photo}" alt=""></div><span class="sm ok">Attached</span>`:`<button class="btn --ghost --sm" onclick="T7.photo(${id})">${I("photo")} Add photo</button><span class="xs muted">Proof for the manager's check</span>`}</div>
+  <div class="sec-head"><div class="h3">Comments</div></div>
+  <div class="col" style="gap:8px">${t.comments.map(c=>`<div class="note-box"><b>${E(name(c.who))}</b> · ${A.fmtTime(c.at)}<br>${E(c.t)}</div>`).join("")||`<span class="muted sm">No comments yet.</span>`}</div>
+  <div class="row mt8"><input class="input" id="t7-cm" placeholder="Write a comment…"><button class="btn --sm" id="t7-cm-ok">${I("send")}</button></div>`;
+  const nextLbl=t.status==="todo"?"Start":t.status==="doing"?"Done · to check":t.status==="review"?(canEdit()?"Approve":""):"";
+  A.sheet({eyebrow:`Task #${t.id}`,title:E(t.t),body,foot:`<button class="ib" onclick="T7.taskMenu(event,${id})">${I("dots")}</button>${t.status==="review"&&canEdit()?`<button class="btn --ghost --sm" onclick="T7.reopen(${id})">${I("undo")} Send back</button>`:""}<span class="sp"></span>${nextLbl?`<button class="btn --sm" onclick="T7.advance(${id})">${I("check")} ${nextLbl}</button>`:t.status==="done"?A.pill("done"):`<span class="muted sm">Waiting for a manager</span>`}`,
+   onMount:sh=>{A.$$("input[type=checkbox]",sh).forEach(c=>c.onchange=()=>{t.ck[+c.dataset.i]=c.checked;c.closest(".t7-ck").classList.toggle("done",c.checked);mountTasks();if(t.ck.every(Boolean)&&t.status==="doing")tt("All ticked – send to check?","Send",()=>advance(id))});
+    const go=()=>{const v=A.$("#t7-cm",sh).value.trim();if(!v)return;t.comments.push({who:ME().id,at:A.NOW.toISOString(),t:v});openTask(id);tt("Comment added")};A.$("#t7-cm-ok",sh).onclick=go;A.$("#t7-cm",sh).onkeydown=e=>{if(e.key==="Enter")go()}}});
+}
+function reopen(id){const t=TK().find(x=>x.id===id);t.status="doing";t.comments=t.comments||[];t.comments.push({who:ME().id,at:A.NOW.toISOString(),t:"Sent back – please redo and add a photo."});A.emit("tasks");mountTasks();openTask(id);tt("Sent back to "+name(t.who))}
+function photo(id){const t=TK().find(x=>x.id===id);t.photo="img/"+["white-spray","peach-posy","veronica"][id%3]+".webp";openTask(id);tt("Photo attached")}
+function reassign(ev,id){A.pop(ev,["Assign to",...S.filter(s=>s.on&&s.role!=="owner").map(s=>({t:s.n,ic:"user",fn:()=>{const t=TK().find(x=>x.id===id);t.who=s.id;A.emit("tasks");mountTasks();openTask(id);tt("Assigned to "+s.n);A.push("New task for you",t.t,{icon:"check",type:"task"})}}))])}
+function taskMenu(ev,id){const t=TK().find(x=>x.id===id);A.pop(ev,[{t:"Move due to tomorrow",ic:"calendar",fn:()=>{t.due=A.T(12,0,1);t.late=false;A.emit("tasks");mountTasks();openTask(id);tt("Due moved to tomorrow")}},{t:"Mark urgent",ic:"flag",fn:()=>{t.tags=[...new Set([...t.tags,"urgent"])];mountTasks();openTask(id);tt("Marked urgent")}},{t:"Duplicate as template",ic:"copy",fn:()=>tt("Saved to task templates")},"-",{t:"Delete task",ic:"trash",cls:"--accent",fn:()=>A.confirm("Delete task?",t.t,"Delete",()=>{const i=TK().indexOf(t);TK().splice(i,1);A.closeSheet();A.emit("tasks");mountTasks();tt("Task deleted")},{danger:true})}])}
+function newTask(){
+  A.modal({title:"New task",body:`<div class="field"><label>What</label><input class="input" id="t7-nt" placeholder="e.g. Refill ribbon station" autofocus></div><div class="grid g2 mt16"><div class="field"><label>Who</label><select class="select" id="t7-nw">${S.filter(s=>s.role!=="owner").map(s=>`<option value="${s.id}" ${s.id===ME().id?"selected":""}>${E(s.n)}</option>`).join("")}</select></div><div class="field"><label>Kind</label><select class="select" id="t7-nk"><option value="shop">Routine · today</option><option value="website">Project · this week</option><option value="purchasing">Ask · needs an answer</option></select></div></div><div class="grid g2 mt16"><div class="field"><label>Due</label><select class="select" id="t7-nd"><option value="0">Today 17:00</option><option value="1">Tomorrow 12:00</option><option value="3">Friday 18:00</option></select></div><div class="field"><label>Priority</label><select class="select" id="t7-np"><option>Normal</option><option>Urgent</option></select></div></div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="t7-nt-ok">${I("plus")} Create</button>`,
+   onMount:b=>{const ok=()=>{const v=A.$("#t7-nt",b).value.trim();if(!v){tt("Give the task a name");return}const d=+A.$("#t7-nd",b).value;const t={id:300+TK().length+1+Math.floor(Math.random()*900),t:v,who:A.$("#t7-nw",b).value,by:ME().id,status:"todo",due:d===0?A.T(17,0):d===1?A.T(12,0,1):A.T(18,0,3),tags:[A.$("#t7-nk",b).value].concat(A.$("#t7-np",b).value==="Urgent"?["urgent"]:[])};TK().unshift(t);A.closeModal();A.emit("tasks");st.tasksView=t.who===ME().id?st.tasksView:"team";mountTasks();tt("Task created · "+name(t.who));if(t.who!==ME().id)A.push("New task for you",t.t,{icon:"check",type:"task"})};A.$("#t7-nt-ok",b).onclick=ok;A.$("#t7-nt",b).onkeydown=e=>{if(e.key==="Enter")ok()};setTimeout(()=>A.$("#t7-nt",b).focus(),60)}});
+}
+function huddle(){A.sheet({eyebrow:"Morning huddle · Tue 20 Oct",title:"Read before the shift",narrow:true,body:`<div class="timeline"><div class="tl --on">30 orders today, peak 12:00–16:00<small>13 in production, 2 late – see Today</small></div><div class="tl">Peonies out – offer Juliet garden rose<small>3-minute lesson in Learning</small></div><div class="tl">RFH Thursday: confirm by 15:00<small>Valeria</small></div><div class="tl --accent">Fridge log missed at 09:00<small>Anna – overdue task</small></div><div class="tl">Saturday workshop kits – Olesya<small>Due Fri 17:00</small></div></div>`,foot:`<span class="sp"></span><button class="btn --sm" onclick="App.closeSheet();App.toast('Huddle read · logged for ${E(ME().n)}')">${I("check")} I've read it</button>`})}
+
+/* ================= LEARNING ================= */
+function mountLearn(){
+  const h=A.$("#t7-learn-head");const isTrainee=ME().staff_type==="trainee";
+  h.innerHTML=`<div class="seg-ctl">${[["matrix","Skills matrix"],["today","Today's lessons"],["buddy","Buddy · Lina"]].map(([k,l])=>`<button class="${st.learnTab===k?"on":""}" data-t="${k}">${l}</button>`).join("")}</div><span class="sp"></span>
+  <button class="btn --ghost --sm" onclick="T7.quiz()">${I("zap")} Quiz of the day</button>${canEdit()?`<button class="btn --sm" onclick="T7.newLesson()">${I("plus")} New lesson</button>`:`<button class="btn --sm" onclick="T7.skillCheck()">${I("award")} Skill check</button>`}`;
+  A.$$(".seg-ctl button",h).forEach(b=>b.onclick=()=>{st.learnTab=b.dataset.t;mountLearn()});
+  const b=A.$("#t7-learn-body");
+  if(st.learnTab==="matrix"){
+    const people=S.filter(s=>s.role!=="owner");
+    b.innerHTML=`<div class="tbl-wrap"><table class="tbl mx"><thead><tr><th>Who</th>${T7_SKILLS.map(s=>`<th>${s}</th>`).join("")}<th class="num">Passed</th></tr></thead><tbody>${people.map(p=>{const m=T7_MATRIX[p.id]||[0,0,0,0,0,0];return `<tr class="${p.id===ME().id?"me":""}"><td><div class="row" style="gap:10px">${A.avatar(p.id,"--s")}<div><b style="font-weight:400">${E(p.n)}</b><span class="sub">${E(p.title)}</span></div></div></td>${m.map((v,i)=>`<td><button class="sk --${v}" data-p="${p.id}" data-i="${i}" title="${T7_SKILLS[i]}"><i></i></button></td>`).join("")}<td class="num">${m.filter(v=>v===1).length}/6</td></tr>`}).join("")}</tbody></table></div>
+    <div class="row mt16" style="gap:18px;font-size:12px;color:var(--graphite)"><span><span class="dot --ok"></span> passed</span><span><span class="dot --warn"></span> check due</span><span><span class="dot" style="background:var(--hair)"></span> not yet</span><span class="muted">${canEdit()?"Click a dot to mark passed or schedule a check.":"Ask Valeria to schedule a check for a skill."}</span></div>`;
+    A.$$(".sk",b).forEach(d=>d.onclick=ev=>skillPop(ev,d.dataset.p,+d.dataset.i));
+  }else if(st.learnTab==="today"){
+    const mine=T7_LESSONS.filter(l=>canEdit()||l.who.includes(ME().id));
+    b.innerHTML=`<div class="grid g3 mb16"><div class="kpi-card" style="cursor:default"><span class="caps">Lessons today</span><span class="kpi-s">${mine.length}</span><span class="delta">3 minutes each</span></div><div class="kpi-card" style="cursor:default"><span class="caps">Completed</span><span class="kpi-s">${mine.filter(l=>canEdit()?l.done.length===l.who.length:l.done.includes(ME().id)).length}</span><span class="delta">${canEdit()?"by everyone assigned":"by you"}</span></div><div class="kpi-card" onclick="T7.quiz()"><span class="caps">Quiz of the day</span><span class="kpi-s">3</span><span class="delta">questions · ${I("chev")} start</span></div></div>
+    <div class="list" style="border:1px solid var(--hair)">${mine.map(l=>{const me=l.done.includes(ME().id);return `<div class="li" data-l="${l.id}"><span class="dot ${me?"--ok":"--ink"}"></span><div class="t"><b>${E(l.t)}</b><small>${l.min} min · ${canEdit()?`${l.done.length}/${l.who.length} done · `:""}${l.who.map(name).join(", ")}</small></div>${canEdit()?`<span class="avatars">${l.who.map(w=>A.avatar(w,"--s "+(l.done.includes(w)?"--ink":""))).join("")}</span>`:(me?A.pill("done","Done"):`<button class="btn --sm" style="height:30px">${I("play")} Start</button>`)}</div>`}).join("")}</div>
+    <div class="sec-head"><div class="h3">Glossary · new this week</div><button class="textbtn" onclick="App.toast('Glossary opened (read-only in this prototype)')">all terms</button></div>
+    <div class="grid g3"><div class="card"><b>Juliet</b><div class="sm soft">Garden rose, peach, peony-like. Peony substitute Oct–Apr.</div></div><div class="card"><b>Conditioning</b><div class="sm soft">Angled cut, 2 h in water before use.</div></div><div class="card"><b>Line shift</b><div class="sm soft">10–19: wrap, till, photo station.</div></div></div>`;
+    A.$$(".li",b).forEach(li=>li.onclick=()=>openLesson(+li.dataset.l));
+  }else{
+    const ro=!(canEdit()||ME().id==="svetlana"||isTrainee);
+    b.innerHTML=`<div class="row mb16" style="gap:16px;flex-wrap:wrap">${A.avatar("lina","--l --ink")}<div><div class="h3">Lina · trainee · day 8 of 14</div><div class="sm muted">Buddy: Svetlana · started Mon 12 Oct · two-week review Fri 23 Oct</div></div><span class="sp"></span><div class="progress" style="width:200px"><i style="width:${T7_BUDDY_DONE.filter(Boolean).length/14*100}%"></i></div></div>
+    <div class="buddy">${T7_BUDDY.map((t,i)=>`<div class="bd ${T7_BUDDY_DONE[i]?"done":""} ${i===7?"today":""} ${ro?"ro":""}" data-i="${i}"><b>Day ${i+1}</b>${E(t)}${T7_BUDDY_DONE[i]?I("check"):""}</div>`).join("")}</div>
+    <div class="note-box mt16">${I("sparkle")} ${ro?"Only Lina, her buddy and managers tick check-ins.":"Tick a day when the check-in is done. Day 14 opens the two-week review for Valeria."}</div>
+    <div class="sec-head"><div class="h3">Development plan</div><button class="textbtn" onclick="App.toast('Goal added to Lina\\'s plan')">add goal</button></div>
+    <div class="grid g3"><div class="card"><span class="caps">Goal 1</span><b>Hand-tied 25 stems solo</b><div class="progress mt8"><i style="width:40%"></i></div></div><div class="card"><span class="caps">Goal 2</span><b>Till without help</b><div class="progress --ok mt8"><i style="width:80%"></i></div></div><div class="card"><span class="caps">Goal 3</span><b>Phone orders</b><div class="progress mt8"><i style="width:10%"></i></div></div></div>`;
+    A.$$(".bd",b).forEach(d=>d.onclick=()=>{if(ro){tt("Only Lina, Svetlana or a manager can tick this");return}const i=+d.dataset.i;T7_BUDDY_DONE[i]=T7_BUDDY_DONE[i]?0:1;mountLearn();tt(`Day ${i+1} · ${T7_BUDDY_DONE[i]?"checked":"unchecked"}`);if(i===13&&T7_BUDDY_DONE[i])A.push("Two-week review","Lina · buddy programme complete · review with Valeria",{icon:"award"})});
+  }
+}
+function skillPop(ev,pid,i){
+  if(!canEdit()){tt(pid===ME().id?"Ask Valeria to schedule a check for "+T7_SKILLS[i]:"Managers mark skills");return}
+  const set=v=>{T7_MATRIX[pid][i]=v;mountLearn();tt(`${name(pid)} · ${T7_SKILLS[i]} · ${v===1?"passed":v===2?"check scheduled":"cleared"}`);if(v===2)A.push("Skill check",`${name(pid)} · ${T7_SKILLS[i]} · Thu 10:00 with Svetlana`,{icon:"award"})};
+  A.pop(ev,[`${name(pid)} · ${T7_SKILLS[i]}`,{t:"Mark passed",ic:"check",fn:()=>set(1)},{t:"Schedule check · Thu 10:00",ic:"calendar",fn:()=>set(2)},"-",{t:"Clear",ic:"close",fn:()=>set(0)}]);
+}
+function openLesson(id){
+  const l=T7_LESSONS.find(x=>x.id===id);const done=l.done.includes(ME().id);
+  A.sheet({eyebrow:`3-minute lesson · ${l.min} min`,title:E(l.t),body:`<div class="sm" style="font-size:15px;line-height:1.55">${E(l.body)}</div><div class="hr"></div><div class="h3 mb16">Three questions</div>${l.q.map((q,qi)=>`<div class="card mb16"><b>${qi+1}. ${E(q[0])}</b><div class="col mt8">${q[1].map((a,ai)=>`<label class="check"><input type="radio" name="q${qi}" value="${ai}"><span>${E(a)}</span></label>`).join("")}</div></div>`).join("")}`,
+   foot:done?`<span class="pill --done">Done</span><span class="sp"></span><button class="btn --ghost --sm" onclick="App.closeSheet()">Close</button>`:`<span class="muted sm">Pass: 3 of 3</span><span class="sp"></span><button class="btn --sm" id="t7-ls-ok">${I("check")} Submit answers</button>`,
+   onMount:sh=>{const ok=A.$("#t7-ls-ok",sh);if(!ok)return;ok.onclick=()=>{let n=0,ans=0;l.q.forEach((q,qi)=>{const r=A.$(`input[name=q${qi}]:checked`,sh);if(r){ans++;if(+r.value===q[2])n++}});if(ans<3){tt("Answer all three questions");return}if(n===3){if(!l.done.includes(ME().id))l.done.push(ME().id);A.closeSheet();mountLearn();tt("Lesson passed · 3/3 · +10 points");A.push("Lesson passed",`${ME().n} · ${l.t}`,{icon:"book"})}else tt(`${n}/3 – read it again and retry`)}}});
+}
+function quiz(){const qs=[["Which day does RFH deliver?",["Mon/Wed/Fri","Tue/Thu/Sat","Every day"],1],["Same-day cut-off for the last slot?",["18:00","19:00","20:00"],1],["Freshness guarantee means…",["Refund","Replacement only","Discount next time"],1]];
+  A.modal({title:"Quiz of the day",wide:true,body:qs.map((q,qi)=>`<div class="card mb16"><b>${qi+1}. ${E(q[0])}</b><div class="col mt8">${q[1].map((a,ai)=>`<label class="check"><input type="radio" name="z${qi}" value="${ai}"><span>${E(a)}</span></label>`).join("")}</div></div>`).join(""),foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Later</button><button class="btn --sm" id="t7-qz">Check</button>`,
+   onMount:b=>A.$("#t7-qz",b).onclick=()=>{let n=0,ans=0;qs.forEach((q,qi)=>{const r=A.$(`input[name=z${qi}]:checked`,b);if(r){ans++;if(+r.value===q[2])n++}});if(ans<3){tt("Answer all three");return}A.closeModal();tt(n===3?"3/3 · streak 6 days · +5 points":`${n}/3 · tomorrow again`)}});}
+function skillCheck(){A.modal({title:"Skill check · self-test",body:`<div class="sm mb16">Pick a skill, rate yourself first, then answer 5 questions. Results stay with you.</div><div class="field"><label>Skill</label><select class="select">${T7_SKILLS.map(s=>`<option>${s}</option>`).join("")}</select></div><div class="field mt16"><label>How confident are you?</label><div class="seg-ctl"><button class="on">1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('Skill check started · 5 questions')">Start</button>`,onMount:b=>A.$$(".seg-ctl button",b).forEach(x=>x.onclick=()=>{A.$$(".seg-ctl button",b).forEach(y=>y.classList.remove("on"));x.classList.add("on")})})}
+function newLesson(){A.modal({title:"New 3-minute lesson",body:`<div class="field"><label>Title</label><input class="input" placeholder="What changed and why"></div><div class="field mt16"><label>Was → now → why</label><textarea class="textarea" placeholder="Short, 3 sentences"></textarea></div><div class="field mt16"><label>Assign to</label><div class="chips">${["All florists","Managers","Couriers","Lina"].map((c,i)=>`<button class="chip ${i===0?"on":""}">${c}</button>`).join("")}</div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --ghost --sm" onclick="App.closeModal();App.toast('Saved as draft · review tomorrow morning')">Save draft</button><button class="btn --sm" onclick="App.closeModal();App.toast('Lesson published · 5 people assigned')">Publish</button>`,onMount:b=>A.$$(".chip",b).forEach(c=>c.onclick=()=>c.classList.toggle("on"))})}
+
+/* ================= GROWTH (owner) ================= */
+function mountGrowth(){
+  const h=A.$("#t7-growth-head");
+  h.innerHTML=`<div class="seg-ctl">${[["analytics","Analytics"],["upsell","Upsell"],["marketing","Marketing"],["seo","SEO"],["content","Content"]].map(([k,l])=>`<button class="${st.growthTab===k?"on":""}" data-t="${k}">${l}</button>`).join("")}</div><span class="sp"></span>
+  <div class="seg-ctl"><button onclick="App.toast('Range: today')">Today</button><button class="on">7 days</button><button onclick="App.toast('Range: 30 days')">30 days</button></div><button class="btn --ghost --sm" onclick="T7.askCrm()">${I("sparkle")} Ask CRM</button>`;
+  A.$$(".seg-ctl button[data-t]",h).forEach(b=>b.onclick=()=>{st.growthTab=b.dataset.t;mountGrowth()});
+  const b=A.$("#t7-growth-body");const t=st.growthTab;
+  const kpi=(c,v,d,cls="",fn="App.toast('Opens the full report (not in this prototype)')")=>`<div class="kpi-card" onclick="${fn}"><span class="caps">${c}</span><span class="kpi-s ${cls}">${v}</span><span class="delta ${cls==="accent"?"down":"up"}">${d}</span></div>`;
+  if(t==="analytics"){const max=Math.max(...T7_WEEK.map(w=>w[1]));
+    b.innerHTML=`<div class="grid g4 mb16">${kpi("Revenue · 7 days","£15 380","+12% vs last week")}${kpi("Orders","117","+9 · AOV £131")}${kpi("Repeat customers","9%","sites · 3% marketplaces","accent")}${kpi("Marketplace share","26%","Deliveroo 17 · Uber Eats 14")}</div>
+    <div class="grid g2"><div class="card"><span class="caps">Revenue by day</span><div class="bar mt8">${T7_WEEK.map(([d,v],i)=>`<div><b>£${(v/1000).toFixed(1)}k</b><i class="${i===6?"on":""}" style="height:${v/max*80}px"></i>${d}</div>`).join("")}</div><div class="xs muted mt8">Paid orders only, not cancelled · Tuesday is to 10:42</div></div>
+    <div class="card --pad0"><table class="tbl"><thead><tr><th>Channel</th><th class="num">Orders</th><th class="num">Revenue</th><th class="num">AOV</th></tr></thead><tbody>${T7_CHAN.map(c=>`<tr class="r" onclick="App.go('orders',{view:'all'})"><td>${A.chanTag(c[0])}</td><td class="num">${c[1]}</td><td class="num">£${c[2].toLocaleString("en-GB")}</td><td class="num">£${c[3]}</td></tr>`).join("")}</tbody></table></div></div>
+    <div class="sec-head"><div class="h3">Losses this week</div><button class="textbtn" onclick="App.go('orders',{view:'problems'})">open problems</button></div>
+    <div class="grid g4">${kpi("Cancelled","4","£412 · 2 marketplace","accent","App.go('orders',{view:'all'})")}${kpi("Remakes","2","£96 in stems","accent")}${kpi("Late slots","6","mostly 12–14","accent","App.go('today')")}${kpi("Unpaid > 24 h","3","£318","accent","App.go('orders',{view:'unpaid'})")}</div>`;
+  }else if(t==="upsell"){
+    b.innerHTML=`<div class="grid g3 mb16">${kpi("Add-on attach","0.9%","of web orders · target 5%","accent")}${kpi("Add-on revenue","£212","7 days")}${kpi("Bundles live","0","2 drafts")}</div>
+    <div class="card --pad0"><table class="tbl"><thead><tr><th>Offer</th><th class="num">Taken · 7d</th><th>Note</th><th>Live</th></tr></thead><tbody>${T7_UPSELL.map((u,i)=>`<tr class="r"><td>${E(u[0])}</td><td class="num">${u[2]}</td><td class="muted">${E(u[3])}</td><td><span class="switch ${u[1]==="on"?"on":""}" data-i="${i}"></span></td></tr>`).join("")}</tbody></table></div>
+    <div class="sec-head"><div class="h3">Reviews & retention</div><button class="textbtn" onclick="App.toast('Review requests: 377 drafts waiting – send in the morning')">review requests</button></div>
+    <div class="grid g3">${kpi("Google rating","4.8","412 reviews · 3 new")}${kpi("Occasion reminders","14","due this week · WhatsApp","","App.go('customers')")}${kpi("Win-back","23","no order in 6 months","","App.go('customers')")}</div>`;
+    A.$$(".switch",b).forEach(s=>s.onclick=()=>{const u=T7_UPSELL[+s.dataset.i];u[1]=u[1]==="on"?"off":"on";s.classList.toggle("on");tt(`${u[0]} · ${u[1]==="on"?"live on floritta.uk":"hidden"}`)});
+  }else if(t==="marketing"){
+    b.innerHTML=`<div class="sec-head"><div class="h3">Promo codes</div><button class="btn --sm" onclick="T7.newPromo()">${I("plus")} New code</button></div>
+    <div class="card --pad0 mb16"><table class="tbl"><thead><tr><th>Code</th><th>Rule</th><th class="num">Uses</th><th class="num">Revenue</th><th>Active</th></tr></thead><tbody>${T7_PROMO.map((p,i)=>`<tr class="r"><td><b style="font-weight:500;letter-spacing:.04em">${p[0]}</b></td><td>${E(p[1])}</td><td class="num">${p[2]}</td><td class="num">${p[3]}</td><td><span class="switch ${p[4]?"on":""}" data-i="${i}"></span></td></tr>`).join("")}</tbody></table></div>
+    <div class="grid g2"><div class="card"><span class="caps">Social planner · this week</span><div class="list">${[["Wed 10:00","Threads","Autumn window – 3 photos","scheduled"],["Thu 18:00","Instagram","Juliet vs peony reel","draft"],["Sat 09:00","Pinterest","Sympathy spray – pin","scheduled"]].map(p=>`<div class="li" onclick="App.toast('${p[2]} · opens the post')"><div class="t"><b>${p[2]}</b><small>${p[0]} · ${p[1]}</small></div>${A.pill(p[3]==="draft"?"todo":"done",p[3])}</div>`).join("")}</div></div>
+    <div class="card"><span class="caps">Attribution · 7 days</span><div class="list">${[["Google Ads","£2 310 spend","28 orders","£82 CPA"],["Awin affiliates","£140 fees","9 orders","£16 CPA"],["Referral links","–","6 orders","NEW15"],["Perks at Work","–","4 orders","manual"]].map(r=>`<div class="li" onclick="App.toast('${r[0]} report (not in this prototype)')"><div class="t"><b>${r[0]}</b><small>${r[1]} · ${r[2]}</small></div><span class="xs muted">${r[3]}</span></div>`).join("")}</div></div></div>`;
+    A.$$(".switch",b).forEach(s=>s.onclick=()=>{const p=T7_PROMO[+s.dataset.i];p[4]=!p[4];s.classList.toggle("on");tt(`${p[0]} · ${p[4]?"active":"paused"}`)});
+  }else if(t==="seo"){
+    b.innerHTML=`<div class="grid g4 mb16">${kpi("Clicks · 7d","3 420","+6% · Search Console")}${kpi("Impressions","112k","+3%")}${kpi("Avg position","4.1","−0.3")}${kpi("Core Web Vitals","Good","median of 3 runs")}</div>
+    <div class="sec-head"><div class="h3">Top pages</div><div class="btn-row"><button class="btn --ghost --sm" onclick="App.toast('SEO machine run queued · 2 runs a day')">${I("refresh")} Run SEO machine</button><button class="btn --ghost --sm" onclick="App.toast('GBP: 3 new reviews, 1 Q&A to answer')">${I("pin")} Google Business</button></div></div>
+    <div class="card --pad0"><table class="tbl"><thead><tr><th>Page</th><th class="num">Clicks</th><th class="num">Impressions</th><th class="num">Position</th><th></th></tr></thead><tbody>${T7_SEO.map(p=>`<tr class="r" onclick="App.toast('On-page report for ${p[0]}')"><td style="font-family:var(--f-body)">${p[0]}</td><td class="num">${p[1].toLocaleString("en-GB")}</td><td class="num">${p[2].toLocaleString("en-GB")}</td><td class="num">${p[3].toFixed(1)}</td><td style="text-align:right"><span class="acts"><button class="ib" title="Edit text in Content" onclick="event.stopPropagation();App.toast('Opens Content → bulk edit')">${I("edit")}</button></span></td></tr>`).join("")}</tbody></table></div>
+    <div class="grid g3 mt16">${kpi("Geo pages","48","district × occasion · 6 thin")}${kpi("AI search mentions","11","ChatGPT, Perplexity · 7d")}${kpi("Tech issues","2","redirect chain, 1 missing alt","accent")}</div>`;
+  }else{
+    b.innerHTML=`<div class="grid g4 mb16">${kpi("Pages","126","4 unpublished drafts","","App.toast('Pages list (not in this prototype)')")}${kpi("News","38","last: Autumn collection")}${kpi("FAQ","54","3 answers outdated","accent")}${kpi("Languages","EN · PL","UK, RU next")}</div>
+    <div class="grid g2"><div class="card"><span class="caps">Bulk edit · storefront text</span><div class="sm soft">Replace a phrase across pages, categories, news or FAQ. Every run is logged and reversible.</div><div class="btn-row mt16"><button class="btn --sm" onclick="App.toast('Bulk edit: preview first, then apply')">${I("edit")} Bulk edit</button><button class="btn --ghost --sm" onclick="App.toast('Last run rolled back · 12 pages')">${I("undo")} Roll back last</button></div></div>
+    <div class="card"><span class="caps">Needs attention</span><div class="list">${[["Christmas wreath page","draft · cut-off 18 Dec text missing"],["FAQ · same-day cut-off","says 20:00, should be 22:00"],["Sympathy category","no Polish translation"]].map(r=>`<div class="li" onclick="App.toast('${r[0]} · opens the page editor')"><span class="dot --warn"></span><div class="t"><b>${r[0]}</b><small>${r[1]}</small></div>${I("chev")}</div>`).join("")}</div></div></div>`;
+  }
+}
+function newPromo(){A.modal({title:"New promo code",body:`<div class="grid g2"><div class="field"><label>Code</label><input class="input" id="t7-pc" value="NOV10" style="letter-spacing:.06em"></div><div class="field"><label>Rule</label><select class="select"><option>10% off</option><option>£10 off £80+</option><option>Free delivery</option></select></div></div><div class="grid g2 mt16"><div class="field"><label>Valid to</label><input class="input" type="date" value="2026-11-30"></div><div class="field"><label>Channels</label><select class="select"><option>Website only</option><option>Website + phone</option></select></div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="t7-pc-ok">Create</button>`,onMount:b=>A.$("#t7-pc-ok",b).onclick=()=>{const c=A.$("#t7-pc",b).value.trim().toUpperCase()||"NEW";T7_PROMO.unshift([c,"10% off",0,"£0",true]);A.closeModal();mountGrowth();tt(c+" created · active")}})}
+function askCrm(){A.sheet({eyebrow:"Ask CRM · read-only SQL",title:"Ask a question",narrow:true,body:`<div class="field"><label>Question</label><input class="input" id="t7-ask" value="Which postcodes ordered most on Saturdays this month?"></div><div class="note-box mt16">Read-only query, nothing is changed.</div><div class="mt16" id="t7-ask-out"></div>`,foot:`<span class="sp"></span><button class="btn --sm" id="t7-ask-ok">${I("sparkle")} Ask</button>`,onMount:sh=>A.$("#t7-ask-ok",sh).onclick=()=>{A.$("#t7-ask-out",sh).innerHTML=`<table class="tbl"><thead><tr><th>Postcode</th><th class="num">Orders</th><th class="num">Revenue</th></tr></thead><tbody>${[["SE1",41,"£5 120"],["SE16",17,"£1 980"],["SE17",9,"£1 040"],["SW1",6,"£1 310"]].map(r=>`<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td></tr>`).join("")}</tbody></table><div class="xs muted mt8">SELECT postcode, COUNT(*) … WHERE DAYOFWEEK = 7 · 0.4 s</div>`;tt("Answered · 4 rows")}})}
+
+/* ================= SETTINGS (owner) ================= */
+function mountSettings(p){
+  if(p&&p.tab)st.setTab=p.tab;
+  const tabs=[["general","General","settings"],["team","Team & roles","customers"],["integrations","Integrations","link"],["notifications","Notifications","bell"],["appearance","Appearance","sun"]];
+  const t=st.setTab;const fr=(l,s,c)=>`<div class="frow"><div class="lbl">${l}${s?`<small>${s}</small>`:""}</div><div>${c}</div></div>`;
+  const sw=(on,msg)=>`<span class="switch ${on?"on":""}" onclick="this.classList.toggle('on');App.toast('${msg} · '+(this.classList.contains('on')?'on':'off'))"></span>`;
+  let body="";
+  if(t==="general")body=`<div class="h2 mb16">General</div>${fr("Shop name","","<input class='input' value='Floritta' onchange=\"App.toast('Saved')\">")}${fr("Address","Shown on receipts and the courier app","<input class='input' value='80 Willow Walk, Bermondsey, London SE1 5SY' onchange=\"App.toast('Saved')\">")}${fr("Opening hours","Mon–Sun","<div class='row'><input class='input' value='08:00' style='width:90px' onchange=\"App.toast('Saved')\"><span>–</span><input class='input' value='22:00' style='width:90px' onchange=\"App.toast('Saved')\"></div>")}${fr("Same-day cut-off","Last order for the 20:00–22:00 slot","<input class='input' value='19:00' style='width:90px' onchange=\"App.toast('Cut-off saved · lesson draft created for the team')\">")}${fr("Delivery slots","2-hour windows",`<div class='chips'>${A.SLOTS.map(s=>`<button class='chip on' onclick="this.classList.toggle('on');App.toast('${s} · '+(this.classList.contains('on')?'open':'closed'))">${s}</button>`).join("")}</div>`)}${fr("Delivery fee","Default, before zones","<input class='input' value='£12' style='width:90px' onchange=\"App.toast('Saved')\">")}${fr("Alcohol sales","Licence SE1 889934 · needs CCTV on",sw(true,"Alcohol sales"))}${fr("Time zone","","<span class='sm'>Europe/London</span>")}`;
+  else if(t==="team")body=`<div class="sec-head"><div class="h2">Team & roles</div><button class="btn --sm" onclick="T7.invite()">${I("plus")} Invite</button></div>
+   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Role</th><th>Type</th><th>Shift grid</th><th>New design (beta)</th><th></th></tr></thead><tbody>${S.map(s=>`<tr class="r"><td><div class="row" style="gap:8px">${A.avatar(s.id,"--s")}<div><b style="font-weight:400">${E(s.n)}</b><span class="sub">${E(s.n.toLowerCase())}@floritta.uk</span></div></div></td><td><select class="select" style="width:130px;height:30px" onchange="App.toast('${E(s.n)} · role '+this.value)"><option ${s.role==="owner"?"selected":""}>Admin</option><option ${s.role==="manager"?"selected":""}>Manager</option><option ${s.role==="florist"?"selected":""}>Florist</option><option ${s.role==="courier"?"selected":""}>Courier</option></select></td><td>${s.staff_type?`<span class="tag">${s.staff_type}</span>`:`<span class="tag --line">permanent</span>`}</td><td class="muted">${s.role==="florist"?(s.staff_type?"Line 10–19":"08–17 / 13–22"):s.shift}</td><td><span class="switch ${T7_BETA[s.id]?"on":""}" data-u="${s.id}"></span></td><td style="text-align:right"><span class="acts"><button class="ib" title="Permissions" onclick="T7.perms('${s.id}')">${I("lock")}</button><button class="ib" title="Reset password" onclick="App.toast('Password reset link sent to ${E(s.n)}')">${I("mail")}</button></span></td></tr>`).join("")}</tbody></table></div>
+   <div class="note-box mt16">${I("info")} <b>New design (beta)</b> is a personal switch (users.theme = “floritta”); each person can also flip it in their account menu.</div>
+   <div class="btn-row mt16"><button class="btn --ghost --sm" onclick="T7.betaAll(true)">Enable for everyone</button><button class="btn --ghost --sm" onclick="T7.betaAll(false)">Back to classic for everyone</button></div>`;
+  else if(t==="integrations")body=`<div class="h2 mb16">Integrations</div>${T7_INT.map((x,i)=>`<div class="intg"><span class="dot ${x[1]==="ok"?"--ok":x[1]==="warn"?"--warn":""}"></span><div class="t"><b>${E(x[0])}</b><small>${E(x[2])}</small></div>${x[1]==="off"?`<button class="btn --sm" onclick="App.toast('${E(x[0])} · connect flow (not in this prototype)')">Connect</button>`:`<button class="btn --ghost --sm" onclick="T7.reconnect(${i})">${I("refresh")} ${x[1]==="warn"?"Reconnect":"Test"}</button><button class="ib" onclick="App.toast('${E(x[0])} · keys live in .env, not here')">${I("settings")}</button>`}</div>`).join("")}<div class="note-box mt16">${I("lock")} Keys live in the server environment, never here. This page shows status and re-runs a sync.</div>`;
+  else if(t==="notifications")body=`<div class="h2 mb16">Notifications</div>${fr("New order","Push to managers on shift · sound",sw(true,"New order"))}${fr("Late slot","Push 30 min before the slot ends · all on shift",sw(true,"Late slot"))}${fr("Customer replied","Inbox badge + push to the assignee",sw(true,"Customer replied"))}${fr("Courier did not accept","Telegram pager after 5 min",sw(true,"Courier pager"))}${fr("Low stock","Morning digest 08:00",sw(false,"Low stock digest"))}${fr("Daily summary","Owner · 22:30 · revenue, problems, tomorrow",sw(true,"Daily summary"))}${fr("Quiet hours","No pushes 23:00–07:00 except delivery problems",sw(true,"Quiet hours"))}`;
+  else body=`<div class="h2 mb16">Appearance</div><div class="note-box mb16">${I("user")} These are your personal settings. Nothing changes for other people.</div>${fr("Theme","Ivory for the studio, Ink for evenings on the iPad",`<div class="seg-ctl"><button class="${A.state.theme==="ivory"?"on":""}" onclick="App.setTheme('ivory');App.remount()">${I("sun")} Ivory</button><button class="${A.state.theme==="ink"?"on":""}" onclick="App.setTheme('ink');App.remount()">${I("moon")} Ink</button></div>`)}${fr("Density","Compact rows: 36 px instead of 44",`<div class="seg-ctl"><button class="${A.state.density==="comfortable"?"on":""}" onclick="App.setDensity('comfortable')">Comfortable</button><button class="${A.state.density==="compact"?"on":""}" onclick="App.setDensity('compact')">Compact</button></div>`)}${fr("New design (beta)","Your own switch · users.theme",sw(T7_BETA[ME().id],"New design for you"))}${fr("Start page","After sign-in",`<select class="select" onchange="App.toast('Start page · '+this.value)"><option>Today</option><option>Orders</option><option>Production</option></select>`)}${fr("Language","","<select class='select' onchange=\"App.toast('Language · '+this.value)\"><option>English</option><option>Русский</option></select>")}`;
+  A.$("#t7-set-body").innerHTML=`<div class="set"><div class="set-nav">${tabs.map(x=>`<button class="${t===x[0]?"on":""}" data-t="${x[0]}">${I(x[2])}<span>${x[1]}</span></button>`).join("")}</div><div>${body}</div></div>`;
+  A.$$(".set-nav button").forEach(b=>b.onclick=()=>{st.setTab=b.dataset.t;mountSettings()});
+  A.$$("#s-settings .switch[data-u]").forEach(s=>s.onclick=()=>{const u=s.dataset.u;T7_BETA[u]=!T7_BETA[u];s.classList.toggle("on",T7_BETA[u]);tt(`${name(u)} · ${T7_BETA[u]?"new design on next sign-in":"classic design"}`)});
+}
+function betaAll(v){A.confirm(v?"Enable the new design for everyone?":"Back to classic for everyone?",v?"12 people switch on their next sign-in. Each can still turn it off in Appearance.":"Everyone returns to the classic layout. Personal choices are kept but ignored.",v?"Enable":"Switch back",()=>{Object.keys(T7_BETA).forEach(k=>T7_BETA[k]=v);mountSettings();tt(v?"New design on for 12 people":"Classic design restored")})}
+function reconnect(i){const x=T7_INT[i];tt(`${x[0]} · ${x[1]==="warn"?"reconnecting…":"testing…"}`);setTimeout(()=>{x[1]="ok";x[2]=x[0]==="Xero"?"Synced just now · 14 invoices":"OK · just now";mountSettings();tt(`${x[0]} · OK`)},900)}
+function invite(){A.modal({title:"Invite a team member",body:`<div class="field"><label>Email</label><input class="input" placeholder="name@floritta.uk"></div><div class="grid g2 mt16"><div class="field"><label>Role</label><select class="select"><option>Florist</option><option>Manager</option><option>Courier</option><option>Admin</option></select></div><div class="field"><label>Type</label><select class="select"><option>Permanent</option><option>Seasonal</option><option>Trainee</option></select></div></div><div class="note-box mt16">Trainees get read-only orders and the buddy programme; seasonal staff get the line shift and no bonus.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('Invite sent · link valid 48 h')">${I("send")} Send invite</button>`})}
+function perms(id){const u=U(id);const P=[["Orders · see totals",u.role!=="florist"],["Analytics",u.role==="owner"],["Approve timesheets",u.role==="manager"||u.role==="owner"],["Edit schedule",u.role!=="florist"&&u.role!=="courier"],["Finance & Xero",u.role==="owner"],["Marketplace menus",u.role!=="florist"]];A.sheet({eyebrow:"Permissions · "+ROLE_LBL[u.role],title:E(u.n),narrow:true,body:`<div class="sm muted mb16">Role gives the base. Extra rights are granted per person.</div>${P.map(p=>`<div class="row" style="min-height:44px;border-bottom:1px solid var(--hair)"><span class="sp">${p[0]}</span><span class="switch ${p[1]?"on":""}" onclick="this.classList.toggle('on');App.toast('${p[0]} · '+(this.classList.contains('on')?'granted':'removed'))"></span></div>`).join("")}`,foot:`<button class="btn --ghost --sm --accent" onclick="App.confirm('Deactivate ${E(u.n)}?','Sessions end now; history stays.','Deactivate',()=>{App.closeSheet();App.toast('${E(u.n)} deactivated')},{danger:true})">Deactivate</button><span class="sp"></span><button class="btn --sm" onclick="App.closeSheet();App.toast('Permissions saved')">Save</button>`})}
+
+window.T7={tt,leave,genWeek,approve,approveAll,fixOut,clockOut,bonusDetail,newTask,advance,reopen,photo,reassign,taskMenu,huddle,quiz,skillCheck,newLesson,newPromo,askCrm,invite,perms,betaAll,reconnect};
+window.mount_team=mountTeam;window.mount_tasks=mountTasks;window.mount_learning=mountLearn;window.mount_growth=mountGrowth;window.mount_settings=mountSettings;
+document.addEventListener("tasks",()=>{if(A.state.current==="tasks")mountTasks()});
+document.addEventListener("orders",()=>{if(A.state.current==="growth")mountGrowth()});
+})();
+</script>

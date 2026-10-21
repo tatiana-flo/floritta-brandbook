@@ -1,0 +1,344 @@
+<style>
+/* ===== 06 · Catalog & Stock (scoped) ===== */
+#s-catalog .c6-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:16px}
+[data-size="phone"] #s-catalog .c6-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#s-catalog .c6-card{border:1px solid var(--hair);background:var(--paper);cursor:pointer;display:flex;flex-direction:column;min-width:0;position:relative;transition:border-color var(--m-fast)}
+#s-catalog .c6-card:hover{border-color:var(--grey)}
+#s-catalog .c6-card.off .photo img{opacity:.4}
+#s-catalog .c6-card .c6-ci{padding:10px 12px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+#s-catalog .c6-card .c6-nm{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-catalog .c6-card .c6-ft{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:12px;color:var(--grey)}
+#s-catalog .c6-card .c6-ft .switch{margin-left:auto}
+#s-catalog .c6-card .c6-badge{position:absolute;top:8px;left:8px}
+.c6-rt td{max-width:none}
+.c6-rt td:first-child{white-space:normal;line-height:1.25;min-width:150px}
+.c6-rt td.x{width:40px;padding:0 4px}
+.c6-rt .input{height:28px;width:58px;text-align:right}
+.c6-tot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.c6-tot .card{padding:12px 14px}
+.c6-lvl{width:72px;display:inline-block;vertical-align:middle}
+#s-stock .c6-kpis{margin-bottom:20px}
+#s-stock .c6-two{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+[data-size="ipad"] #s-stock .c6-two,[data-size="phone"] #s-stock .c6-two{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .c6-hp,[data-size="ipad"] .c6-hi{display:none}
+#s-stock .c6-cnt{height:28px;width:72px;text-align:right}
+#s-stock .tbl th:first-child{width:28%}
+#s-stock .tbl td:first-child{min-width:170px}
+#s-purchasing .tbl th:nth-child(2){width:22%}
+#s-purchasing .c6-days{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:24px}
+[data-size="phone"] #s-purchasing .c6-days{grid-template-columns:minmax(0,1fr)}
+.c6-day{border:1px solid var(--hair);padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;cursor:pointer;transition:border-color var(--m-fast)}
+.c6-day:hover{border-color:var(--grey)}
+.c6-day.--today{box-shadow:inset 0 3px 0 var(--ink)}
+.c6-day .c6-ln{display:flex;justify-content:space-between;gap:8px;font-size:13px;min-width:0}
+.c6-day .c6-ln span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c6-day .c6-ln span:last-child{color:var(--grey);font-variant-numeric:tabular-nums;white-space:nowrap}
+.c6-steps{display:flex;margin-bottom:16px}
+.c6-steps span{flex:1;height:30px;display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);border:1px solid var(--hair);margin-left:-1px}
+.c6-steps span.done{background:var(--silver);color:var(--graphite)}
+.c6-steps span.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.c6-flo .li{cursor:default}
+</style>
+
+<section class="scr" id="s-catalog" data-nav="Catalog" data-group="Catalog & Stock" data-title="Catalog" data-sub="floritta.uk">
+  <div class="scr-head" id="c6-cat-head"></div>
+  <div class="scr-body" id="c6-cat-body"></div>
+</section>
+<section class="scr" id="s-stock" data-nav="Stock" data-group="Catalog & Stock" data-title="Stock" data-sub="80 Willow Walk">
+  <div class="scr-head" id="c6-st-head"></div>
+  <div class="scr-body" id="c6-st-body"></div>
+</section>
+<section class="scr" id="s-purchasing" data-nav="Purchasing" data-group="Catalog & Stock" data-title="Purchasing" data-sub="RFH · Tue / Thu / Sat" data-roles="owner manager" data-parent="stock">
+  <div class="scr-head" id="c6-po-head"></div>
+  <div class="scr-body" id="c6-po-body"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App,esc=A.esc,fmt=A.fmt,icon=A.icon,$=A.$;
+const inv=()=>A.data.inventory,prods=()=>A.data.products;
+const FACTOR={Standard:1,Deluxe:1.3,Grand:1.7};
+const FALLBACK={"Mixed stems":1.4,"Foliage":1.1,"Base":3.5};
+const REASONS=["Wilted","Defect","Damage","Expired","Missort","Supplier claim","Other"];
+const IMGS=["red-roses","peony-basket","pink-garden","white-spray","lilac-dream","peach-posy","belgravia","charmingly","daydream-basket","hero-basket","hero-white","pink-manifesto","poem-petals","powdered-rose","veronica"];
+const CATS=["Roses","Baskets","Garden","White","Seasonal","Signature","Bespoke","Add-ons"];
+const WD=["Tue","Wed","Thu","Fri","Sat","Sun","Mon"];const wd=iso=>{const d=new Date(iso),n=new Date(A.NOW);const off=Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate())-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/864e5);return WD[((off%7)+7)%7]};
+const dayLbl=iso=>wd(iso)+" "+new Date(iso).toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+const kind=i=>/helium|balloon/i.test(i.name)?"helium":(i.unit==="stems"||i.unit==="bunches")?"flowers":"sundries";
+const KIND_LBL={flowers:"Fresh · RFH",sundries:"Sundries",helium:"Helium & balloons"};
+const low=i=>i.qty<i.par;
+const supplier=i=>kind(i)==="flowers"?"RFH · Floriday":kind(i)==="helium"?"BOC":"Smithers Oasis";
+const findInv=n=>inv().find(i=>i.name===n)||inv().find(i=>i.name.includes(n));
+const unitCost=n=>{const i=findInv(n);return i?i.cost:(FALLBACK[n]||1)};
+const isStem=n=>{const i=findInv(n);return i?kind(i)==="flowers":n!=="Base"};
+const prices=p=>{if(!p.prices)p.prices=p.sizes.length>1?{Standard:p.price,Deluxe:Math.round(p.price*1.3),Grand:Math.round(p.price*1.7)}:{[p.sizes[0]||"Standard"]:p.price};return p.prices};
+const bomQty=(l,size)=>isStem(l[0])?Math.round(l[1]*(FACTOR[size]||1)):l[1];
+const cost=(p,size="Standard")=>(p.bom||[]).reduce((s,l)=>s+bomQty(l,size)*unitCost(l[0]),0);
+const margin=(p,size="Standard")=>{const pr=prices(p)[size]||p.price;const ex=pr/1.2;return ex?Math.round((ex-cost(p,size))/ex*100):0};
+const mCls=m=>m>=60?"ok":m>=40?"warn":"accent";
+const sold=id=>A.data.orders.filter(o=>o.product===id||o.addons.includes(id)).length;
+const slug=n=>n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const num=v=>Math.max(0,Math.round(Number(String(v).replace(/[^0-9.]/g,""))||0));
+
+/* ---- demo data (fictional) ---- */
+const MOVES={};const WHO=["svetlana","marina","anna","lina","valeria"];
+inv().forEach((it,i)=>{const k=kind(it),m=[];
+ if(k==="flowers"){m.push({at:A.T(7,10,it.next==="Tue"?0:it.next==="Thu"?-5:-3),type:"receipt",qty:it.par,who:"valeria",note:"RFH · "+(it.next==="Tue"?"PO-2041":it.next==="Thu"?"PO-2038":"PO-2039")});m.push({at:A.T(9,20,-1),type:"sale",qty:-(3+i*2),who:WHO[i%5],note:"Orders · yesterday"});if(i%3===0)m.push({at:A.T(18,40,-1),type:"writeoff",qty:-(2+i%4),who:WHO[(i+1)%5],note:"Wilted"})}
+ else{m.push({at:A.T(11,0,-6),type:"receipt",qty:it.par,who:"valeria",note:k==="helium"?"BOC":"Smithers · PO-2037"});m.push({at:A.T(16,0,-2),type:"sale",qty:-(1+i%5),who:WHO[i%5],note:"Orders"})}
+ m.push({at:A.T(9,5,0),type:"sale",qty:-(1+i%3),who:WHO[(i+2)%5],note:"Orders · this morning"});MOVES[it.id]=m});
+const MTYPE={receipt:"Received",sale:"Used in orders",writeoff:"Written off",adjustment:"Stocktake",transfer:"Moved to shop floor"};
+const FLOOR=[{n:"Roses · red 60cm",q:"24 stems",at:A.T(8,15)},{n:"Eucalyptus · bunches",q:"3",at:A.T(8,15)},{n:"Ready-now bouquets",q:"4",at:A.T(10,5),go:"ready-now"},{n:"Vases · glass",q:"5",at:A.T(8,15)},{n:"Balloons · inflated",q:"6",at:A.T(9,30)}];
+const POS=[
+ {id:"PO-2043",date:A.T(6,0,4),supplier:"RFH · Floriday",status:"draft",lines:[[403,40],[409,30],[410,100]]},
+ {id:"PO-2042",date:A.T(6,0,2),supplier:"RFH · Floriday",status:"confirmed",lines:[[401,120],[402,80],[404,40],[405,20],[408,50]],sent:A.T(15,20,-1)},
+ {id:"PO-2041",date:A.T(6,0,0),supplier:"RFH · Floriday",status:"received",lines:[[406,10],[407,8],[401,60]],sent:A.T(14,0,-3),received:A.T(7,10,0)},
+ {id:"PO-2039",date:A.T(6,0,-3),supplier:"RFH · Floriday",status:"received",lines:[[403,40],[409,60],[410,100]],sent:A.T(14,0,-5),received:A.T(7,20,-3)},
+ {id:"PO-2037",date:A.T(11,0,-6),supplier:"Smithers Oasis · sundries",status:"received",lines:[[411,80],[412,30],[414,20],[415,8]],sent:A.T(10,0,-8),received:A.T(11,0,-6)}
+];
+let poSeq=2044;
+const PO_PILL={draft:["queue","Draft"],sent:["out","Sent"],confirmed:["photo","Confirmed"],received:["ready","Received"],cancelled:["cancelled","Cancelled"]};
+const poPill=po=>A.pill(PO_PILL[po.status][0],PO_PILL[po.status][1]);
+const item=id=>inv().find(i=>i.id===Number(id));
+const poTotal=po=>po.lines.reduce((s,l)=>s+l[1]*(item(l[0])?.cost||0),0);
+const po=id=>POS.find(p=>p.id===id);
+const sameDay=(iso,off)=>new Date(iso).toDateString()===new Date(A.T(12,0,off)).toDateString();
+const nextOpenDay=()=>{for(const off of [2,4,7,9,11]){if(!POS.find(p=>sameDay(p.date,off)&&p.status!=="received"&&p.status!=="cancelled"))return off}return 2};
+const cutoff=off=>wd(A.T(12,0,off-1))+" 12:00";
+
+/* ================= CATALOG ================= */
+const cs={q:"",cat:"All",view:"grid",hidden:false,sort:"name",dir:1,size:"Standard"};
+window.mount_catalog=function(params){
+ const mgr=A.isMgr(),all=prods();const cats=["All",...CATS.filter(c=>all.some(p=>p.cat===c))];
+ $("#c6-cat-head").innerHTML=`<div class="toolbar" style="margin:0;flex:1"><div class="search">${icon("search")}<input id="c6-cq" placeholder="Search products or SKU…" value="${esc(cs.q)}"></div>
+  <div class="chips">${cats.map(c=>`<button class="chip ${cs.cat===c?"on":""}" onclick="C6.catCat('${c}')">${c}<span class="n">${c==="All"?all.length:all.filter(p=>p.cat===c).length}</span></button>`).join("")}<button class="chip ${cs.hidden?"on":""}" onclick="C6.catHidden()">${icon("eye")}Hidden<span class="n">${all.filter(p=>!p.active).length}</span></button></div>
+  <span class="sp"></span><div class="seg-ctl"><button class="${cs.view==="grid"?"on":""}" onclick="C6.catView('grid')">${icon("board")}Grid</button><button class="${cs.view==="table"?"on":""}" onclick="C6.catView('table')">${icon("list")}Table</button></div>
+  ${mgr?`<button class="btn --sm" onclick="C6.addProduct()">${icon("plus")} Add product</button>`:""}</div>`;
+ $("#c6-cq").oninput=e=>{cs.q=e.target.value;renderCat()};
+ renderCat();
+ if(mgr)A.registerCommands([{g:"Actions",t:"Add a product to the catalogue",ic:"catalog",fn:()=>{A.go("catalog");C6.addProduct()}}]);
+ if(params&&params.open&&!params._o){params._o=1;openProduct(params.open)}
+};
+const catList=()=>prods().filter(p=>(cs.cat==="All"||p.cat===cs.cat)&&(!cs.hidden||!p.active)&&(!cs.q||(p.name+" "+p.sku).toLowerCase().includes(cs.q.toLowerCase()))).sort((a,b)=>{if(cs.sort==="name"&&!!a.addon!==!!b.addon)return a.addon?1:-1;const va=a[cs.sort],vb=b[cs.sort];return(typeof va==="string"?va.localeCompare(vb):va-vb)*cs.dir});
+function renderCat(){
+ const b=$("#c6-cat-body"),list=catList(),mgr=A.isMgr();
+ if(!list.length){b.innerHTML=`<div class="empty">${icon("catalog")}<div class="h3">No products match</div><button class="textbtn" onclick="C6.catReset()">Clear filters</button></div>`;return}
+ const sw=p=>`<span class="switch ${p.active?"on":""}" title="${p.active?"On site · click to hide":"Hidden · click to show"}" onclick="event.stopPropagation();C6.toggleActive(${p.id})"></span>`;
+ if(cs.view==="grid"){
+  b.innerHTML=`<div class="c6-grid">${list.map(p=>`<div class="c6-card ${p.active?"":"off"}" onclick="C6.openProduct(${p.id})"><div class="photo --4x5"><img src="${p.img}" alt="" loading="lazy"></div>${p.active?"":`<span class="tag c6-badge">Hidden</span>`}<div class="c6-ci"><div class="c6-nm">${esc(p.name)}</div><div class="xs muted">${esc(p.cat)} · ${esc(p.sku)}</div><div class="row" style="gap:8px"><b class="tnum">${fmt(p.price)}</b>${p.sizes.length>1?`<span class="xs muted">to ${fmt(prices(p).Grand)}</span>`:""}</div><div class="c6-ft"><span class="tnum">${p.stock?p.stock+" on shelf":"made to order"}</span>${sw(p)}</div></div></div>`).join("")}</div>`;
+ }else{
+  const th=(k,l,c="")=>`<th class="sort ${c}" onclick="C6.catSort('${k}')">${l}${cs.sort===k?(cs.dir>0?" ↑":" ↓"):""}</th>`;
+  b.innerHTML=`<div class="tbl-wrap"><table class="tbl"><thead><tr><th style="width:44px"></th>${th("name","Product")}<th class="c6-hp">Category</th>${th("price","Price","num")}<th class="c6-hp">Sizes</th>${th("stock","On shelf","num c6-hp")}${mgr?`<th class="num c6-hp">Margin</th>`:""}<th>On site</th><th class="c6-hp"></th></tr></thead><tbody>${list.map(p=>`<tr class="r" onclick="C6.openProduct(${p.id})"><td style="padding-right:0"><span class="thumb --s"><img src="${p.img}" alt=""></span></td><td>${esc(p.name)}<span class="sub">${esc(p.sku)}</span></td><td class="c6-hp muted">${esc(p.cat)}</td><td class="num">${fmt(p.price)}${p.sizes.length>1?`<span class="sub">to ${fmt(prices(p).Grand)}</span>`:""}</td><td class="c6-hp">${p.sizes.length?p.sizes.map(s=>`<span class="tag --line" style="margin-right:4px">${s[0]}</span>`).join(""):`<span class="muted">–</span>`}</td><td class="num c6-hp">${p.stock||"–"}</td>${mgr?`<td class="num c6-hp ${p.bom?mCls(margin(p)):"muted"}">${p.bom?margin(p)+"%":"–"}</td>`:""}<td onclick="event.stopPropagation()">${sw(p)}</td><td class="c6-hp" onclick="event.stopPropagation()"><span class="acts">${mgr?`<button class="ib" title="Duplicate" onclick="C6.dup(${p.id})">${icon("copy")}</button>`:""}<button class="ib" title="Recipe" onclick="C6.openProduct(${p.id},'recipe')">${icon("production")}</button></span></td></tr>`).join("")}</tbody><tfoot><tr><td colspan="9">${list.length} products · ${list.filter(p=>p.active).length} on site</td></tr></tfoot></table></div>`;
+ }
+}
+function openProduct(id,tab="details"){
+ const p=A.product(id);if(!p){A.toast("Product not found");return}
+ const mgr=A.isMgr(),pr=prices(p),sizes=p.sizes.length?p.sizes:["Standard"];
+ const tabs=`<button class="${tab==="details"?"on":""}" onclick="C6.openProduct(${id},'details')">Details</button><button class="${tab==="recipe"?"on":""}" onclick="C6.openProduct(${id},'recipe')">Recipe & cost</button>`;
+ let body;
+ if(tab==="details"){
+  body=`<div class="row" style="align-items:flex-start;gap:16px"><div class="photo --4x5" style="width:150px;flex:none"><img src="${p.img}" alt=""></div><div style="flex:1;min-width:0">
+   <div class="h3">${esc(p.name)}</div><div class="sm muted" style="margin-top:4px">${esc(p.cat)} · ${esc(p.sku)}</div>
+   <div class="row mt8" style="gap:6px;flex-wrap:wrap">${p.active?`<span class="pill --ready">On site</span>`:`<span class="pill --queue">Hidden</span>`}${p.addon?`<span class="tag">Add-on</span>`:""}${p.stock?`<span class="tag --line">${p.stock} on shelf</span>`:`<span class="tag --line">Made to order</span>`}</div>
+   <div class="grid g2 mt16" style="gap:10px"><div class="kpi-card" style="cursor:default;padding:10px 12px"><span class="caps">Orders · demo set</span><span class="kpi-s">${sold(id)}</span></div><div class="kpi-card" style="cursor:default;padding:10px 12px"><span class="caps">Margin ex VAT</span><span class="kpi-s ${p.bom?mCls(margin(p)):""}">${p.bom?margin(p)+"%":"–"}</span></div></div>
+  </div></div>
+  <div class="sec-head"><div class="h3">Prices</div><span class="xs muted">${mgr?"Click a price to edit · ":""}inc. VAT</span></div>
+  <table class="tbl"><thead><tr><th>Size</th><th class="num">Price</th><th class="num">Cost</th><th class="num">Margin</th></tr></thead><tbody>${sizes.map(s=>`<tr><td>${s}${s==="Deluxe"?`<span class="sub">× 1.3 stems</span>`:s==="Grand"?`<span class="sub">× 1.7 stems</span>`:""}</td><td class="num">${mgr?`<span class="muted">£</span><input class="input --inline tnum" style="width:72px;text-align:right" value="${pr[s]}" onchange="C6.setPrice(${id},'${s}',this.value)">`:fmt(pr[s])}</td><td class="num muted">${p.bom?fmt(cost(p,s)):"–"}</td><td class="num ${p.bom?mCls(margin(p,s)):"muted"}">${p.bom?margin(p,s)+"%":"–"}</td></tr>`).join("")}</tbody></table>
+  <div class="sec-head"><div class="h3">On floritta.uk</div><button class="textbtn" onclick="App.toast('Opens floritta.uk/${slug(p.name)} (demo)')">open</button></div>
+  <dl class="kv"><dt>URL</dt><dd class="tnum">floritta.uk/${slug(p.name)}</dd><dt>Category</dt><dd>${mgr?`<button class="link" onclick="C6.pickCat(event,${id})">${esc(p.cat)}</button>`:esc(p.cat)}</dd><dt>Sizes</dt><dd>${sizes.join(" · ")}</dd><dt>Photos</dt><dd>1 photo · 4:5${mgr?` · <button class="textbtn" onclick="App.toast('Photo upload (demo)')">upload</button>`:""}</dd><dt>Description</dt><dd>${mgr?`<textarea class="textarea" style="min-height:60px" onchange="App.toast('Description saved')">${esc(p.desc||"Hand-tied in Bermondsey the morning it leaves. Same-day across London until 22:00.")}</textarea>`:`<span class="soft">${esc(p.desc||"Hand-tied in Bermondsey the morning it leaves. Same-day across London until 22:00.")}</span>`}</dd></dl>`;
+ }else{
+  const size=sizes.includes(cs.size)?cs.size:sizes[0];
+  const shorts=(p.bom||[]).filter(l=>{const it=findInv(l[0]);return it&&it.qty<bomQty(l,size)});
+  body=`${sizes.length>1?`<div class="row mb16"><span class="caps">Size</span><div class="seg-ctl">${sizes.map(s=>`<button class="${s===size?"on":""}" onclick="C6.rsize(${id},'${s}')">${s}</button>`).join("")}</div>${size!=="Standard"?`<span class="xs muted">stems × ${FACTOR[size]} · edit on Standard</span>`:""}</div>`:""}
+  ${!p.bom?`<div class="empty">${icon("production")}<div class="h3">No recipe</div><div class="sm">${p.addon?"Add-ons are bought in, not made – cost is the purchase price.":"Add stems to see cost and margin."}</div>${mgr&&!p.addon?`<button class="btn --sm" onclick="C6.addLine(event,${id})">${icon("plus")} Add stem</button>`:""}</div>`:
+  `<table class="tbl c6-rt"><thead><tr><th>Stem · material</th><th class="num">Qty</th><th class="num">Unit cost</th><th class="num">Line</th><th class="num">In stock</th>${mgr?"<th></th>":""}</tr></thead><tbody>${p.bom.map((l,i)=>{const it=findInv(l[0]),q=bomQty(l,size),sh=it&&it.qty<q;return`<tr><td>${esc(l[0])}${it?"":`<span class="sub">not tracked in stock</span>`}</td><td class="num">${mgr&&size==="Standard"?`<input class="input tnum" value="${l[1]}" onchange="C6.setQty(${id},${i},this.value)">`:q}</td><td class="num muted">${fmt(unitCost(l[0]))}</td><td class="num">${fmt(q*unitCost(l[0]))}</td><td class="num ${sh?"accent":"muted"}">${it?`<button class="${sh?"accent":"muted"}" onclick="C6.openItem(${it.id})">${it.qty} ${it.unit}</button>`:"–"}</td>${mgr?`<td class="x"><button class="ib" title="Remove" onclick="C6.rmLine(${id},${i})">${icon("close")}</button></td>`:""}</tr>`}).join("")}</tbody></table>
+  ${mgr?`<div class="mt8"><button class="textbtn" onclick="C6.addLine(event,${id})">+ add from stock</button></div>`:""}
+  <div class="c6-tot"><div class="card --flat"><span class="caps">Cost · ${size}</span><div class="kpi-s">${fmt(cost(p,size))}</div></div><div class="card --flat"><span class="caps">Price ex VAT</span><div class="kpi-s">${fmt(prices(p)[size]/1.2)}</div><div class="xs muted">${fmt(prices(p)[size])} inc.</div></div><div class="card --flat"><span class="caps">Margin</span><div class="kpi-s ${mCls(margin(p,size))}">${margin(p,size)}%</div><div class="progress --${mCls(margin(p,size))} mt8"><i style="width:${Math.min(100,Math.max(0,margin(p,size)))}%"></i></div></div></div>
+  ${shorts.length?`<div class="note-box --accent mt16">${icon("alert")} Short for this size: ${shorts.map(l=>esc(l[0])).join(", ")} ${mgr?`· <button class="textbtn --accent" onclick="App.go('purchasing')">order</button>`:"· tell a manager"}</div>`:`<div class="note-box --ok mt16">${icon("check")} Everything for ${sizes.length>1?"a "+size:"this"} is in stock today.</div>`}
+  <div class="xs muted mt16">Labour and wrap are not in the cost. Margin target 60 % ex VAT.</div>`}`;
+ }
+ const foot=mgr?`<button class="ib" title="More" onclick="C6.prodMenu(event,${id})">${icon("dots")}</button><span class="sp"></span><button class="btn --ghost --sm" onclick="C6.dup(${id})">${icon("copy")} Duplicate</button><button class="btn --sm" onclick="C6.toggleActive(${id});C6.openProduct(${id},'${tab}')">${icon(p.active?"eye":"globe")} ${p.active?"Hide from site":"Show on site"}</button>`
+  :`<span class="muted sm row" style="gap:6px">${icon("lock")} Read only · a manager edits prices and recipes</span>`;
+ A.sheet({eyebrow:`Product · ${esc(p.sku)}`,title:esc(p.name),tabs,body,foot,_replace:$("#sheet").classList.contains("on")});
+}
+function toggleActive(id){const p=A.product(id);if(!A.isMgr()){A.toast("Ask a manager to change site visibility");return}p.active=!p.active;renderCat();A.toast(p.active?`${p.name} · shown on floritta.uk`:`${p.name} · hidden from site`,"Undo",()=>{p.active=!p.active;renderCat();if($("#sheet").classList.contains("on"))openProduct(id)})}
+function setPrice(id,s,v){const p=A.product(id),n=num(v);if(!n){A.toast("Enter a price");openProduct(id);return}prices(p)[s]=n;if(s===p.sizes[0]||s==="Standard")p.price=n;renderCat();A.toast(`${p.name} · ${s} ${fmt(n)}`);openProduct(id)}
+function setQty(id,i,v){const p=A.product(id);p.bom[i][1]=num(v)||1;openProduct(id,"recipe");A.toast("Recipe updated")}
+function rmLine(id,i){const p=A.product(id);const l=p.bom.splice(i,1)[0];openProduct(id,"recipe");A.toast(`${l[0]} removed`,"Undo",()=>{p.bom.splice(i,0,l);openProduct(id,"recipe")})}
+function addLine(ev,id){const p=A.product(id);const have=new Set((p.bom||[]).map(l=>l[0]));const items=inv().filter(i=>!have.has(i.name));A.pop(ev,["Add from stock",...items.slice(0,12).map(i=>({t:`${i.name} · ${i.qty} ${i.unit}`,ic:kind(i)==="flowers"?"production":"box",fn:()=>{if(!p.bom)p.bom=[];p.bom.push([i.name,kind(i)==="flowers"?5:1]);openProduct(id,"recipe");A.toast(i.name+" added")}}))])}
+function dup(id){const p=A.product(id);const n=Object.assign({},p,{id:Math.max(...prods().map(x=>x.id))+1,sku:p.sku+"-C",name:p.name+" · copy",active:false,stock:0,prices:null,bom:p.bom?p.bom.map(l=>l.slice()):undefined});prods().push(n);renderCat();A.toast(`Duplicated as ${n.sku} · hidden until you show it`);openProduct(n.id)}
+function pickCat(ev,id){const p=A.product(id);A.pop(ev,["Category",...CATS.filter(c=>c!=="Add-ons").map(c=>({t:c,ic:c===p.cat?"check":"tag",fn:()=>{p.cat=c;renderCat();openProduct(id);A.toast("Category · "+c)}}))])}
+function prodMenu(ev,id){const p=A.product(id);A.pop(ev,[{t:"Open on floritta.uk",ic:"globe",fn:()=>A.toast(`floritta.uk/${slug(p.name)} (demo)`)},{t:"Print recipe card",ic:"printer",fn:()=>A.toast("Sent to printer · recipe card")},{t:"Change category",ic:"tag",fn:()=>openProduct(id)},{t:"Publish as Ready now",ic:"photo",fn:()=>A.go("ready-now",{new:true})},"-",{t:"Archive product",ic:"trash",cls:"--accent",fn:()=>A.confirm("Archive "+p.name+"?","It disappears from the site and the catalogue; past orders keep it.","Archive",()=>{p.active=false;p.archived=true;const i=prods().indexOf(p);prods().splice(i,1);A.closeSheet();renderCat();A.toast(p.name+" archived","Undo",()=>{prods().splice(i,0,p);renderCat()})},{danger:true})}])}
+function addProduct(){
+ A.modal({title:"Add product",body:`<div class="col" style="gap:12px"><div class="field"><label>Name</label><input class="input" id="c6-np-n" placeholder="e.g. Autumn Garden"></div><div class="grid g2" style="gap:12px"><div class="field"><label>Category</label><select class="select" id="c6-np-c">${CATS.filter(c=>c!=="Add-ons").map(c=>`<option>${c}</option>`).join("")}</select></div><div class="field"><label>Price · Standard, inc. VAT</label><input class="input tnum" id="c6-np-p" placeholder="£" value="95"></div></div><div class="field"><label>Sizes</label><div class="row" style="gap:16px"><label class="check"><input type="checkbox" id="c6-np-s1" checked disabled>Standard</label><label class="check"><input type="checkbox" id="c6-np-s2" checked>Deluxe × 1.3</label><label class="check"><input type="checkbox" id="c6-np-s3" checked>Grand × 1.7</label></div></div><div class="field"><label>Photo</label><div class="row" style="gap:8px;flex-wrap:wrap" id="c6-np-img">${IMGS.slice(0,8).map((im,i)=>`<span class="thumb ${i?"":"on"}" data-im="${im}" style="cursor:pointer;${i?"":"box-shadow:0 0 0 2px var(--ink)"}" onclick="C6.npImg(this)"><img src="img/${im}.webp" alt=""></span>`).join("")}</div></div><div class="xs muted">A default recipe is added – adjust it in Recipe & cost.</div></div>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="C6.createProduct()">${icon("plus")} Create product</button>`,onMount:()=>setTimeout(()=>$("#c6-np-n").focus(),50)});
+}
+function npImg(el){[...el.parentNode.children].forEach(x=>x.style.boxShadow="");el.style.boxShadow="0 0 0 2px var(--ink)";el.parentNode.dataset.im=el.dataset.im}
+function createProduct(){const n=$("#c6-np-n").value.trim();if(!n){A.toast("Give the product a name");return}const price=num($("#c6-np-p").value)||95;const sizes=["Standard"];if($("#c6-np-s2").checked)sizes.push("Deluxe");if($("#c6-np-s3").checked)sizes.push("Grand");const im=$("#c6-np-img").dataset.im||IMGS[0];
+ const p={id:Math.max(...prods().map(x=>x.id))+1,sku:"FL-"+(1400+prods().length),name:n,cat:$("#c6-np-c").value,img:"img/"+im+".webp",price,sizes,active:true,stock:0,bom:[["Rose Red Naomi 60cm",12],["Eucalyptus cinerea",4],["Ruscus",3],["Wrap · ivory",1],["Ribbon · satin",1]]};
+ prods().push(p);A.closeModal();cs.q="";cs.cat="All";cs.hidden=false;mount_catalog({});A.toast(`${n} created · on site`);openProduct(p.id)}
+
+/* ================= STOCK ================= */
+const ss={view:"all",q:"",count:false,counts:{},sort:"name",dir:1};
+const VIEWS=[["all","All",()=>true],["low","Low",low],["flowers","Flowers",i=>kind(i)==="flowers"],["sundries","Sundries",i=>kind(i)==="sundries"],["helium","Helium & balloons",i=>kind(i)==="helium"]];
+window.mount_stock=function(params){
+ const mgr=A.isMgr();
+ $("#c6-st-head").innerHTML=`<div class="toolbar" style="margin:0;flex:1"><div class="search">${icon("search")}<input id="c6-sq" placeholder="Search stock…" value="${esc(ss.q)}"></div><span class="sp"></span>
+  ${ss.count?`<span class="sm muted">Stocktake in progress – enter what you count, then Apply</span>`:`<button class="btn --ghost --sm" onclick="C6.stocktake()">${icon("scan")} Stocktake</button><button class="btn --ghost --sm" onclick="C6.writeoff()">${icon("trash")} Write-off</button><button class="btn --sm" onclick="C6.receive()">${icon("download")} Receive delivery</button>`}</div>`;
+ $("#c6-sq").oninput=e=>{ss.q=e.target.value;renderStock()};
+ renderStock();
+ A.registerCommands([{g:"Actions",t:"Receive RFH delivery",ic:"download",fn:()=>{A.go("stock");receive()}},{g:"Actions",t:"Write off stock",ic:"trash",fn:()=>{A.go("stock");writeoff()}},{g:"Actions",t:"Start a stocktake",ic:"scan",fn:()=>{A.go("stock");stocktake()}},...(mgr?[{g:"Actions",t:"New purchase order from low stock",ic:"truck",fn:()=>{A.go("purchasing");fromLow()}}]:[])]);
+ if(params&&params.open&&!params._o){params._o=1;openItem(params.open)}
+};
+function renderStock(){
+ const b=$("#c6-st-body"),mgr=A.isMgr(),items=inv(),v=VIEWS.find(x=>x[0]===ss.view);
+ const list=items.filter(v[2]).filter(i=>!ss.q||i.name.toLowerCase().includes(ss.q.toLowerCase())).sort((a,b)=>{const va=a[ss.sort],vb=b[ss.sort];return(typeof va==="string"?va.localeCompare(vb):va-vb)*ss.dir});
+ const lowN=items.filter(low).length,value=items.reduce((s,i)=>s+i.qty*i.cost,0);
+ const wk=new Date(A.NOW-7*864e5);let woN=0,woV=0;items.forEach(i=>MOVES[i.id].forEach(m=>{if(m.type==="writeoff"&&new Date(m.at)>wk){woN++;woV+=-m.qty*i.cost}}));
+ const nextPO=POS.filter(p=>p.status!=="received"&&p.status!=="cancelled"&&new Date(p.date)>A.NOW).sort((a,b)=>a.date<b.date?-1:1)[0];
+ const th=(k,l,c="")=>`<th class="sort ${c}" onclick="C6.stSort('${k}')">${l}${ss.sort===k?(ss.dir>0?" ↑":" ↓"):""}</th>`;
+ const lvl=i=>{const pct=i.par?Math.min(100,Math.round(i.qty/i.par*100)):100;return`<span class="progress c6-lvl ${pct<50?"--accent":pct<100?"--warn":"--ok"}"><i style="width:${pct}%"></i></span>`};
+ b.innerHTML=`${ss.count?`<div class="bulk">${icon("scan")}<span>Stocktake · ${dayLbl(A.NOW)} · <b class="tnum" id="c6-cntn">${Object.values(ss.counts).filter(x=>x!=="").length}</b> of ${list.length} counted</span><span class="sp"></span><button class="btn" onclick="C6.applyCount()">Apply</button><button class="btn" onclick="C6.cancelCount()">Cancel</button></div>`:""}
+ <div class="grid g4 c6-kpis">
+  <div class="kpi-card" onclick="C6.stView('low')"><span class="caps">Below par</span><span class="kpi ${lowN?"accent":""}">${lowN}</span><span class="delta">${lowN?"of "+items.length+" lines":"all lines at par"}</span></div>
+  <div class="kpi-card" onclick="C6.stView('all')"><span class="caps">Stock value</span><span class="kpi">${mgr?fmt(value):items.reduce((s,i)=>s+(kind(i)==="flowers"?i.qty:0),0)}</span><span class="delta">${mgr?"at cost · "+items.length+" lines":"stems in the fridge"}</span></div>
+  <div class="kpi-card" onclick="${mgr?"App.go('purchasing')":"C6.receive()"}"><span class="caps">Next delivery</span><span class="kpi-s" style="margin-top:6px">${nextPO?dayLbl(nextPO.date):"–"}</span><span class="delta">${nextPO?nextPO.lines.length+" lines · "+(mgr?fmt(poTotal(nextPO)):nextPO.supplier)+(nextPO.status==="draft"?" · draft, not sent":""):"nothing ordered"}</span></div>
+  <div class="kpi-card" onclick="C6.woLog()"><span class="caps">Written off · 7 days</span><span class="kpi">${mgr?fmt(woV):woN}</span><span class="delta">${mgr?woN+" lines · mostly wilted":"lines · mostly wilted"}</span></div>
+ </div>
+ <div class="c6-two"><div>
+  <div class="views">${VIEWS.map(x=>`<button class="${ss.view===x[0]?"on":""}" onclick="C6.stView('${x[0]}')">${x[1]}<span class="n">${items.filter(x[2]).length}</span></button>`).join("")}</div>
+  ${list.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr>${th("name","Item")}<th class="c6-hp">Unit</th>${th("qty","On hand","num")}${th("par","Par","num c6-hp")}<th class="c6-hp">Level</th><th class="c6-hp">Next delivery</th>${mgr?`<th class="num c6-hp c6-hi">Cost</th><th class="num c6-hp">Value</th>`:""}<th style="width:${ss.count?96:80}px">${ss.count?"Counted":""}</th></tr></thead><tbody>
+  ${list.map(i=>`<tr class="r ${low(i)?"--late":""}" onclick="C6.openItem(${i.id})"><td>${esc(i.name)}<span class="sub">${KIND_LBL[kind(i)]}</span></td><td class="c6-hp muted">${i.unit}</td><td class="num ${low(i)?"accent":""}"><b>${i.qty}</b></td><td class="num c6-hp muted">${i.par}</td><td class="c6-hp">${lvl(i)}</td><td class="c6-hp ${i.next==="—"?"muted":""}">${i.next==="—"?"on request":"RFH · "+i.next}</td>${mgr?`<td class="num c6-hp c6-hi muted">${fmt(i.cost)}</td><td class="num c6-hp">${fmt(i.qty*i.cost)}</td>`:""}<td onclick="event.stopPropagation()">${ss.count?`<input class="input c6-cnt tnum" placeholder="${i.qty}" value="${ss.counts[i.id]??""}" oninput="C6.setCount(${i.id},this.value)">`:`<span class="acts"><button class="ib" title="Receive" onclick="C6.receive(${i.id})">${icon("download")}</button><button class="ib" title="Write off" onclick="C6.writeoff(${i.id})">${icon("trash")}</button></span>`}</td></tr>`).join("")}
+  </tbody><tfoot><tr><td colspan="9">${list.length} lines · ${list.filter(low).length} below par</td></tr></tfoot></table></div>`:`<div class="empty">${icon("warehouse")}<div class="h3">Nothing here</div><button class="textbtn" onclick="C6.stView('all')">Show all</button></div>`}
+ </div>
+ <div class="col" style="gap:20px">
+  <div class="panel ${mgr?"":"c6-flo"}"><div class="p-head"><div class="h4">Shop floor</div><span class="xs muted">${mgr?"what's on display":"read only"}</span></div><div class="p-body list">${FLOOR.map((f,i)=>`<div class="li" ${f.go?`onclick="App.go('${f.go}')"`:mgr?`onclick="C6.floorEdit(${i})"`:""}><div class="t"><b>${esc(f.n)}</b><small>updated ${A.fmtTime(f.at)}</small></div><span class="tnum sm">${esc(f.q)}</span>${f.go?icon("chev"):""}</div>`).join("")}</div></div>
+  <div class="panel"><div class="p-head"><div class="h4">Deliveries this week</div>${mgr?`<button class="textbtn" onclick="App.go('purchasing')">all</button>`:""}</div><div class="p-body list">${POS.filter(p=>new Date(p.date)>=new Date(A.T(0,0,-1))&&new Date(p.date)<new Date(A.T(0,0,6))).sort((a,b)=>a.date<b.date?-1:1).map(p=>`<div class="li" onclick="${mgr?`App.go('purchasing',{open:'${p.id}'})`:p.status==="received"?`App.toast('Received ${A.fmtTime(p.received)} · ${p.lines.length} lines')`:"C6.receive()"}"><div class="t"><b>${dayLbl(p.date)} · ${esc(p.supplier.split(" · ")[0])}</b><small>${p.lines.length} lines${mgr?" · "+fmt(poTotal(p)):""}</small></div>${poPill(p)}</div>`).join("")}</div></div>
+ </div></div>`;
+}
+function openItem(id){
+ const i=item(id);if(!i)return;const mgr=A.isMgr(),k=kind(i);const pct=i.par?Math.min(100,Math.round(i.qty/i.par*100)):100;
+ const used=prods().filter(p=>(p.bom||[]).some(l=>findInv(l[0])===i));
+ const body=`<div class="grid g3" style="gap:10px"><div class="kpi-card" style="cursor:default"><span class="caps">On hand</span><span class="kpi ${low(i)?"accent":""}">${i.qty}</span><span class="delta">${i.unit}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">Par</span>${mgr?`<input class="input --inline kpi" style="width:100%;height:44px;font-size:40px;padding:0" value="${i.par}" onchange="C6.setPar(${id},this.value)">`:`<span class="kpi">${i.par}</span>`}<span class="delta">${mgr?"click to edit":"target level"}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">${mgr?"Value":"Level"}</span><span class="kpi-s" style="margin-top:6px">${mgr?fmt(i.qty*i.cost):pct+"%"}</span><span class="delta">${mgr?fmt(i.cost)+" / "+i.unit:"of par"}</span></div></div>
+ <div class="progress ${pct<50?"--accent":pct<100?"--warn":"--ok"} mt16"><i style="width:${pct}%"></i></div><div class="xs muted mt8">${pct}% of par${low(i)?" · "+(i.par-i.qty)+" "+i.unit+" short":""}</div>
+ <dl class="kv mt16"><dt>Supplier</dt><dd>${supplier(i)}</dd><dt>Next delivery</dt><dd>${i.next==="—"?"On request · lead time 3 days":"RFH auction · "+i.next}</dd>${k==="flowers"?`<dt>Freshness</dt><dd>Received ${i.next==="Tue"?"today":i.next==="Thu"?"Thu":"Sat"} · best before ${i.next==="Tue"?"Sat":i.next==="Thu"?"Tue":"Thu"}</dd>`:""}<dt>Unit</dt><dd>${i.unit}${mgr?" · "+fmt(i.cost)+" at last receipt":""}</dd><dt>Counted</dt><dd>${i.id%2?"Mon 19 Oct · Lina":"Sat 17 Oct · Anna"} · <button class="textbtn" onclick="App.closeSheet();C6.stocktake()">count now</button></dd></dl>
+ <div class="sec-head"><div class="h3">Used in</div><span class="xs muted">${used.length} products</span></div>
+ ${used.length?`<div class="list" style="border:1px solid var(--hair)">${used.slice(0,6).map(p=>`<div class="li" onclick="C6.openProduct(${p.id},'recipe')"><span class="thumb --s"><img src="${p.img}" alt=""></span><div class="t"><b>${esc(p.name)}</b><small>${(p.bom.find(l=>findInv(l[0])===i)||[])[1]} ${i.unit} per Standard</small></div>${icon("chev")}</div>`).join("")}</div>`:`<div class="muted sm">Not in any recipe.</div>`}
+ <div class="sec-head"><div class="h3">Movements</div><button class="textbtn" onclick="App.toast('Full ledger (demo)')">all</button></div>
+ <div class="timeline">${MOVES[id].slice().reverse().slice(0,8).map((m,x)=>`<div class="tl ${x===0?"--on":""} ${m.type==="writeoff"?"--accent":""}"><span class="tnum ${m.qty>0?"ok":m.type==="writeoff"?"accent":""}">${m.qty>0?"+":""}${m.qty}</span> · ${MTYPE[m.type]}${m.note?" · "+esc(m.note):""}<small>${A.fmtDay(m.at)} ${A.fmtTime(m.at)} · ${esc(A.user(m.who)?.n||m.who)}</small></div>`).join("")}</div>`;
+ const foot=`<button class="btn --ghost --sm" onclick="C6.writeoff(${id})">${icon("trash")} Write off</button><button class="btn --ghost --sm" onclick="C6.receive(${id})">${icon("download")} Receive</button><span class="sp"></span>${mgr?`<button class="btn --sm" onclick="C6.orderItem(${id})">${icon("truck")} Order from ${k==="flowers"?"RFH":"supplier"}</button>`:`<button class="btn --sm" onclick="C6.requestRestock(${id})">${icon("send")} Request restock</button>`}`;
+ A.sheet({eyebrow:`Stock item · ${KIND_LBL[k]}`,title:esc(i.name),body,foot,_replace:$("#sheet").classList.contains("on")});
+}
+function setPar(id,v){const i=item(id);i.par=num(v)||i.par;A.emit("stock");openItem(id);A.toast(`${i.name} · par ${i.par} ${i.unit}`)}
+function stView(v){ss.view=v;renderStock()}
+function stSort(k){if(ss.sort===k)ss.dir=-ss.dir;else{ss.sort=k;ss.dir=1}renderStock()}
+/* receive */
+const rs={mode:"po"};
+function receive(focus){
+ const nextPO=POS.filter(p=>p.status==="confirmed"||p.status==="sent").sort((a,b)=>a.date<b.date?-1:1)[0];
+ if(focus!==undefined||!nextPO)rs.mode="adhoc";
+ const seg=`<div class="seg-ctl mb16"><button class="${rs.mode==="po"?"on":""}" ${nextPO?`onclick="C6.rsMode('po')"`:"disabled style='opacity:.4'"}>${nextPO?`From order · ${dayLbl(nextPO.date)}`:"No open order"}</button><button class="${rs.mode==="adhoc"?"on":""}" onclick="C6.rsMode('adhoc')">Without order</button></div>`;
+ let rows,note;
+ if(rs.mode==="po"){rows=nextPO.lines.map(l=>{const i=item(l[0]);return`<tr><td>${esc(i.name)}<span class="sub">on hand ${i.qty} ${i.unit}</span></td><td class="num muted">${l[1]}</td><td class="num"><input class="input c6-cnt tnum" data-id="${i.id}" value="${l[1]}" style="height:28px;width:72px;text-align:right"></td></tr>`}).join("");note=`${nextPO.id} · ${nextPO.supplier} · ${nextPO.lines.length} lines · ${A.isMgr()?fmt(poTotal(nextPO)):""}. Change a quantity if the box count differs; the difference becomes a supplier claim.`}
+ else{const list=inv().filter(i=>focus===undefined?kind(i)==="flowers":true).sort((a,b)=>(a.id===focus?-1:b.id===focus?1:0));rows=list.map(i=>`<tr><td>${esc(i.name)}<span class="sub">on hand ${i.qty} ${i.unit}${low(i)?" · "+(i.par-i.qty)+" short":""}</span></td><td class="num muted">${i.par}</td><td class="num"><input class="input c6-cnt tnum" data-id="${i.id}" value="${i.id===focus?Math.max(i.par-i.qty,1):""}" placeholder="0" style="height:28px;width:72px;text-align:right"></td></tr>`).join("");note="Receipt without a purchase order – e.g. a market top-up. Only lines with a quantity are booked."}
+ A.modal({title:"Receive delivery",wide:true,body:`${seg}<div class="tbl-wrap" style="max-height:360px"><table class="tbl"><thead><tr><th>Item</th><th class="num">${rs.mode==="po"?"Ordered":"Par"}</th><th class="num">Received</th></tr></thead><tbody>${rows}</tbody></table></div><div class="note-box mt16">${note}</div>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="C6.receiveApply(${rs.mode==="po"?`'${nextPO.id}'`:"null"})">${icon("check")} ${rs.mode==="po"?"Receive all":"Book receipt"}</button>`,
+  onMount:b=>{const f=b.querySelector(`input[data-id="${focus}"]`);if(f)setTimeout(()=>f.select(),50)}});
+}
+function rsMode(m){rs.mode=m;receive()}
+function receiveApply(poId){
+ const ins=[...document.querySelectorAll("#m-box input[data-id]")];let n=0,lines=0,claims=0;const p=poId?po(poId):null;
+ ins.forEach(el=>{const q=num(el.value);if(!q)return;const i=item(el.dataset.id);i.qty+=q;n+=q;lines++;MOVES[i.id].push({at:A.NOW.toISOString(),type:"receipt",qty:q,who:A.me().id,note:p?p.id:"Without order"});if(p){const l=p.lines.find(x=>x[0]===i.id);if(l&&l[1]!==q)claims++}});
+ if(!lines){A.toast("Enter at least one quantity");return}
+ if(p){p.status="received";p.received=A.NOW.toISOString()}
+ A.closeModal();A.emit("stock");A.toast(`Received ${lines} lines · ${n} units${claims?" · "+claims+" short – claim raised":""}`);A.push("Delivery booked",`${lines} lines in the fridge · ${A.me().n}`,{icon:"warehouse",type:"stock",go:["stock",{}]});
+}
+/* write-off */
+function writeoff(focus){
+ const items=inv();const sel=focus??items.find(low)?.id??items[0].id;
+ A.modal({title:"Write off",body:`<div class="col" style="gap:12px"><div class="field"><label>Item</label><select class="select" id="c6-wo-i">${items.map(i=>`<option value="${i.id}" ${i.id===sel?"selected":""}>${esc(i.name)} · ${i.qty} ${i.unit}</option>`).join("")}</select></div><div class="grid g2" style="gap:12px"><div class="field"><label>Quantity</label><input class="input tnum" id="c6-wo-q" value="1"></div><div class="field"><label>Reason</label><select class="select" id="c6-wo-r">${REASONS.map(r=>`<option>${r}</option>`).join("")}</select></div></div><div class="field"><label>Note · optional</label><input class="input" id="c6-wo-n" placeholder="e.g. heads dropped, box 3"></div><div class="xs muted">Written-off stems are reviewed on Friday with the team. Supplier claims go to RFH within 24 h.</div></div>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --accent --sm" onclick="C6.writeoffApply()">${icon("trash")} Write off</button>`,onMount:()=>setTimeout(()=>$("#c6-wo-q").select(),50)});
+}
+function writeoffApply(){const i=item($("#c6-wo-i").value),q=Math.min(num($("#c6-wo-q").value),i.qty),r=$("#c6-wo-r").value,n=$("#c6-wo-n").value.trim();if(!q){A.toast("Nothing to write off");return}
+ i.qty-=q;const mv={at:A.NOW.toISOString(),type:"writeoff",qty:-q,who:A.me().id,note:r+(n?" · "+n:"")};MOVES[i.id].push(mv);A.closeModal();A.emit("stock");
+ if($("#sheet").classList.contains("on"))openItem(i.id);
+ A.toast(`Written off · ${q} ${i.unit} ${i.name} · ${r}`,"Undo",()=>{i.qty+=q;MOVES[i.id].splice(MOVES[i.id].indexOf(mv),1);A.emit("stock");if($("#sheet").classList.contains("on"))openItem(i.id)})}
+function woLog(){const rows=[];inv().forEach(i=>MOVES[i.id].forEach(m=>{if(m.type==="writeoff")rows.push({i,m})}));rows.sort((a,b)=>a.m.at<b.m.at?1:-1);
+ A.sheet({eyebrow:"Stock",title:"Write-offs · last 7 days",narrow:true,flush:true,body:rows.length?`<div class="list">${rows.map(({i,m})=>`<div class="li" onclick="C6.openItem(${i.id})"><div class="t"><b>${esc(i.name)}</b><small>${esc(m.note)} · ${A.fmtDay(m.at)} ${A.fmtTime(m.at)} · ${esc(A.user(m.who)?.n||"")}</small></div><span class="tnum accent">${m.qty} ${i.unit}</span></div>`).join("")}</div>`:`<div class="empty">${icon("check")}<div class="h3">Nothing written off</div></div>`,
+  foot:`<button class="btn --ghost --sm" onclick="App.toast('Exported · write-offs.csv')">${icon("download")} Export</button><span class="sp"></span><button class="btn --sm" onclick="App.go('tasks',{new:true})">${icon("check")} Review with team</button>`})}
+/* stocktake */
+function stocktake(){ss.count=true;ss.counts={};ss.q="";mount_stock({});A.toast("Stocktake started · type what you count")}
+function setCount(id,v){ss.counts[id]=v.trim();const n=$("#c6-cntn");if(n)n.textContent=Object.values(ss.counts).filter(x=>x!=="").length}
+function cancelCount(){ss.count=false;ss.counts={};mount_stock({});A.toast("Stocktake abandoned")}
+function applyCount(){
+ const diffs=Object.entries(ss.counts).filter(([id,v])=>v!==""&&num(v)!==item(id).qty).map(([id,v])=>({i:item(id),to:num(v)}));
+ if(!diffs.length){ss.count=false;mount_stock({});A.toast("Stocktake done · nothing changed");return}
+ A.modal({title:`Apply ${diffs.length} adjustment${diffs.length>1?"s":""}?`,body:`<table class="tbl"><thead><tr><th>Item</th><th class="num">System</th><th class="num">Counted</th><th class="num">Diff</th></tr></thead><tbody>${diffs.map(d=>`<tr><td>${esc(d.i.name)}</td><td class="num muted">${d.i.qty}</td><td class="num">${d.to}</td><td class="num ${d.to<d.i.qty?"accent":"ok"}">${d.to-d.i.qty>0?"+":""}${d.to-d.i.qty}</td></tr>`).join("")}</tbody></table><div class="xs muted mt8">Each line is booked as a stocktake adjustment by ${A.me().n}.</div>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Back</button><button class="btn --sm" onclick="C6.applyCountGo()">${icon("check")} Apply</button>`});
+ ss._diffs=diffs;
+}
+function applyCountGo(){ss._diffs.forEach(d=>{MOVES[d.i.id].push({at:A.NOW.toISOString(),type:"adjustment",qty:d.to-d.i.qty,who:A.me().id,note:"Stocktake"});d.i.qty=d.to});const n=ss._diffs.length;ss.count=false;ss.counts={};A.closeModal();A.emit("stock");mount_stock({});A.toast(`Stocktake applied · ${n} adjustments`)}
+/* misc */
+function floorEdit(idx){const f=FLOOR[idx];A.modal({title:f.n,body:`<div class="field"><label>On display now</label><input class="input" id="c6-fl" value="${esc(f.q)}"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="C6.floorSave(${idx})">Save</button>`,onMount:()=>setTimeout(()=>$("#c6-fl").select(),50)})}
+function floorSave(idx){FLOOR[idx].q=$("#c6-fl").value.trim()||FLOOR[idx].q;FLOOR[idx].at=A.NOW.toISOString();A.closeModal();renderStock();A.toast("Shop floor updated")}
+function requestRestock(id){const i=item(id);A.closeSheet();A.toast(`Restock request sent to Valeria · ${i.name}`);A.push("Restock request",`${i.name} · ${i.qty} ${i.unit} left · ${A.me().n}`,{icon:"warehouse",type:"stock",go:["purchasing",{}]})}
+function orderItem(id){const i=item(id);const q=kind(i)==="flowers"?Math.max(10,Math.ceil(Math.max(i.par-i.qty,1)/10)*10):Math.max(i.par-i.qty,1);const d=addToDraft([[i.id,q]]);A.closeSheet();A.toast(`${q} ${i.unit} ${i.name} → ${d.id} · ${dayLbl(d.date)}`,"Open",()=>A.go("purchasing",{open:d.id}))}
+
+/* ================= PURCHASING ================= */
+const ps={view:"all"};
+const PV=[["all","All",()=>true],["draft","Drafts",p=>p.status==="draft"],["open","Sent & confirmed",p=>p.status==="sent"||p.status==="confirmed"],["received","Received",p=>p.status==="received"]];
+window.mount_purchasing=function(params){
+ $("#c6-po-head").innerHTML=`<div class="toolbar" style="margin:0;flex:1"><div class="views" style="margin:0;border:0">${PV.map(v=>`<button class="${ps.view===v[0]?"on":""}" onclick="C6.poView('${v[0]}')">${v[1]}<span class="n">${POS.filter(v[2]).length}</span></button>`).join("")}</div><span class="sp"></span><button class="btn --ghost --sm" onclick="C6.newPO()">${icon("plus")} New order</button><button class="btn --sm" onclick="C6.fromLow()">${icon("truck")} New order from low stock</button></div>`;
+ renderPO();
+ if(params&&params.open&&!params._o){params._o=1;openPO(params.open)}
+};
+function renderPO(){
+ const b=$("#c6-po-body"),v=PV.find(x=>x[0]===ps.view);const lowN=inv().filter(low).length;
+ const days=[0,2,4].map(off=>{const p=POS.find(x=>sameDay(x.date,off)&&x.supplier.startsWith("RFH"));return{off,p}});
+ const card=({off,p})=>`<div class="c6-day ${off===0?"--today":""}" onclick="${p?`C6.openPO('${p.id}')`:`C6.newPO(${off})`}"><div class="row"><div class="h3">${dayLbl(A.T(6,0,off))}</div><span class="sp"></span>${p?poPill(p):`<span class="pill --plain">Nothing yet</span>`}</div><div class="xs muted">${off===0?"Auction today · delivered 07:10":"Cut-off "+cutoff(off)+" · delivered ~07:00"}</div>
+  ${p?`${p.lines.slice(0,4).map(l=>`<div class="c6-ln"><span>${esc(item(l[0]).name)}</span><span>${l[1]} ${item(l[0]).unit}</span></div>`).join("")}${p.lines.length>4?`<div class="xs muted">+${p.lines.length-4} more</div>`:""}<div class="row mt8"><b class="tnum">${fmt(poTotal(p))}</b><span class="sp"></span>${p.status==="draft"?`<button class="btn --sm" onclick="event.stopPropagation();C6.poSend('${p.id}')">${icon("send")} Send</button>`:p.status==="sent"?`<button class="btn --ghost --sm" onclick="event.stopPropagation();C6.poConfirm('${p.id}')">Mark confirmed</button>`:p.status==="confirmed"?`<button class="btn --sm" onclick="event.stopPropagation();C6.poReceive('${p.id}')">${icon("download")} Receive</button>`:`<span class="xs muted">${A.fmtTime(p.received)} · booked</span>`}</div>`
+  :`<div class="empty" style="padding:16px 0"><div class="sm">${lowN?lowN+" lines below par":"Stock at par"}</div><button class="btn --ghost --sm" onclick="event.stopPropagation();C6.newPO(${off})">${icon("plus")} Create order</button></div>`}</div>`;
+ const list=POS.filter(v[2]).sort((a,b)=>a.date<b.date?1:-1);
+ b.innerHTML=`<div class="sec-head"><div class="h2">This week · RFH</div><span class="xs muted">Buyer accounts 51410 / 51411 · Floriday</span></div><div class="c6-days">${days.map(card).join("")}</div>
+ <div class="sec-head"><div class="h2">${v[1]}</div><span class="xs muted">${list.length} orders</span></div>
+ ${list.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Ref</th><th>Delivery</th><th class="c6-hp">Supplier</th><th>Status</th><th class="num c6-hp">Lines</th><th class="num">Total</th><th class="c6-hp"></th></tr></thead><tbody>${list.map(p=>`<tr class="r" onclick="C6.openPO('${p.id}')"><td class="tnum">${p.id}</td><td>${dayLbl(p.date)}<span class="sub">${p.sent?"sent "+A.fmtDay(p.sent)+" "+A.fmtTime(p.sent):"not sent"}</span></td><td class="c6-hp">${esc(p.supplier)}</td><td>${poPill(p)}</td><td class="num c6-hp">${p.lines.length}</td><td class="num">${fmt(poTotal(p))}</td><td class="c6-hp" onclick="event.stopPropagation()"><span class="acts">${p.status==="draft"?`<button class="ib" title="Send" onclick="C6.poSend('${p.id}')">${icon("send")}</button>`:p.status==="confirmed"?`<button class="ib" title="Receive" onclick="C6.poReceive('${p.id}')">${icon("download")}</button>`:""}<button class="ib" title="Duplicate" onclick="C6.poDup('${p.id}')">${icon("copy")}</button></span></td></tr>`).join("")}</tbody><tfoot><tr><td colspan="7">${fmt(list.reduce((s,p)=>s+poTotal(p),0))} across ${list.length} orders</td></tr></tfoot></table></div>`:`<div class="empty">${icon("truck")}<div class="h3">No orders here</div><button class="textbtn" onclick="C6.poView('all')">Show all</button></div>`}`;
+}
+function poView(v){ps.view=v;mount_purchasing({})}
+function openPO(id){
+ const p=po(id);if(!p){A.toast("Order not found");return}const dr=p.status==="draft";const steps=["draft","sent","confirmed","received"],si=steps.indexOf(p.status);
+ const body=`<div class="c6-steps">${steps.map((s,i)=>`<span class="${i<si?"done":i===si?"on":""}">${PO_PILL[s][1]}</span>`).join("")}</div>
+ <dl class="kv"><dt>Delivery</dt><dd>${dayLbl(p.date)} · ~07:00 to 80 Willow Walk</dd><dt>Supplier</dt><dd>${esc(p.supplier)}</dd>${p.supplier.startsWith("RFH")?`<dt>Cut-off</dt><dd>${wd(new Date(p.date)-864e5)} 12:00 · Floriday</dd>`:""}${p.sent?`<dt>Sent</dt><dd>${A.fmtDay(p.sent)} ${A.fmtTime(p.sent)}</dd>`:""}${p.received?`<dt>Received</dt><dd>${A.fmtDay(p.received)} ${A.fmtTime(p.received)} · booked to stock</dd>`:""}</dl>
+ <div class="sec-head"><div class="h3">Lines</div>${dr?`<button class="textbtn" onclick="C6.poAddLine(event,'${id}')">+ add line</button>`:""}</div>
+ ${p.lines.length?`<table class="tbl c6-rt"><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Unit cost</th><th class="num">Line</th>${dr?"<th></th>":""}</tr></thead><tbody>${p.lines.map((l,i)=>{const it=item(l[0]);return`<tr><td>${esc(it.name)}<span class="sub">on hand ${it.qty} · par ${it.par} ${it.unit}</span></td><td class="num">${dr?`<input class="input tnum" value="${l[1]}" onchange="C6.poQty('${id}',${i},this.value)">`:l[1]+" "+it.unit}</td><td class="num muted">${fmt(it.cost)}</td><td class="num">${fmt(l[1]*it.cost)}</td>${dr?`<td class="x"><button class="ib" onclick="C6.poRm('${id}',${i})">${icon("close")}</button></td>`:""}</tr>`}).join("")}</tbody><tfoot><tr><td colspan="2">${p.lines.length} lines</td><td class="num" colspan="2"><b class="tnum" style="color:var(--ink)">${fmt(poTotal(p))}</b></td>${dr?"<td></td>":""}</tr></tfoot></table>`:`<div class="empty">${icon("truck")}<div class="h3">Empty order</div><button class="btn --sm" onclick="C6.poAddLine(event,'${id}')">${icon("plus")} Add line</button></div>`}
+ <div class="note-box mt16">${dr?"Prices are from the last auction; the final price comes with the Floriday invoice and lands in Xero via Hubdoc.":p.status==="received"?"Receipt booked. The Floriday invoice is matched in Xero by supplier, amount and date.":"Changes after cut-off go by phone to the buyer. Short boxes become a supplier claim on receipt."}</div>`;
+ const foot=dr?`<button class="btn --ghost --sm" onclick="C6.poDelete('${id}')">Delete draft</button><span class="sp"></span><button class="btn --sm" onclick="C6.poSend('${id}')">${icon("send")} Send to ${p.supplier.startsWith("RFH")?"RFH":"supplier"}</button>`
+  :p.status==="sent"?`<button class="btn --ghost --sm" onclick="C6.poDup('${id}')">${icon("copy")} Duplicate</button><span class="sp"></span><button class="btn --sm" onclick="C6.poConfirm('${id}')">${icon("check")} Mark confirmed</button>`
+  :p.status==="confirmed"?`<button class="btn --ghost --sm" onclick="C6.poDup('${id}')">${icon("copy")} Duplicate</button><span class="sp"></span><button class="btn --sm" onclick="C6.poReceive('${id}')">${icon("download")} Receive delivery</button>`
+  :`<button class="btn --ghost --sm" onclick="C6.poDup('${id}')">${icon("copy")} Duplicate</button><span class="sp"></span><button class="btn --ghost --sm" onclick="App.toast('Invoice matched in Xero · ${fmt(poTotal(p))}')">${icon("pound")} Invoice in Xero</button>`;
+ A.sheet({eyebrow:`${p.id} · ${esc(p.supplier)}`,title:dayLbl(p.date),body,foot,_replace:$("#sheet").classList.contains("on")});
+}
+function addToDraft(lines,off){
+ let d=POS.find(p=>p.status==="draft"&&p.supplier.startsWith("RFH")&&(off===undefined||sameDay(p.date,off)));
+ if(!d){d={id:"PO-"+(poSeq++),date:A.T(6,0,off??nextOpenDay()),supplier:"RFH · Floriday",status:"draft",lines:[]};POS.push(d)}
+ lines.forEach(l=>{const ex=d.lines.find(x=>x[0]===l[0]);if(ex)ex[1]=Math.max(ex[1],l[1]);else d.lines.push(l.slice())});
+ if(A.state.current==="purchasing")renderPO();return d;
+}
+function newPO(off){const d={id:"PO-"+(poSeq++),date:A.T(6,0,off??nextOpenDay()),supplier:"RFH · Floriday",status:"draft",lines:[]};POS.push(d);renderPO();openPO(d.id);A.toast(`${d.id} · draft for ${dayLbl(d.date)}`)}
+function fromLow(){const ls=inv().filter(i=>low(i)&&kind(i)==="flowers").map(i=>[i.id,Math.max(10,Math.ceil((i.par-i.qty)/10)*10)]);const other=inv().filter(i=>low(i)&&kind(i)!=="flowers").length;if(!ls.length){A.toast(other?`No flowers below par · ${other} sundries lines need a supplier order`:"Nothing below par");return}const d=addToDraft(ls);A.toast(`${ls.length} flower lines → ${d.id} · ${dayLbl(d.date)}${other?" · "+other+" sundries lines not included":""}`);openPO(d.id)}
+function poQty(id,i,v){const p=po(id);p.lines[i][1]=num(v)||1;openPO(id);renderPO()}
+function poRm(id,i){const p=po(id);const l=p.lines.splice(i,1)[0];openPO(id);renderPO();A.toast(`${item(l[0]).name} removed`,"Undo",()=>{p.lines.splice(i,0,l);openPO(id);renderPO()})}
+function poAddLine(ev,id){const p=po(id);const have=new Set(p.lines.map(l=>l[0]));A.pop(ev,["Add from stock",...inv().filter(i=>!have.has(i.id)).sort((a,b)=>(low(b)-low(a))).slice(0,12).map(i=>({t:`${i.name} · ${i.qty}/${i.par} ${i.unit}`,ic:low(i)?"alert":"box",cls:low(i)?"--accent":"",fn:()=>{p.lines.push([i.id,kind(i)==="flowers"?Math.max(10,Math.ceil((i.par-i.qty)/10)*10):Math.max(i.par-i.qty,1)]);openPO(id);renderPO()}}))])}
+function poSend(id){const p=po(id);if(!p.lines.length){A.toast("Add at least one line");return}p.status="sent";p.sent=A.NOW.toISOString();renderPO();if($("#sheet").classList.contains("on"))openPO(id);A.toast(`${p.id} sent · ${p.supplier.split(" · ")[0]} · ${fmt(poTotal(p))}`);A.push("Purchase order sent",`${p.id} · ${p.lines.length} lines · ${dayLbl(p.date)}`,{icon:"truck",type:"stock",go:["purchasing",{open:p.id}]})}
+function poConfirm(id){const p=po(id);p.status="confirmed";renderPO();if($("#sheet").classList.contains("on"))openPO(id);A.toast(`${p.id} confirmed by ${p.supplier.split(" · ")[0]}`)}
+function poReceive(id){const p=po(id);p.lines.forEach(l=>{const i=item(l[0]);i.qty+=l[1];MOVES[i.id].push({at:A.NOW.toISOString(),type:"receipt",qty:l[1],who:A.me().id,note:p.id})});p.status="received";p.received=A.NOW.toISOString();A.emit("stock");renderPO();if($("#sheet").classList.contains("on"))openPO(id);A.toast(`${p.id} received · ${p.lines.length} lines booked to stock`);A.push("Delivery booked",`${p.id} · ${p.lines.length} lines · ${A.me().n}`,{icon:"warehouse",type:"stock",go:["stock",{}]})}
+function poDelete(id){const p=po(id);A.confirm("Delete "+p.id+"?","The draft is removed; nothing was sent.","Delete",()=>{POS.splice(POS.indexOf(p),1);A.closeSheet();renderPO();A.toast(p.id+" deleted")},{danger:true})}
+function poDup(id){const p=po(id);const d={id:"PO-"+(poSeq++),date:A.T(6,0,nextOpenDay()),supplier:p.supplier,status:"draft",lines:p.lines.map(l=>l.slice())};POS.push(d);renderPO();openPO(d.id);A.toast(`Duplicated as ${d.id} · ${dayLbl(d.date)}`)}
+
+/* ---- events ---- */
+document.addEventListener("orders",()=>{const c=A.state.current;if(c==="catalog")renderCat();if(c==="stock")renderStock()});
+document.addEventListener("stock",()=>{const c=A.state.current;if(c==="stock")renderStock();if(c==="purchasing")renderPO();if(c==="catalog")renderCat()});
+window.C6={openProduct,toggleActive,setPrice,setQty,rmLine,addLine,dup,pickCat,prodMenu,addProduct,npImg,createProduct,rsize:(id,s)=>{cs.size=s;openProduct(id,"recipe")},
+ catCat:c=>{cs.cat=c;mount_catalog({})},catHidden:()=>{cs.hidden=!cs.hidden;mount_catalog({})},catView:v=>{cs.view=v;mount_catalog({})},catSort:k=>{if(cs.sort===k)cs.dir=-cs.dir;else{cs.sort=k;cs.dir=1}renderCat()},catReset:()=>{cs.q="";cs.cat="All";cs.hidden=false;mount_catalog({})},
+ openItem,setPar,stView,stSort,receive,rsMode,receiveApply,writeoff,writeoffApply,woLog,stocktake,setCount,cancelCount,applyCount,applyCountGo,floorEdit,floorSave,requestRestock,orderItem,
+ poView,openPO,newPO,fromLow,poQty,poRm,poAddLine,poSend,poConfirm,poReceive,poDelete,poDup};
+})();
+</script>

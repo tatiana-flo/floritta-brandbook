@@ -1,0 +1,245 @@
+<style>
+/* ===== 01 · Today (scoped #s-today) ===== */
+#s-today .t-date{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+#s-today .t-greet{font-family:var(--f-display);font-weight:300;font-size:26px;line-height:1.05}
+#s-today .t-cols{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px;align-items:start;margin-top:24px}
+#s-today .kpi-card .kpi{margin-top:2px}
+#s-today .kpi-card.--hot{box-shadow:inset 0 3px 0 var(--accent)}
+#s-today .kpi-card .delta{display:flex;align-items:center;gap:6px}
+#s-today .t-need .li{align-items:center;gap:12px;padding:8px 14px}
+#s-today .li .ic{width:32px;height:32px;display:grid;place-items:center;background:var(--silver);color:var(--graphite);flex:none}
+#s-today .li .ic.--accent{background:var(--accent-bg);color:var(--accent)}
+#s-today .li .ic.--warn{background:var(--warn-bg);color:var(--warn)}
+#s-today .t-need .li .acts{display:flex;gap:6px;flex:none}
+#s-today .t-need .li .t b{font-weight:400}
+#s-today .t-slots{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+#s-today .t-slot{border:1px solid var(--hair);padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-width:0;text-align:left;transition:border-color var(--m-fast);background:var(--paper)}
+#s-today .t-slot:hover{border-color:var(--grey)}
+#s-today .t-slot.--past{background:var(--paper-2);color:var(--graphite)}
+#s-today .t-slot.--now{border-color:var(--ink);box-shadow:inset 0 2px 0 var(--ink)}
+#s-today .t-slot .sl{display:flex;align-items:baseline;justify-content:space-between;gap:6px;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#s-today .t-slot .sl b{font-family:var(--f-display);font-size:22px;font-weight:300;line-height:1}
+#s-today .t-slot .mini{display:flex;align-items:flex-end;gap:3px;height:36px}
+#s-today .t-slot .mini i{flex:1;background:var(--light);min-height:2px}
+#s-today .t-slot .mini i.--q{background:var(--light)}
+#s-today .t-slot .mini i.--m{background:var(--ink)}
+#s-today .t-slot .mini i.--r{background:var(--ok)}
+#s-today .t-slot .mini i.--o{background:var(--grey)}
+#s-today .t-slot .mini i.--late{background:var(--accent)}
+#s-today .t-slot .sf{font-size:11px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-today .t-legend{display:flex;gap:14px;font-size:11px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase;flex-wrap:wrap}
+#s-today .t-legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px;background:var(--light)}
+#s-today .t-legend i.--m{background:var(--ink)}#s-today .t-legend i.--r{background:var(--ok)}#s-today .t-legend i.--o{background:var(--grey)}#s-today .t-legend i.--late{background:var(--accent)}
+#s-today .t-shift .li{padding:6px 14px}
+#s-today .t-shift .li .do{font-size:12px;color:var(--graphite);white-space:nowrap;font-variant-numeric:tabular-nums}
+#s-today .t-shift .li .do.--accent{color:var(--accent)}
+#s-today .t-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;font-size:11px;color:var(--grey);text-align:center;margin-top:6px}
+#s-today .t-week span.on{color:var(--ink)}
+#s-today .bar{height:64px}
+#s-today .bar i{cursor:pointer;transition:background var(--m-fast)}
+#s-today .bar i:hover{background:var(--graphite)}
+#s-today .t-mk{display:grid;grid-template-columns:1fr auto auto;gap:4px 16px;align-items:center;font-size:13.5px}
+#s-today .t-mk .n{color:var(--grey);font-size:12px}
+/* florist layout */
+#s-today .f-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#s-today .f-card{border:1px solid var(--hair);display:flex;flex-direction:column;min-width:0;background:var(--paper)}
+#s-today .f-card.--late{box-shadow:inset 4px 0 0 var(--accent)}
+#s-today .f-card .fc-top{display:flex;gap:14px;padding:14px;cursor:pointer}
+#s-today .f-card .fc-top:hover{background:var(--silver)}
+#s-today .f-card .photo{width:84px;flex:none}
+#s-today .f-card .fc-t{flex:1;min-width:0}
+#s-today .f-card .fc-t .h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-today .f-card .fc-foot{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--hair)}
+#s-today .f-card .fc-foot .btn{flex:1;height:48px}
+#s-today .f-queue .li{min-height:60px}
+#s-today .f-queue .li .btn{height:44px}
+#s-today .f-queue .li .t b{font-size:15px}
+#s-today .f-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:28px}
+#s-today .f-task .btn{height:40px}
+#s-today .f-lesson{border:1px solid var(--hair);padding:16px;display:flex;gap:14px;align-items:flex-start}
+#s-today .f-lesson .ic{width:40px;height:40px;background:var(--ink);color:var(--paper);display:grid;place-items:center;flex:none}
+#s-today .f-kpi .kpi-card{min-height:96px}
+/* iPad */
+[data-size="ipad"] #s-today .t-cols{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] #s-today .grid.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+[data-size="ipad"] #s-today .t-slots{grid-template-columns:repeat(4,minmax(0,1fr))}
+[data-size="ipad"] #s-today .f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* Phone */
+[data-size="phone"] #s-today .t-cols,[data-size="phone"] #s-today .f-cols,[data-size="phone"] #s-today .f-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] #s-today .t-slots{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px}
+[data-size="phone"] #s-today .t-slot{flex:0 0 132px}
+[data-size="phone"] #s-today .t-need .li{flex-wrap:wrap;row-gap:6px}
+[data-size="phone"] #s-today .t-need .li .t{flex-basis:calc(100% - 44px)}
+[data-size="phone"] #s-today .t-need .li .acts{margin-left:44px}
+[data-size="phone"] #s-today .t-need .li .acts .btn+.btn{display:none}
+[data-size="phone"] #s-today .panel .p-head{flex-wrap:wrap}
+[data-size="phone"] #s-today .panel .p-head .h4{flex-basis:100%}
+[data-size="phone"] #s-today .t-greet{font-size:22px}
+[data-size="phone"] #s-today .t-head-acts .btn:not(.--keep){display:none}
+</style>
+
+<section class="scr" id="s-today" data-nav="Today" data-group="Today" data-title="Today" data-sub="Tue 20 Oct">
+  <div class="scr-head" id="t-head"></div>
+  <div class="scr-body" id="t-body"></div>
+</section>
+
+<script>
+/* ---- 01 · Today – demo data (fictional) ---- */
+const T1_WEEK=[{d:"Wed",v:4380},{d:"Thu",v:3920},{d:"Fri",v:5110},{d:"Sat",v:6240},{d:"Sun",v:3350},{d:"Mon",v:4120}]; // last 6 days; today appended live
+const T1_LAST_TUE=4860;
+const T1_MARKET=[{n:"Deliveroo",eta:"On time 94%",rating:"4.8"},{n:"Uber Eats",eta:"On time 88%",rating:"4.6"}];
+const T1_LESSONS=[{t:"Hand-tied spiral · 3-minute lesson",sub:"Step 3 of 5 · wrapping the stems",min:3},{t:"Quiz of the day · Sympathy etiquette",sub:"4 questions · 2 min",min:2}];
+const T1_DONE_TASKS=new Set();
+
+window.mount_today=function(params){
+  const A=window.App,$=A.$,esc=A.esc,icon=A.icon,fmt=A.fmt;
+  const me=A.me(),mgr=A.isMgr();
+  const O=A.data.orders,S=A.data.staff,TK=A.data.tasks,INV=A.data.inventory,CV=A.data.convos,SL=A.SLOTS;
+  const today=O.filter(o=>o.n===0&&o.status!=="cancelled");
+  const live=today.filter(o=>o.status!=="delivered");
+  const late=live.filter(o=>A.isLate(o));
+  const slotStartMin=s=>{const [h,m]=s.split("–")[0].split(":").map(Number);return h*60+m};
+  const slotEndMin=s=>{const [h,m]=s.split("–")[1].split(":").map(Number);return h*60+m};
+  const nowMin=A.NOW.getHours()*60+A.NOW.getMinutes();
+  const curSlot=SL.find(s=>slotStartMin(s)<=nowMin&&nowMin<slotEndMin(s))||SL[1];
+  const hour=A.NOW.getHours();const greet=hour<12?"Good morning":hour<18?"Good afternoon":"Good evening";
+  const dateLine="Tuesday 20 October · "+A.fmtTime(A.NOW.toISOString())+" · London · Open till 22:00";
+
+  /* ---- palette commands (once) ---- */
+  if(!window.__t1cmds){window.__t1cmds=true;A.registerCommands([
+    {g:"Today",t:"Open today's late orders",ic:"clock",fn:()=>A.go("orders",{view:"problems"})},
+    {g:"Today",t:"Open unpaid orders due today",ic:"pound",fn:()=>A.go("orders",{view:"unpaid"})},
+    {g:"Today",t:"Orders in the current slot",ic:"orders",fn:()=>A.go("orders",{slot:curSlot})},
+    {g:"Today",t:"Who's on shift now",ic:"team",fn:()=>A.go("team",{tab:"schedule"})},
+    {g:"Today",t:"Print today's tickets",ic:"printer",fn:()=>A.toast("Sent to printer · "+live.length+" tickets")}
+  ])}
+
+  /* ---- head ---- */
+  const head=$("#t-head");
+  if(mgr){
+    head.innerHTML=`<div style="min-width:0"><div class="t-date">${esc(dateLine)}</div><div class="t-greet">${greet}, ${esc(me.first||me.n)}</div></div><span class="sp"></span>
+      <div class="btn-row t-head-acts">
+        <button class="btn --ghost --sm" onclick="App.toast('Sent to printer · ${live.length} tickets')">${icon("printer")} Print tickets</button>
+        <button class="btn --ghost --sm" onclick="App.go('production')">${icon("production")} Board</button>
+        <button class="btn --sm --keep" onclick="App.go('order-new')">${icon("plus")} New order</button>
+      </div>`;
+  }else{
+    head.innerHTML=`<div style="min-width:0"><div class="t-date">${esc(dateLine)} · shift ${esc(me.shift)}</div><div class="t-greet">${greet}, ${esc(me.n)}</div></div><span class="sp"></span>
+      <div class="btn-row t-head-acts"><button class="btn --ghost --sm" onclick="App.go('production')">${icon("production")} Board</button><button class="btn --sm --keep" style="height:44px" onclick="T1.takeNext()">${icon("play")} Take next in queue</button></div>`;
+  }
+
+  const body=$("#t-body");
+  if(!mgr){body.innerHTML=floristView();return}
+
+  /* ---- KPI ---- */
+  const revenue=today.filter(o=>o.paid==="paid").reduce((s,o)=>s+o.total,0);
+  const unpaidToday=live.filter(o=>o.paid!=="paid");
+  const unread=CV.filter(c=>c.unread).length;
+  const delta=Math.round((revenue-T1_LAST_TUE)/T1_LAST_TUE*100);
+  const kpis=`<div class="grid g4">
+    <div class="kpi-card" onclick="App.go('orders',{view:'today'})"><span class="caps">Orders today</span><span class="kpi">${today.length}</span><span class="delta">${live.length} open · ${today.length-live.length} delivered</span></div>
+    <div class="kpi-card" onclick="App.go('${A.role()==="owner"?"growth":"orders"}')"><span class="caps">Revenue today</span><span class="kpi">${fmt(revenue)}</span><span class="delta ${delta>=0?"up":"down"}">${delta>=0?"+":""}${delta}% vs last Tue${unpaidToday.length?` · <span class="accent">${fmt(unpaidToday.reduce((s,o)=>s+o.total,0))} unpaid</span>`:""}</span></div>
+    <div class="kpi-card ${late.length?"--hot":""}" onclick="App.go('orders',{view:'problems'})"><span class="caps">Late or urgent</span><span class="kpi ${late.length?"accent":""}">${late.length}</span><span class="delta">${late.filter(o=>o.status==="queue").length} not started · ${late.filter(o=>o.status!=="queue").length} slot passed</span></div>
+    <div class="kpi-card" onclick="App.go('inbox',{filter:'unread'})"><span class="caps">Unread in inbox</span><span class="kpi ${unread?"":"muted"}">${unread}</span><span class="delta">${CV.filter(c=>c.unread&&!c.assigned).length} unassigned · ${CV.filter(c=>c.unread&&c.chan==="WhatsApp").length} WhatsApp</span></div>
+  </div>`;
+
+  /* ---- Needs you now ---- */
+  const need=[];
+  late.forEach(o=>need.push({k:"orders",ic:"clock",cls:"--accent",t:`#${o.id} · ${esc(A.product(o.product).name)} · ${esc(A.customer(o.customer).n)}`,sub:o.status==="queue"?`Slot ${o.slot} ${slotStartMin(o.slot)>nowMin?"starts in "+(slotStartMin(o.slot)-nowMin)+" min":"has started"} · nobody has started it`:`Slot ${o.slot} has passed · still ${A.STATUS_LBL[o.status].toLowerCase()}`,pill:A.orderPill(o),acts:[["Open",`App.openOrder(${o.id})`],o.status==="queue"?["Assign",`App.pickFlorist(event,${o.id})`]:o.status==="ready"?["Courier",`App.pickCourier(event,${o.id})`]:null]}));
+  O.filter(o=>o.problem&&o.n===0&&o.status!=="delivered"&&o.status!=="cancelled").forEach(o=>need.push({k:"delivery",ic:"alert",cls:"--accent",t:`#${o.id} · ${esc(o.problem)}`,sub:`${esc(o.recipient)} · ${esc(o.addr)} · ${o.courier?esc(A.user(o.courier)?.n||o.courier):"no courier"}`,pill:A.pill("problem","Delivery"),acts:[["Dispatch",`App.go('delivery',{open:${o.id}})`],["Call",`App.toast('Calling ${esc(o.recipient)}… (demo)')`]]}));
+  unpaidToday.filter(o=>!A.isLate(o)&&slotStartMin(o.slot)-nowMin<180).sort((a,b)=>slotStartMin(a.slot)-slotStartMin(b.slot)).forEach(o=>need.push({k:"orders",ic:"pound",cls:"--warn",t:`#${o.id} · ${fmt(o.total)} ${o.paid==="partial"?"deposit only":"unpaid"} · ${esc(A.customer(o.customer).n)}`,sub:`Slot ${o.slot} · ${esc(o.chan)} · ${A.STATUS_LBL[o.status]}`,pill:A.pill(o.paid),acts:[["Payment link",`App.paymentLink(${o.id})`],["Open",`App.openOrder(${o.id})`]]}));
+  live.filter(o=>o.status==="ready"&&o.type==="delivery"&&!o.courier&&!A.isLate(o)).forEach(o=>need.push({k:"delivery",ic:"truck",cls:"",t:`#${o.id} · ready, no courier · ${esc(o.recipient)}`,sub:`Slot ${o.slot} · ${esc(o.addr)}`,pill:A.pill("ready"),acts:[["Assign courier",`App.pickCourier(event,${o.id})`],["Dispatch",`App.go('delivery',{open:${o.id}})`]]}));
+  TK.filter(t=>t.status!=="done"&&!T1_DONE_TASKS.has(t.id)&&(t.late||new Date(t.due)<A.NOW)).forEach(t=>need.push({k:"tasks",ic:"check",cls:"--warn",t:esc(t.t),sub:`${esc(A.user(t.who)?.n||t.who)} · due ${A.fmtTime(t.due)} · ${A.STATUS_LBL[t.status]}`,pill:A.pill("overdue"),acts:[["Open",`App.go('tasks',{open:${t.id}})`],["Nudge",`App.push('Reminder sent',${JSON.stringify(A.user(t.who)?.n+" · "+t.t)},{icon:'bell'});App.toast('Reminder sent · push')`]]}));
+  const low=INV.filter(i=>i.qty<i.par);
+  if(low.length)need.push({k:"stock",ic:"warehouse",cls:low.some(i=>i.qty===0)?"--accent":"--warn",t:`${low.length} stock lines below par · ${low.filter(i=>i.qty===0).length} at zero`,sub:esc(low.slice(0,4).map(i=>i.name).join(", "))+(low.length>4?" …":""),pill:A.pill("plain","Stock"),acts:[["Order from RFH",`App.go('purchasing')`],["Stock",`App.go('stock',{view:'low'})`]]});
+  const nf=params&&params.need||"all";const cnt=k=>need.filter(x=>k==="all"||x.k===k).length;
+  const needRows=need.filter(x=>nf==="all"||x.k===nf);
+  const needHtml=`<div class="panel t-need"><div class="p-head"><div class="h4">Needs you now <span class="muted xs tnum">${need.length}</span></div>
+      <div class="chips">${[["all","All"],["orders","Orders"],["delivery","Delivery"],["tasks","Tasks"],["stock","Stock"]].map(([k,l])=>`<button class="chip ${nf===k?"on":""}" style="height:26px;padding:0 9px;font-size:12px" onclick="T1.filter('${k}')">${l} <span class="n">${cnt(k)}</span></button>`).join("")}</div></div>
+    <div class="p-body list">${needRows.length?needRows.map(r=>`<div class="li" onclick="${r.acts[0][1].replace(/"/g,"&quot;")}"><span class="ic ${r.cls}">${icon(r.ic)}</span><div class="t"><b>${r.t}</b><small>${r.sub}</small></div>${r.pill}<div class="acts" onclick="event.stopPropagation()">${r.acts.filter(Boolean).map(([l,f],i)=>`<button class="btn --sm ${i?"--ghost":"--secondary"}" onclick="${f.replace(/"/g,"&quot;")}">${l}</button>`).join("")}</div></div>`).join(""):`<div class="empty">${icon("check")}<div class="h3">All clear</div><div class="sm">Nothing in this group needs you right now.</div></div>`}</div></div>`;
+
+  /* ---- On shift ---- */
+  const doing=s=>{if(s.role==="florist"){const n=today.filter(o=>o.florist===s.id&&["making","photo"].includes(o.status)).length;const r=today.filter(o=>o.florist===s.id&&["ready","out","delivered"].includes(o.status)).length;return n?`${n} making · ${r} done`:`${r} done · free`}
+    if(s.role==="courier"){const n=today.filter(o=>o.courier===s.id&&o.status==="out").length;const d=today.filter(o=>o.courier===s.id&&o.status==="delivered").length;return n?`${n} on the road · ${d} delivered`:`${d} delivered · at the shop`}
+    if(s.role==="owner")return"";const c=CV.filter(x=>x.assigned===s.id).length;return c?`${c} chats assigned`:"front of house"};
+  const onNow=S.filter(s=>s.on&&s.id!==me.id);const later=S.filter(s=>!s.on);
+  const shiftHtml=`<div class="panel t-shift"><div class="p-head"><div class="h4">On shift now <span class="muted xs tnum">${onNow.length+1}</span></div><button class="textbtn" onclick="App.go('team',{tab:'schedule'})">Schedule</button></div>
+    <div class="p-body list">${onNow.map(s=>`<div class="li" onclick="T1.person(event,'${s.id}')">${A.avatar(s.id)}<div class="t"><b>${esc(s.n)}</b><small>${esc(s.title)} · ${esc(s.shift)}</small></div><span class="do ${s.role==="florist"&&today.some(o=>o.florist===s.id&&A.isLate(o))?"--accent":""}">${doing(s)}</span></div>`).join("")}
+      <div class="li" style="cursor:default;background:var(--paper-2)"><span class="ic">${icon("clock")}</span><div class="t"><b class="muted">Later today</b><small>${esc(later.map(s=>s.n+" "+s.shift.split("–")[0]).join(" · "))}</small></div></div></div></div>`;
+
+  /* ---- Orders by slot ---- */
+  const bySlot=SL.map(s=>{const os=today.filter(o=>o.slot===s);const c=k=>os.filter(o=>k.includes(o.status)).length;return{s,os,q:c(["queue"]),m:c(["making","photo"]),r:c(["ready"]),o:c(["out"]),d:c(["delivered"]),late:os.filter(o=>A.isLate(o)).length}});
+  const mx=Math.max(1,...bySlot.flatMap(b=>[b.q,b.m,b.r,b.o]));
+  const slotHtml=`<div class="sec-head"><div class="h3">Orders by slot</div><div class="t-legend"><span><i class="--q"></i>Queue</span><span><i class="--m"></i>Making</span><span><i class="--r"></i>Ready</span><span><i class="--o"></i>Out</span><span><i class="--late"></i>Late</span></div><button class="textbtn" onclick="App.go('orders',{view:'today'})">All today</button></div>
+    <div class="t-slots">${bySlot.map(b=>{const past=slotEndMin(b.s)<=nowMin,now=b.s===curSlot;const h=v=>Math.round(v/mx*100);return`<button class="t-slot ${past?"--past":""} ${now?"--now":""}" onclick="App.go('orders',{slot:'${b.s}'})" title="Open ${b.s}">
+      <div class="sl"><span>${b.s}${now?' <span class="tag --ink" style="margin-left:4px">Now</span>':""}</span><b>${b.os.length}</b></div>
+      <div class="mini"><i class="--q ${b.late&&b.q?"--late":""}" style="height:${h(b.q)}%" title="Queue ${b.q}"></i><i class="--m ${b.late&&!b.q&&b.m?"--late":""}" style="height:${h(b.m)}%" title="Making ${b.m}"></i><i class="--r" style="height:${h(b.r)}%" title="Ready ${b.r}"></i><i class="--o ${b.late&&!b.q&&!b.m&&b.o?"--late":""}" style="height:${h(b.o)}%" title="Out ${b.o}"></i></div>
+      <div class="sf">${b.late?`<span class="accent">${b.late} late</span> · `:""}${past?`${b.d} delivered${b.os.length-b.d?` · <span class="accent">${b.os.length-b.d} open</span>`:""}`:b.os.length?`${b.q} queue · ${b.m} making · ${b.r+b.o} ready/out`:"nothing booked"}</div></button>`}).join("")}</div>`;
+
+  /* ---- Tomorrow ---- */
+  const tom=O.filter(o=>o.n===1&&o.status!=="cancelled");
+  const tomSlots=SL.map(s=>[s,tom.filter(o=>o.slot===s).length]).filter(x=>x[1]);
+  const rfh=INV.filter(i=>i.next==="Thu");
+  const tomHtml=`<div class="panel"><div class="p-head"><div class="h4">Tomorrow <span class="muted xs">Wed 22 Oct</span></div><button class="textbtn" onclick="App.go('orders',{view:'tomorrow'})">Open</button></div>
+    <div style="padding:14px"><div class="row" style="gap:20px;align-items:baseline"><span class="kpi">${tom.length}</span><span class="sm soft">orders booked · ${fmt(tom.reduce((s,o)=>s+o.total,0))} · ${tom.filter(o=>o.paid!=="paid").length} unpaid</span></div>
+      <div class="chips mt16">${tomSlots.map(([s,n])=>`<button class="chip" onclick="App.go('orders',{view:'tomorrow',slot:'${s}'})">${s} <span class="n">${n}</span></button>`).join("")||'<span class="muted sm">Nothing booked yet</span>'}</div>
+      <div class="hr" style="margin:14px 0"></div>
+      <div class="row" style="gap:10px"><span class="dot --ok"></span><div class="sm" style="flex:1">RFH delivery Thursday · ${rfh.length} lines expected${rfh.some(i=>i.qty<i.par)?` · <span class="accent">${rfh.filter(i=>i.qty<i.par).length} below par till then</span>`:""}</div><button class="textbtn" onclick="App.go('purchasing')">Purchasing</button></div>
+      <div class="row mt8" style="gap:10px"><span class="dot --ink"></span><div class="sm" style="flex:1">Shifts: ${esc(S.filter(s=>s.role==="florist").slice(0,3).map(s=>s.n).join(", "))} + Daniel (van)</div><button class="textbtn" onclick="App.go('team',{tab:'schedule'})">Schedule</button></div>
+      <div class="btn-row mt16"><button class="btn --ghost --sm" onclick="App.toast('Sent to printer · ${tom.length} tickets for tomorrow')">${icon("printer")} Print tomorrow's tickets</button></div></div></div>`;
+
+  /* ---- Owner extras ---- */
+  let ownerHtml="";
+  if(A.role()==="owner"){
+    const week=[...T1_WEEK,{d:"Tue",v:revenue,on:true}];const wm=Math.max(...week.map(w=>w.v));const wsum=week.reduce((s,w)=>s+w.v,0);
+    const mk=T1_MARKET.map(m=>{const os=today.filter(o=>o.chan===m.n);return{...m,n0:os.length,v:os.reduce((s,o)=>s+o.total,0),lateN:os.filter(o=>A.isLate(o)).length}});
+    ownerHtml=`<div class="grid g2 mt24">
+      <div class="panel"><div class="p-head"><div class="h4">Week <span class="muted xs">${fmt(wsum)} · 7 days</span></div><button class="textbtn" onclick="App.go('growth',{tab:'analytics'})">Analytics</button></div>
+        <div style="padding:14px"><div class="bar">${week.map(w=>`<i class="${w.on?"on":""}" style="height:${Math.round(w.v/wm*100)}%" title="${w.d} · ${fmt(w.v)}" onclick="App.toast('${w.d} · ${fmt(w.v)}${w.on?" so far":""}')"></i>`).join("")}</div>
+        <div class="t-week">${week.map(w=>`<span class="${w.on?"on":""}">${w.d}</span>`).join("")}</div>
+        <div class="row mt16 sm soft" style="gap:16px"><span>Best day Sat ${fmt(6240)}</span><span class="sp"></span><span>Avg order ${fmt(Math.round(revenue/Math.max(1,today.filter(o=>o.paid==="paid").length)))}</span></div></div></div>
+      <div class="panel"><div class="p-head"><div class="h4">Marketplaces <span class="muted xs">today</span></div><button class="textbtn" onclick="App.go('orders',{view:'marketplaces'})">Orders</button></div>
+        <div style="padding:14px" class="t-mk">${mk.map(m=>`<div><div class="row" style="gap:8px"><b>${m.n}</b>${m.lateN?`<span class="pill --late">${m.lateN} late</span>`:""}</div><div class="n">${m.eta} · rating ${m.rating}</div></div><span class="tnum">${m.n0} orders</span><span class="tnum" style="text-align:right">${fmt(m.v)}</span>`).join("")}
+          <div style="grid-column:1/-1" class="btn-row mt8"><button class="btn --ghost --sm" onclick="T1.pause('Deliveroo')">${icon("pause")} Pause Deliveroo</button><button class="btn --ghost --sm" onclick="T1.pause('Uber Eats')">${icon("pause")} Pause Uber Eats</button><button class="btn --ghost --sm" onclick="App.toast('Menus synced · 23 products live on both')">${icon("refresh")} Sync menus</button></div></div></div></div>`;
+  }
+
+  body.innerHTML=kpis+`<div class="t-cols"><div class="col" style="gap:24px">${needHtml}</div><div class="col" style="gap:16px">${shiftHtml}${tomHtml}</div></div><div class="mt24">${slotHtml}</div>`+ownerHtml;
+
+  /* ================= FLORIST ================= */
+  function floristView(){
+    const mine=live.filter(o=>o.florist===me.id&&["making","photo"].includes(o.status)).sort((a,b)=>slotStartMin(a.slot)-slotStartMin(b.slot));
+    const queue=live.filter(o=>o.status==="queue").sort((a,b)=>slotStartMin(a.slot)-slotStartMin(b.slot));
+    const doneMine=today.filter(o=>o.florist===me.id&&["ready","out","delivered"].includes(o.status)).length;
+    const myTasks=TK.filter(t=>t.who===me.id&&t.status!=="done"&&!T1_DONE_TASKS.has(t.id));
+    const nxt=o=>o.status==="making"?["photo","Add photo","photo"]:["ready","Send photo · ready","check"];
+    const card=o=>{const p=A.product(o.product),n=nxt(o);return`<div class="f-card ${A.isLate(o)?"--late":""}">
+      <div class="fc-top" onclick="App.openOrder(${o.id})"><div class="photo --4x5"><img src="${p.img}" alt=""></div><div class="fc-t"><div class="caps">#${o.id} · ${o.slot}</div><div class="h3">${esc(p.name)}</div><div class="sm soft">${esc(o.size)}${o.addons.length?" · + "+o.addons.map(a=>esc(A.product(a).name)).join(", "):""}</div><div class="row mt8" style="gap:6px">${A.orderPill(o)}${o.card&&o.card.trim()?`<span class="tag">Card</span>`:""}${o.type==="collection"?`<span class="tag">Collection</span>`:""}</div>${o.notes?`<div class="note-box mt8 xs">${esc(o.notes)}</div>`:""}</div></div>
+      <div class="fc-foot"><button class="btn --ghost" onclick="App.openOrder(${o.id})">Open</button><button class="btn" onclick="App.setOrderStatus(${o.id},'${n[0]}')">${icon(n[2])} ${n[1]}</button></div></div>`};
+    const kp=`<div class="grid g3 f-kpi">
+      <div class="kpi-card" onclick="App.go('production',{mine:true})"><span class="caps">Mine in progress</span><span class="kpi">${mine.length}</span><span class="delta">${mine.filter(o=>o.status==="photo").length} waiting for photo</span></div>
+      <div class="kpi-card ${queue.some(o=>A.isLate(o))?"--hot":""}" onclick="App.go('production')"><span class="caps">Next in queue</span><span class="kpi ${queue.some(o=>A.isLate(o))?"accent":""}">${queue.length}</span><span class="delta">${queue[0]?"first · "+queue[0].slot:"queue is empty"}</span></div>
+      <div class="kpi-card" onclick="App.go('orders',{view:'today'})"><span class="caps">Done by me today</span><span class="kpi">${doneMine}</span><span class="delta">${today.length-live.length} delivered by the shop</span></div></div>`;
+    const mineHtml=`<div class="sec-head"><div class="h2">My orders in progress</div><button class="textbtn" onclick="App.go('production',{mine:true})">Board</button></div>
+      ${mine.length?`<div class="f-grid">${mine.map(card).join("")}</div>`:`<div class="empty" style="border:1px solid var(--hair)">${icon("production")}<div class="h3">Nothing on your table</div><div class="sm">Take the next order from the queue.</div><button class="btn --sm mt8" onclick="T1.takeNext()">${icon("play")} Take next</button></div>`}`;
+    const qHtml=`<div class="sec-head"><div class="h2">Next in queue <span class="muted sm">${queue.length}</span></div><button class="textbtn" onclick="App.go('production')">All</button></div>
+      <div class="list f-queue" style="border:1px solid var(--hair)">${queue.slice(0,5).map(o=>{const p=A.product(o.product);return`<div class="li" onclick="App.openOrder(${o.id})"><span class="thumb"><img src="${p.img}" alt=""></span><div class="t"><b>#${o.id} · ${esc(p.name)} · ${esc(o.size)}</b><small>${o.slot}${o.addons.length?" · + "+o.addons.map(a=>esc(A.product(a).name)).join(", "):""}${o.type==="collection"?" · collection":""}</small></div>${A.orderPill(o)}<button class="btn --sm" onclick="event.stopPropagation();App.assignFlorist(${o.id},'${me.id}')">${icon("play")} Take</button></div>`}).join("")||`<div class="empty">${icon("check")}<div class="h3">Queue is clear</div><div class="sm">Everything for today has been started.</div></div>`}</div>`;
+    const tHtml=`<div><div class="sec-head"><div class="h3">My tasks <span class="muted sm">${myTasks.length}</span></div><button class="textbtn" onclick="App.go('tasks',{mine:true})">All tasks</button></div>
+      <div class="list f-task" style="border:1px solid var(--hair)">${myTasks.map(t=>`<div class="li" onclick="App.go('tasks',{open:${t.id}})"><span class="dot ${t.late||new Date(t.due)<A.NOW?"--accent":t.status==="review"?"--warn":"--ink"}"></span><div class="t"><b>${esc(t.t)}</b><small>due ${A.fmtDay(t.due)} ${A.fmtTime(t.due)} · from ${esc(A.user(t.by)?.n||t.by)}</small></div>${t.status==="review"?A.pill("review"):`<button class="btn --ghost --sm" onclick="event.stopPropagation();T1.doneTask(${t.id})">${icon("check")} Done</button>`}</div>`).join("")||`<div class="empty">${icon("check")}<div class="sm">No open tasks for you.</div></div>`}</div></div>`;
+    const lHtml=`<div><div class="sec-head"><div class="h3">Learning today</div><button class="textbtn" onclick="App.go('learning')">Learning</button></div>
+      <div class="col" style="gap:8px">${T1_LESSONS.map((l,i)=>`<div class="f-lesson"><span class="ic">${icon(i?"sparkle":"book")}</span><div style="flex:1;min-width:0"><b>${esc(l.t)}</b><div class="sm muted">${esc(l.sub)}</div></div><button class="btn --sm ${i?"--ghost":""}" onclick="App.go('learning',{${i?"quiz":"lesson"}:true})">${icon("play")} ${l.min} min</button></div>`).join("")}
+      <div class="note-box">${icon("info")} Huddle at 13:00 · Kamila takes over the floor. RFH delivery Thursday – peonies out of stock till then.</div></div></div>`;
+    return kp+`<div class="mt24">${mineHtml}</div><div class="mt24">${qHtml}</div><div class="f-cols">${tHtml}${lHtml}</div>`;
+  }
+};
+
+/* ---- 01 · Today – actions ---- */
+window.T1={
+  filter(k){App.state.params=Object.assign({},App.state.params,{need:k});window.mount_today(App.state.params)},
+  person(ev,id){const u=App.user(id);App.pop(ev,[u.n+" · "+u.title,{t:"Their orders today",ic:"orders",fn:()=>App.go("orders",{view:"today",florist:id})},{t:"Message",ic:"chat",fn:()=>App.toast("Message to "+u.n+" · Telegram (demo)")},{t:"Shift & timesheet",ic:"calendar",fn:()=>App.go("team",{tab:"schedule",who:id})},"-",{t:"Send home early",ic:"logout",fn:()=>App.toast(u.n+" · shift ends now (demo)")}])},
+  pause(m){App.confirm("Pause "+m+"?","The store goes offline on "+m+" for 60 minutes. Orders already accepted are not affected.","Pause for 1 h",()=>{App.toast(m+" paused for 60 min");App.push(m+" paused","Store offline till "+App.fmtTime(new Date(App.NOW.getTime()+36e5).toISOString()),{icon:"pause"})})},
+  takeNext(){const me=App.me();const q=App.data.orders.filter(o=>o.n===0&&o.status==="queue").sort((a,b)=>a.slot.localeCompare(b.slot));if(!q.length){App.toast("Queue is empty – nothing to take");return}App.assignFlorist(q[0].id,me.id);App.openOrder(q[0].id)},
+  doneTask(id){T1_DONE_TASKS.add(id);const t=App.data.tasks.find(x=>x.id===id);if(t)t.status="review";App.emit("tasks");App.toast("Task sent to check","Undo",()=>{T1_DONE_TASKS.delete(id);if(t)t.status="todo";App.emit("tasks");if(App.state.current==="today")window.mount_today(App.state.params)});if(App.state.current==="today")window.mount_today(App.state.params)}
+};
+document.addEventListener('orders',()=>{if(App.state.current==='today')window.mount_today(App.state.params)});
+document.addEventListener('tasks',()=>{if(App.state.current==='today')window.mount_today(App.state.params)});
+</script>

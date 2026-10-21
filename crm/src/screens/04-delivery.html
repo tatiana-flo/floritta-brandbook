@@ -1,0 +1,320 @@
+<style>
+/* ===== 04 · Delivery dispatch (list · map · couriers) ===== */
+#s-delivery .d4-wrap{display:grid;grid-template-columns:340px minmax(0,1fr) 300px;height:100%;min-height:0}
+#s-delivery .d4-wrap>*{min-width:0;min-height:0;overflow:auto}
+#s-delivery .d4-wrap>*+*{border-left:1px solid var(--hair)}
+#s-delivery .d4-seg{display:none}
+#s-delivery .d4-seg .ph{display:none}
+#s-delivery .d4-cnt{font-size:12px;color:var(--grey);white-space:nowrap}
+#s-delivery .d4-cnt b{color:var(--ink);font-weight:400}
+/* list */
+#s-delivery .d4-slot{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;background:var(--paper-2);border-bottom:1px solid var(--hair);font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--graphite)}
+#s-delivery .d4-slot .n{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--grey);letter-spacing:0}
+#s-delivery .d4-slot.--late{color:var(--accent)}
+#s-delivery .d4-row{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid var(--hair);cursor:pointer;transition:background var(--m-fast);position:relative}
+#s-delivery .d4-row:hover{background:var(--silver)}
+#s-delivery .d4-row.on{background:var(--silver);box-shadow:inset 3px 0 0 var(--ink)}
+#s-delivery .d4-row.--late{box-shadow:inset 3px 0 0 var(--accent)}
+#s-delivery .d4-row.--done{opacity:.6}
+#s-delivery .d4-row .check{margin-top:3px}
+#s-delivery .d4-row .check input{width:20px;height:20px}
+#s-delivery .d4-row .t{flex:1;min-width:0}
+#s-delivery .d4-row .t .l1{display:flex;align-items:center;gap:8px;font-size:13.5px;white-space:nowrap}
+#s-delivery .d4-row .t .l1 b{font-weight:400;font-variant-numeric:tabular-nums}
+#s-delivery .d4-row .t .l1 .sp{flex:1}
+#s-delivery .d4-row .t .l2{font-size:13px;color:var(--graphite);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+#s-delivery .d4-row .t .l3{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--grey);margin-top:4px;white-space:nowrap;overflow:hidden}
+#s-delivery .d4-row .t .l3 .accent{overflow:hidden;text-overflow:ellipsis}
+#s-delivery .d4-row .ib{width:28px;height:28px;flex:none;margin:-2px -6px 0 0}
+#s-delivery .d4-row .ib svg{width:16px;height:16px}
+/* map column */
+#s-delivery .d4-mapcol{display:flex;flex-direction:column;overflow:hidden}
+#s-delivery .d4-map{flex:1;min-height:0}
+#s-delivery .d4-map .pin.--sel{box-shadow:0 0 0 1px var(--ink),0 0 0 5px var(--accent-bg)}
+#s-delivery .d4-map .pin.--out::after{content:"";position:absolute;inset:-6px;border:1px solid var(--ink);border-radius:50%;opacity:.35}
+#s-delivery .d4-map .pin.--delivered{opacity:.55}
+#s-delivery .d4-map .lbl-pin{pointer-events:none;z-index:2}
+#s-delivery .d4-cpin{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px;z-index:3;cursor:pointer}
+#s-delivery .d4-cpin .avatar{box-shadow:0 0 0 2px var(--paper)}
+#s-delivery .d4-cpin small{font-size:11px;background:var(--ink);color:var(--paper);padding:1px 6px;white-space:nowrap}
+#s-delivery .d4-mapbar{display:flex;align-items:center;gap:14px;padding:8px 14px;border-top:1px solid var(--hair);font-size:12px;color:var(--grey);flex:none;flex-wrap:wrap;background:var(--paper)}
+#s-delivery .d4-mapbar .lg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+#s-delivery .d4-mapbar .lg .pin{position:static;transform:none;cursor:default}
+#s-delivery .d4-mapbar .sp{flex:1}
+#s-delivery .d4-mapbar .kbd{margin-left:4px}
+/* side */
+#s-delivery .d4-side{display:flex;flex-direction:column;background:var(--paper)}
+#s-delivery .d4-sec{padding:14px 14px 4px}
+#s-delivery .d4-sec .sec-head{margin:0 0 10px}
+#s-delivery .d4-cour{border:1px solid var(--hair);padding:10px 12px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px}
+#s-delivery .d4-cour .hd{display:flex;align-items:center;gap:10px}
+#s-delivery .d4-cour .hd .nm{flex:1;min-width:0}
+#s-delivery .d4-cour .hd .nm b{display:block;font-weight:400;font-size:14px}
+#s-delivery .d4-cour .hd .nm small{display:block;font-size:11.5px;color:var(--grey)}
+#s-delivery .d4-cour .st{font-size:12.5px;color:var(--graphite);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#s-delivery .d4-cour.--off{opacity:.7}
+#s-delivery .d4-run{border:1px solid var(--hair);padding:10px 12px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:border-color var(--m-fast)}
+#s-delivery .d4-run:hover{border-color:var(--grey)}
+#s-delivery .d4-run .hd{display:flex;align-items:center;gap:8px;font-size:13.5px}
+#s-delivery .d4-run .hd b{font-weight:400;font-variant-numeric:tabular-nums}
+#s-delivery .d4-run .hd .sp{flex:1}
+#s-delivery .d4-run .stops{font-size:12px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-delivery .d4-prob{border:1px solid var(--hair);box-shadow:inset 3px 0 0 var(--accent);padding:10px 12px 10px 14px;margin-bottom:8px;display:flex;flex-direction:column;gap:6px}
+#s-delivery .d4-prob .hd{display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer}
+#s-delivery .d4-prob .hd b{font-weight:400;font-variant-numeric:tabular-nums}
+#s-delivery .d4-prob .why{font-size:13px;color:var(--accent)}
+#s-delivery .d4-prob .ad{font-size:12px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-delivery .d4-prob .btn-row{gap:6px}
+#s-delivery .d4-prob .btn{padding:0 10px}
+#s-delivery .d4-empty{padding:18px 8px 12px;text-align:center;color:var(--grey);font-size:13px}
+/* run sheet */
+.d4-stop{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair)}
+.d4-stop .no{width:24px;height:24px;border:1px solid var(--light);display:grid;place-items:center;font-size:11px;font-variant-numeric:tabular-nums;flex:none}
+.d4-stop.--done .no{background:var(--ok);border-color:var(--ok);color:var(--paper)}
+.d4-stop .t{flex:1;min-width:0}
+.d4-stop .t b{display:block;font-weight:400;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d4-stop .t small{display:block;font-size:12px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d4-pick{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.d4-pick label{display:flex;align-items:center;gap:10px;border:1px solid var(--hair);padding:8px 10px;cursor:pointer}
+.d4-pick label.on{border-color:var(--ink)}
+.d4-pick label input{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1px solid var(--light);border-radius:50%;margin:0;display:grid;place-items:center;flex:none}
+.d4-pick label input:checked{border-color:var(--ink)}
+.d4-pick label input:checked::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.d4-pick label .nm{flex:1;min-width:0;font-size:13.5px}
+.d4-pick label small{font-size:11.5px;color:var(--grey)}
+/* iPad: list OR map + side */
+[data-size="ipad"] #s-delivery .d4-wrap{grid-template-columns:minmax(0,1fr) 280px}
+[data-size="ipad"] #s-delivery .d4-seg{display:inline-flex}
+[data-size="ipad"] #s-delivery .d4-wrap[data-view="map"] .d4-list,[data-size="ipad"] #s-delivery .d4-wrap[data-view="couriers"] .d4-list{display:none}
+[data-size="ipad"] #s-delivery .d4-wrap[data-view="list"] .d4-mapcol{display:none}
+[data-size="ipad"] #s-delivery .d4-row{padding:12px 14px}
+/* Phone: one panel at a time */
+[data-size="phone"] #s-delivery .d4-wrap{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] #s-delivery .d4-wrap>*+*{border-left:0}
+[data-size="phone"] #s-delivery .d4-seg{display:inline-flex}
+[data-size="phone"] #s-delivery .d4-seg .ph{display:inline-flex}
+[data-size="phone"] #s-delivery .d4-wrap>*{display:none}
+[data-size="phone"] #s-delivery .d4-wrap[data-view="list"] .d4-list,[data-size="phone"] #s-delivery .d4-wrap[data-view="map"] .d4-mapcol,[data-size="phone"] #s-delivery .d4-wrap[data-view="couriers"] .d4-side{display:flex;flex-direction:column}
+[data-size="phone"] #s-delivery .scr-head .chips{order:5;width:100%}
+[data-size="phone"] #s-delivery .d4-row .t .l1{white-space:normal;flex-wrap:wrap}
+</style>
+
+<section class="scr" id="s-delivery" data-nav="Delivery dispatch" data-group="Delivery" data-title="Delivery" data-sub="Today · 80 Willow Walk SE1" data-roles="owner manager">
+  <div class="scr-head" id="d4-head"></div>
+  <div class="scr-body flush">
+    <div class="d4-wrap" id="d4-wrap" data-view="list">
+      <div class="d4-list" id="d4-list"></div>
+      <div class="d4-mapcol">
+        <div class="map d4-map" id="d4-map"></div>
+        <div class="d4-mapbar" id="d4-mapbar"></div>
+      </div>
+      <div class="d4-side" id="d4-side"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===== 04 · Delivery dispatch runtime (prefix D4) ===== */
+window.D4=(()=>{
+  const S={filter:"all",view:"list",sel:new Set(),runs:null,uber:[],lastParams:null,calls:{}};
+  const SLOT_ORD=s=>App.SLOTS.indexOf(s);
+  const hash=s=>{let h=7;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h};
+  const SHOP={x:50,y:56};
+  const pos=o=>{const h=hash(o.addr+o.id);return{x:10+(h%1000)/1000*80,y:8+((h>>10)%1000)/1000*76}};
+  const km=o=>{const p=pos(o);return Math.round((Math.hypot(p.x-SHOP.x,(p.y-SHOP.y)*0.8)/16+0.4)*10)/10};
+  const pl=(n,w)=>n+" "+w+(n===1?"":"s");
+  const todays=()=>App.data.orders.filter(o=>o.n===0&&o.type==="delivery"&&o.status!=="cancelled");
+  const onBoard=()=>todays().filter(o=>["ready","out","delivered"].includes(o.status));
+  const upcoming=()=>todays().filter(o=>["queue","making","photo"].includes(o.status));
+  const problems=()=>todays().filter(o=>o.problem);
+  const couriers=()=>App.data.staff.filter(s=>s.role==="courier");
+  const vehicle=c=>c.title.split("·")[1].trim();
+  const stopsOf=id=>App.data.orders.filter(o=>o.n===0&&o.courier===id&&o.status==="out");
+  const assignedOf=id=>App.data.orders.filter(o=>o.n===0&&o.courier===id&&o.status==="ready");
+  const minsFromNow=m=>{const d=new Date(App.NOW);d.setMinutes(d.getMinutes()+m);return App.fmtTime(d.toISOString())};
+  const selectable=o=>o.status==="ready"&&!o.courier;
+  const fmtRunId=r=>"R"+r.id;
+
+  function seedRuns(){
+    if(S.runs)return;S.runs=[];let n=1;
+    couriers().forEach(c=>{const st=stopsOf(c.id);if(st.length){S.runs.push({id:n++,courier:c.id,stops:st.map(o=>o.id),started:App.T(10,5),createdBy:"valeria"})}});
+    App.data.orders.filter(o=>o.n===0&&o.courier==="Uber Direct"&&o.status!=="delivered").forEach(o=>S.uber.push({id:o.id,eta:minsFromNow(18),price:9}));
+  }
+  function filtered(){
+    let L=onBoard();
+    if(S.filter==="ready")L=L.filter(o=>o.status==="ready");
+    else if(S.filter==="out")L=L.filter(o=>o.status==="out");
+    else if(S.filter==="delivered")L=L.filter(o=>o.status==="delivered");
+    else if(S.filter==="problems")L=todays().filter(o=>o.problem);
+    else if(S.filter==="unassigned")L=L.filter(o=>o.status==="ready"&&!o.courier);
+    const rank=o=>(o.problem?0:o.status==="out"?1:o.status==="ready"?2:3);
+    return L.sort((a,b)=>SLOT_ORD(a.slot)-SLOT_ORD(b.slot)||rank(a)-rank(b)||a.id-b.id);
+  }
+  function pruneSel(){[...S.sel].forEach(id=>{const o=App.order(id);if(!o||!selectable(o))S.sel.delete(id)})}
+
+  /* ---------- render ---------- */
+  function render(){pruneSel();renderHead();renderList();renderMap();renderSide();App.$("#d4-wrap").dataset.view=S.view}
+  function renderHead(){
+    const B=onBoard(),cnt={all:B.length,unassigned:B.filter(o=>o.status==="ready"&&!o.courier).length,ready:B.filter(o=>o.status==="ready").length,out:B.filter(o=>o.status==="out").length,delivered:B.filter(o=>o.status==="delivered").length,problems:problems().length};
+    const chip=(k,l)=>`<button class="chip ${S.filter===k?"on":""}" onclick="D4.filter('${k}')">${l}<span class="n">${cnt[k]}</span></button>`;
+    const n=S.sel.size;
+    App.$("#d4-head").innerHTML=`
+      <div class="chips">${chip("all","All")}${chip("unassigned","Unassigned")}${chip("ready","Ready")}${chip("out","Out")}${chip("delivered","Delivered")}<button class="chip ${S.filter==="problems"?"on":""} ${cnt.problems?"":"is-disabled"}" onclick="D4.filter('problems')"><span class="${cnt.problems?"accent":""}">Problems</span><span class="n">${cnt.problems}</span></button></div>
+      <div class="seg-ctl d4-seg"><button class="${S.view==="list"?"on":""}" onclick="D4.view('list')">${App.icon("list")} List</button><button class="${S.view==="map"?"on":""}" onclick="D4.view('map')">${App.icon("map")} Map</button><button class="ph ${S.view==="couriers"?"on":""}" onclick="D4.view('couriers')">${App.icon("truck")} Couriers</button></div>
+      <span class="sp"></span>
+      <span class="d4-cnt">${n?`<b>${n} selected</b> · <button class="textbtn" onclick="D4.clearSel()">clear</button>`:`${upcoming().length} still in production`}</span>
+      <button class="btn --ghost --sm" onclick="D4.uberModal()">${App.icon("truck")} Call Uber Direct</button>
+      <button class="btn --sm" ${n?"":"disabled"} onclick="D4.runModal()">${App.icon("route")} Create run${n?" · "+n:""}</button>`;
+  }
+  function renderList(){
+    const L=filtered();const el=App.$("#d4-list");
+    if(!L.length){el.innerHTML=`<div class="empty">${App.icon("truck")}<div class="h3">${S.filter==="problems"?"No delivery problems":S.filter==="unassigned"?"Everything has a courier":"Nothing here yet"}</div><div class="sm">${upcoming().length?upcoming().length+" orders are still being made.":"All of today's deliveries are on the board."}</div><button class="btn --ghost --sm" onclick="D4.filter('all')">Show all</button></div>`;return}
+    let h="",slot=null;
+    L.forEach(o=>{
+      if(o.slot!==slot){slot=o.slot;const inSlot=L.filter(x=>x.slot===slot);const late=inSlot.some(x=>App.isLate(x));h+=`<div class="d4-slot ${late?"--late":""}">${App.icon("clock")} ${App.esc(slot)}<span class="n">${inSlot.filter(x=>x.status==="delivered").length}/${inSlot.length}</span></div>`}
+      const c=App.customer(o.customer),p=App.product(o.product),late=App.isLate(o),sel=S.sel.has(o.id);
+      const cour=o.courier?(App.user(o.courier)?App.avatar(o.courier,"--s")+" "+App.esc(App.user(o.courier).n):`<span class="tag --line">Uber Direct</span>`):`<span class="${o.status==="ready"?"accent":"muted"}">No courier</span>`;
+      h+=`<div class="d4-row ${sel?"on":""} ${late&&o.status!=="delivered"?"--late":""} ${o.status==="delivered"?"--done":""}" data-id="${o.id}" onclick="App.openOrder(${o.id})">
+        <label class="check" onclick="event.stopPropagation()" title="${selectable(o)?"Select for a run":"Only ready orders without a courier can join a run"}"><input type="checkbox" ${sel?"checked":""} ${selectable(o)?"":"disabled"} onchange="D4.sel(${o.id},this.checked)"></label>
+        <div class="t">
+          <div class="l1"><b>#${o.id}</b>${App.orderPill(o)}<span class="sp"></span><span class="xs muted">${km(o)} km</span></div>
+          <div class="l2">${App.esc(p.name)} · ${App.esc(o.size)} → ${App.esc(o.recipient)}</div>
+          <div class="l3">${App.icon("pin")}<span style="overflow:hidden;text-overflow:ellipsis">${App.esc(o.addr)}</span></div>
+          <div class="l3">${cour}${o.problem?`<span class="accent">· ${App.esc(o.problem)}</span>`:o.notes?`<span class="muted">· ${App.esc(o.notes)}</span>`:""}</div>
+        </div>
+        <button class="ib" title="Actions" onclick="event.stopPropagation();D4.rowMenu(event,${o.id})">${App.icon("dots")}</button>
+      </div>`;
+    });
+    el.innerHTML=h;
+  }
+  function renderMap(){
+    const m=App.$("#d4-map");const L=filtered();
+    let h=`<span class="pin --shop" style="left:${SHOP.x}%;top:${SHOP.y}%" title="Floritta · 80 Willow Walk" onclick="App.toast('Floritta · 80 Willow Walk, Bermondsey SE1 5SY')"></span><span class="lbl-pin" style="left:${SHOP.x}%;top:${SHOP.y}%">Shop</span>`;
+    L.forEach(o=>{const p=pos(o);const cls=o.problem||(App.isLate(o)&&o.status!=="delivered")?"--accent":o.status==="delivered"?"--ok --delivered":o.status==="out"?"--out":"";
+      h+=`<span class="pin ${cls} ${S.sel.has(o.id)?"--sel":""}" style="left:${p.x}%;top:${p.y}%" title="#${o.id} · ${App.esc(o.recipient)} · ${App.esc(o.addr)}" onclick="App.openOrder(${o.id})"></span>`;
+      if(o.problem||S.sel.has(o.id)||o.status==="out")h+=`<span class="lbl-pin ${o.problem?"accent":""}" style="left:${p.x}%;top:${p.y}%">#${o.id}${o.problem?" · "+App.esc(o.problem.split(" –")[0]):""}</span>`});
+    couriers().forEach(c=>{const st=stopsOf(c.id);let x,y;if(st.length){x=st.reduce((s,o)=>s+pos(o).x,0)/st.length;y=Math.max(7,st.reduce((s,o)=>s+pos(o).y,0)/st.length-6)}else{if(!c.on)return;const i=couriers().indexOf(c);x=SHOP.x-9+i*6;y=SHOP.y+7}
+      h+=`<span class="d4-cpin" style="left:${x}%;top:${y}%" onclick="D4.courierSheet('${c.id}')">${App.avatar(c.id,"--s --ink")}<small>${App.esc(c.n)} · ${st.length?pl(st.length,"stop"):"at shop"}</small></span>`});
+    S.uber.forEach(u=>{const o=App.order(u.id);if(!o||o.status==="delivered")return;const p=pos(o);h+=`<span class="d4-cpin" style="left:${p.x}%;top:${Math.max(7,p.y-7)}%" onclick="App.openOrder(${o.id})"><small>Uber · ETA ${u.eta}</small></span>`});
+    m.innerHTML=h;
+    App.$("#d4-mapbar").innerHTML=`<span class="lg"><span class="pin --shop"></span>Shop</span><span class="lg"><span class="pin"></span>Ready</span><span class="lg"><span class="pin --out"></span>Out</span><span class="lg"><span class="pin --ok"></span>Delivered</span><span class="lg"><span class="pin --accent"></span>Late / problem</span><span class="sp"></span><span>${pl(L.length,"stop")} shown</span><button class="textbtn" onclick="D4.showAll()">Show all<span class="kbd">Z</span></button>`;
+  }
+  function renderSide(){
+    const n=S.sel.size;
+    let h=`<div class="d4-sec"><div class="sec-head"><div class="h3">Couriers</div><button class="textbtn" onclick="App.go('team',{tab:'schedule'})">Rota</button></div>`;
+    couriers().forEach(c=>{const st=stopsOf(c.id),as=assignedOf(c.id);const idle=!st.length&&c.on;
+      const status=st.length?`<span class="pill --out">On the road</span>`:c.on?`<span class="pill --ready">At shop</span>`:`<span class="pill --queue">Off · from ${c.shift.split("–")[0]}</span>`;
+      const line=st.length?`${pl(st.length,"stop")} · next #${st[0].id} · ETA ${minsFromNow(9)} · back ${minsFromNow(9*st.length+12)}`:as.length?`${as.length} assigned, not left yet`:c.on?`Idle ${28+hash(c.id)%30} min`:`Shift ${c.shift}`;
+      const done=App.data.orders.filter(o=>o.n===0&&o.courier===c.id&&o.status==="delivered").length;const tot=done+st.length;
+      h+=`<div class="d4-cour ${c.on||st.length?"":"--off"}"><div class="hd" style="cursor:pointer" onclick="D4.courierSheet('${c.id}')">${App.avatar(c.id,"--l")}<div class="nm"><b>${App.esc(c.n)}</b><small>${vehicle(c)} · ${c.shift}</small></div>${status}</div>
+        <div class="st">${line}</div>${tot?`<div class="progress --ok"><i style="width:${Math.round(done/tot*100)}%"></i></div>`:""}
+        <div class="btn-row"><button class="btn --ghost --sm" onclick="D4.call('${c.id}')">${App.icon("phone")} Call</button>${n?`<button class="btn --sm" onclick="D4.createRun('${c.id}',false)">${App.icon("route")} Assign ${n}</button>`:idle?`<button class="btn --ghost --sm" onclick="D4.filter('unassigned');App.toast('Tick ready orders, then Create run')">${App.icon("plus")} Build run</button>`:""}</div></div>`});
+    h+=`</div><div class="d4-sec"><div class="sec-head"><div class="h3">Runs</div><span class="xs muted">${S.runs.length} today</span></div>`;
+    if(!S.runs.length)h+=`<div class="d4-empty">No runs yet · tick orders and press Create run</div>`;
+    S.runs.forEach(r=>{const os=r.stops.map(App.order).filter(Boolean);const done=os.filter(o=>o.status==="delivered").length,left=os.filter(o=>o.status!=="delivered");const cu=App.user(r.courier);
+      h+=`<div class="d4-run" onclick="D4.runSheet(${r.id})"><div class="hd"><b>Run ${fmtRunId(r)}</b>${App.avatar(r.courier,"--s")}<span>${App.esc(cu?cu.n:r.courier)}</span><span class="sp"></span>${r.started?done===os.length?`<span class="pill --delivered">Done</span>`:`<span class="pill --out">${left.length} left</span>`:`<span class="pill --ready">Planned</span>`}</div>
+        <div class="progress --ok"><i style="width:${os.length?Math.round(done/os.length*100):0}%"></i></div>
+        <div class="stops">${pl(os.length,"stop")} · ${done} delivered${r.started?" · left "+App.fmtTime(r.started):""}${left.length?" · next "+App.esc(left[0].addr.split(",")[0]):""}</div>
+        <div class="btn-row">${r.started?left.length?`<button class="btn --sm" onclick="event.stopPropagation();D4.nextStop(${r.id})">${App.icon("check")} Stop delivered</button>`:"":`<button class="btn --sm" onclick="event.stopPropagation();D4.startRun(${r.id})">${App.icon("play")} Start run</button>`}<button class="btn --ghost --sm" onclick="event.stopPropagation();D4.printRun(${r.id})">${App.icon("printer")}</button></div></div>`});
+    const ub=S.uber.map(u=>App.order(u.id)).filter(o=>o&&o.status!=="delivered");
+    if(ub.length){h+=`<div class="caps" style="margin:6px 0 8px">Uber Direct</div>`;ub.forEach(o=>{const u=S.uber.find(x=>x.id===o.id);h+=`<div class="d4-run" onclick="App.openOrder(${o.id})"><div class="hd"><b>#${o.id}</b><span class="tag --line">Uber</span><span class="sp"></span>${o.status==="out"?`<span class="pill --out">On the way</span>`:`<span class="pill --ready">Pickup ${u.eta}</span>`}</div><div class="stops">${App.esc(o.addr)} · ${App.fmt(u.price)}</div><div class="btn-row">${o.status==="ready"?`<button class="btn --sm" onclick="event.stopPropagation();App.setOrderStatus(${o.id},'out',{courier:'Uber Direct'})">${App.icon("truck")} Picked up</button>`:`<button class="btn --sm" onclick="event.stopPropagation();App.setOrderStatus(${o.id},'delivered')">${App.icon("check")} Delivered</button>`}<button class="btn --ghost --sm" onclick="event.stopPropagation();App.toast('Tracking link copied · uber.com/track')">${App.icon("link")}</button></div></div>`})}
+    h+=`</div><div class="d4-sec"><div class="sec-head"><div class="h3 ${problems().length?"accent":""}">Problems</div><span class="xs muted">${problems().length}</span></div>`;
+    if(!problems().length)h+=`<div class="d4-empty">${App.icon("check")}<div>No delivery problems right now</div></div>`;
+    problems().forEach(o=>{h+=`<div class="d4-prob"><div class="hd" onclick="App.openOrder(${o.id})"><b>#${o.id}</b><span>${App.esc(o.recipient)}</span><span class="sp"></span>${App.orderPill(o)}</div><div class="why">${App.esc(o.problem)}</div><div class="ad">${App.esc(o.addr)} · ${o.courier?App.esc(App.user(o.courier)?.n||o.courier):"no courier"} · ${App.esc(o.slot)}</div>
+      <div class="btn-row"><button class="btn --ghost --sm" onclick="D4.callRecipient(${o.id})">${App.icon("phone")} Call recipient</button><button class="btn --ghost --sm" onclick="D4.resolve(${o.id})">${App.icon("check")} Resolve</button><button class="btn --ghost --sm" onclick="D4.returnToShop(${o.id})">${App.icon("undo")} Return to shop</button></div></div>`});
+    h+=`</div>`;
+    App.$("#d4-side").innerHTML=h;
+  }
+
+  /* ---------- actions ---------- */
+  function filter(k){S.filter=k;if(App.state.size!=="desktop"&&S.view==="couriers")S.view="list";render()}
+  function view(v){S.view=v;render()}
+  function sel(id,on){if(on)S.sel.add(id);else S.sel.delete(id);render()}
+  function clearSel(){S.sel.clear();render()}
+  function showAll(){S.filter="all";if(App.state.size!=="desktop")S.view="map";render();App.toast("All stops in view")}
+  function rowMenu(ev,id){const o=App.order(id);const items=["#"+id+" · "+App.esc(o.recipient)];
+    if(o.status==="ready"){items.push({t:"Hand to courier…",ic:"user",fn:()=>App.pickCourier(ev,id)});items.push({t:"Call Uber Direct",ic:"truck",fn:()=>uberModal(id)});items.push({t:"Mark picked up (out)",ic:"play",fn:()=>App.setOrderStatus(id,"out",{courier:o.courier||undefined})})}
+    if(o.status==="out"){items.push({t:"Mark delivered",ic:"check",fn:()=>App.setOrderStatus(id,"delivered")});items.push({t:"Return to shop",ic:"undo",fn:()=>returnToShop(id)})}
+    items.push({t:"Open order",ic:"orders",fn:()=>App.openOrder(id)},{t:"Message customer",ic:"chat",fn:()=>App.openOrder(id,"chat")},"-",o.problem?{t:"Resolve problem",ic:"check",fn:()=>resolve(id)}:{t:"Report a problem",ic:"alert",cls:"--accent",fn:()=>problemModal(id)});
+    App.pop(ev,items)}
+  function call(cid){const c=App.user(cid);App.toast(`Calling ${c.n} · ${vehicle(c)}`,"Message instead",()=>App.toast(`Telegram → ${c.n}: sent`))}
+  function callRecipient(id){const o=App.order(id);o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Called recipient · "+o.recipient});S.calls[id]=(S.calls[id]||0)+1;App.toast(`Calling ${o.recipient} · attempt ${S.calls[id]}`,"No answer → SMS",()=>{o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"SMS to recipient · courier is outside"});App.toast("SMS sent · “Your flowers are outside, please call us”")})}
+  function resolve(id){const o=App.order(id);o.problem="";o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Problem resolved"});App.emit("orders",{id});App.toast(`#${id} · problem resolved`)}
+  function returnToShop(id){const o=App.order(id);App.confirm("Return #"+id+" to shop?",`${App.esc(o.recipient)} · ${App.esc(o.addr)}. The courier brings it back, the order goes to Ready and the customer gets a message to rebook.`,"Return to shop",()=>{o.courier=null;o.problem="";App.setOrderStatus(id,"ready",{note:"Returned to shop · rebook with customer",silent:true});S.runs.forEach(r=>r.stops=r.stops.filter(x=>x!==id));App.push("Returned to shop","#"+id+" · "+o.recipient+" · message sent to customer to rebook",{icon:"undo",type:"problem",go:["delivery",{open:id}]});App.toast(`#${id} back in Ready`)})}
+  function problemModal(id){const o=App.order(id);App.modal({title:"Problem with #"+id,body:`<div class="field"><label>What happened</label><select class="select" id="d4-pr"><option>Recipient not answering</option><option>Address incomplete – no flat number</option><option>Recipient moved away</option><option>Damaged in transit</option><option>Courier delayed – traffic</option></select></div><div class="field mt16"><label>Note for the team</label><textarea class="textarea" id="d4-prn" placeholder="Optional…"></textarea></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --accent --sm" onclick="D4._problemGo(${id})">${App.icon("alert")} Flag problem</button>`})}
+  function _problemGo(id){const o=App.order(id);const v=App.$("#d4-pr").value,n=App.$("#d4-prn").value.trim();o.problem=v;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Problem · "+v+(n?" · "+n:"")});App.closeModal();App.emit("orders",{id});App.push("Delivery problem","#"+id+" · "+v,{icon:"alert",type:"problem",go:["delivery",{open:id}]})}
+
+  /* runs */
+  function runModal(){
+    if(!S.sel.size){App.toast("Tick ready orders first");return}
+    const os=[...S.sel].map(App.order).sort((a,b)=>SLOT_ORD(a.slot)-SLOT_ORD(b.slot));
+    const cs=couriers();const def=cs.find(c=>c.on&&!stopsOf(c.id).length)||cs.find(c=>c.on)||cs[0];
+    App.modal({title:`New run · ${pl(os.length,"stop")}`,body:`<div class="xs muted" style="margin-bottom:6px">Stops in slot order · ${(Math.round(os.reduce((s,o)=>s+km(o),0)*10)/10).toFixed(1)} km · about ${os.length*9+12} min</div>
+      ${os.map((o,i)=>`<div class="d4-stop"><span class="no">${i+1}</span><div class="t"><b>#${o.id} · ${App.esc(o.recipient)}</b><small>${App.esc(o.addr)} · ${App.esc(o.slot)}</small></div></div>`).join("")}
+      <div class="caps" style="margin-top:14px">Courier</div>
+      <div class="d4-pick" id="d4-pick">${cs.map(c=>`<label class="${c.id===def.id?"on":""}"><input type="radio" name="d4c" value="${c.id}" ${c.id===def.id?"checked":""} onchange="D4._pickOn(this)">${App.avatar(c.id,"--s")}<span class="nm">${App.esc(c.n)} · ${vehicle(c)}</span><small>${stopsOf(c.id).length?pl(stopsOf(c.id).length,"stop")+" on the road":c.on?"at shop":"off until "+c.shift.split("–")[0]}</small></label>`).join("")}</div>
+      <label class="check mt16"><input type="checkbox" id="d4-startnow" checked>Start now – courier leaves straight away</label>`,
+      foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="D4._runGo()">${App.icon("route")} Create run</button>`})
+  }
+  function _pickOn(inp){App.$$("#d4-pick label").forEach(l=>l.classList.toggle("on",l.contains(inp)))}
+  function _runGo(){const c=App.$("input[name=d4c]:checked")?.value;const start=App.$("#d4-startnow")?.checked;App.closeModal();createRun(c,!!start)}
+  function createRun(cid,start){
+    const ids=[...S.sel].map(App.order).filter(Boolean).sort((a,b)=>SLOT_ORD(a.slot)-SLOT_ORD(b.slot)).map(o=>o.id);
+    if(!ids.length){App.toast("Tick ready orders first");return}
+    const r={id:(S.runs.length?Math.max(...S.runs.map(x=>x.id)):0)+1,courier:cid,stops:ids,started:start?App.NOW.toISOString():null,createdBy:App.me().id};
+    S.runs.push(r);S.sel.clear();
+    ids.forEach(id=>{const o=App.order(id);o.courier=cid;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Courier · "+App.user(cid).n+" · run "+fmtRunId(r)});if(start){o.status="out";o.late=false;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Status · Out"})}});
+    App.emit("orders",{run:r.id});
+    App.push(`Run ${fmtRunId(r)} → ${App.user(cid).n}`,`${pl(ids.length,"stop")} · first ${App.order(ids[0]).addr.split(",")[0]} · ${App.order(ids[0]).slot}`,{icon:"truck",type:"order",go:["delivery",{}]});
+    App.toast(`Run ${fmtRunId(r)} · ${pl(ids.length,"stop")} → ${App.user(cid).n}${start?"":" · planned"}`,"Open",()=>runSheet(r.id));
+  }
+  function startRun(rid){const r=S.runs.find(x=>x.id===rid);if(!r)return;r.started=App.NOW.toISOString();r.stops.forEach(id=>{const o=App.order(id);if(o&&o.status==="ready"){o.status="out";o.courier=r.courier;o.late=false;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Status · Out · run "+fmtRunId(r)})}});App.emit("orders",{run:rid});App.toast(`Run ${fmtRunId(r)} started · ${App.user(r.courier).n} on the road`)}
+  function nextStop(rid){const r=S.runs.find(x=>x.id===rid);const o=r.stops.map(App.order).find(x=>x&&x.status!=="delivered");if(!o){App.toast("Run complete");return}App.setOrderStatus(o.id,"delivered",{note:"run "+fmtRunId(r)})}
+  function printRun(rid){const r=S.runs.find(x=>x.id===rid);App.toast(`Run sheet ${fmtRunId(r)} sent to printer · ${r.stops.length} tickets`)}
+  function runSheet(rid){const r=S.runs.find(x=>x.id===rid);if(!r)return;const os=r.stops.map(App.order).filter(Boolean);const cu=App.user(r.courier);const left=os.filter(o=>o.status!=="delivered");
+    const body=`<div class="row" style="gap:14px">${App.avatar(r.courier,"--l --ink")}<div style="flex:1"><div class="h3">${App.esc(cu.n)} <span class="muted sm">· ${vehicle(cu)}</span></div><div class="sm soft">${pl(os.length,"stop")} · ${(Math.round(os.reduce((s,o)=>s+km(o),0)*10)/10).toFixed(1)} km · ${r.started?"left "+App.fmtTime(r.started)+" · back about "+minsFromNow(left.length*9+8):"not started"}</div></div>${left.length?r.started?`<span class="pill --out">${left.length} left</span>`:`<span class="pill --ready">Planned</span>`:`<span class="pill --delivered">Done</span>`}</div>
+      <div class="progress --ok mt16"><i style="width:${Math.round((os.length-left.length)/Math.max(1,os.length)*100)}%"></i></div>
+      <div class="sec-head"><div class="h3">Stops</div><button class="textbtn" onclick="App.toast('Order optimised by distance (demo)')">Optimise</button></div>
+      ${os.map((o,i)=>`<div class="d4-stop ${o.status==="delivered"?"--done":""}"><span class="no">${o.status==="delivered"?App.icon("check"):i+1}</span><div class="t" style="cursor:pointer" onclick="App.openOrder(${o.id})"><b>#${o.id} · ${App.esc(o.recipient)}</b><small>${App.esc(o.addr)} · ${App.esc(o.slot)}${o.problem?` · <span class="accent">${App.esc(o.problem)}</span>`:""}</small></div>${o.status==="delivered"?`<span class="xs muted">${App.fmtTime(o.log[o.log.length-1].at)}</span>`:o.status==="out"?`<button class="btn --ghost --sm" onclick="App.setOrderStatus(${o.id},'delivered',{note:'run ${fmtRunId(r)}'});D4.runSheet(${r.id})">Delivered</button>`:`<span class="xs muted">at shop</span>`}</div>`).join("")}
+      <div class="note-box mt16">${App.icon("info")} The courier sees this run in the staff app; each stop is confirmed with a photo on the doorstep and the customer gets the tracking link by WhatsApp.</div>`;
+    App.sheet({eyebrow:`Run ${fmtRunId(r)} · ${App.fmtDay(App.NOW.toISOString())}`,title:`${pl(os.length,"stop")} · ${App.esc(cu.n)}`,body,foot:`<button class="btn --ghost --sm" onclick="D4.printRun(${r.id})">${App.icon("printer")} Print</button><button class="btn --ghost --sm" onclick="D4.call('${r.courier}')">${App.icon("phone")} Call</button><span class="sp"></span>${r.started?left.length?`<button class="btn --sm" onclick="D4.nextStop(${r.id});D4.runSheet(${r.id})">${App.icon("check")} Next stop delivered</button>`:`<span class="pill --delivered">All delivered</span>`:`<button class="btn --sm" onclick="D4.startRun(${r.id});D4.runSheet(${r.id})">${App.icon("play")} Start run</button>`}`,_replace:App.$("#sheet").classList.contains("on")})}
+  function courierSheet(cid){const c=App.user(cid);const st=stopsOf(cid),as=assignedOf(cid),done=App.data.orders.filter(o=>o.n===0&&o.courier===cid&&o.status==="delivered");
+    const li=o=>`<div class="li" onclick="App.openOrder(${o.id})"><div class="t"><b>#${o.id} · ${App.esc(o.recipient)}</b><small>${App.esc(o.addr)} · ${App.esc(o.slot)}</small></div>${App.orderPill(o)}</div>`;
+    App.sheet({eyebrow:"Courier",title:App.esc(c.n),narrow:true,body:`<div class="row" style="gap:14px">${App.avatar(cid,"--l --ink")}<div><div class="sm">${vehicle(c)} · shift ${c.shift}</div><div class="row mt8" style="gap:6px">${st.length?`<span class="pill --out">On the road</span>`:c.on?`<span class="pill --ready">At shop</span>`:`<span class="pill --queue">Off shift</span>`}<span class="tag --line">${c.id==="omar"?"Freelance · per drop":"Staff"}</span></div></div></div>
+      <div class="grid g3 mt16"><div class="kpi-card" style="cursor:default"><span class="caps">Delivered</span><span class="kpi-s">${done.length}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">On board</span><span class="kpi-s">${st.length}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">Assigned</span><span class="kpi-s">${as.length}</span></div></div>
+      <div class="sec-head"><div class="h3">Now</div></div>${st.length?`<div class="list" style="border:1px solid var(--hair)">${st.map(li).join("")}</div>`:`<div class="muted sm">${c.on?"At the shop, nothing on board.":"Not on shift until "+c.shift.split("–")[0]+"."}</div>`}
+      ${as.length?`<div class="sec-head"><div class="h3">Waiting at shop</div></div><div class="list" style="border:1px solid var(--hair)">${as.map(li).join("")}</div>`:""}
+      ${done.length?`<div class="sec-head"><div class="h3">Delivered today</div></div><div class="list" style="border:1px solid var(--hair)">${done.map(li).join("")}</div>`:""}`,
+      foot:`<button class="btn --ghost --sm" onclick="D4.call('${cid}')">${App.icon("phone")} Call</button><button class="btn --ghost --sm" onclick="App.toast('Live location shared · staff app')">${App.icon("pin")} Locate</button><span class="sp"></span>${S.sel.size?`<button class="btn --sm" onclick="App.closeSheet();D4.createRun('${cid}',true)">${App.icon("route")} Run with ${S.sel.size} selected</button>`:as.length&&!st.length?`<button class="btn --sm" onclick="App.closeSheet();D4.sel(${as[0].id},true);D4.createRun('${cid}',true)">${App.icon("play")} Send out</button>`:""}`})}
+
+  /* Uber Direct */
+  function uberModal(pref){
+    const cand=onBoard().filter(o=>o.status==="ready"&&(!o.courier||o.id===pref));
+    if(pref&&!cand.find(o=>o.id===pref)){const o=App.order(pref);if(o)cand.unshift(o)}
+    if(!cand.length){App.modal({title:"Call Uber Direct",body:`<div class="empty">${App.icon("truck")}<div class="h3">Nothing ready to send</div><div class="sm">Uber Direct picks up orders that are ready and have no courier.</div></div>`});return}
+    const first=cand.find(o=>o.id===pref)||cand[0];
+    App.modal({title:"Call Uber Direct",body:`<div class="field"><label>Order</label><select class="select" id="d4-uo" onchange="D4._uberQuote()">${cand.map(o=>`<option value="${o.id}" ${o.id===first.id?"selected":""}>#${o.id} · ${App.esc(o.recipient)} · ${App.esc(o.slot)}</option>`).join("")}</select></div><div id="d4-uq" class="mt16"></div><div class="note-box mt16">${App.icon("info")} Booked on the Floritta Uber Direct account. The customer gets the Uber tracking link by WhatsApp; the courier confirms the handover with a photo.</div>`,
+      foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="D4._uberGo()">${App.icon("truck")} Book Uber Direct</button>`,onMount:_uberQuote})
+  }
+  function _uberQuote(){const id=+App.$("#d4-uo").value;const o=App.order(id);if(!o)return;const d=km(o);const price=Math.round((7.9+d*0.9)*2)/2;const eta=9+hash(id)%7;
+    App.$("#d4-uq").innerHTML=`<dl class="kv"><dt>Deliver to</dt><dd>${App.esc(o.addr)}</dd><dt>Distance</dt><dd>${d} km from Willow Walk</dd><dt>Pickup</dt><dd>about ${eta} min · ${minsFromNow(eta)}</dd><dt>Drop-off</dt><dd>about ${minsFromNow(eta+Math.round(d*6)+6)} · slot ${App.esc(o.slot)}</dd><dt>Price</dt><dd><span class="kpi-s">${App.fmt(price)}</span> <span class="xs muted">vs own courier ~£4.20</span></dd></dl>`;App.$("#d4-uq").dataset.price=price;App.$("#d4-uq").dataset.eta=minsFromNow(eta)}
+  function _uberGo(){const id=+App.$("#d4-uo").value;const q=App.$("#d4-uq");const price=+q.dataset.price||9,eta=q.dataset.eta||minsFromNow(12);App.closeModal();S.uber=S.uber.filter(u=>u.id!==id);S.uber.push({id,eta,price});S.sel.delete(id);App.assignCourier(id,"Uber Direct");App.push("Uber Direct booked","#"+id+" · pickup "+eta+" · "+App.fmt(price),{icon:"truck",type:"order",go:["delivery",{open:id}]})}
+
+  /* ---------- mount ---------- */
+  function mount(params){
+    seedRuns();
+    if(App.state.size==="desktop"&&S.view==="couriers")S.view="list";
+    if(params!==S.lastParams){S.lastParams=params;if(params.open){const o=App.order(params.open);if(o&&o.problem)S.filter="problems";setTimeout(()=>App.openOrder(params.open),60)}if(params.uber)setTimeout(()=>uberModal(),60)}
+    render();
+    App.registerCommands([
+      {g:"Actions",t:"Create a run from selected orders",ic:"route",fn:()=>{App.go("delivery");runModal()}},
+      {g:"Actions",t:"Show unassigned deliveries",ic:"truck",fn:()=>{App.go("delivery");filter("unassigned")}},
+      {g:"Actions",t:"Show delivery problems",ic:"alert",fn:()=>{App.go("delivery");filter("problems")}}
+    ]);
+  }
+  document.addEventListener("keydown",e=>{if(App.state.current!=="delivery")return;const tag=(e.target.tagName||"").toLowerCase();if(tag==="input"||tag==="textarea"||tag==="select")return;if(App.$("#modal").classList.contains("on")||App.$("#sheet").classList.contains("on")||App.$("#palette").classList.contains("on"))return;if(e.key.toLowerCase()==="z"){showAll()}else if(e.key.toLowerCase()==="u"){uberModal()}});
+  return {S,mount,filter,view,sel,clearSel,showAll,rowMenu,call,callRecipient,resolve,returnToShop,problemModal,_problemGo,runModal,_pickOn,_runGo,createRun,startRun,nextStop,printRun,runSheet,courierSheet,uberModal,_uberQuote,_uberGo,render};
+})();
+window.mount_delivery=function(params){D4.mount(params||{})};
+document.addEventListener('orders',()=>{if(App.state.current==='delivery')D4.render()});
+</script>

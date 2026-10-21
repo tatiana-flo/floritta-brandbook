@@ -1,0 +1,444 @@
+<style>
+/* ---- 02 · Orders list ---- */
+#s-orders .scr-head{padding-top:0;padding-bottom:0;min-height:56px;gap:8px 12px}
+#s-orders .views{margin:0;border-bottom:0;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
+#s-orders .views::-webkit-scrollbar{display:none}
+#s-orders .views button{height:56px;flex:none}
+#s-orders .views button.sv{color:var(--grey);gap:6px}
+#s-orders .views .vx{display:inline-grid;place-items:center;width:16px;height:16px;color:var(--grey);margin-left:2px}
+#s-orders .views .vx:hover{color:var(--accent)}
+#s-orders .views .vx svg{width:11px;height:11px}
+#s-orders .head-r{display:flex;align-items:center;gap:8px;flex:none}
+#s-orders .head-r .search{display:flex;align-items:center;gap:8px;height:var(--btn-h-s);padding:0 10px;border:1px solid var(--light);width:220px;font-size:13px;background:var(--paper)}
+#s-orders .head-r .search input{border:0;background:none;outline:none;width:100%;font-size:13px;min-width:0}
+#s-orders .head-r .search svg{width:15px;height:15px;stroke:var(--grey);fill:none;stroke-width:1.5}
+#s-orders .toolbar{margin-bottom:12px}
+#s-orders .toolbar .cnt{margin-left:auto;font-size:12px;color:var(--grey);font-variant-numeric:tabular-nums}
+#s-orders .tbl{table-layout:fixed}
+#s-orders .tbl th.chk{width:36px}
+#s-orders .tbl th.c-id{width:84px}
+#s-orders .tbl th.acts-td{width:100px}
+#s-orders .ph-list>.li{align-items:flex-start;padding:10px 14px}
+#s-orders .ph-list .t b{white-space:normal}
+#s-orders .ph-list .r2{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center}
+#s-orders .tbl th.c-slot{width:124px}
+#s-orders .tbl th.c-st{width:140px}
+#s-orders .tbl th.c-paid{width:104px}
+#s-orders .tbl th.c-chan{width:104px}
+#s-orders .tbl th.c-team{width:72px}
+#s-orders .tbl th.c-tot{width:84px}
+#s-orders .tbl th.sort .ar{display:inline-block;width:10px;color:var(--ink);margin-left:3px}
+#s-orders .tbl tr.r.cur td{background:var(--silver)}
+#s-orders .tbl td.acts-td{width:100px;text-align:right}
+#s-orders .tbl .acts{justify-content:flex-end}
+#s-orders .check input{width:16px;height:16px}
+#s-orders .kanban{height:calc(100% - 52px);min-height:360px}
+#s-orders .kcard.on{border-color:var(--ink)}
+#s-orders .kcard .btn.--sm{height:26px;padding:0 8px;font-size:10.5px}
+#s-orders .bulk .btn{white-space:nowrap}
+#s-orders .bulk .n{font-variant-numeric:tabular-nums;font-weight:500}
+[data-size="ipad"] #s-orders .tbl .acts{opacity:1}
+[data-size="ipad"] #s-orders .head-r .search{width:170px}
+[data-size="phone"] #s-orders .scr-head{padding:0 10px}
+[data-size="phone"] #s-orders .views{flex-basis:100%;order:2}
+[data-size="phone"] #s-orders .views button{height:40px;padding:0 10px}
+[data-size="phone"] #s-orders .head-r{flex:1;order:1;padding-top:8px}
+[data-size="phone"] #s-orders .head-r .search{flex:1;width:auto}
+[data-size="phone"] #s-orders .head-r .btn{display:none}
+[data-size="phone"] #s-orders .bulk{height:auto;flex-wrap:wrap;padding:8px 10px;gap:6px}
+[data-size="phone"] #s-orders .kanban{grid-auto-columns:minmax(200px,1fr)}
+
+/* ---- 02 · New order ---- */
+#s-order-new .n2-grid{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:32px;align-items:start}
+#s-order-new .n2-sec{margin-bottom:28px}
+#s-order-new .n2-sec>.caps{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+#s-order-new .n2-sec>.caps .st{width:20px;height:20px;border:1px solid var(--light);display:inline-grid;place-items:center;font-size:10px;color:var(--grey);letter-spacing:0}
+#s-order-new .n2-sec>.caps .st.ok{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+#s-order-new .n2-rel{position:relative}
+#s-order-new .n2-dd{position:absolute;left:0;right:0;top:100%;z-index:5;background:var(--paper);border:1px solid var(--hair);box-shadow:var(--shadow-pop);max-height:260px;overflow:auto;display:none}
+#s-order-new .n2-dd.on{display:block}
+#s-order-new .n2-cust{border:1px solid var(--hair);padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
+#s-order-new .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#s-order-new .n2-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+#s-order-new .n2-tile{border:1px solid var(--hair);background:var(--paper);display:flex;flex-direction:column;min-width:0;transition:border-color var(--m-fast)}
+#s-order-new .n2-tile:hover{border-color:var(--grey)}
+#s-order-new .n2-tile.on{box-shadow:inset 0 0 0 2px var(--ink);border-color:var(--ink)}
+#s-order-new .n2-tile .photo{aspect-ratio:4/5}
+#s-order-new .n2-tile .nm{font-size:12px;padding:6px 8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-order-new .n2-tile .pr{font-size:11.5px;color:var(--grey);padding:0 8px 7px;font-variant-numeric:tabular-nums}
+#s-order-new .chip.off{opacity:.35;pointer-events:none}
+#s-order-new .seg-ctl.--w{display:flex}
+#s-order-new .seg-ctl.--w button{flex:1;justify-content:center}
+#s-order-new .n2-sum{border:1px solid var(--hair);padding:14px 16px}
+#s-order-new .n2-sum .ln{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:3px 0}
+#s-order-new .n2-sum .ln .muted{font-size:12px}
+#s-order-new .n2-sum .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--hair);margin-top:8px;padding-top:10px}
+#s-order-new .sticky-foot{margin-top:8px}
+[data-size="ipad"] #s-order-new .n2-grid{grid-template-columns:minmax(0,1fr) 380px;gap:24px}
+[data-size="ipad"] #s-order-new .n2-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] #s-order-new .n2-grid{grid-template-columns:minmax(0,1fr);gap:0}
+[data-size="phone"] #s-order-new .f2{grid-template-columns:1fr}
+[data-size="phone"] #s-order-new .n2-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] #s-order-new .sticky-foot{margin:0 -14px -14px;padding:10px 14px;flex-wrap:wrap}
+[data-size="phone"] #s-order-new .sticky-foot .muted{display:none}
+</style>
+
+<section class="scr" id="s-orders" data-nav="Orders" data-group="Orders" data-title="Orders">
+  <div class="scr-head">
+    <div class="views" id="o2-views"></div>
+    <div class="head-r">
+      <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="o2-q" placeholder="Search # · name · phone · product" oninput="O2.search(this.value)"></label>
+      <div class="seg-ctl" id="o2-mode"><button class="on" data-m="table" onclick="O2.setMode('table')" title="Table (b)"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></button><button data-m="board" onclick="O2.setMode('board')" title="Board (b)"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="3" y="4" width="5" height="16"/><rect x="9.5" y="4" width="5" height="11"/><rect x="16" y="4" width="5" height="7"/></svg></button></div>
+      <button class="btn --sm" id="o2-new" onclick="App.go('order-new')"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> New order</button>
+    </div>
+  </div>
+  <div class="scr-body">
+    <div class="toolbar" id="o2-chips"></div>
+    <div id="o2-bulk"></div>
+    <div id="o2-list"></div>
+  </div>
+</section>
+
+<section class="scr" id="s-order-new" data-nav="New order" data-group="Orders" data-title="New order" data-sub="Phone · WhatsApp · walk-in" data-parent="orders">
+  <div class="scr-head">
+    <button class="ib" title="Back" onclick="App.back()"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <span class="caps">Same-day until 22:00 · delivery £12 · collection free</span>
+    <span class="sp"></span>
+    <button class="textbtn" onclick="N2.reset();App.toast('Form cleared')">Clear form</button>
+  </div>
+  <div class="scr-body">
+    <div class="n2-grid">
+      <div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st" id="n2-st1">1</span>Customer</div>
+          <div id="n2-custbox"></div>
+        </div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st" id="n2-st2">2</span>Recipient</div>
+          <div class="row" style="gap:8px"><input class="input" id="n2-rec" placeholder="Who receives the flowers" oninput="N2.set('rec',this.value)"><button class="btn --ghost --sm" style="flex:none" onclick="N2.sameRec()">Same as customer</button></div>
+        </div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st" id="n2-st3">3</span>Delivery or collection</div>
+          <div class="seg-ctl --w mb8" id="n2-type"><button class="on" onclick="N2.setType('delivery')">Delivery · £12</button><button onclick="N2.setType('collection')">Collection · 80 Willow Walk</button></div>
+          <div id="n2-addrbox"></div>
+        </div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st ok" id="n2-st4">4</span>When</div>
+          <div class="chips mb8" id="n2-days"></div>
+          <div class="chips" id="n2-slots"></div>
+          <div class="xs muted mt8" id="n2-slothint"></div>
+        </div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st" id="n2-st5">5</span>Card message &amp; notes</div>
+          <div class="chips mb8"><button class="chip" onclick="N2.cardPreset('Happy birthday, with all my love x')">Happy birthday</button><button class="chip" onclick="N2.cardPreset('With love and best wishes.')">With love</button><button class="chip" onclick="N2.cardPreset('Thinking of you.')">Thinking of you</button><button class="chip" onclick="N2.cardPreset('Congratulations!')">Congratulations</button><button class="chip" onclick="N2.cardPreset('')">No card</button></div>
+          <textarea class="textarea" id="n2-card" placeholder="Card message – written by hand on a Floritta card" oninput="N2.set('card',this.value)"></textarea>
+          <input class="input mt8" id="n2-notes" placeholder="Notes for the florist or courier (allergies, concierge, do not call…)" oninput="N2.set('notes',this.value)">
+        </div>
+      </div>
+      <div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st" id="n2-st6">6</span>Product</div>
+          <label class="row mb8" style="gap:8px"><input class="input" id="n2-pq" placeholder="Search the catalogue" oninput="N2.prodSearch(this.value)"></label>
+          <div class="n2-tiles" id="n2-prods"></div>
+          <div class="xs muted mt8" id="n2-prodmore"></div>
+          <div class="mt16" id="n2-sizes"></div>
+        </div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st" id="n2-st7">7</span>Add-ons</div>
+          <div class="chips" id="n2-addons"></div>
+        </div>
+        <div class="n2-sec">
+          <div class="caps"><span class="st ok">8</span>Payment &amp; channel</div>
+          <div class="seg-ctl --w mb8" id="n2-pay"><button class="on" onclick="N2.setPay('link')">Stripe link</button><button onclick="N2.setPay('paid')">Paid now</button><button onclick="N2.setPay('invoice')">Invoice</button></div>
+          <div id="n2-payhint" class="mb8"></div>
+          <div class="f2"><div class="field"><label>Channel</label><select class="select" id="n2-chan" onchange="N2.set('chan',this.value)"><option>Phone</option><option>WhatsApp</option><option>Instagram</option><option>Walk-in</option><option>Email</option></select></div><div class="field" id="n2-methodbox"></div></div>
+        </div>
+        <div class="n2-sum" id="n2-sum"></div>
+      </div>
+    </div>
+    <div class="sticky-foot">
+      <button class="btn --ghost" onclick="N2.discard()">Discard</button>
+      <span class="sp"></span>
+      <span class="muted sm" id="n2-ready"></span>
+      <button class="btn" id="n2-create" onclick="N2.create()"><svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></svg> Create order</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===================== 02 · ORDERS ===================== */
+(function(){
+const A=App,esc=A.esc;
+const NEXT={queue:"making",making:"photo",photo:"ready",ready:"out",out:"delivered"};
+const NEXT_LBL={making:"Start making",photo:"Add photo",ready:"Send photo · ready",out:"Hand to courier",delivered:"Mark delivered"};
+const NEXT_IC={making:"play",photo:"photo",ready:"send",out:"truck",delivered:"check"};
+const NEXT_SHORT={making:"Make",photo:"Photo",ready:"Ready",out:"Courier",delivered:"Delivered"};
+const O2=window.O2={view:"today",sv:null,q:"",slot:null,status:null,chan:null,type:null,mode:"table",sel:new Set(),sort:["slot",1],cur:-1,openId:null,saved:[],n:0};
+const BASE=[
+ {id:"today",t:"Today",f:o=>o.n===0&&o.status!=="cancelled"},
+ {id:"tomorrow",t:"Tomorrow",f:o=>o.n===1&&o.status!=="cancelled"},
+ {id:"unpaid",t:"Unpaid",mgr:true,f:o=>o.paid!=="paid"&&o.status!=="cancelled"},
+ {id:"problems",t:"Problems",f:o=>o.status!=="cancelled"&&o.status!=="delivered"&&(!!o.problem||A.isLate(o))},
+ {id:"marketplaces",t:"Marketplaces",mgr:true,f:o=>o.chan==="Deliveroo"||o.chan==="Uber Eats"},
+ {id:"all",t:"All",mgr:true,f:()=>true}
+];
+const bases=()=>BASE.filter(v=>!v.mgr||A.isMgr());
+const base=id=>BASE.find(v=>v.id===id)||BASE[0];
+const SV={id:o=>o.id,customer:o=>A.customer(o.customer).n,product:o=>A.product(o.product).name,slot:o=>o.date+" "+o.slot,status:o=>A.ORDER_STATUSES.indexOf(o.status),paid:o=>o.paid,chan:o=>o.chan,total:o=>o.total};
+const STATUS_OPTS=["queue","making","photo","ready","out","delivered","cancelled"];
+const chans=()=>[...new Set(A.data.orders.map(o=>o.chan))];
+function spec(){return{base:O2.view,slot:O2.slot,status:O2.status,chan:O2.chan,type:O2.type,q:O2.q}}
+function rowsFor(s){
+  let L=A.data.orders.filter(base(s.base).f);
+  if(s.slot)L=L.filter(o=>o.slot===s.slot);
+  if(s.status)L=L.filter(o=>s.status==="late"?(A.isLate(o)&&o.status!=="delivered"):o.status===s.status);
+  if(s.chan)L=L.filter(o=>o.chan===s.chan);
+  if(s.type)L=L.filter(o=>o.type===s.type);
+  if(s.q){const q=s.q.toLowerCase().trim(),qn=q.replace(/\s/g,"");L=L.filter(o=>{const c=A.customer(o.customer),p=A.product(o.product);return String(o.id).includes(q)||c.n.toLowerCase().includes(q)||(o.recipient||"").toLowerCase().includes(q)||p.name.toLowerCase().includes(q)||(qn&&c.phone.replace(/\s/g,"").includes(qn))})}
+  return L;
+}
+function rows(){
+  const L=rowsFor(spec());const [k,d]=O2.sort;const f=SV[k]||SV.slot;
+  L.sort((a,b)=>{const x=f(a),y=f(b);return (x<y?-1:x>y?1:0)*d||a.id-b.id});
+  return L;
+}
+const hasF=()=>!!(O2.slot||O2.status||O2.chan||O2.type||O2.q);
+
+/* ---- views ---- */
+function renderViews(){
+  const vs=bases();let h="";
+  vs.forEach(v=>{const n=A.data.orders.filter(v.f).length;const on=!O2.sv&&O2.view===v.id;h+=`<button class="${on?"on":""}" onclick="O2.selectView('${v.id}')">${v.t}<span class="n${v.id==="problems"&&n?" accent":""}">${n||""}</span></button>`});
+  O2.saved.forEach(v=>{const n=rowsFor(v).length;h+=`<button class="sv ${O2.sv===v.id?"on":""}" onclick="O2.selectView('${v.id}')">${A.icon("star")}${esc(v.t)}<span class="n">${n}</span><span class="vx" title="Remove view" onclick="event.stopPropagation();O2.removeView('${v.id}')">${A.icon("close")}</span></button>`});
+  h+=`<button onclick="O2.saveView()" title="Save the current filters as a view">${A.icon("plus")}<span class="xs">Save view</span></button>`;
+  A.$("#o2-views").innerHTML=h;
+}
+O2.selectView=id=>{const sv=O2.saved.find(v=>v.id===id);if(sv){Object.assign(O2,{view:sv.base,slot:sv.slot,status:sv.status,chan:sv.chan,type:sv.type,q:sv.q,sv:sv.id})}else{O2.view=id;O2.sv=null;if(id==="all"&&O2.sort[0]==="slot")O2.sort=["slot",-1];else if(id!=="all"&&O2.sort[0]==="slot")O2.sort=["slot",1]}
+  A.$("#o2-q").value=O2.q||"";O2.cur=-1;renderAll()};
+O2.saveView=()=>{const s=spec();const parts=[base(s.base).t,s.slot,s.status&&("status "+s.status),s.chan,s.type,s.q&&("“"+s.q+"”")].filter(Boolean).join(" · ");
+  A.modal({title:"Save view",body:`<div class="field"><label>Name</label><input class="input" id="o2-svn" value="${esc(parts)}" placeholder="e.g. Afternoon deliveries"></div><div class="note-box mt16">Filters: ${esc(parts)}. Saved views are personal; share with the team from the view menu later.</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="O2._saveGo()">Save view</button>`,onMount:b=>setTimeout(()=>{const i=b.querySelector("#o2-svn");i.focus();i.select();i.onkeydown=e=>{if(e.key==="Enter")O2._saveGo()}},40)})};
+O2._saveGo=()=>{const name=(A.$("#o2-svn").value||"Saved view").trim();const id="sv"+(++O2.n);O2.saved.push(Object.assign({id,t:name},spec()));O2.sv=id;A.closeModal();A.toast("View “"+name+"” saved");renderAll()};
+O2.removeView=id=>{O2.saved=O2.saved.filter(v=>v.id!==id);if(O2.sv===id)O2.sv=null;A.toast("View removed");renderAll()};
+
+/* ---- toolbar chips ---- */
+function chip(k,label,val,lbl){return`<button class="chip ${val?"on":""}" onclick="O2.pick(event,'${k}')">${esc(val?(lbl||val):label)}${A.icon("down")}</button>`}
+function renderChips(){
+  const L=rowsFor(spec());const stLbl=O2.status==="late"?"Late / urgent":O2.status&&A.STATUS_LBL[O2.status];
+  const typeLbl=O2.type==="delivery"?"Delivery":O2.type==="collection"?"Collection":null;
+  A.$("#o2-chips").innerHTML=chip("slot","Slot",O2.slot)+chip("status","Status",O2.status,stLbl)+chip("chan","Channel",O2.chan)+chip("type","Type",O2.type,typeLbl)+(hasF()?`<button class="textbtn" onclick="O2.clear()">Clear</button>`:"")+`<span class="cnt">${L.length} order${L.length===1?"":"s"}${A.isMgr()&&L.length?" · "+A.fmt(L.reduce((s,o)=>s+o.total,0)):""}</span>`;
+}
+O2.pick=(ev,k)=>{
+  const set=v=>{O2[k]=v;O2.sv=null;O2.cur=-1;renderAll()};
+  const items=k==="slot"?["Slot",...A.SLOTS.map(s=>({t:s+(O2.slot===s?"  ·":""),ic:"clock",fn:()=>set(s)}))]
+   :k==="status"?["Status",...STATUS_OPTS.map(s=>({t:A.STATUS_LBL[s],fn:()=>set(s)})),"-",{t:"Late / urgent",ic:"alert",cls:"--accent",fn:()=>set("late")}]
+   :k==="chan"?["Channel",...chans().map(c=>({t:c,fn:()=>set(c)}))]
+   :["Type",{t:"Delivery",ic:"truck",fn:()=>set("delivery")},{t:"Collection",ic:"box",fn:()=>set("collection")}];
+  if(O2[k])items.push("-",{t:"Any · clear",ic:"close",fn:()=>set(null)});
+  A.pop(ev,items);
+};
+O2.clear=()=>{Object.assign(O2,{slot:null,status:null,chan:null,type:null,q:"",sv:null});A.$("#o2-q").value="";renderAll()};
+let qT=null;O2.search=v=>{O2.q=v;O2.sv=null;O2.cur=-1;clearTimeout(qT);qT=setTimeout(renderAll,120)};
+O2.setMode=m=>{O2.mode=m;A.$$("#o2-mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));O2.cur=-1;renderList()};
+O2.sortBy=k=>{O2.sort=O2.sort[0]===k?[k,-O2.sort[1]]:[k,1];renderList()};
+
+/* ---- selection / bulk ---- */
+O2.toggleSel=(id,on)=>{on?O2.sel.add(id):O2.sel.delete(id);renderBulk();const tr=A.$(`#o2-list tr[data-id="${id}"]`);if(tr)tr.classList.toggle("on",on||O2.openId===id)};
+O2.selAll=on=>{O2.sel.clear();if(on)rows().forEach(o=>O2.sel.add(o.id));renderBulk();renderList()};
+O2.clearSel=()=>{O2.sel.clear();renderBulk();renderList()};
+function ids(){return[...O2.sel].filter(id=>A.order(id))}
+function renderBulk(){
+  const n=O2.sel.size;const el=A.$("#o2-bulk");if(!n){el.innerHTML="";return}
+  el.innerHTML=`<div class="bulk"><span><span class="n">${n}</span> selected</span><button class="btn" onclick="O2.bulkPrint()">${A.icon("printer")} Print tickets</button><button class="btn" onclick="O2.bulkAssign(event)">${A.icon("user")} Assign florist</button>${A.isMgr()?`<button class="btn" onclick="O2.bulkPaid()">${A.icon("check")} Mark paid</button><button class="btn" onclick="O2.bulkExport()">${A.icon("download")} Export</button>`:""}<button class="ib x" title="Clear selection" onclick="O2.clearSel()">${A.icon("close")}</button></div>`;
+}
+O2.bulkPrint=()=>{A.toast(`Sent to printer · ${ids().length} ticket${ids().length===1?"":"s"}`);O2.clearSel()};
+O2.bulkAssign=ev=>A.pop(ev,["Assign florist",...A.data.staff.filter(s=>s.role==="florist").map(s=>({t:s.n+(s.on?"":" · off shift"),ic:"user",fn:()=>{const L=ids();L.forEach(id=>A.assignFlorist(id,s.id));A.toast(`${L.length} order${L.length===1?"":"s"} → ${s.n}`);O2.clearSel()}}))]);
+O2.bulkPaid=()=>{const L=ids().filter(id=>A.order(id).paid!=="paid");if(!L.length){A.toast("Already paid");return}A.confirm("Mark "+L.length+" order"+(L.length===1?"":"s")+" as paid?","Use this for cash, card at the till or a bank transfer you have seen. Stripe payments mark themselves.","Mark paid",()=>{L.forEach(id=>A.markPaid(id));A.toast(`${L.length} marked paid`);O2.clearSel()})};
+O2.bulkExport=()=>{A.toast(`Exported ${ids().length} orders · CSV`,"Open Xero",()=>A.toast("Opens Xero (demo)"));O2.clearSel()};
+
+/* ---- list ---- */
+O2.open=id=>{O2.openId=id;A.openOrder(id);A.$$("#o2-list tr.r").forEach(tr=>tr.classList.toggle("on",+tr.dataset.id===id||O2.sel.has(+tr.dataset.id)));A.$$("#o2-list .kcard").forEach(k=>k.classList.toggle("on",+k.dataset.id===id))};
+O2.next=(ev,id)=>{ev.stopPropagation();const o=A.order(id);const n=NEXT[o.status];if(n)A.setOrderStatus(id,n)};
+function nextBtn(o,cls){const n=NEXT[o.status];if(!n)return"";return`<button class="${cls}" title="${NEXT_LBL[n]}" onclick="O2.next(event,${o.id})">${A.icon(NEXT_IC[n])}${cls.includes("btn")?" "+NEXT_SHORT[n]:""}</button>`}
+function teamCell(o){const f=o.florist?A.avatar(o.florist,"--s"):"";const c=o.courier?(A.user(o.courier)?A.avatar(o.courier,"--s"):`<span class="avatar --s" title="Uber Direct">UD</span>`):"";return f||c?`<span class="avatars">${f}${c}</span>`:`<span class="muted xs">–</span>`}
+function renderList(){
+  const L=rows();const mgr=A.isMgr();const el=A.$("#o2-list");
+  if(!L.length){el.innerHTML=`<div class="empty">${A.icon("orders")}<div class="h3">${hasF()?"No orders match":O2.view==="problems"?"No problems right now":"Nothing here yet"}</div><div class="sm">${hasF()?"Try another view or clear the filters.":O2.view==="problems"?"Every order is on time and paid.":"New orders from the website, WhatsApp and marketplaces land here."}</div>${hasF()?`<button class="btn --ghost --sm" onclick="O2.clear()">Clear filters</button>`:`<button class="btn --ghost --sm" onclick="App.go('order-new')">${A.icon("plus")} New order</button>`}</div>`;return}
+  if(O2.mode==="board"){
+    const cols=[["queue","Queue"],["making","Making"],["photo","Photo"],["ready","Ready"],["out","Out"],["delivered","Delivered"]];
+    el.innerHTML=`<div class="kanban">${cols.map(([s,t])=>{const K=L.filter(o=>o.status===s);return`<div class="kcol"><div class="k-head">${t}<span class="n">${K.length}</span></div><div class="k-body">${K.map(o=>{const c=A.customer(o.customer),p=A.product(o.product);const late=A.isLate(o)&&o.status!=="delivered";return`<div class="kcard ${late?"--late":""} ${O2.openId===o.id?"on":""}" data-id="${o.id}" onclick="O2.open(${o.id})"><div class="k-top"><span>#${o.id}</span><span class="${late?"accent":""}">${esc(o.slot)}</span><span class="sp"></span>${o.n!==0?`<span class="tag --line">${A.fmtDay(o.date)}</span>`:""}${o.florist?A.avatar(o.florist,"--s"):""}</div><div class="k-title">${esc(p.name)} <span class="muted">· ${esc(o.size)}</span></div><div class="k-foot"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.n)}</span>${o.paid!=="paid"?A.pill(o.paid):""}</div><div class="k-foot">${o.problem?`<span class="accent xs" style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(o.problem)}</span>`:`<span class="sp"></span>`}${nextBtn(o,"btn --ghost --sm")}</div></div>`}).join("")||`<div class="empty" style="padding:24px 8px"><span class="xs">Empty</span></div>`}</div></div>`}).join("")}</div>`;
+    return;
+  }
+  if(A.state.size==="phone"){
+    el.innerHTML=`<div class="list ph-list" style="border:1px solid var(--hair)">${L.map(o=>{const c=A.customer(o.customer),p=A.product(o.product);const late=A.isLate(o)&&o.status!=="delivered"&&o.status!=="cancelled";return`<div class="li ${O2.openId===o.id?"on":""}" data-id="${o.id}" onclick="O2.open(${o.id})"><div class="t"><b>${esc(c.n)} <span class="muted">· #${o.id}</span></b><small>${esc(p.name)} · ${esc(o.size)}${o.addons.length?" · +"+o.addons.length:""}${o.type==="collection"?" · collection":""}</small><div class="r2"><span class="tnum sm ${late?"accent":""}">${o.n!==0?A.fmtDay(o.date)+" · ":""}${esc(o.slot)}</span>${A.orderPill(o)}${o.paid!=="paid"?A.pill(o.paid):""}${mgr?`<span class="sp"></span><span class="tnum sm">${A.fmt(o.total)}</span>`:""}</div></div>${o.status!=="cancelled"?nextBtn(o,"ib"):""}</div>`}).join("")}</div><div class="xs muted mt8">${L.length} order${L.length===1?"":"s"}</div>`;return}
+  const wide=A.state.size==="desktop";
+  const ar=k=>O2.sort[0]===k?`<span class="ar">${O2.sort[1]>0?"↑":"↓"}</span>`:"";
+  const allSel=L.length&&L.every(o=>O2.sel.has(o.id));
+  const th=(k,t,cls="")=>`<th class="sort ${cls}" onclick="O2.sortBy('${k}')">${t}${ar(k)}</th>`;
+  let h=`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th class="chk"><label class="check"><input type="checkbox" ${allSel?"checked":""} onchange="O2.selAll(this.checked)"></label></th>${th("id","#","c-id")}${th("customer","Customer")}${th("product","Product")}${th("slot","Slot","c-slot")}${th("status","Status","c-st")}${th("paid","Paid","c-paid")}${wide?th("chan","Channel","c-chan")+`<th class="c-team">Team</th>`:""}${mgr?th("total","Total","num c-tot"):""}<th class="acts-td"></th></tr></thead><tbody>`;
+  L.forEach((o,i)=>{const c=A.customer(o.customer),p=A.product(o.product);const late=A.isLate(o)&&o.status!=="delivered"&&o.status!=="cancelled";const on=O2.openId===o.id||O2.sel.has(o.id);
+    h+=`<tr class="r ${late?"--late":""} ${on?"on":""} ${i===O2.cur?"cur":""}" data-id="${o.id}" onclick="O2.open(${o.id})">
+<td class="chk"><label class="check" onclick="event.stopPropagation()"><input type="checkbox" ${O2.sel.has(o.id)?"checked":""} onchange="O2.toggleSel(${o.id},this.checked)"></label></td>
+<td class="tnum c-id">${o.id}<span class="sub">${A.fmtTime(o.placed)}</span></td>
+<td>${esc(c.n)}<span class="sub">${o.recipient&&o.recipient!==c.n?"→ "+esc(o.recipient):esc(c.phone)}</span></td>
+<td>${esc(p.name)}<span class="sub">${esc(o.size)}${o.addons.length?" · + "+o.addons.map(a=>esc(A.product(a).name.split(" ·")[0])).join(", "):""}${o.card&&o.card.trim()?" · card":""}</span></td>
+<td class="tnum ${late?"accent":""}">${esc(o.slot)}<span class="sub">${o.n!==0?A.fmtDay(o.date):o.type==="collection"?"Collection":o.problem?`<span class="accent">${esc(o.problem)}</span>`:""}</span></td>
+<td>${A.orderPill(o)}</td>
+<td>${A.pill(o.paid)}</td>
+${wide?`<td>${A.chanTag(o.chan)}</td><td>${teamCell(o)}</td>`:""}
+${mgr?`<td class="num">${A.fmt(o.total)}</td>`:""}
+<td class="acts-td"><span class="acts">${o.status!=="cancelled"?nextBtn(o,"ib"):""}<button class="ib" title="Print ticket" onclick="event.stopPropagation();App.toast('Sent to printer · #${o.id}')">${A.icon("printer")}</button><button class="ib" title="More" onclick="event.stopPropagation();App.orderMenu(event,${o.id})">${A.icon("dots")}</button></span></td></tr>`});
+  h+=`</tbody><tfoot><tr><td colspan="${(mgr?9:8)+(wide?2:0)}">${L.length} order${L.length===1?"":"s"}${mgr?" · "+A.fmt(L.reduce((s,o)=>s+o.total,0))+" incl. delivery":""} · <span class="kbd">j</span> <span class="kbd">k</span> move · <span class="kbd">↵</span> open · <span class="kbd">x</span> select · <span class="kbd">b</span> board</td></tr></tfoot></table></div>`;
+  el.innerHTML=h;
+}
+function renderAll(){renderViews();renderChips();renderBulk();renderList()}
+
+/* ---- keyboard j/k/enter/x/b ---- */
+document.addEventListener("keydown",e=>{
+  if(A.state.current!=="orders")return;const tag=(e.target.tagName||"").toLowerCase();if(["input","textarea","select"].includes(tag)||e.metaKey||e.ctrlKey)return;
+  if(["#sheet","#modal","#palette","#pop"].some(s=>A.$(s).classList.contains("on"))){return}
+  const L=rows();const k=e.key;
+  if(k==="j"||k==="k"||k==="ArrowDown"||k==="ArrowUp"){e.preventDefault();if(!L.length)return;O2.cur=Math.max(0,Math.min(L.length-1,O2.cur+((k==="j"||k==="ArrowDown")?1:-1)));renderList();A.$(`#o2-list tr.cur`)?.scrollIntoView({block:"nearest"})}
+  else if(k==="Enter"&&O2.cur>=0&&L[O2.cur]){O2.open(L[O2.cur].id)}
+  else if(k==="x"&&O2.cur>=0&&L[O2.cur]){const id=L[O2.cur].id;O2.toggleSel(id,!O2.sel.has(id))}
+  else if(k==="b"){O2.setMode(O2.mode==="table"?"board":"table")}
+  else if(k==="Escape"&&(O2.sel.size||O2.cur>=0)){O2.cur=-1;O2.clearSel()}
+});
+
+/* ---- mount ---- */
+window.mount_orders=function(params){
+  params=params||{};
+  if(!bases().find(v=>v.id===O2.view)){O2.view="today";O2.sv=null}
+  if(params.view&&!params._v){params._v=1;O2.selectView(params.view)}
+  if(params.slot&&!params._s){params._s=1;O2.slot=params.slot;O2.sv=null;if(O2.view!=="today"&&O2.view!=="tomorrow")O2.view="today"}
+  if(params.status&&!params._st){params._st=1;O2.status=params.status;O2.sv=null}
+  A.$("#o2-q").value=O2.q||"";A.$$("#o2-mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===O2.mode));
+  A.$("#o2-new").innerHTML=A.icon("plus")+(A.isMgr()?" New order":" Walk-in order");
+  renderAll();
+  if(params.open&&!params._o){params._o=1;O2.openId=+params.open;setTimeout(()=>O2.open(+params.open),60)}
+  A.registerCommands([
+    {g:"Actions",t:"Orders · today's problems",ic:"alert",fn:()=>A.go("orders",{view:"problems"})},
+    {g:"Actions",t:"Orders · board view",ic:"board",fn:()=>{A.go("orders");O2.setMode("board")}},
+    {g:"Actions",t:"Orders · save current view",ic:"star",fn:()=>{A.go("orders");O2.saveView()}}
+  ].concat(A.isMgr()?[{g:"Actions",t:"Orders · unpaid",ic:"pound",fn:()=>A.go("orders",{view:"unpaid"})},{g:"Actions",t:"Orders · marketplaces today",ic:"globe",fn:()=>A.go("orders",{view:"marketplaces"})}]:[]));
+};
+document.addEventListener("orders",()=>{if(A.state.current==="orders")renderAll()});
+document.addEventListener("sheetclose",()=>{if(A.state.current==="orders"&&O2.openId){O2.openId=null;A.$$("#o2-list tr.r").forEach(tr=>tr.classList.toggle("on",O2.sel.has(+tr.dataset.id)));A.$$("#o2-list .kcard.on").forEach(k=>k.classList.remove("on"))}});
+})();
+
+/* ===================== 02 · NEW ORDER ===================== */
+(function(){
+const A=App,esc=A.esc;const MULT={Standard:1,Deluxe:1.3,Grand:1.7};
+const N2=window.N2={c:null,newc:false,nn:"",np:"",cq:"",rec:"",type:"delivery",addr:"",day:0,slot:null,card:"",notes:"",p:null,size:"Standard",ad:new Set(),pay:"link",method:"Card at the till",chan:"Phone",pq:"",po:"",cdate:""};
+const slotStart=s=>{const [h,m]=s.split("–")[0].split(":").map(Number);const x=new Date(A.NOW);x.setHours(h,m,0,0);return x};
+const slotEnd=s=>{const [h,m]=s.split("–")[1].split(":").map(Number);const x=new Date(A.NOW);x.setHours(h,m,0,0);return x};
+const slotOk=s=>N2.day!==0||(slotEnd(s)-A.NOW)>=90*6e4;
+const firstSlot=()=>N2.day!==0?A.SLOTS[1]:(A.SLOTS.find(s=>(slotStart(s)-A.NOW)>=90*6e4)||A.SLOTS.find(slotOk)||A.SLOTS[6]);
+const products=()=>A.data.products.filter(p=>!p.addon&&p.active);
+const addons=()=>A.data.products.filter(p=>p.addon);
+const fee=()=>N2.type==="delivery"&&N2.chan!=="Walk-in"?12:0;
+const calc=()=>{const p=N2.p&&A.product(N2.p);const b=p?Math.round(p.price*MULT[N2.size]):0;const ad=[...N2.ad].reduce((s,id)=>s+A.product(id).price,0);return{base:b,ad,fee:p?fee():0,total:b+ad+(p?fee():0)}};
+const custName=()=>N2.c?A.customer(N2.c).n:N2.newc?N2.nn:"";
+
+N2.set=(k,v)=>{N2[k]=v;if(k==="chan"){renderAddr();renderSum()}if(k==="nn"||k==="np"||k==="rec"||k==="addr")renderSteps()};
+N2.reset=()=>{Object.assign(N2,{c:null,newc:false,nn:"",np:"",cq:"",rec:"",type:A.role()==="florist"?"collection":"delivery",addr:"",day:0,slot:null,card:"",notes:"",p:null,size:"Standard",ad:new Set(),pay:A.role()==="florist"?"paid":"link",method:"Card at the till",chan:A.role()==="florist"?"Walk-in":"Phone",pq:"",po:"",cdate:""});N2.slot=firstSlot();renderAll()};
+N2.discard=()=>{if(custName()||N2.p)A.confirm("Discard this order?","Nothing has been saved yet.","Discard",()=>{N2.reset();A.back()},{danger:true});else A.back()};
+
+/* customer */
+function renderCust(){
+  const el=A.$("#n2-custbox");
+  if(N2.c){const c=A.customer(N2.c);const os=A.data.orders.filter(o=>o.customer===c.id).length;
+    el.innerHTML=`<div class="n2-cust"><span class="avatar --l --ink">${esc(c.first[0]+c.n.split(" ")[1][0])}</span><div style="flex:1;min-width:0"><div class="row" style="gap:8px;flex-wrap:wrap"><b>${esc(c.n)}</b>${c.tags.map(t=>`<span class="tag ${t==="VIP"?"--ink":""}">${t}</span>`).join("")}</div><div class="sm soft tnum">${esc(c.phone)} · ${esc(c.email)}</div><div class="xs muted mt8">${os} order${os===1?"":"s"} in this set · ${esc(c.occasion)}${c.note?" · "+esc(c.note):""}</div></div><div class="col" style="gap:4px;align-items:flex-end"><button class="textbtn" onclick="N2.changeCust()">change</button><button class="textbtn" onclick="App.openCustomer(${c.id})">profile</button></div></div>`;return}
+  if(N2.newc){el.innerHTML=`<div class="f2"><div class="field"><label>Name</label><input class="input" id="n2-nn" value="${esc(N2.nn)}" placeholder="Full name" oninput="N2.set('nn',this.value)"></div><div class="field"><label>Phone</label><input class="input" id="n2-np" value="${esc(N2.np)}" placeholder="+44 7…" oninput="N2.set('np',this.value)"></div></div><div class="row mt8" style="gap:12px"><span class="tag --ok">New customer</span><button class="textbtn" onclick="N2.changeCust()">search existing instead</button></div>`;return}
+  el.innerHTML=`<div class="n2-rel"><input class="input" id="n2-cq" value="${esc(N2.cq)}" placeholder="Phone number or name – start typing" oninput="N2.custSearch(this.value)" onfocus="N2.custSearch(this.value)" onblur="setTimeout(()=>N2.dd(false),150)"><div class="n2-dd" id="n2-cdd"></div></div><div class="xs muted mt8">Flora fills the address and the last occasion from the customer card.</div>`;
+}
+N2.dd=on=>{const d=A.$("#n2-cdd");if(d)d.classList.toggle("on",!!on)};
+N2.custSearch=v=>{N2.cq=v;const q=v.toLowerCase().trim(),qn=q.replace(/\s/g,"");const d=A.$("#n2-cdd");if(!d)return;
+  const L=A.data.customers.filter(c=>!q||c.n.toLowerCase().includes(q)||(qn&&c.phone.replace(/\s/g,"").includes(qn))).slice(0,6);
+  d.innerHTML=`<div class="list">${L.map(c=>`<div class="li" onmousedown="event.preventDefault();N2.pickCust(${c.id})"><span class="avatar --s">${esc(c.first[0]+c.n.split(" ")[1][0])}</span><div class="t"><b>${esc(c.n)}</b><small class="tnum">${esc(c.phone)} · ${esc(c.addr)}</small></div>${c.tags[0]?`<span class="tag">${c.tags[0]}</span>`:""}</div>`).join("")}<div class="li" onmousedown="event.preventDefault();N2.newCust()"><span class="avatar --s">+</span><div class="t"><b>New customer${q?" “"+esc(v)+"”":""}</b><small>Name and phone only – the rest can wait</small></div></div></div>`;
+  N2.dd(true);
+};
+N2.pickCust=id=>{const c=A.customer(id);N2.c=id;N2.newc=false;if(!N2.addr)N2.addr=c.addr;if(!N2.rec)N2.rec=c.n;N2.dd(false);renderAll();A.toast(c.n+" · address and phone filled")};
+N2.newCust=()=>{N2.c=null;N2.newc=true;const v=N2.cq.trim();if(/^[+\d\s]+$/.test(v))N2.np=v;else N2.nn=v;renderAll();setTimeout(()=>A.$("#n2-"+(N2.nn?"np":"nn"))?.focus(),30)};
+N2.changeCust=()=>{N2.c=null;N2.newc=false;N2.cq="";renderAll();setTimeout(()=>A.$("#n2-cq")?.focus(),30)};
+N2.sameRec=()=>{const n=custName();if(!n){A.toast("Pick a customer first");return}N2.rec=n;A.$("#n2-rec").value=n;renderSteps()};
+
+/* delivery */
+N2.setType=t=>{N2.type=t;A.$$("#n2-type button").forEach((b,i)=>b.classList.toggle("on",(i===0)===(t==="delivery")));renderAddr();renderSum();renderSteps()};
+function renderAddr(){const el=A.$("#n2-addrbox");
+  if(N2.type==="collection"){el.innerHTML=`<div class="note-box">${A.icon("pin")} Collection from the studio · 80 Willow Walk, Bermondsey SE1 5SY · 08:00–22:00. The customer gets a “ready for collection” message with the photo.</div>`;return}
+  el.innerHTML=`<input class="input" id="n2-addr" value="${esc(N2.addr)}" placeholder="Street, flat, postcode" oninput="N2.set('addr',this.value)"><div class="xs muted mt8">${N2.chan==="Walk-in"?"Walk-in with delivery · £12":"London SE1–SE17 and central · £12 · own couriers or Uber Direct"}${N2.addr&&/SE1\b/.test(N2.addr)?" · <span class='ok'>Zone 1 – 20 min by bike</span>":""}</div>`}
+
+/* when */
+N2.setDay=d=>{N2.day=d;if(d!=="custom")N2.cdate="";if(!slotOk(N2.slot))N2.slot=firstSlot();renderWhen();renderSum()};
+N2.setDate=v=>{if(!v)return;const d=new Date(v);const t=new Date(A.NOW);t.setHours(0,0,0,0);const diff=Math.round((d-t)/864e5);if(diff<0){A.toast("That date has passed");return}N2.cdate=v;N2.day=diff;renderWhen()};
+N2.setSlot=s=>{N2.slot=s;renderWhen()};
+function renderWhen(){
+  const dayLbl=N2.day===0?"Today":N2.day===1?"Tomorrow":new Date(A.T(0,0,N2.day)).toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+  A.$("#n2-days").innerHTML=`<button class="chip ${N2.day===0?"on":""}" onclick="N2.setDay(0)">Today · Tue 20 Oct</button><button class="chip ${N2.day===1?"on":""}" onclick="N2.setDay(1)">Tomorrow · Wed</button><button class="chip ${N2.day>1?"on":""}" onclick="N2.setDay(2)">Thu 23 Oct</button><input type="date" class="input" style="width:150px;height:30px" value="${esc(N2.cdate)}" min="2026-10-21" onchange="N2.setDate(this.value)" title="Pick a date">`;
+  A.$("#n2-slots").innerHTML=A.SLOTS.map(s=>{const n=A.data.orders.filter(o=>o.n===N2.day&&o.slot===s&&o.status!=="cancelled").length;return`<button class="chip ${N2.slot===s?"on":""} ${slotOk(s)?"":"off"}" onclick="N2.setSlot('${s}')">${s}<span class="n">${n||""}</span></button>`}).join("");
+  A.$("#n2-slothint").textContent=N2.day===0?"Same-day: slots that end within 90 minutes are closed. Counts show orders already in the slot."+(N2.slot&&A.data.orders.filter(o=>o.n===0&&o.slot===N2.slot).length>=6?" This slot is busy – consider the next one.":""):dayLbl+" · all slots open · wave limits are a signal, not a lock.";
+  renderSteps();
+}
+N2.cardPreset=t=>{N2.card=t;A.$("#n2-card").value=t;renderSteps()};
+
+/* product */
+N2.prodSearch=v=>{N2.pq=v;renderProds()};
+N2.pickProd=id=>{N2.p=id;renderProds();renderSizes();renderSum();renderSteps()};
+N2.setSize=s=>{N2.size=s;renderSizes();renderSum()};
+N2.toggleAd=id=>{N2.ad.has(id)?N2.ad.delete(id):N2.ad.add(id);renderAddons();renderSum();renderSteps()};
+function renderProds(){const q=N2.pq.toLowerCase().trim();let L=products().filter(p=>!q||p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)||p.sku.toLowerCase().includes(q));
+  if(N2.p&&!L.find(p=>p.id===N2.p)&&!q)L.unshift(A.product(N2.p));const more=Math.max(0,L.length-8);L=L.slice(0,8);
+  A.$("#n2-prods").innerHTML=L.map(p=>`<button class="n2-tile ${N2.p===p.id?"on":""}" onclick="N2.pickProd(${p.id})" title="${esc(p.name)}"><div class="photo"><img src="${p.img}" alt="" loading="lazy"></div><span class="nm">${esc(p.name)}</span><span class="pr">${A.fmt(p.price)}${p.stock===0?" · <span class='accent'>none left</span>":""}</span></button>`).join("")||`<div class="empty" style="grid-column:1/-1;padding:20px">${A.icon("search")}<span class="sm">Nothing in the catalogue for “${esc(N2.pq)}”</span></div>`;
+  A.$("#n2-prodmore").textContent=more?`+${more} more – type to narrow down`:q?"":"Showing 8 of "+products().length+" – type to search";
+}
+function renderSizes(){const p=N2.p&&A.product(N2.p);const el=A.$("#n2-sizes");if(!p){el.innerHTML="";return}
+  if(p.sizes.length<2){el.innerHTML=`<div class="sm soft">${esc(p.name)} · one size · ${A.fmt(p.price)}</div>`;N2.size="Standard";return}
+  el.innerHTML=`<div class="lbl mb8">Size</div><div class="seg-ctl --w">${p.sizes.map(s=>`<button class="${N2.size===s?"on":""}" onclick="N2.setSize('${s}')">${s} · ${A.fmt(Math.round(p.price*MULT[s]))}</button>`).join("")}</div>`;
+}
+function renderAddons(){A.$("#n2-addons").innerHTML=addons().map(a=>`<button class="chip ${N2.ad.has(a.id)?"on":""}" onclick="N2.toggleAd(${a.id})">${esc(a.name)}<span class="n">${A.fmt(a.price)}</span></button>`).join("")}
+
+/* payment */
+N2.setPay=p=>{N2.pay=p;A.$$("#n2-pay button").forEach((b,i)=>b.classList.toggle("on",["link","paid","invoice"][i]===p));renderPay();renderSum()};
+function renderPay(){const h={link:`<div class="note-box">${A.icon("link")} A Stripe link goes to the customer by WhatsApp or SMS the moment the order is created. The order stays <b>unpaid</b> until Stripe confirms; unpaid orders are not started.</div>`,
+  paid:`<div class="note-box --ok">${A.icon("check")} Money already taken – cash, card at the till, Revolut or a bank transfer you have seen. Recorded in Xero as a sale today.</div>`,
+  invoice:`<div class="note-box --warn">${A.icon("mail")} Corporate account – an invoice is raised in Xero, due in 14 days. The order starts straight away.</div>`}[N2.pay];
+  A.$("#n2-payhint").innerHTML=h;
+  A.$("#n2-methodbox").innerHTML=N2.pay==="paid"?`<label>Method</label><select class="select" onchange="N2.set('method',this.value)">${["Card at the till","Cash","Revolut","Bank transfer"].map(m=>`<option ${N2.method===m?"selected":""}>${m}</option>`).join("")}</select>`:N2.pay==="invoice"?`<label>PO number</label><input class="input" placeholder="Optional" oninput="N2.set('po',this.value)">`:`<label>Send link via</label><select class="select"><option>WhatsApp</option><option>SMS</option><option>Email</option></select>`;
+}
+function renderSum(){const t=calc();const p=N2.p&&A.product(N2.p);
+  A.$("#n2-sum").innerHTML=`<div class="caps mb8">Summary</div>
+  <div class="ln"><span>${p?esc(p.name)+" <span class='muted'>· "+esc(N2.size)+"</span>":"<span class='muted'>No product yet</span>"}</span><span class="tnum">${p?A.fmt(t.base):"–"}</span></div>
+  ${[...N2.ad].map(id=>{const a=A.product(id);return`<div class="ln"><span class="soft">+ ${esc(a.name)}</span><span class="tnum">${A.fmt(a.price)}</span></div>`}).join("")}
+  <div class="ln"><span class="soft">${N2.type==="delivery"?"Delivery · "+(N2.day===0?"today":"later")+" · "+esc(N2.slot||"")+"":"Collection"}</span><span class="tnum">${p?A.fmt(t.fee):"–"}</span></div>
+  <div class="tot"><span class="caps">Total</span><span class="kpi-s tnum">${A.fmt(t.total)}</span></div>
+  <div class="row mt8" style="gap:6px;flex-wrap:wrap">${A.pill(N2.pay==="paid"?"paid":"unpaid",N2.pay==="paid"?"Paid · "+N2.method:N2.pay==="invoice"?"Invoice · 14 days":"Awaiting Stripe")}${A.chanTag(N2.chan)}${N2.type==="collection"?`<span class="tag">Collection</span>`:""}</div>`;
+}
+function missing(){const m=[];if(!custName())m.push("customer");if(N2.newc&&!N2.np.trim())m.push("phone");if(!N2.p)m.push("product");if(N2.type==="delivery"&&!N2.addr.trim())m.push("address");return m}
+function renderSteps(){const st=(id,ok)=>A.$(id).classList.toggle("ok",!!ok);st("#n2-st1",!!custName()&&(!N2.newc||N2.np.trim()));st("#n2-st2",!!N2.rec.trim());st("#n2-st3",N2.type==="collection"||!!N2.addr.trim());st("#n2-st5",!!N2.card.trim()||!!N2.notes.trim());st("#n2-st6",!!N2.p);st("#n2-st7",N2.ad.size>0);
+  const m=missing();A.$("#n2-ready").textContent=m.length?"Still needed: "+m.join(", "):"Ready · "+A.fmt(calc().total);A.$("#n2-create").classList.toggle("is-disabled",m.length>0)}
+function renderAll(){renderCust();A.$("#n2-rec").value=N2.rec;A.$$("#n2-type button").forEach((b,i)=>b.classList.toggle("on",(i===0)===(N2.type==="delivery")));renderAddr();renderWhen();A.$("#n2-card").value=N2.card;A.$("#n2-notes").value=N2.notes;A.$("#n2-pq").value=N2.pq;renderProds();renderSizes();renderAddons();A.$$("#n2-pay button").forEach((b,i)=>b.classList.toggle("on",["link","paid","invoice"][i]===N2.pay));renderPay();A.$("#n2-chan").value=N2.chan;renderSum();renderSteps()}
+
+/* create */
+N2.create=()=>{const m=missing();if(m.length){A.toast("Add the "+m[0]+" first");const f={customer:"#n2-cq",phone:"#n2-np",product:"#n2-pq",address:"#n2-addr"}[m[0]];A.$(f)?.focus();return}
+  let cid=N2.c;
+  if(!cid){const id=5100+A.data.customers.filter(c=>c.id>=5100).length;let nm=N2.nn.trim()||"Walk-in customer";const parts=nm.split(" ");if(parts.length<2)nm+=" ·";A.data.customers.push({id,n:nm,first:parts[0],phone:N2.np.trim(),email:"",addr:N2.addr||"Collection · 80 Willow Walk",tags:[],occasion:"First order · today",orders:0,spent:0,since:"2026",channel:N2.chan,note:""});cid=id}
+  const t=calc();const p=A.product(N2.p);
+  const o=A.addOrder({customer:cid,product:N2.p,size:N2.size,addons:[...N2.ad],total:t.total,delivery:t.fee,chan:N2.chan,slot:N2.slot,type:N2.type,addr:N2.type==="collection"?"Collection · 80 Willow Walk":N2.addr.trim(),recipient:N2.rec.trim()||undefined,card:N2.card.trim(),notes:N2.notes.trim()+(N2.pay==="invoice"?(N2.notes.trim()?" · ":"")+"Invoice"+(N2.po?" PO "+N2.po:""):""),paid:N2.pay==="paid"?"paid":"unpaid",n:N2.day,date:A.T(12,0,N2.day).slice(0,10)});
+  if(N2.pay==="paid")o.log.push({at:A.NOW.toISOString(),who:A.me().id,t:"Paid · "+N2.method});
+  if(N2.pay==="link")o.log.push({at:A.NOW.toISOString(),who:A.me().id,t:"Payment link sent · WhatsApp"});
+  if(N2.pay==="invoice")o.log.push({at:A.NOW.toISOString(),who:A.me().id,t:"Invoice raised in Xero · 14 days"});
+  const id=o.id,pay=N2.pay,day=N2.day,name=A.customer(cid).n;N2.reset();
+  A.go("orders",{open:id,view:day===1?"tomorrow":"today"});
+  setTimeout(()=>A.toast(`#${id} created · ${name} · ${A.fmt(t.total)}`,pay==="link"?"Payment link":"Print ticket",()=>pay==="link"?A.paymentLink(id):A.toast("Sent to printer · #"+id)),80);
+  if(p.stock===0)setTimeout(()=>A.push("Stock check","#"+id+" · "+p.name+" has no stock left – florist to substitute",{icon:"warehouse",type:"stock",go:["stock",{}]}),900);
+};
+
+window.mount_order_new=function(params){
+  params=params||{};
+  if(!N2.inited){N2.inited=true;N2.reset()}
+  if(params.customer&&!params._c){params._c=1;N2.reset();N2.pickCust(+params.customer);return}
+  if(A.role()==="florist"&&N2.chan==="Phone"&&!N2.c&&!N2.p){N2.chan="Walk-in";N2.type="collection";N2.pay="paid"}
+  renderAll();
+};
+})();
+</script>
