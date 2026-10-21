@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Floritta CRM – схемы редизайна</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#faf7f2;--ink:#1e1a17;--graphite:#5c5450;--grey:#8b8378;--light:#d9d2c7;--hair:#e4ddd3;--silver:#f1ece4;--accent:#b4595f;--ok:#7a8a6b;--warn:#b8862e}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif;font-weight:300;font-size:16px;line-height:1.5}
+.docnav{max-width:1100px;margin:24px auto 0;padding:0 16px;display:flex;align-items:center;gap:18px;font:400 12px/1 Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.docnav a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--light);padding-bottom:2px}
+.docnav img{height:16px;margin-right:auto}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 16px 72px}
+h1{font-family:'Cormorant Infant',serif;font-weight:300;font-size:44px;line-height:1.1;margin:4px 0 8px}
+h2{font-family:'Cormorant Infant',serif;font-weight:300;font-size:30px;line-height:1.15;margin:0 0 6px}
+.caps{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.lead{color:var(--graphite);max-width:760px;margin:0 0 44px}
+section{margin:0 0 56px;padding:28px 0 0;border-top:1px solid var(--light)}
+.sub{color:var(--graphite);margin:0 0 6px;max-width:860px}
+.fig{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px}
+.fig svg{width:100%;height:auto;display:block}
+@media(max-width:720px){.fig svg{min-width:880px}h1{font-size:36px}}
+.cap{margin-top:12px;color:var(--graphite);font-size:14px;max-width:860px}
+.cap b{font-weight:500;color:var(--ink)}
+.legend{display:flex;gap:18px 24px;flex-wrap:wrap;font-size:13px;color:var(--graphite);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{display:inline-block;width:22px;height:12px;border:1.5px solid var(--ink);background:var(--paper)}
+.legend i.new{border-color:var(--accent)}
+.legend i.dash{border-style:dashed}
+.legend i.soft{border-color:var(--grey)}
+.legend i.sil{background:var(--silver)}
+svg text{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:var(--ink);font-weight:400}
+svg .t{font-weight:500;font-size:14px}
+svg .t13{font-weight:500;font-size:13px}
+svg .h{font-family:'Cormorant Infant',serif;font-size:22px;font-weight:300}
+svg .s{font-size:12px;fill:var(--graphite)}
+svg .a{fill:var(--accent)}
+svg .g{fill:var(--grey)}
+svg .k{fill:var(--ok)}
+svg .m{text-anchor:middle}
+svg .e{text-anchor:end}
+svg .caps{font-size:12px;letter-spacing:.14em;text-transform:uppercase;fill:var(--grey)}
+svg .box{fill:var(--paper);stroke:var(--ink);stroke-width:1.3}
+svg .box.new{stroke:var(--accent);stroke-width:1.5}
+svg .box.sil{fill:var(--silver)}
+svg .box.soft{stroke:var(--grey)}
+svg .box.ok{stroke:var(--ok)}
+svg .chip{fill:var(--paper);stroke:var(--ink);stroke-width:1.2}
+svg .chip.new{stroke:var(--accent)}
+svg .dash{stroke-dasharray:5 4}
+svg .ln{fill:none;stroke:var(--ink);stroke-width:1.3}
+svg .ln.new{stroke:var(--accent);stroke-width:1.5}
+svg .ln.soft{stroke:var(--grey)}
+svg .lane{fill:none;stroke:var(--hair);stroke-width:1}
+svg .lane.alt{fill:var(--silver);stroke:none}
+.foot{color:var(--grey);font-size:13px;border-top:1px solid var(--light);padding-top:16px}
+</style>
+</head>
+<body>
+<nav class="docnav"><img src="logo.svg" alt="Floritta"><a href="index.html">← Prototype</a><a href="concept.html">Concept</a></nav>
+<div class="wrap">
+<div class="caps">Floritta CRM · редизайн 2026-10 · схемы · 21.10.2026</div>
+<h1>Пять схем к редизайну CRM</h1>
+<p class="lead">Архитектура, карта разделов, жизненный цикл заказа, утро менеджера и карта компонентов. Чёрный контур – то, что уже есть в CRM; винный – то, что добавляем; пунктир – ограничено ролью или необязательно. Прототип экранов – в <a href="index.html" style="border-bottom:1px solid var(--light)">index.html</a>, ТЗ – в BRIEF.md рядом.</p>
+
+<!-- ============ 1. АРХИТЕКТУРА ============ -->
+<section>
+<h2>1. Архитектура</h2>
+<p class="sub">Ничего в стеке не меняется: та же Laravel + Inertia + React, те же интеграции. Новая тема – это CSS-переменные поверх существующего <code>users.theme</code>, плюс пять новых компонентов на клиенте.</p>
+<div class="legend"><span><i></i>есть</span><span><i class="new"></i>новое в редизайне</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Архитектура CRM Floritta">
+<defs>
+<marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e1a17"/></marker>
+<marker id="a1n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b4595f"/></marker>
+</defs>
+
+<!-- clients -->
+<rect class="box" x="20" y="20" width="320" height="70"/>
+<text class="t" x="36" y="44">Browser · desktop 1440</text>
+<text class="s" x="36" y="64">менеджер и владелец за столом · Chrome</text>
+<rect class="box" x="360" y="20" width="320" height="70"/>
+<text class="t" x="376" y="44">iPad in the shop · 1024</text>
+<text class="s" x="376" y="64">флорист у стола · тач, цели 44px, крупные кнопки</text>
+<rect class="box" x="740" y="20" width="340" height="70"/>
+<text class="t" x="756" y="44">Mobile app · Expo</text>
+<text class="s" x="756" y="64">курьер и флорист: trip · deliveries · scan · timeclock</text>
+
+<line class="ln" x1="180" y1="92" x2="180" y2="118" marker-end="url(#a1)"/>
+<line class="ln" x1="520" y1="92" x2="520" y2="118" marker-end="url(#a1)"/>
+
+<!-- Inertia / React -->
+<rect class="box" x="20" y="120" width="660" height="170"/>
+<rect class="box sil" x="20" y="120" width="660" height="40"/>
+<text class="h" x="36" y="148">Inertia · React · TypeScript · Tailwind</text>
+<text class="s e" x="664" y="146">resources/js</text>
+
+<text class="s" x="36" y="189">есть</text>
+<rect class="chip" x="80" y="174" width="84" height="22"/><text class="s m" x="122" y="189">DataTable</text>
+<rect class="chip" x="170" y="174" width="60" height="22"/><text class="s m" x="200" y="189">Modal</text>
+<rect class="chip" x="236" y="174" width="68" height="22"/><text class="s m" x="270" y="189">Toaster</text>
+<rect class="chip" x="310" y="174" width="56" height="22"/><text class="s m" x="338" y="189">Board</text>
+<rect class="chip" x="372" y="174" width="80" height="22"/><text class="s m" x="412" y="189">StatusTag</text>
+<rect class="chip" x="458" y="174" width="90" height="22"/><text class="s m" x="503" y="189">Sidebar rail</text>
+<rect class="chip" x="554" y="174" width="100" height="22"/><text class="s m" x="604" y="189">ThemeProvider</text>
+
+<text class="s a" x="36" y="225">новое</text>
+<rect class="chip new" x="80" y="210" width="230" height="22"/><text class="s a m" x="195" y="225">Ivory theme: CSS-vars + users.theme</text>
+<rect class="chip new" x="316" y="210" width="56" height="22"/><text class="s a m" x="344" y="225">Sheet</text>
+<rect class="chip new" x="378" y="210" width="136" height="22"/><text class="s a m" x="446" y="225">CommandPalette ⌘K</text>
+<rect class="chip new" x="520" y="210" width="90" height="22"/><text class="s a m" x="565" y="225">SavedViews</text>
+
+<rect class="chip new" x="80" y="244" width="180" height="22"/><text class="s a m" x="170" y="259">Flora suggestions in Inbox</text>
+<rect class="chip new" x="266" y="244" width="84" height="22"/><text class="s a m" x="308" y="259">Bulk panel</text>
+<rect class="chip new" x="356" y="244" width="100" height="22"/><text class="s a m" x="406" y="259">Density 44/36</text>
+<rect class="chip new" x="462" y="244" width="70" height="22"/><text class="s a m" x="497" y="259">KPI-card</text>
+<rect class="chip new" x="538" y="244" width="90" height="22"/><text class="s a m" x="583" y="259">Empty state</text>
+
+<!-- Inertia <-> Laravel -->
+<line class="ln" x1="350" y1="292" x2="350" y2="328" marker-start="url(#a1)" marker-end="url(#a1)"/>
+<text class="s" x="362" y="314">Inertia props · XHR JSON · poll 60 s</text>
+
+<!-- Laravel -->
+<rect class="box" x="20" y="330" width="660" height="170"/>
+<rect class="box sil" x="20" y="330" width="660" height="40"/>
+<text class="h" x="36" y="358">Laravel 11</text>
+<text class="s e" x="664" y="356">app/ · routes/tenant · HandleInertiaRequests</text>
+
+<rect class="box" x="36" y="384" width="148" height="100"/>
+<text class="t13" x="46" y="404">Routes</text>
+<text class="s" x="46" y="422">web.php · api.php</text>
+<text class="s" x="46" y="438">/today /orders /inbox</text>
+<text class="s" x="46" y="454">/api/v1 · Sanctum</text>
+<text class="s" x="46" y="470">role: middleware</text>
+
+<rect class="box" x="196" y="384" width="148" height="100"/>
+<text class="t13" x="206" y="404">Actions</text>
+<text class="s" x="206" y="422">TransitionOrderStatus</text>
+<text class="s" x="206" y="438">RecordPayment</text>
+<text class="s" x="206" y="454">AdvanceDelivery</text>
+<text class="s" x="206" y="470">SendMessage · Flora</text>
+
+<rect class="box" x="356" y="384" width="148" height="100"/>
+<text class="t13" x="366" y="404">Policies · roles</text>
+<text class="s" x="366" y="422">florist · manager</text>
+<text class="s" x="366" y="438">admin · courier</text>
+<text class="s" x="366" y="454">seasonal · trainee</text>
+<text class="s" x="366" y="470">сервер решает сам</text>
+
+<rect class="box" x="516" y="384" width="148" height="100"/>
+<text class="t13" x="526" y="404">Shared props</text>
+<text class="s" x="526" y="422">me · navCounts · flags</text>
+<text class="s" x="526" y="438">shopTime · i18n</text>
+<rect class="chip new" x="526" y="448" width="128" height="22"/><text class="s a m" x="590" y="463">theme = ivory | ink</text>
+
+<!-- DB & queues -->
+<line class="ln" x1="180" y1="502" x2="180" y2="538" marker-end="url(#a1)"/>
+<line class="ln" x1="520" y1="502" x2="520" y2="538" marker-end="url(#a1)"/>
+<rect class="box" x="20" y="540" width="320" height="110"/>
+<text class="t" x="36" y="562">MySQL</text>
+<text class="s" x="36" y="582">orders · order_items · payment_links · production_jobs</text>
+<text class="s" x="36" y="598">conversations · messages · customers · runs · trips</text>
+<rect class="chip new" x="36" y="612" width="150" height="22"/><text class="s a m" x="111" y="627">users.theme · saved_views</text>
+<text class="s" x="196" y="627">остальное без миграций</text>
+
+<rect class="box" x="360" y="540" width="320" height="110"/>
+<text class="t" x="376" y="562">Queues · workers · scheduler</text>
+<text class="s" x="376" y="582">jobs: NotifyCustomer · marketplace sync · push</text>
+<text class="s" x="376" y="598">cron: remind-unpaid · sla-watchdog · daily-quiz</text>
+<text class="s" x="376" y="614">Flora agent: shadow / pilot / live</text>
+<text class="s" x="376" y="630">print agent · ConversationAttention</text>
+
+<!-- mobile -> laravel -->
+<path class="ln" d="M740 55 H710 V390 H684" marker-end="url(#a1)"/>
+<text class="s m" transform="translate(704 235) rotate(-90)">REST /api/v1 · Sanctum</text>
+
+<!-- integrations -->
+<text class="caps" x="740" y="112">Integrations · app/Services</text>
+<rect class="box" x="740" y="120" width="340" height="490"/>
+<line class="ln" x1="1000" y1="132" x2="1000" y2="92" marker-end="url(#a1)"/>
+
+<rect class="box" x="752" y="134" width="316" height="44"/>
+<text class="t13" x="762" y="152">Expo push</text><text class="s" x="762" y="168">PushNotifier → APNs / FCM → приложение</text>
+<rect class="box" x="752" y="186" width="316" height="44"/>
+<text class="t13" x="762" y="204">Stripe</text><text class="s" x="762" y="220">Checkout · ссылки /pay/{token} · вебхуки</text>
+<rect class="box" x="752" y="238" width="316" height="44"/>
+<text class="t13" x="762" y="256">WhatsApp · Instagram via Wazzup</text><text class="s" x="762" y="272">входящий вебхук · исходящие SendMessage</text>
+<rect class="box" x="752" y="290" width="316" height="44"/>
+<text class="t13" x="762" y="308">Deliveroo · Uber Eats · Just Eat</text><text class="s" x="762" y="324">заказы площадок → OrderIngestService</text>
+<rect class="box" x="752" y="342" width="316" height="44"/>
+<text class="t13" x="762" y="360">Uber Direct</text><text class="s" x="762" y="376">внешний курьер · 2 аккаунта · вебхуки</text>
+<rect class="box" x="752" y="394" width="316" height="44"/>
+<text class="t13" x="762" y="412">Xero</text><text class="s" x="762" y="428">AccountingGateway · syncXero</text>
+<rect class="box" x="752" y="446" width="316" height="44"/>
+<text class="t13" x="762" y="464">Telegram</text><text class="s" x="762" y="480">Business-чаты + ops-пейджер команде</text>
+<rect class="box" x="752" y="498" width="316" height="44"/>
+<text class="t13" x="762" y="516">Google</text><text class="s" x="762" y="532">Maps / Routes · Gmail · GSC · GA4 · GBP</text>
+<rect class="box" x="752" y="550" width="316" height="44"/>
+<text class="t13" x="762" y="568">Storefront floritta.uk</text><text class="s" x="762" y="584">POST /api/orders · лиды · Ready now</text>
+
+<!-- laravel <-> integrations -->
+<line class="ln" x1="684" y1="470" x2="738" y2="470" marker-start="url(#a1)" marker-end="url(#a1)"/>
+<text class="s m" x="711" y="462">webhooks</text>
+<text class="s m" x="711" y="486">API</text>
+</svg>
+</div>
+<p class="cap"><b>Что добавляем.</b> Один новый блок токенов в <code>app.css</code> (<code>.theme-ivory</code> + тёмный <code>.theme-ink</code>) и запись в белый список тем – выбирается тем же тумблером <code>users.theme</code>, что сейчас переключает bloom / charcoal. На клиенте – пять компонентов, которых в CRM нет: правая шторка Sheet вместо модалок и самописных оверлеев, палитра команд ⌘K, сохранённые виды таблиц, bulk-панель и карточка подсказки Flora в инбоксе. Сервер, Actions, роли и интеграции не трогаем.</p>
+</section>
+
+<!-- ============ 2. КАРТА IA ============ -->
+<section>
+<h2>2. Карта разделов (IA)</h2>
+<p class="sub">13 разделов вместо 28 пунктов и 20 горизонтальных подменю. Сплошной контур – видят все роли; пунктир – только роль из подписи.</p>
+<div class="legend"><span><i></i>все роли</span><span><i class="dash"></i>ограничено ролью</span><span><i class="sil"></i>раздел сайдбара</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Карта разделов CRM">
+<!-- group eyebrows -->
+<text class="caps" x="20" y="26">Home</text>
+<text class="caps" x="173" y="26">Work</text>
+<text class="caps" x="938" y="26">Shop</text>
+<text class="caps" x="20" y="416">Shop</text>
+<text class="caps" x="173" y="416">People</text>
+<text class="caps" x="632" y="416">Business · owner</text>
+
+<!-- row 1 headers -->
+<rect class="box sil" x="20" y="36" width="141" height="50"/><text class="h" x="32" y="60">Today</text><text class="s" x="32" y="78">все роли · /today</text>
+<rect class="box sil" x="173" y="36" width="141" height="50"/><text class="h" x="185" y="60">Orders</text><text class="s" x="185" y="78">все роли · /orders</text>
+<rect class="box sil" x="326" y="36" width="141" height="50"/><text class="h" x="338" y="60">Production</text><text class="s" x="338" y="78">все роли</text>
+<rect class="box sil dash" x="479" y="36" width="141" height="50"/><text class="h" x="491" y="60">Delivery</text><text class="s a" x="491" y="78">manager+</text>
+<rect class="box sil dash" x="632" y="36" width="141" height="50"/><text class="h" x="644" y="60">Inbox</text><text class="s a" x="644" y="78">manager+</text>
+<rect class="box sil dash" x="785" y="36" width="141" height="50"/><text class="h" x="797" y="60">Customers</text><text class="s a" x="797" y="78">manager+</text>
+<rect class="box sil" x="938" y="36" width="141" height="50"/><text class="h" x="950" y="60">Catalog</text><text class="s" x="950" y="78">florist: read-only</text>
+
+<!-- Today -->
+<rect class="box" x="20" y="94" width="141" height="52"/><text x="28" y="111">Today</text><text class="s" x="28" y="125">KPI · Needs you now</text><text class="s" x="28" y="139">slots · on shift · tomorrow</text>
+<rect class="box dash" x="20" y="152" width="141" height="52"/><text x="28" y="169">Florist view</text><text class="s" x="28" y="183">my orders · next · tasks</text><text class="s a" x="28" y="197">florist · iPad</text>
+<rect class="box dash" x="20" y="210" width="141" height="52"/><text x="28" y="227">Week · Marketplaces</text><text class="s" x="28" y="241">7-day bars · Deliveroo</text><text class="s a" x="28" y="255">owner</text>
+
+<!-- Orders -->
+<rect class="box" x="173" y="94" width="141" height="52"/><text x="181" y="111">Orders list</text><text class="s" x="181" y="125">table | board · views</text><text class="s" x="181" y="139">bulk · j/k · filters</text>
+<rect class="box" x="173" y="152" width="141" height="52"/><text x="181" y="169">Order sheet</text><text class="s" x="181" y="183">status · pay · photo</text><text class="s" x="181" y="197">chat · history · menu</text>
+<rect class="box" x="173" y="210" width="141" height="52"/><text x="181" y="227">New order</text><text class="s" x="181" y="241">phone · walk-in</text><text class="s" x="181" y="255">2 columns · Stripe link</text>
+<rect class="box dash" x="173" y="268" width="141" height="52"/><text x="181" y="285">Florist mode</text><text class="s" x="181" y="299">today / tomorrow</text><text class="s a" x="181" y="313">без сумм · florist</text>
+
+<!-- Production -->
+<rect class="box" x="326" y="94" width="141" height="52"/><text x="334" y="111">Production board</text><text class="s" x="334" y="125">kanban 4 columns</text><text class="s" x="334" y="139">Take · → Photo · → Ready</text>
+<rect class="box" x="326" y="152" width="141" height="52"/><text x="334" y="169">Photo check</text><text class="s" x="334" y="183">approve &amp; send</text><text class="s" x="334" y="197">retake with note</text>
+<rect class="box" x="326" y="210" width="141" height="52"/><text x="334" y="227">Ready now</text><text class="s" x="334" y="241">showcase → floritta.uk</text><text class="s" x="334" y="255">publish · sold · hidden</text>
+<rect class="box" x="326" y="268" width="141" height="52"/><text x="334" y="285">Who's making what</text><text class="s" x="334" y="299">load per florist</text><text class="s" x="334" y="313">strip above board</text>
+
+<!-- Delivery -->
+<rect class="box dash" x="479" y="94" width="141" height="52"/><text x="487" y="111">Dispatch</text><text class="s" x="487" y="125">list by slot · map</text><text class="s" x="487" y="139">pins = status</text>
+<rect class="box dash" x="479" y="152" width="141" height="52"/><text x="487" y="169">Runs</text><text class="s" x="487" y="183">select → Create run</text><text class="s" x="487" y="197">push to courier</text>
+<rect class="box dash" x="479" y="210" width="141" height="52"/><text x="487" y="227">Uber Direct</text><text class="s" x="487" y="241">modal: price · ETA</text><text class="s" x="487" y="255">one click to book</text>
+<rect class="box dash" x="479" y="268" width="141" height="52"/><text x="487" y="285">Problems</text><text class="s" x="487" y="299">call · resolve</text><text class="s" x="487" y="313">return to shop</text>
+
+<!-- Inbox -->
+<rect class="box dash" x="632" y="94" width="141" height="52"/><text x="640" y="111">Inbox</text><text class="s" x="640" y="125">3 columns · channels</text><text class="s" x="640" y="139">All · Unread · Mine</text>
+<rect class="box dash" x="632" y="152" width="141" height="52"/><text x="640" y="169">Flora suggests</text><text class="s" x="640" y="183">Send · Edit · Dismiss</text><text class="s" x="640" y="197">draft, not auto-send</text>
+<rect class="box dash" x="632" y="210" width="141" height="52"/><text x="640" y="227">Context</text><text class="s" x="640" y="241">customer · order</text><text class="s" x="640" y="255">pay link · new order</text>
+
+<!-- Customers -->
+<rect class="box dash" x="785" y="94" width="141" height="52"/><text x="793" y="111">Customers</text><text class="s" x="793" y="125">tags · spend · last</text><text class="s" x="793" y="139">views · birthdays</text>
+<rect class="box dash" x="785" y="152" width="141" height="52"/><text x="793" y="169">Customer sheet</text><text class="s" x="793" y="183">orders · recipients</text><text class="s" x="793" y="197">Flora facts</text>
+
+<!-- Catalog -->
+<rect class="box" x="938" y="94" width="141" height="52"/><text x="946" y="111">Catalog</text><text class="s" x="946" y="125">grid | table · 4:5</text><text class="s" x="946" y="139">active switch · stock</text>
+<rect class="box dash" x="938" y="152" width="141" height="52"/><text x="946" y="169">Product sheet</text><text class="s" x="946" y="183">prices · BOM · margin</text><text class="s a" x="946" y="197">edit: manager+</text>
+
+<!-- row 2 headers -->
+<rect class="box sil" x="20" y="426" width="141" height="50"/><text class="h" x="32" y="450">Stock</text><text class="s" x="32" y="468">все роли</text>
+<rect class="box sil" x="173" y="426" width="141" height="50"/><text class="h" x="185" y="450">Team</text><text class="s" x="185" y="468">все роли</text>
+<rect class="box sil" x="326" y="426" width="141" height="50"/><text class="h" x="338" y="450">Tasks</text><text class="s" x="338" y="468">все роли</text>
+<rect class="box sil" x="479" y="426" width="141" height="50"/><text class="h" x="491" y="450">Learning</text><text class="s" x="491" y="468">все роли</text>
+<rect class="box sil dash" x="632" y="426" width="141" height="50"/><text class="h" x="644" y="450">Growth</text><text class="s a" x="644" y="468">owner</text>
+<rect class="box sil dash" x="785" y="426" width="141" height="50"/><text class="h" x="797" y="450">Settings</text><text class="s a" x="797" y="468">owner</text>
+
+<!-- Stock -->
+<rect class="box" x="20" y="484" width="141" height="52"/><text x="28" y="501">Stock</text><text class="s" x="28" y="515">qty · par · cost</text><text class="s" x="28" y="529">below par = accent</text>
+<rect class="box" x="20" y="542" width="141" height="52"/><text x="28" y="559">Receive · Write-off</text><text class="s" x="28" y="573">RFH Tue / Thu / Sat</text><text class="s" x="28" y="587">modals</text>
+<rect class="box" x="20" y="600" width="141" height="52"/><text x="28" y="617">Stocktake</text><text class="s" x="28" y="631">inline count · Apply</text><text class="s" x="28" y="645">every 5 days</text>
+<rect class="box" x="20" y="658" width="141" height="52"/><text x="28" y="675">Shop floor</text><text class="s" x="28" y="689">what's on display</text><text class="s" x="28" y="703">read-only for florist</text>
+<rect class="box dash" x="20" y="716" width="141" height="52"/><text x="28" y="733">Purchasing</text><text class="s" x="28" y="747">Draft → Received</text><text class="s a" x="28" y="761">manager+</text>
+
+<!-- Team -->
+<rect class="box" x="173" y="484" width="141" height="52"/><text x="181" y="501">Schedule</text><text class="s" x="181" y="515">week grid · shifts</text><text class="s" x="181" y="529">swap · two time grids</text>
+<rect class="box dash" x="173" y="542" width="141" height="52"/><text x="181" y="559">Timesheet</text><text class="s" x="181" y="573">hours · Approve all</text><text class="s a" x="181" y="587">approve: manager+</text>
+<rect class="box" x="173" y="600" width="141" height="52"/><text x="181" y="617">Bonus</text><text class="s" x="181" y="631">team pot · own row</text><text class="s" x="181" y="645">florist sees own only</text>
+
+<!-- Tasks -->
+<rect class="box" x="326" y="484" width="141" height="52"/><text x="334" y="501">Board</text><text class="s" x="334" y="515">4 columns</text><text class="s" x="334" y="529">Mine | Team</text>
+<rect class="box" x="326" y="542" width="141" height="52"/><text x="334" y="559">Task sheet</text><text class="s" x="334" y="573">checklist · photo</text><text class="s" x="334" y="587">Done · Approve</text>
+<rect class="box" x="326" y="600" width="141" height="52"/><text x="334" y="617">New task</text><text class="s" x="334" y="631">modal · template</text><text class="s" x="334" y="645">who · due · photo</text>
+
+<!-- Learning -->
+<rect class="box" x="479" y="484" width="141" height="52"/><text x="487" y="501">Skills matrix</text><text class="s" x="487" y="515">staff × skills</text><text class="s" x="487" y="529">passed · check · empty</text>
+<rect class="box" x="479" y="542" width="141" height="52"/><text x="487" y="559">Lessons today</text><text class="s" x="487" y="573">3-minute lesson</text><text class="s" x="487" y="587">quiz of the day</text>
+<rect class="box dash" x="479" y="600" width="141" height="52"/><text x="487" y="617">Buddy check-ins</text><text class="s" x="487" y="631">days 1 / 3 / 7 / 14</text><text class="s a" x="487" y="645">trainee · buddy</text>
+
+<!-- Growth -->
+<rect class="box dash" x="632" y="484" width="141" height="52"/><text x="640" y="501">Analytics</text><text class="s" x="640" y="515">KPI · 7 days</text><text class="s" x="640" y="529">channels table</text>
+<rect class="box dash" x="632" y="542" width="141" height="52"/><text x="640" y="559">Upsell</text><text class="s" x="640" y="573">add-ons attach rate</text><text class="s" x="640" y="587">bundles</text>
+<rect class="box dash" x="632" y="600" width="141" height="52"/><text x="640" y="617">Marketing</text><text class="s" x="640" y="631">promo codes · social</text><text class="s" x="640" y="645">UTM · referrals</text>
+<rect class="box dash" x="632" y="658" width="141" height="52"/><text x="640" y="675">SEO</text><text class="s" x="640" y="689">top pages · keywords</text><text class="s" x="640" y="703">GBP</text>
+<rect class="box dash" x="632" y="716" width="141" height="52"/><text x="640" y="733">Content</text><text class="s" x="640" y="747">pages · FAQ · news</text><text class="s" x="640" y="761">bulk edits</text>
+
+<!-- Settings -->
+<rect class="box dash" x="785" y="484" width="141" height="52"/><text x="793" y="501">General</text><text class="s" x="793" y="515">shop · hours</text><text class="s" x="793" y="529">cut-off · slots</text>
+<rect class="box dash" x="785" y="542" width="141" height="52"/><text x="793" y="559">Team &amp; roles</text><text class="s" x="793" y="573">users · role</text><text class="s a" x="793" y="587">New design (beta)</text>
+<rect class="box dash" x="785" y="600" width="141" height="52"/><text x="793" y="617">Integrations</text><text class="s" x="793" y="631">Stripe · Wazzup · Xero</text><text class="s" x="793" y="645">status dot · Reconnect</text>
+<rect class="box dash" x="785" y="658" width="141" height="52"/><text x="793" y="675">Notifications</text><text class="s" x="793" y="689">push · Telegram</text><text class="s" x="793" y="703">digest · quiet hours</text>
+<rect class="box dash" x="785" y="716" width="141" height="52"/><text x="793" y="733">Appearance</text><text class="s" x="793" y="747">Ivory | Ink</text><text class="s" x="793" y="761">density 44 / 36</text>
+
+<!-- roles note -->
+<rect class="box sil" x="938" y="426" width="141" height="342"/>
+<text class="t" x="950" y="450">Roles</text>
+<text class="s" x="950" y="474">owner – все 13</text>
+<text class="s" x="950" y="494">manager – всё,</text>
+<text class="s" x="950" y="510">кроме Growth</text>
+<text class="s" x="950" y="526">и Settings</text>
+<text class="s" x="950" y="550">florist – Today,</text>
+<text class="s" x="950" y="566">Orders (без £),</text>
+<text class="s" x="950" y="582">Production, Catalog</text>
+<text class="s" x="950" y="598">(чтение), Stock,</text>
+<text class="s" x="950" y="614">Team, Tasks,</text>
+<text class="s" x="950" y="630">Learning</text>
+<text class="s" x="950" y="654">trainee – Learning,</text>
+<text class="s" x="950" y="670">Orders только</text>
+<text class="s" x="950" y="686">чтение</text>
+<text class="s" x="950" y="710">courier – мобильное</text>
+<text class="s" x="950" y="726">приложение +</text>
+<text class="s" x="950" y="742">Team › Schedule</text>
+</svg>
+</div>
+<p class="cap"><b>Куда делись старые пункты.</b> Dashboard / Overview / All orders → Today + Orders с сохранёнными видами; Tasks + Floritta Active → Tasks (баллы и награды – внутри); Learning · Buddy · Development · Skill check · Quiz day → один раздел Learning; Comms + Flora facts → Inbox и Customers; Catalog · Inventory · Shop floor · Constructor → Catalog и Stock; Analytics · Growth · Marketing · SEO · Content · Storefront → Growth (сегментами); System → Settings. Видимость по-прежнему решает сервер; `LIMITED_ACCESS_NAV` для сезонных и стажёров сохраняется.</p>
+</section>
+
+<!-- ============ 3. ЖИЗНЕННЫЙ ЦИКЛ ЗАКАЗА ============ -->
+<section>
+<h2>3. Жизненный цикл заказа</h2>
+<p class="sub">Шесть статусов на доске, независимая ось оплаты и две ветки – отмена и проблема с вручением. Дорожки – кто действует: заказчик, менеджер, Flora, флорист, курьер, система.</p>
+<div class="legend"><span><i></i>статус заказа (order.status)</span><span><i class="new"></i>ветка проблемы / отмены</span><span><i class="dash"></i>подсказка или необязательный шаг</span><span><i class="sil"></i>ось оплаты (payment_status)</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 750" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Жизненный цикл заказа">
+<defs>
+<marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e1a17"/></marker>
+<marker id="a3n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b4595f"/></marker>
+</defs>
+
+<!-- step headers -->
+<text class="caps m" x="190" y="38">1 · intake</text>
+<text class="caps m" x="325" y="38">2 · making</text>
+<text class="caps m" x="460" y="38">3 · photo</text>
+<text class="caps m" x="595" y="38">4 · ready</text>
+<text class="caps m" x="730" y="38">5 · out</text>
+<text class="caps m" x="865" y="38">6 · delivered</text>
+<text class="caps m" x="1000" y="38">7 · problem</text>
+
+<!-- lanes -->
+<rect class="lane alt" x="130" y="50" width="945" height="84"/>
+<rect class="lane" x="130" y="134" width="945" height="84"/>
+<rect class="lane alt" x="130" y="218" width="945" height="84"/>
+<rect class="lane" x="130" y="302" width="945" height="84"/>
+<rect class="lane alt" x="130" y="386" width="945" height="144"/>
+<rect class="lane" x="130" y="530" width="945" height="84"/>
+<text class="t" x="20" y="96">Customer</text>
+<text class="t" x="20" y="180">Manager</text>
+<text class="t" x="20" y="264">Flora</text>
+<text class="t" x="20" y="348">Florist</text>
+<text class="t" x="20" y="462">Courier</text>
+<text class="t" x="20" y="576">System</text>
+
+<!-- Customer -->
+<rect class="box soft" x="135" y="70" width="110" height="44"/><text class="t13 m" x="190" y="88">Places order</text><text class="s m" x="190" y="104">web · chat · phone</text>
+<rect class="box soft dash" x="405" y="70" width="110" height="44"/><text class="t13 m" x="460" y="88">Sees photo</text><text class="s m" x="460" y="104">Client approval</text>
+<rect class="box soft" x="675" y="70" width="110" height="44"/><text class="t13 m" x="730" y="88">Tracking</text><text class="s m" x="730" y="104">/track/{token}</text>
+<rect class="box soft" x="810" y="70" width="110" height="44"/><text class="t13 m" x="865" y="88">Receives</text><text class="s m" x="865" y="104">survey · NPS</text>
+
+<!-- Manager -->
+<rect class="box" x="135" y="154" width="110" height="44"/><text class="t13 m" x="190" y="172">Queue</text><text class="s m" x="190" y="188">unconfirmed → prod.</text>
+<rect class="box new" x="270" y="154" width="110" height="44"/><text class="t13 a m" x="325" y="172">Cancelled</text><text class="s m" x="325" y="188">reason · stock freed</text>
+<rect class="box dash" x="405" y="154" width="110" height="44"/><text class="t13 m" x="460" y="172">Approve &amp; send</text><text class="s m" x="460" y="188">photo to customer</text>
+<rect class="box" x="540" y="154" width="110" height="44"/><text class="t13 m" x="595" y="172">Assign courier</text><text class="s m" x="595" y="188">run · Uber Direct</text>
+<rect class="box new" x="810" y="154" width="110" height="44"/><text class="t13 a m" x="865" y="172">Resolve</text><text class="s m" x="865" y="188">redeliver · refund</text>
+
+<!-- Flora -->
+<rect class="box dash" x="270" y="238" width="110" height="44"/><text class="t13 m" x="325" y="256">Replies in chat</text><text class="s m" x="325" y="272">chat-draft order</text>
+<rect class="box dash" x="810" y="238" width="110" height="44"/><text class="t13 m" x="865" y="256">Drafts text</text><text class="s m" x="865" y="272">«not home» to client</text>
+
+<!-- Florist -->
+<rect class="box" x="270" y="322" width="110" height="44"/><text class="t13 m" x="325" y="340">Making</text><text class="s m" x="325" y="356">job in_progress</text>
+<rect class="box" x="405" y="322" width="110" height="44"/><text class="t13 m" x="460" y="340">Photo</text><text class="s m" x="460" y="356">pre-wrap · bouquet</text>
+<rect class="box" x="540" y="322" width="110" height="44"/><text class="t13 m" x="595" y="340">Ready</text><text class="s m" x="595" y="356">status = ready</text>
+
+<!-- Courier -->
+<rect class="box" x="675" y="406" width="110" height="44"/><text class="t13 m" x="730" y="424">Out</text><text class="s m" x="730" y="440">out_for_delivery</text>
+<rect class="box" x="810" y="406" width="110" height="44"/><text class="t13 m" x="865" y="424">Delivered</text><text class="s m" x="865" y="440">POD → fulfilled</text>
+<rect class="box new" x="810" y="470" width="110" height="44"/><text class="t13 a m" x="865" y="488">Not answering</text><text class="s m" x="865" y="504">call · wait · note</text>
+<rect class="box new" x="945" y="470" width="110" height="44"/><text class="t13 a m" x="1000" y="488">Return to shop</text><text class="s m" x="1000" y="504">back to Ready</text>
+
+<!-- System -->
+<rect class="box soft" x="135" y="550" width="110" height="44"/><text class="t13 m" x="190" y="568">Ingest</text><text class="s m" x="190" y="584">web · marketplace</text>
+<rect class="box soft" x="270" y="550" width="110" height="44"/><text class="t13 m" x="325" y="568">ProductionJob</text><text class="s m" x="325" y="584">stock reserved</text>
+<rect class="box soft" x="675" y="550" width="110" height="44"/><text class="t13 m" x="730" y="568">Email</text><text class="s m" x="730" y="584">ON_ITS_WAY · link</text>
+<rect class="box soft" x="810" y="550" width="110" height="44"/><text class="t13 m" x="865" y="568">Email · close()</text><text class="s m" x="865" y="584">DELIVERED · survey</text>
+<rect class="box soft" x="945" y="550" width="110" height="44"/><text class="t13 m" x="1000" y="568">SLA watchdog</text><text class="s m" x="1000" y="584">push · not-home case</text>
+
+<!-- edges -->
+<line class="ln" x1="190" y1="116" x2="190" y2="152" marker-end="url(#a3)"/>
+<line class="ln" x1="170" y1="548" x2="170" y2="200" marker-end="url(#a3)"/>
+<line class="ln new" x1="247" y1="176" x2="268" y2="176" marker-end="url(#a3n)"/>
+<path class="ln" d="M215 200 V344 H268" marker-end="url(#a3)"/>
+<line class="ln" x1="382" y1="344" x2="403" y2="344" marker-end="url(#a3)"/>
+<line class="ln" x1="517" y1="344" x2="538" y2="344" marker-end="url(#a3)"/>
+<line class="ln dash" x1="460" y1="320" x2="460" y2="200" marker-end="url(#a3)"/>
+<line class="ln dash" x1="460" y1="152" x2="460" y2="116" marker-end="url(#a3)"/>
+<line class="ln" x1="595" y1="200" x2="595" y2="320" marker-end="url(#a3)"/>
+<path class="ln" d="M652 344 H662 V428 H673" marker-end="url(#a3)"/>
+<line class="ln" x1="787" y1="428" x2="808" y2="428" marker-end="url(#a3)"/>
+<path class="ln new" d="M730 452 V492 H808" marker-end="url(#a3n)"/>
+<line class="ln new dash" x1="865" y1="468" x2="865" y2="452" marker-end="url(#a3n)"/>
+<line class="ln new" x1="922" y1="492" x2="943" y2="492" marker-end="url(#a3n)"/>
+<path class="ln new" d="M1000 468 V176 H922" marker-end="url(#a3n)"/>
+<line class="ln new dash" x1="865" y1="236" x2="865" y2="200" marker-end="url(#a3n)"/>
+<path class="ln new" d="M808 176 H795 V312 H620 V320" marker-end="url(#a3n)"/>
+
+<!-- edge labels -->
+<text class="s" x="198" y="140">phone · walk-in</text>
+<text class="s" x="178" y="520">idempotent</text>
+<text class="s" x="226" y="290">confirm</text>
+<text class="s" x="604" y="262">courier set</text>
+<text class="s" x="744" y="482">no answer</text>
+<text class="s" x="872" y="463">answered</text>
+<text class="s" x="1010" y="330">→ manager</text>
+<text class="s a" x="626" y="306">redeliver → Ready</text>
+<text class="s" x="464" y="262">optional</text>
+
+<!-- payment axis -->
+<text class="caps" x="20" y="640">Payment · independent axis</text>
+<rect class="box sil" x="135" y="652" width="110" height="44"/><text class="t13 m" x="190" y="670">Unpaid</text><text class="s m" x="190" y="686">default for chat</text>
+<rect class="box sil" x="270" y="652" width="110" height="44"/><text class="t13 m" x="325" y="670">Payment link</text><text class="s m" x="325" y="686">manager · Flora</text>
+<rect class="box sil" x="405" y="652" width="110" height="44"/><text class="t13 m" x="460" y="670">Paid</text><text class="s m" x="460" y="686">customer · Stripe</text>
+<rect class="box sil dash" x="540" y="652" width="110" height="44"/><text class="t13 m" x="595" y="670">Refunded</text><text class="s m" x="595" y="686">owner · refund</text>
+<line class="ln" x1="247" y1="674" x2="268" y2="674" marker-end="url(#a3)"/>
+<line class="ln" x1="382" y1="674" x2="403" y2="674" marker-end="url(#a3)"/>
+<line class="ln dash" x1="517" y1="674" x2="538" y2="674" marker-end="url(#a3)"/>
+<text class="s" x="675" y="664">Stripe webhook checkout.session.completed → RecordPayment</text>
+<text class="s" x="675" y="682">Unpaid + close slot → «Needs you now» на Today · payments:expire-links</text>
+<text class="s" x="675" y="700">Marketplace orders arrive paid · cash / card in shop = manual RecordPayment</text>
+<text class="s g" x="20" y="722">Статусы в коде: unconfirmed · in_production · ready · out_for_delivery · fulfilled · cancelled. Queue → Making = unconfirmed → in_production; Photo – этап внутри in_production.</text>
+<text class="s g" x="20" y="740">Отмена возможна из любого статуса до Delivered, причина обязательна. Ось доставки (DeliveryStage: ready · assigned · in_transit · delivered · failed) двигает только AdvanceDelivery.</text>
+</svg>
+</div>
+<p class="cap"><b>Три оси, одна карточка.</b> Статус, оплата и стадия доставки – независимые поля (<code>TransitionOrderStatus</code>, <code>RecordPayment</code>, <code>AdvanceDelivery</code>), поэтому в шторке заказа они показаны тремя пилюлями, а не одной. Flora нигде не меняет заказ сама – только предлагает текст менеджеру. Проблема с вручением не создаёт нового статуса: курьер фиксирует «не отвечает», система заводит кейс и пушит менеджеру, менеджер выбирает – повторная доставка (заказ возвращается в Ready) или возврат денег.</p>
+</section>
+
+<!-- ============ 4. УТРО МЕНЕДЖЕРА ============ -->
+<section>
+<h2>4. Утро менеджера: было и стало</h2>
+<p class="sub">Первые действия дня из аудита (подтвердить новые, неоплаченные, ответить в инбоксе, собрать рейсы, проблемы, табель). Счётчик кликов – оценка по коду: в аудите «новый заказ 2, статус 1, написать клиенту 3+, вызвать курьера 3–4».</p>
+<div class="legend"><span><i class="soft"></i>было: текущая CRM</span><span><i></i>стало: редизайн</span><span><i class="sil"></i>итог дорожки</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Утро менеджера: было и стало">
+<defs>
+<marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e1a17"/></marker>
+<marker id="a4g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8b8378"/></marker>
+</defs>
+
+<!-- track 1: было -->
+<text class="caps" x="20" y="40">Было · 8 экранов</text>
+<rect class="lane alt" x="20" y="50" width="1060" height="130"/>
+<rect class="box soft" x="30" y="62" width="110" height="70"/><text class="t13 m" x="85" y="81">Login</text><text class="s m" x="85" y="97">→ «Dashboard»</text><text class="s m" x="85" y="111">board /orders</text>
+<rect class="box soft" x="156" y="62" width="110" height="70"/><text class="t13 m" x="211" y="81">Confirm new</text><text class="s m" x="211" y="97">status pill ×3</text><text class="s m" x="211" y="111">1 click each</text>
+<rect class="box soft" x="282" y="62" width="110" height="70"/><text class="t13 m" x="337" y="81">Unpaid</text><text class="s m" x="337" y="97">Finance →</text><text class="s m" x="337" y="111">Unpaid cases</text>
+<rect class="box soft" x="408" y="62" width="110" height="70"/><text class="t13 m" x="463" y="81">Payment link</text><text class="s m" x="463" y="97">order → link → copy</text><text class="s m" x="463" y="111">→ Comms → paste</text>
+<rect class="box soft" x="534" y="62" width="110" height="70"/><text class="t13 m" x="589" y="81">Write to client</text><text class="s m" x="589" y="97">row → Preview</text><text class="s m" x="589" y="111">→ Open in Inbox</text>
+<rect class="box soft" x="660" y="62" width="110" height="70"/><text class="t13 m" x="715" y="81">Courier</text><text class="s m" x="715" y="97">Delivery → Dispatch</text><text class="s m" x="715" y="111">23 sub-tabs</text>
+<rect class="box soft" x="786" y="62" width="110" height="70"/><text class="t13 m" x="841" y="81">Problems · tasks</text><text class="s m" x="841" y="97">Finance → Problem</text><text class="s m" x="841" y="111">Tasks → Huddle</text>
+<rect class="box sil" x="922" y="62" width="148" height="70"/><text class="h m" x="996" y="90">≈ 22 клика</text><text class="s m" x="996" y="110">8 экранов · 5 подменю</text>
+<line class="ln soft" x1="142" y1="97" x2="154" y2="97" marker-end="url(#a4g)"/>
+<line class="ln soft" x1="268" y1="97" x2="280" y2="97" marker-end="url(#a4g)"/>
+<line class="ln soft" x1="394" y1="97" x2="406" y2="97" marker-end="url(#a4g)"/>
+<line class="ln soft" x1="520" y1="97" x2="532" y2="97" marker-end="url(#a4g)"/>
+<line class="ln soft" x1="646" y1="97" x2="658" y2="97" marker-end="url(#a4g)"/>
+<line class="ln soft" x1="772" y1="97" x2="784" y2="97" marker-end="url(#a4g)"/>
+<line class="ln soft" x1="898" y1="97" x2="920" y2="97" marker-end="url(#a4g)"/>
+<text class="s m g" x="85" y="152">+1</text>
+<text class="s m g" x="211" y="152">+3</text>
+<text class="s m g" x="337" y="152">+2</text>
+<text class="s m g" x="463" y="152">+5</text>
+<text class="s m g" x="589" y="152">+3</text>
+<text class="s m g" x="715" y="152">+4</text>
+<text class="s m g" x="841" y="152">+4</text>
+<text class="s m g" x="996" y="152">поиск и статусы – в разных местах</text>
+
+<!-- track 2: стало -->
+<text class="caps" x="20" y="226">Стало · 4 экрана</text>
+<rect class="lane" x="20" y="236" width="1060" height="130"/>
+<rect class="box" x="30" y="248" width="110" height="70"/><text class="t13 m" x="85" y="267">Today</text><text class="s m" x="85" y="283">home after login</text><text class="s m" x="85" y="297">KPI · slots</text>
+<rect class="box" x="156" y="248" width="110" height="70"/><text class="t13 m" x="211" y="267">Needs you now</text><text class="s m" x="211" y="283">late · unpaid</text><text class="s m" x="211" y="297">problem · low stock</text>
+<rect class="box" x="282" y="248" width="110" height="70"/><text class="t13 m" x="337" y="267">Order sheet</text><text class="s m" x="337" y="283">status · pay link</text><text class="s m" x="337" y="297">Flora draft → Send</text>
+<rect class="box" x="408" y="248" width="110" height="70"/><text class="t13 m" x="463" y="267">Inbox</text><text class="s m" x="463" y="283">Flora suggests</text><text class="s m" x="463" y="297">Send ×2</text>
+<rect class="box" x="534" y="248" width="110" height="70"/><text class="t13 m" x="589" y="267">Delivery</text><text class="s m" x="589" y="283">select → Create run</text><text class="s m" x="589" y="297">or Uber Direct</text>
+<rect class="box" x="660" y="248" width="110" height="70"/><text class="t13 m" x="715" y="267">Problems</text><text class="s m" x="715" y="283">Resolve from</text><text class="s m" x="715" y="297">Today row</text>
+<rect class="box" x="786" y="248" width="110" height="70"/><text class="t13 m" x="841" y="267">Timesheet</text><text class="s m" x="841" y="283">Team → Timesheet</text><text class="s m" x="841" y="297">Approve all</text>
+<rect class="box sil" x="922" y="248" width="148" height="70"/><text class="h m" x="996" y="276">≈ 12 кликов</text><text class="s m" x="996" y="296">4 экрана · ⌘K везде</text>
+<line class="ln" x1="142" y1="283" x2="154" y2="283" marker-end="url(#a4)"/>
+<line class="ln" x1="268" y1="283" x2="280" y2="283" marker-end="url(#a4)"/>
+<line class="ln" x1="394" y1="283" x2="406" y2="283" marker-end="url(#a4)"/>
+<line class="ln" x1="520" y1="283" x2="532" y2="283" marker-end="url(#a4)"/>
+<line class="ln" x1="646" y1="283" x2="658" y2="283" marker-end="url(#a4)"/>
+<line class="ln" x1="772" y1="283" x2="784" y2="283" marker-end="url(#a4)"/>
+<line class="ln" x1="898" y1="283" x2="920" y2="283" marker-end="url(#a4)"/>
+<text class="s m" x="85" y="338">+0</text>
+<text class="s m" x="211" y="338">+1</text>
+<text class="s m" x="337" y="338">+3</text>
+<text class="s m" x="463" y="338">+2</text>
+<text class="s m" x="589" y="338">+3</text>
+<text class="s m" x="715" y="338">+1</text>
+<text class="s m" x="841" y="338">+2</text>
+<text class="s m" x="996" y="338">шторка не уводит со списка</text>
+
+<!-- what changed -->
+<text class="t" x="20" y="400">Что даёт экономию</text>
+<text class="s" x="20" y="422">1. Today собирает исключения дня в один список – не нужно обходить Finance, Delivery и Tasks, чтобы узнать, где горит.</text>
+<text class="s" x="20" y="440">2. Шторка заказа: статус, ссылка на оплату и чат с черновиком Flora – в одной карточке, без перехода в Comms и обратно.</text>
+<text class="s" x="20" y="458">3. Один поиск ⌘K по заказам, клиентам и экранам вместо поиска доски, поиска топбара и 23 подвкладок Delivery.</text>
+</svg>
+</div>
+<p class="cap"><b>Сохраняем лучшее из текущей доски.</b> Пилюля статуса в строке (1 клик), подсветка просроченных и неоплаченных строк и автообновление раз в 60 с переезжают в Orders и Today без изменений – в аудите они отмечены как сильная сторона.</p>
+</section>
+
+<!-- ============ 5. КАРТА КОМПОНЕНТОВ ============ -->
+<section>
+<h2>5. Карта компонентов дизайн-системы</h2>
+<p class="sub">Четыре слоя: токены → примитивы → составные → экраны. Стрелка «использует» идёт справа налево: экран собран из составных, составные – из примитивов, примитивы – из токенов. Винным – то, чего в текущей CRM нет (или есть только обходным путём).</p>
+<div class="legend"><span><i></i>есть аналог в CRM</span><span><i class="new"></i>новое</span></div>
+<div class="fig">
+<svg viewBox="0 0 1100 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Карта компонентов дизайн-системы">
+<defs>
+<marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1e1a17"/></marker>
+</defs>
+
+<!-- uses arrows -->
+<line class="ln" x1="298" y1="60" x2="244" y2="60" marker-end="url(#a5)"/><text class="s m" x="270" y="51">uses</text>
+<line class="ln" x1="578" y1="60" x2="524" y2="60" marker-end="url(#a5)"/><text class="s m" x="550" y="51">uses</text>
+<line class="ln" x1="858" y1="60" x2="804" y2="60" marker-end="url(#a5)"/><text class="s m" x="830" y="51">uses</text>
+
+<!-- Tokens -->
+<rect class="box" x="20" y="40" width="220" height="488"/>
+<rect class="box sil" x="20" y="40" width="220" height="40"/>
+<text class="h" x="32" y="68">Tokens</text><text class="s e" x="228" y="66">app.css :root</text>
+<text x="32" y="106">Colours: paper · ink · graphite</text>
+<text x="32" y="136">grey · light · hair · silver</text>
+<text x="32" y="166">accent · ok · warn (+ bg)</text>
+<text class="a" x="32" y="196">Ink theme – same tokens, dark</text>
+<text class="a" x="32" y="226">Cormorant Infant 300 · display</text>
+<text class="a" x="32" y="256">Jost 300 / 400 / 500 · body</text>
+<text class="a" x="32" y="286">Radius 0 · 1px hairlines</text>
+<text class="a" x="32" y="316">Density: row 44 / 36 · pad 24 / 16</text>
+<text x="32" y="346">Motion 160 / 280 ms · ease-out</text>
+<text x="32" y="376">Shadows: sheet · float · pop</text>
+<text x="32" y="406">Focus 2px · reduced motion</text>
+<text class="s" x="32" y="440">Сейчас: 8 тем, 25 токенов</text>
+<text class="s" x="32" y="458">каждая, Inter не подключён,</text>
+<text class="s" x="32" y="476">радиус 5–6 px, 50 HEX вне</text>
+<text class="s" x="32" y="494">токенов (boardColors.ts).</text>
+
+<!-- Primitives -->
+<rect class="box" x="300" y="40" width="220" height="488"/>
+<rect class="box sil" x="300" y="40" width="220" height="40"/>
+<text class="h" x="312" y="68">Primitives</text><text class="s e" x="508" y="66">components/ui</text>
+<text x="312" y="106">Button 40 / 32 · primary · ghost</text>
+<text x="312" y="136">Input 36 · Select · Textarea</text>
+<text x="312" y="166">Pill – status (queue … late)</text>
+<text x="312" y="196">Tag – channel (web, WhatsApp…)</text>
+<text x="312" y="226">Avatar 28 / 36 · initials</text>
+<text x="312" y="256">Chip – filter · add-on · slot</text>
+<text x="312" y="286">Switch · Checkbox · Radio</text>
+<text class="a" x="312" y="316">Icon 18 · stroke 1.5 (не буквы)</text>
+<text x="312" y="346">kbd · Eyebrow · Progress bar</text>
+<text class="a" x="312" y="376">Segment (Table | Board)</text>
+<text class="s" x="312" y="440">Сейчас: Button есть, но на</text>
+<text class="s" x="312" y="458">страницах 6+ ручных вариантов;</text>
+<text class="s" x="312" y="476">три набора цветов статуса</text>
+<text class="s" x="312" y="494">(--tag-*, --src-*, HEX).</text>
+
+<!-- Composites -->
+<rect class="box" x="580" y="40" width="220" height="488"/>
+<rect class="box sil" x="580" y="40" width="220" height="40"/>
+<text class="h" x="592" y="68">Composites</text><text class="s e" x="788" y="66">components/</text>
+<text class="a" x="592" y="106">DataTable + SavedViews + Bulk</text>
+<text class="a" x="592" y="136">Sheet – order · customer · task</text>
+<text x="592" y="166">Modal · Confirm (danger)</text>
+<text class="a" x="592" y="196">Popover – menus · cell actions</text>
+<text x="592" y="226">Toast · Push preview · Bell</text>
+<text class="a" x="592" y="256">CommandPalette ⌘K</text>
+<text x="592" y="286">Kanban – production · tasks</text>
+<text class="a" x="592" y="316">Split 2 / 3 – inbox · dispatch</text>
+<text x="592" y="346">KPI-card · Bar chart</text>
+<text x="592" y="376">Empty state · Skeleton</text>
+<text x="592" y="406">Map – pins by status</text>
+<text x="592" y="436">Sidebar 232 / 64 · Topbar 56</text>
+<text class="a" x="592" y="466">Toolbar · Views bar</text>
+<text class="a" x="592" y="496">Flora suggestion card</text>
+
+<!-- Screens -->
+<rect class="box" x="860" y="40" width="220" height="488"/>
+<rect class="box sil" x="860" y="40" width="220" height="40"/>
+<text class="h" x="872" y="68">Screens</text><text class="s e" x="1068" y="66">pages/</text>
+<text x="872" y="106">Today <tspan class="s">KPI · list · slots</tspan></text>
+<text x="872" y="136">Orders <tspan class="s">table · views · sheet</tspan></text>
+<text x="872" y="166">Production <tspan class="s">kanban · photos</tspan></text>
+<text x="872" y="196">Delivery <tspan class="s">split · map · modal</tspan></text>
+<text x="872" y="226">Inbox <tspan class="s">split 3 · Flora card</tspan></text>
+<text x="872" y="256">Customers <tspan class="s">table · sheet</tspan></text>
+<text x="872" y="286">Catalog <tspan class="s">grid · sheet · BOM</tspan></text>
+<text x="872" y="316">Stock <tspan class="s">table · modals</tspan></text>
+<text x="872" y="346">Team <tspan class="s">grid · segment</tspan></text>
+<text x="872" y="376">Tasks <tspan class="s">kanban · sheet</tspan></text>
+<text x="872" y="406">Learning <tspan class="s">matrix · popover</tspan></text>
+<text x="872" y="436">Growth <tspan class="s">KPI · charts · table</tspan></text>
+<text x="872" y="466">Settings <tspan class="s">forms · switch</tspan></text>
+<text class="s" x="872" y="500">Каждый экран – только из</text>
+<text class="s" x="872" y="516">составных, без своих стилей.</text>
+</svg>
+</div>
+<p class="cap"><b>Правило слоёв.</b> Экран не знает о цветах и размерах – только о составных компонентах; составной не рисует кнопку сам – берёт примитив; примитив не содержит ни одного HEX – только токен. Это закрывает три находки аудита: 50 HEX вне токенов, десятки ручных кнопок и 10 самописных оверлеев. Sheet заменяет и модалки карточек, и три разных реализации шторки (Preview, TaskCatalogDrawer, DetailPanel).</p>
+</section>
+
+<p class="foot">Floritta CRM · схемы к редизайну от 21.10.2026 · палитра Ivory, Cormorant Infant + Jost, квадратные углы по брендбуку 2026-10. Источники: research/01_audit_frontend.md, research/02_audit_domain.md, BRIEF.md.</p>
+</div>
+</body>
+</html>
