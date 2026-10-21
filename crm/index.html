@@ -49,7 +49,7 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .stage-sub{color:#5c5450;font-size:13px;margin:0 0 18px}
 .eyebrow{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:#8b8378;font-weight:400}
 .seg{display:flex;border:1px solid #d9d2c7;margin:6px 0 16px}
-.seg button{flex:1;height:32px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#5c5450;border-right:1px solid #d9d2c7}
+.seg button{flex:1 0 auto;min-width:60px;height:32px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#5c5450;border-right:1px solid #d9d2c7}
 .seg button:last-child{border-right:0}
 .seg button.on{background:#1e1a17;color:#fdfbf8}
 .nav-list{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:2px}
@@ -199,10 +199,16 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 [data-btn="sage"] .btn:not(.--secondary):not(.--ghost):not(.--accent):hover{background:#66765a;border-color:#66765a}
 [data-btn="sage"] .sb-item.on{background:var(--ok-bg);color:var(--ink);box-shadow:inset 2px 0 0 var(--ok)}
 [data-btn="sage"] .chip.on,[data-btn="sage"] .seg-ctl button.on{background:var(--ok);border-color:var(--ok);color:#fff}
-[data-btn="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent){background:#c28186;border-color:#c28186;color:#fff}
-[data-btn="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent):hover{background:var(--accent);border-color:var(--accent)}
-[data-btn="rose"] .sb-item.on{background:var(--accent-bg);color:var(--ink);box-shadow:inset 2px 0 0 #c28186}
-[data-btn="rose"] .chip.on,[data-btn="rose"] .seg-ctl button.on{background:#c28186;border-color:#c28186;color:#fff}
+[data-btn^="rose"]{--btn-c:#b4767c;--btn-h:#a06a77}
+[data-btn="rose2"]{--btn-c:#ad7076;--btn-h:#9c646b}
+[data-btn="rose3"]{--btn-c:#a86f76;--btn-h:#95616a}
+[data-btn="rose4"]{--btn-c:#a06a77;--btn-h:#8c5c68}
+[data-btn^="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent){background:var(--btn-c);border-color:var(--btn-c);color:#fff}
+[data-btn^="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent):hover{background:var(--btn-h);border-color:var(--btn-h)}
+[data-btn^="rose"] .sb-item.on{background:var(--btn-c);color:#fff}
+[data-btn^="rose"] .chip.on,[data-btn^="rose"] .seg-ctl button.on,[data-btn^="rose"] .views button.on{background:var(--btn-c);border-color:var(--btn-c);color:#fff}
+[data-btn^="rose"] .views button.on{background:transparent;color:var(--ink);border-bottom-color:var(--btn-c)}
+[data-btn^="rose"] .nav-list button.on,[data-btn^="rose"] .seg button.on{background:var(--btn-c);color:#fff}
 
 /* ============ INPUTS ============ */
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -463,7 +469,7 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
     <div class="eyebrow">Theme</div>
     <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Ivory</button></div>
     <div class="eyebrow">Buttons</div>
-    <div class="seg" id="tg-btn"><button data-v="ink" class="on">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Rose</button></div>
+    <div class="seg" id="tg-btn" style="flex-wrap:wrap"><button data-v="ink" class="on">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Dusty</button><button data-v="rose2">Clay</button><button data-v="rose3">Old rose</button><button data-v="rose4">Mauve</button></div>
     <div class="eyebrow">Density</div>
     <div class="seg" id="tg-density"><button data-v="comfortable" class="on">Comfortable</button><button data-v="compact">Compact</button></div>
     <div class="eyebrow">Role</div>
@@ -634,6 +640,53 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 [data-size="phone"] #s-orders .head-r .btn{display:none}
 [data-size="phone"] #s-orders .bulk{height:auto;flex-wrap:wrap;padding:8px 10px;gap:6px}
 [data-size="phone"] #s-orders .kanban{grid-auto-columns:minmax(200px,1fr)}
+/* thumbs */
+#s-orders .pcell{display:flex;align-items:center;gap:10px;min-width:0}
+#s-orders .pcell>div{min-width:0;overflow:hidden;text-overflow:ellipsis}
+#s-orders .thumb{position:relative}
+#s-orders .thumb:not(.--shot) img{opacity:.7}
+#s-orders .thumb.--shot::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px var(--ok);pointer-events:none}
+[data-density="compact"] #s-orders .thumb.--s{width:28px;height:28px}
+#s-orders .kcard .k-mid{display:flex;gap:10px;align-items:flex-start;min-width:0}
+#s-orders .kcard .k-mid .thumb{width:40px;height:40px}
+#s-orders .kcard .k-mid>div{flex:1;min-width:0}
+#s-orders .ph-list>.li .thumb{width:40px;height:40px;margin-top:2px}
+/* week strip + day chip */
+#s-orders .o2-wk{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+#s-orders .o2-wk::-webkit-scrollbar{display:none}
+#s-orders .o2-wk .chip{flex:1;min-width:0;justify-content:center;height:40px;gap:4px;padding:0 8px}
+#s-orders .o2-wk .chip .wd{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+#s-orders .o2-wk .chip.on .wd{color:var(--paper);opacity:.7}
+#s-orders .o2-wk .chip.today:not(.on){box-shadow:inset 0 0 0 1px var(--ink)}
+#s-orders .o2-wk .chip.hot:not(.on) .n{color:var(--accent)}
+#s-orders .o2-wk .chip.past:not(.on){opacity:.55}
+#s-orders .toolbar .chip.o2-day svg{width:11px;height:11px;margin-left:2px}
+[data-size="phone"] #s-orders .head-r .btn.o2-cb{display:inline-flex;padding:0;width:32px}
+[data-size="phone"] #s-orders .o2-cbt{display:none}
+[data-size="phone"] #s-orders .o2-wk .chip{padding:0 4px;gap:3px}
+/* calendar sheet (lives outside the section) */
+#sheet .o2-calh{display:flex;align-items:center;gap:4px;margin-bottom:12px}
+#sheet .o2-calh .h3{flex:1;text-align:center}
+#sheet .o2-dow{display:grid;grid-template-columns:repeat(7,1fr);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);text-align:center;margin-bottom:4px}
+#sheet .o2-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair)}
+#sheet .o2-cd{background:var(--paper);min-height:60px;padding:6px 6px 5px;position:relative;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background var(--m-fast)}
+#sheet .o2-cd:hover{background:var(--silver)}
+#sheet .o2-cd.e{background:var(--paper);opacity:.35;cursor:default}
+#sheet .o2-cd.past{opacity:.5}
+#sheet .o2-cd.today{box-shadow:inset 0 0 0 1px var(--ink)}
+#sheet .o2-cd.on{background:var(--silver);box-shadow:inset 0 0 0 1px var(--ink)}
+#sheet .o2-cd.hot::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+#sheet .o2-cd .d{font-size:12px;color:var(--grey);font-variant-numeric:tabular-nums}
+#sheet .o2-cd.today .d{color:var(--ink);font-weight:500}
+#sheet .o2-cd .cn{font-size:15px;font-variant-numeric:tabular-nums;line-height:1.1}
+#sheet .o2-cd.hot .cn{color:var(--accent)}
+#sheet .o2-cd .cs{font-size:10.5px;color:var(--grey);font-variant-numeric:tabular-nums}
+#sheet .o2-tot{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);border-top:0}
+#sheet .o2-tot>div{background:var(--paper);padding:8px 8px 7px}
+#sheet .o2-tot .caps{font-size:10.5px;display:block;margin-bottom:2px}
+#sheet .o2-tot .v{font-size:15px;font-variant-numeric:tabular-nums}
+#sheet .o2-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--grey);margin-top:12px}
+#sheet .o2-leg i{display:inline-block;width:10px;height:10px;vertical-align:-1px;margin-right:5px}
 
 /* ---- 02 · New order ---- */
 #s-order-new .n2-grid{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:32px;align-items:start}
@@ -676,10 +729,12 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
     <div class="head-r">
       <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="o2-q" placeholder="Search # · name · phone · product" oninput="O2.search(this.value)"></label>
       <div class="seg-ctl" id="o2-mode"><button class="on" data-m="table" onclick="O2.setMode('table')" title="Table (b)"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></button><button data-m="board" onclick="O2.setMode('board')" title="Board (b)"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="3" y="4" width="5" height="16"/><rect x="9.5" y="4" width="5" height="11"/><rect x="16" y="4" width="5" height="7"/></svg></button></div>
+      <button class="btn --ghost --sm o2-cb" title="Calendar (c)" onclick="O2.calendar()"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="o2-cbt">Calendar</span></button>
       <button class="btn --sm" id="o2-new" onclick="App.go('order-new')"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> New order</button>
     </div>
   </div>
   <div class="scr-body">
+    <div id="o2-week"></div>
     <div class="toolbar" id="o2-chips"></div>
     <div id="o2-bulk"></div>
     <div id="o2-list"></div>
@@ -772,8 +827,7 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 #s-production .kcard .p3-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 #s-production .kcard .p3-th{position:relative;transition:opacity var(--m-fast)}
 #s-production .kcard .p3-th.--ref img{opacity:.7}
-#s-production .kcard .p3-th.--shot{box-shadow:inset 0 0 0 1px var(--ok)}
-#s-production .kcard .p3-th.--shot::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px var(--ok);pointer-events:none}
+#s-production .kcard .p3-th.--shot::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px var(--ok);pointer-events:none}/* ring above the img */
 #s-production .kcard .p3-th .bdg{position:absolute;right:0;bottom:0;width:16px;height:16px;display:flex;align-items:center;justify-content:center;background:var(--paper);color:var(--grey)}
 #s-production .kcard .p3-th .bdg svg{width:11px;height:11px}
 #s-production .kcard .p3-th.--shot .bdg{color:var(--ok)}
@@ -1848,10 +1902,28 @@ const NEXT={queue:"making",making:"photo",photo:"ready",ready:"out",out:"deliver
 const NEXT_LBL={making:"Start making",photo:"Add photo",ready:"Send photo · ready",out:"Hand to courier",delivered:"Mark delivered"};
 const NEXT_IC={making:"play",photo:"photo",ready:"send",out:"truck",delivered:"check"};
 const NEXT_SHORT={making:"Make",photo:"Photo",ready:"Ready",out:"Courier",delivered:"Delivered"};
-const O2=window.O2={view:"today",sv:null,q:"",slot:null,status:null,chan:null,type:null,mode:"table",sel:new Set(),sort:["slot",1],cur:-1,openId:null,saved:[],n:0};
+const O2=window.O2={view:"today",sv:null,q:"",slot:null,status:null,chan:null,type:null,day:null,mode:"table",sel:new Set(),sort:["slot",1],cur:-1,openId:null,saved:[],n:0,cal:{y:A.NOW.getFullYear(),m:A.NOW.getMonth()}};
+/* ---- days & demo calendar numbers ---- */
+const pad=n=>String(n).padStart(2,"0");
+const keyOf=(y,m,d)=>y+"-"+pad(m+1)+"-"+pad(d);
+const dk=iso=>{const d=new Date(iso);return keyOf(d.getFullYear(),d.getMonth(),d.getDate())};
+const TODAY=dk(A.NOW);const REAL=[-1,0,1].map(n=>dk(A.T(12,0,n)));
+const monday=(()=>{const d=new Date(A.NOW);d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d})();
+const WEEK=[0,1,2,3,4,5,6].map(i=>{const d=new Date(monday);d.setDate(monday.getDate()+i);return dk(d)});
+const dayIso=key=>key+"T12:00:00";
+const dayLbl=key=>A.fmtDate(dayIso(key));
+const rnd01=(y,m,d,s)=>{const x=Math.sin((y*372+m*31+d)*9301+s*49297)*49979;return x-Math.floor(x)};
+function dayStat(y,m,d){
+  const key=keyOf(y,m,d);const real=A.data.orders.filter(o=>o.status!=="cancelled"&&dk(o.date)===key);
+  if(REAL.includes(key))return{key,n:real.length,sum:real.reduce((s,o)=>s+o.total,0),real:true};
+  const dow=new Date(y,m,d).getDay(),r=rnd01(y,m,d,1);let n;
+  if(m===9&&d===31)n=48;else if(m===11&&d>=18&&d<=24)n=52+Math.round(r*22);else if(dow===0)n=10+Math.round(r*8);else if(dow===6)n=36+Math.round(r*16);else n=18+Math.round(r*16);
+  return{key,n,sum:n*(56+Math.round(rnd01(y,m,d,2)*18)),real:false};
+}
 const BASE=[
  {id:"today",t:"Today",f:o=>o.n===0&&o.status!=="cancelled"},
  {id:"tomorrow",t:"Tomorrow",f:o=>o.n===1&&o.status!=="cancelled"},
+ {id:"week",t:"Week",f:o=>o.status!=="cancelled"&&WEEK.includes(dk(o.date))},
  {id:"unpaid",t:"Unpaid",mgr:true,f:o=>o.paid!=="paid"&&o.status!=="cancelled"},
  {id:"problems",t:"Problems",f:o=>o.status!=="cancelled"&&o.status!=="delivered"&&(!!o.problem||A.isLate(o))},
  {id:"marketplaces",t:"Marketplaces",mgr:true,f:o=>o.chan==="Deliveroo"||o.chan==="Uber Eats"},
@@ -1862,9 +1934,9 @@ const base=id=>BASE.find(v=>v.id===id)||BASE[0];
 const SV={id:o=>o.id,customer:o=>A.customer(o.customer).n,product:o=>A.product(o.product).name,slot:o=>o.date+" "+o.slot,status:o=>A.ORDER_STATUSES.indexOf(o.status),paid:o=>o.paid,chan:o=>o.chan,total:o=>o.total};
 const STATUS_OPTS=["queue","making","photo","ready","out","delivered","cancelled"];
 const chans=()=>[...new Set(A.data.orders.map(o=>o.chan))];
-function spec(){return{base:O2.view,slot:O2.slot,status:O2.status,chan:O2.chan,type:O2.type,q:O2.q}}
+function spec(){return{base:O2.view,slot:O2.slot,status:O2.status,chan:O2.chan,type:O2.type,q:O2.q,day:O2.day}}
 function rowsFor(s){
-  let L=A.data.orders.filter(base(s.base).f);
+  let L=s.day?A.data.orders.filter(o=>o.status!=="cancelled"&&dk(o.date)===s.day):A.data.orders.filter(base(s.base).f);
   if(s.slot)L=L.filter(o=>o.slot===s.slot);
   if(s.status)L=L.filter(o=>s.status==="late"?(A.isLate(o)&&o.status!=="delivered"):o.status===s.status);
   if(s.chan)L=L.filter(o=>o.chan===s.chan);
@@ -1877,19 +1949,20 @@ function rows(){
   L.sort((a,b)=>{const x=f(a),y=f(b);return (x<y?-1:x>y?1:0)*d||a.id-b.id});
   return L;
 }
-const hasF=()=>!!(O2.slot||O2.status||O2.chan||O2.type||O2.q);
+const hasF=()=>!!(O2.slot||O2.status||O2.chan||O2.type||O2.q||O2.day);
+const baseOn=v=>!O2.sv&&O2.view===v.id&&(!O2.day||(v.id==="week"&&WEEK.includes(O2.day)));
 
 /* ---- views ---- */
 function renderViews(){
   const vs=bases();let h="";
-  vs.forEach(v=>{const n=A.data.orders.filter(v.f).length;const on=!O2.sv&&O2.view===v.id;h+=`<button class="${on?"on":""}" onclick="O2.selectView('${v.id}')">${v.t}<span class="n${v.id==="problems"&&n?" accent":""}">${n||""}</span></button>`});
+  vs.forEach(v=>{const n=A.data.orders.filter(v.f).length;const on=baseOn(v);h+=`<button class="${on?"on":""}" onclick="O2.selectView('${v.id}')">${v.t}<span class="n${v.id==="problems"&&n?" accent":""}">${n||""}</span></button>`});
   O2.saved.forEach(v=>{const n=rowsFor(v).length;h+=`<button class="sv ${O2.sv===v.id?"on":""}" onclick="O2.selectView('${v.id}')">${A.icon("star")}${esc(v.t)}<span class="n">${n}</span><span class="vx" title="Remove view" onclick="event.stopPropagation();O2.removeView('${v.id}')">${A.icon("close")}</span></button>`});
   h+=`<button onclick="O2.saveView()" title="Save the current filters as a view">${A.icon("plus")}<span class="xs">Save view</span></button>`;
   A.$("#o2-views").innerHTML=h;
 }
-O2.selectView=id=>{const sv=O2.saved.find(v=>v.id===id);if(sv){Object.assign(O2,{view:sv.base,slot:sv.slot,status:sv.status,chan:sv.chan,type:sv.type,q:sv.q,sv:sv.id})}else{O2.view=id;O2.sv=null;if(id==="all"&&O2.sort[0]==="slot")O2.sort=["slot",-1];else if(id!=="all"&&O2.sort[0]==="slot")O2.sort=["slot",1]}
+O2.selectView=id=>{const sv=O2.saved.find(v=>v.id===id);if(sv){Object.assign(O2,{view:sv.base,slot:sv.slot,status:sv.status,chan:sv.chan,type:sv.type,q:sv.q,day:sv.day||null,sv:sv.id})}else{O2.view=id;O2.sv=null;O2.day=null;if(id==="all"&&O2.sort[0]==="slot")O2.sort=["slot",-1];else if(id!=="all"&&O2.sort[0]==="slot")O2.sort=["slot",1]}
   A.$("#o2-q").value=O2.q||"";O2.cur=-1;renderAll()};
-O2.saveView=()=>{const s=spec();const parts=[base(s.base).t,s.slot,s.status&&("status "+s.status),s.chan,s.type,s.q&&("“"+s.q+"”")].filter(Boolean).join(" · ");
+O2.saveView=()=>{const s=spec();const parts=[s.day?"Day "+dayLbl(s.day):base(s.base).t,s.slot,s.status&&("status "+s.status),s.chan,s.type,s.q&&("“"+s.q+"”")].filter(Boolean).join(" · ");
   A.modal({title:"Save view",body:`<div class="field"><label>Name</label><input class="input" id="o2-svn" value="${esc(parts)}" placeholder="e.g. Afternoon deliveries"></div><div class="note-box mt16">Filters: ${esc(parts)}. Saved views are personal; share with the team from the view menu later.</div>`,
    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="O2._saveGo()">Save view</button>`,onMount:b=>setTimeout(()=>{const i=b.querySelector("#o2-svn");i.focus();i.select();i.onkeydown=e=>{if(e.key==="Enter")O2._saveGo()}},40)})};
 O2._saveGo=()=>{const name=(A.$("#o2-svn").value||"Saved view").trim();const id="sv"+(++O2.n);O2.saved.push(Object.assign({id,t:name},spec()));O2.sv=id;A.closeModal();A.toast("View “"+name+"” saved");renderAll()};
@@ -1900,7 +1973,36 @@ function chip(k,label,val,lbl){return`<button class="chip ${val?"on":""}" onclic
 function renderChips(){
   const L=rowsFor(spec());const stLbl=O2.status==="late"?"Late / urgent":O2.status&&A.STATUS_LBL[O2.status];
   const typeLbl=O2.type==="delivery"?"Delivery":O2.type==="collection"?"Collection":null;
-  A.$("#o2-chips").innerHTML=chip("slot","Slot",O2.slot)+chip("status","Status",O2.status,stLbl)+chip("chan","Channel",O2.chan)+chip("type","Type",O2.type,typeLbl)+(hasF()?`<button class="textbtn" onclick="O2.clear()">Clear</button>`:"")+`<span class="cnt">${L.length} order${L.length===1?"":"s"}${A.isMgr()&&L.length?" · "+A.fmt(L.reduce((s,o)=>s+o.total,0)):""}</span>`;
+  const dayChip=O2.day?`<button class="chip on o2-day" title="Remove the day filter" onclick="O2.setDay(null)">Day · ${dayLbl(O2.day)}${A.icon("close")}</button>`:"";
+  A.$("#o2-chips").innerHTML=dayChip+chip("slot","Slot",O2.slot)+chip("status","Status",O2.status,stLbl)+chip("chan","Channel",O2.chan)+chip("type","Type",O2.type,typeLbl)+(hasF()?`<button class="textbtn" onclick="O2.clear()">Clear</button>`:"")+`<span class="cnt">${L.length} order${L.length===1?"":"s"}${A.isMgr()&&L.length?" · "+A.fmt(L.reduce((s,o)=>s+o.total,0)):""}</span>`;
+  renderWeek();
+}
+function renderWeek(){
+  const el=A.$("#o2-week");if(O2.view!=="week"||O2.sv){el.innerHTML="";return}
+  el.innerHTML=`<div class="o2-wk">${WEEK.map(key=>{const [y,m,d]=key.split("-").map(Number);const s=dayStat(y,m-1,d);const dt=new Date(y,m-1,d);
+    return`<button class="chip ${O2.day===key?"on":""} ${key===TODAY?"today":""} ${s.n>40?"hot":""} ${key<TODAY?"past":""}" title="${s.n} order${s.n===1?"":"s"}${A.isMgr()?" · "+A.fmt(s.sum):""}" onclick="O2.setDay('${key}',true)"><span class="wd">${dt.toLocaleDateString("en-GB",{weekday:"short"})}</span>${d}<span class="n">${s.n}</span></button>`}).join("")}</div>`;
+}
+O2.setDay=(key,toggle)=>{O2.day=(toggle&&O2.day===key)?null:key;O2.sv=null;O2.cur=-1;if(key&&A.state.current==="orders"&&A.$("#sheet").classList.contains("on")&&A.$("#o2-calwrap"))A.closeSheet();renderAll();if(key)A.toast("Orders · "+A.fmtDay(dayIso(key)))};
+
+/* ---- calendar sheet ---- */
+const MONTH=(y,m)=>new Date(y,m,1).toLocaleDateString("en-GB",{month:"long",year:"numeric"});
+O2.calendar=()=>{const c=O2.cal;if(O2.day){const [y,m]=O2.day.split("-").map(Number);c.y=y;c.m=m-1}
+  A.sheet({narrow:true,eyebrow:"Orders",title:"Calendar",body:`<div id="o2-calwrap"></div>`,foot:`<button class="btn --ghost --sm" onclick="O2.calGo(${A.NOW.getFullYear()},${A.NOW.getMonth()})">Today</button><span class="sp"></span><button class="btn --secondary --sm" onclick="App.closeSheet()">Close</button>`,onMount:()=>renderCal()})};
+O2.calNav=d=>{const c=O2.cal;c.m+=d;if(c.m<0){c.m=11;c.y--}if(c.m>11){c.m=0;c.y++}renderCal()};
+O2.calGo=(y,m)=>{O2.cal={y,m};renderCal()};
+function renderCal(){
+  const el=A.$("#o2-calwrap");if(!el)return;const {y,m}=O2.cal;const mgr=A.isMgr();
+  const first=new Date(y,m,1),lead=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+  const stats=[];for(let d=1;d<=days;d++)stats.push(dayStat(y,m,d));
+  const tot=stats.reduce((s,x)=>s+x.n,0),sum=stats.reduce((s,x)=>s+x.sum,0),peak=stats.reduce((a,b)=>b.n>a.n?b:a,stats[0]);
+  let cells="";for(let i=0;i<lead;i++)cells+=`<div class="o2-cd e"></div>`;
+  stats.forEach(s=>{const d=+s.key.slice(-2);cells+=`<div class="o2-cd ${s.key===TODAY?"today":""} ${s.key<TODAY?"past":""} ${s.n>40?"hot":""} ${O2.day===s.key?"on":""}" title="${s.key===TODAY?"Today · ":""}${s.n} order${s.n===1?"":"s"}${mgr?" · "+A.fmt(s.sum):""}${s.real?"":" · demo"}" onclick="O2.setDay('${s.key}')"><span class="d">${d}</span><span class="cn">${s.n||"–"}</span>${mgr&&s.n?`<span class="cs">${A.fmt(s.sum)}</span>`:""}</div>`});
+  const tail=(7-(lead+days)%7)%7;for(let i=0;i<tail;i++)cells+=`<div class="o2-cd e"></div>`;
+  el.innerHTML=`<div class="o2-calh"><button class="ib" title="Previous month" onclick="O2.calNav(-1)">${A.icon("back")}</button><div class="h3">${MONTH(y,m)}</div><button class="ib" title="Next month" onclick="O2.calNav(1)"><svg class="i" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button></div>
+  <div class="o2-dow">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>`<span>${d}</span>`).join("")}</div>
+  <div class="o2-cal">${cells}</div>
+  <div class="o2-tot"><div><span class="caps">Orders</span><span class="v">${tot}</span></div>${mgr?`<div><span class="caps">Revenue</span><span class="v">${A.fmt(sum)}</span></div>`:`<div><span class="caps">Days</span><span class="v">${days}</span></div>`}<div><span class="caps">Avg day</span><span class="v">${Math.round(tot/days)}</span></div><div><span class="caps">Peak</span><span class="v">${peak.n} <span class="xs muted">· ${dayLbl(peak.key)}</span></span></div></div>
+  <div class="o2-leg"><span><i style="background:var(--accent)"></i>over 40 orders</span><span><i style="box-shadow:inset 0 0 0 1px var(--ink)"></i>today</span><span>Today, tomorrow and yesterday are the demo set; other days are illustrative.</span></div>`;
 }
 O2.pick=(ev,k)=>{
   const set=v=>{O2[k]=v;O2.sv=null;O2.cur=-1;renderAll()};
@@ -1911,7 +2013,7 @@ O2.pick=(ev,k)=>{
   if(O2[k])items.push("-",{t:"Any · clear",ic:"close",fn:()=>set(null)});
   A.pop(ev,items);
 };
-O2.clear=()=>{Object.assign(O2,{slot:null,status:null,chan:null,type:null,q:"",sv:null});A.$("#o2-q").value="";renderAll()};
+O2.clear=()=>{Object.assign(O2,{slot:null,status:null,chan:null,type:null,q:"",sv:null,day:null});A.$("#o2-q").value="";renderAll()};
 let qT=null;O2.search=v=>{O2.q=v;O2.sv=null;O2.cur=-1;clearTimeout(qT);qT=setTimeout(renderAll,120)};
 O2.setMode=m=>{O2.mode=m;A.$$("#o2-mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));O2.cur=-1;renderList()};
 O2.sortBy=k=>{O2.sort=O2.sort[0]===k?[k,-O2.sort[1]]:[k,1];renderList()};
@@ -1934,17 +2036,19 @@ O2.bulkExport=()=>{A.toast(`Exported ${ids().length} orders · CSV`,"Open Xero",
 O2.open=id=>{O2.openId=id;A.openOrder(id);A.$$("#o2-list tr.r").forEach(tr=>tr.classList.toggle("on",+tr.dataset.id===id||O2.sel.has(+tr.dataset.id)));A.$$("#o2-list .kcard").forEach(k=>k.classList.toggle("on",+k.dataset.id===id))};
 O2.next=(ev,id)=>{ev.stopPropagation();const o=A.order(id);const n=NEXT[o.status];if(n)A.setOrderStatus(id,n)};
 function nextBtn(o,cls){const n=NEXT[o.status];if(!n)return"";return`<button class="${cls}" title="${NEXT_LBL[n]}" onclick="O2.next(event,${o.id})">${A.icon(NEXT_IC[n])}${cls.includes("btn")?" "+NEXT_SHORT[n]:""}</button>`}
+function thumb(o,p,cls=""){return`<span class="thumb ${cls} ${o.photo?"--shot":""}" title="${o.photo?"Bouquet photo taken":"Catalogue photo"}"><img src="${p.img}" alt="" loading="lazy"></span>`}
 function teamCell(o){const f=o.florist?A.avatar(o.florist,"--s"):"";const c=o.courier?(A.user(o.courier)?A.avatar(o.courier,"--s"):`<span class="avatar --s" title="Uber Direct">UD</span>`):"";return f||c?`<span class="avatars">${f}${c}</span>`:`<span class="muted xs">–</span>`}
 function renderList(){
   const L=rows();const mgr=A.isMgr();const el=A.$("#o2-list");
+  if(!L.length&&O2.day&&!(O2.slot||O2.status||O2.chan||O2.type||O2.q)){el.innerHTML=`<div class="empty">${A.icon("calendar")}<div class="h3">No orders in the demo set for this day</div><div class="sm">${new Date(dayIso(O2.day)).toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}. The calendar numbers for days outside today, tomorrow and yesterday are illustrative.</div><div class="row" style="gap:8px"><button class="btn --sm" onclick="App.go('order-new')">${A.icon("plus")} New order</button><button class="btn --ghost --sm" onclick="O2.setDay(null)">Clear day</button></div></div>`;return}
   if(!L.length){el.innerHTML=`<div class="empty">${A.icon("orders")}<div class="h3">${hasF()?"No orders match":O2.view==="problems"?"No problems right now":"Nothing here yet"}</div><div class="sm">${hasF()?"Try another view or clear the filters.":O2.view==="problems"?"Every order is on time and paid.":"New orders from the website, WhatsApp and marketplaces land here."}</div>${hasF()?`<button class="btn --ghost --sm" onclick="O2.clear()">Clear filters</button>`:`<button class="btn --ghost --sm" onclick="App.go('order-new')">${A.icon("plus")} New order</button>`}</div>`;return}
   if(O2.mode==="board"){
     const cols=[["queue","Queue"],["making","Making"],["photo","Photo"],["ready","Ready"],["out","Out"],["delivered","Delivered"]];
-    el.innerHTML=`<div class="kanban">${cols.map(([s,t])=>{const K=L.filter(o=>o.status===s);return`<div class="kcol"><div class="k-head">${t}<span class="n">${K.length}</span></div><div class="k-body">${K.map(o=>{const c=A.customer(o.customer),p=A.product(o.product);const late=A.isLate(o)&&o.status!=="delivered";return`<div class="kcard ${late?"--late":""} ${O2.openId===o.id?"on":""}" data-id="${o.id}" onclick="O2.open(${o.id})"><div class="k-top"><span>#${o.id}</span><span class="${late?"accent":""}">${esc(o.slot)}</span><span class="sp"></span>${o.n!==0?`<span class="tag --line">${A.fmtDay(o.date)}</span>`:""}${o.florist?A.avatar(o.florist,"--s"):""}</div><div class="k-title">${esc(p.name)} <span class="muted">· ${esc(o.size)}</span></div><div class="k-foot"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.n)}</span>${o.paid!=="paid"?A.pill(o.paid):""}</div><div class="k-foot">${o.problem?`<span class="accent xs" style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(o.problem)}</span>`:`<span class="sp"></span>`}${nextBtn(o,"btn --ghost --sm")}</div></div>`}).join("")||`<div class="empty" style="padding:24px 8px"><span class="xs">Empty</span></div>`}</div></div>`}).join("")}</div>`;
+    el.innerHTML=`<div class="kanban">${cols.map(([s,t])=>{const K=L.filter(o=>o.status===s);return`<div class="kcol"><div class="k-head">${t}<span class="n">${K.length}</span></div><div class="k-body">${K.map(o=>{const c=A.customer(o.customer),p=A.product(o.product);const late=A.isLate(o)&&o.status!=="delivered";return`<div class="kcard ${late?"--late":""} ${O2.openId===o.id?"on":""}" data-id="${o.id}" onclick="O2.open(${o.id})"><div class="k-top"><span>#${o.id}</span><span class="${late?"accent":""}">${esc(o.slot)}</span><span class="sp"></span>${o.n!==0?`<span class="tag --line">${A.fmtDay(o.date)}</span>`:""}${o.florist?A.avatar(o.florist,"--s"):""}</div><div class="k-mid">${thumb(o,p)}<div><div class="k-title">${esc(p.name)} <span class="muted">· ${esc(o.size)}</span></div><div class="k-foot"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.n)}</span>${o.paid!=="paid"?A.pill(o.paid):""}</div></div></div><div class="k-foot">${o.problem?`<span class="accent xs" style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(o.problem)}</span>`:`<span class="sp"></span>`}${nextBtn(o,"btn --ghost --sm")}</div></div>`}).join("")||`<div class="empty" style="padding:24px 8px"><span class="xs">Empty</span></div>`}</div></div>`}).join("")}</div>`;
     return;
   }
   if(A.state.size==="phone"){
-    el.innerHTML=`<div class="list ph-list" style="border:1px solid var(--hair)">${L.map(o=>{const c=A.customer(o.customer),p=A.product(o.product);const late=A.isLate(o)&&o.status!=="delivered"&&o.status!=="cancelled";return`<div class="li ${O2.openId===o.id?"on":""}" data-id="${o.id}" onclick="O2.open(${o.id})"><div class="t"><b>${esc(c.n)} <span class="muted">· #${o.id}</span></b><small>${esc(p.name)} · ${esc(o.size)}${o.addons.length?" · +"+o.addons.length:""}${o.type==="collection"?" · collection":""}</small><div class="r2"><span class="tnum sm ${late?"accent":""}">${o.n!==0?A.fmtDay(o.date)+" · ":""}${esc(o.slot)}</span>${A.orderPill(o)}${o.paid!=="paid"?A.pill(o.paid):""}${mgr?`<span class="sp"></span><span class="tnum sm">${A.fmt(o.total)}</span>`:""}</div></div>${o.status!=="cancelled"?nextBtn(o,"ib"):""}</div>`}).join("")}</div><div class="xs muted mt8">${L.length} order${L.length===1?"":"s"}</div>`;return}
+    el.innerHTML=`<div class="list ph-list" style="border:1px solid var(--hair)">${L.map(o=>{const c=A.customer(o.customer),p=A.product(o.product);const late=A.isLate(o)&&o.status!=="delivered"&&o.status!=="cancelled";return`<div class="li ${O2.openId===o.id?"on":""}" data-id="${o.id}" onclick="O2.open(${o.id})">${thumb(o,p)}<div class="t"><b>${esc(c.n)} <span class="muted">· #${o.id}</span></b><small>${esc(p.name)} · ${esc(o.size)}${o.addons.length?" · +"+o.addons.length:""}${o.type==="collection"?" · collection":""}</small><div class="r2"><span class="tnum sm ${late?"accent":""}">${o.n!==0?A.fmtDay(o.date)+" · ":""}${esc(o.slot)}</span>${A.orderPill(o)}${o.paid!=="paid"?A.pill(o.paid):""}${mgr?`<span class="sp"></span><span class="tnum sm">${A.fmt(o.total)}</span>`:""}</div></div>${o.status!=="cancelled"?nextBtn(o,"ib"):""}</div>`}).join("")}</div><div class="xs muted mt8">${L.length} order${L.length===1?"":"s"}</div>`;return}
   const wide=A.state.size==="desktop";
   const ar=k=>O2.sort[0]===k?`<span class="ar">${O2.sort[1]>0?"↑":"↓"}</span>`:"";
   const allSel=L.length&&L.every(o=>O2.sel.has(o.id));
@@ -1955,14 +2059,14 @@ function renderList(){
 <td class="chk"><label class="check" onclick="event.stopPropagation()"><input type="checkbox" ${O2.sel.has(o.id)?"checked":""} onchange="O2.toggleSel(${o.id},this.checked)"></label></td>
 <td class="tnum c-id">${o.id}<span class="sub">${A.fmtTime(o.placed)}</span></td>
 <td>${esc(c.n)}<span class="sub">${o.recipient&&o.recipient!==c.n?"→ "+esc(o.recipient):esc(c.phone)}</span></td>
-<td>${esc(p.name)}<span class="sub">${esc(o.size)}${o.addons.length?" · + "+o.addons.map(a=>esc(A.product(a).name.split(" ·")[0])).join(", "):""}${o.card&&o.card.trim()?" · card":""}</span></td>
+<td><div class="pcell">${thumb(o,p,"--s")}<div>${esc(p.name)}<span class="sub">${esc(o.size)}${o.addons.length?" · + "+o.addons.map(a=>esc(A.product(a).name.split(" ·")[0])).join(", "):""}${o.card&&o.card.trim()?" · card":""}</span></div></div></td>
 <td class="tnum ${late?"accent":""}">${esc(o.slot)}<span class="sub">${o.n!==0?A.fmtDay(o.date):o.type==="collection"?"Collection":o.problem?`<span class="accent">${esc(o.problem)}</span>`:""}</span></td>
 <td>${A.orderPill(o)}</td>
 <td>${A.pill(o.paid)}</td>
 ${wide?`<td>${A.chanTag(o.chan)}</td><td>${teamCell(o)}</td>`:""}
 ${mgr?`<td class="num">${A.fmt(o.total)}</td>`:""}
 <td class="acts-td"><span class="acts">${o.status!=="cancelled"?nextBtn(o,"ib"):""}<button class="ib" title="Print ticket" onclick="event.stopPropagation();App.toast('Sent to printer · #${o.id}')">${A.icon("printer")}</button><button class="ib" title="More" onclick="event.stopPropagation();App.orderMenu(event,${o.id})">${A.icon("dots")}</button></span></td></tr>`});
-  h+=`</tbody><tfoot><tr><td colspan="${(mgr?9:8)+(wide?2:0)}">${L.length} order${L.length===1?"":"s"}${mgr?" · "+A.fmt(L.reduce((s,o)=>s+o.total,0))+" incl. delivery":""} · <span class="kbd">j</span> <span class="kbd">k</span> move · <span class="kbd">↵</span> open · <span class="kbd">x</span> select · <span class="kbd">b</span> board</td></tr></tfoot></table></div>`;
+  h+=`</tbody><tfoot><tr><td colspan="${(mgr?9:8)+(wide?2:0)}">${L.length} order${L.length===1?"":"s"}${mgr?" · "+A.fmt(L.reduce((s,o)=>s+o.total,0))+" incl. delivery":""} · <span class="kbd">j</span> <span class="kbd">k</span> move · <span class="kbd">↵</span> open · <span class="kbd">x</span> select · <span class="kbd">b</span> board · <span class="kbd">c</span> calendar</td></tr></tfoot></table></div>`;
   el.innerHTML=h;
 }
 function renderAll(){renderViews();renderChips();renderBulk();renderList()}
@@ -1976,6 +2080,7 @@ document.addEventListener("keydown",e=>{
   else if(k==="Enter"&&O2.cur>=0&&L[O2.cur]){O2.open(L[O2.cur].id)}
   else if(k==="x"&&O2.cur>=0&&L[O2.cur]){const id=L[O2.cur].id;O2.toggleSel(id,!O2.sel.has(id))}
   else if(k==="b"){O2.setMode(O2.mode==="table"?"board":"table")}
+  else if(k==="c"){O2.calendar()}
   else if(k==="Escape"&&(O2.sel.size||O2.cur>=0)){O2.cur=-1;O2.clearSel()}
 });
 
@@ -1986,6 +2091,7 @@ window.mount_orders=function(params){
   if(params.view&&!params._v){params._v=1;O2.selectView(params.view)}
   if(params.slot&&!params._s){params._s=1;O2.slot=params.slot;O2.sv=null;if(O2.view!=="today"&&O2.view!=="tomorrow")O2.view="today"}
   if(params.status&&!params._st){params._st=1;O2.status=params.status;O2.sv=null}
+  if(params.day&&!params._d){params._d=1;O2.day=params.day;O2.sv=null}
   A.$("#o2-q").value=O2.q||"";A.$$("#o2-mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===O2.mode));
   A.$("#o2-new").innerHTML=A.icon("plus")+(A.isMgr()?" New order":" Walk-in order");
   renderAll();
@@ -1993,6 +2099,8 @@ window.mount_orders=function(params){
   A.registerCommands([
     {g:"Actions",t:"Orders · today's problems",ic:"alert",fn:()=>A.go("orders",{view:"problems"})},
     {g:"Actions",t:"Orders · board view",ic:"board",fn:()=>{A.go("orders");O2.setMode("board")}},
+    {g:"Actions",t:"Orders · calendar",ic:"calendar",fn:()=>{A.go("orders");setTimeout(O2.calendar,60)}},
+    {g:"Actions",t:"Orders · this week",ic:"calendar",fn:()=>A.go("orders",{view:"week"})},
     {g:"Actions",t:"Orders · save current view",ic:"star",fn:()=>{A.go("orders");O2.saveView()}}
   ].concat(A.isMgr()?[{g:"Actions",t:"Orders · unpaid",ic:"pound",fn:()=>A.go("orders",{view:"unpaid"})},{g:"Actions",t:"Orders · marketplaces today",ic:"globe",fn:()=>A.go("orders",{view:"marketplaces"})}]:[]));
 };
