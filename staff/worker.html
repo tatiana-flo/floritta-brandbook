@@ -4102,7 +4102,7 @@ S.report=function(){
         <span class="soft">Releasing a shift</span><span>please 24 h before – or offer it to a colleague</span>
         <span class="soft">If you release late</span><span>no fee, no rating – it goes back on the board as urgent; the release is on record, and a pattern of late releases is the one reason we may end the arrangement, in writing</span>
         <span class="soft">Pay</span><span>hourly, never below £12.71, + bouquet bonus</span>
-        <span class="soft">Holiday</span><span>12.07 % on every statement</span>
+        <span class="soft">Holiday</span><span>builds up as you work (12.07 % of your hours, up to 28 days); paid when you take it</span>
       </div>
       <div class="note">You're a casual worker: free to take or leave work, free to work elsewhere. Inside a shift the studio's standards apply like for everyone.</div>`;
   };
@@ -4142,7 +4142,7 @@ S.report=function(){
   window.mount_pay=function(){
     const u=A.me(),el=document.getElementById('pay-body'),rate=u.rate||13.21;
     const hrs=21.5,learn=0.5,bonus=9.90,pot=4.20;
-    const base=hrs*rate,learnP=learn*rate,sub=base+learnP+bonus+pot,hol=sub*0.1207,tot=sub+hol;
+    const base=hrs*rate,learnP=learn*rate,sub=base+learnP+bonus+pot,tot=sub;const holAcc=Math.round((hrs+learn)*0.1207),holBank=61,holCap=196;
     el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">${fmtGBP(tot)}</h1><div class="sm soft mt4">Paid Fri 23 Oct · PAYE</div></div>
       <div class="grp">Breakdown</div>
       <div class="wk-kv">
@@ -4150,11 +4150,13 @@ S.report=function(){
         <span class="soft">Learning · ${learn*60} min (paid)</span><span>${fmtGBP(learnP)}</span>
         <span class="soft">Bouquet bonus · 22 bouquets</span><span>${fmtGBP(bonus)}</span>
         <span class="soft">Team pot share (by hours)</span><span>${fmtGBP(pot)}</span>
-        <span class="soft t">Subtotal</span><span class="t">${fmtGBP(sub)}</span>
-        <span class="soft">Holiday pay 12.07 %</span><span>${fmtGBP(hol)}</span>
         <span class="soft t">Total before tax</span><span class="t">${fmtGBP(tot)}</span>
+        <span class="soft">Holiday earned this week</span><span>+${holAcc} h</span>
       </div>
-      <div class="note">Holiday pay is paid with every statement because your hours vary (rolled-up holiday pay). Your hourly rate is never below £12.71 for any hour you work, including learning.</div>
+      <div class="note">Tax and National Insurance are taken off through PAYE, as for everyone on the team. Your hourly rate is never below £12.71 for any hour you work, including learning.</div>
+      <div class="grp">Holiday</div>
+      <div class="blk"><div class="panel"><div class="flex ai-c jc-sb"><span class="caps muted">Built up so far</span><span class="xs muted">cap 28 days · ${holCap} h</span></div><div class="h2 mt8">${holBank} h <span class="h4 muted" style="font-weight:300">≈ 8.7 days</span></div><div class="progress mt12"><i style="width:${Math.round(holBank/holCap*100)}%"></i></div><p class="sm soft" style="margin:12px 0 14px">Every hour you work adds 12.07 % to this. When you want a paid week off, take no shifts and request it here – we pay it at your average rate over the last 52 paid weeks, bonuses included.</p><button class="btn --sm --secondary" onclick="App.toast('Request sent – paid with the next statement')">Take paid holiday</button></div></div>
+      <div class="note">Holiday can't be swapped for cash while you work with us – only paid out if you leave.</div>
       <div class="grp">Earlier weeks</div>
       <div class="rows" style="border-top:1px solid var(--hair)">
         <div class="row st"><span class="rt"><div class="l">Week 41 · 5–11 Oct</div><div class="d">Paid 16 Oct</div></span><span class="val" style="color:var(--ink)">£338.12</span></div>
@@ -4173,7 +4175,7 @@ S.report=function(){
       const l=r.querySelector('.l');if(!l)return;const t=l.textContent.trim();
       if(t==='Schedule'){l.textContent='Shift offers';r.querySelector('.d').innerHTML=`<span class="accent">${W.offers.filter(o=>o.status==='open').length} open</span> · ${W.offers.filter(o=>o.status==='accepted').length} booked`}
       if(t==='Time sheet'){r.querySelector('.d').textContent='Hours inside your booked shifts'}
-      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · holiday pay 12.07 % included</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
+      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
     });
     const pills=el.querySelector('.pillrow');if(pills)pills.innerHTML=`<span class="pill --plain">Casual worker</span><span class="pill --plain">Shop floor</span>`;
     const wk=el.querySelector('.sec-head .h2');if(wk&&wk.textContent==='This week')wk.textContent='This week · booked';
@@ -4219,7 +4221,7 @@ S.report=function(){
       <li><b>Zhadra</b> – casual worker. Войти как она: «View as» в Me или персона слева.</li>
       <li><b>Shift offers</b> вместо Schedule: студия публикует, worker берёт или пропускает. Пропуск и отказ ничего не записывают.</li>
       <li><b>Guaranteed hours</b> – предложение по 12 неделям (ERA 2025, с 2027). «Нет» ничего не меняет.</li>
-      <li><b>Pay statement</b> – часы × ставка ≥ £12.71, обучение оплачено, holiday pay 12,07 % отдельной строкой.</li>
+      <li><b>Pay statement</b> – часы × ставка ≥ £12.71, обучение оплачено, PAYE; отпуск копится в часах (12,07 %, потолок 28 дней) и платится при взятии.</li>
       <li><b>Внутри смены</b> всё как у всех: clock-in, задачи, уроки, бонус. Отличие только между сменами.</li>
       <li><b>Менеджер</b> (View as Valeria → Schedule) видит доску открытых смен и может только публиковать, не назначать.</li>
       <li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
