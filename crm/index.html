@@ -186,6 +186,24 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .textbtn.--accent{color:var(--accent)}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
+/* ============ BUTTON STYLE VARIANTS (stand toggle, html[data-btn]) ============ */
+[data-btn="graphite"] .btn:not(.--secondary):not(.--ghost):not(.--accent):not(.--ok){background:var(--graphite);border-color:var(--graphite)}
+[data-btn="graphite"] .btn:not(.--secondary):not(.--ghost):not(.--accent):not(.--ok):hover{background:var(--ink);border-color:var(--ink)}
+[data-btn="graphite"] .sb-item.on,[data-btn="graphite"] .chip.on,[data-btn="graphite"] .seg-ctl button.on,[data-btn="graphite"] .nav-list button.on,[data-btn="graphite"] .seg button.on{background:var(--graphite);border-color:var(--graphite);color:var(--paper)}
+[data-btn="outline"] .btn:not(.--secondary):not(.--ghost):not(.--accent):not(.--ok){background:transparent;color:var(--ink);border-color:var(--ink)}
+[data-btn="outline"] .btn:not(.--secondary):not(.--ghost):not(.--accent):not(.--ok):hover{background:var(--ink);color:var(--paper)}
+[data-btn="outline"] .btn.--secondary{border-color:var(--light)}
+[data-btn="outline"] .sb-item.on{background:transparent;color:var(--ink);box-shadow:inset 2px 0 0 var(--ink)}
+[data-btn="outline"] .chip.on,[data-btn="outline"] .seg-ctl button.on{background:var(--silver);color:var(--ink);border-color:var(--ink)}
+[data-btn="sage"] .btn:not(.--secondary):not(.--ghost):not(.--accent){background:var(--ok);border-color:var(--ok);color:#fff}
+[data-btn="sage"] .btn:not(.--secondary):not(.--ghost):not(.--accent):hover{background:#66765a;border-color:#66765a}
+[data-btn="sage"] .sb-item.on{background:var(--ok-bg);color:var(--ink);box-shadow:inset 2px 0 0 var(--ok)}
+[data-btn="sage"] .chip.on,[data-btn="sage"] .seg-ctl button.on{background:var(--ok);border-color:var(--ok);color:#fff}
+[data-btn="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent){background:#c28186;border-color:#c28186;color:#fff}
+[data-btn="rose"] .btn:not(.--secondary):not(.--ghost):not(.--ok):not(.--accent):hover{background:var(--accent);border-color:var(--accent)}
+[data-btn="rose"] .sb-item.on{background:var(--accent-bg);color:var(--ink);box-shadow:inset 2px 0 0 #c28186}
+[data-btn="rose"] .chip.on,[data-btn="rose"] .seg-ctl button.on{background:#c28186;border-color:#c28186;color:#fff}
+
 /* ============ INPUTS ============ */
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field label,.lbl{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
@@ -444,6 +462,8 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
     <p class="stage-sub">app.floritta.ai · Brandbook 2026-10 · Ivory · Square · desktop + iPad</p>
     <div class="eyebrow">Theme</div>
     <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Ivory</button></div>
+    <div class="eyebrow">Buttons</div>
+    <div class="seg" id="tg-btn"><button data-v="ink" class="on">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Rose</button></div>
     <div class="eyebrow">Density</div>
     <div class="seg" id="tg-density"><button data-v="comfortable" class="on">Comfortable</button><button data-v="compact">Compact</button></div>
     <div class="eyebrow">Role</div>
@@ -747,6 +767,21 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 #s-production .p3-f .progress{margin-top:5px}
 #s-production .p3-f .n{font-family:var(--f-display);font-size:24px;line-height:1;font-variant-numeric:tabular-nums;font-weight:300}
 #s-production .p3-board{flex:1;min-height:0}
+/* card: mini photo 44×44 left, content right */
+#s-production .kcard .p3-row{display:flex;gap:10px;align-items:flex-start;min-width:0}
+#s-production .kcard .p3-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#s-production .kcard .p3-th{position:relative;transition:opacity var(--m-fast)}
+#s-production .kcard .p3-th.--ref img{opacity:.7}
+#s-production .kcard .p3-th.--shot{box-shadow:inset 0 0 0 1px var(--ok)}
+#s-production .kcard .p3-th.--shot::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px var(--ok);pointer-events:none}
+#s-production .kcard .p3-th .bdg{position:absolute;right:0;bottom:0;width:16px;height:16px;display:flex;align-items:center;justify-content:center;background:var(--paper);color:var(--grey)}
+#s-production .kcard .p3-th .bdg svg{width:11px;height:11px}
+#s-production .kcard .p3-th.--shot .bdg{color:var(--ok)}
+[data-density="compact"] #s-production .kcard .p3-th{width:32px;height:32px}
+[data-density="compact"] #s-production .kcard .p3-th .bdg{width:13px;height:13px}
+[data-density="compact"] #s-production .kcard .p3-th .bdg svg{width:9px;height:9px}
+[data-density="compact"] #s-production .kcard .p3-row{gap:8px}
+[data-size="phone"] #s-production .kcard .p3-th{width:40px;height:40px}
 #s-production .kcard .k-acts{display:flex;gap:6px;margin-top:2px;flex-wrap:wrap}
 #s-production .kcard .k-acts .btn{flex:1;min-width:0;padding:0 8px}
 #s-production .kcard .k-foot svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
@@ -1247,8 +1282,23 @@ const PRODUCTS=(()=>{
  addons.forEach((a,i)=>p.push({id:200+i,sku:"AD-"+(201+i),name:a[0],cat:"Add-ons",img:"img/"+a[1]+".webp",price:a[2],sizes:[],active:true,stock:ri(4,30),addon:true}));
  const extra=["Vase arrangement · low","Wreath · classic","Sympathy spray","Bridal bouquet","Table centrepiece","Christmas wreath 60cm"];
  extra.forEach((n,i)=>p.push({id:300+i,sku:"FL-"+(1301+i),name:n,cat:i>=4?"Seasonal":"Bespoke",img:"img/"+pick(imgs)+".webp",price:[90,60,150,350,75,90][i],sizes:["Standard"],active:i!==5,stock:ri(0,4),bom:[["Mixed stems",ri(10,30)],["Foliage",ri(4,10)],["Base",1]]}));
+ p.forEach((x,i)=>{const v=x.addon?ri(80,600):ri(400,6200);const c=Math.round(v*(ri(4,14)/100));const b=Math.round(c*(ri(18,45)/100));x.stats={views30:v,carts30:c,orders30:b,revenue30:b*x.price,rating:x.addon?null:(38+ri(0,12))/10,reviews:x.addon?0:ri(0,42),returns:ri(0,2),conv:v?+(b/v*100).toFixed(1):0,trend:Array.from({length:12},()=>ri(10,100)),rank:0,posViews:ri(1,40),margin:x.addon?ri(40,60):ri(52,74)}});
+ p.filter(x=>!x.addon).sort((a,b)=>b.stats.orders30-a.stats.orders30).forEach((x,i)=>x.stats.rank=i+1);
  return p;
 })();
+
+/* UTM / tracking links (clicks → visits → orders) */
+const TRACKING=[
+ ["Instagram bio","instagram","bio","oct-bio",1840,1210,41],["Instagram stories · peonies","instagram","story","peony-sale",960,640,22],["Google Ads · Brand","google","cpc","brand-uk",2210,1980,96],["Google Ads · Same-day","google","cpc","same-day-se1",1460,1190,38],["Perks at Work","partner","offer","paw-oct",380,290,17],["Awin · Quidco","awin","affiliate","quidco",210,160,9],["WhatsApp broadcast · Oct","whatsapp","broadcast","oct-news",540,410,33],["Email · Autumn edit","email","newsletter","autumn-edit",1290,870,29],["TikTok · wrap video","tiktok","social","wrap-video",720,350,6],["Pinterest","pinterest","social","boards",310,240,8],["Threads","threads","social","oct",120,90,2],["QR on packaging","qr","print","box-qr",260,230,14]
+].map((r,i)=>({id:901+i,name:r[0],source:r[1],medium:r[2],campaign:r[3],clicks:r[4],visits:r[5],orders:r[6],revenue:r[6]*ri(78,140),url:"floritta.uk/?utm_source="+r[1]+"&utm_medium="+r[2]+"&utm_campaign="+r[3],created:T(9,0,-ri(5,60))}));
+
+/* Site & blog daily stats (last 30 days) */
+const SITE_DAILY=Array.from({length:30},(_,k)=>{const d=29-k;const base=820+ri(-120,260)+(k%7>=5?140:0);const sess=base;const pv=Math.round(sess*ri(23,31)/10);const carts=Math.round(sess*ri(5,8)/100);const chk=Math.round(carts*ri(45,62)/100);const ord=Math.round(chk*ri(58,76)/100);return{date:T(12,0,-d),sessions:sess,users:Math.round(sess*.84),pageviews:pv,carts,checkouts:chk,orders:ord,revenue:ord*ri(82,126),bounce:ri(38,52),avgTime:ri(95,190),newUsers:Math.round(sess*ri(55,70)/100),mobile:ri(61,74)}});
+const PAGES_STATS=[
+ ["/","Home",14200,38,42],["/same-day-flower-delivery-london","Same-day delivery",6100,44,31],["/bouquets","Bouquets",5400,35,22],["/roses","Roses",3900,41,18],["/blog/how-to-keep-peonies-fresh","Blog · Peonies fresh",2800,71,2],["/blog/what-flowers-for-a-birthday","Blog · Birthday flowers",2300,68,5],["/blog/wedding-flowers-london-guide","Blog · Wedding guide",1900,74,1],["/about","About",1200,52,3],["/delivery","Delivery info",2100,30,9],["/baskets","Baskets",1700,39,8],["/blog/autumn-flowers-2026","Blog · Autumn 2026",1400,66,4],["/gift-cards","Gift cards",640,45,6]
+].map((r,i)=>({id:951+i,path:r[0],title:r[1],views30:r[2],bounce:r[3],orders30:r[4],blog:r[0].startsWith("/blog"),cwv:pick(["good","good","needs work"]),position:r[0].startsWith("/blog")?ri(3,18):ri(1,9)}));
+const PROMO_CODES=[["NEW15",15,"%",412,38,T(9,0,-200)],["PEONY10",10,"%",96,21,T(9,0,-20)],["CORP20",20,"%",28,9,T(9,0,-90)],["FREEDEL",12,"£",210,54,T(9,0,-40)],["BDAY",10,"%",64,12,T(9,0,-10)]].map((r,i)=>({id:971+i,code:r[0],value:r[1],unit:r[2],uses:r[3],uses30:r[4],created:r[5],revenue30:r[4]*ri(70,120)}));
+const MARKETPLACE_DAILY=Array.from({length:30},(_,k)=>({date:T(12,0,-(29-k)),deliveroo:{orders:ri(2,9),revenue:0,onTime:ri(84,100),rejected:ri(0,1),rating:(44+ri(0,5))/10},ubereats:{orders:ri(1,7),revenue:0,onTime:ri(80,100),rejected:ri(0,2),rating:(43+ri(0,6))/10}})).map(d=>{d.deliveroo.revenue=d.deliveroo.orders*ri(38,62);d.ubereats.revenue=d.ubereats.orders*ri(36,60);return d});
 
 const CUSTOMERS=(()=>{
  const first=["Charlotte","Oliver","Amelia","Harry","Isla","Jack","Sophie","James","Grace","Thomas","Emily","William","Freya","Daniel","Lily","Edward","Zara","Max","Alice","Noah","Hannah","Arthur","Rosie","Louis","Priya"];
@@ -1344,7 +1394,7 @@ const NOTIFS=[
 const App=(()=>{
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
   const state={role:"manager",theme:"ivory",density:"comfortable",size:"desktop",history:[],current:null,params:{},notifs:NOTIFS,commands:[]};
-  const data={orders:ORDERS,staff:STAFF,customers:CUSTOMERS,products:PRODUCTS,convos:CONVOS,tasks:TASKS,inventory:INVENTORY,slots:SLOTS};
+  const data={orders:ORDERS,staff:STAFF,customers:CUSTOMERS,products:PRODUCTS,convos:CONVOS,tasks:TASKS,inventory:INVENTORY,slots:SLOTS,tracking:TRACKING,siteDaily:SITE_DAILY,pages:PAGES_STATS,promos:PROMO_CODES,marketplaceDaily:MARKETPLACE_DAILY};
   const user=id=>STAFF.find(s=>s.id===id);
   const me=()=>user(ROLE_USER[state.role]);
   const role=()=>state.role;
@@ -1416,13 +1466,14 @@ const App=(()=>{
       {id:"tasks",n:"Tasks",ic:"check",cnt:()=>TASKS.filter(t=>t.status!=="done"&&(t.late||new Date(t.due)<NOW)).length,hot:true},
       {id:"learning",n:"Learning",ic:"book"}
     ]},
-    {g:"Business",roles:["owner"],items:[
-      {id:"growth",n:"Growth",ic:"growth",roles:["owner"]},
+    {g:"Business",roles:["owner","manager"],items:[
+      {id:"analytics",n:"Analytics",ic:"growth",roles:["owner","manager"]},
+      {id:"growth",n:"Growth",ic:"zap",roles:["owner"]},
       {id:"settings",n:"Settings",ic:"settings",roles:["owner"]}
     ]}
   ];
-  const TITLES={today:"Today",orders:"Orders","order-new":"New order",production:"Production","ready-now":"Ready now",delivery:"Delivery",inbox:"Inbox",customers:"Customers",catalog:"Catalog",stock:"Stock",purchasing:"Purchasing",team:"Team",tasks:"Tasks",learning:"Learning",growth:"Growth",settings:"Settings"};
-  const URLS={today:"/today",orders:"/orders","order-new":"/orders/new",production:"/production","ready-now":"/production/ready-now",delivery:"/delivery",inbox:"/inbox",customers:"/customers",catalog:"/catalog",stock:"/stock",purchasing:"/stock/purchasing",team:"/team",tasks:"/team/tasks",learning:"/team/learning",growth:"/growth",settings:"/settings"};
+  const TITLES={today:"Today",orders:"Orders","order-new":"New order",production:"Production","ready-now":"Ready now",delivery:"Delivery",inbox:"Inbox",customers:"Customers",catalog:"Catalog",stock:"Stock",purchasing:"Purchasing",team:"Team",tasks:"Tasks",learning:"Learning",growth:"Growth",analytics:"Analytics",settings:"Settings"};
+  const URLS={today:"/today",orders:"/orders","order-new":"/orders/new",production:"/production","ready-now":"/production/ready-now",delivery:"/delivery",inbox:"/inbox",customers:"/customers",catalog:"/catalog",stock:"/stock",purchasing:"/stock/purchasing",team:"/team",tasks:"/team/tasks",learning:"/team/learning",growth:"/growth",analytics:"/analytics",settings:"/settings"};
   const screenGroup=id=>{for(const g of NAV)for(const it of g.items){if(it.id===id)return it.id}const s=document.getElementById("s-"+id);return s?.dataset.parent||id};
   function renderSidebar(){
     const nav=$("#sb-nav");let h="";
@@ -1497,7 +1548,7 @@ const App=(()=>{
   function userMenu(ev){pop(ev,[me().n+" · "+me().title,{t:"My schedule",ic:"calendar",fn:()=>go("team",{tab:"schedule"})},{t:"My tasks",ic:"check",fn:()=>go("tasks",{mine:true})},"-",{t:state.density==="comfortable"?"Compact rows":"Comfortable rows",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")},"-",{t:"Sign out",ic:"logout",fn:()=>toast("Signed out (demo)")}])}
   /* ---- COMMAND PALETTE ---- */
   const baseCommands=()=>[
-    {g:"Go to",t:"Today",ic:"today",k:"G T",fn:()=>go("today")},{g:"Go to",t:"Orders",ic:"orders",k:"G O",fn:()=>go("orders")},{g:"Go to",t:"Production board",ic:"production",k:"G P",fn:()=>go("production")},{g:"Go to",t:"Delivery dispatch",ic:"delivery",k:"G D",fn:()=>go("delivery"),mgr:true},{g:"Go to",t:"Inbox",ic:"inbox",k:"G I",fn:()=>go("inbox"),mgr:true},{g:"Go to",t:"Customers",ic:"customers",k:"G C",fn:()=>go("customers"),mgr:true},{g:"Go to",t:"Catalog",ic:"catalog",fn:()=>go("catalog")},{g:"Go to",t:"Stock",ic:"warehouse",fn:()=>go("stock")},{g:"Go to",t:"Team · schedule",ic:"team",fn:()=>go("team")},{g:"Go to",t:"Tasks",ic:"check",fn:()=>go("tasks")},{g:"Go to",t:"Learning",ic:"book",fn:()=>go("learning")},
+    {g:"Go to",t:"Today",ic:"today",k:"G T",fn:()=>go("today")},{g:"Go to",t:"Orders",ic:"orders",k:"G O",fn:()=>go("orders")},{g:"Go to",t:"Production board",ic:"production",k:"G P",fn:()=>go("production")},{g:"Go to",t:"Delivery dispatch",ic:"delivery",k:"G D",fn:()=>go("delivery"),mgr:true},{g:"Go to",t:"Inbox",ic:"inbox",k:"G I",fn:()=>go("inbox"),mgr:true},{g:"Go to",t:"Customers",ic:"customers",k:"G C",fn:()=>go("customers"),mgr:true},{g:"Go to",t:"Catalog",ic:"catalog",fn:()=>go("catalog")},{g:"Go to",t:"Stock",ic:"warehouse",fn:()=>go("stock")},{g:"Go to",t:"Team · schedule",ic:"team",fn:()=>go("team")},{g:"Go to",t:"Tasks",ic:"check",fn:()=>go("tasks")},{g:"Go to",t:"Learning",ic:"book",fn:()=>go("learning")},{g:"Go to",t:"Analytics",ic:"growth",k:"G A",fn:()=>go("analytics"),mgr:true},
     {g:"Actions",t:"New order",ic:"plus",k:"N",fn:()=>go("order-new")},{g:"Actions",t:"New task",ic:"check",fn:()=>go("tasks",{new:true})},{g:"Actions",t:"Call a courier · Uber Direct",ic:"truck",fn:()=>go("delivery",{uber:true}),mgr:true},{g:"Actions",t:"Send payment link",ic:"link",fn:()=>toast("Pick an order first – open it and press Payment link")},{g:"Actions",t:"Publish a Ready-now bouquet",ic:"photo",fn:()=>go("ready-now",{new:true})},
     {g:"Preferences",t:state.density==="comfortable"?"Compact density":"Comfortable density",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")}
   ].filter(c=>!c.mgr||isMgr());
@@ -1531,7 +1582,7 @@ const App=(()=>{
     if(e.key==="/"){e.preventDefault();palette(true);return}
     if(e.key.toLowerCase()==="n"&&!e.metaKey){go("order-new");return}
     if(e.key.toLowerCase()==="g"){gPending=true;setTimeout(()=>gPending=false,800);return}
-    if(gPending){const m={t:"today",o:"orders",p:"production",d:"delivery",i:"inbox",c:"customers",s:"stock",k:"catalog"}[e.key.toLowerCase()];if(m){go(m)}gPending=false}
+    if(gPending){const m={t:"today",o:"orders",p:"production",d:"delivery",i:"inbox",c:"customers",s:"stock",k:"catalog",a:"analytics"}[e.key.toLowerCase()];if(m){go(m)}gPending=false}
   });
   document.addEventListener("click",e=>{if(!e.target.closest("#pop"))closePop()});
   /* ---- STAND TOGGLES ---- */
@@ -1542,7 +1593,8 @@ const App=(()=>{
   function remount(){const cur=state.current;if(!cur)return;const fn=window["mount_"+cur.replace(/-/g,"_")];if(typeof fn==="function"){try{fn(state.params)}catch(e){console.error(e)}}renderSidebar()}
   function fit(){const wrap=$(".frame-wrap"),outer=$("#frame-outer"),br=$("#browser");const w=br.offsetWidth,h=br.offsetHeight;const avail=wrap.clientWidth;const sc=Math.min(1,avail/w);outer.style.transform=`scale(${sc})`;outer.style.width=w+"px";wrap.style.height=(h*sc)+"px";outer.style.marginLeft=Math.max(0,(avail-w*sc)/2)+"px"}
   window.addEventListener("resize",fit);
-  ["theme","density","role","size"].forEach(k=>$$("#tg-"+k+" button").forEach(b=>b.onclick=()=>({theme:setTheme,density:setDensity,role:setRole,size:setSize})[k](b.dataset.v)));
+  ["theme","density","role","size","btn"].forEach(k=>$$("#tg-"+k+" button").forEach(b=>b.onclick=()=>({theme:setTheme,density:setDensity,role:setRole,size:setSize,btn:setBtn})[k](b.dataset.v)));
+  function setBtn(v){state.btn=v;document.documentElement.dataset.btn=v;$$("#tg-btn button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));toast("Buttons · "+v)}
   /* ---- DOMAIN MUTATIONS ---- */
   function emit(n,d){document.dispatchEvent(new CustomEvent(n,{detail:d||{}}));renderSidebar()}
   function setOrderStatus(id,s,opts={}){const o=order(id);if(!o)return;const prev=o.status;o.status=s;if(s!=="queue"&&!o.florist&&me().role==="florist")o.florist=me().id;if(s==="making"&&!o.florist)o.florist=opts.florist||me().id;if(s==="photo")o.photo=true;if(s==="ready")o.photoSent=true;if(s==="out"&&!o.courier)o.courier=opts.courier||"daniel";if(s==="delivered")o.problem="";o.late=false;
@@ -1624,7 +1676,7 @@ const App=(()=>{
   window.addEventListener("DOMContentLoaded",init);
   return {$,$$,state,data,NOW,T,user,me,role,isMgr,fmt,fmtTime,fmtDay,fmtDate,timeAgo,isLate,customer,product,order,esc,icon,pill,orderPill,avatar,chanTag,STATUS_LBL,NEXT,ORDER_STATUSES,SLOTS,
     go,back,drawer,sheet,sheetBack,closeSheet,modal,closeModal,confirm,_confirmGo,pop,closePop,toast,push,notifications,readAll,userMenu,palette,registerCommands,
-    setTheme,setDensity,setRole,setSize,fit,remount,renderSidebar,emit,setOrderStatus,assignFlorist,assignCourier,markPaid,cancelOrder,addOrder,sendPhoto,paymentLink,openOrder,orderMenu,pickFlorist,pickCourier,openCustomer};
+    setTheme,setDensity,setRole,setSize,setBtn,fit,remount,renderSidebar,emit,setOrderStatus,assignFlorist,assignCourier,markPaid,cancelOrder,addOrder,sendPhoto,paymentLink,openOrder,orderMenu,pickFlorist,pickCourier,openCustomer};
 })();
 window.App=App;
 </script>
@@ -2096,13 +2148,20 @@ function p3Acts(o){
   if(o.status==="ready")return o.type==="collection"?`<button class="btn --ok --sm" onclick="${stop}App.setOrderStatus(${o.id},'delivered',{note:'Collected in shop'})">${App.icon("check")} Collected</button>`:(mgr?`<button class="btn --sm" onclick="${stop}P3_hand(event,${o.id})">${App.icon("truck")} Hand over</button>`:`<span class="wait">${App.icon("truck")} Awaiting courier</span>`);
   return "";
 }
+function p3Thumb(o,p){
+  const sent=o.status==="ready"&&o.photoSent;
+  const cls=o.photo?"--shot":"--ref",ttl=o.photo?(sent?"Photo sent to customer":"Photo taken on the bench"):"Catalogue reference · photo not taken yet";
+  return `<div class="thumb p3-th ${cls}" title="${ttl}"><img src="${p.img}" alt=""><span class="bdg">${App.icon(o.photo?(sent?"send":"check"):"photo")}</span></div>`;
+}
 function p3Card(o){
   const p=App.product(o.product),late=App.isLate(o);
   return `<div class="kcard ${late?"--late":""}" onclick="App.openOrder(${o.id})">
+    <div class="p3-row">${p3Thumb(o,p)}<div class="p3-main">
     <div class="k-top"><b class="tnum" style="color:var(--ink)">#${o.id}</b><span class="${late?"accent":""}">${App.esc(o.slot)}</span><span class="sp"></span>${o.type==="collection"?`<span class="tag">Collect</span>`:""}${o.chan==="Deliveroo"||o.chan==="Uber Eats"?App.chanTag(o.chan):""}${o.florist?App.avatar(o.florist,"--s"):""}</div>
     <div class="k-title">${App.esc(p.name)} <span class="muted">· ${App.esc(o.size)}</span></div>
     <div class="k-foot">${p3Icons(o)}<span class="sp"></span>${late?App.orderPill(o):""}</div>
     <div class="k-acts">${p3Acts(o)}</div>
+    </div></div>
   </div>`;
 }
 function p3Head(){
