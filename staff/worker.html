@@ -4037,8 +4037,16 @@ S.report=function(){
 .wk-offer .btns .btn{flex:1}
 .wk-offer.mine{border-color:var(--ink)}
 .wk-offer.gone{opacity:.45}
-.wk-kv{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding:0 var(--gutter);font-size:14px}
-.wk-kv .t{font-weight:500;border-top:1px solid var(--hair);padding-top:8px;margin-top:4px}
+.wk-kv{display:grid;grid-template-columns:1fr auto;gap:0;margin:0 var(--gutter);font-size:14px;border-top:1px solid var(--hair)}
+.wk-kv>span,.wk-kv>span:first-child{padding:11px 0;border-bottom:1px solid var(--hair);text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink)}
+.wk-kv>span.soft{color:var(--graphite)}
+.wk-kv>span:nth-child(even){padding-left:16px;text-align:right}
+.wk-kv .t{font-weight:500}
+.wk-kv.--info{grid-template-columns:36% 1fr;gap:0;border:1px solid var(--hair)}
+.wk-kv.--info>span{padding:13px 14px;line-height:1.4}
+.wk-kv.--info>span:nth-child(odd){font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);border-right:1px solid var(--hair);padding-top:15px}
+.wk-kv.--info>span:nth-child(even){color:var(--ink);text-align:left;padding-left:14px}
+.wk-kv.--info>span:nth-last-child(-n+2){border-bottom:0}
 .wk-kv .t+ .t{}
 .wk-badge{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--light);padding:2px 8px;color:var(--graphite)}
 </style>
@@ -4096,7 +4104,7 @@ S.report=function(){
       ${open.map(card).join('')}
       ${canc?`<div class="sec-head"><div class="h2">Cancelled</div></div>${canc}`:''}
       <div class="grp">How this works</div>
-      <div class="wk-kv">
+      <div class="wk-kv --info">
         <span class="soft">Notice of a shift</span><span>at least ${W.notice} h before it starts</span>
         <span class="soft">If we cancel late</span><span>we pay part of the shift</span>
         <span class="soft">Releasing a shift</span><span>please 24 h before – or offer it to a colleague</span>
@@ -4123,7 +4131,7 @@ S.report=function(){
     el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Offer · 20 Oct 2026</div><h1 class="h1 mt8">${g.avg} hours a week, guaranteed</h1>
       <p class="soft" style="margin:14px 0 0">Over the last ${g.weeks} weeks you took shifts most weeks – on average ${g.avg} h, usually ${g.pattern}. The law asks us to offer you a contract that guarantees those hours.</p></div>
       <div class="grp">What changes if you accept</div>
-      <div class="wk-kv">
+      <div class="wk-kv --info">
         <span class="soft">Hours</span><span>${g.avg} h a week, on a rota we agree with you</span>
         <span class="soft">Status</span><span>employee, from 1 Nov 2026</span>
         <span class="soft">Pay</span><span>same hourly rate, same bonus</span>
@@ -4266,7 +4274,7 @@ S.report=function(){
     if(j.status==='mine')return `<div class="ct-job mine"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --done">Yours</span></div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · collect ${j.pickup}${j.note?' · '+j.note:''}</div><div class="btns"><button class="btn --sm --ghost" onclick="CT.sub(${j.id})">Send a substitute</button><button class="btn --sm --secondary" onclick="CT.withdraw(${j.id})">Withdraw</button></div></div>`;
     if(j.status==='applied')return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --review">Applied</span></div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · first application that passes the checks is confirmed</div></div>`;
     if(j.status==='proposed')return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --review">Your price sent</span></div><div class="fee">${gbp(j.fee)} <span class="xs muted">→ ${gbp(j.proposed)}</span></div><div class="meta">${j.to} · studio answers in the app</div></div>`;
-    return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span>${j.hard?'<span class="wk-badge">hard window</span>':j.special?'<span class="wk-badge">special</span>':''}</div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · collect ${j.pickup}</div><div class="btns">${j.special?`<button class="btn --sm --ghost" onclick="CT.propose(${j.id})">Propose my price</button>`:''}<button class="btn --sm" onclick="CT.apply(${j.id})">Apply</button></div></div>`;
+    return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span>${j.hard?'<span class="wk-badge">hard window</span>':j.special?'<span class="wk-badge">special</span>':''}</div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · collect ${j.pickup}</div><div class="btns"><button class="btn --sm" onclick="CT.apply(${j.id})">Apply</button></div></div>`;
   };
   const board=()=>{
     const mine=C.jobs.filter(j=>j.status==='mine'),open=C.jobs.filter(j=>j.status!=='mine');
@@ -4276,8 +4284,8 @@ S.report=function(){
       <div class="sec-head"><div class="h2">Jobs board</div><span class="xs muted">today + 3 days</span></div>
       ${open.map(card).join('')}
       <div class="grp">How this works</div>
-      <div class="wk-kv">
-        <span class="soft">Fee</span><span>fixed per job, shown before you apply; special jobs – your price</span>
+      <div class="wk-kv --info">
+        <span class="soft">Fee</span><span>fixed per job, shown before you apply</span>
         <span class="soft">Who does it</span><span>you, or a substitute you choose (18+, right to work checked)</span>
         <span class="soft">Withdraw</span><span>any time before collection – no fee, no mark</span>
         <span class="soft">Other clients</span><span>work for anyone, also while carrying our item</span>
@@ -4301,15 +4309,14 @@ S.report=function(){
   window.mount_jobs=function(){document.getElementById('jobs-body').innerHTML=board()};
   window.mount_statements=function(){
     const el=document.getElementById('statements-body');
-    el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">£131.50</h1><div class="sm soft mt4">Paid Fri 23 Oct · bank transfer · gross, no deductions</div></div>
+    el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">£127.00</h1><div class="sm soft mt4">Paid Fri 23 Oct · bank transfer · gross, no deductions</div></div>
       <div class="grp">Jobs in this statement</div>
       <div class="wk-kv">
         <span class="soft">14 deliveries × £7–£11</span><span>£118.00</span>
         <span class="soft">1 hard window</span><span>£1.50</span>
         <span class="soft">1 return to studio (recipient absent)</span><span>£4.50</span>
         <span class="soft">Peak Sat 17 Oct</span><span>£3.00</span>
-        <span class="soft">Agreed price · event TW9</span><span>£4.50 top-up</span>
-        <span class="soft t">Total</span><span class="t">£131.50</span>
+        <span class="soft t">Total</span><span class="t">£127.00</span>
       </div>
       <div class="note">No tax or National Insurance is taken off – you handle your own. No holiday pay, sick pay or pension: this is a statement for services, not wages.</div>
       <div class="grp">Your invoice instead?</div>
@@ -4332,9 +4339,9 @@ S.report=function(){
   window.mount_taxstatus=function(){
     document.getElementById('taxstatus-body').innerHTML=`<div class="pad" style="padding-top:8px"><h1 class="h2">You work for yourself</h1><p class="soft" style="margin:12px 0 0">You are a self-employed courier, not an employee or worker of Floritta. You choose which jobs to take, you may send a substitute, and you may work for anyone else at any time.</p></div>
       <div class="grp">Tax</div>
-      <div class="wk-kv"><span class="soft">Income tax & NI</span><span>yours to declare (Self Assessment)</span><span class="soft">Trading allowance</span><span>first £1,000 a year tax-free</span><span class="soft">From us</span><span>weekly statement or your invoice, paid gross</span></div>
+      <div class="wk-kv --info"><span class="soft">Income tax & NI</span><span>yours to declare (Self Assessment)</span><span class="soft">Trading allowance</span><span>first £1,000 a year tax-free</span><span class="soft">From us</span><span>weekly statement or your invoice, paid gross</span></div>
       <div class="grp">Not included</div>
-      <div class="wk-kv"><span class="soft">Holiday pay</span><span>no</span><span class="soft">Sick pay</span><span>no</span><span class="soft">Pension</span><span>no</span><span class="soft">Minimum wage</span><span>no – a price per job instead</span></div>
+      <div class="wk-kv --info"><span class="soft">Holiday pay</span><span>no</span><span class="soft">Sick pay</span><span>no</span><span class="soft">Pension</span><span>no</span><span class="soft">Minimum wage</span><span>no – a price per job instead</span></div>
       <div class="note">Agreement v1.0 accepted 03.10.2026 · <button class="textbtn" onclick="App.toast('PDF – demo')">Read it</button></div>`;
   };
 
@@ -4353,7 +4360,7 @@ S.report=function(){
       <div class="pillrow" style="padding:14px var(--gutter) 0"><span class="pill --plain">Self-employed</span><span class="pill --plain">Own car</span><span class="pill --plain">Also on Deliveroo</span></div>
       <div class="grp">Jobs</div><div class="rows">
         ${R('calendar','Jobs board',`${C.jobs.filter(j=>j.status!=='mine').length} open · ${C.jobs.filter(j=>j.status==='mine').length} taken`,'',"App.go('jobs')")}
-        ${R('award','Statements & invoices','Weekly · gross · or your own invoice','£131.50',"App.go('statements')")}
+        ${R('award','Statements & invoices','Weekly · gross · or your own invoice','£127.00',"App.go('statements')")}
       </div>
       <div class="grp">Your business</div><div class="rows">
         ${R('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
@@ -4373,7 +4380,7 @@ S.report=function(){
   /* persona + nav */
   const pe=document.getElementById('persona');if(pe&&!pe.querySelector('[data-id="dana"]')){const u=A.user('dana');const b=document.createElement('button');b.dataset.id='dana';b.innerHTML=`${A.avatar(u,'--sm')}<span>${u.n}</span><small>Self-employed</small>`;b.onclick=()=>A.setUser('dana');pe.insertBefore(b,pe.children[1]||null)}
   const nav=document.getElementById('nav-list');if(nav){[['jobs','Jobs board'],['statements','Statements & invoices'],['bizprofile','Business profile'],['taxstatus','Tax & status']].forEach(([id,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.setUser('dana');App.go('${id}')"><span>${l}</span><small>self-employed</small></button>`;nav.appendChild(li)});
-    const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур self-employed (Dana)</h4><ul><li><b>Jobs board</b> – работы с фиксированной ценой за задачу; Apply / Withdraw без последствий; «Propose my price» на особых работах.</li><li><b>Send a substitute</b> – без нашего разрешения, только 18+ и проверка права на работу (закон).</li><li><b>Statements & invoices</b> – gross, без вычетов, без holiday pay; можно слать свой счёт.</li><li><b>Business profile</b> – добровольно, раз в квартал: UTR, другие клиенты, страховка.</li><li>Нет смен, роты, задач, уроков и табеля. Три вкладки вместо пяти.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
+    const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур self-employed (Dana)</h4><ul><li><b>Jobs board</b> – работы с фиксированной ценой за задачу; Apply / Withdraw без последствий.</li><li><b>Send a substitute</b> – без нашего разрешения, только 18+ и проверка права на работу (закон).</li><li><b>Statements & invoices</b> – gross, без вычетов, без holiday pay; можно слать свой счёт.</li><li><b>Business profile</b> – добровольно, раз в квартал: UTR, другие клиенты, страховка.</li><li>Нет смен, роты, задач, уроков и табеля. Три вкладки вместо пяти.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
   tabs();
 })();
 </script>
