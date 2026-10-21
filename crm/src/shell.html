@@ -443,13 +443,13 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
     <h1 class="stage-title">CRM<br>redesign</h1>
     <p class="stage-sub">app.floritta.ai · Brandbook 2026-10 · Ivory · Square · desktop + iPad</p>
     <div class="eyebrow">Theme</div>
-    <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Ivory</button><button data-v="ink">Ink</button></div>
+    <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Ivory</button></div>
     <div class="eyebrow">Density</div>
     <div class="seg" id="tg-density"><button data-v="comfortable" class="on">Comfortable</button><button data-v="compact">Compact</button></div>
     <div class="eyebrow">Role</div>
     <div class="seg" id="tg-role"><button data-v="owner">Owner</button><button data-v="manager" class="on">Manager</button><button data-v="florist">Florist</button></div>
     <div class="eyebrow">Size</div>
-    <div class="seg" id="tg-size"><button data-v="desktop" class="on">1440</button><button data-v="ipad">iPad 1024</button><button data-v="phone">Phone 390</button></div>
+    <div class="seg" id="tg-size"><button data-v="desktop" class="on">MacBook 13"</button><button data-v="ipad">iPad 11"</button><button data-v="phone">Phone 390</button></div>
     <div class="eyebrow" style="margin-bottom:6px">Documents</div>
     <ul class="nav-list"><li><a href="concept.html"><button type="button"><span>Концепция (RU)</span><small>md → html</small></button></a></li><li><a href="diagrams.html"><button type="button"><span>Схемы</span><small>5 svg</small></button></a></li><li><a href="../staff/"><button type="button"><span>Staff app</span><small>эталон</small></button></a></li></ul>
     <div class="eyebrow" style="margin-bottom:6px">Screens</div>
@@ -779,12 +779,12 @@ const App=(()=>{
     sheet({title:"Notifications",narrow:true,flush:true,head:`<button class="textbtn" onclick="App.readAll()">Mark all read</button>`,body:list||`<div class="empty">${icon("bell")}<div class="h3">All quiet</div><div class="sm">Nothing needs you right now.</div></div>`,onMount:sh=>{$$(".ntf",sh).forEach(el=>el.onclick=()=>{const n=state.notifs[+el.dataset.i];n.read=true;closeSheet();if(n.go)go(n.go[0],n.go[1]||{});renderSidebar()})}});
   }
   function readAll(){state.notifs.forEach(n=>n.read=true);renderSidebar();notifications()}
-  function userMenu(ev){pop(ev,[me().n+" · "+me().title,{t:"My schedule",ic:"calendar",fn:()=>go("team",{tab:"schedule"})},{t:"My tasks",ic:"check",fn:()=>go("tasks",{mine:true})},"-",{t:state.theme==="ivory"?"Dark theme":"Light theme",ic:state.theme==="ivory"?"moon":"sun",fn:()=>setTheme(state.theme==="ivory"?"ink":"ivory")},{t:state.density==="comfortable"?"Compact rows":"Comfortable rows",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")},"-",{t:"Sign out",ic:"logout",fn:()=>toast("Signed out (demo)")}])}
+  function userMenu(ev){pop(ev,[me().n+" · "+me().title,{t:"My schedule",ic:"calendar",fn:()=>go("team",{tab:"schedule"})},{t:"My tasks",ic:"check",fn:()=>go("tasks",{mine:true})},"-",{t:state.density==="comfortable"?"Compact rows":"Comfortable rows",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")},"-",{t:"Sign out",ic:"logout",fn:()=>toast("Signed out (demo)")}])}
   /* ---- COMMAND PALETTE ---- */
   const baseCommands=()=>[
     {g:"Go to",t:"Today",ic:"today",k:"G T",fn:()=>go("today")},{g:"Go to",t:"Orders",ic:"orders",k:"G O",fn:()=>go("orders")},{g:"Go to",t:"Production board",ic:"production",k:"G P",fn:()=>go("production")},{g:"Go to",t:"Delivery dispatch",ic:"delivery",k:"G D",fn:()=>go("delivery"),mgr:true},{g:"Go to",t:"Inbox",ic:"inbox",k:"G I",fn:()=>go("inbox"),mgr:true},{g:"Go to",t:"Customers",ic:"customers",k:"G C",fn:()=>go("customers"),mgr:true},{g:"Go to",t:"Catalog",ic:"catalog",fn:()=>go("catalog")},{g:"Go to",t:"Stock",ic:"warehouse",fn:()=>go("stock")},{g:"Go to",t:"Team · schedule",ic:"team",fn:()=>go("team")},{g:"Go to",t:"Tasks",ic:"check",fn:()=>go("tasks")},{g:"Go to",t:"Learning",ic:"book",fn:()=>go("learning")},
     {g:"Actions",t:"New order",ic:"plus",k:"N",fn:()=>go("order-new")},{g:"Actions",t:"New task",ic:"check",fn:()=>go("tasks",{new:true})},{g:"Actions",t:"Call a courier · Uber Direct",ic:"truck",fn:()=>go("delivery",{uber:true}),mgr:true},{g:"Actions",t:"Send payment link",ic:"link",fn:()=>toast("Pick an order first – open it and press Payment link")},{g:"Actions",t:"Publish a Ready-now bouquet",ic:"photo",fn:()=>go("ready-now",{new:true})},
-    {g:"Preferences",t:state.theme==="ivory"?"Switch to dark theme":"Switch to light theme",ic:"moon",fn:()=>setTheme(state.theme==="ivory"?"ink":"ivory")},{g:"Preferences",t:state.density==="comfortable"?"Compact density":"Comfortable density",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")}
+    {g:"Preferences",t:state.density==="comfortable"?"Compact density":"Comfortable density",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")}
   ].filter(c=>!c.mgr||isMgr());
   let palIdx=0,palItems=[];
   function palette(open=true){const p=$("#palette");if(!open){p.classList.remove("on");return}p.classList.add("on");const inp=$("#pal-in");inp.value="";renderPal("");setTimeout(()=>inp.focus(),30)}
