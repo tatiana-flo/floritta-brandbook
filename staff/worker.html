@@ -4088,7 +4088,7 @@ S.report=function(){
     const gh=W.ghOffer.answered?'':`<div class="panel blk" style="margin:0 var(--gutter) 18px;border-color:var(--ink)"><div class="caps muted">Guaranteed hours</div><div class="h3 mt8">You've worked about ${W.ghOffer.avg} h a week for ${W.ghOffer.weeks} weeks</div><p class="sm soft" style="margin:6px 0 14px">By law we must offer you a contract with those hours. You can say no and keep choosing shifts.</p><button class="btn --sm --secondary" onclick="App.go('guaranteed')">See the offer</button></div>`;
     const canc=cancelled.map(o=>`<div class="wk-offer gone" style="opacity:.8"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="wk-badge">Cancelled by studio</span></div><div class="hrs">${o.hrs}</div><div class="meta">Cancelled ${o.cancelNotice} h before start – under our ${W.notice} h notice. ${o.comp} h paid as cancellation pay, on your next statement.</div></div>`).join('');
     el.innerHTML=`
-      <div class="note" style="padding-top:0">No rota for you. We publish shifts, you take the ones that suit you. Skipping or ignoring an offer changes nothing – not your pay, not what we offer next.</div>
+      <div class="note" style="padding-top:0">No rota for you. We publish shifts, you take the ones that suit you. Skipping or ignoring an offer is not recorded and changes nothing – not your pay, not what we offer next.</div>
       ${gh}
       <div class="sec-head" style="margin-top:6px"><div class="h2">Your shifts</div><span class="xs muted">${mine.reduce((s,o)=>s+o.h,0)} h booked</span></div>
       ${mine.length?mine.map(card).join(''):'<div class="note">Nothing booked yet.</div>'}
@@ -4100,7 +4100,7 @@ S.report=function(){
         <span class="soft">Notice of a shift</span><span>at least ${W.notice} h before it starts</span>
         <span class="soft">If we cancel late</span><span>we pay part of the shift</span>
         <span class="soft">Releasing a shift</span><span>please 24 h before – or offer it to a colleague</span>
-        <span class="soft">If you release late</span><span>no fee, no mark – it goes back on the board as urgent</span>
+        <span class="soft">If you release late</span><span>no fee, no rating – it goes back on the board as urgent; the release is on record, and a pattern of late releases is the one reason we may end the arrangement, in writing</span>
         <span class="soft">Pay</span><span>hourly, never below £12.71, + bouquet bonus</span>
         <span class="soft">Holiday</span><span>12.07 % on every statement</span>
       </div>
@@ -4110,7 +4110,7 @@ S.report=function(){
   W.skip=id=>{const o=W.offers.find(x=>x.id===id);o.status='skipped';A.haptic();A.toast('Skipped – no effect on future offers');window.mount_schedule()};
   W.unskip=id=>{const o=W.offers.find(x=>x.id===id);o.status='open';window.mount_schedule()};
   W.release=id=>{const o=W.offers.find(x=>x.id===id);
-    A.sheet(`<div class="sh-head"><div class="h3">Release this shift?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(o.off)} · ${o.hrs}. It goes back to the open list. No fee, no note, no effect on what we offer you next. We ask for 24 h notice when you can – or pass it to a colleague who wants it.</p><div class="caps muted" style="margin:18px 0 6px">Offer it to a colleague</div><button class="radio" onclick="App.closeSheet();App.toast('Offered to Max – he gets one push');WK.releaseDo(${o.id},'max')"><span class="rd"></span><span class="f1"><span class="sm">Max</span> <span class="xs muted">· casual courier, free that day</span></span></button></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();WK.releaseDo(${o.id})">Release to the board</button></div>`)};
+    A.sheet(`<div class="sh-head"><div class="h3">Release this shift?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(o.off)} · ${o.hrs}. It goes back to the open list. No fee, no rating, no effect on what we offer you next. The shift and the time you released it stay in your record, like every shift. We ask for 24 h notice when you can – or pass it to a colleague who wants it.</p><div class="caps muted" style="margin:18px 0 6px">Offer it to a colleague</div><button class="radio" onclick="App.closeSheet();App.toast('Offered to Max – he gets one push');WK.releaseDo(${o.id},'max')"><span class="rd"></span><span class="f1"><span class="sm">Max</span> <span class="xs muted">· casual courier, free that day</span></span></button></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();WK.releaseDo(${o.id})">Release to the board</button></div>`)};
   W.releaseDo=(id,to)=>{const o=W.offers.find(x=>x.id===id);o.status='open';o.taken--;if(to){o.note='Offered to '+to.charAt(0).toUpperCase()+to.slice(1)+' first'}else{const soon=o.off<=1;if(soon){o.note='Urgent · +£1/h';o.pub=1}A.toast('Released – shift is open again')}window.mount_schedule()};
 
   /* ---- Guaranteed-hours offer (ERA 2025, from 2027) ---- */
@@ -4227,6 +4227,152 @@ S.report=function(){
   A.setUser('zhadra');A.state.clockedIn=false;
   document.title='Floritta Staff — worker contour (copy)';
   if(A.state.current){A.go(A.state.current,{},{replace:true})}
+})();
+</script>
+
+<!-- ============ CONTRACTOR CONTOUR (genuinely self-employed) – overlay, 21.10.2026 ============ -->
+<style>
+.ct-job{border:1px solid var(--hair);padding:14px var(--gutter);margin:0 var(--gutter) 10px;background:var(--paper)}
+.ct-job .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.ct-job .fee{font-family:var(--f-display);font-size:30px;font-weight:300;line-height:1;margin-top:6px}
+.ct-job .meta{font-size:13px;color:var(--graphite);margin-top:6px}
+.ct-job .btns{display:flex;gap:8px;margin-top:14px}
+.ct-job .btns .btn{flex:1}
+.ct-job.mine{border-color:var(--ink)}
+.ct-hide{display:none!important}
+</style>
+<script>
+(function(){
+  const A=window.App;const C={};window.CT=C;
+  STAFF.push({id:'dana',n:'Dana',role:'courier',title:'Courier · self-employed',initials:'DA',engagement:'contractor'});
+  const isCtr=u=>(u||A.me()).engagement==='contractor';
+  const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
+  const lab=off=>{const d=dOf(off);return `${DAYS[(d.getDay()+6)%7]} ${d.getDate()} ${['Oct','Nov'][d.getMonth()-9]}`};
+  const gbp=n=>'£'+n.toFixed(2);
+  /* jobs: published with a fixed fee; the courier applies, withdraws, sends a substitute or proposes a price on special jobs */
+  C.jobs=[
+    {id:11,off:0,win:'14:00–16:00',to:'SW11 · 6.2 km',fee:7,status:'mine',pickup:'13:30',note:'Hand to recipient, PIN'},
+    {id:12,off:0,win:'17:00–19:00',to:'SE16 · 3.1 km',fee:7,status:'open',pickup:'16:30'},
+    {id:13,off:1,win:'10:00–12:00',to:'N1 · 9.8 km',fee:9,status:'open',pickup:'09:20',hard:true},
+    {id:14,off:1,win:'12:00–18:00',to:'TW9 · 17 km · event, 12 boxes',fee:11,status:'open',pickup:'11:00',special:true},
+    {id:15,off:2,win:'09:00–11:00',to:'E2 · 4.4 km',fee:7,status:'open',pickup:'08:30'},
+    {id:16,off:3,win:'any time',to:'SW6 → SE1 · stock run',fee:14,status:'open',pickup:'flexible',special:true}
+  ];
+  C.profile={utr:'',other:['Deliveroo','Stuart'],insurance:'Hire & Reward · valid to 03.2027',vehicle:'Own car',invoice:'own'};
+  const card=j=>{
+    if(j.status==='mine')return `<div class="ct-job mine"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --done">Yours</span></div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · collect ${j.pickup}${j.note?' · '+j.note:''}</div><div class="btns"><button class="btn --sm --ghost" onclick="CT.sub(${j.id})">Send a substitute</button><button class="btn --sm --secondary" onclick="CT.withdraw(${j.id})">Withdraw</button></div></div>`;
+    if(j.status==='applied')return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --review">Applied</span></div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · first application that passes the checks is confirmed</div></div>`;
+    if(j.status==='proposed')return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --review">Your price sent</span></div><div class="fee">${gbp(j.fee)} <span class="xs muted">→ ${gbp(j.proposed)}</span></div><div class="meta">${j.to} · studio answers in the app</div></div>`;
+    return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span>${j.hard?'<span class="wk-badge">hard window</span>':j.special?'<span class="wk-badge">special</span>':''}</div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · collect ${j.pickup}</div><div class="btns">${j.special?`<button class="btn --sm --ghost" onclick="CT.propose(${j.id})">Propose my price</button>`:''}<button class="btn --sm" onclick="CT.apply(${j.id})">Apply</button></div></div>`;
+  };
+  const board=()=>{
+    const mine=C.jobs.filter(j=>j.status==='mine'),open=C.jobs.filter(j=>j.status!=='mine');
+    return `<div class="note" style="padding:0 var(--gutter) 8px">Jobs with a fixed fee. Apply if you want one, ignore the rest. Nothing is required of you, and nothing is recorded when you pass.</div>
+      <div class="sec-head" style="margin-top:6px"><div class="h2">Your jobs</div><span class="xs muted">${mine.length} · ${gbp(mine.reduce((s,j)=>s+j.fee,0))}</span></div>
+      ${mine.length?mine.map(card).join(''):'<div class="note">No jobs taken.</div>'}
+      <div class="sec-head"><div class="h2">Jobs board</div><span class="xs muted">today + 3 days</span></div>
+      ${open.map(card).join('')}
+      <div class="grp">How this works</div>
+      <div class="wk-kv">
+        <span class="soft">Fee</span><span>fixed per job, shown before you apply; special jobs – your price</span>
+        <span class="soft">Who does it</span><span>you, or a substitute you choose (18+, right to work checked)</span>
+        <span class="soft">Withdraw</span><span>any time before collection – no fee, no mark</span>
+        <span class="soft">Other clients</span><span>work for anyone, also while carrying our item</span>
+        <span class="soft">Paid</span><span>weekly statement, or your own invoice</span>
+        <span class="soft">Holiday, sick pay</span><span>none – you are in business on your own account</span>
+      </div>`;
+  };
+  C.apply=id=>{const j=C.jobs.find(x=>x.id===id);j.status='applied';A.haptic();A.toast('Applied');setTimeout(()=>{j.status='mine';A.push('Job confirmed',`${lab(j.off)} · ${j.win} · ${j.to}`,{icon:'check'});C.remount()},1400);C.remount()};
+  C.withdraw=id=>{const j=C.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Withdraw from this job?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(j.off)} · ${j.win} · ${j.to}. It goes back on the board. No fee, no rating, no effect on future jobs. The withdrawal stays in the job's record, like everything else. Please only before collection.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();CT.withdrawDo(${id})">Withdraw</button></div>`)};
+  C.withdrawDo=id=>{const j=C.jobs.find(x=>x.id===id);j.status='open';A.toast('Withdrawn – job is back on the board');C.remount()};
+  C.sub=id=>{const j=C.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Send a substitute</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">You don't need our permission. The person must be 18+ and have had a right-to-work check with us – that's the law, not our choice. You stay responsible for the job and pay them what you agree.</p><div class="field"><label>Who is collecting?</label><input class="input" placeholder="Name or @telegram"></div><p class="xs muted" style="margin:0">Not registered yet? They register in the app, we check right to work within 24 h, then they can collect.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();CT.subDo(${id})">Tell the studio</button></div>`)};
+  C.subDo=id=>{const j=C.jobs.find(x=>x.id===id);j.note='Substitute: Ivan collects';A.toast('Noted – Ivan collects, fee still paid to you');C.remount()};
+  C.propose=id=>{const j=C.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Propose your price</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">${j.to}. Listed at ${gbp(j.fee)}. Special jobs can be priced by you; the studio accepts or declines in the app.</p><div class="field"><label>Your price</label><input class="input" id="ct-price" value="${(j.fee*1.6).toFixed(0)}"></div><div class="field"><label>Why (optional)</label><input class="input" placeholder="e.g. 12 boxes, two trips"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();CT.proposeDo(${id})">Send</button></div>`)};
+  C.proposeDo=id=>{const j=C.jobs.find(x=>x.id===id);const v=parseFloat((document.getElementById('ct-price')||{}).value)||j.fee*1.6;j.status='proposed';j.proposed=v;A.toast('Price sent to the studio');C.remount()};
+  C.remount=()=>{const cur=A.state.current;if(cur==='home')window.mount_home();else if(cur==='jobs')window.mount_jobs();else if(cur==='me')window.mount_me()};
+
+  /* ---- screens ---- */
+  const screens=document.querySelector('.screens');
+  const mk=(id,ttl,back)=>{const s=document.createElement('section');s.className='scr me5';s.id='s-'+id;s.dataset.nav=ttl;s.dataset.group='Self-employed';s.innerHTML=`<div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('${back||'me'}')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">${ttl}</div></div><div class="scr-body" id="${id}-body" style="padding-bottom:32px"></div>`;screens.appendChild(s);return s};
+  mk('jobs','Jobs board','home');mk('statements','Statements & invoices');mk('bizprofile','Business profile');mk('taxstatus','Tax & status');
+  window.mount_jobs=function(){document.getElementById('jobs-body').innerHTML=board()};
+  window.mount_statements=function(){
+    const el=document.getElementById('statements-body');
+    el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">£131.50</h1><div class="sm soft mt4">Paid Fri 23 Oct · bank transfer · gross, no deductions</div></div>
+      <div class="grp">Jobs in this statement</div>
+      <div class="wk-kv">
+        <span class="soft">14 deliveries × £7–£11</span><span>£118.00</span>
+        <span class="soft">1 hard window</span><span>£1.50</span>
+        <span class="soft">1 return to studio (recipient absent)</span><span>£4.50</span>
+        <span class="soft">Peak Sat 17 Oct</span><span>£3.00</span>
+        <span class="soft">Agreed price · event TW9</span><span>£4.50 top-up</span>
+        <span class="soft t">Total</span><span class="t">£131.50</span>
+      </div>
+      <div class="note">No tax or National Insurance is taken off – you handle your own. No holiday pay, sick pay or pension: this is a statement for services, not wages.</div>
+      <div class="grp">Your invoice instead?</div>
+      <div class="blk"><div class="panel"><div class="h4">Send your own invoice</div><p class="sm soft" style="margin:6px 0 14px">If you prefer to invoice us, upload it here and we pay against it. Otherwise this weekly statement is the record.</p><div class="flex" style="gap:8px"><button class="btn --secondary --sm" onclick="App.toast('Upload – demo')">Upload invoice</button><button class="btn --ghost --sm" onclick="App.toast('PDF – demo')">Download statement</button></div></div></div>
+      <div class="grp">Earlier</div>
+      <div class="rows" style="border-top:1px solid var(--hair)"><div class="row st"><span class="rt"><div class="l">Week 41</div><div class="d">Paid 16 Oct · your invoice #0041</div></span><span class="val" style="color:var(--ink)">£96.00</span></div><div class="row st"><span class="rt"><div class="l">Week 40</div><div class="d">No jobs</div></span><span class="val" style="color:var(--ink)">£0.00</span></div></div>`;
+  };
+  window.mount_bizprofile=function(){
+    const p=C.profile,el=document.getElementById('bizprofile-body');
+    el.innerHTML=`<div class="note" style="padding-top:8px">Optional. It never affects which jobs you see or get. We ask once a quarter at most, and only keep what you type here.</div>
+      <div class="grp">Your business</div>
+      <div class="blk"><div class="field"><label>UTR (optional)</label><input class="input" placeholder="10 digits" value="${p.utr}"></div>
+      <div class="field"><label>Other platforms or clients you work for (optional)</label><input class="input" value="${p.other.join(', ')}"></div>
+      <div class="field"><label>Courier insurance</label><input class="input" value="${p.insurance}"></div>
+      <div class="field"><label>Vehicle</label><input class="input" value="${p.vehicle}"></div>
+      <div class="field"><label>How you'd like to be paid</label><input class="input" value="${p.invoice==='own'?'My own invoice':'Weekly statement'}"></div></div>
+      <div class="blk" style="margin-top:8px"><button class="btn --block --secondary" onclick="App.toast('Saved')">Save</button></div>
+      <div class="note">Why we ask: it helps both of us show, if anyone ever asks, that you run your own business. Leaving it empty changes nothing.</div>`;
+  };
+  window.mount_taxstatus=function(){
+    document.getElementById('taxstatus-body').innerHTML=`<div class="pad" style="padding-top:8px"><h1 class="h2">You work for yourself</h1><p class="soft" style="margin:12px 0 0">You are a self-employed courier, not an employee or worker of Floritta. You choose which jobs to take, you may send a substitute, and you may work for anyone else at any time.</p></div>
+      <div class="grp">Tax</div>
+      <div class="wk-kv"><span class="soft">Income tax & NI</span><span>yours to declare (Self Assessment)</span><span class="soft">Trading allowance</span><span>first £1,000 a year tax-free</span><span class="soft">From us</span><span>weekly statement or your invoice, paid gross</span></div>
+      <div class="grp">Not included</div>
+      <div class="wk-kv"><span class="soft">Holiday pay</span><span>no</span><span class="soft">Sick pay</span><span>no</span><span class="soft">Pension</span><span>no</span><span class="soft">Minimum wage</span><span>no – a price per job instead</span></div>
+      <div class="note">Agreement v1.0 accepted 03.10.2026 · <button class="textbtn" onclick="App.toast('PDF – demo')">Read it</button></div>`;
+  };
+
+  /* ---- home / me / tabs for a contractor ---- */
+  const origHome=window.mount_home,origMe=window.mount_me;
+  window.mount_home=function(){if(!isCtr())return origHome();
+    const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
+    const mine=C.jobs.filter(j=>j.status==='mine'&&j.off===0);
+    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Dana</h1><div class="sm soft mt4">${mine.length?`${mine.length} job today · collect ${mine[0].pickup}`:'No jobs taken today'}</div></div>
+      ${board()}`;
+  };
+  window.mount_me=function(){if(!isCtr())return origMe();
+    const u=A.me(),el=document.getElementById('me-body');
+    const R=(i,l,d,v,fn)=>`<button class="row" onclick="${fn}">${A.icon(i).replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${v?`<span class="val">${v}</span>`:''}${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`;
+    el.innerHTML=`<div class="prof" style="margin-top:6px">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${u.n}</h1><div class="tt">${u.title}</div><div class="tt xs muted">Works with Floritta since Oct 2026 · own business</div></div></div>
+      <div class="pillrow" style="padding:14px var(--gutter) 0"><span class="pill --plain">Self-employed</span><span class="pill --plain">Own car</span><span class="pill --plain">Also on Deliveroo</span></div>
+      <div class="grp">Jobs</div><div class="rows">
+        ${R('calendar','Jobs board',`${C.jobs.filter(j=>j.status!=='mine').length} open · ${C.jobs.filter(j=>j.status==='mine').length} taken`,'',"App.go('jobs')")}
+        ${R('award','Statements & invoices','Weekly · gross · or your own invoice','£131.50',"App.go('statements')")}
+      </div>
+      <div class="grp">Your business</div><div class="rows">
+        ${R('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
+        ${R('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
+      </div>
+      <div class="grp">Preferences</div><div class="rows">
+        ${R('bell','Job alerts','By area and time · max 6 a day · quiet 21–08','On',"App.go('settings')")}
+        ${R('globe','Language','','English',"ME5.openLang()")}
+      </div>
+      <div class="grp">Support</div><div class="rows">${R('help','Help','Collection, handover, problems','',"App.go('help')")}${R('eye','View as','','',"ME5.openViewAs()")}${R('logout','Sign out','','',"ME5.signOut()")}</div>
+      <div class="note tc" style="padding:28px var(--gutter) 8px">No shifts, no rota, no tasks, no lessons. Briefs come with each job.</div>`;
+  };
+  const tabs=()=>{const ct=isCtr();document.querySelectorAll('#tabbar .tab').forEach(t=>{const k=t.dataset.tab;if(k==='tasks'||k==='learn')t.classList.toggle('ct-hide',ct);if(k==='work'){const s=t.querySelector('span:not(.dot)');if(s)s.textContent=ct?'MY JOBS':(t.dataset.lbl||s.textContent);if(!t.dataset.lbl&&s)t.dataset.lbl=s.textContent}});document.getElementById('tabbar').style.gridTemplateColumns=ct?'repeat(3,1fr)':''};
+  document.addEventListener('user',tabs);
+  const origWork=window.mount_work;window.mount_work=function(p){if(!isCtr())return origWork&&origWork(p);A.go('jobs',{},{replace:true})};
+  const origSplash=window.mount_splash;window.mount_splash=function(){origSplash();if(isCtr()){document.getElementById('sp-eyebrow').textContent='Floritta Jobs · self-employed';document.querySelector('.sp-lead').textContent='Jobs with a fixed fee. Take what suits you.'}};
+  /* persona + nav */
+  const pe=document.getElementById('persona');if(pe&&!pe.querySelector('[data-id="dana"]')){const u=A.user('dana');const b=document.createElement('button');b.dataset.id='dana';b.innerHTML=`${A.avatar(u,'--sm')}<span>${u.n}</span><small>Self-employed</small>`;b.onclick=()=>A.setUser('dana');pe.insertBefore(b,pe.children[1]||null)}
+  const nav=document.getElementById('nav-list');if(nav){[['jobs','Jobs board'],['statements','Statements & invoices'],['bizprofile','Business profile'],['taxstatus','Tax & status']].forEach(([id,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.setUser('dana');App.go('${id}')"><span>${l}</span><small>self-employed</small></button>`;nav.appendChild(li)});
+    const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур self-employed (Dana)</h4><ul><li><b>Jobs board</b> – работы с фиксированной ценой за задачу; Apply / Withdraw без последствий; «Propose my price» на особых работах.</li><li><b>Send a substitute</b> – без нашего разрешения, только 18+ и проверка права на работу (закон).</li><li><b>Statements & invoices</b> – gross, без вычетов, без holiday pay; можно слать свой счёт.</li><li><b>Business profile</b> – добровольно, раз в квартал: UTR, другие клиенты, страховка.</li><li>Нет смен, роты, задач, уроков и табеля. Три вкладки вместо пяти.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
+  tabs();
 })();
 </script>
 
