@@ -300,53 +300,6 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
 .map{position:relative;background:#ece7df;overflow:hidden}
 .map::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--light) 1px,transparent 1px),linear-gradient(90deg,var(--light) 1px,transparent 1px);background-size:34px 34px;opacity:.5}
 
-/* ============ VARIANT: LIQUID GLASS (html[data-style="glass"]) ============ */
-html[data-style="glass"]{--glass-bg:rgba(250,247,242,.58);--glass-bd:rgba(255,255,255,.75);--glass-hi:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(30,26,23,.04);--glass-sh:0 12px 32px rgba(30,26,23,.16),0 2px 6px rgba(30,26,23,.06);--tab-h:72px}
-html[data-style="glass"] .app{background:radial-gradient(900px 500px at 15% -10%,#f7e6e4 0,transparent 60%),radial-gradient(700px 400px at 110% 20%,#eef0e9 0,transparent 55%),var(--paper)}
-html[data-style="glass"] .scr{background:radial-gradient(900px 500px at 15% -10%,#f7e6e4 0,transparent 60%),radial-gradient(700px 400px at 110% 20%,#eef0e9 0,transparent 55%),var(--paper)}
-html[data-style="glass"] .tabbar{left:14px;right:14px;bottom:calc(10px + var(--safe-b));height:64px;padding:6px;border-radius:999px;border:1px solid var(--glass-bd);background:var(--glass-bg);backdrop-filter:blur(28px) saturate(1.7);-webkit-backdrop-filter:blur(28px) saturate(1.7);box-shadow:var(--glass-sh),var(--glass-hi);gap:2px}
-html[data-style="glass"] .tabbar.hide{transform:translateY(140%)}
-html[data-style="glass"] .tab{border-radius:999px;position:relative;isolation:isolate;transition:color var(--m-fast)}
-html[data-style="glass"] .tab::before{content:"";position:absolute;inset:0;border-radius:999px;background:var(--ink);opacity:0;transform:scale(.7);transition:opacity var(--m-base) var(--m-ease),transform var(--m-base) var(--m-ease);z-index:-1}
-html[data-style="glass"] .tab.on{color:var(--paper)}
-html[data-style="glass"] .tab.on::before{opacity:1;transform:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 4px 12px rgba(30,26,23,.25)}
-html[data-style="glass"] .tab .dot{top:6px;left:calc(50% + 8px);border-radius:999px;box-shadow:0 0 0 2px var(--paper)}
-html[data-style="glass"] .scr-body.has-tab{padding-bottom:calc(var(--tab-h) + var(--safe-b) + 28px)}
-html[data-style="glass"] .cta-bar{left:14px;right:14px;bottom:calc(10px + var(--safe-b));padding:8px;border-radius:22px;border:1px solid var(--glass-bd);background:var(--glass-bg);backdrop-filter:blur(28px) saturate(1.7);-webkit-backdrop-filter:blur(28px) saturate(1.7);box-shadow:var(--glass-sh),var(--glass-hi)}
-html[data-style="glass"] .cta-bar .btn,html[data-style="glass"] .cta-bar .qty,html[data-style="glass"] .cta-bar .ib{border-radius:0}
-html[data-style="glass"] .cta-bar .btn{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 16px rgba(30,26,23,.22)}
-html[data-style="glass"] #s-bag .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b) + 22px)!important;border-radius:28px}
-html[data-style="glass"] .scr-body.has-cta{padding-bottom:calc(var(--btn-h) + 56px + var(--safe-b))}
-html[data-style="glass"] .toast{border-radius:18px;bottom:calc(var(--tab-h) + var(--safe-b) + 26px);background:rgba(30,26,23,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:var(--glass-sh)}
-html[data-style="glass"] .toast img{border-radius:0;width:34px;height:42px}
-html[data-style="glass"] .sheet{border-radius:28px 28px 0 0;background:rgba(250,247,242,.86);backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);border-top:1px solid var(--glass-bd);box-shadow:var(--glass-sh),var(--glass-hi)}
-html[data-style="glass"] .sheet .grab{border-radius:999px}
-html[data-style="glass"] .scrim{background:rgba(30,26,23,.28);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-html[data-style="glass"] .appbar{background:transparent}
-html[data-style="glass"] .appbar .ib,html[data-style="glass"] .ib.glass{border-radius:0}
-html[data-style="glass"] .appbar .ib:active{background:rgba(30,26,23,.06)}
-html[data-style="glass"] .search{border-radius:0;background:rgba(255,255,255,.55);border:1px solid var(--glass-bd);box-shadow:var(--glass-hi),0 4px 14px rgba(30,26,23,.06)}
-html[data-style="glass"] .chip{border-radius:0;background:rgba(255,255,255,.5);border-color:rgba(30,26,23,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
-html[data-style="glass"] .chip.on{background:var(--ink);border-color:var(--ink);box-shadow:0 4px 12px rgba(30,26,23,.2)}
-html[data-style="glass"] .tag{border-radius:0;padding:0 8px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-html[data-style="glass"] .tag.--soft{background:rgba(250,247,242,.7)}
-html[data-style="glass"] .panel{border-radius:0;background:rgba(255,255,255,.5);border:1px solid var(--glass-bd);box-shadow:var(--glass-hi),0 8px 24px rgba(30,26,23,.07)}
-html[data-style="glass"] .panel.--accent{background:rgba(247,222,227,.6)}
-html[data-style="glass"] .panel.--ok{background:rgba(238,240,233,.7)}
-html[data-style="glass"] .panel.--ink{background:linear-gradient(160deg,#2a2521,#1e1a17);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 12px 28px rgba(30,26,23,.28)}
-html[data-style="glass"] .card .ph,html[data-style="glass"] .banner,html[data-style="glass"] .mini img,html[data-style="glass"] .tile,html[data-style="glass"] .map{border-radius:0;overflow:hidden}
-html[data-style="glass"] .card .ph{box-shadow:0 10px 24px rgba(30,26,23,.1)}
-html[data-style="glass"] .card .fav{background:rgba(250,247,242,.6);border-radius:0;width:34px;height:34px;right:8px;top:8px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
-html[data-style="glass"] .usp{border-radius:0;overflow:hidden;background:rgba(255,255,255,.45);border-color:var(--glass-bd);box-shadow:var(--glass-hi)}
-html[data-style="glass"] .input,html[data-style="glass"] textarea.input{border-radius:0;background:rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
-html[data-style="glass"] .seg{border-radius:0;overflow:hidden;background:rgba(255,255,255,.45);border-color:rgba(30,26,23,.12)}
-html[data-style="glass"] .seg button.on{border-radius:0;box-shadow:0 2px 8px rgba(30,26,23,.25)}
-html[data-style="glass"] .switch::after{box-shadow:0 1px 3px rgba(30,26,23,.3)}
-html[data-style="glass"] .progress,html[data-style="glass"] .progress>i{border-radius:999px}
-html[data-style="glass"] .btn.--block:not(.--secondary):not(.--ghost){border-radius:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 6px 16px rgba(30,26,23,.18)}
-html[data-style="glass"] .push{border-radius:22px}
-html[data-style="glass"] .push-l{border-radius:10px}
-html[data-style="glass"] .nav-list button.on{border-radius:8px}
 /* style toggle (desktop gutter + tiny mobile pill) */
 .style-toggle{display:inline-grid;grid-auto-flow:column;border:1px solid var(--light);margin:0 0 18px}
 .style-toggle button{padding:8px 14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
@@ -361,11 +314,9 @@ html[data-style="glass"] .nav-list button.on{border-radius:8px}
     <img src="logo.svg" alt="Floritta" style="width:160px;margin-bottom:22px">
     <h1 class="stage-title">Client app<br>mockup</h1>
     <p class="stage-sub">iOS / Android · Brandbook 2026-10 · Ivory · Square</p>
-    <div class="eyebrow" style="margin-bottom:8px">Style</div>
-    <div class="style-toggle" id="style-toggle"><button data-style="flat">Flat</button><button data-style="glass">Liquid Glass</button></div>
     <div class="eyebrow" style="margin-bottom:8px">Screens</div>
     <ul class="nav-list" id="nav-list"></ul>
-    <p class="stage-sub" style="margin-top:20px;font-size:12px">Кликабельный прототип: все переходы, корзина, чекаут, платёжный шлюз и трекинг работают. На телефоне – во весь экран: <a class="link-u" href="?style=flat">?style=flat</a> · <a class="link-u" href="?style=glass">?style=glass</a></p>
+    <p class="stage-sub" style="margin-top:20px;font-size:12px">Кликабельный прототип: все переходы, корзина, чекаут, платёжный шлюз и трекинг работают. На телефоне – во весь экран.</p>
   </aside>
 
   <div class="phone">
@@ -500,7 +451,7 @@ html[data-style="glass"] .nav-list button.on{border-radius:8px}
       </div>
     </div>
 
-    <div class="sec-head"><div class="h2">In the studio now</div><a class="link" onclick="App.tab('bloom')">Bloom</a></div>
+    <div class="sec-head"><div class="h2">From your homes</div><a class="link" onclick="App.tab('community')">Community</a></div>
     <div class="hscroll" id="home-bloom"></div>
     <div class="pad mt16">
       <div class="banner home-build" onclick="App.go('builder')">
@@ -1183,7 +1134,6 @@ html[data-style="glass"] .nav-list button.on{border-radius:8px}
       <button onclick="App.go('addresses')"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><div><div class="l">Addresses</div><div class="b">3 saved</div></div></button>
     </div>
     <div style="margin-top:32px">
-      <button class="row" onclick="App.go('garden')"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21V11"/><path d="M12 11c-3 0-5-2-5-5 3 0 5 2 5 5zm0 0c3 0 5-2 5-5-3 0-5 2-5 5z"/><path d="M5 21h14"/></svg><div class="rt"><div class="l">My Garden</div><div class="d">People, dates &amp; Living Flowers</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       <button class="row" onclick="App.tab('orders')"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><div class="rt"><div class="l">Orders</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       <button class="row" onclick="App.go('payments')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="M3 10h18"/></svg><div class="rt"><div class="l">Payment methods</div></div><span class="val">Visa ··4421</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       <button class="row" onclick="App.go('notifications')"><svg class="ic" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><div class="rt"><div class="l">Notifications</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
@@ -1396,7 +1346,7 @@ html[data-style="glass"] .nav-list button.on{border-radius:8px}
       <div class="wraps" id="bd-wraps"></div>
     </div>
     <div class="sizehint mt24"><span id="bd-size">Medium bouquet · 14 stems</span><button class="textbtn" onclick="Extras.bdReset()">Start again</button></div>
-    <div class="pad mt16 flex g8"><button class="btn --ghost --block" onclick="App.toast('Design saved to <b>Your designs</b>',{action:{label:'View',onclick:&quot;App.go('saved')&quot;}})">Save design</button><button class="btn --ghost --block" onclick="App.go('studio-publish')">Publish design</button></div>
+    <div class="pad mt16 flex g8"><button class="btn --ghost --block" onclick="App.toast('Design saved to <b>Your designs</b>',{action:{label:'View',onclick:&quot;App.go('saved')&quot;}})">Save design</button></div>
     <p class="xs muted pad mt12" style="margin-bottom:0">Hand-tied in Bermondsey · Photo before delivery · Same-day until 10 pm</p>
   </div>
   <div class="cta-bar"><button class="btn" onclick="Extras.bdAdd()">Add to bag <span class="btn-price" id="bd-cta-price">£64</span></button></div>
@@ -1473,7 +1423,6 @@ html[data-style="glass"] .nav-list button.on{border-radius:8px}
 /* ---- shared bloom bits ---- */
 #s-bloom .petals,#s-post .petals{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px 0 10px;border:1px solid var(--light);font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
 #s-bloom .petals svg,#s-post .petals svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
-html[data-style="glass"] #s-bloom .petals,html[data-style="glass"] #s-post .petals{border-radius:0;background:rgba(255,255,255,.5);border-color:rgba(30,26,23,.1)}
 #s-bloom .av,#s-florist .av,#s-post .av{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--f-display);font-size:15px;font-weight:400;letter-spacing:.04em;flex:none}
 
 /* ---- stories strip ---- */
@@ -1487,8 +1436,6 @@ html[data-style="glass"] #s-bloom .petals,html[data-style="glass"] #s-post .peta
 #s-bloom .story.--live .sav::after{content:"Live";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px}
 #s-bloom .story .sl{font-size:11px;line-height:1.25;color:var(--graphite);max-width:68px}
 #s-bloom .story.seen .sav{outline-color:var(--hair);opacity:.8}
-html[data-style="glass"] #s-bloom .story .sav{border-radius:50%}
-html[data-style="glass"] #s-bloom .story.--live .sav::after{border-radius:0}
 #s-bloom .chips{margin-top:18px}
 
 /* ---- feed ---- */
@@ -1500,7 +1447,6 @@ html[data-style="glass"] #s-bloom .story.--live .sav::after{border-radius:0}
 #s-bloom .post.--thanks .ph img{object-position:50% 85%;transform:scale(1.25)}
 #s-bloom .post .ph .tagz{position:absolute;left:8px;top:8px;display:flex;gap:4px;flex-direction:column;align-items:flex-start}
 #s-bloom .post .ph .tag{background:rgba(250,247,242,.9)}
-html[data-style="glass"] #s-bloom .post .ph{border-radius:0;box-shadow:0 10px 24px rgba(30,26,23,.1)}
 #s-bloom .post .bigheart{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
 #s-bloom .post .bigheart svg{width:96px;height:96px;stroke:#fff;fill:none;stroke-width:1.2;opacity:0;filter:drop-shadow(0 2px 10px rgba(30,26,23,.35))}
 #s-bloom .post .bigheart.go svg{animation:bh .9s var(--m-ease)}
@@ -1521,10 +1467,8 @@ html[data-style="glass"] #s-bloom .post .ph{border-radius:0;box-shadow:0 10px 24
 #s-bloom .post .cap .tag{margin-left:6px;vertical-align:1px}
 #s-bloom .post .thanks{margin:10px var(--gutter) 0;padding:12px 14px;background:var(--ok-bg);display:flex;gap:10px;align-items:center;font-size:13px;color:var(--graphite)}
 #s-bloom .post .thanks svg{width:18px;height:18px;stroke:var(--ok);fill:none;stroke-width:1.5;flex:none}
-html[data-style="glass"] #s-bloom .post .thanks{border-radius:0;background:rgba(238,240,233,.75)}
 #s-bloom .post .winner{margin:10px var(--gutter) 0;padding:12px 14px;border:1px solid var(--ink);display:flex;gap:12px;align-items:center;font-size:13px}
 #s-bloom .post .winner .f1 b{font-weight:500}
-html[data-style="glass"] #s-bloom .post .winner{border-radius:0}
 #s-bloom .post .ft{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px var(--gutter) 0}
 #s-bloom .post .ft .pr{font-family:var(--f-display);font-size:24px;font-weight:300;line-height:1}
 #s-bloom .post .ft .pr small{font-family:var(--f-body);font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);margin-right:6px}
@@ -1559,8 +1503,6 @@ html[data-style="glass"] #s-bloom .post .winner{border-radius:0}
 #st-sheet .st-tap{position:absolute;inset:0;z-index:2}
 #st-sheet .st-tap button{position:absolute;top:0;bottom:0;width:50%}
 #st-sheet .st-tap button:first-child{left:0}#st-sheet .st-tap button:last-child{right:0}
-html[data-style="glass"] #st-sheet{border-radius:28px 28px 0 0}
-html[data-style="glass"] #st-sheet .st-bars i{border-radius:0}
 
 /* ---- florist profile ---- */
 #s-florist .hero{padding:8px var(--gutter) 0;display:flex;gap:16px;align-items:center}
@@ -1572,7 +1514,6 @@ html[data-style="glass"] #st-sheet .st-bars i{border-radius:0}
 #s-florist .stats>div{padding:12px 8px;text-align:center;border-right:1px solid var(--hair);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
 #s-florist .stats>div:last-child{border-right:0}
 #s-florist .stats b{display:block;font-family:var(--f-display);font-size:22px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink);line-height:1.1;margin-bottom:3px}
-html[data-style="glass"] #s-florist .stats{border-radius:0;overflow:hidden;background:rgba(255,255,255,.45);border-color:var(--glass-bd)}
 #s-florist .follow{margin:16px var(--gutter) 0;display:flex;gap:10px}
 #s-florist .follow .btn{flex:1;height:44px}
 #s-florist .follow .btn.on{background:transparent;color:var(--ink)}
@@ -1584,9 +1525,6 @@ html[data-style="glass"] #s-florist .stats{border-radius:0;overflow:hidden;backg
 #s-florist .g3 button{aspect-ratio:1;background:var(--silver);overflow:hidden;position:relative}
 #s-florist .g3 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #s-florist .g3 .pr{position:absolute;left:6px;bottom:6px;font-size:11px;background:rgba(250,247,242,.9);padding:1px 6px}
-html[data-style="glass"] #s-florist .g3{gap:8px}
-html[data-style="glass"] #s-florist .g3 button{border-radius:0}
-html[data-style="glass"] #s-florist .g3 .pr{border-radius:0}
 #s-florist .rv{padding:14px var(--gutter);border-bottom:1px solid var(--hair)}
 #s-florist .rv .rh{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
 #s-florist .rv p{margin:6px 0 0;font-size:14px;color:var(--graphite);line-height:1.5}
@@ -1597,7 +1535,6 @@ html[data-style="glass"] #s-florist .g3 .pr{border-radius:0}
 #s-post .ph img{width:100%;height:100%;object-fit:cover}
 #s-post .ph .tagz{position:absolute;left:12px;top:12px;display:flex;gap:4px;flex-direction:column;align-items:flex-start}
 #s-post .ph .tag{background:rgba(250,247,242,.9)}
-html[data-style="glass"] #s-post .ph{border-radius:0 0 24px 24px}
 #s-post .hd{display:flex;align-items:center;gap:12px;padding:16px var(--gutter) 0}
 #s-post .hd .who{flex:1}
 #s-post .hd .who .n{font-size:15px}
@@ -1615,14 +1552,12 @@ html[data-style="glass"] #s-post .ph{border-radius:0 0 24px 24px}
 #s-post .react button svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform var(--m-fast)}
 #s-post .react button.on{border-color:var(--ink);color:var(--ink)}
 #s-post .react button.on svg{animation:pop .4s var(--m-ease)}
-html[data-style="glass"] #s-post .react button{border-radius:0;background:rgba(255,255,255,.45)}
 #s-post .thanks{margin:16px var(--gutter) 0;padding:14px;background:var(--ok-bg);font-size:13px;color:var(--graphite);line-height:1.45}
 #s-post .thanks b{font-weight:500;color:var(--ink)}
-html[data-style="glass"] #s-post .thanks{border-radius:0}
 </style>
 
 <!-- ============ BLOOM – live feed ============ -->
-<section class="scr" id="s-bloom" data-tab="bloom" data-nav="Bloom – live feed" data-group="Social">
+<section class="scr" id="s-bloom" data-tab="community" data-nav="Bloom – live feed" data-group="Flag: off" data-flag="bloomLive">
   <div class="appbar">
     <div class="ttl">Bloom</div>
     <button class="petals" onclick="App.go('account')" aria-label="Petals"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg><span data-petals>1,240</span></button>
@@ -1638,7 +1573,7 @@ html[data-style="glass"] #s-post .thanks{border-radius:0}
 </section>
 
 <!-- ============ FLORIST profile ============ -->
-<section class="scr" id="s-florist" data-nav="Florist profile" data-group="Social">
+<section class="scr" id="s-florist" data-nav="Florist profile" data-group="Flag: off" data-flag="bloomLive">
   <div class="appbar">
     <button class="ib" onclick="App.back('bloom')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl caps" id="flr-ttl">Florist</div>
@@ -1657,174 +1592,9 @@ html[data-style="glass"] #s-post .thanks{border-radius:0}
   <div class="scr-body has-cta" id="po-body"></div>
   <div class="cta-bar"><button class="btn" id="po-cta">Make it mine</button></div>
 </section>
-<!-- 08-studio.html -->
-<!-- ===================== 08 STUDIO: Design Studio (community co-creation) · design detail · publish flow ===================== -->
-<style>
-/* ---- collage (shared by the three studio screens, scoped) ---- */
-#s-studio .dcol,#s-design .dcol,#s-studio-publish .dcol{display:grid;gap:2px;aspect-ratio:1;background:var(--silver);overflow:hidden;position:relative}
-#s-studio .dcol img,#s-design .dcol img,#s-studio-publish .dcol img{width:100%;height:100%;object-fit:cover;min-height:0}
-#s-studio .dcol.--n1,#s-design .dcol.--n1,#s-studio-publish .dcol.--n1{grid-template-columns:1fr}
-#s-studio .dcol.--n2,#s-design .dcol.--n2,#s-studio-publish .dcol.--n2{grid-template-columns:1fr 1fr}
-#s-studio .dcol.--n3,#s-design .dcol.--n3,#s-studio-publish .dcol.--n3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
-#s-studio .dcol.--n3 img:first-child,#s-design .dcol.--n3 img:first-child,#s-studio-publish .dcol.--n3 img:first-child{grid-row:1/3}
-#s-studio .dcol.--n4,#s-design .dcol.--n4,#s-studio-publish .dcol.--n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
-html[data-style="glass"] #s-studio .dcol,html[data-style="glass"] #s-design .dcol,html[data-style="glass"] #s-studio-publish .dcol{border-radius:0;box-shadow:0 10px 24px rgba(30,26,23,.1)}
-/* avatar initials (circle allowed) */
-#s-studio .av,#s-design .av{width:24px;height:24px;border-radius:50%;background:var(--silver);color:var(--ink);font-size:9.5px;letter-spacing:.04em;display:inline-grid;place-items:center;flex:none;font-weight:400}
-#s-design .av.--lg{width:44px;height:44px;font-size:14px}
-
-/* ---- studio ---- */
-#s-studio .hero{margin:4px var(--gutter) 0;padding:22px 20px 20px}
-#s-studio .hero .caps{color:rgba(250,247,242,.6)}
-#s-studio .hero .h2{color:var(--paper);margin-top:6px}
-#s-studio .hero .cd{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:rgba(250,247,242,.85)}
-#s-studio .hero .cd svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round}
-#s-studio .hero .cd b{font-weight:400;font-variant-numeric:tabular-nums;color:var(--paper)}
-#s-studio .hero .rule{font-size:13px;color:rgba(250,247,242,.7);margin-top:4px}
-#s-studio .hero .btn{margin-top:18px}
-#s-studio .dcard{display:flex;flex-direction:column;min-width:0;position:relative}
-#s-studio .dcard .dcol{cursor:pointer}
-#s-studio .dcard .rank{position:absolute;left:8px;top:8px;z-index:2}
-#s-studio .dcard .nm{margin-top:10px;font-size:14px;line-height:1.35;color:var(--ink);min-height:1.35em}
-#s-studio .dcard .by{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--grey);margin-top:5px}
-#s-studio .dcard .meta{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:13px}
-#s-studio .dcard .meta .pr{font-weight:400;font-variant-numeric:tabular-nums}
-#s-studio .vote{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 8px 0 6px;margin-right:-8px;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;transition:color var(--m-fast)}
-#s-studio .vote svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:all var(--m-fast)}
-#s-studio .vote.on svg{fill:var(--ink)}
-#s-studio .vote.on{pointer-events:none}
-#s-studio .win{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:16px var(--gutter);border-bottom:1px solid var(--hair);align-items:start}
-#s-studio .win img{width:96px;height:120px;object-fit:cover;background:var(--silver)}
-#s-studio .win .nm{font-family:var(--f-display);font-size:22px;font-weight:300;line-height:1.1}
-#s-studio .win .by{font-size:13px;color:var(--graphite);margin-top:3px}
-#s-studio .win .st{font-size:12px;color:var(--grey);margin-top:6px}
-#s-studio .win .btn{margin-top:12px}
-html[data-style="glass"] #s-studio .win img{border-radius:0}
-#s-studio .mine{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:16px var(--gutter);border-bottom:1px solid var(--hair);align-items:start}
-#s-studio .mine .dcol{width:96px}
-#s-studio .mine .nm{font-family:var(--f-display);font-size:22px;font-weight:300;line-height:1.1}
-#s-studio .mine .st{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--grey);margin-top:6px}
-#s-studio .mine .st i{width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block}
-#s-studio .mine .st i.--draft{background:var(--light)}
-#s-studio .mine .acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-#s-studio .empty{padding:40px var(--gutter);text-align:center;color:var(--grey);font-size:14px}
-
-/* ---- design detail ---- */
-#s-design .author{display:flex;align-items:center;gap:12px;padding:16px var(--gutter);border-bottom:1px solid var(--hair)}
-#s-design .author .l{font-size:15px}
-#s-design .author .d{font-size:12px;color:var(--grey);margin-top:1px}
-#s-design .story{font-family:var(--f-display);font-size:22px;font-weight:300;line-height:1.25;font-style:italic;color:var(--graphite);padding:20px var(--gutter) 0}
-#s-design .stem{display:flex;align-items:center;gap:12px;padding:10px var(--gutter);border-bottom:1px solid var(--hair)}
-#s-design .stem img{width:44px;height:44px;object-fit:cover;background:var(--silver);flex:none}
-html[data-style="glass"] #s-design .stem img{border-radius:0}
-#s-design .stem .nm{font-size:14px;flex:1}
-#s-design .stem .q{font-size:13px;color:var(--grey);font-variant-numeric:tabular-nums}
-#s-design .est{display:flex;align-items:baseline;justify-content:space-between;padding:14px var(--gutter) 0}
-#s-design .est .pr{font-family:var(--f-display);font-size:28px;font-weight:300}
-#s-design .note{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--graphite);line-height:1.5;padding:0 var(--gutter)}
-#s-design .note svg{width:18px;height:18px;flex:none;stroke:var(--grey);fill:none;stroke-width:1.5;margin-top:2px}
-#s-design .vbtn svg{width:18px;height:18px}
-#s-design .vbtn.on svg{fill:var(--ink)}
-#s-design .vbtn.on{pointer-events:none;opacity:.75}
-
-/* ---- publish ---- */
-#s-studio-publish .prev{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:4px var(--gutter) 0;align-items:center}
-#s-studio-publish .prev .dcol{width:120px}
-#s-studio-publish .prev .t{font-family:var(--f-display);font-size:24px;font-weight:300;line-height:1.1}
-#s-studio-publish .prev .d{font-size:13px;color:var(--grey);margin-top:4px;line-height:1.5}
-#s-studio-publish .cnt{font-size:11px;color:var(--grey);text-align:right;margin-top:-2px;font-variant-numeric:tabular-nums}
-#s-studio-publish .sw{display:flex;align-items:center;gap:14px;padding:16px var(--gutter);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
-#s-studio-publish .sw .l{font-size:15px}
-#s-studio-publish .sw .d{font-size:13px;color:var(--grey);margin-top:2px;line-height:1.45}
-#s-studio-publish .chips{padding:0 var(--gutter)}
-#pub-ok .okmark{width:56px;height:56px;border:1px solid var(--ink);display:grid;place-items:center;margin:4px auto 16px}
-#pub-ok .okmark svg{width:24px;height:24px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-#pub-ok .okmark svg path{stroke-dasharray:60;stroke-dashoffset:60;animation:st-draw .9s var(--m-ease) .15s forwards}
-@keyframes st-draw{to{stroke-dashoffset:0}}
-html[data-style="glass"] #pub-ok .okmark{border-radius:50%}
-</style>
-
-<!-- ============ STUDIO ============ -->
-<section class="scr" id="s-studio" data-tab="bloom" data-nav="Design Studio" data-group="Social">
-  <div class="appbar">
-    <button class="ib" onclick="App.back('home')" aria-label="Back">${back}</button>
-    <div class="ttl">Studio</div>
-    <button class="ib" onclick="App.go('studio-publish')" aria-label="Publish a design">${plus}</button>
-  </div>
-  <div class="scr-body has-tab">
-    <div class="pad"><div class="caps muted">Designed by you</div></div>
-    <div class="panel --ink hero mt12">
-      <div class="caps">This week's challenge</div>
-      <div class="h2">Autumn edit</div>
-      <div class="cd">${clock}<span>Voting ends in <b id="st-cd">2 d 14 h</b></span></div>
-      <div class="rule">5 seasonal stems, any wrap</div>
-      <button class="btn --paper --block" onclick="App.go('builder',{reset:true})">Enter the challenge</button>
-    </div>
-    <div class="pad mt24"><div class="seg" id="st-seg"></div></div>
-    <div id="st-panel" class="mt16"></div>
-  </div>
-</section>
-
-<!-- ============ DESIGN DETAIL ============ -->
-<section class="scr" id="s-design" data-nav="Community design" data-group="Social">
-  <div class="appbar">
-    <button class="ib" onclick="App.back('studio')" aria-label="Back">${back}</button>
-    <div class="ttl caps">Community design</div>
-    <button class="ib" onclick="Studio.share()" aria-label="Share">${share}</button>
-  </div>
-  <div class="scr-body has-cta" id="ds-body"></div>
-  <div class="cta-bar"><button class="btn" id="ds-order">Order this design <span class="btn-price" id="ds-cta-price">£72</span></button></div>
-</section>
-
-<!-- ============ PUBLISH ============ -->
-<section class="scr" id="s-studio-publish" data-nav="Publish design" data-group="Social">
-  <div class="appbar">
-    <button class="ib" onclick="App.back('builder')" aria-label="Back">${back}</button>
-    <div class="ttl">Publish design</div>
-  </div>
-  <div class="scr-body has-cta">
-    <div class="prev" id="pub-prev"></div>
-    <div class="pad mt24">
-      <div class="field"><label for="pub-name">Design name</label><input class="input" id="pub-name" placeholder="e.g. Peach hour" maxlength="32" autocomplete="off"></div>
-      <div class="field"><label for="pub-story">One line about it</label><input class="input" id="pub-story" placeholder="Who is it for, what made you choose these stems" maxlength="80" autocomplete="off"><div class="cnt"><span id="pub-cnt">0</span> / 80</div></div>
-      <div class="field" style="margin-bottom:0"><label>Occasion</label></div>
-    </div>
-    <div class="chips" id="pub-chips"></div>
-    <div class="sw mt24">
-      <div class="f1"><div class="l">Allow Floritta to sell this design</div><div class="d">You earn 10 Petals per sale and your name on the card</div></div>
-      <button class="switch on" id="pub-sell" onclick="this.classList.toggle('on');App.haptic()" aria-label="Allow Floritta to sell this design"></button>
-    </div>
-    <p class="xs muted pad mt16" style="margin-bottom:0">Published designs are reviewed by our florists before voting opens. Top three of the week are hand-tied in Bermondsey and photographed for Bloom.</p>
-  </div>
-  <div class="cta-bar"><button class="btn" onclick="Studio.publish()">Publish</button></div>
-</section>
 <!-- 09-garden.html -->
 <!-- ================= GARDEN (people & dates) ================= -->
-<section class="scr" id="s-garden" data-tab="account" data-nav="Garden – people & dates" data-group="Social">
-  <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Your garden</div><button class="ib" onclick="window.gdnAdd()" aria-label="Add person"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
-  <div class="scr-body has-tab">
-    <p class="pad muted sm" style="margin:0 0 12px">Every person you send flowers to grows here. Tap a stem.</p>
-    <div class="bed pad"><div class="bed-in" id="gdn-bed"></div></div>
-    <div class="pad" id="gdn-card"></div>
 
-    <div class="sec-head"><div class="h2">Daily Bloom</div><span class="muted sm" id="gdn-streak">12-day streak</span></div>
-    <div class="pad flex ai-c g12">
-      <div class="streak f1" id="gdn-days"></div>
-      <button class="btn --secondary --sm" id="gdn-water" onclick="window.gdnWater()">Water today</button>
-    </div>
-    <p class="pad muted xs" style="margin:10px 0 0">Open the app each day · +3 Petals. Today: the garden rose – lasts longest with a cut every second day.</p>
-
-    <div class="sec-head"><div class="h2">People &amp; dates</div><button class="link" onclick="window.gdnAdd()">Add</button></div>
-    <div id="gdn-people"></div>
-
-    <div class="sec-head"><div class="h2">Season collection</div></div>
-    <button class="season pad" onclick="App.go('category',{cat:'bestsellers',title:'Autumn edit'})">
-      <div class="f1" style="text-align:left"><div class="sm">Autumn edit · <span id="gdn-season-n">1 of 4</span> collected</div><div class="xs muted mt4">Order a limited-edition bouquet – a rare stem appears in your garden</div></div>
-      <div class="sq4" id="gdn-season"></div>
-    </button>
-    <div style="height:24px"></div>
-  </div>
-</section>
 
 <!-- ================= LIVING FLOWER (recipient) ================= -->
 <section class="scr" id="s-living" data-nav="Living Flower (recipient)" data-group="Social">
@@ -1838,7 +1608,7 @@ html[data-style="glass"] #pub-ok .okmark{border-radius:50%}
     <div class="pad mt24">
       <div class="lv-real">
         <img id="lv-img" src="img/poem-petals.webp" alt="">
-        <div class="f1"><div class="sm" id="lv-name">A poem in petals</div><div class="xs muted mt4">Hand-tied in Bermondsey this morning</div><div class="xs muted mt4">Lives 7 days, then stays in your garden forever</div></div>
+        <div class="f1"><div class="sm" id="lv-name">A poem in petals</div><div class="xs muted mt4">Hand-tied in Bermondsey this morning</div><div class="xs muted mt4">Lives 7 days, then stays on your profile forever</div></div>
       </div>
       <div class="lv-day mt16"><span class="caps muted" id="lv-day">Day 1 of 7 · fresh</span><div class="progress mt8"><i id="lv-bar" style="width:14%"></i></div></div>
     </div>
@@ -1888,7 +1658,7 @@ html[data-style="glass"] #pub-ok .okmark{border-radius:50%}
     <div class="sec-head"><div class="h2">Today</div><span class="muted sm">+5 Petals each</span></div>
     <div id="care-tasks"></div>
     <div class="pad mt24"><button class="btn --secondary --block" onclick="App.toast('Photo saved · day 3 looks lovely');App.addPetals(5,'Day 3 check-in')"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Check in with a photo</button></div>
-    <div class="pad mt24"><div class="panel flex ai-c g12"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg><div class="f1"><div class="sm">Day 7 reward · Caretaker badge</div><div class="xs muted mt4">Keep the bouquet 7 days and it joins your garden in full bloom</div></div></div></div>
+    <div class="pad mt24"><div class="panel flex ai-c g12"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg><div class="f1"><div class="sm">Day 7 reward · Caretaker badge</div><div class="xs muted mt4">Keep the bouquet 7 days and earn the Caretaker badge on your profile</div></div></div></div>
     <div style="height:32px"></div>
   </div>
 </section>
@@ -1927,8 +1697,6 @@ html[data-style="glass"] #pub-ok .okmark{border-radius:50%}
 #s-garden .sq4 i{width:14px;height:14px;border:1px solid var(--light)}
 #s-garden .sq4 i.f{background:var(--ink);border-color:var(--ink)}
 #s-garden .relc{display:flex;gap:8px;flex-wrap:wrap}
-html[data-style="glass"] #s-garden .bed-in{border-radius:0}
-html[data-style="glass"] #s-garden .streak i,html[data-style="glass"] #s-garden .sq4 i{border-radius:0}
 
 /* ---- living ---- */
 #s-living .bloom-wrap{display:flex;justify-content:center;padding:8px 0 4px}
@@ -1947,8 +1715,6 @@ html[data-style="glass"] #s-garden .streak i,html[data-style="glass"] #s-garden 
 .lv-react{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
 .lv-react button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
 .lv-react button.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
-html[data-style="glass"] .lv-react button{border-radius:0}
-html[data-style="glass"] #s-living .lv-real img{border-radius:0}
 
 /* ---- petals ---- */
 #s-petals .pt-big{font-family:var(--f-display);font-weight:300;font-size:72px;line-height:1;display:flex;align-items:baseline;gap:12px}
@@ -1977,8 +1743,6 @@ html[data-style="glass"] #s-living .lv-real img{border-radius:0}
 #s-petals .spend .it .c small{font-family:var(--f-body);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);margin-left:4px}
 #s-petals .hist .val.neg{color:var(--accent)}
 #s-petals .hist .val.pos{color:var(--ink)}
-html[data-style="glass"] #s-petals .spend .it{border-radius:0;background:rgba(255,255,255,.45)}
-html[data-style="glass"] #s-petals .ladder .nd b{border-radius:50%}
 
 /* ---- care ---- */
 #s-care .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
@@ -1993,15 +1757,228 @@ html[data-style="glass"] #s-petals .ladder .nd b{border-radius:50%}
 #s-care .task.on .bx{background:var(--ink);border-color:var(--ink)}
 #s-care .task.on .bx svg{animation:gdnGrow .45s var(--m-ease) forwards}
 #s-care .task.on .l{color:var(--grey);text-decoration:line-through}
-html[data-style="glass"] #s-care .days div{border-radius:0}
-html[data-style="glass"] #s-care .task .bx{border-radius:50%}
 </style>
+<!-- 10-community.html -->
+<!-- ===================== 10 COMMUNITY: feed · post · member · compose · hashtag ===================== -->
+<style>
+/* shared bits (scoped to the five community sections via .cmz) */
+.cmz .av{display:grid;place-items:center;flex:none;background:var(--silver);color:var(--ink);font-family:var(--f-display);font-weight:400;letter-spacing:.04em;width:36px;height:36px;font-size:15px;position:relative}
+.cmz .av.--fl{background:var(--ink);color:var(--paper)}
+.cmz .av.--t2{background:var(--hair)}.cmz .av.--t3{background:var(--light)}
+.cmz .flb{display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 6px;background:var(--ink);color:var(--paper);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:400;vertical-align:2px}
+.cmz .flb svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.6}
+.cmz .petals{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px 0 10px;border:1px solid var(--light);font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.cmz .petals svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.cmz .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:0 var(--gutter)}
+.cmz .g3 button{aspect-ratio:1;background:var(--silver);overflow:hidden;position:relative}
+.cmz .g3 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cmz .g3 .dl{position:absolute;left:6px;top:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:rgba(250,247,242,.9);padding:2px 6px}
+.cmz .g3 .lk{position:absolute;right:6px;bottom:6px;font-size:11px;color:#fff;display:flex;align-items:center;gap:3px;text-shadow:0 1px 4px rgba(30,26,23,.5)}
+.cmz .g3 .lk svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:1.6}
+.cmz .htags{display:flex;flex-wrap:wrap;gap:6px;padding:8px var(--gutter) 0}
+.cmz .htags .chip{height:28px;padding:0 10px;font-size:12px;color:var(--graphite)}
+.cmz .shopstrip{margin:10px var(--gutter) 0;display:flex;align-items:center;gap:12px;padding:8px 10px 8px 8px;border:1px solid var(--hair);text-align:left;width:calc(100% - 2*var(--gutter))}
+.cmz .shopstrip img{width:40px;height:50px;object-fit:cover;flex:none;background:var(--silver)}
+.cmz .shopstrip .t{flex:1;min-width:0;font-size:13px;line-height:1.3}
+.cmz .shopstrip .t .e{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+.cmz .shopstrip .t .n b{font-weight:500}
+.cmz .shopstrip svg{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+.cmz .empty{padding:48px var(--gutter);text-align:center;color:var(--grey);font-size:14px;line-height:1.5}
+.cmz .empty .h3{color:var(--ink);margin-bottom:6px;font-weight:300;font-size:24px}
+
+/* ---- feed ---- */
+#s-community .members{display:flex;gap:14px;overflow-x:auto;padding:6px var(--gutter) 4px;scrollbar-width:none}
+#s-community .members::-webkit-scrollbar{display:none}
+#s-community .mb{flex:none;width:60px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+#s-community .mb .av{width:56px;height:56px;font-size:20px;outline:1px solid var(--hair);outline-offset:2px}
+#s-community .mb.--new .av{outline:1.5px solid var(--ink)}
+#s-community .mb .av.--fl::after{content:"";position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;background:var(--paper);border:1px solid var(--ink)}
+#s-community .mb .l{font-size:11px;line-height:1.25;color:var(--graphite);max-width:60px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-community .seg{margin:18px var(--gutter) 0}
+#s-community .feed{display:flex;flex-direction:column;gap:32px;margin-top:24px}
+.cmz .post{display:flex;flex-direction:column}
+.cmz .post .hd{display:flex;align-items:center;gap:10px;padding:0 var(--gutter) 10px}
+.cmz .post .hd .who{flex:1;min-width:0}
+.cmz .post .hd .who .n{font-size:14px;line-height:1.3}
+.cmz .post .hd .who .n b{font-weight:500}
+.cmz .post .hd .who .w{font-size:12px;color:var(--grey);margin-top:1px}
+.cmz .post .hd .dl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--light);padding:3px 8px;color:var(--graphite);white-space:nowrap}
+.cmz .post .ph-wrap{position:relative;margin:0 var(--gutter)}
+.cmz .post .ph{aspect-ratio:4/5;background:var(--silver);overflow:hidden;position:relative}
+.cmz .post .ph img{width:100%;height:100%;object-fit:cover}
+.cmz .post .ph .q{position:absolute;inset:0;display:flex;align-items:flex-end;padding:20px;background:linear-gradient(180deg,rgba(30,26,23,0) 40%,rgba(30,26,23,.6) 100%);color:#fff;font-family:var(--f-display);font-size:28px;font-weight:300;line-height:1.1}
+.cmz .post .ph .ba{position:absolute;left:0;right:0;top:0;bottom:0;display:grid;grid-template-columns:1fr 1fr}
+.cmz .post .ph .ba>div{position:relative;overflow:hidden}
+.cmz .post .ph .ba>div img{width:100%;height:100%;object-fit:cover}
+.cmz .post .ph .ba>div:first-child{border-right:2px solid var(--paper)}
+.cmz .post .ph .ba>div span{position:absolute;left:8px;bottom:8px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:rgba(250,247,242,.92);padding:2px 7px}
+.cmz .post .ph .ba>div:first-child img{filter:saturate(.75) brightness(.96)}
+.cmz .post .bigheart{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.cmz .post .bigheart svg{width:96px;height:96px;stroke:#fff;fill:none;stroke-width:1.2;opacity:0;filter:drop-shadow(0 2px 10px rgba(30,26,23,.35))}
+.cmz .post .bigheart.go svg{animation:cmbh .9s var(--m-ease)}
+@keyframes cmbh{0%{opacity:0;transform:scale(.4)}25%{opacity:1;transform:scale(1.08)}60%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}
+.cmz .post .acts{display:flex;align-items:center;gap:2px;padding:6px var(--gutter) 0;margin-left:-8px}
+.cmz .post .acts .ib{width:44px;height:44px}
+.cmz .post .acts .ib.cnt{width:auto;padding:0 10px 0 8px;gap:6px;font-size:13px;font-variant-numeric:tabular-nums}
+.cmz .post .acts .ib.like.on svg{fill:var(--accent);stroke:var(--accent)}
+.cmz .post .acts .ib.save.on svg{fill:var(--ink)}
+.cmz .post .acts .ib.pop svg{animation:pop .4s var(--m-ease)}
+.cmz .post .acts .sp{flex:1}
+.cmz .post .cap{padding:4px var(--gutter) 0;font-size:14px;line-height:1.5;color:var(--ink)}
+.cmz .post .cap b{font-weight:500}
+.cmz .post .rep{margin:12px var(--gutter) 0;border-left:1px solid var(--light);padding-left:12px;display:flex;flex-direction:column;gap:10px}
+.cmz .post .rep .r{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.45}
+.cmz .post .rep .r .av{width:28px;height:28px;font-size:12px}
+.cmz .post .rep .r b{font-weight:500}
+.cmz .post .vc{padding:8px var(--gutter) 0;font-size:13px;color:var(--grey)}
+#s-community .more{margin:32px var(--gutter) 0}
+#s-community .fend{padding:24px var(--gutter) 8px;text-align:center;color:var(--grey);font-size:13px}
+
+/* ---- post view ---- */
+#s-post-view .post .ph-wrap{margin:0}
+#s-post-view .post .hd{padding-top:14px}
+#s-post-view .cmts{padding:0 var(--gutter)}
+#s-post-view .cmt{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);align-items:flex-start}
+#s-post-view .cmt .av{width:32px;height:32px;font-size:13px}
+#s-post-view .cmt .b{flex:1;min-width:0;font-size:14px;line-height:1.45}
+#s-post-view .cmt .b .n{font-size:13px;margin-bottom:2px}
+#s-post-view .cmt .b .n b{font-weight:500}
+#s-post-view .cmt .b .n .t{color:var(--grey);margin-left:6px;font-size:12px}
+#s-post-view .cmt.--me{background:var(--silver);margin:0 calc(-1*var(--gutter));padding:12px var(--gutter)}
+#s-post-view .cbar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:10px var(--gutter) calc(10px + var(--safe-b));background:rgba(250,247,242,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--hair);z-index:30}
+#s-post-view .cbar .av{width:32px;height:32px;font-size:13px}
+#s-post-view .cbar .input{height:44px;flex:1}
+#s-post-view .cbar .send{width:44px;height:44px;display:grid;place-items:center;background:var(--ink);color:var(--paper);flex:none}
+#s-post-view .cbar .send svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
+
+/* ---- member ---- */
+#s-member .hero{padding:8px var(--gutter) 0;display:flex;gap:16px;align-items:center}
+#s-member .hero .av{width:84px;height:84px;font-size:32px;font-weight:300}
+#s-member .hero .nm{font-family:var(--f-display);font-size:30px;font-weight:300;line-height:1.05;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#s-member .hero .ar{font-size:13px;color:var(--graphite);margin-top:2px}
+#s-member .bio{padding:14px var(--gutter) 0;font-size:14px;color:var(--graphite);line-height:1.5}
+#s-member .stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);margin:20px var(--gutter) 0}
+#s-member .stats>div{padding:12px 8px;text-align:center;border-right:1px solid var(--hair);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
+#s-member .stats>div:last-child{border-right:0}
+#s-member .stats b{display:block;font-family:var(--f-display);font-size:22px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink);line-height:1.1;margin-bottom:3px}
+#s-member .acts{margin:16px var(--gutter) 0;display:flex;gap:10px}
+#s-member .acts .btn{flex:1;height:44px}
+#s-member .acts .btn.on{background:transparent;color:var(--ink)}
+#s-member .seg{margin:28px var(--gutter) 14px}
+
+/* ---- compose ---- */
+#s-compose .drop{margin:0 var(--gutter);aspect-ratio:1;border:1px dashed var(--light);background:var(--silver);position:relative;display:grid;place-items:center;text-align:center;color:var(--grey);font-size:13px;overflow:hidden}
+#s-compose .drop svg{width:32px;height:32px;stroke:var(--ink);fill:none;stroke-width:1.2;margin:0 auto 8px}
+#s-compose .drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+#s-compose .drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#s-compose .drop.has{border-style:solid;border-color:var(--ink)}
+#s-compose .drop .ch{position:absolute;right:8px;bottom:8px;background:rgba(250,247,242,.92);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;z-index:2}
+#s-compose .samples{display:flex;gap:8px;padding:12px var(--gutter) 0;overflow-x:auto;scrollbar-width:none}
+#s-compose .samples::-webkit-scrollbar{display:none}
+#s-compose .samples .lb{font-size:12px;color:var(--grey);align-self:center;white-space:nowrap;margin-right:4px}
+#s-compose .samples button{flex:none;width:56px;height:56px;overflow:hidden;background:var(--silver);outline:1px solid var(--hair);outline-offset:2px}
+#s-compose .samples button.on{outline:1.5px solid var(--ink)}
+#s-compose .samples img{width:100%;height:100%;object-fit:cover}
+#s-compose .lab{padding:28px var(--gutter) 8px;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+#s-compose .lab span{float:right;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums}
+#s-compose .pad textarea.input{min-height:88px}
+#s-compose .search{margin:0 var(--gutter) 10px;width:auto;height:44px}
+#s-compose .search input{flex:1;background:none;border:0;outline:none;font-size:15px;color:var(--ink);min-width:0}
+#s-compose .chips{flex-wrap:wrap;row-gap:8px}
+#s-compose .chip img{width:22px;height:22px;object-fit:cover;margin-left:-6px}
+#s-compose .sw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px var(--gutter);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-top:28px;font-size:15px}
+#s-compose .sw .d{font-size:13px;color:var(--grey);margin-top:1px}
+
+/* ---- hashtag ---- */
+#s-hashtag .hh{padding:8px var(--gutter) 0;display:flex;align-items:center;gap:14px}
+#s-hashtag .hh .f1 .h2{font-size:30px}
+#s-hashtag .hh .f1 .m{font-size:13px;color:var(--grey);margin-top:2px}
+#s-hashtag .hh .btn{height:40px;padding:0 16px;font-size:11.5px}
+#s-hashtag .hh .btn.on{background:transparent;color:var(--ink)}
+#s-hashtag .g3{margin-top:24px}
+</style>
+
+<!-- ============ COMMUNITY feed ============ -->
+<section class="scr cmz" id="s-community" data-tab="community" data-nav="Community – feed" data-group="Social">
+  <div class="appbar">
+    <div class="ttl">Community</div>
+    <button class="petals" onclick="App.go('petals')" aria-label="Petals"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg><span data-petals>1,240</span></button>
+    <button class="ib" onclick="App.go('compose')" aria-label="Post a bouquet" style="border:1px solid var(--ink)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  </div>
+  <div class="scr-body has-tab">
+    <div class="members" id="cm-members"></div>
+    <div class="seg" id="cm-seg"><button class="on" onclick="Comm.filter('for',this)">For you</button><button onclick="Comm.filter('fol',this)">Following</button><button onclick="Comm.filter('near',this)">Nearby · SE1</button></div>
+    <div class="feed" id="cm-feed"></div>
+    <div class="more"><button class="btn --ghost --block" id="cm-more" onclick="Comm.more()">Load more</button></div>
+    <div class="fend" id="cm-fend">Bouquets at home, across London. Post yours for 20 Petals.</div>
+  </div>
+</section>
+
+<!-- ============ POST view ============ -->
+<section class="scr cmz" id="s-post-view">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('community')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl caps" id="pv-ttl">Post</div>
+    <button class="ib" onclick="App.toast('Link copied')" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button>
+  </div>
+  <div class="scr-body has-cta" id="pv-body"></div>
+  <div class="cbar"><span class="av --t2">TS</span><input class="input" id="pv-in" placeholder="Add a comment…" onkeydown="if(event.key==='Enter')Comm.send()"><button class="send" onclick="Comm.send()" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M4 12 20 4l-4 16-4-7z"/><path d="m12 13 8-9"/></svg></button></div>
+</section>
+
+<!-- ============ MEMBER profile ============ -->
+<section class="scr cmz" id="s-member" data-nav="Member profile" data-group="Social">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('community')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl caps" id="mb-ttl">Member</div>
+    <button class="ib" onclick="App.toast('Profile link copied')" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button>
+  </div>
+  <div class="scr-body" id="mb-body"></div>
+</section>
+
+<!-- ============ COMPOSE ============ -->
+<section class="scr cmz" id="s-compose" data-nav="Post a bouquet" data-group="Social">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('community')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="ttl caps">Share your bouquet at home</div>
+    <span class="ib"></span>
+  </div>
+  <div class="scr-body has-cta">
+    <div class="pad" style="padding-top:4px;padding-bottom:16px"><div class="h2">On my table</div><p class="soft sm" style="margin:6px 0 0">One photo, a few honest words. Your area only, never your address.</p></div>
+    <div class="drop" id="cp-drop">
+      <div id="cp-ph"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Tap to add a photo<br><span class="xs">JPG or HEIC · square works best</span></div>
+      <input type="file" accept="image/*" id="cp-file" onchange="Comm.file(this)">
+    </div>
+    <div class="samples" id="cp-samples"><span class="lb">Use a sample photo</span></div>
+    <div class="lab">Caption <span id="cp-cnt">0 / 220</span></div>
+    <div class="pad"><textarea class="input" id="cp-cap" maxlength="220" placeholder="Day 3 and still going. Moved them off the windowsill…" oninput="Comm.count(this)"></textarea></div>
+    <div class="lab">Which bouquet is it? <span class="muted">optional</span></div>
+    <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="cp-q" placeholder="Search Floritta bouquets" oninput="Comm.prodChips(this.value)"></div>
+    <div class="chips" id="cp-prods"></div>
+    <div class="lab">Which day?</div>
+    <div class="chips" id="cp-days"></div>
+    <div class="lab">Hashtags</div>
+    <div class="chips" id="cp-tags"></div>
+    <div class="sw"><div><div>Share location (area only)</div><div class="d" id="cp-area">Bermondsey · SE1</div></div><button class="switch on" id="cp-loc" onclick="this.classList.toggle('on');App.haptic()" aria-label="Share area"></button></div>
+    <p class="muted xs pad" style="margin:14px 0 0">Posts are public to Floritta members. We may feature yours in the shop – we'll always ask first.</p>
+  </div>
+  <div class="cta-bar"><button class="btn" onclick="Comm.post()">Post · +20 Petals</button></div>
+</section>
+
+<!-- ============ HASHTAG ============ -->
+<section class="scr cmz" id="s-hashtag">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('community')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl caps">Hashtag</div>
+    <span class="ib"></span>
+  </div>
+  <div class="scr-body" id="ht-body"></div>
+</section>
         </div>
         <nav class="tabbar" id="tabbar">
           <button class="tab" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>Home</button>
           <button class="tab" data-tab="shop"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Shop</button>
           <button class="tab" data-tab="bag"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Bag<span class="dot" id="bag-dot" data-n="0"></span></button>
-          <button class="tab" data-tab="bloom"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg>Bloom</button>
+          <button class="tab" data-tab="community"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg>Community</button>
           <button class="tab" data-tab="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>You</button>
         </nav>
         <div class="scrim" id="scrim"></div>
@@ -2013,12 +1990,6 @@ html[data-style="glass"] #s-care .task .bx{border-radius:50%}
   </div>
 
   <aside class="gutter-r notes" id="notes">
-<h4>Два варианта стиля</h4>
-<ul>
-<li><b>Flat</b> – как в брендбуке сайта: square, плоско, тихо. Переключатель слева («Style»).</li>
-<li><b>Liquid Glass</b> – плавающие стеклянные слои в духе iOS 26: нижнее меню-капсула с размытием и бликом, плавающая кнопка «Add to bag», стеклянные шторки и панели, карточки с мягкой тенью. Палитра та же, Ivory; кнопки, чипы, поля и карточки остаются квадратными, как во Flat – скруглены только сами стеклянные «капсулы» (меню, панель CTA, шторка, тост).</li>
-<li><b>Рекомендация:</b> для приложения взять Glass, но только для «плавающих» слоёв (меню, CTA, шторки, тосты, пуши) – так делает сама Apple; контент (карточки, заголовки, фото) оставить спокойным. Так приложение выглядит дороже и нативнее на iOS 26, а сайт остаётся square и не спорит с ним. На Android стекло рендерится проще, но смотрится тоже нормально.</li>
-</ul>
 <h4>Что взято у лучших приложений</h4>
 <ul>
 <li><b>Bloom &amp; Wild</b> – напоминания о датах: добавить день рождения или годовщину и получить напоминание заранее (панель на Home и экран Reminders).</li>
@@ -2049,13 +2020,11 @@ html[data-style="glass"] #s-care .task .bx{border-radius:50%}
 <li>Идите по сценарию с Home: каталог, товар, корзина, оплата, отслеживание.</li>
 <li>Для полного экрана откройте страницу на телефоне. Это прототип, бэкенда нет, данные примерные.</li>
 </ul>
-<h4>Floritta Bloom – соцсеть и геймификация (раунд 3)</h4>
+<h4>Community – соцсеть про букеты дома (раунд 4)</h4>
 <ul>
-<li><b>Bloom</b> – живая лента мастерской: каждый собранный букет = пост с фото из CRM, флорист, время, район; «Make it mine» в один тап; сторис «в мастерской сейчас»; профили флористов с подпиской. Лента полна с первого дня, контент бесплатный. Вкладка Bloom заменила Orders в меню (заказы – в «You»).</li>
-<li><b>Studio</b> – соавторы каталога: клиент собирает букет в конструкторе, публикует, голосование недели, победитель попадает в каталог «By Anna K.» и получает Petals с каждой продажи. Виральность: «голосуй за мой букет».</li>
-<li><b>Garden + Living Flower</b> – сад людей и дат (цветок растёт с каждым подарком); получатель вместе с букетом получает «живой цветок» в телефоне – экран Living Flower – чтобы сохранить его, ставит приложение. Реферал в каждую доставку.</li>
-<li><b>Petals</b> – валюта и статусы Seed → Bloom → Florist's Circle → Botanist; награды только статусные (приоритетный слот, свой флорист, каллиграфия), не скидки. Стрики: Daily Bloom и «Keep it alive» 7 дней после доставки (из экрана Tracking).</li>
-<li><b>Почему не «соцсеть про растения»</b>: пустая лента на старте, конкуренция с Instagram/Planta, модерация, редкая покупка. Комментарии и подписки между клиентами – фаза 4, когда будет аудитория. Подробно: Концепция_соцсеть_и_геймификация_2026-10-20.md в волте.</li>
+<li><b>Community</b> – четвёртая вкладка: лента постов «букет у меня дома» от клиентов: фото, район, день букета (Day 1…7), хэштеги, лайки и комментарии, «Shop this bouquet», профили участников, подписки, хэштег-страницы, публикация своего фото (+20 Petals). Лента не пустая: 20 участников и 24 поста заготовлены нами как примеры; среди участников три наших флориста с бейджем, отвечают на вопросы.</li>
+<li><b>Оставлено:</b> Living Flower (получатель), Petals & status, Keep it alive (из Tracking). <b>Убрано:</b> Garden, Design Studio. <b>За флагом off:</b> Bloom-лента мастерской и профиль флориста (в списке слева – полупрозрачные, кликабельны для просмотра).</li>
+<li><b>Стиль:</b> только Flat по брендбуку; вариант Liquid Glass снят.</li>
 </ul>
 <h4>Что дальше</h4>
 <ul>
@@ -2099,8 +2068,9 @@ window.ADDONS=[
 /* ============ APP RUNTIME ============ */
 const App=(()=>{
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-  const state={petals:1240,bag:[],fav:new Set([2,6]),history:[],current:null,user:{name:"Tatiana",postcode:"SE1 5SY",area:"Bermondsey"},promo:null,order:null,params:{}};
-  const TABS={home:"home",shop:"shop",bag:"bag",bloom:"bloom",orders:"orders",account:"account"};
+  const FLAGS={bloomLive:false};
+  const state={flags:FLAGS,petals:1240,bag:[],fav:new Set([2,6]),history:[],current:null,user:{name:"Tatiana",postcode:"SE1 5SY",area:"Bermondsey"},promo:null,order:null,params:{}};
+  const TABS={home:"home",shop:"shop",bag:"bag",community:"community",orders:"orders",account:"account"};
   const tabOf=id=>{const el=document.getElementById("s-"+id);return el?el.dataset.tab||"":""};
   const fmt=n=>"£"+(Math.round(n*100)/100).toFixed(n%1?2:0);
   const product=id=>PRODUCTS.find(p=>p.id==id);
@@ -2255,7 +2225,7 @@ const App=(()=>{
     $("#scrim").onclick=closeSheet;
     // side nav list
     const nl=$("#nav-list");
-    $$(".scr").forEach(s=>{if(s.dataset.nav===undefined)return;const b=document.createElement("button");b.dataset.screen=s.id.replace(/^s-/,"");b.innerHTML=`<span>${s.dataset.nav}</span><small>${s.dataset.group||""}</small>`;b.onclick=()=>{state.history=[];go(b.dataset.screen,{id:1})};const li=document.createElement("li");li.appendChild(b);nl.appendChild(li)});
+    $$(".scr").forEach(s=>{if(s.dataset.nav===undefined)return;const b=document.createElement("button");b.dataset.screen=s.id.replace(/^s-/,"");b.innerHTML=`<span>${s.dataset.nav}</span><small>${s.dataset.group||""}</small>`;if(s.dataset.flag&&!FLAGS[s.dataset.flag])b.style.opacity=".45";b.onclick=()=>{state.history=[];go(b.dataset.screen,{id:1})};const li=document.createElement("li");li.appendChild(b);nl.appendChild(li)});
     renderBagBadge();
     const h=(location.hash||"").replace("#","");
     go(h&&document.getElementById("s-"+h)?h:(document.getElementById("s-splash")?"splash":"home"),{id:1});
@@ -2265,7 +2235,7 @@ const App=(()=>{
     scr.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx,dy=Math.abs(e.changedTouches[0].clientY-sy);if(sx<28&&dx>70&&dy<60&&state.history.length)back()},{passive:true});
   }
   function setStyle(v,save=true){document.documentElement.dataset.style=v;$$("#style-toggle button,#style-toggle-m button").forEach(b=>b.classList.toggle("on",b.dataset.style===v));if(save){try{localStorage.setItem("fl_style",v)}catch(e){}}}
-  (function(){let v="flat";try{v=localStorage.getItem("fl_style")||v}catch(e){}const q=new URLSearchParams(location.search).get("style");if(q)v=q;document.documentElement.dataset.style=v})();
+  document.documentElement.dataset.style="flat";
   document.addEventListener("DOMContentLoaded",()=>{setStyle(document.documentElement.dataset.style||"flat",false);$$("#style-toggle button,#style-toggle-m button").forEach(b=>b.onclick=()=>{setStyle(b.dataset.style);haptic()})});
   document.addEventListener("DOMContentLoaded",init);
   return {setStyle,addPetals,state,go,back,tab,sheet,closeSheet,toast,confirm,addToBag,setQty,removeLine,bagCount,lineTotal,subtotal,deliveryFee,discount,total,clearBag,toggleFav,fmt,product,card,miniCard,tags,stars,icon,nextDays,dateLabel,haptic,$,$$};
@@ -2395,8 +2365,8 @@ window.App=App;
 })();
 
 document.addEventListener("screen",e=>{if(e.detail.id!=="home")return;const el=document.getElementById("home-bloom");if(!el||el.children.length)return;
-  const picks=[[3,"Svetlana","14:02"],[12,"Kamila","13:40"],[6,"Vita","13:15"],[1,"Svetlana","12:48"]];
-  el.innerHTML=picks.map(([id,f,t])=>{const p=App.product(id);return `<div class="card" style="width:150px" onclick="App.tab('bloom')"><div class="ph"><img src="${p.img}" alt=""><div class="tags"><span class="tag --ink">Made ${t}</span></div></div><div class="nm" style="min-height:0">${p.n}</div><div class="meta">${f} · Bermondsey</div></div>`}).join("")+`<div class="card" style="width:150px" onclick="App.tab('bloom')"><div class="ph" style="display:grid;place-items:center;border:1px solid var(--hair);background:var(--paper)"><div class="tc"><div class="h3">Bloom</div><div class="xs muted mt4">Live from the studio</div></div></div></div>`});
+  const picks=[[3,"Anna K.","Day 4"],[12,"Priya R.","Day 2"],[6,"James O.","Day 6"],[1,"Marta S.","Day 1"]];
+  el.innerHTML=picks.map(([id,f,t])=>{const p=App.product(id);return `<div class="card" style="width:150px" onclick="App.tab('community')"><div class="ph"><img src="${p.img}" alt=""><div class="tags"><span class="tag --ink">${t}</span></div></div><div class="nm" style="min-height:0">${p.n}</div><div class="meta">${f} · #onmytable</div></div>`}).join("")+`<div class="card" style="width:150px" onclick="App.go('compose')"><div class="ph" style="display:grid;place-items:center;border:1px solid var(--hair);background:var(--paper)"><div class="tc"><div class="h3">Share yours</div><div class="xs muted mt4">+20 Petals</div></div></div></div>`});
 </script>
 <!-- 02-shop.html -->
 <script>
@@ -3398,7 +3368,6 @@ document.addEventListener("fav",()=>{if(document.getElementById("s-account").cla
     $("#bd-wraps").innerHTML=WRAPS.map(w=>`<button class="wrap ${w.id===BD.wrap?"on":""}" onclick="Extras.bdWrap('${w.id}')"><i style="background:${w.c}"></i><div class="tl">${w.n}</div><div class="tp">${w.p?"+"+App.fmt(w.p):"Included"}</div></button>`).join("");
   }
   window.mount_builder=function(params){if(params&&params.reset)bdDefault();bdRender()};
-  Extras.bdCurrent=()=>({stems:ALL.filter(x=>BD.q[x.id]>0).map(x=>Object.assign({qty:BD.q[x.id]},x)),wrap:WRAPS.find(w=>w.id===BD.wrap).n,price:bdPrice()});
   Extras.bdCat=c=>{BD.cat=c;bdRender();if(c==="Wrap"){const b=$("#s-builder .scr-body");b.scrollTo({top:$("#bd-wrap-sec").offsetTop-72,behavior:"smooth"})}};
   Extras.bdQty=(id,d)=>{BD.q[id]=Math.max(0,Math.min(30,(BD.q[id]||0)+d));App.haptic();const st=$("#s-builder .scr-body").scrollTop;bdRender();$("#s-builder .scr-body").scrollTop=st};
   Extras.bdWrap=id=>{BD.wrap=id;App.haptic();const st=$("#s-builder .scr-body").scrollTop;bdRender();$("#s-builder .scr-body").scrollTop=st};
@@ -3699,152 +3668,6 @@ window.Bloom=(()=>{
   return {filter,more,like,tapPhoto,save,share,vote,story,stNext,stPrev,closeStory,follow,react,openPost};
 })();
 </script>
-<!-- 08-studio.html -->
-<script>
-(function(){
-  const $=App.$,$$=App.$$;
-  ["studio","design","studio-publish"].forEach(id=>{const el=document.getElementById("s-"+id);if(!el)return;el.innerHTML=el.innerHTML.replace(/\$\{(\w+)\}/g,(m,n)=>App.icon(n)||m)});
-  const Studio=window.Studio={};
-
-  /* ---- data ---- */
-  const ST={ava:{n:"Avalanche rose",img:"img/white-spray.webp",p:4.5},gar:{n:"Garden rose",img:"img/powdered-rose.webp",p:5},red:{n:"Red Naomi rose",img:"img/red-roses.webp",p:4.5},spr:{n:"Spray rose",img:"img/veronica.webp",p:3},peo:{n:"Peony",img:"img/peony-basket.webp",p:6},ran:{n:"Ranunculus",img:"img/peach-posy.webp",p:3.5},lis:{n:"Lisianthus",img:"img/lilac-dream.webp",p:3},hyd:{n:"Hydrangea",img:"img/pink-manifesto.webp",p:7},euc:{n:"Eucalyptus",img:"img/belgravia.webp",p:2},rus:{n:"Italian ruscus",img:"img/pink-garden.webp",p:1.5},pis:{n:"Pistache",img:"img/charmingly.webp",p:2},chr:{n:"Charming mix",img:"img/charmingly.webp",p:3.5},poe:{n:"Poem mix",img:"img/poem-petals.webp",p:4}};
-  const mk=(id,name,author,initials,story,stems,votes,wrap)=>({id,name,author,initials,story,stems,votes,wrap:wrap||"Ivory paper",voted:false});
-  const DESIGNS=[
-    mk(1,"Peach hour","Anna K.","AK","For my mum – she loves peach",[["ran",8],["gar",5],["euc",3],["rus",2]],184,"Kraft"),
-    mk(2,"Quiet Sunday","Tom R.","TR","Something calm for the kitchen table",[["ava",7],["lis",4],["rus",3],["pis",2]],163),
-    mk(3,"Velvet dusk","Priya S.","PS","Deep reds for a first anniversary",[["red",10],["hyd",2],["euc",3]],141,"Hatbox"),
-    mk(4,"Lilac lane","Marta S.","MS","Lilac, like the street I grew up on",[["lis",8],["spr",5],["rus",3]],98,"Blush pink"),
-    mk(5,"Morning peony","Elena V.","EV","One peony is never enough",[["peo",5],["ava",4]],76),
-    mk(6,"Garden thank-you","James O.","JO","For the neighbour who waters our plants",[["gar",6],["ran",4],["pis",3],["spr",3]],52,"Kraft")
-  ];
-  const WINNERS=[
-    {pid:5,author:"Marta S.",name:"Powdered rose",sold:38,petals:380,week:"Last week"},
-    {pid:12,author:"Daniel H.",name:"Pink garden elegance",sold:61,petals:610,week:"Two weeks ago"},
-    {pid:13,author:"Sofia L.",name:"Lilac daydream",sold:24,petals:240,week:"September"}
-  ];
-  const MINE=[
-    {name:"Sunday blush",status:"Published",votes:14,stems:[["gar",6],["ran",4],["euc",3]],wrap:"Ivory paper"},
-    {name:"Mum's garden",status:"Draft",votes:0,stems:[["peo",3],["lis",5]],wrap:"Blush pink"}
-  ];
-  const stemsOf=d=>d.stems.map(([id,q])=>Object.assign({id,qty:q},ST[id]));
-  const count=d=>d.stems.reduce((a,[,q])=>a+q,0);
-  const price=d=>Math.round(stemsOf(d).reduce((a,s)=>a+s.p*s.qty,0)+10+(d.wrap==="Hatbox"?15:d.wrap==="Blush pink"?2:0));
-  const collage=(d,cls="")=>{const s=stemsOf(d).sort((a,b)=>b.qty-a.qty).slice(0,4);return `<div class="dcol --n${s.length} ${cls}">${s.map(x=>`<img src="${x.img}" alt="" loading="lazy">`).join("")}</div>`};
-  const ranked=()=>[...DESIGNS].sort((a,b)=>b.votes-a.votes);
-  const rankOf=d=>ranked().indexOf(d)+1;
-  const ord=n=>n===1?"1st":n===2?"2nd":n===3?"3rd":"";
-
-  /* ---- countdown ---- */
-  const END=Date.now()+(2*24*60+14*60)*60*1000+7*1000;
-  function tick(){const el=$("#st-cd");if(!el)return;let s=Math.max(0,Math.floor((END-Date.now())/1000));const d=Math.floor(s/86400);s-=d*86400;const h=Math.floor(s/3600);s-=h*3600;const m=Math.floor(s/60);s-=m*60;el.textContent=`${d} d ${h} h ${String(m).padStart(2,"0")} m ${String(s).padStart(2,"0")} s`}
-  setInterval(tick,1000);tick();
-
-  /* ---- studio ---- */
-  let seg="week";
-  const SEGS=[["week","This week"],["winners","Winners"],["mine","My designs"]];
-  Studio.seg=s=>{seg=s;App.haptic();renderStudio()};
-  function renderStudio(){
-    $("#st-seg").innerHTML=SEGS.map(([k,l])=>`<button class="${k===seg?"on":""}" onclick="Studio.seg('${k}')">${l}</button>`).join("");
-    const p=$("#st-panel");
-    if(seg==="week"){
-      p.innerHTML=`<div class="sec-head" style="margin-top:8px"><div class="h2">Autumn edit</div><span class="xs muted">${DESIGNS.length} designs · 1 vote each</span></div>
-      <div class="grid-2">${ranked().map((d,i)=>`<div class="dcard fade-up" style="animation-delay:${i*40}ms">
-        ${i<3?`<span class="tag --ink rank">${ord(i+1)}</span>`:""}
-        <div onclick="App.go('design',{id:${d.id}})">${collage(d)}</div>
-        <div class="nm" onclick="App.go('design',{id:${d.id}})">${d.name}</div>
-        <div class="by"><span class="av">${d.initials}</span><span>${d.author}</span><span>· ${count(d)} stems</span></div>
-        <div class="meta"><span class="pr">≈ ${App.fmt(price(d))}</span><button class="vote ${d.voted?"on":""}" onclick="Studio.vote(${d.id},this)" aria-label="Vote">${App.icon("heart")}<span>${d.votes}</span></button></div>
-      </div>`).join("")}</div>
-      <p class="xs muted pad mt24" style="margin-bottom:0">Top three are hand-tied by Svetlana on Monday and join Bloom. The winner enters the catalogue for the season.</p>`;
-    }else if(seg==="winners"){
-      p.innerHTML=`<div class="sec-head" style="margin-top:8px"><div class="h2">Now in the catalogue</div></div>`+WINNERS.map(w=>{const pr=App.product(w.pid);return `<div class="win">
-        <img src="${pr.img}" alt="" onclick="App.go('pdp',{id:${w.pid}})">
-        <div><div class="caps muted" style="font-size:11px">${w.week}</div><div class="nm mt4">${w.name}</div><div class="by">By ${w.author} · now in the catalogue</div><div class="st">Sold ${w.sold} times · ${w.author.split(" ")[0]} earned ${w.petals} Petals</div>
-        <button class="btn --secondary --sm" onclick="App.go('pdp',{id:${w.pid}})">Shop it <span class="btn-price" style="font-size:13px">${App.fmt(pr.p)}</span></button></div></div>`}).join("")+
-      `<p class="xs muted pad mt24" style="margin-bottom:0">Co-creators earn 10 Petals every time their design is sold, for as long as it stays in the catalogue.</p>`;
-    }else{
-      p.innerHTML=`<div class="sec-head" style="margin-top:8px"><div class="h2">My designs</div><a class="link" onclick="App.go('builder')">New design</a></div>`+MINE.map((d,i)=>`<div class="mine">
-        <div>${collage(d)}</div>
-        <div><div class="nm">${d.name}</div><div class="st"><i class="${d.status==="Draft"?"--draft":""}"></i>${d.status==="Draft"?"Draft":"Published · "+d.votes+" vote"+(d.votes===1?"":"s")}<span>· ${count(d)} stems</span></div>
-        <div class="acts">${d.status==="Draft"?`<button class="btn --secondary --xs" onclick="App.go('studio-publish',{mine:${i}})">Publish</button><button class="btn --ghost --xs" onclick="App.go('builder')">Edit</button>`:`<button class="btn --secondary --xs" onclick="Studio.shareMine()">${App.icon("share")} Share for votes</button>`}</div></div></div>`).join("")+
-      (MINE.length?"":`<div class="empty">Nothing yet – build a bouquet and publish it.</div>`);
-    }
-  }
-  Studio.vote=(id,el)=>{const d=DESIGNS.find(x=>x.id===id);if(!d||d.voted)return;d.voted=true;d.votes++;App.haptic();
-    if(el){el.classList.add("on","pop");el.querySelector("span").textContent=d.votes}
-    $$("#s-design .vbtn").forEach(b=>{if(b.dataset.id==id){b.classList.add("on");b.innerHTML=App.icon("heart")+" Voted · "+d.votes}});
-    App.addPetals(1,"Voted");setTimeout(()=>{if(App.state.current==="studio"&&seg==="week")renderStudio()},900)};
-  Studio.shareMine=()=>{App.haptic();App.toast("Link copied – ‘Vote for my bouquet’")};
-  Studio.share=()=>{App.haptic();App.toast("Link copied – share this design")};
-  window.mount_studio=function(params){if(params&&params.seg)seg=params.seg;renderStudio();tick()};
-
-  /* ---- design detail ---- */
-  let cur=null,following=new Set();
-  Studio.follow=(a,el)=>{App.haptic();if(following.has(a)){following.delete(a);el.textContent="Follow";App.toast(`Unfollowed ${a}`)}else{following.add(a);el.textContent="Following";App.toast(`You now follow ${a} – new designs in Bloom`)}};
-  window.mount_design=function(params){
-    const d=DESIGNS.find(x=>x.id==(params&&params.id))||DESIGNS[0];cur=d;
-    const pr=price(d),r=rankOf(d);
-    $("#ds-body").innerHTML=`<div class="pad">${collage(d)}</div>
-      <div class="pad mt16 flex ai-c g8">${r<=3?`<span class="tag --ink">${ord(r)} this week</span>`:""}<span class="tag --soft">Autumn edit</span><span class="tag --soft">${count(d)} stems</span></div>
-      <div class="pad mt12"><div class="h1">${d.name}</div></div>
-      <div class="story">“${d.story}”</div>
-      <div class="author mt16"><span class="av --lg">${d.initials}</span><div class="f1"><div class="l">${d.author}</div><div class="d">Co-creator · ${r<=3?"Top three this week":"Entered this week"}</div></div><button class="btn --ghost --xs" onclick="Studio.follow('${d.author}',this)">${following.has(d.author)?"Following":"Follow"}</button></div>
-      <div class="sec-head"><div class="h2">Stems</div><span class="xs muted">${d.wrap}</span></div>
-      ${stemsOf(d).map(s=>`<div class="stem"><img src="${s.img}" alt=""><div class="nm">${s.n}</div><div class="q">× ${s.qty}</div></div>`).join("")}
-      <div class="est"><div><div class="caps muted">Estimated price</div><div class="xs muted mt4">Hand-tied · £10 included</div></div><div class="pr">≈ ${App.fmt(pr)}</div></div>
-      <div class="pad mt24 flex col g8">
-        <button class="btn --secondary --block vbtn ${d.voted?"on":""}" data-id="${d.id}" onclick="Studio.vote(${d.id})">${App.icon("heart")} ${d.voted?"Voted":"Vote"} · ${d.votes}</button>
-        <button class="btn --ghost --block" onclick="App.go('builder')">Remix in builder</button>
-      </div>
-      <div class="hr"></div>
-      <div class="note">${App.icon("flower")}<span>If it wins, Svetlana hand-ties it and it joins the catalogue as ‘By ${d.author}’. ${d.author.split(" ")[0]} earns 10 Petals on every sale.</span></div>
-      <p class="xs muted pad mt24" style="margin-bottom:0">Ordered designs are made to the author's recipe with today's freshest stems · Photo before delivery · Same-day until 10 pm</p>`;
-    $("#ds-cta-price").textContent=App.fmt(pr);
-    $("#ds-order").onclick=()=>{App.addToBag(2,{size:"Custom",extra:pr-79,silent:true});App.toast(`<b>${d.name}</b> by ${d.author} added to bag`,{img:stemsOf(d)[0].img,action:{label:"View bag",onclick:"App.tab('bag')"}})};
-  };
-
-  /* ---- publish ---- */
-  const OCC=["Autumn edit","Birthday","Thank you","Just because","Anniversary","New home"];
-  let occ=new Set(["Autumn edit"]),pubSrc=null;
-  Studio.occ=o=>{App.haptic();occ.has(o)?occ.delete(o):occ.add(o);renderChips()};
-  const renderChips=()=>{$("#pub-chips").innerHTML=OCC.map(o=>`<button class="chip ${occ.has(o)?"on":""}" onclick="Studio.occ('${o}')">${o}</button>`).join("")};
-  window.mount_studio_publish=function(params){
-    let d=null;
-    if(params&&params.mine!==undefined&&MINE[params.mine]){d=MINE[params.mine];$("#pub-name").value=d.name}
-    else{
-      const ex=window.Extras&&typeof Extras.bdCurrent==="function"?Extras.bdCurrent():null;
-      if(ex&&ex.stems&&ex.stems.length){d={name:"",stems:ex.stems.map(s=>{const id=ST[s.id]?s.id:null;if(!id)ST[s.id]={n:s.n,img:s.img,p:s.p};return [s.id,s.qty]}),wrap:ex.wrap||"Ivory paper",price:ex.price}}
-      else d={name:"",stems:[["ava",6],["peo",3],["euc",3],["rus",2]],wrap:"Ivory paper"};
-      $("#pub-name").value="";
-    }
-    pubSrc=d;
-    const pr=d.price||price(d);
-    $("#pub-prev").innerHTML=`${collage(d)}<div><div class="caps muted">Your design</div><div class="t mt4">${count(d)} stems · ≈ ${App.fmt(pr)}</div><div class="d">${stemsOf(d).map(s=>s.n).join(", ")}<br>${d.wrap}</div></div>`;
-    $("#pub-story").value="";$("#pub-cnt").textContent="0";
-    $("#pub-story").oninput=e=>{$("#pub-cnt").textContent=e.target.value.length};
-    occ=new Set(["Autumn edit"]);renderChips();
-    $("#pub-sell").classList.add("on");
-  };
-  Studio.publish=()=>{
-    const name=$("#pub-name").value.trim();
-    if(!name){App.toast("Give your design a name");$("#pub-name").focus();return}
-    App.haptic();
-    const sell=$("#pub-sell").classList.contains("on");
-    const i=MINE.indexOf(pubSrc);
-    const rec={name,status:"Published",votes:0,stems:pubSrc.stems,wrap:pubSrc.wrap,story:$("#pub-story").value.trim(),sell};
-    if(i>=0)MINE[i]=rec;else MINE.unshift(rec);
-    App.sheet(`<div class="sh-head"><div class="h3">Published</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
-      <div class="sh-body" id="pub-ok"><div class="okmark">${App.icon("check")}</div>
-      <div class="h2 tc">${name}</div>
-      <p class="soft tc" style="margin:8px 0 0">Published · share for votes. Voting on this week's challenge closes in <b id="pub-cd" style="font-weight:400">${$("#st-cd").textContent.replace(/ \d+ m \d+ s$/,"")}</b>.</p>
-      ${sell?`<p class="xs muted tc" style="margin:10px 0 0">If it wins, it joins the catalogue as ‘By ${App.state.user.name}’ – 10 Petals per sale.</p>`:""}
-      <div class="flex col g8 mt24">
-        <button class="btn --block" onclick="App.haptic();App.toast('Link copied – ‘Vote for my bouquet’')">${App.icon("share")} Share</button>
-        <button class="btn --secondary --block" onclick="App.closeSheet();App.state.history=[];App.go('studio',{seg:'mine'})">See it in Studio</button>
-      </div></div>`);
-  };
-})();
-</script>
 <!-- 09-garden.html -->
 <script>
 (function(){
@@ -3923,7 +3746,7 @@ window.gdnAdd=function(){
     };
   }});
 };
-window.mount_garden=function(){clearTimeout(window._gdnDone);window._gdnDone=setTimeout(()=>{const b=document.querySelector("#s-garden .bed-in");if(b)b.classList.add("done")},1800);renderBed();renderCard();renderDays();renderPeople();renderSeason()};
+window.mount_garden_off=function(){clearTimeout(window._gdnDone);window._gdnDone=setTimeout(()=>{const b=document.querySelector("#s-garden .bed-in");if(b)b.classList.add("done")},1800);renderBed();renderCard();renderDays();renderPeople();renderSeason()};
 
 /* ======== LIVING FLOWER ======== */
 const LV={day:1,thanked:false,anon:false};
@@ -3966,10 +3789,10 @@ window.lvThanks=function(){
   }});
 };
 window.lvKeep=function(){
-  App.sheet(`<div class="sh-head"><div class="h3">Create your garden</div>${X}</div><div class="sh-body">
+  App.sheet(`<div class="sh-head"><div class="h3">Create your profile</div>${X}</div><div class="sh-body">
     <p class="soft" style="margin:0 0 16px">Keep this flower forever, see who sent it, and get a reminder when it's their turn. Free, takes ten seconds.</p>
-    <button class="btn --apple --block" onclick="App.closeSheet();App.toast('Garden created · your flower is saved');setTimeout(()=>App.go('garden'),900)">${App.icon("apple")}Continue with Apple</button>
-    <button class="btn --secondary --block" style="margin-top:8px;text-transform:none;letter-spacing:0;font-size:16px" onclick="App.closeSheet();App.toast('Garden created · your flower is saved');setTimeout(()=>App.go('garden'),900)"><svg viewBox="0 0 24 24" style="stroke-width:1.5"><circle cx="12" cy="12" r="9"/><path d="M12 12h8M12 8v8"/></svg>Continue with Google</button>
+    <button class="btn --apple --block" onclick="App.closeSheet();App.toast('Garden created · your flower is saved');setTimeout(()=>App.go('community'),900)">${App.icon("apple")}Continue with Apple</button>
+    <button class="btn --secondary --block" style="margin-top:8px;text-transform:none;letter-spacing:0;font-size:16px" onclick="App.closeSheet();App.toast('Garden created · your flower is saved');setTimeout(()=>App.go('community'),900)"><svg viewBox="0 0 24 24" style="stroke-width:1.5"><circle cx="12" cy="12" r="9"/><path d="M12 12h8M12 8v8"/></svg>Continue with Google</button>
     <p class="muted xs tc" style="margin:14px 0 0">No marketing emails. Your sender never sees your details.</p>
   </div>`);
 };
@@ -4018,6 +3841,206 @@ window.mount_care=function(){
 };
 window.careTick=function(i,el){if(CARE.tasks[i][2])return;CARE.tasks[i][2]=true;el.classList.add("on");App.haptic();App.addPetals(5,"Keep it alive · "+CARE.tasks[i][0]);
   if(CARE.tasks.every(t=>t[2]))setTimeout(()=>App.toast("Day 3 complete · see you tomorrow"),2800)};
+})();
+</script>
+<!-- 10-community.html -->
+<script>
+window.Comm=(()=>{
+  const $=App.$,$$=App.$$,P=id=>App.product(id);
+  const SE1=["Bermondsey","Borough","London Bridge","Southwark"];
+  const M=[
+    ["anna","Anna K.","AK","Bermondsey","Two cats, one windowsill, too many vases.",1],
+    ["marta","Marta S.","MS","Clapham","Sunday flowers, Monday coffee."],
+    ["priya","Priya R.","PR","Islington","Making a small flat feel like a garden."],
+    ["james","James O.","JO","Shoreditch","Flowers for the kitchen table every Friday."],
+    ["olga","Olga V.","OV","Notting Hill","Peonies in May, dahlias in September.",1],
+    ["hannah","Hannah L.","HL","Hampstead","Trying to keep things alive. Mostly succeeding."],
+    ["tom","Tom B.","TB","Greenwich","New to flowers. Taking notes."],
+    ["sofia","Sofia M.","SM","Chelsea","Vase collector, allegedly."],
+    ["leila","Leila A.","LA","Borough","Pastel everything.",1],
+    ["rachel","Rachel W.","RW","Battersea","Desk, bedside, then the compost. In that order."],
+    ["daniel","Daniel F.","DF","London Bridge","Gift-giver in chief for a family of six."],
+    ["chloe","Chloe P.","CP","Dulwich","Dried, fresh, pressed – all of it."],
+    ["yusuf","Yusuf K.","YK","Canary Wharf","Orders for the office. Keeps the spare stems."],
+    ["emma","Emma T.","ET","Brixton","Kitchen table, north light, 6 am."],
+    ["nina","Nina D.","ND","Southwark","Hydrangeas are my nemesis.",1],
+    ["grace","Grace H.","GH","Richmond","Roses on the piano since 2019."],
+    ["max","Max R.","MR","Hackney","Flowers for my mum, photos for me."],
+    ["isabel","Isabel C.","IC","Kensington","Hosts dinner twice a month. Flowers first."],
+    ["svetlana","Svetlana","SV","Bermondsey","Head florist at Floritta. Hand-ties in SE1 since 2021.",1,1],
+    ["kamila","Kamila","KA","Bermondsey","Florist at Floritta. Pastels, wraps, ribbons.",0,1],
+    ["vita","Vita","VI","Bermondsey","Florist at Floritta. Baskets and big garden roses.",0,1]
+  ].map((a,i)=>({id:a[0],n:a[1],ini:a[2],area:a[3],bio:a[4],nw:!!a[5],fl:!!a[6],t:"--t"+(i%3+1),fw:a[6]?2400+i*137:120+(i*53)%640,fg:a[6]?48:60+(i*31)%300}));
+  const ME={id:"me",n:"Tatiana S.",ini:"TS",area:App.state.user.area||"Bermondsey",bio:"Pink manifesto loyalist. Kitchen table, two vases, one very patient husband.",t:"--t2",fw:38,fg:52};
+  const IMG={1:"img/peach-posy.webp",2:"img/poem-petals.webp",3:"img/pink-manifesto.webp",4:"img/white-spray.webp",5:"img/powdered-rose.webp",6:"img/red-roses.webp",7:"img/belgravia.webp",8:"img/daydream-basket.webp",9:"img/peony-basket.webp",10:"img/veronica.webp",11:"img/charmingly.webp",12:"img/pink-garden.webp",13:"img/lilac-dream.webp",hb:"img/hero-basket.webp",hw:"img/hero-white.webp",p32:"img/pink-manifesto-2.webp",p52:"img/powdered-rose-2.webp"};
+  // [member, img, pid, day, kind, time, likes, caption, tags, pos, scale]
+  const RAW=[
+    ["anna",9,9,"Day 4","d","2 h",48,"Day 4 and the peonies are still going. Changed the water twice and moved them off the windowsill – the afternoon sun was too much for them.","day4 peonies kitchentable","50% 30%",1.15],
+    ["james",6,6,"","","3 h",61,"Friday rule: flowers on the table before the weekend starts. Twenty reds, trimmed short for the low bowl.","onmytable fridayflowers roses","50% 60%",1],
+    ["nina","hw",0,"","q","4 h",23,"How do I keep hydrangeas from drooping? Mine look sad by day two, even with fresh water.","help hydrangeas","50% 40%",1.1],
+    ["svetlana",3,3,"","","5 h",132,"Hand-tied this one at 7 am, before the shop opened. Garden roses, ranunculus, a little jasmine for the scent.","handtied bermondsey floritta","50% 20%",1.05],
+    ["marta",5,5,"Day 1","d","6 h",37,"Day 1. Stems cut, water lukewarm, vase on the sideboard away from the radiator. Sunday flowers, Monday coffee.","day1 onmytable sundayflowers","40% 50%",1.2],
+    ["leila",13,13,"","ba","8 h",54,"Before and after. Took it out of the wrap and split it between two small jars for the bathroom and the hall. Same bouquet, twice the rooms.","beforeafter rearranged lilac","50% 50%",1],
+    ["tom",1,1,"","","9 h",71,"First bouquet I've ever bought for myself. The card said change the water every two days, so I've set an alarm.","firstbouquet onmytable peach","60% 30%",1.1],
+    ["olga","p32",3,"Day 5","d","12 h",89,"Day 5. The ranunculus have opened fully and the roses are just starting to blow. This is my favourite stage.","day5 ranunculus onmytable","50% 70%",1.25],
+    ["priya",10,10,"","","Yesterday",29,"Window ledge, north-facing, which turns out to be exactly what spray roses want. Veronica still upright.","windowsill sprayroses northlight","30% 40%",1.15],
+    ["kamila",4,4,"","","Yesterday",97,"Ivory wrap, white spray roses, eucalyptus. Went out to Chelsea at eleven. The customer sent this photo back an hour later.","floritta delivered whiteroses","50% 35%",1],
+    ["hannah",12,12,"Day 7","d","Yesterday",44,"Day 7. Lost two roses, kept the rest. Trimmed everything down to a tumbler and it looks like a new bouquet.","day7 stillgoing tumbler","50% 80%",1.3],
+    ["daniel",8,8,"","","Yesterday",66,"Mum's birthday basket. She refused to let anyone touch it for a week, then finally moved it to the piano.","gift birthday basket","50% 45%",1.05],
+    ["sofia",11,11,"","","2 d",38,"The vase won this time. Pink and red on the mantelpiece, candles out.","mantelpiece onmytable vases","50% 25%",1.1],
+    ["emma","hb",0,"","","2 d",52,"6 am light, kitchen table, nothing fancy. The best twenty minutes of the day.","kitchentable morninglight onmytable","50% 60%",1.2],
+    ["rachel",7,7,"","","2 d",27,"Desk flowers. Small enough not to block the monitor, big enough to be noticed on a call.","desk wfh petite","50% 50%",1.3],
+    ["vita",2,2,"","ba","2 d",83,"Before and after on the bench. Loose stems at nine, finished bouquet at twenty past. The wrap is the last thing.","beforeafter atthebench floritta","50% 50%",1],
+    ["chloe","p52",5,"Day 1","d","3 d",31,"Day 1. Hung three stems upside down to dry already – I know, I know. The rest are in water on the shelf.","day1 dried powderedrose","70% 40%",1.2],
+    ["yusuf",6,6,"","","3 d",19,"Office reception. Two people asked where they're from before lunch.","office reception roses","50% 20%",1.15],
+    ["max",12,12,"","","3 d",58,"For my mum. She said 'oh, you shouldn't have' and then moved the TV to make room.","mum gift onmytable","30% 50%",1.2],
+    ["grace",4,4,"","","4 d",36,"Roses on the piano since 2019. This week's are white, because the room was getting loud.","piano whiteroses living","50% 70%",1.25],
+    ["anna",9,9,"Day 1","d","4 d",42,"Day 1. Arrived at 2 pm, photo from the florist came at half one. Straight onto the table; cats inspected and approved.","day1 peonies cats","50% 55%",1.3],
+    ["isabel",8,8,"","","5 d",47,"Dinner for eight. Flowers go in the middle, then I cook around them.","dinnerparty centrepiece onmytable","60% 30%",1.1],
+    ["priya",13,13,"","ba","5 d",33,"Before and after: split the lilac between the hall and the bedroom. The hallway smells like May.","beforeafter lilac hallway","50% 50%",1],
+    ["james",10,10,"Day 5","d","6 d",25,"Day 5. The veronica has gone over, the roses haven't. Pulled the veronica, topped up the water, carried on.","day5 sprayroses kitchentable","50% 30%",1.2]
+  ];
+  const EXTRA=[
+    ["marta",3,3,"Day 7","d","1 w",30,"Day 7. Down to six roses in a jam jar by the kettle. Still the first thing I look at in the morning.","day7 jamjar onmytable","50% 75%",1.35],
+    ["tom",1,1,"Day 5","d","1 w",22,"Day 5. The alarm works. Water changed, stems trimmed, one casualty. Learning.","day5 firstbouquet peach","40% 60%",1.2],
+    ["hannah","hw",0,"","","1 w",41,"Moved everything to the bathroom for the steam. Works for roses too, apparently.","bathroom tip onmytable","50% 50%",1.15],
+    ["olga",2,2,"","","1 w",57,"Birthday flowers from my sister. Opened the box on the bus and nearly missed my stop.","birthday gift peonies","50% 40%",1.05],
+    ["leila",11,11,"Day 1","d","1 w",28,"Day 1. Pink and red isn't my thing, apparently it is now.","day1 onmytable pink","50% 65%",1.2],
+    ["emma",7,7,"","","2 w",19,"Bedside. Small, quiet, done.","bedside petite onmytable","50% 50%",1.3]
+  ];
+  const MINE=[
+    ["me","p32",3,"Day 2","d","1 w",14,"Pink manifesto on the kitchen table, day 2. The jasmine is doing all the work.","day2 onmytable kitchentable","50% 50%",1.1],
+    ["me",4,4,"","","2 w",9,"White spray roses for the hallway. Guests have started commenting.","hallway whiteroses onmytable","50% 40%",1.15]
+  ];
+  let nid=1;
+  const mk=a=>({id:nid++,m:a[0],img:IMG[a[1]]||a[1],pid:a[2],day:a[3],kind:a[4],time:a[5],likes:a[6],cap:a[7],tags:a[8]?a[8].split(" "):[],pos:a[9],sc:a[10],cm:[]});
+  const POSTS=RAW.map(mk);const MORE=EXTRA.map(mk);const MYP=MINE.map(mk);
+  const QREP=[["svetlana","Cut the stems at an angle, dip the ends in just-boiled water for 20 seconds, then straight into cool water. Mist the heads – hydrangeas drink through the petals too."],["hannah","The boiling-water trick saved mine last week. Also keep them out of the sun."],["olga","I submerge the whole head in a sink of cold water for an hour. Sounds mad, works."]];
+  const CPOOL=[["marta","So lovely."],["james","Which vase is that? I need it."],["emma","The light in this photo."],["hannah","Mine lasted nine days with the boiling-water trick."],["sofia","Same table, same chaos, fewer flowers."],["daniel","Saving this for my next order."],["priya","Day 4 is the hardest. Keep going."],["grace","Bermondsey represent."],["tom","Taking notes, as usual."],["chloe","Dry a few stems before they go – you'll thank me."],["max","My mum would approve."],["leila","Pastel perfection."]];
+  const FPOOL=[["svetlana","Trim 1 cm off the stems every other day and they'll go another week."],["kamila","Keep them away from the fruit bowl – ripening fruit shortens the vase life."],["vita","Lovely placement. North light is perfect for these."]];
+  const TIMES=["12 min","40 min","1 h","3 h","Yesterday"];
+  const S={filter:"for",liked:new Set(),saved:new Set(),follow:new Set(["anna","svetlana","olga","james"]),ftags:new Set(),more:false,fl:false,fc:false,ff:false,cur:null,
+    cp:{img:null,pid:null,day:null,tags:new Set(["onmytable"])}};
+  const mem=id=>id==="me"?ME:M.find(m=>m.id===id);
+  const all=()=>[...MYP.filter(p=>p.time==="Just now"),...POSTS,...(S.more?MORE:[]),...MYP.filter(p=>p.time!=="Just now")];
+  const byId=id=>all().find(p=>p.id==id);
+  const esc=s=>s.replace(/</g,"&lt;");
+  const av=(m,cls="")=>`<span class="av ${m.fl?"--fl":m.t} ${cls}">${m.ini}</span>`;
+  const flb=m=>m.fl?`<span class="flb"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg>Florist</span>`:"";
+  const H=n=>App.icon(n);
+  const cmtsOf=p=>{if(p.cm.length)return p.cm;const n=3+(p.id%4);const out=[];for(let i=0;i<n;i++){const c=CPOOL[(p.id*3+i)%CPOOL.length];if(c[0]!==p.m)out.push({m:c[0],t:c[1],w:TIMES[(p.id+i)%TIMES.length]})}const f=FPOOL[p.id%FPOOL.length];if(f[0]!==p.m)out.splice(1,0,{m:f[0],t:f[1],w:TIMES[(p.id+2)%TIMES.length]});p.cm=out.slice(0,6);return p.cm};
+  const tagChips=p=>`<div class="htags">${p.tags.map(t=>`<button class="chip" onclick="App.go('hashtag',{tag:'${t}'})">#${t}</button>`).join("")}</div>`;
+  const strip=p=>{if(!p.pid)return"";const pr=P(p.pid);return`<button class="shopstrip" onclick="App.go('pdp',{id:${pr.id}})"><img src="${pr.img}" alt=""><span class="t"><span class="e">Shop this bouquet</span><br><span class="n"><b>${pr.n}</b> · ${App.fmt(pr.p)}</span></span>${H("chev")}</button>`};
+  const photo=p=>{const im=`<img src="${p.img}" alt="" style="object-position:${p.pos};transform:scale(${p.sc})">`;
+    if(p.kind==="ba")return`<div class="ba"><div><img src="${p.img}" alt="" style="object-position:30% 60%;transform:scale(1.5)"><span>Before</span></div><div>${im}<span>After</span></div></div>`;
+    if(p.kind==="q")return im+`<div class="q">${esc(p.cap)}</div>`;return im};
+  const postHtml=(p,full)=>{const m=mem(p.m);const liked=S.liked.has(p.id),saved=S.saved.has(p.id);const lk=p.likes+(liked?1:0);
+    return`<article class="post" data-pid="${p.id}">
+      <div class="hd"><button onclick="Comm.openMember('${m.id}')" style="display:contents">${av(m)}</button><div class="who"><div class="n"><b onclick="Comm.openMember('${m.id}')">${m.n}</b> ${flb(m)}</div><div class="w">${m.area} · ${p.time}</div></div>${p.day?`<span class="dl">${p.day}</span>`:p.kind==="ba"?`<span class="dl">Before / after</span>`:p.kind==="q"?`<span class="dl">Question</span>`:""}</div>
+      <div class="ph-wrap"><div class="ph" onclick="Comm.tapPhoto(${p.id},this)">${photo(p)}</div><div class="bigheart">${H("heart")}</div></div>
+      <div class="acts">
+        <button class="ib cnt like ${liked?"on":""}" onclick="Comm.like(${p.id},this)" aria-label="Like">${H("heart")}<span>${lk}</span></button>
+        <button class="ib cnt" onclick="${full?"document.getElementById('pv-in').focus()":`Comm.openPost(${p.id})`}" aria-label="Comment">${H("chat")}<span>${cmtsOf(p).length}</span></button>
+        <span class="sp"></span>
+        <button class="ib" onclick="Comm.share()" aria-label="Share">${H("share")}</button>
+        <button class="ib save ${saved?"on":""}" onclick="Comm.save(${p.id},this)" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></button>
+      </div>
+      ${p.kind==="q"?"":`<div class="cap"><b>${m.n.split(" ")[0]}</b> ${esc(p.cap)}</div>`}
+      ${tagChips(p)}
+      ${p.kind==="q"?`<div class="rep">${QREP.map(r=>{const rm=mem(r[0]);return`<div class="r">${av(rm)}<div><b>${rm.n}</b> ${flb(rm)}<br>${r[1]}</div></div>`}).join("")}</div>`:""}
+      ${strip(p)}
+      ${!full&&p.kind!=="q"?`<button class="vc" onclick="Comm.openPost(${p.id})">View all ${cmtsOf(p).length} comments</button>`:""}
+    </article>`};
+
+  /* ---- feed ---- */
+  function feedList(){const a=all().filter(p=>p.m!=="me"||S.filter==="for");
+    if(S.filter==="fol")return a.filter(p=>S.follow.has(p.m));
+    if(S.filter==="near")return a.filter(p=>SE1.includes(mem(p.m).area));return a}
+  function mount(){
+    $("#cm-members").innerHTML=M.map(m=>`<button class="mb ${m.nw?"--new":""}" onclick="Comm.openMember('${m.id}')">${av(m)}<span class="l">${m.n.split(" ")[0]}</span></button>`).join("");
+    renderFeed();$$("[data-petals]").forEach(e=>e.textContent=App.state.petals.toLocaleString("en-GB"));
+  }
+  function renderFeed(){const l=feedList();const f=$("#cm-feed");
+    f.innerHTML=l.length?l.map(p=>postHtml(p)).join(""):`<div class="empty"><div class="h3">Nothing here yet</div>${S.filter==="fol"?"Follow a few members and their bouquets will show up here.":"No posts from SE1 this week. Be the first."}</div>`;
+    $("#cm-more").style.display=S.more||S.filter!=="for"?"none":"";
+    $("#cm-fend").textContent=S.more?"You're all caught up. Post yours for 20 Petals.":"Bouquets at home, across London. Post yours for 20 Petals."}
+  function filter(f,btn){S.filter=f;$$("#cm-seg button").forEach(b=>b.classList.toggle("on",b===btn));renderFeed();App.haptic()}
+  function more(){const b=$("#cm-more");b.innerHTML='<span class="skeleton" style="width:80px;height:12px;display:block"></span>';setTimeout(()=>{S.more=true;b.innerHTML="Load more";renderFeed();App.toast("6 more bouquets")},600)}
+  /* ---- actions ---- */
+  function syncLike(p){const liked=S.liked.has(p.id);$$(`.post[data-pid="${p.id}"] .like`).forEach(b=>{b.classList.toggle("on",liked);b.querySelector("span").textContent=p.likes+(liked?1:0)})}
+  function like(id,btn){const p=byId(id);if(!p)return;App.haptic();
+    if(S.liked.has(id)){S.liked.delete(id);syncLike(p);return}
+    S.liked.add(id);syncLike(p);if(btn){btn.classList.remove("pop");void btn.offsetWidth;btn.classList.add("pop")}
+    if(!S.fl){S.fl=true;App.addPetals(1,"First like today")}}
+  let lastTap=0,tapT;
+  function tapPhoto(id,el){const now=Date.now();const dbl=now-lastTap<320;lastTap=now;
+    if(dbl){clearTimeout(tapT);const bh=el.parentNode.querySelector(".bigheart");bh.classList.remove("go");void bh.offsetWidth;bh.classList.add("go");if(!S.liked.has(id))like(id,el.closest(".post").querySelector(".like"));return}
+    if(el.closest("#s-post-view"))return;tapT=setTimeout(()=>openPost(id),330)}
+  function save(id,btn){App.haptic();if(S.saved.has(id)){S.saved.delete(id);App.toast("Removed from saved")}else{S.saved.add(id);App.toast("Saved to your profile",{action:{label:"View",onclick:"App.go('member',{me:true,tab:'saved'})"}})}
+    $$(`.post[data-pid="${id}"] .save`).forEach(b=>b.classList.toggle("on",S.saved.has(id)));btn&&btn.classList.add("pop")}
+  function share(){App.sheet(`<div class="sh-head"><div class="h3">Share</div><button class="ib" onclick="App.closeSheet()">${H("close")}</button></div><div class="sh-body"><button class="row" onclick="App.closeSheet();App.toast('Link copied')">${H("share").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Copy link</div></div></button><button class="row" onclick="App.closeSheet();App.toast('Opening Messages…')">${H("chat").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Send in Messages</div></div></button><button class="row" onclick="App.closeSheet();App.toast('Saved to Photos')">${H("camera").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Save image</div></div></button></div>`)}
+  /* ---- post view ---- */
+  function openPost(id){App.go("post-view",{id})}
+  function mountPost(params){const p=byId(params.id)||POSTS[0];S.cur=p;const m=mem(p.m);$("#pv-ttl").textContent=p.day?p.day+" · "+m.n.split(" ")[0]:m.n;
+    const cm=cmtsOf(p);let more=all().filter(x=>x.m===p.m&&x.id!==p.id);if(more.length<3)more=more.concat(all().filter(x=>x.m!==p.m&&x.id!==p.id&&x.tags.some(t=>p.tags.includes(t))&&!more.includes(x)));if(more.length<3)more=more.concat(all().filter(x=>x.id!==p.id&&!more.includes(x)));more=more.slice(0,3);
+    $("#pv-body").innerHTML=postHtml(p,true)+`<div class="sec-head"><div class="h2" style="font-size:24px">Comments</div><span class="muted sm">${cm.length}</span></div><div class="cmts" id="pv-cmts">${cm.map(cmtHtml).join("")}</div>
+      ${more.length?`<div class="sec-head"><div class="h2" style="font-size:24px">More from ${m.n.split(" ")[0]}</div><button class="link" onclick="Comm.openMember('${m.id}')">Profile</button></div><div class="g3">${more.map(gridCell).join("")}</div>`:""}<div style="height:24px"></div>`;
+    $("#pv-in").value="";if(params.focus)setTimeout(()=>$("#pv-in").focus(),400)}
+  const cmtHtml=c=>{const m=mem(c.m);return`<div class="cmt ${c.m==="me"?"--me":""}">${av(m)}<div class="b"><div class="n"><b>${m.n}</b> ${flb(m)}<span class="t">${c.w}</span></div>${esc(c.t)}</div></div>`};
+  function send(){const inp=$("#pv-in");const t=inp.value.trim();if(!t||!S.cur)return;const c={m:"me",t,w:"Just now"};cmtsOf(S.cur).push(c);const box=$("#pv-cmts");box.insertAdjacentHTML("beforeend",cmtHtml(c));box.lastElementChild.classList.add("fade-up");inp.value="";inp.blur();
+    $$(`.post[data-pid="${S.cur.id}"] .cnt:not(.like) span`).forEach(s=>s.textContent=S.cur.cm.length);box.lastElementChild.scrollIntoView({block:"nearest",behavior:"smooth"});
+    if(!S.fc){S.fc=true;App.addPetals(2,"First comment")}else App.toast("Comment posted")}
+  const gridCell=p=>`<button onclick="Comm.openPost(${p.id})"><img src="${p.img}" alt="" style="object-position:${p.pos};transform:scale(${p.sc})">${p.day?`<span class="dl">${p.day}</span>`:""}<span class="lk">${H("heart")}${p.likes+(S.liked.has(p.id)?1:0)}</span></button>`;
+  /* ---- member ---- */
+  function openMember(id){App.go("member",{id})}
+  function mountMember(params){const me=params.me||params.id==="me";const m=me?ME:(mem(params.id)||M[0]);const mine=all().filter(p=>p.m===m.id);const tab=params.tab||"posts";
+    $("#mb-ttl").textContent=me?"Your profile":m.fl?"Floritta florist":"Member";const fol=S.follow.has(m.id);
+    const grid=tab==="saved"?all().filter(p=>S.saved.has(p.id)):mine;
+    $("#mb-body").innerHTML=`<div class="hero">${av(m)}<div class="f1"><div class="nm">${m.n} ${flb(m)}</div><div class="ar">${m.area}${m.fl?" · Floritta, 80 Willow Walk":", London"}</div></div></div>
+      <div class="bio">${m.bio}</div>
+      <div class="stats"><div><b>${mine.length}</b>Posts</div><div><b>${(m.fw+(fol?1:0)).toLocaleString("en-GB")}</b>Followers</div><div><b>${me?S.follow.size:m.fg}</b>Following</div></div>
+      <div class="acts">${me?`<button class="btn --secondary" onclick="Comm.editProfile()">Edit profile</button><button class="btn --ghost" onclick="App.go('compose')">New post</button>`:`<button class="btn ${fol?"on --secondary":""}" id="mb-follow" onclick="Comm.follow('${m.id}')">${fol?"Following":"Follow"}</button><button class="btn --ghost" onclick="App.toast('Message sent to ${m.n.split(" ")[0]}')">Message</button>`}</div>
+      ${me?`<div class="seg"><button class="${tab==="posts"?"on":""}" onclick="App.go('member',{me:true,tab:'posts'},{replace:true})">Bouquets at home</button><button class="${tab==="saved"?"on":""}" onclick="App.go('member',{me:true,tab:'saved'},{replace:true})">Saved</button></div>`:`<div class="sec-head"><div class="h2" style="font-size:24px">Bouquets at home</div><span class="muted sm">${mine.length}</span></div>`}
+      ${grid.length?`<div class="g3">${grid.map(gridCell).join("")}</div>`:`<div class="empty"><div class="h3">${tab==="saved"?"Nothing saved yet":"No posts yet"}</div>${tab==="saved"?"Tap the bookmark on any post to keep it here.":"Share the first one for 20 Petals."}</div>`}<div style="height:32px"></div>`}
+  function follow(id){const m=mem(id);App.haptic();const b=$("#mb-follow");
+    if(S.follow.has(id)){S.follow.delete(id);b.textContent="Follow";b.classList.remove("on","--secondary");App.toast(`Unfollowed ${m.n}`)}
+    else{S.follow.add(id);b.textContent="Following";b.classList.add("on","--secondary");if(!S.ff){S.ff=true;App.addPetals(5,"First follow")}else App.toast(`Following ${m.n}`)}
+    const st=$("#mb-body .stats div:nth-child(2) b");if(st)st.textContent=(m.fw+(S.follow.has(id)?1:0)).toLocaleString("en-GB")}
+  function editProfile(){App.sheet(`<div class="sh-head"><div class="h3">Edit profile</div><button class="ib" onclick="App.closeSheet()">${H("close")}</button></div><div class="sh-body"><div class="field"><label>Display name</label><input class="input" id="ep-n" value="${ME.n}"></div><div class="field"><label>Area shown</label><input class="input" value="${ME.area}" disabled></div><div class="field"><label>Bio</label><textarea class="input" id="ep-b">${ME.bio}</textarea></div></div><div class="sh-foot"><button class="btn --block" onclick="Comm.saveProfile()">Save</button></div>`)}
+  function saveProfile(){ME.n=$("#ep-n").value.trim()||ME.n;ME.bio=$("#ep-b").value.trim();App.closeSheet();App.toast("Profile updated");mountMember({me:true})}
+  /* ---- compose ---- */
+  const SAMPLES=[IMG.p32,IMG.hb,IMG[9],IMG.hw];
+  function mountCompose(){const c=S.cp;$("#cp-area").textContent=(App.state.user.area||"Bermondsey")+" · "+(App.state.user.postcode||"SE1").split(" ")[0];
+    $("#cp-samples").innerHTML='<span class="lb">Use a sample photo</span>'+SAMPLES.map(s=>`<button class="${c.img===s?"on":""}" onclick="Comm.sample('${s}',this)"><img src="${s}" alt=""></button>`).join("");
+    prodChips($("#cp-q").value);
+    $("#cp-days").innerHTML=["Day 1","Day 2","Day 3","Day 4","Day 5","Day 6","Day 7","Not a Floritta bouquet"].map(d=>`<button class="chip ${c.day===d?"on":""}" onclick="Comm.pick('day','${d}',this)">${d}</button>`).join("");
+    $("#cp-tags").innerHTML=["onmytable","kitchentable","day1","peonies","roses","windowsill","gift","beforeafter","bermondsey"].map(t=>`<button class="chip ${c.tags.has(t)?"on":""}" onclick="Comm.tag('${t}',this)">#${t}</button>`).join("");
+    showPhoto()}
+  function showPhoto(){const d=$("#cp-drop");d.classList.toggle("has",!!S.cp.img);$$("#cp-drop img,#cp-drop .ch").forEach(e=>e.remove());if(S.cp.img){d.insertAdjacentHTML("beforeend",`<img src="${S.cp.img}" alt=""><span class="ch">Change</span>`)}}
+  function file(inp){const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{S.cp.img=e.target.result;$$("#cp-samples button").forEach(b=>b.classList.remove("on"));showPhoto();App.toast("Photo added")};r.readAsDataURL(f)}
+  function sample(src,btn){S.cp.img=src;$$("#cp-samples button").forEach(b=>b.classList.toggle("on",b===btn));showPhoto();App.haptic()}
+  function count(t){$("#cp-cnt").textContent=t.value.length+" / 220"}
+  function prodChips(q){q=(q||"").toLowerCase();const l=PRODUCTS.filter(p=>p.n.toLowerCase().includes(q)).slice(0,q?8:6);
+    $("#cp-prods").innerHTML=(l.length?l.map(p=>`<button class="chip ${S.cp.pid===p.id?"on":""}" onclick="Comm.pick('pid',${p.id},this)"><img src="${p.img}" alt="">${p.n}</button>`).join(""):`<span class="muted sm">No match – that's fine, post it anyway.</span>`)}
+  function pick(k,v,btn){S.cp[k]=S.cp[k]===v?null:v;[...btn.parentNode.children].forEach(b=>b.classList.toggle("on",b===btn&&S.cp[k]!==null));App.haptic();
+    if(k==="day"&&v==="Not a Floritta bouquet"&&S.cp.day){S.cp.pid=null;prodChips($("#cp-q").value)}}
+  function tag(t,btn){S.cp.tags.has(t)?S.cp.tags.delete(t):S.cp.tags.add(t);btn.classList.toggle("on",S.cp.tags.has(t));App.haptic()}
+  function post(){const c=S.cp;if(!c.img){App.toast("Add a photo first – tap the square or pick a sample");$("#cp-drop").scrollIntoView({behavior:"smooth",block:"center"});return}
+    const cap=$("#cp-cap").value.trim()||"On my table today.";const day=c.day&&c.day.startsWith("Day")?c.day:"";
+    const p=mk(["me",c.img,c.pid||0,day,day?"d":"","Just now",0,cap,[...c.tags].join(" "),"50% 50%",1]);MYP.unshift(p);
+    S.cp={img:null,pid:null,day:null,tags:new Set(["onmytable"])};$("#cp-cap").value="";$("#cp-q").value="";count($("#cp-cap"));
+    App.state.history=[];App.go("community");App.addPetals(20,"Posted");S.filter="for";$$("#cm-seg button").forEach((b,i)=>b.classList.toggle("on",i===0));renderFeed();
+    setTimeout(()=>$$("#cm-feed .post")[0]?.classList.add("fade-up"),50)}
+  /* ---- hashtag ---- */
+  const TAGN={onmytable:312,kitchentable:148,day1:96,peonies:171,roses:420,beforeafter:64,windowsill:88,gift:203,bermondsey:57,floritta:260,hydrangeas:41,help:33};
+  function mountHashtag(params){const t=params.tag||"onmytable";const l=all().filter(p=>p.tags.includes(t));const n=TAGN[t]||l.length*7+5;const on=S.ftags.has(t);
+    $("#ht-body").innerHTML=`<div class="hh"><div class="f1"><div class="h2">#${t}</div><div class="m">${n} posts · ${l.length} this week</div></div><button class="btn ${on?"on --secondary":""}" id="ht-f" onclick="Comm.ftag('${t}')">${on?"Following":"Follow tag"}</button></div>
+      ${l.length?`<div class="g3">${l.map(gridCell).join("")}</div>`:`<div class="empty"><div class="h3">Quiet tag</div>Be the first to post with #${t}.</div>`}
+      <div class="sec-head"><div class="h2" style="font-size:24px">Related</div></div><div class="chips">${Object.keys(TAGN).filter(x=>x!==t).slice(0,6).map(x=>`<button class="chip" onclick="App.go('hashtag',{tag:'${x}'},{replace:true})">#${x}</button>`).join("")}</div><div style="height:32px"></div>`}
+  function ftag(t){const b=$("#ht-f");if(S.ftags.has(t)){S.ftags.delete(t);b.textContent="Follow tag";b.classList.remove("on","--secondary")}else{S.ftags.add(t);b.textContent="Following";b.classList.add("on","--secondary");App.toast(`#${t} added to For you`)}App.haptic()}
+
+  window.mount_community=mount;window.mount_post_view=mountPost;window.mount_member=mountMember;window.mount_compose=mountCompose;window.mount_hashtag=mountHashtag;
+  return {filter,more,like,tapPhoto,save,share,openPost,send,openMember,follow,editProfile,saveProfile,file,sample,count,prodChips,pick,tag,post,ftag,S};
 })();
 </script>
 </body>
