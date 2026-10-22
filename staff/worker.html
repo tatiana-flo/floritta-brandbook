@@ -4463,5 +4463,311 @@ S.report=function(){
 })();
 </script>
 
+
+<!-- ============ RESERVE (Work with us → app) + FLORIST JOBS (self-employed) – overlay, 22.10.2026 ============ -->
+<!-- Additive only: no existing screen, persona or function is changed. Every override falls through to the previous version for other personas. -->
+<style>
+.rs-steps{margin:0 var(--gutter);border-top:1px solid var(--hair)}
+.rs-step{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.rs-step .n{flex:none;width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px}
+.rs-step.done .n{background:var(--ink);color:var(--paper)}
+.rs-step.done .n svg{width:14px;height:14px;stroke:var(--paper)}
+.rs-step.wait .n{border-style:dashed}
+.rs-step.off{opacity:.45}
+.rs-step .l{font-size:15px}
+.rs-step .d{font-size:13px;color:var(--graphite);margin-top:3px;line-height:1.4}
+.rs-step .s{margin-left:auto;flex:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);padding-top:4px}
+.rs-bar{height:2px;background:var(--hair);margin:14px var(--gutter) 0}
+.rs-bar i{display:block;height:2px;background:var(--ink);transition:width .4s}
+.rs-path{display:block;width:calc(100% - 2*var(--gutter));margin:0 var(--gutter) 10px;border:1px solid var(--hair);padding:16px;text-align:left;background:var(--paper)}
+.rs-path.on{border-color:var(--ink)}
+.rs-path .hd{display:flex;align-items:center;gap:12px}
+.rs-path .hd i{flex:none;width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.rs-path.on .hd i::after{content:"";width:10px;height:10px;background:var(--ink)}
+.rs-path ul{margin:10px 0 0 32px;padding:0;font-size:13px;color:var(--graphite);line-height:1.55}
+.rs-mail{margin:0 var(--gutter);border:1px solid var(--hair);background:#fff}
+.rs-mail .hdr{padding:12px 14px;border-bottom:1px solid var(--hair);font-size:12px;color:var(--grey);line-height:1.6}
+.rs-mail .hdr b{color:var(--ink);font-weight:500}
+.rs-mail .bd{padding:22px 18px 8px;font-size:14px;line-height:1.6;color:var(--ink)}
+.rs-mail .bd p{margin:0 0 12px}
+.rs-mail .code{font-family:var(--f-display);font-size:30px;font-weight:300;letter-spacing:.08em;margin:6px 0 2px}
+.rs-mail .stores{display:flex;gap:8px;margin:14px 0}
+.rs-mail .stores span{flex:1;border:1px solid var(--ink);padding:10px;text-align:center;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.rs-mail .ft{padding:14px 18px 18px;border-top:1px solid var(--hair);font-size:12px;color:var(--grey);line-height:1.55}
+.rs-mail .ft u{color:var(--ink)}
+.rs-funnel{display:grid;grid-template-columns:repeat(4,1fr);margin:0 var(--gutter);border:1px solid var(--hair)}
+.rs-funnel div{padding:12px 8px;border-right:1px solid var(--hair)}
+.rs-funnel div:last-child{border-right:0}
+.rs-funnel b{display:block;font-family:var(--f-display);font-size:28px;font-weight:300;line-height:1}
+.rs-funnel small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:6px;line-height:1.3}
+.rs-chip{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--light);padding:1px 6px;color:var(--graphite);margin-right:4px}
+.rs-hide{display:none!important}
+.rs-grp{padding:30px var(--gutter) 10px;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);font-weight:400}
+.rs-note{padding:14px var(--gutter);font-size:13px;color:var(--graphite);line-height:1.5}
+.rs-warn{margin:10px 0 0;padding:10px 12px;border-left:2px solid var(--ink);background:var(--silver);font-size:13px;color:var(--graphite)}
+</style>
+<script>
+(function(){
+  const A=window.App;const R={};window.RS=R;
+  /* ---- people ---- */
+  STAFF.push({id:'lina',n:'Lina',role:'florist',title:'Florist · in the reserve',initials:'LI',engagement:'reserve'});
+  STAFF.push({id:'mira',n:'Mira',role:'florist',title:'Florist · self-employed',initials:'MI',engagement:'contractor'});
+  if(window.PERSONAS){PERSONAS.splice(1,0,{id:'lina',label:'Reserve · new'},{id:'mira',label:'Florist · s-e'})}
+  const isRes=u=>(u||A.me()).engagement==='reserve';
+  const isMira=u=>(u||A.me()).id==='mira';
+  const isMgr=u=>(u||A.me()).role==='manager';
+  const gbp=n=>'£'+n.toFixed(0);
+  const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
+  const lab=off=>{const d=dOf(off);return `${DAYS[(d.getDay()+6)%7]} ${d.getDate()} ${['Oct','Nov'][d.getMonth()-9]}`};
+  const ic=(n,c)=>A.icon(n).replace('<svg',`<svg class="${c||'ic'}"`);
+
+  /* ---- onboarding state for Lina (came from the Work with us form) ---- */
+  R.ob={
+    paths:{shifts:false,jobs:false},
+    rtw:'todo',            /* todo → sent → checked */
+    pay:false,
+    signed:{worker:false,contractor:false},
+    lessons:false
+  };
+  const steps=()=>{const o=R.ob,p=o.paths,any=p.shifts||p.jobs;
+    return [
+      {k:'details',l:'Your details',d:'From your application: SE16 · weddings, hand-tied · weekends',done:true,fn:"RS.details()"},
+      {k:'paths',l:'How you\'d like to work',d:any?[p.shifts?'Shifts at the studio':null,p.jobs?'Event & wedding jobs':null].filter(Boolean).join(' + '):'Shifts, jobs, or both',done:any,fn:"App.go('rs-paths')"},
+      {k:'rtw',l:'Right to work',d:o.rtw==='checked'?'Checked on GOV.UK · 22 Oct · by Valeria':o.rtw==='sent'?'Share code sent · we check within 24 h':'Share code from GOV.UK, or your UK / Irish passport',done:o.rtw==='checked',wait:o.rtw==='sent',fn:"App.go('rs-rtw')"},
+      {k:'pay',l:'Pay details',d:o.pay?'Bank · NI number saved':p.jobs&&!p.shifts?'Bank account · UTR optional':'Bank account · National Insurance number',done:o.pay,fn:"RS.paySheet()"},
+      {k:'sign',l:p.shifts&&p.jobs?'Sign your two agreements':'Sign your agreement',d:!any?'After you choose how to work':[p.shifts?`Casual Worker Agreement${o.signed.worker?' ✓':''}`:null,p.jobs?`Florist Services Agreement${o.signed.contractor?' ✓':''}`:null].filter(Boolean).join(' · '),done:any&&(!p.shifts||o.signed.worker)&&(!p.jobs||o.signed.contractor),off:!any,fn:any?"RS.signSheet()":""},
+      {k:'lessons',l:'Two short lessons',d:p.shifts?'Studio safety 6 min · Our standards 8 min · paid with your first shift':'Only for studio shifts – jobs come with their own brief',done:o.lessons||(any&&!p.shifts),off:!p.shifts,fn:p.shifts?"RS.lessons()":""}
+    ]};
+  const ready=()=>steps().every(s=>s.done);
+
+  /* ---- screens ---- */
+  const screens=document.querySelector('.screens');
+  const mk=(id,ttl,back,cta)=>{const s=document.createElement('section');s.className='scr me5';s.id='s-'+id;s.dataset.nav=ttl;s.dataset.group='Reserve';s.innerHTML=`<div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('${back||'home'}')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">${ttl}</div></div><div class="scr-body${cta?' has-cta':''}" id="${id}-body" style="padding-bottom:32px"></div>${cta?`<div class="cta-bar" id="${id}-cta"></div>`:''}`;screens.appendChild(s);return s};
+  mk('rs-email','Invite email · preview','home');
+  mk('rs-paths','How you\'d like to work','home',true);
+  mk('rs-rtw','Right to work','home',true);
+  mk('reserve','Reserve · manager','home');
+
+  /* 1. the email the candidate gets when a manager presses «Invite to reserve» in CRM */
+  window.mount_rs_email=function(){
+    document.getElementById('rs-email-body').innerHTML=`<div class="rs-note" style="padding-top:8px">Sent from CRM when a manager presses <b>Invite to reserve</b> on a Work-with-us application. One email, no follow-up chasers.</div>
+      <div class="rs-mail">
+        <div class="hdr"><b>Floritta Studio</b><br>To: Lina K.<br>Subject: <b>You're in the Floritta reserve</b></div>
+        <div class="bd">
+          <p>Hi Lina,</p>
+          <p>Thank you for applying through <i>Work with us</i>. We loved your wedding work and would like to keep you in our reserve of florists.</p>
+          <p><b>How it works.</b> Download the Floritta Team app and join with your code. When we have an open shift at the studio or a wedding or event job, it comes to your phone. You take what suits you and ignore the rest – no obligation either way.</p>
+          <div class="caps muted" style="margin-top:16px">Your code · valid 14 days</div>
+          <div class="code">FLR-7Q4K</div>
+          <div class="stores"><span>App Store</span><span>Google Play</span></div>
+          <p class="sm soft">In the app you'll choose how you'd like to work – shifts at our studio (paid hourly, with holiday pay), event jobs for a fixed fee as your own business, or both – check your right to work and sign a short agreement. About 10 minutes.</p>
+          <p>See you soon,<br>Floritta Studio · 80 Willow Walk, SE1</p>
+        </div>
+        <div class="ft">We keep your application for 12 months to offer you work, then delete it. <u>Remove me from the reserve</u> – deletes your application now. Privacy notice: floritta.uk/privacy</div>
+      </div>
+      <div class="rs-note">Wording to be approved by the solicitor (status terms) before launch.</div>`;
+  };
+
+  /* 2. choose how to work – two separate legal relationships, chosen by the person */
+  window.mount_rs_paths=function(){
+    const p=R.ob.paths;
+    document.getElementById('rs-paths-body').innerHTML=`<div class="pad" style="padding-top:8px"><h1 class="h2">Two ways to work with us</h1><p class="soft" style="margin:10px 0 0">Choose one or both. They are separate agreements – you can change your mind later.</p></div>
+      <button class="rs-path${p.shifts?' on':''}" onclick="RS.toggle('shifts')"><div class="hd"><i></i><div><div class="h4">Shifts at the studio</div><div class="xs muted">casual worker</div></div></div>
+        <ul><li>We send open shifts, you take the ones you want</li><li>Paid per hour, never below £12.71, + bouquet bonus, through PAYE</li><li>Holiday builds up as you work (12.07 %), sick pay, pension if you qualify</li><li>Inside a shift: clock-in, studio tasks and standards like for everyone</li></ul></button>
+      <button class="rs-path${p.jobs?' on':''}" onclick="RS.toggle('jobs')"><div class="hd"><i></i><div><div class="h4">Event & wedding jobs</div><div class="xs muted">self-employed · your own business</div></div></div>
+        <ul><li>Whole jobs for a fixed fee: weddings, installs, workshops, batches made at your place</li><li>Your design within the client's brief, your tools, your timing</li><li>You may send another florist instead of you</li><li>You invoice us, handle your own tax; no holiday or sick pay</li></ul></button>
+      <div class="rs-note">Not sure? Most florists start with shifts. Jobs suit people who already work for other clients.</div>`;
+    document.getElementById('rs-paths-cta').innerHTML=`<button class="btn --block" ${p.shifts||p.jobs?'':'disabled'} onclick="App.back('home')">Save</button>`;
+  };
+  R.toggle=k=>{R.ob.paths[k]=!R.ob.paths[k];A.haptic();window.mount_rs_paths()};
+
+  /* 3. right to work – share code (any nationality) or UK/IE passport via a certified IDVT provider */
+  window.mount_rs_rtw=function(){
+    const st=R.ob.rtw,el=document.getElementById('rs-rtw-body'),cta=document.getElementById('rs-rtw-cta');
+    if(st!=='todo'){
+      el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">${st==='checked'?'Done':'Sent 22 Oct, 10:14'}</div><h1 class="h2 mt8">${st==='checked'?'Right to work checked':'We\'re checking'}</h1><p class="soft" style="margin:10px 0 0">${st==='checked'?'Checked on GOV.UK by Valeria on 22 Oct. Nothing else to do. If your permission has an end date, we\'ll remind you a month before.':'A manager checks your share code on GOV.UK, usually the same day. You\'ll get a notification.'}</p></div>
+        <div class="rs-grp">What we keep</div><div class="wk-kv --info"><span>Record</span><span>the GOV.UK result page, date and who checked</span><span>How long</span><span>while you work with us + 2 years, then deleted</span></div>`;
+      cta.innerHTML=st==='sent'?`<button class="btn --block --secondary" onclick="RS.rtwDemo()">Demo: manager checks it</button>`:`<button class="btn --block" onclick="App.back('home')">Done</button>`;
+      return;
+    }
+    el.innerHTML=`<div class="rs-note" style="padding-top:8px">The law asks us to check this before anyone works on our orders – for shifts and for jobs alike.</div>
+      <div class="rs-grp">Share code</div>
+      <div class="blk"><div class="field"><label>Share code from GOV.UK</label><input class="input" placeholder="W3K 9PL 2XQ" value="W3K 9PL 2XQ"></div>
+      <div class="field"><label>Date of birth</label><input class="input" value="14 / 03 / 1996"></div>
+      <p class="xs muted" style="margin:0">Get it at gov.uk/prove-right-to-work – takes 2 minutes.</p></div>
+      <div class="rs-grp">British or Irish passport?</div>
+      <div class="blk"><button class="btn --secondary --block --sm" onclick="App.toast('Passport scan + selfie via certified provider – demo')">Scan passport instead</button><p class="xs muted" style="margin:8px 0 0">Checked by a Home Office-certified provider. Or show it at the studio.</p></div>`;
+    cta.innerHTML=`<button class="btn --block" onclick="RS.rtwSend()">Send for check</button>`;
+  };
+  R.rtwSend=()=>{R.ob.rtw='sent';A.haptic();A.toast('Sent – we check within 24 h');window.mount_rs_rtw()};
+  R.rtwDemo=()=>{R.ob.rtw='checked';A.push('Right to work checked','You\'re one step from your first offer',{icon:'check'});window.mount_rs_rtw()};
+
+  R.details=()=>A.sheet(`<div class="sh-head"><div class="h3">Your details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">From your Work-with-us application on 19 Oct. Edit anything.</p><div class="field"><label>Name</label><input class="input" value="Lina K."></div><div class="field"><label>Phone</label><input class="input" value="+44 7··· ··· 412"></div><div class="field"><label>Area</label><input class="input" value="SE16"></div><div class="field"><label>Skills</label><input class="input" value="weddings, hand-tied"></div><div class="field"><label>Usually free</label><input class="input" value="weekends, Mon"></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Saved')">Save</button></div>`);
+  R.paySheet=()=>{const p=R.ob.paths,jobsOnly=p.jobs&&!p.shifts;A.sheet(`<div class="sh-head"><div class="h3">Pay details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Account name</label><input class="input" value="Lina K."></div><div class="field"><label>Sort code · account</label><input class="input" value="04-00-04 · 1234····"></div>${jobsOnly?'':'<div class="field"><label>National Insurance number</label><input class="input" value="QQ 12 34 56 C"></div>'}${p.jobs?'<div class="field"><label>UTR (optional, for jobs)</label><input class="input" placeholder="10 digits"></div>':''}<p class="xs muted" style="margin:0">${p.shifts?'Shifts are paid through PAYE – we need your NI number. ':''}${p.jobs?'Jobs are paid gross – you handle your own tax.':''}</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.ob.pay=true;App.toast('Saved');window.mount_home()">Save</button></div>`)};
+  R.signSheet=()=>{const p=R.ob.paths,s=R.ob.signed;
+    const doc=(k,t,v,terms)=>`<div class="panel" style="margin-bottom:12px"><div class="flex ai-c jc-sb"><div class="h4">${t}</div>${s[k]?'<span class="pill --done">Signed</span>':''}</div><div class="xs muted mt4">${v}</div><div class="wk-kv --info" style="margin:12px 0 0">${terms.map(x=>`<span>${x[0]}</span><span>${x[1]}</span>`).join('')}</div>${s[k]?'':`<button class="btn --sm mt16" onclick="RS.sign('${k}')">Read and sign</button>`}</div>`;
+    A.sheet(`<div class="sh-head"><div class="h3">Your agreement${p.shifts&&p.jobs?'s':''}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body">
+      ${p.shifts?doc('worker','Casual Worker Agreement','v1.0 · for studio shifts',AG.docs.worker.terms.slice(0,4)):''}
+      ${p.jobs?doc('contractor','Florist Services Agreement','v1.0 · for event & wedding jobs',[['Your status','self-employed – your own business'],['Jobs','whole jobs for a fixed fee, shown before you apply'],['How','your design within the client\'s brief, your tools'],['Substitute','another florist may do it instead of you (right to work checked)'],['Pay','your invoice or our statement, gross']]):''}
+      <p class="xs muted" style="margin:4px 0 0">In the build: the same signing screen as <b>My agreement</b> – finger signature or paper with HR.</p></div>`,{full:true})};
+  R.sign=k=>{R.ob.signed[k]=true;A.haptic();A.toast('Signed – copy saved in My agreement');R.signSheet();window.mount_home()};
+  R.lessons=()=>{R.ob.lessons=true;A.toast('Lessons done – paid at your hourly rate with your first shift');window.mount_home()};
+
+  /* Lina – Today = onboarding checklist, then «you're in» */
+  const origHome=window.mount_home;
+  window.mount_home=function(){
+    if(!isRes()){origHome();if(isMgr())R.mgrPanel();return}
+    const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
+    const st=steps(),act=st.filter(s=>!s.off),done=act.filter(s=>s.done).length;
+    const list=st.map((s,i)=>`<button class="rs-step${s.done?' done':''}${s.wait?' wait':''}${s.off?' off':''}" ${s.fn?`onclick="${s.fn}"`:''}><span class="n">${s.done?A.icon('check'):i+1}</span><span class="f1"><div class="l">${s.l}</div><div class="d">${s.d}</div></span><span class="s">${s.done?'Done':s.wait?'Checking':s.off?'':'To do'}</span></button>`).join('');
+    const p=R.ob.paths;
+    document.getElementById('td-body').innerHTML=ready()
+      ?`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve</div><h1 class="h1 mt8">You're in, Lina</h1><p class="soft" style="margin:10px 0 0">${p.shifts?'Open shifts':''}${p.shifts&&p.jobs?' and ':''}${p.jobs?'event jobs':''} will come to this phone. Take what suits you – nothing is expected of you, and passing is never recorded.</p></div>
+        <div class="rs-grp">Alerts</div><div class="wk-kv --info"><span>When</span><span>as soon as something matches · quiet 21:00–08:00</span><span>How many</span><span>max 6 a day</span><span>Matches</span><span>your area (SE16 + 5 km), weekends, Mon</span></div>
+        <div class="blk" style="margin-top:16px"><button class="btn --block" onclick="RS.samplePush()">Show a sample offer</button></div>
+        <div class="rs-note">Your first ${p.shifts?'shift':'job'} opens the rest of the app${p.shifts?' – Today, tasks and lessons, like for the whole team':''}.</div>`
+      :`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve · joined with FLR-7Q4K</div><h1 class="h1 mt8">Hello, Lina</h1><p class="soft" style="margin:10px 0 0">A few steps and we can start sending you offers. About 10 minutes.</p></div>
+        <div class="rs-bar"><i style="width:${Math.round(done/act.length*100)}%"></i></div>
+        <div class="sm soft" style="padding:8px var(--gutter) 14px">${done} of ${act.length} done</div>
+        <div class="rs-steps">${list}</div>
+        <div class="rs-note">Changed your mind? <button class="textbtn" onclick="RS.leave()">Leave the reserve</button> – we delete your application.</div>`;
+  };
+  R.samplePush=()=>{const p=R.ob.paths;if(p.shifts)A.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h + bonus · Take or skip',{icon:'calendar'});else A.push('New job · £420','Sat 24 Oct · wedding, Chelsea · arch + 8 centrepieces',{icon:'calendar'})};
+  R.leave=()=>A.confirm('Leave the reserve?','We delete your application and this account. No more emails or alerts. You can apply again any time on floritta.uk.','Leave and delete',()=>A.toast('Deleted – demo'));
+
+  /* Lina – Me: short, no team sections */
+  const origMe=window.mount_me;
+  window.mount_me=function(){if(!isRes())return origMe();
+    const u=A.me(),el=document.getElementById('me-body');
+    const Rw=(i,l,d,fn)=>`<button class="row" onclick="${fn}">${ic(i)}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${ic('chev','chev')}</button>`;
+    el.innerHTML=`<div class="prof" style="margin-top:6px">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${u.n}</h1><div class="tt">${u.title}</div><div class="tt xs muted">Applied 19 Oct · invited 20 Oct</div></div></div>
+      <div class="rs-grp">Reserve</div><div class="rows">
+        ${Rw('check','Getting ready',ready()?'All done':'Steps to your first offer',"App.tab('home')")}
+        ${Rw('calendar','How I work','Shifts, jobs or both',"App.go('rs-paths')")}
+        ${Rw('bell','Offer alerts','Area, days, quiet hours',"App.go('settings')")}
+      </div>
+      <div class="rs-grp">Privacy</div><div class="rows">
+        ${Rw('eye','What we keep','Application for 12 months, then deleted','App.toast(\'Privacy notice – demo\')')}
+        ${Rw('trash','Leave the reserve','Deletes your application now',"RS.leave()")}
+      </div>`;
+  };
+
+  /* tabs: a reserve member only has Today + Me until the first shift or job */
+  const tabs=()=>{const r=isRes();document.querySelectorAll('#tabbar .tab').forEach(t=>{const k=t.dataset.tab;t.classList.toggle('rs-hide',r&&(k==='tasks'||k==='learn'||k==='work'))});if(r)document.getElementById('tabbar').style.gridTemplateColumns='repeat(2,1fr)'};
+  document.addEventListener('user',tabs);
+  const origSplash=window.mount_splash;window.mount_splash=function(){origSplash();if(!isRes())return;
+    document.getElementById('sp-eyebrow').textContent='Floritta reserve';document.getElementById('sp-title').innerHTML='Welcome,<br>Lina.';document.querySelector('.sp-lead').textContent='Open shifts and event jobs, straight to your phone.';
+    const b=document.getElementById('sp-face');b.innerHTML='Join with invite code';b.onclick=()=>A.sheet(`<div class="sh-head"><div class="h3">Join the reserve</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Invite code from your email</label><input class="input" value="FLR-7Q4K"></div><div class="field"><label>Email</label><input class="input" value="lina.k@····.com"></div><p class="xs muted" style="margin:0">The code links this app to your application – no forms twice. Then Face ID or a PIN.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.go('home');App.state.history=[]">Continue</button></div>`);
+    const pin=document.getElementById('sp-pin');if(pin)pin.textContent='See the invite email';pin.onclick=()=>A.go('rs-email')};
+
+  /* ---- Mira – self-employed florist: whole jobs for a fixed fee ---- */
+  R.jobs=[
+    {id:31,off:0,title:'Restaurant install · Mayfair W1',what:'6 large urns + bar garland, brief & mood board attached',when:'15:00–18:00',fee:140,mat:'flowers supplied by Floritta, your tools',status:'mine'},
+    {id:32,off:4,title:'Wedding · Chelsea Old Town Hall',what:'ceremony arch + 8 table centrepieces',when:'set up 07:30–10:30',fee:420,mat:'flowers to the client\'s order, collected from SE1',status:'open'},
+    {id:33,off:6,title:'Workshop host · SW6 shop',what:'wreath workshop, 12 guests, 2.5 h – your own format',when:'18:00–20:30',fee:150,mat:'kits ready on the table',status:'open'},
+    {id:34,off:8,title:'Corporate lobby · EC2',what:'3 statement vases, weekly refresh – one visit',when:'any time Wed before 09:00',fee:95,mat:'buy to the brief, budget £120, receipt',status:'open'},
+    {id:35,off:16,title:'Batch at your studio',what:'20 hand-tied bouquets to the photo spec',when:'collect stems 08:00 SE1 · back by 14:00',fee:180,mat:'stems from us, wrap & tools yours',status:'open'}
+  ];
+  const jcard=j=>{
+    const head=`<div class="top"><span class="caps muted">${lab(j.off)} · ${j.when}</span>${j.status==='mine'?'<span class="pill --done">Yours</span>':j.status==='applied'?'<span class="pill --review">Applied</span>':''}</div><div class="h4 mt8">${j.title}</div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.what} · ${j.mat}</div>`;
+    if(j.status==='mine')return `<div class="ct-job mine">${head}<div class="btns"><button class="btn --sm --ghost" onclick="RS.brief(${j.id})">Brief</button><button class="btn --sm --ghost" onclick="RS.sub(${j.id})">Send a florist</button><button class="btn --sm --secondary" onclick="RS.withdraw(${j.id})">Withdraw</button></div></div>`;
+    if(j.status==='applied')return `<div class="ct-job">${head}<div class="meta">The studio confirms in the app, usually within the hour.</div></div>`;
+    return `<div class="ct-job">${head}<div class="btns"><button class="btn --sm --secondary" onclick="RS.brief(${j.id})">Brief</button><button class="btn --sm" onclick="RS.apply(${j.id})">Apply</button></div></div>`;
+  };
+  const fboard=()=>{const mine=R.jobs.filter(j=>j.status==='mine'),open=R.jobs.filter(j=>j.status!=='mine');
+    return `<div class="rs-note" style="padding:0 var(--gutter) 8px">Whole jobs with a fixed fee. Apply if one suits you. Passing is not recorded and changes nothing.</div>
+      <div class="sec-head" style="margin-top:6px"><div class="h2">Your jobs</div><span class="xs muted">${mine.length} · ${gbp(mine.reduce((s,j)=>s+j.fee,0))}</span></div>
+      ${mine.length?mine.map(jcard).join(''):'<div class="rs-note">No jobs taken.</div>'}
+      <div class="sec-head"><div class="h2">Open jobs</div><span class="xs muted">next 3 weeks</span></div>
+      ${open.map(jcard).join('')}
+      <div class="rs-grp">How this works</div>
+      <div class="wk-kv --info">
+        <span class="soft">Fee</span><span>fixed for the whole job, shown before you apply</span>
+        <span class="soft">How you do it</span><span>your design within the client's brief; we check the result against the brief, not your hours</span>
+        <span class="soft">Who does it</span><span>you, or a florist you choose (right to work checked)</span>
+        <span class="soft">Tools</span><span>yours</span>
+        <span class="soft">Withdraw</span><span>any time – please early, or send a florist; no fee, no mark</span>
+        <span class="soft">If the client isn't happy</span><span>you fix it or we agree a lower fee for that job</span>
+        <span class="soft">Paid</span><span>your invoice or our statement, gross</span>
+        <span class="soft">Holiday, sick pay</span><span>none – you are in business on your own account</span>
+      </div>`;
+  };
+  R.remount=()=>{const c=A.state.current;if(c==='home')window.mount_home();else if(c==='jobs')window.mount_jobs()};
+  R.apply=id=>{const j=R.jobs.find(x=>x.id===id);j.status='applied';A.haptic();A.toast('Applied');setTimeout(()=>{j.status='mine';A.push('Job confirmed',`${lab(j.off)} · ${j.title}`,{icon:'check'});R.remount()},1400);R.remount()};
+  R.withdraw=id=>{const j=R.jobs.find(x=>x.id===id);A.confirm('Withdraw from this job?',`${lab(j.off)} · ${j.title}. It goes back to open jobs. No fee, no rating, no effect on future jobs. Please tell us as early as you can – or send a florist instead.`,'Withdraw',()=>{j.status='open';A.toast('Withdrawn');R.remount()})};
+  R.sub=id=>{const j=R.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Send a florist instead</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">You don't need our permission. The florist must have had a right-to-work check with us – the law, not our choice. You stay responsible for the job and pay them what you agree.</p><div class="field"><label>Who does it?</label><input class="input" placeholder="Name or phone"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Noted – fee still paid to you')">Tell the studio</button></div>`)};
+  R.brief=id=>{const j=R.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">${j.title}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="caps muted">${lab(j.off)} · ${j.when}</div><div class="h2 mt8">${gbp(j.fee)}</div><div class="wk-kv --info" style="margin:14px 0 0"><span>The result</span><span>${j.what}</span><span>Client's brief</span><span>palette ivory & blush, no lilies, 3 reference photos</span><span>Materials</span><span>${j.mat}</span><span>On site</span><span>venue contact in the app on the day</span><span>Done when</span><span>photo of the finished work in the job</span></div><p class="xs muted" style="margin:12px 0 0">The brief describes the result. How and in what order you work is up to you.</p></div><div class="sh-foot">${j.status==='open'?`<button class="btn" onclick="App.closeSheet();RS.apply(${id})">Apply</button>`:'<button class="btn --secondary" onclick="App.closeSheet()">Close</button>'}</div>`,{full:true})};
+
+  const origJobs=window.mount_jobs;window.mount_jobs=function(p){if(!isMira())return origJobs&&origJobs(p);const t=document.querySelector('#s-jobs .ttl');if(t)t.textContent='Event jobs';document.getElementById('jobs-body').innerHTML=fboard()};
+  document.addEventListener('screen',e=>{if(e.detail.id==='jobs'&&!isMira()){const t=document.querySelector('#s-jobs .ttl');if(t)t.textContent='Jobs board'}});
+  const prevHome=window.mount_home;window.mount_home=function(){if(!isMira())return prevHome();
+    const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
+    const t=R.jobs.filter(j=>j.status==='mine'&&j.off===0);
+    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Mira</h1><div class="sm soft mt4">${t.length?`Today: ${t[0].title} · ${t[0].when}`:'No jobs today'}</div></div>${fboard()}`};
+  const prevMe=window.mount_me;window.mount_me=function(){if(!isMira())return prevMe();
+    const u=A.me(),el=document.getElementById('me-body');
+    const Rw=(i,l,d,v,fn)=>`<button class="row" onclick="${fn}">${ic(i)}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${v?`<span class="val">${v}</span>`:''}${ic('chev','chev')}</button>`;
+    el.innerHTML=`<div class="prof" style="margin-top:6px">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${u.n}</h1><div class="tt">${u.title}</div><div class="tt xs muted">Own studio in E8 · weddings & events</div></div></div>
+      <div class="pillrow" style="padding:14px var(--gutter) 0"><span class="pill --plain">Self-employed</span><span class="pill --plain">Own tools</span><span class="pill --plain">Other clients</span></div>
+      <div class="rs-grp">Jobs</div><div class="rows">
+        ${Rw('calendar','Event jobs',`${R.jobs.filter(j=>j.status!=='mine').length} open · ${R.jobs.filter(j=>j.status==='mine').length} taken`,'',"App.go('jobs')")}
+        ${Rw('award','Statements & invoices','Per job · gross · or your own invoice','£610',"App.go('statements')")}
+      </div>
+      <div class="rs-grp">Your business</div><div class="rows">
+        ${Rw('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
+        ${Rw('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
+      </div>
+      <div class="rs-grp">Preferences</div><div class="rows">${Rw('bell','Job alerts','Weddings, installs · max 6 a day · quiet 21–08','On',"App.go('settings')")}${Rw('eye','View as','','',"ME5.openViewAs()")}</div>
+      <div class="rs-note tc" style="padding:28px var(--gutter) 8px">No shifts, no clock-in, no tasks, no lessons. Each job comes with its brief.</div>`};
+  const prevSt=window.mount_statements;window.mount_statements=function(){if(!isMira())return prevSt();
+    document.getElementById('statements-body').innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">£610.00</h1><div class="sm soft mt4">Paid Fri 23 Oct · against your invoice #MK-118 · gross</div></div>
+      <div class="rs-grp">Jobs</div><div class="wk-kv"><span class="soft">Wedding · Marylebone · arch + 10 tables</span><span>£420.00</span><span class="soft">Corporate lobby · EC2 · 2 visits × £95</span><span>£190.00</span><span class="soft t">Total</span><span class="t">£610.00</span></div>
+      <div class="rs-note">No tax or NI taken off, no holiday pay or pension – a payment for services, not wages. Materials you bought to a brief are repaid at cost against the receipt, outside the fee.</div>`};
+  const prevWork=window.mount_work;window.mount_work=function(p){if(!isMira())return prevWork&&prevWork(p);A.go('jobs',{},{replace:true})};
+
+  /* ---- manager: Reserve – invite, check right to work, offer shifts and jobs ---- */
+  R.people=[
+    {n:'Lina K.',sk:'weddings, hand-tied',paths:['Shifts','Jobs'],st:'rtw',at:'share code sent 22 Oct'},
+    {n:'Olena M.',sk:'retail, hand-tied',paths:['Shifts'],st:'ready',at:'ready since 14 Oct'},
+    {n:'Priya S.',sk:'installations',paths:['Jobs'],st:'ready',at:'ready since 9 Oct'},
+    {n:'Tom R.',sk:'funeral, retail',paths:['Shifts'],st:'onb',at:'3 of 5 steps'},
+    {n:'Aigerim B.',sk:'weddings',paths:[],st:'invited',at:'invited 20 Oct · not opened the app'},
+    {n:'Chloe D.',sk:'hand-tied',paths:['Shifts','Jobs'],st:'ready',at:'ready since 2 Oct'}
+  ];
+  R.pool=[{n:'Sofia P.',sk:'weddings',d:'applied 18 Oct'},{n:'Marta L.',sk:'retail',d:'applied 17 Oct'},{n:'Ben H.',sk:'installations',d:'applied 12 Oct'}];
+  const stPill={rtw:'<span class="pill --urgent">RTW to check</span>',ready:'<span class="pill --done">Ready</span>',onb:'<span class="pill --doing">Onboarding</span>',invited:'<span class="pill --todo">Invited</span>'};
+  window.mount_reserve=function(){
+    const P=R.people,cnt=s=>P.filter(p=>p.st===s).length,rtw=P.filter(p=>p.st==='rtw');
+    document.getElementById('reserve-body').innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Florists · from Work with us</div><h1 class="h2 mt8">Reserve</h1></div>
+      <div class="rs-funnel"><div><b>34</b><small>Applied</small></div><div><b>${P.length+12}</b><small>Invited</small></div><div><b>${P.filter(p=>p.st!=='invited').length+6}</b><small>In the app</small></div><div><b>${cnt('ready')}</b><small>Ready</small></div></div>
+      ${rtw.length?`<div class="sec-head"><div class="h2">Waiting for you</div><span class="xs muted">${rtw.length}</span></div>${rtw.map(p=>`<div class="ct-job"><div class="top"><span class="caps muted">Right to work</span>${stPill.rtw}</div><div class="h4 mt8">${p.n}</div><div class="meta">${p.at} · check it on GOV.UK, then record the result here</div><div class="btns"><button class="btn --sm" onclick="RS.rtwCheck('${p.n}')">Record the check</button></div></div>`).join('')}`:''}
+      <div class="sec-head"><div class="h2">People</div><span class="xs muted">${P.length}</span></div>
+      <div class="rows" style="border-top:1px solid var(--hair)">${P.map(p=>`<div class="row st"><span class="rt"><div class="l">${p.n} ${p.paths.map(x=>`<span class="rs-chip">${x}</span>`).join('')}</div><div class="d">${p.sk} · ${p.at}</div></span>${stPill[p.st]}</div>`).join('')}</div>
+      <div class="rs-note">No acceptance rates, rankings or «reliability» here – on purpose: passing on offers must never count against anyone.</div>
+      <div class="rs-grp">Actions</div>
+      <div class="blk" style="display:grid;gap:8px"><button class="btn --block" onclick="RS.inviteSheet()">Invite from applications</button><button class="btn --block --secondary" onclick="RS.offerSheet()">Offer an open shift</button><button class="btn --block --secondary" onclick="RS.jobSheet()">Post an event job</button></div>`;
+  };
+  R.rtwCheck=n=>A.sheet(`<div class="sh-head"><div class="h3">Right to work · ${n}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">Open GOV.UK «View a job applicant's right to work», enter share code W3K 9PL 2XQ and date of birth, compare the photo with the person.</p><button class="radio"><span class="f1">Unlimited right to work</span></button><button class="radio"><span class="f1">Time-limited – until <input class="input" style="height:36px;width:130px;display:inline-block" placeholder="dd/mm/yyyy"></span></button><button class="radio"><span class="f1">No right to work – do not offer anything</span></button><div class="field mt16"><label>GOV.UK result (PDF)</label><button class="btn --secondary --sm" onclick="App.toast('Upload – demo')">Attach</button></div><p class="xs muted" style="margin:0">Saved with your name and the time. Kept while they work with us + 2 years.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.rtwDone('${n}')">Save check</button></div>`,{full:true});
+  R.rtwDone=n=>{const p=R.people.find(x=>x.n===n);p.st='onb';p.at='right to work checked 22 Oct · by Valeria';if(n==='Lina K.')R.ob.rtw='checked';A.toast('Recorded');window.mount_reserve()};
+  R.inviteSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Invite to the reserve</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 6px">Applications from Work with us, florists only. Same button in CRM → Candidates.</p>${R.pool.map(c=>`<button class="ag-check on" style="margin:12px 0 0" onclick="this.classList.toggle('on')"><i></i><span><b>${c.n}</b> · ${c.sk} · ${c.d}</span></button>`).join('')}<div class="blk" style="padding:0;margin-top:18px"><button class="btn --ghost --sm" onclick="App.closeSheet();App.go('rs-email')">Preview the email</button></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.inviteDo()">Send ${R.pool.length} invites</button></div>`,{full:true});
+  R.inviteDo=()=>{R.pool.forEach(c=>R.people.push({n:c.n,sk:c.sk,paths:[],st:'invited',at:'invited 22 Oct'}));R.pool=[];A.toast('Invites sent – each gets a code valid 14 days');window.mount_reserve()};
+  R.offerSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Offer an open shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Shift</label><input class="input" value="Sat 24 Oct · 08:00–15:00 · SE1 studio"></div><div class="field"><label>Places</label><input class="input" value="2"></div><div class="field"><label>Rate</label><input class="input" value="£13.21/h + bouquet bonus"></div><div class="field"><label>Who gets the alert</label><input class="input" value="Ready for shifts · ${R.people.filter(p=>p.st==='ready'&&p.paths.includes('Shifts')).length} people · area & days match"></div><div class="rs-warn">Published 43 h before the start – under our 48 h notice. Fine for an extra shift; from 2027 the law sets the notice, so the app keeps when each offer went out.</div><p class="xs muted" style="margin:12px 0 0">First to take it gets it. You publish – you never assign a reserve florist to a shift.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent');App.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h',{icon:'calendar',to:'reserve'})">Send offer</button></div>`,{full:true});
+  R.jobSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Post an event job</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Job</label><input class="input" value="Wedding · Chelsea Old Town Hall"></div><div class="field"><label>The result</label><input class="input" value="ceremony arch + 8 table centrepieces"></div><div class="field"><label>Fixed fee</label><input class="input" value="£420"></div><div class="field"><label>Brief</label><input class="input" value="palette, 3 photos, no lilies"></div><div class="field"><label>Who gets the alert</label><input class="input" value="Ready for jobs · ${R.people.filter(p=>p.st==='ready'&&p.paths.includes('Jobs')).length} people"></div><p class="xs muted" style="margin:0">A job is a result for a fee – never hours, a rate or a time to be at the studio. If it needs to be done in our studio under a manager, it's a shift, not a job.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Posted');App.push('New job · £420','Sat 24 Oct · wedding, Chelsea',{icon:'calendar',to:'reserve'})">Post job</button></div>`,{full:true});
+  R.mgrPanel=()=>{const body=document.getElementById('td-body');if(!body)return;const n=R.people.filter(p=>p.st==='rtw').length;const b=document.createElement('div');b.className='panel blk';b.style.margin='0 var(--gutter) 14px';
+    b.innerHTML=`<div class="caps muted">Reserve</div><div class="h3 mt8">${n?`${n} right-to-work check${n>1?'s':''} waiting`:'Reserve is up to date'}</div><div class="sm soft mt4">${R.people.filter(p=>p.st==='ready').length} florists ready · ${R.pool.length} new applications to invite</div><button class="btn --sm mt16" onclick="App.go('reserve')">Open reserve</button>`;
+    body.insertBefore(b,body.firstChild)};
+
+  /* ---- notes for the build (sidebar) ---- */
+  const nav=document.getElementById('nav-list');if(nav){const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Резерв и заказы для флористов (22.10)</h4><ul>
+    <li><b>Только добавлено</b> – прежние экраны, персоны и функции не менялись. Новые экраны – группа «Reserve» в списке слева.</li>
+    <li><b>Lina</b> (Reserve · new) – пришла из формы Work with us. Splash → «Join with invite code» → Today = 6 шагов: данные из анкеты, выбор пути (смены / заказы / оба), right to work (share code или паспорт UK/IE), банк и NI, договор(ы), 2 урока (только для смен, оплачиваются). Готово → «You're in», дальше push.</li>
+    <li><b>Invite email · preview</b> – письмо из CRM по кнопке «Invite to reserve»: код на 14 дней, ссылки на сторы, «Remove me from the reserve».</li>
+    <li><b>Mira</b> (Florist · s-e) – заказы целиком за фиксированную цену: свадьба, инсталляция, мастер-класс, партия у себя. Brief описывает результат, не процесс. Можно прислать другого флориста. Нет смен, clock-in, задач, уроков, рейтингов.</li>
+    <li><b>Reserve · manager</b> (Valeria, плашка на Today) – воронка, очередь проверок right to work с записью «кто и когда проверил», приглашение из анкет, «Offer an open shift» (только публиковать, не назначать; предупреждение при уведомлении &lt; 48 ч), «Post an event job». Нарочно без процента принятия и рейтингов.</li>
+    <li>ТЗ: волт Floritta_Brain_Main/Юридическое/Резерв_флористов_ТЗ_2026-10-22.md</li></ul>`;nav.parentNode.appendChild(n)}
+})();
+</script>
+
 </body>
 </html>
