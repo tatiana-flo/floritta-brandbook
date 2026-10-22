@@ -4094,7 +4094,7 @@ S.report=function(){
       return `<div class="wk-offer"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="xs muted">${left} place${left===1?'':'s'} left</span></div><div class="hrs">${o.hrs}</div><div class="meta">${o.h} h · ${o.place} · ${fmtGBP(u.rate)}/h + bonus${o.note?' · '+o.note:''}</div><div class="btns"><button class="btn --sm --secondary" onclick="WK.skip(${o.id})">Skip</button><button class="btn --sm" onclick="WK.take(${o.id})">Take this shift</button></div></div>`;
     };
     const gh=W.ghOffer.answered?'':`<div class="panel blk" style="margin:0 var(--gutter) 18px;border-color:var(--ink)"><div class="caps muted">Guaranteed hours</div><div class="h3 mt8">You've worked about ${W.ghOffer.avg} h a week for ${W.ghOffer.weeks} weeks</div><p class="sm soft" style="margin:6px 0 14px">By law we must offer you a contract with those hours. You can say no and keep choosing shifts.</p><button class="btn --sm --secondary" onclick="App.go('guaranteed')">See the offer</button></div>`;
-    const canc=cancelled.map(o=>`<div class="wk-offer gone" style="opacity:.8"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="wk-badge">Cancelled by studio</span></div><div class="hrs">${o.hrs}</div><div class="meta">Cancelled ${o.cancelNotice} h before start – under our ${W.notice} h notice. ${o.comp} h paid as cancellation pay, on your next statement.</div></div>`).join('');
+    const canc=cancelled.map(o=>`<div class="wk-offer gone" style="opacity:.8"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="wk-badge">Cancelled by studio</span></div><div class="hrs">${o.hrs}</div><div class="meta">Cancelled ${o.cancelNotice} h before start. We're sorry – the shift is simply off; nothing is paid or deducted.</div></div>`).join('');
     el.innerHTML=`
       <div class="note" style="padding-top:0">No rota for you. We publish shifts, you take the ones that suit you. Skipping or ignoring an offer is not recorded and changes nothing – not your pay, not what we offer next.</div>
       ${gh}
@@ -4106,7 +4106,6 @@ S.report=function(){
       <div class="grp">How this works</div>
       <div class="wk-kv --info">
         <span class="soft">Notice of a shift</span><span>at least ${W.notice} h before it starts</span>
-        <span class="soft">If we cancel late</span><span>we pay part of the shift</span>
         <span class="soft">Releasing a shift</span><span>please 24 h before – or offer it to a colleague</span>
         <span class="soft">If you release late</span><span>no fee, no rating – it goes back on the board as urgent; the release is on record, and a pattern of late releases is the one reason we may end the arrangement, in writing</span>
         <span class="soft">Pay</span><span>hourly, never below £12.71, + bouquet bonus</span>
@@ -4216,7 +4215,7 @@ S.report=function(){
   const origSchedule2=window.mount_schedule;
   window.mount_schedule=function(p){origSchedule2(p);const u=A.me();if(isWorker(u)||!(u.role==='manager'||u.role==='owner'))return;
     const el=document.getElementById('sch-body');const open=W.offers.filter(o=>o.status!=='cancelled');
-    const rows=open.map(o=>`<div class="appr"><div class="f1"><div class="sm"><b>${lab(o.off)}</b> · ${o.hrs} · ${o.place}</div><div class="xs muted">${o.taken}/${o.spots} taken${o.status==='accepted'?' · Zhadra':''} · published ${o.pub} h ago${o.pub<W.notice?' · <span class="accent">under notice</span>':''}</div></div><button class="btn --xs --secondary" onclick="App.toast('Cancel → cancellation pay applies if under ${W.notice} h')">Cancel</button></div>`).join('');
+    const rows=open.map(o=>`<div class="appr"><div class="f1"><div class="sm"><b>${lab(o.off)}</b> · ${o.hrs} · ${o.place}</div><div class="xs muted">${o.taken}/${o.spots} taken${o.status==='accepted'?' · Zhadra':''} · published ${o.pub} h ago${o.pub<W.notice?' · <span class="accent">under notice</span>':''}</div></div><button class="btn --xs --secondary" onclick="App.toast('Cancelled – workers get one push; nothing is paid or deducted')">Cancel</button></div>`).join('');
     const box=document.createElement('div');box.innerHTML=`<div class="grp first">Open shifts for casual workers · ${open.length}</div>${rows}<div class="blk" style="margin:12px 0 8px"><button class="btn --secondary --block --sm" onclick="WK.publish()">Publish a shift</button></div><div class="note" style="padding-top:0">Casual workers pick from this list. You can't assign them – only publish and wait.</div><div class="grp">Agreements ending soon</div><div class="appr"><div class="f1"><div class="sm"><b>Max</b> · casual courier · ends 15 Dec 2026</div><div class="xs muted">Decide by 1 Dec: extend, let it end, or offer a contract</div></div><button class="btn --xs --secondary" onclick="App.toast('Reminder set for 1 Dec')">Remind me</button></div><div class="appr"><div class="f1"><div class="sm"><b>Zhadra</b> · casual florist · ends 15 Mar 2027</div><div class="xs muted">Decide by 1 Mar</div></div></div>`;
     el.insertBefore(box,el.firstChild);
   };
