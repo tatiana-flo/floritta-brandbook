@@ -4178,12 +4178,12 @@ S.report=function(){
   window.mount_me=function(){
     origMe();const u=A.me();if(!isWorker(u))return;
     const el=document.getElementById('me-body');
-    const since=el.querySelector('.prof .tt.xs');if(since)since.textContent='Casual worker · since Oct 2026 · free to work elsewhere';
+    const since=el.querySelector('.prof .tt.xs');if(since)since.textContent='Casual worker · 1 Nov 2026 – 15 Mar 2027 · free to work elsewhere';
     el.querySelectorAll('.row').forEach(r=>{
       const l=r.querySelector('.l');if(!l)return;const t=l.textContent.trim();
       if(t==='Schedule'){l.textContent='Shift offers';r.querySelector('.d').innerHTML=`<span class="accent">${W.offers.filter(o=>o.status==='open').length} open</span> · ${W.offers.filter(o=>o.status==='accepted').length} booked`}
       if(t==='Time sheet'){r.querySelector('.d').textContent='Hours inside your booked shifts'}
-      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
+      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.toast('Casual worker agreement v1.0 · PDF – demo')">${A.icon('help').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">My agreement</div><div class="d">Casual worker · from 1 Nov 2026 · ends 15 Mar 2027 (peak season)</div></span><span class="val">PDF</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button><button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
     });
     const pills=el.querySelector('.pillrow');if(pills)pills.innerHTML=`<span class="pill --plain">Casual worker</span><span class="pill --plain">Shop floor</span>`;
     const wk=el.querySelector('.sec-head .h2');if(wk&&wk.textContent==='This week')wk.textContent='This week · booked';
@@ -4217,7 +4217,7 @@ S.report=function(){
   window.mount_schedule=function(p){origSchedule2(p);const u=A.me();if(isWorker(u)||!(u.role==='manager'||u.role==='owner'))return;
     const el=document.getElementById('sch-body');const open=W.offers.filter(o=>o.status!=='cancelled');
     const rows=open.map(o=>`<div class="appr"><div class="f1"><div class="sm"><b>${lab(o.off)}</b> · ${o.hrs} · ${o.place}</div><div class="xs muted">${o.taken}/${o.spots} taken${o.status==='accepted'?' · Zhadra':''} · published ${o.pub} h ago${o.pub<W.notice?' · <span class="accent">under notice</span>':''}</div></div><button class="btn --xs --secondary" onclick="App.toast('Cancel → cancellation pay applies if under ${W.notice} h')">Cancel</button></div>`).join('');
-    const box=document.createElement('div');box.innerHTML=`<div class="grp first">Open shifts for casual workers · ${open.length}</div>${rows}<div class="blk" style="margin:12px 0 8px"><button class="btn --secondary --block --sm" onclick="WK.publish()">Publish a shift</button></div><div class="note" style="padding-top:0">Casual workers pick from this list. You can't assign them – only publish and wait.</div>`;
+    const box=document.createElement('div');box.innerHTML=`<div class="grp first">Open shifts for casual workers · ${open.length}</div>${rows}<div class="blk" style="margin:12px 0 8px"><button class="btn --secondary --block --sm" onclick="WK.publish()">Publish a shift</button></div><div class="note" style="padding-top:0">Casual workers pick from this list. You can't assign them – only publish and wait.</div><div class="grp">Agreements ending soon</div><div class="appr"><div class="f1"><div class="sm"><b>Max</b> · casual courier · ends 15 Dec 2026</div><div class="xs muted">Decide by 1 Dec: extend, let it end, or offer a contract</div></div><button class="btn --xs --secondary" onclick="App.toast('Reminder set for 1 Dec')">Remind me</button></div><div class="appr"><div class="f1"><div class="sm"><b>Zhadra</b> · casual florist · ends 15 Mar 2027</div><div class="xs muted">Decide by 1 Mar</div></div></div>`;
     el.insertBefore(box,el.firstChild);
   };
   W.publish=()=>A.sheet(`<div class="sh-head"><div class="h3">Publish a shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Day</label><input class="input" value="Sat 31 Oct"></div><div class="field"><label>Hours</label><input class="input" value="12:00–20:00"></div><div class="field"><label>Places</label><input class="input" value="2"></div><div class="field"><label>Note</label><input class="input" placeholder="e.g. Halloween – busy day"></div><p class="xs muted" style="margin:0">Starts in 11 days – well over the ${W.notice} h notice. Workers get one push; no reminders.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Published to 2 casual florists')">Publish</button></div>`);
@@ -4232,7 +4232,7 @@ S.report=function(){
       <li><b>Pay statement</b> – часы × ставка ≥ £12.71, обучение оплачено, PAYE; отпуск копится в часах (12,07 %, потолок 28 дней) и платится при взятии.</li>
       <li><b>Внутри смены</b> всё как у всех: clock-in, задачи, уроки, бонус. Отличие только между сменами.</li>
       <li><b>Менеджер</b> (View as Valeria → Schedule) видит доску открытых смен и может только публиковать, не назначать.</li>
-      <li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
+      <li><b>Срок договора</b> – «My agreement» в Me (worker и self-employed) с датой окончания; у менеджера в Schedule – «Agreements ending soon» с датой решения за 2 недели.</li><li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
   /* ---- start as Zhadra ---- */
   A.setUser('zhadra');A.state.clockedIn=false;
   document.title='Floritta Staff — worker contour (copy)';
@@ -4365,6 +4365,7 @@ S.report=function(){
       <div class="grp">Your business</div><div class="rows">
         ${R('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
         ${R('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
+        ${R('calendar','My agreement','Services agreement · 3 Oct 2026 – 30 Sep 2027 · renew by 1 Sep','PDF',"App.toast('Services agreement v1.0 · PDF – demo')")}
       </div>
       <div class="grp">Preferences</div><div class="rows">
         ${R('bell','Job alerts','By area and time · max 6 a day · quiet 21–08','On',"App.go('settings')")}
