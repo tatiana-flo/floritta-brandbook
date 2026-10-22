@@ -4182,7 +4182,7 @@ S.report=function(){
       const l=r.querySelector('.l');if(!l)return;const t=l.textContent.trim();
       if(t==='Schedule'){l.textContent='Shift offers';r.querySelector('.d').innerHTML=`<span class="accent">${W.offers.filter(o=>o.status==='open').length} open</span> · ${W.offers.filter(o=>o.status==='accepted').length} booked`}
       if(t==='Time sheet'){r.querySelector('.d').textContent='Hours inside your booked shifts'}
-      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.toast('Casual worker agreement v1.0 · PDF – demo')">${A.icon('help').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">My agreement</div><div class="d">Casual worker · from 1 Nov 2026 · ends 15 Mar 2027 (peak season)</div></span><span class="val">PDF</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button><button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
+      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.go('agreement')">${A.icon('help').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">My agreement</div><div class="d">Casual worker · from 1 Nov 2026 · ends 15 Mar 2027 (peak season)</div></span><span class="val">${(window.AG&&AG.signed('worker'))?'Signed':'To sign'}</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button><button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
     });
     const pills=el.querySelector('.pillrow');if(pills)pills.innerHTML=`<span class="pill --plain">Casual worker</span><span class="pill --plain">Shop floor</span>`;
     const wk=el.querySelector('.sec-head .h2');if(wk&&wk.textContent==='This week')wk.textContent='This week · booked';
@@ -4231,7 +4231,7 @@ S.report=function(){
       <li><b>Pay statement</b> – часы × ставка ≥ £12.71, обучение оплачено, PAYE; отпуск копится в часах (12,07 %, потолок 28 дней) и платится при взятии.</li>
       <li><b>Внутри смены</b> всё как у всех: clock-in, задачи, уроки, бонус. Отличие только между сменами.</li>
       <li><b>Менеджер</b> (View as Valeria → Schedule) видит доску открытых смен и может только публиковать, не назначать.</li>
-      <li><b>Срок договора</b> – «My agreement» в Me (worker и self-employed) с датой окончания; у менеджера в Schedule – «Agreements ending soon» с датой решения за 2 недели.</li><li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
+      <li><b>Срок договора</b> – «My agreement» в Me (worker и self-employed) с датой окончания; у менеджера в Schedule – «Agreements ending soon» с датой решения за 2 недели.</li><li><b>My agreement</b> – краткое содержание договора, галочка «прочитала», подпись пальцем (Clear / Sign), после подписи – дата, версия, картинка подписи. У Zhadra не подписан (на Today – напоминание), у Dana подписан на бумаге (скан от HR).</li><li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
   /* ---- start as Zhadra ---- */
   A.setUser('zhadra');A.state.clockedIn=false;
   document.title='Floritta Staff — worker contour (copy)';
@@ -4341,7 +4341,7 @@ S.report=function(){
       <div class="wk-kv --info"><span class="soft">Income tax & NI</span><span>yours to declare (Self Assessment)</span><span class="soft">Trading allowance</span><span>first £1,000 a year tax-free</span><span class="soft">From us</span><span>weekly statement or your invoice, paid gross</span></div>
       <div class="grp">Not included</div>
       <div class="wk-kv --info"><span class="soft">Holiday pay</span><span>no</span><span class="soft">Sick pay</span><span>no</span><span class="soft">Pension</span><span>no</span><span class="soft">Minimum wage</span><span>no – a price per job instead</span></div>
-      <div class="note">Agreement v1.0 accepted 03.10.2026 · <button class="textbtn" onclick="App.toast('PDF – demo')">Read it</button></div>`;
+      <div class="note">Agreement v1.0 signed 03.10.2026 · <button class="textbtn" onclick="App.go('agreement')">Open</button></div>`;
   };
 
   /* ---- home / me / tabs for a contractor ---- */
@@ -4364,7 +4364,7 @@ S.report=function(){
       <div class="grp">Your business</div><div class="rows">
         ${R('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
         ${R('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
-        ${R('calendar','My agreement','Services agreement · 3 Oct 2026 – 30 Sep 2027 · renew by 1 Sep','PDF',"App.toast('Services agreement v1.0 · PDF – demo')")}
+        ${R('calendar','My agreement','Services agreement · 3 Oct 2026 – 30 Sep 2027 · renew by 1 Sep',(window.AG&&AG.signed('contractor'))?'Signed':'To sign',"App.go('agreement')")}
       </div>
       <div class="grp">Preferences</div><div class="rows">
         ${R('bell','Job alerts','By area and time · max 6 a day · quiet 21–08','On',"App.go('settings')")}
@@ -4382,6 +4382,84 @@ S.report=function(){
   const nav=document.getElementById('nav-list');if(nav){[['jobs','Jobs board'],['statements','Statements & invoices'],['bizprofile','Business profile'],['taxstatus','Tax & status']].forEach(([id,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.setUser('dana');App.go('${id}')"><span>${l}</span><small>self-employed</small></button>`;nav.appendChild(li)});
     const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур self-employed (Dana)</h4><ul><li><b>Jobs board</b> – работы с фиксированной ценой за задачу; Apply / Withdraw без последствий.</li><li><b>Send a substitute</b> – без нашего разрешения, только 18+ и проверка права на работу (закон).</li><li><b>Statements & invoices</b> – gross, без вычетов, без holiday pay; можно слать свой счёт.</li><li><b>Business profile</b> – добровольно, раз в квартал: UTR, другие клиенты, страховка.</li><li>Нет смен, роты, задач, уроков и табеля. Три вкладки вместо пяти.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
   tabs();
+})();
+</script>
+
+<!-- ============ AGREEMENT SIGNING (worker + contractor) – overlay, 22.10.2026 ============ -->
+<style>
+.ag-doc{border:1px solid var(--hair);margin:0 var(--gutter);padding:18px 16px;background:var(--paper)}
+.ag-sig{position:relative;margin:0 var(--gutter);border:1px solid var(--ink);background:#fff;height:170px}
+.ag-sig canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.ag-sig .line{position:absolute;left:16px;right:16px;bottom:38px;border-bottom:1px solid var(--light);pointer-events:none}
+.ag-sig .ph{position:absolute;left:16px;bottom:14px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);pointer-events:none}
+.ag-sig .x{position:absolute;left:16px;bottom:44px;font-family:var(--f-display);font-size:22px;color:var(--grey);pointer-events:none}
+.ag-signed img{display:block;max-width:100%;height:90px;object-fit:contain;object-position:left;margin-top:10px;border-bottom:1px solid var(--hair)}
+.ag-check{display:flex;gap:12px;align-items:flex-start;margin:16px var(--gutter) 0;text-align:left;font-size:14px;color:var(--graphite)}
+.ag-check i{flex:none;width:20px;height:20px;border:1px solid var(--ink);margin-top:1px;display:flex;align-items:center;justify-content:center}
+.ag-check.on i::after{content:"";width:10px;height:10px;background:var(--ink)}
+</style>
+<script>
+(function(){
+  const A=window.App;const G={};window.AG=G;
+  G.docs={
+    worker:{title:'Casual Worker Agreement',ver:'v1.0',from:'1 Nov 2026',to:'15 Mar 2027',signed:null,
+      terms:[['Your status','casual worker – not an employee, not self-employed'],['Work','we publish shifts; you take the ones you want. No obligation either way between shifts'],['Pay','hourly rate per hour worked (never below £12.71) + bouquet bonus, weekly, through PAYE'],['Holiday','12.07 % of your hours builds up, up to 28 days a year; paid when you take it'],['Sick pay, pension','Statutory Sick Pay; workplace pension if you qualify'],['Inside a shift','studio standards, clock-in, tasks and lessons apply like for everyone'],['Ending','either of us, in writing; this agreement ends on 15 Mar 2027 unless renewed']]},
+    contractor:{title:'Services Agreement',ver:'v1.0',from:'3 Oct 2026',to:'30 Sep 2027',signed:{via:'paper',at:'3 Oct 2026, 11:05',by:'HR · Sasha',img:null},
+      terms:[['Your status','self-employed – you run your own business'],['Jobs','fixed fee per job, shown before you apply; apply or withdraw freely before collection'],['Substitute','you may send someone else (18+, right to work checked)'],['Other clients','you may work for anyone'],['Pay','weekly statement or your own invoice, gross – you handle your own tax'],['Not included','holiday pay, sick pay, pension'],['Ending','either of us, 7 days in writing; ends 30 Sep 2027 unless renewed']]}
+  };
+  const kind=()=>{const u=A.me();return u.engagement==='contractor'?'contractor':u.engagement==='worker'?'worker':null};
+  G.signed=k=>!!(G.docs[k]&&G.docs[k].signed);
+  let drawn=false,agreed=false;
+  /* screen */
+  const s=document.createElement('section');s.className='scr me5';s.id='s-agreement';s.dataset.nav='My agreement';s.dataset.group='Worker';
+  s.innerHTML=`<div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My agreement</div></div><div class="scr-body has-cta" id="agreement-body"></div><div class="cta-bar" id="agreement-cta"></div>`;
+  document.querySelector('.screens').appendChild(s);
+  window.mount_agreement=function(){
+    const k=kind()||'worker',d=G.docs[k],el=document.getElementById('agreement-body'),cta=document.getElementById('agreement-cta');
+    drawn=false;agreed=false;
+    const kv=d.terms.map(t=>`<span>${t[0]}</span><span>${t[1]}</span>`).join('');
+    const head=`<div class="pad" style="padding-top:8px"><div class="caps muted">${d.ver} · ${d.from} – ${d.to}</div><h1 class="h2 mt8">${d.title}</h1><div class="sm soft mt4">Floritta LTD · Unit 3 The Willows, 80 Willow Walk, London SE1 5SY</div></div>
+      <div class="grp">In short</div><div class="wk-kv --info">${kv}</div>
+      <div class="blk" style="margin-top:14px"><button class="btn --secondary --block --sm" onclick="App.toast('Full agreement PDF – demo')">Read the full agreement (PDF)</button></div>`;
+    if(d.signed){
+      const sg=d.signed;
+      el.innerHTML=head+`<div class="grp">Signature</div><div class="blk ag-signed"><div class="panel"><div class="flex ai-c jc-sb"><span class="caps muted">Signed</span><span class="pill --done">${sg.via==='app'?'In the app':'On paper'}</span></div><div class="sm mt8"><b>${sg.at}</b></div><div class="xs soft mt4">${sg.via==='app'?`${d.ver} · signed by you on this phone`:`${d.ver} · signed at the studio · scan uploaded by ${sg.by}`}</div>${sg.img?`<img src="${sg.img}" alt="Your signature">`:''}</div></div>
+        <div class="note">A signed copy is always here. If we change the agreement, you'll be asked to sign the new version – the old one stays on record.</div>`;
+      cta.innerHTML=`<button class="btn --block --secondary" onclick="App.toast('Signed PDF – demo')">Download signed copy</button>`;
+      return;
+    }
+    el.innerHTML=head+`
+      <div class="grp">Sign</div>
+      <button class="ag-check" id="ag-read" onclick="AG.toggleRead()"><i></i><span>I have read the agreement and agree to it.</span></button>
+      <div class="sm soft" style="margin:16px var(--gutter) 8px">Sign with your finger in the box.</div>
+      <div class="ag-sig"><canvas id="ag-canvas" aria-label="Signature pad"></canvas><span class="x">×</span><span class="line"></span><span class="ph">Signature · ${A.me().n}</span></div>
+      <div class="note">Prefer paper? Ask HR at the studio – they sign with you and upload the scan, and it shows up here. You can start taking shifts once either is done.</div>`;
+    cta.innerHTML=`<button class="btn --ghost" onclick="AG.clear()">Clear</button><button class="btn" id="ag-sign" disabled onclick="AG.sign()">Sign</button>`;
+    setTimeout(G.initPad,30);
+  };
+  G.toggleRead=()=>{agreed=!agreed;document.getElementById('ag-read').classList.toggle('on',agreed);A.haptic();G.upd()};
+  G.upd=()=>{const b=document.getElementById('ag-sign');if(b)b.disabled=!(drawn&&agreed)};
+  G.initPad=()=>{
+    const c=document.getElementById('ag-canvas');if(!c)return;const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+    c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);const x=c.getContext('2d');x.scale(dpr,dpr);
+    x.lineWidth=2.2;x.lineCap='round';x.lineJoin='round';x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#1e1a17';
+    let down=false,lx=0,ly=0;
+    const pos=e=>{const b=c.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]};
+    c.onpointerdown=e=>{down=true;c.setPointerCapture(e.pointerId);[lx,ly]=pos(e);x.beginPath();x.arc(lx,ly,1.1,0,Math.PI*2);x.fillStyle=x.strokeStyle;x.fill()};
+    c.onpointermove=e=>{if(!down)return;const [nx,ny]=pos(e);x.beginPath();x.moveTo(lx,ly);x.lineTo(nx,ny);x.stroke();lx=nx;ly=ny;if(!drawn){drawn=true;document.querySelectorAll('.ag-sig .x,.ag-sig .ph').forEach(n=>n.style.opacity=.35);G.upd()}};
+    c.onpointerup=c.onpointercancel=()=>{down=false};
+  };
+  G.clear=()=>{const c=document.getElementById('ag-canvas');if(!c)return;c.getContext('2d').clearRect(0,0,c.width,c.height);drawn=false;document.querySelectorAll('.ag-sig .x,.ag-sig .ph').forEach(n=>n.style.opacity=1);G.upd()};
+  G.sign=()=>{const k=kind()||'worker',d=G.docs[k],c=document.getElementById('ag-canvas');
+    d.signed={via:'app',at:'22 Oct 2026, '+new Date().toTimeString().slice(0,5),img:c.toDataURL('image/png')};
+    A.haptic();A.toast('Signed – a copy is saved here');setTimeout(()=>A.push('Agreement signed',`${d.title} ${d.ver} · copy in My agreement`,{icon:'check'}),700);window.mount_agreement()};
+  /* Today: reminder for an unsigned worker */
+  const origHome=window.mount_home;window.mount_home=function(){origHome();const k=kind();if(!k||G.signed(k))return;const body=document.getElementById('td-body');if(!body)return;
+    const b=document.createElement('div');b.className='panel blk';b.style.margin='0 var(--gutter) 14px';b.style.borderColor='var(--ink)';
+    b.innerHTML=`<div class="caps muted">Before your first ${k==='worker'?'shift':'job'}</div><div class="h3 mt8">Sign your agreement</div><div class="sm soft mt4">Takes a minute. Or sign on paper with HR at the studio.</div><button class="btn --sm mt16" onclick="App.go('agreement')">Read and sign</button>`;
+    body.insertBefore(b,body.firstChild)};
+  /* nav */
+  const nav=document.getElementById('nav-list');if(nav){const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="agreement" onclick="App.go('agreement')"><span>My agreement · sign</span><small>worker / s-e</small></button>`;nav.appendChild(li)}
 })();
 </script>
 
