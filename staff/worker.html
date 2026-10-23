@@ -4769,5 +4769,670 @@ S.report=function(){
 })();
 </script>
 
+
+
+<!-- ============ FREELANCE COURIER MODE (Sam) – 23.10.2026 ============ -->
+
+<style>
+/* ===== Freelance courier mode (Sam) – approved 23.10.2026 ===== */
+.fl svg.i,#fl-tabbar svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#fl-tabbar .tab svg{width:24px;height:24px}
+#fl-tabbar .tab .dot{position:absolute;top:8px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;background:var(--accent);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.fl .tag:not([class*="--"]){background:var(--silver)}.fl .tag.--warn{background:var(--warn-bg);color:var(--warn)}
+.fl .ann{margin:0}
+.fl .live{width:100%;text-align:left}
+.fl .h-display{text-wrap:balance}
+.fl .textbtn.accent{color:var(--accent)}
+.fl .sec-head .link{font-size:12px}
+.fl-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fl-tiles .tile{padding:14px 12px;min-height:92px}
+.fl-tiles .tile svg{width:24px;height:24px}
+.fl .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:4px 0 20px}
+.fl .steps i{height:3px;background:var(--light)}.fl .steps i.on{background:var(--ink)}
+.fl .code-boxes{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.fl .code-boxes span{height:56px;border:1px solid var(--ink);display:grid;place-items:center;font-family:var(--f-display);font-size:30px}
+.fl .hint{font-size:12px;color:var(--grey)}
+.fl .dcard{display:block;width:100%;text-align:left;border:1px solid var(--hair);padding:14px;background:var(--paper);transition:border-color var(--m-fast)}
+.fl .dcard:active{border-color:var(--ink)}
+.fl .dcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.fl .dcard .when{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey)}
+.fl .dcard .where{font-family:var(--f-display);font-size:24px;font-weight:400;line-height:1.1;margin-top:4px}
+.fl .dcard .pay{font-family:var(--f-display);font-size:30px;font-weight:300;line-height:1;white-space:nowrap}
+.fl .dcard .meta{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--graphite);margin-top:8px;align-items:center}
+.fl .dcard .meta span{display:inline-flex;align-items:center;gap:5px}.fl .dcard .meta svg{width:15px;height:15px}
+.fl .dcard .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.fl .dlist{display:grid;gap:8px;padding:0 var(--gutter)}
+.fl .ocard .mn{flex:1;min-width:0}.fl .ocard img{width:52px;height:64px}
+.fl .tl-step .tl-a{margin:2px 0 14px}
+.fl .tl-step .ind i{font-style:normal;font-size:12px;color:var(--grey)}.fl .tl-step.done .ind i,.fl .tl-step.now .ind i{color:inherit}
+.fl .tl-step.done .ind i{color:var(--paper)}
+.fl .tl-step .ind i svg{width:14px;height:14px;stroke-width:2}
+.fl .stline{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.fl .stline .sd{color:var(--grey);font-size:12px;margin-top:1px}.fl .stline .sv{white-space:nowrap}
+.fl .stline.total{border-bottom:0;font-size:16px;font-weight:400;border-top:1px solid var(--ink);margin-top:4px}
+.fl .bubble{padding:12px 14px;max-width:82%;font-size:14px;line-height:1.45}
+.fl .bubble.--me{background:var(--ink);color:var(--paper);margin-left:auto}.fl .bubble.--them{background:var(--silver)}
+.fl .bubble small{display:block;font-size:11px;opacity:.65;margin-bottom:3px}
+.fl .qopt{display:block;width:100%;text-align:left;border:1px solid var(--light);padding:14px;font-size:15px;margin-bottom:8px}
+.fl .qopt.right{border-color:var(--ok);background:var(--ok-bg)}.fl .qopt.wrong{border-color:var(--accent);background:var(--accent-bg)}
+.fl .wl-hero{position:relative;height:52%;min-height:300px;overflow:hidden;background:var(--silver)}
+.fl .wl-hero img.ph{width:100%;height:100%;object-fit:cover}
+.fl .wl-hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(250,247,242,0) 45%,var(--paper) 100%)}
+.fl .wl-hero .logo{position:absolute;top:66px;left:50%;transform:translateX(-50%);height:15px;width:auto}
+.fl .wl-body{padding:0 24px 24px;margin-top:-28px;position:relative;display:flex;flex-direction:column;gap:12px}
+.fl .rl{font-size:15px}.fl .rdd{font-size:13px;color:var(--grey);margin-top:1px}
+.fl .row.--danger .l{color:var(--accent)}
+.fl-mapbox{height:190px}.fl-mapbox::before{display:none}
+.fl-mapbox svg.fl-map{position:absolute;inset:0;width:100%;height:100%}
+.fl-mapbox .mk{position:absolute;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--paper);padding:3px 7px;border:1px solid var(--ink)}
+.fl-mapbox .mk.--ink{background:var(--ink);color:var(--paper)}
+.fl-mapbox .fl-map-note{position:absolute;left:12px;bottom:10px;right:12px;text-align:right;font-size:11px;color:var(--graphite)}
+#notes[data-fl]>:not(#fl-notes){display:none}
+#fl-notes{display:none}#notes[data-fl] #fl-notes{display:block}
+#fl-notes h3{font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1.05;color:var(--ink);margin:0 0 12px}
+#fl-notes .fl-ctl{display:inline-grid;grid-auto-flow:column;border:1px solid var(--light);margin:0 0 8px}
+#fl-notes .fl-ctl button{padding:7px 11px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+#fl-notes .fl-ctl button.on{background:var(--ink);color:var(--paper)}
+#fl-notes .fl-push{display:block;width:100%;text-align:left;padding:7px 10px;border:1px solid var(--hair);margin-bottom:4px;font-size:13px}
+#fl-notes .fl-push:hover{background:var(--silver)}
+</style>
+
+<script>
+(function(){
+  const A=window.App;
+  STAFF.push({id:'sam',n:'Sam',role:'courier',title:'Freelance courier',initials:'SK',engagement:'freelance'});
+  PERSONAS.push({id:'sam',label:'Freelance courier'});
+const NOTES={
+ 'fl-welcome':['Вход в приложение','<ul><li>Один экран для всех: сотрудник студии входит как раньше, новый курьер жмёт <b>Become a Floritta courier</b>.</li><li>Кнопка показывается только в воркспейсе Floritta.</li><li>«I already use the Telegram bot» – связка с ботом, без второй регистрации.</li></ul><h4>Статус</h4><ul><li>Нет слов shift / job / employee. «Deliveries», «request».</li></ul>'],
+ 'fl-signin':['Вход','<ul><li><code>POST /api/v1/auth/login</code> – уже есть.</li><li>Роль <code>freelance</code> → приложение показывает только 5 вкладок курьера, ни одного экрана сотрудника.</li><li>Восстановление пароля – уже есть.</li></ul>'],
+ 'fl-su1':['Регистрация · 1','<ul><li>Почта + пароль (решение 22.10).</li><li>Новая точка CRM <code>POST /api/v1/freelance/signup</code>: создаёт пользователя с ролью freelance и курьера, сразу выдаёт токен.</li><li>Почту подтверждаем ссылкой – иначе не восстановить пароль.</li></ul>'],
+ 'fl-su2':['Регистрация · 2','<ul><li>Те же поля, что в боте: имя, телефон, транспорт, домашний посткод.</li><li>Car – с подсказкой про Hire &amp; Reward: заявку CRM пустит только после отметки менеджера о страховке.</li></ul>'],
+ 'fl-su3':['Право на работу','<ul><li>Share code + дата рождения (18+) – как в боте, проверяет менеджер на gov.uk.</li><li>С 01.10.2026 проверка обязательна для платформ (BSAI Act 2025 s.48).</li><li>Британский / ирландский паспорт – share code нет, менеджер смотрит паспорт.</li></ul>'],
+ 'fl-su4':['Как это работает','<ul><li>Короткая выжимка договора самозанятого: выбор, другие заказчики, замена, оплата за доставку, свои налоги.</li><li>Галочка согласия – с датой и версией договора в CRM.</li></ul><h4>Почему</h4><ul><li>Риск статуса worker (Uber v Aslam): экран прямо говорит, что контроля и штрафов нет.</li></ul>'],
+ 'fl-pending':['Ждёт проверки','<ul><li>Менеджеру в чат «🆕 New freelancer» – как из бота.</li><li>Доска видна сразу, «Request» объясняет, почему пока нельзя (переключатель слева «Ждёт проверки»).</li><li>Пуш, когда менеджер нажал Verify.</li></ul>'],
+ 'fl-link':['Связка с ботом','<ul><li>В боте новая кнопка <b>Get the app</b> → 6-значный код на 10 минут.</li><li>В приложении код + почта и пароль → тот же курьер получает <code>user_id</code>.</li><li>История, деньги, маршруты общие; бот продолжает работать.</li></ul>'],
+ 'fl-board':['Доступные доставки','<ul><li><code>GET /freelance/jobs?date=</code> – уже есть.</li><li>Карточка как в боте: слот, район, км, оплата, Peak / Hard window / 18+.</li><li>Фильтры: по маршрутам, по районам, «забрать сейчас».</li><li>Чёрная плашка – «рядом со студией» (геозона 2 мили вместо живой геопозиции Telegram).</li></ul>'],
+ 'fl-dlv':['Карточка доставки','<ul><li>Точный адрес – только после подтверждения, телефон – только после забора (как в боте).</li><li><code>POST /jobs/{id}/apply</code>; ответы CRM показываются текстом: не проверен, алкоголь без обучения, лимит £99 для новичка.</li><li>Withdraw без последствий – прямо на экране.</li></ul>'],
+ 'fl-mine':['Мои доставки','<ul><li><code>GET /freelance/my</code>.</li><li>Активная – сверху чёрной плашкой; ниже – ждут подтверждения студии и выполненные за неделю.</li><li>Возврат в студию – отдельной строкой с оплатой +50 %.</li></ul>'],
+ 'fl-run':['Доставка в работе','<ul><li>Шаги: I\'m on my way → Picked up (фото) → Delivered (фото). Нажимайте кнопки – шаги двигаются.</li><li>PIN выключен с 25.09 – не спрашиваем; код готов, если CRM снова включит.</li><li>Алкоголь: перед фото – вопрос про документ или отказ с причиной.</li><li>«Problem with delivery» – 4 причины, как в боте.</li><li>Фото – через очередь офлайн приложения: уйдёт, когда появится сеть.</li></ul>'],
+ 'fl-done':['Вручено','<ul><li>Сумма сразу в неделю.</li><li>Фото уходит заказчику с сообщением о доставке (как сейчас).</li></ul>'],
+ 'fl-way':['Куда едешь?','<ul><li><code>POST /freelance/route-check</code>: откуда (геопозиция или посткод) → куда → транспорт → доставки с крюком и оплатой.</li><li>Навигация – только ссылкой в Google Maps, свой навигатор не строим.</li></ul>'],
+ 'fl-saved':['Маршруты и районы','<ul><li><code>GET/POST/DELETE /routes</code>, до 3 маршрутов; <code>/areas</code> – outcode.</li><li>По ним CRM шлёт пуши о новых доставках (уже работает для бота и приложения).</li></ul>'],
+ 'fl-earn':['Заработок','<ul><li><code>GET /balance</code>, <code>GET /statements</code> – уже есть.</li><li>Неделя / месяц / не выплачено, последняя выплата, счёт – последние 4 цифры.</li><li>Слово «Earnings», не «Pay» и не «Salary».</li></ul>'],
+ 'fl-stmt':['Недельная выписка','<ul><li>FS-YYYY-Www-NNNN, как в CRM (договор п. 6.4) – инвойсы не собираем.</li><li>«All correct» / «Something is wrong» → вопрос менеджеру выплат (Саша).</li></ul>'],
+ 'fl-bank':['Реквизиты','<ul><li><code>POST /couriers/me/payout-details</code>.</li><li>После сохранения номер скрыт, в логи не пишется.</li></ul>'],
+ 'fl-tax':['Налоги и статус','<ul><li>Тот же экран, что в боте: self-employed, trading allowance £1 000, отчётность платформ в HMRC.</li><li>Перед отправкой в магазины – прогон текстов через скилл legal.</li></ul>'],
+ 'fl-me':['Профиль','<ul><li>Открывается кружком с инициалами справа вверху.</li><li>Без рейтинга курьера на экране (риск статуса).</li><li>«Delete account» – обязательна для Apple (5.1.1(v)), если аккаунт создаётся в приложении.</li></ul>'],
+ 'fl-notif':['Уведомления','<ul><li><code>push_mode</code>: районы и маршруты / районы / маршруты / выкл. – как в боте.</li><li>Тихие часы 21–08, не больше 6 в день – настройка CRM.</li><li>«Near the studio» – системная геозона: батарею почти не ест, точку не храним; нужно согласие на геопозицию в фоне.</li></ul>'],
+ 'fl-alco':['Обучение по алкоголю','<ul><li>6 экранов правил + 8 вопросов, тот же <code>training.VERSION</code>, что в боте.</li><li>Лицензия 889934, усл. 342 – действует 6 месяцев.</li><li>Нажмите ответ – покажется пояснение.</li></ul>'],
+ 'fl-studio':['Студия – вкладка внизу','<ul><li>По просьбе Tatiana 23.10: связь со студией всегда под рукой – отдельная вкладка в нижнем меню, красная точка = непрочитанный ответ.</li><li>Профиль переехал в кружок с инициалами справа вверху на каждой вкладке (Apple советует не больше 5 вкладок).</li><li><code>POST /couriers/me/message</code> – уходит в чат менеджеров, как из бота.</li><li>Ответ менеджера реплаем в Telegram приходит сюда пушем.</li><li>Текст и фото; голосовые – позже.</li></ul>'],
+ 'fl-delete':['Удаление аккаунта','<ul><li>Новая точка CRM: выключить вход, отозвать токены, стереть всё лишнее.</li><li>Храним по закону: запись проверки права на работу – 2 года, выписки и выплаты – 6 лет.</li><li>Без этого экрана Apple приложение не пропустит.</li></ul>']
+};
+const BOARD=[
+ {when:'Today · 17:00–19:00',where:'Battersea SW11',pay:'£9',km:'6.4 km',t:'28 min',tags:['<span class="tag --sale">Peak</span>','<span class="tag --ink">Hard window</span>'],img:'peach-posy'},
+ {when:'Today · 18:00–20:00',where:'Vauxhall SW8',pay:'£7',km:'3.1 km',t:'15 min',tags:['<span class="tag">On your route</span>'],img:'red-roses'},
+ {when:'Today · 18:00–21:00',where:'Canary Wharf E14',pay:'£11',km:'8.9 km',t:'40 min',tags:['<span class="tag --warn">18+ · alcohol</span>'],img:'pink-garden'},
+ {when:'Today · 19:00–21:00',where:'Peckham SE15',pay:'£7',km:'4.2 km',t:'19 min',tags:['<span class="tag">Near home</span>'],img:'lilac-dream'}
+];
+
+  const FL=window.FL={v:1,runStep:1,photoFor:'pickup',
+    sheet(id){const el=document.getElementById('fl-sh-'+id);if(!el)return;A.sheet(el.innerHTML)},
+    setV(v){this.v=v;document.querySelectorAll('#fl-vt button').forEach(b=>b.classList.toggle('on',+b.dataset.v===v));this.render()},
+    push(kind){
+      const P={route:['New delivery on your route','Battersea SW11 · today 17:00–19:00 · £9 · +6 min','fl-dlv','route'],confirm:['The studio confirmed','Battersea SW11 by 19:00 – pick up from 16:30','fl-run','check'],near:['You are 0.7 mi from the studio','3 deliveries ready to pick up now · from £7','fl-board','pin'],reply:['Studio (Kamila)','No problem, the bouquet will be at the front desk.','fl-studio','chat']}[kind];
+      if(A.state.me!=='sam')A.setUser('sam',{silent:true});
+      A.push(P[0],P[1],{icon:P[3],go:[P[2],{}]});
+    },
+    openPhoto(f){this.photoFor=f;document.getElementById('fl-ph-title').textContent=f==='pickup'?'Photo at pickup':'Photo of the delivery';document.getElementById('fl-ph-cap').textContent=f==='pickup'?'Bouquet and order label in the frame':'Bouquet at the door or with the recipient';this.sheet('photo')},
+    photoDone(){A.closeSheet();if(this.photoFor==='pickup'){this.runStep=3;this.render();A.toast('Picked up. Phone number unlocked.')}else{this.runStep=1;A.go('fl-done')}},
+    render(){
+  // board banner + list
+  const bb=document.getElementById('fl-board-banner');
+  bb.innerHTML=this.v?'<button class="live" onclick="App.go(\'board\')"><span class="lv-ic"><svg class="i"><use href="#fl-i-pin"/></svg></span><span><span class="lv-t" style="display:block">You\'re 0.7 mi from the studio</span><span class="lv-d" style="display:block">3 ready to pick up now</span></span><span class="lv-r">3</span></button>'
+   :'<div class="panel --warn sm"><b>Checking your right to work.</b> You can look around; requests open as soon as a manager has checked it – usually within 24 hours.</div>';
+  document.getElementById('fl-board-list').innerHTML=BOARD.map(d=>'<button class="dcard" onclick="App.go(\'dlv\')"><div class="top"><div style="min-width:0"><div class="when">'+d.when+'</div><div class="where">'+d.where+'</div></div><div class="pay">'+d.pay+'</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-pin"/></svg>From SE1</span><span><svg class="i"><use href="#fl-i-bike"/></svg>'+d.km+' · '+d.t+'</span></div><div class="tags">'+d.tags.join('')+'</div></button>').join('');
+  document.getElementById('fl-dlv-cta').innerHTML=this.v?'<button class="btn --block" onclick="FL.sheet(\'requested\')">Request this delivery<span class="bp">£9.00</span></button><div class="xs muted">You can withdraw any time before pickup.</div>'
+   :'<button class="btn --block" disabled>Request this delivery<span class="bp">£9.00</span></button><div class="xs muted">Requests open once your right to work is checked.</div>';
+  document.getElementById('fl-me-pill').innerHTML=this.v?'<span class="pill --done">Checked · can request</span>':'<span class="pill --review">Waiting for check</span>';
+  // run timeline
+  const s=this.runStep, st=(i)=>i<s?'done':(i===s?'now':'todo'), ic=(i,n)=>i<s?'<svg class="i"><use href="#fl-i-check"/></svg>':n;
+  const steps=[
+   ['Confirmed by the studio','Today 16:02'],
+   ['On your way to the studio',s===1?'<div class="tl-a"><button class="btn --sm" onclick="FL.runStep=2;FL.render();App.toast(\'The studio knows you are coming.\')">I\'m on my way</button></div>':'16:21 · the studio was told'],
+   ['Picked up – photo',s===2?'<div class="tl-a"><button class="btn --sm" onclick="FL.openPhoto(\'pickup\')"><svg class="i"><use href="#fl-i-camera"/></svg>Take pickup photo</button></div>':(s>2?'16:48':'At the studio, show order 186412')],
+   ['Delivered – photo',s===3?'<div class="tl-a" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn --sm" onclick="FL.openPhoto(\'deliver\')"><svg class="i"><use href="#fl-i-camera"/></svg>Delivered – photo</button><button class="btn --sm --ghost" onclick="FL.sheet(\'age\')">18+ order</button></div>':'By 19:00']
+  ];
+  document.getElementById('fl-run-tl').innerHTML=steps.map((x,i)=>'<div class="tl-step '+st(i)+'"><div class="ind"><i>'+ic(i,i+1)+'</i></div><div><div class="tl-t">'+x[0]+'</div>'+(x[1].startsWith('<')?x[1]:'<div class="tl-d">'+x[1]+'</div>')+'</div></div>').join('');
+  document.getElementById('fl-run-phone').innerHTML=s>=3?'<svg class="i"><use href="#fl-i-phone"/></svg><div class="rt"><div class="l num">07700 900 117</div><div class="d">Call or text the recipient</div></div>'
+   :'<svg class="i" style="color:var(--grey)"><use href="#fl-i-lock"/></svg><div class="rt"><div class="l muted">Phone number</div><div class="d">Shown after pickup</div></div>';
+  document.getElementById('fl-run-withdraw').hidden=s>=3;
+  document.getElementById('fl-mine-live-d').textContent=['Confirmed · pick up from 16:30','Confirmed · pick up from 16:30','On your way to the studio','Picked up · deliver by 19:00'][s];
+ }
+  };
+  /* tab bar of the courier mode: B's own bar hides on fl- screens */
+  const sync=id=>{
+    const el=document.getElementById('s-'+id);const isFl=!!(id&&id.startsWith('fl-'));
+    const tb=document.getElementById('tabbar'),ft=document.getElementById('fl-tabbar');
+    if(isFl){tb.classList.add('hide');const t=el&&el.dataset.tab;ft.classList.toggle('hide',!t);ft.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.tab===t));FL.render()}
+    else ft.classList.add('hide');
+    const notes=document.getElementById('notes');if(!notes)return;
+    if(isFl){notes.dataset.fl='1';const n=NOTES[id];document.getElementById('fl-notes-body').innerHTML=n?'<h3>'+n[0]+'</h3>'+n[1]:''}else delete notes.dataset.fl;
+  };
+  document.addEventListener('screen',e=>{const id=e.detail.id;if(id.startsWith('fl-')&&A.state.me!=='sam')A.setUser('sam',{silent:true});sync(id)});
+  const origBack=A.back;A.back=function(f){origBack(A.state.me==='sam'?'fl-board':f);sync(A.state.current)};
+  document.addEventListener('user',()=>{const cur=A.state.current||'';
+    if(A.state.me==='sam'&&!cur.startsWith('fl-'))setTimeout(()=>A.go('fl-board',{},{replace:true}),0);
+    if(A.state.me!=='sam'&&cur.startsWith('fl-'))setTimeout(()=>A.go('home',{},{replace:true}),0)});
+  /* screens, sheets, bar, notes */
+  const scr=document.querySelector('.screens');
+  const wrap=document.createElement('div');wrap.innerHTML=`
+
+<!-- ============ START ============ -->
+<section class="scr fl fl" id="s-fl-welcome" data-nav="Welcome" data-group="Freelance · Start">
+  <div class="wl-hero"><img class="ph" src="img/hero-white.webp" alt=""><div class="ov"></div><img class="logo" src="logo.svg" alt="Floritta"></div>
+  <div class="wl-body">
+    <div class="caps muted">Floritta couriers · London</div>
+    <h1 class="h-display">Deliver flowers on your way.</h1>
+    <p class="soft sm" style="margin:0">Pick the deliveries that suit you, from £7 each, paid every Friday. You decide when and how often.</p>
+    <button class="btn --block mt8" onclick="App.go('fl-su1')">Become a Floritta courier</button>
+    <button class="btn --ghost --block" onclick="App.go('fl-signin')">Sign in</button>
+    <div style="text-align:center"><button class="textbtn" onclick="App.go('fl-link')">I already use the Telegram bot</button></div>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-signin" data-nav="Sign in" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Sign in</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <h1 class="h1 mt16" style="margin:16px 0 24px">Welcome back.</h1>
+    <div class="field"><label for="fl-si-e">Email</label><input class="input" id="fl-si-e" value="sam.k@example.com"></div>
+    <div class="field"><label for="fl-si-p">Password</label><input class="input" id="fl-si-p" type="password" value="password12"></div>
+    <button class="btn --block" onclick="App.tab('fl-board')">Sign in</button>
+    <div style="text-align:center;margin-top:18px"><button class="textbtn">Forgot password</button></div>
+    <p class="hint" style="text-align:center;margin-top:28px">Floritta studio staff sign in here too – the app shows each person their own screens.</p>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-su1" data-nav="Sign up 1 · Account" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 1 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i></i><i></i><i></i></div>
+    <h1 class="h1" style="margin-bottom:8px">Create your account</h1>
+    <p class="soft sm" style="margin:0 0 22px">You'll use this email to sign in and get your weekly statements.</p>
+    <div class="field"><label for="fl-su-e">Email</label><input class="input" id="fl-su-e" placeholder="you@example.com" value="sam.k@example.com"></div>
+    <div class="field"><label for="fl-su-p">Password</label><input class="input" id="fl-su-p" type="password" value="password12"><span class="hint">At least 8 characters, letters and numbers.</span></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-su2')">Continue</button></div>
+</section>
+
+<section class="scr fl fl" id="s-fl-su2" data-nav="Sign up 2 · About you" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 2 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+    <h1 class="h1" style="margin-bottom:20px">About you</h1>
+    <div class="field"><label for="fl-su-n">Full name</label><input class="input" id="fl-su-n" value="Sam Kowalski"></div>
+    <div class="field"><label for="fl-su-ph">Mobile number</label><input class="input" id="fl-su-ph" value="07700 900481"></div>
+    <div class="field"><label>How do you get around?</label>
+      <div class="fl-tiles" id="fl-transport">
+        <button class="tile" data-t="walk"><svg class="i"><use href="#fl-i-walk"/></svg><span class="tl">On foot</span></button>
+        <button class="tile on" data-t="bike"><svg class="i"><use href="#fl-i-bike"/></svg><span class="tl">Bike</span></button>
+        <button class="tile" data-t="transit"><svg class="i"><use href="#fl-i-train"/></svg><span class="tl">Public transport</span></button>
+        <button class="tile" data-t="car"><svg class="i"><use href="#fl-i-car"/></svg><span class="tl">Car</span><span class="tp">Needs Hire &amp; Reward insurance</span></button>
+      </div>
+    </div>
+    <div class="field"><label for="fl-su-pc">Home postcode</label><input class="input" id="fl-su-pc" value="SE15 4QL"><span class="hint">We use it to show deliveries near you. Nobody else sees it.</span></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-su3')">Continue</button></div>
+</section>
+
+<section class="scr fl fl" id="s-fl-su3" data-nav="Sign up 3 · Right to work" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 3 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+    <h1 class="h1" style="margin-bottom:8px">Right to work</h1>
+    <p class="soft sm" style="margin:0 0 18px">UK law asks every delivery platform to check this before your first delivery. Get a share code at gov.uk/prove-right-to-work – it takes two minutes.</p>
+    <div class="field"><label for="fl-su-sc">Share code</label><input class="input num" id="fl-su-sc" value="W7K 4PX 9QM" style="letter-spacing:.12em"></div>
+    <div class="field"><label for="fl-su-dob">Date of birth</label><input class="input num" id="fl-su-dob" value="14 / 03 / 1996"><span class="hint">The Home Office check needs it. You must be 18 or over.</span></div>
+    <div class="panel sm soft mt8"><b>British or Irish passport?</b> You don't need a share code – pick "Show my passport instead" and a studio manager will check it in person.</div>
+    <div style="margin-top:14px"><button class="textbtn">Show my passport instead</button></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-su4')">Continue</button></div>
+</section>
+
+<section class="scr fl fl" id="s-fl-su4" data-nav="Sign up 4 · How it works" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 4 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+    <h1 class="h1" style="margin-bottom:16px">How it works</h1>
+    <div class="timeline">
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">You choose</div><div class="tl-d">Request only the deliveries you want. No minimum hours, no penalty for saying no.</div></div></div>
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Work for anyone</div><div class="tl-d">Deliver for other apps at the same time. You can send a substitute who passed the same checks.</div></div></div>
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Paid per delivery</div><div class="tl-d">£7 / £9 / £11 by distance, shown before you request. Weekly statement, paid every Friday.</div></div></div>
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Your own tax</div><div class="tl-d">You're self-employed. The first £1,000 a year is tax-free under the trading allowance.</div></div></div>
+    </div>
+    <button class="check on" onclick="this.classList.toggle('on')"><span class="cb"><svg class="i"><use href="#fl-i-check"/></svg></span><span class="ct">I've read the <u>Courier agreement</u> and the <u>Privacy notice</u>.</span></button>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-pending')">Create account</button></div>
+</section>
+
+<section class="scr fl fl" id="s-fl-pending" data-nav="Waiting for check" data-group="Freelance · Start">
+  <div class="appbar"><span class="ib"></span><div class="ttl" style="text-align:center"><img src="logo.svg" alt="Floritta" style="height:13px;width:auto;margin:0 auto"></div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="caps muted mt16" style="margin-top:24px">Account created</div>
+    <h1 class="h-display" style="margin:8px 0 14px">Thanks, Sam.</h1>
+    <p class="soft" style="margin:0 0 24px">A studio manager checks your right to work, usually within 24 hours. We'll send a notification as soon as you can request deliveries.</p>
+    <div class="timeline">
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Account and details</div><div class="tl-d">Today 21:14</div></div></div>
+      <div class="tl-step now"><div class="ind"><i>2</i></div><div><div class="tl-t">Right-to-work check</div><div class="tl-d">Share code W7K 4PX 9QM · in progress</div></div></div>
+      <div class="tl-step todo"><div class="ind"><i>3</i></div><div><div class="tl-t">Request your first delivery</div><div class="tl-d">Orders up to £99 for your first 5 deliveries</div></div></div>
+    </div>
+    <div class="panel --ok sm mt16" style="margin-top:12px">Meanwhile, add your usual route home – you'll see what's on your way from day one.</div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="FL.setV(0);App.tab('fl-board')">See available deliveries</button></div>
+</section>
+
+<section class="scr fl fl" id="s-fl-link" data-nav="Link the Telegram bot" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Already in the bot</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:16px 0 8px">Move to the app in one step</h1>
+    <p class="soft sm" style="margin:0 0 18px">Your deliveries, routes and earnings come with you. The bot keeps working too.</p>
+    <div class="timeline">
+      <div class="tl-step done"><div class="ind"><i>1</i></div><div><div class="tl-t">Open @floritta_freelance_bot</div><div class="tl-d">Tap <b>Get the app</b> in the menu</div></div></div>
+      <div class="tl-step now"><div class="ind"><i>2</i></div><div><div class="tl-t">Type the 6-digit code here</div><div class="tl-d">It works for 10 minutes</div></div></div>
+    </div>
+    <div class="code-boxes mt8"><span class="on">4</span><span class="on">8</span><span class="on">1</span><span class="on">0</span><span class="on">7</span><span class="on">3</span></div>
+    <div class="field mt16" style="margin-top:22px"><label for="fl-ln-e">Email for signing in</label><input class="input" id="fl-ln-e" value="sam.k@example.com"></div>
+    <div class="field"><label for="fl-ln-p">Choose a password</label><input class="input" id="fl-ln-p" type="password" value="password12"></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="FL.setV(1);App.toast('Linked. Welcome back, Sam.');App.tab('fl-board')">Link my account</button></div>
+</section>
+
+<!-- ============ DELIVERIES ============ -->
+<section class="scr fl fl" id="s-fl-board" data-tab="fl-board" data-nav="Available deliveries" data-group="Freelance · Deliveries">
+  <div class="appbar">
+    <div class="ttl"><img src="logo.svg" alt="Floritta" style="height:13px;width:auto"></div>
+    <button class="ib" aria-label="Notifications" onclick="App.go('fl-notif')"><svg class="i"><use href="#fl-i-bell"/></svg><span class="dot">2</span></button>
+    <button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button>
+  </div>
+  <div class="scr-body has-tab">
+    <div class="pad"><h1 class="h1" style="margin:4px 0 14px">Deliveries</h1>
+      <div class="seg" id="fl-day-seg"><button class="on">Today · 7</button><button>Tomorrow · 12</button></div>
+    </div>
+    <div class="pad" style="margin-top:14px" id="fl-board-banner"></div>
+    <div class="chips" style="margin:14px 0 12px"><button class="chip on">All</button><button class="chip">On my routes · 3</button><button class="chip">My areas · 4</button><button class="chip">Pick up now</button></div>
+    <div class="dlist" id="fl-board-list"></div>
+    <p class="hint pad" style="margin-top:14px;text-align:center">New deliveries appear from about 2 hours before pickup.</p>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-dlv" data-nav="Delivery details" data-group="Freelance · Deliveries">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delivery</div><span class="ib"></span></div>
+  <div class="scr-body has-cta">
+    <div class="map fl-mapbox"><svg class="fl-map" viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice" aria-label="Map: studio SE1 to Battersea SW11">
+  <rect width="400" height="190" fill="#ece7df"/>
+  <path d="M-10 40 C 60 30, 90 70, 150 78 S 250 60, 290 96 S 360 170, 410 150" stroke="#d9dcd6" stroke-width="22" fill="none"/>
+  <path d="M-10 40 C 60 30, 90 70, 150 78 S 250 60, 290 96 S 360 170, 410 150" stroke="#cfd5d1" stroke-width="1" fill="none"/>
+  <rect x="300" y="120" width="70" height="44" fill="#e2e6da"/>
+  <rect x="40" y="110" width="46" height="30" fill="#e2e6da"/>
+  <g stroke="#faf7f2" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M0 150 L120 130 L210 140 L400 120"/><path d="M60 0 L90 190"/><path d="M180 0 L170 190"/><path d="M260 0 L300 190"/><path d="M0 95 L400 70"/>
+  </g>
+  <g stroke="#faf7f2" stroke-width="2.5" fill="none"><path d="M0 120 L400 100"/><path d="M130 0 L120 190"/><path d="M225 0 L240 190"/><path d="M340 0 L350 190"/><path d="M0 175 L400 160"/></g>
+  <text x="158" y="73" font-size="8" letter-spacing="2" fill="#8b8378" font-family="Jost,sans-serif">RIVER THAMES</text>
+  <text x="306" y="146" font-size="7" letter-spacing="1" fill="#7a8a6b" font-family="Jost,sans-serif">BATTERSEA PARK</text>
+  <circle cx="328" cy="62" r="26" fill="rgba(180,89,95,.14)" stroke="#b4595f" stroke-width="1" stroke-dasharray="3 3"/>
+  <path d="M70 128 C 120 118, 150 110, 196 96 S 280 72, 322 64" stroke="#1e1a17" stroke-width="2" fill="none" stroke-dasharray="6 5"/>
+  <rect x="64" y="122" width="12" height="12" fill="#1e1a17"/>
+</svg>
+<span class="mk" style="left:22px;top:146px">Studio SE1</span><span class="mk --ink" style="right:18px;top:22px">SW11 · area</span>
+<span class="fl-map-note">Exact address after the studio confirms</span></div>
+    <div class="pad" style="margin-top:18px">
+      <div class="flex" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div><div class="caps muted">Today · 17:00–19:00</div><h1 class="h1" style="margin-top:6px">Battersea, SW11</h1></div>
+        <div style="font-family:var(--f-display);font-size:40px;font-weight:300;line-height:1">£9</div>
+      </div>
+      <div class="wrap-chips mt8" style="margin-top:10px"><span class="tag --sale">Peak</span><span class="tag --ink">Hard window</span><span class="tag">Band M · 6.4 km</span></div>
+    </div>
+    <div class="row" style="margin-top:14px"><svg class="i"><use href="#fl-i-pin"/></svg><div class="rt"><div class="l">Pick up · Floritta studio</div><div class="d">80 Willow Walk, SE1 5SY · ready from 16:30</div></div></div>
+    <div class="row"><svg class="i"><use href="#fl-i-nav"/></svg><div class="rt"><div class="l">Drop off · Battersea SW11 2</div><div class="d">Full address after the studio confirms</div></div></div>
+    <div class="row"><svg class="i"><use href="#fl-i-bike"/></svg><div class="rt"><div class="l">About 28 min by bike</div><div class="d">One medium bouquet · 1.2 kg · flat bag fits</div></div></div>
+    <div class="pad mt16" style="margin-top:16px"><div class="ann sm soft">Hard window: the recipient has asked for it before 19:00. If you can't make it, withdraw before pickup – nothing happens to your account.</div></div>
+  </div>
+  <div class="cta-bar"><div id="fl-dlv-cta"></div></div>
+</section>
+
+<!-- ============ MINE ============ -->
+<section class="scr fl fl" id="s-fl-mine" data-tab="fl-mine" data-nav="My deliveries" data-group="Freelance · My deliveries">
+  <div class="appbar"><div class="ttl">My deliveries</div><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="scr-body has-tab">
+    <div class="pad"><button class="live" onclick="App.go('fl-run')"><span class="lv-ic"><svg class="i"><use href="#fl-i-bike"/></svg></span><span><span class="lv-t" style="display:block">Battersea SW11 · by 19:00</span><span class="lv-d" style="display:block" id="fl-mine-live-d">Confirmed · pick up from 16:30</span></span><span class="lv-r">£9</span></button></div>
+    <div class="sec-head"><div class="caps muted">Requested · waiting for the studio</div></div>
+    <button class="ocard" onclick="App.go('fl-dlv')"><img src="img/red-roses.webp" alt=""><div class="mn"><div class="ot">Clapham SW4</div><div class="om"><span>Tomorrow 09:00–12:00</span><span class="pill --review">Requested</span></div></div><div class="oc">£7</div></button>
+    <div class="sec-head"><div class="caps muted">Done this week</div><button class="link" onclick="App.tab('fl-earn')">Earnings</button></div>
+    <button class="ocard"><img src="img/lilac-dream.webp" alt=""><div class="mn"><div class="ot">Kennington SE11</div><div class="om"><span>Mon 13:00</span><span class="pill --done">Delivered</span></div></div><div class="oc">£7</div></button>
+    <button class="ocard"><img src="img/pink-garden.webp" alt=""><div class="mn"><div class="ot">Canary Wharf E14</div><div class="om"><span>Tue 18:40</span><span class="pill --done">Delivered</span></div></div><div class="oc">£11</div></button>
+    <button class="ocard"><img src="img/white-spray.webp" alt=""><div class="mn"><div class="ot">Vauxhall SW8</div><div class="om"><span>Wed 12:10</span><span class="pill">Returned · £10.50</span></div></div><div class="oc">£10.5</div></button>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-run" data-nav="Delivery in progress" data-group="Freelance · My deliveries">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Battersea · by 19:00</div><button class="ib" aria-label="Write to the studio" onclick="App.go('fl-studio')"><svg class="i"><use href="#fl-i-msg"/></svg></button></div>
+  <div class="scr-body">
+    <div class="pad">
+      <div class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><div class="caps muted">Show at the studio</div><div style="font-family:var(--f-display);font-size:30px;line-height:1.1">Order 186412</div></div><img src="img/peach-posy.webp" alt="" style="width:56px;height:70px;object-fit:cover"></div>
+      <div class="timeline" id="fl-run-tl" style="margin-top:20px"></div>
+    </div>
+    <div class="sec-head" style="margin-top:8px"><div class="caps muted">Recipient</div></div>
+    <div class="row"><svg class="i"><use href="#fl-i-user"/></svg><div class="rt"><div class="l">Emma W.</div><div class="d">Flat 4, 21 Lavender Hill, SW11 5QT</div></div></div>
+    <div class="row" id="fl-run-phone"></div>
+    <div class="row"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Note from the sender</div><div class="d">Ring twice, the bell is quiet. Leave with the concierge if out.</div></div></div>
+    <div class="pad" style="display:grid;gap:8px;margin:18px 0 24px">
+      <a class="btn --ghost --block" href="https://www.google.com/maps/dir/?api=1&destination=SW11+5QT&travelmode=bicycling" target="_blank" rel="noopener"><svg class="i"><use href="#fl-i-nav"/></svg>Open in Google Maps</a>
+      <button class="btn --ghost --block" onclick="FL.sheet('problem')"><svg class="i"><use href="#fl-i-alert"/></svg>Problem with delivery</button>
+      <div style="text-align:center;margin-top:6px" id="fl-run-withdraw"><button class="textbtn" onclick="FL.sheet('withdraw')">Withdraw from this delivery</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-done" data-nav="Delivered" data-group="Freelance · My deliveries">
+  <div class="scr-body pad" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+    <div style="width:64px;height:64px;background:var(--ok);color:#fff;display:grid;place-items:center;margin:0 auto 20px"><svg class="i" style="width:30px;height:30px"><use href="#fl-i-check"/></svg></div>
+    <div class="caps muted">Delivered 18:22</div>
+    <h1 class="h-display" style="margin:8px 0 12px">Thank you, Sam.</h1>
+    <p class="soft" style="margin:0 0 6px">£9.00 added to this week's statement.</p>
+    <p class="hint" style="margin:0 0 28px">The sender gets your photo with the delivery message.</p>
+    <button class="btn --block" onclick="App.tab('fl-board')">More deliveries</button>
+    <div style="margin-top:16px"><button class="textbtn" onclick="App.tab('fl-earn')">See earnings</button></div>
+  </div>
+</section>
+
+<!-- ============ MY WAY ============ -->
+<section class="scr fl fl" id="s-fl-way" data-tab="fl-way" data-nav="Where are you going?" data-group="Freelance · On my way">
+  <div class="appbar"><div class="ttl">On my way</div><button class="ib" aria-label="Saved routes" onclick="App.go('fl-saved')"><svg class="i"><use href="#fl-i-route"/></svg></button><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="scr-body has-tab">
+    <div class="pad">
+      <h1 class="h1" style="margin:4px 0 16px">Where are you going?</h1>
+      <div class="field"><label for="fl-w-from">From</label><input class="input" id="fl-w-from" value="My location · Bermondsey SE1"></div>
+      <div class="field"><label for="fl-w-to">To</label><input class="input" id="fl-w-to" value="SW11 1AJ · Clapham Junction"><span class="hint">A postcode, or drop a pin on the map.</span></div>
+      <div class="seg" style="margin-bottom:14px"><button>Walk</button><button class="on">Bike</button><button>Transit</button></div>
+      <button class="btn --block" onclick="document.getElementById('way-res').hidden=false">Show deliveries on my way</button>
+    </div>
+    <div id="fl-way-res">
+      <div class="sec-head"><div><div class="caps muted">2 deliveries fit · 34 min trip</div></div></div>
+      <div class="dlist">
+        <button class="dcard" onclick="App.go('fl-dlv')"><div class="top"><div><div class="when">Today · 17:00–19:00</div><div class="where">Battersea SW11</div></div><div class="pay">£9</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-clock"/></svg>+6 min detour</span><span>Pick up at the studio on your way</span></div></button>
+        <button class="dcard" onclick="App.go('fl-dlv')"><div class="top"><div><div class="when">Today · 18:00–20:00</div><div class="where">Vauxhall SW8</div></div><div class="pay">£7</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-clock"/></svg>+9 min detour</span></div></button>
+      </div>
+      <p class="hint pad" style="margin-top:12px">Navigation opens in Google Maps. Trip times are estimates.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-saved" data-tab="fl-way" data-nav="My routes and areas" data-group="Freelance · On my way">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Routes and areas</div><span class="ib"></span></div>
+  <div class="scr-body has-tab">
+    <div class="sec-head" style="margin-top:12px"><div class="h2">My routes</div><span class="caps muted">2 of 3</span></div>
+    <div class="row"><svg class="i"><use href="#fl-i-route"/></svg><div class="rt"><div class="l">Home from uni</div><div class="d">WC1E → SE15 · Bike · Mon–Thu 16:30–18:00</div></div><button class="ib" aria-label="Delete"><svg class="i" style="color:var(--grey)"><use href="#fl-i-x"/></svg></button></div>
+    <div class="row"><svg class="i"><use href="#fl-i-route"/></svg><div class="rt"><div class="l">Saturday gym</div><div class="d">SE15 → SW11 · Transit · Sat 09:00–11:00</div></div><button class="ib" aria-label="Delete"><svg class="i" style="color:var(--grey)"><use href="#fl-i-x"/></svg></button></div>
+    <div class="pad" style="margin-top:12px"><button class="btn --ghost --block" onclick="FL.sheet('route')"><svg class="i"><use href="#fl-i-plus"/></svg>Add a route</button></div>
+    <div class="sec-head"><div class="h2">My areas</div></div>
+    <div class="pad"><p class="soft sm" style="margin:0 0 12px">Get notified about deliveries to these postcode areas.</p>
+      <div class="wrap-chips"><span class="chip on">SE1 ×</span><span class="chip on">SE15 ×</span><span class="chip on">SE11 ×</span><span class="chip on">SW8 ×</span><button class="chip"><svg class="i" style="width:14px;height:14px"><use href="#fl-i-plus"/></svg>Add area</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EARNINGS ============ -->
+<section class="scr fl fl" id="s-fl-earn" data-tab="fl-earn" data-nav="Earnings" data-group="Freelance · Earnings">
+  <div class="appbar"><div class="ttl">Earnings</div><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="scr-body has-tab">
+    <div class="stats num"><div><b>£63</b><span>This week</span></div><div><b>£214</b><span>October</span></div><div><b>£63</b><span>Unpaid</span></div></div>
+    <div class="pad" style="margin-top:12px"><div class="panel sm soft" style="display:flex;gap:10px;align-items:center"><svg class="i"><use href="#fl-i-bank"/></svg><span>Paid every Friday to the account ending <b class="num">4821</b>. Last payout £81.00 on 17 Oct.</span></div></div>
+    <div class="sec-head"><div class="h2">Statements</div></div>
+    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 43 · 20–26 Oct</div><div class="d">7 deliveries · issued Mon 27 Oct</div></div><span class="pill --review">Check it</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 42 · 13–19 Oct</div><div class="d">9 deliveries · £81.00</div></div><span class="pill --done">Paid</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 41 · 6–12 Oct</div><div class="d">8 deliveries · £70.00</div></div><span class="pill --done">Paid</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-bank')"><svg class="i"><use href="#fl-i-bank"/></svg><div class="rt"><div class="l">Bank details</div><div class="d">Account ending 4821</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-tax')"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Tax &amp; status</div><div class="d">Self-employed · trading allowance £1,000</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-stmt" data-tab="fl-earn" data-nav="Weekly statement" data-group="Freelance · Earnings">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Statement FS-2026-W43-0007</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:8px 0 4px">Week 43</h1>
+    <p class="soft sm" style="margin:0 0 14px">20–26 October · Floritta Ltd · paid Friday 31 October</p>
+    <div class="num">
+      <div class="stline"><div>Kennington SE11<div class="sd">Mon 20 · order 186211</div></div><span class="sv">£7.00</span></div>
+      <div class="stline"><div>Canary Wharf E14<div class="sd">Tue 21 · order 186260 · band L</div></div><span class="sv">£11.00</span></div>
+      <div class="stline"><div>Vauxhall SW8 · returned<div class="sd">Wed 22 · full rate + 50% for the return</div></div><span class="sv">£10.50</span></div>
+      <div class="stline"><div>Battersea SW11<div class="sd">Thu 23 · order 186412</div></div><span class="sv">£9.00</span></div>
+      <div class="stline"><div>3 more deliveries<div class="sd">Fri–Sun</div></div><span class="sv">£25.50</span></div>
+      <div class="stline total"><div>Total</div><span class="sv">£63.00</span></div>
+    </div>
+    <p class="hint">No tax is taken off – you report this income yourself.</p>
+  </div>
+  <div class="cta-bar" style="flex-direction:row"><button class="btn --ghost" style="flex:1" onclick="FL.sheet('query')">Something is wrong</button><button class="btn" style="flex:1" onclick="App.toast('Thanks – statement confirmed.')">All correct</button></div>
+</section>
+
+<section class="scr fl fl" id="s-fl-bank" data-tab="fl-earn" data-nav="Bank details" data-group="Freelance · Earnings">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Bank details</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:8px 0 8px">Where we pay you</h1>
+    <p class="soft sm" style="margin:0 0 20px">A UK account in your own name. Only the payout team sees it.</p>
+    <div class="field"><label for="fl-b-n">Name on the account</label><input class="input" id="fl-b-n" value="Sam Kowalski"></div>
+    <div class="field"><label for="fl-b-s">Sort code</label><input class="input num" id="fl-b-s" value="••-••-14"></div>
+    <div class="field"><label for="fl-b-a">Account number</label><input class="input num" id="fl-b-a" value="••••4821"><span class="hint">Hidden after saving. To change it, type the whole number again.</span></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.toast('Bank details saved.');App.back()">Save</button></div>
+</section>
+
+<section class="scr fl fl" id="s-fl-tax" data-tab="fl-earn" data-nav="Tax & status" data-group="Freelance · Earnings">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Tax &amp; status</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <h1 class="h1" style="margin:8px 0 16px">You're self-employed</h1>
+    <div class="acc">
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Your choice, every time</div><div class="d">No minimum hours, no schedule, no penalty for withdrawing or saying no.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Work for others</div><div class="d">Deliver for any other company at the same time.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Send a substitute</div><div class="d">Someone who passed the same right-to-work check can take a delivery for you.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Tax</div><div class="d">The first £1,000 of self-employed income each tax year is tax-free (trading allowance). Above that, register for Self Assessment.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Reporting to HMRC</div><div class="d">From 2026 platforms report what they pay sellers and couriers to HMRC once a year. Your statements match that report.</div></div></div>
+    </div>
+    <div style="margin:18px 0 28px;display:grid;gap:10px"><a class="textbtn" href="https://www.gov.uk/working-for-yourself" target="_blank" rel="noopener">gov.uk – Working for yourself</a><a class="textbtn" href="https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income" target="_blank" rel="noopener">gov.uk – Trading allowance</a></div>
+  </div>
+</section>
+
+<!-- ============ STUDIO ============ -->
+<section class="scr fl fl" id="s-fl-studio" data-tab="fl-studio" data-nav="Studio · messages" data-group="Freelance · Studio">
+  <div class="appbar"><div class="ttl">Studio</div><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="pad"><div class="panel sm soft" style="display:flex;gap:10px;align-items:center"><svg class="i"><use href="#fl-i-clock"/></svg><span>A studio manager replies 08:00–21:00, usually within 10 minutes. Stuck at the door? Use <b>Problem with delivery</b> on the delivery itself.</span></div></div>
+  <div class="scr-body pad" style="display:flex;flex-direction:column;gap:10px;padding-bottom:150px">
+    <div class="caps muted" style="text-align:center;margin:10px 0">Today</div>
+    <div class="bubble --me"><small>You · 16:41</small>I'm 10 min late to the studio, the bridge is closed.</div>
+    <div class="bubble --them"><small>Studio (Kamila) · 16:43</small>No problem, the bouquet will be at the front desk. Order 186412.</div>
+    <div class="bubble --me"><small>You · 18:05</small>Concierge says flat 4 is empty. Leave with him?</div>
+    <div class="bubble --them"><small>Studio (Kamila) · 18:06</small>Yes, the sender agreed. Take the photo with the concierge desk please.</div>
+  </div>
+  <div class="cta-bar" style="flex-direction:row;align-items:center;bottom:var(--tab-h)"><button class="ib" aria-label="Attach photo"><svg class="i"><use href="#fl-i-camera"/></svg></button><input class="input" id="fl-st-msg" placeholder="Message to the studio" style="height:44px;flex:1"><button class="btn --sm">Send</button></div>
+</section>
+
+<!-- ============ PROFILE ============ -->
+<section class="scr fl fl" id="s-fl-me" data-tab="fl-me" data-nav="Profile" data-group="Freelance · Profile">
+  <div class="appbar"><div class="ttl">Profile</div></div>
+  <div class="scr-body has-tab">
+    <div class="pad" style="display:flex;gap:14px;align-items:center;margin:6px 0 16px">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:20px;letter-spacing:.04em;font-weight:500">SK</div>
+      <div><div class="h2">Sam Kowalski</div><div class="sm muted">Self-employed courier · Bike · since Oct 2026</div><div style="margin-top:6px" id="fl-me-pill"></div></div>
+    </div>
+    <div class="stats num"><div><b>23</b><span>Delivered</span></div><div><b>0</b><span>Problems</span></div><div><b>SE15</b><span>Home area</span></div></div>
+    <div style="margin-top:14px">
+      <button class="row" onclick="App.go('fl-notif')"><svg class="i"><use href="#fl-i-bell"/></svg><div class="rt"><div class="l">Notifications</div><div class="d">Areas and routes · near the studio on</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-alco')"><svg class="i"><use href="#fl-i-glass"/></svg><div class="rt"><div class="l">Alcohol deliveries</div><div class="d">Trained · valid until April 2027</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.tab('fl-studio')"><svg class="i"><use href="#fl-i-msg"/></svg><div class="rt"><div class="l">Write to the studio</div><div class="d">Kamila replied 2 h ago</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-tax')"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Tax &amp; status</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row"><svg class="i"><use href="#fl-i-shield"/></svg><div class="rt"><div class="l">Right to work</div><div class="d">Checked 23 Oct 2026 · valid until March 2027</div></div></button>
+      <button class="row"><svg class="i"><use href="#fl-i-help"/></svg><div class="rt"><div class="l">Help and courier agreement</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-welcome')"><svg class="i"><use href="#fl-i-out"/></svg><div class="rt"><div class="l">Sign out</div></div></button>
+      <button class="row --danger" onclick="App.go('fl-delete')"><svg class="i" style="color:var(--accent)"><use href="#fl-i-trash"/></svg><div class="rt"><div class="l">Delete account</div></div></button>
+    </div>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-notif" data-tab="fl-me" data-nav="Notifications" data-group="Freelance · Profile">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Notifications</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <h1 class="h1" style="margin:8px 0 6px">New deliveries</h1>
+    <p class="soft sm" style="margin:0 0 8px">Which ones should we tell you about?</p>
+    <div id="fl-pm">
+      <button class="radio on"><span class="rd"></span><span><span class="rl" style="display:block">My areas and routes</span><span class="rdd" style="display:block">Recommended</span></span></button>
+      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">Only my areas</span></span></button>
+      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">Only my routes</span></span></button>
+      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">None</span><span class="rdd" style="display:block">You can still open the app and look</span></span></button>
+    </div>
+    <p class="hint" style="margin:10px 0 0">Quiet from 21:00 to 08:00, and never more than 6 a day.</p>
+    <div class="row" style="padding-left:0;padding-right:0;margin-top:18px;border-top:1px solid var(--hair)"><div class="rt"><div class="l">Near the studio</div><div class="d">When you pass within 2 miles of the studio and there's something ready to pick up. Uses your location only for this; we don't store it.</div></div><button class="switch on" onclick="this.classList.toggle('on')" aria-label="Near the studio"></button></div>
+    <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Messages from the studio</div><div class="d">Replies and changes to your deliveries</div></div><button class="switch on" onclick="this.classList.toggle('on')" aria-label="Messages"></button></div>
+  </div>
+</section>
+
+<section class="scr fl fl" id="s-fl-alco" data-tab="fl-me" data-nav="Alcohol training" data-group="Freelance · Profile">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Alcohol deliveries · 18+</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <div class="caps muted" style="margin-top:8px">Question 3 of 8</div>
+    <div class="progress" style="margin:10px 0 20px"><i style="width:37%"></i></div>
+    <h1 class="h2" style="margin-bottom:18px">The recipient looks about 22 and has no ID. What do you do?</h1>
+    <div id="fl-quiz">
+      <button class="qopt" data-ok="0">Hand it over – the sender already paid</button>
+      <button class="qopt" data-ok="1">Don't hand it over and bring it back to the studio</button>
+      <button class="qopt" data-ok="0">Leave it with a neighbour</button>
+    </div>
+    <div class="panel --ok sm" id="fl-quiz-fb" hidden>Right. Challenge 25: if they look under 25, ask for ID. No valid ID – no alcohol. You're paid the full rate plus 50% for the return.</div>
+    <p class="hint" style="margin-top:18px">Floritta premises licence 889934. Training is valid for 6 months. Until you pass, deliveries with alcohol don't show up for you.</p>
+  </div>
+</section>
+
+
+
+<section class="scr fl fl" id="s-fl-delete" data-nav="Delete account" data-group="Freelance · Profile">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delete account</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:8px 0 14px">Delete your courier account?</h1>
+    <div class="sec-head" style="padding:0;margin:8px 0 6px"><div class="caps muted">We delete now</div></div>
+    <div class="sm soft">Sign-in, phone number, home postcode, routes and areas, bank details, notification settings and messages.</div>
+    <div class="sec-head" style="padding:0;margin:20px 0 6px"><div class="caps muted">The law asks us to keep</div></div>
+    <div class="sm soft">The right-to-work check record – 2 years after your last delivery (Home Office). Statements and payments – 6 years (HMRC). Nobody uses them for anything else, and they are then deleted.</div>
+    <div class="panel --warn sm mt16" style="margin-top:18px">Unpaid earnings (£63.00) are still paid on Friday.</div>
+    <button class="check" onclick="this.classList.toggle('on')" style="margin-top:10px"><span class="cb"><svg class="i"><use href="#fl-i-check"/></svg></span><span class="ct">I understand this can't be undone.</span></button>
+  </div>
+  <div class="cta-bar"><button class="btn --accent --block" onclick="App.toast('Account deleted.');App.go('fl-welcome')">Delete my account</button></div>
+</section>
+
+        `;
+  while(wrap.firstChild)scr.appendChild(wrap.firstChild);
+  const app=document.getElementById('app');
+  const extra=document.createElement('div');extra.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="fl-i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="fl-i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="fl-i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="fl-i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="fl-i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1112 0v5l1.5 2h-15zM10 20.5a2 2 0 004 0"/></symbol>
+  <symbol id="fl-i-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol>
+  <symbol id="fl-i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></symbol>
+  <symbol id="fl-i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h7.5a3.5 3.5 0 000-7h-7a3.5 3.5 0 010-7H16"/></symbol>
+  <symbol id="fl-i-pound" viewBox="0 0 24 24"><path d="M16.5 7.5A4 4 0 009 8.5V12m-2.5 0h8M9 12v3.5c0 1.5-.8 2.8-2.5 3.5h11"/></symbol>
+  <symbol id="fl-i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20.5c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+  <symbol id="fl-i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0113 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+  <symbol id="fl-i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="fl-i-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M5.5 16L9 9h6l3.5 7M9 9l3 7h-1M14 6h2.5l-1.5 3"/></symbol>
+  <symbol id="fl-i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2-6 3 3v3M12 15l-1-5 4 1.5 2 2.5M11 10l-3 2v3"/></symbol>
+  <symbol id="fl-i-train" viewBox="0 0 24 24"><rect x="5.5" y="3.5" width="13" height="13" rx="0"/><path d="M5.5 11h13M8.5 20l2-3.5M15.5 20l-2-3.5"/><circle cx="9" cy="14" r=".6"/><circle cx="15" cy="14" r=".6"/></symbol>
+  <symbol id="fl-i-car" viewBox="0 0 24 24"><path d="M4 16v-3.5L6 8h12l2 4.5V16zM4 16v2.5h2.5V16M17.5 16v2.5H20V16"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></symbol>
+  <symbol id="fl-i-camera" viewBox="0 0 24 24"><path d="M3.5 8h4l1.5-2.5h6L16.5 8h4v11h-17z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="fl-i-alert" viewBox="0 0 24 24"><path d="M12 3.5L21 19.5H3z"/><path d="M12 9.5v4.5M12 16.8v.2"/></symbol>
+  <symbol id="fl-i-msg" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="fl-i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.5 4.5-2 1.5a11 11 0 005.5 5.5l1.5-2 4.5 1.5v3a2 2 0 01-2 2A16.5 16.5 0 014.5 5.5a2 2 0 012-2z"/></symbol>
+  <symbol id="fl-i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/></symbol>
+  <symbol id="fl-i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="fl-i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.2-7.5 9.5-4.3-1.3-7.5-5-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="fl-i-doc" viewBox="0 0 24 24"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5M9 13h6M9 16.5h6"/></symbol>
+  <symbol id="fl-i-trash" viewBox="0 0 24 24"><path d="M4.5 6.5h15M9 6.5V4h6v2.5M6.5 6.5l1 14h9l1-14"/></symbol>
+  <symbol id="fl-i-glass" viewBox="0 0 24 24"><path d="M7 3.5h10l-1 8a4 4 0 01-8 0zM12 15.5V20.5M8.5 20.5h7"/></symbol>
+  <symbol id="fl-i-nav" viewBox="0 0 24 24"><path d="M20 4L3.5 11l7 2.5L13 20.5z"/></symbol>
+  <symbol id="fl-i-bank" viewBox="0 0 24 24"><path d="M3.5 9L12 4l8.5 5zM5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 20h17"/></symbol>
+  <symbol id="fl-i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 114 2c-.9.6-1.6 1.1-1.6 2.3M12 16.8v.2"/></symbol>
+  <symbol id="fl-i-out" viewBox="0 0 24 24"><path d="M14 4.5H5v15h9M10 12h10M16.5 8.5L20 12l-3.5 3.5"/></symbol>
+  <symbol id="fl-i-tg" viewBox="0 0 24 24"><path d="M21 4L2.5 11.5l6 2 2 6.5 3.5-4 5 3.5z"/><path d="M8.5 13.5L18 7"/></symbol>
+</svg><nav class="tabbar hide" id="fl-tabbar">
+          <button class="tab" data-tab="fl-board" onclick="App.tab('fl-board')"><svg class="i"><use href="#fl-i-box"/></svg>Deliveries<span class="dot">7</span></button>
+          <button class="tab" data-tab="fl-mine" onclick="App.tab('fl-mine')"><svg class="i"><use href="#fl-i-bag"/></svg>Mine</button>
+          <button class="tab" data-tab="fl-way" onclick="App.tab('fl-way')"><svg class="i"><use href="#fl-i-route"/></svg>My way</button>
+          <button class="tab" data-tab="fl-earn" onclick="App.tab('fl-earn')"><svg class="i"><use href="#fl-i-pound"/></svg>Earnings</button>
+          <button class="tab" data-tab="fl-studio" onclick="App.tab('fl-studio')"><svg class="i"><use href="#fl-i-msg"/></svg>Studio<span class="dot">1</span></button>
+        </nav>
+        <div class="fl-sheet-src" hidden id="fl-sh-photo"><div class="sh-head"><div class="h3" id="fl-ph-title">Photo of the bouquet</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><div class="cam"><img src="img/peach-posy.webp" alt=""><div class="frame"></div><div class="cap" id="fl-ph-cap">Bouquet and order label in the frame</div></div></div>
+          <div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet()">Retake</button><button class="btn" onclick="FL.photoDone()">Use photo</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-age"><div class="sh-head"><div class="h3">Check the recipient's age</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><p class="soft sm" style="margin:0 0 6px">This order has alcohol. Ask for ID if they look under 25. Choose what you saw – we don't store any numbers.</p>
+            <button class="radio on"><span class="rd"></span><span class="rl">Passport</span></button><button class="radio"><span class="rd"></span><span class="rl">Photo driving licence</span></button><button class="radio"><span class="rd"></span><span class="rl">PASS card or UK armed forces ID</span></button><button class="radio"><span class="rd"></span><span class="rl">Clearly over 25 – no ID asked</span></button>
+            <div style="margin-top:16px;text-align:center"><button class="textbtn accent" onclick="FL.sheet('refuse')">Can't hand over – refuse</button></div></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();FL.openPhoto('deliver')">Continue to photo</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-refuse"><div class="sh-head"><div class="h3">Why can't you hand it over?</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><button class="radio on"><span class="rd"></span><span class="rl">No ID</span></button><button class="radio"><span class="rd"></span><span class="rl">Under 18 or ID says under 18</span></button><button class="radio"><span class="rd"></span><span class="rl">Seems drunk</span></button><button class="radio"><span class="rd"></span><span class="rl">Other reason</span></button>
+            <div class="panel sm soft" style="margin-top:14px">Bring the order back to the studio. You're paid the full rate plus 50% for the return.</div></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('The studio knows. Bring it back when you can.')">Tell the studio</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-problem"><div class="sh-head"><div class="h3">Problem with delivery</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><button class="radio on"><span class="rd"></span><span class="rl">Recipient isn't answering</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't find the address</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't deliver for another reason</span></button><button class="radio"><span class="rd"></span><span class="rl">The bouquet got damaged</span></button>
+            <div class="field" style="margin-top:14px"><label for="fl-pr-n">Anything to add</label><textarea class="input" id="fl-pr-n">Rang three times, no answer. Waiting outside.</textarea></div></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent. The studio will reply here.')">Send to the studio</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-withdraw"><div class="sh-head"><div class="h3">Withdraw from this delivery?</div></div>
+          <div class="sh-body"><p class="soft sm" style="margin:0">That's fine – it goes back to other couriers. Nothing changes on your account.</p></div>
+          <div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();App.toast('Withdrawn.');App.tab('fl-board')">Withdraw</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-query"><div class="sh-head"><div class="h3">What looks wrong?</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><div class="field"><label for="fl-q-n">Tell the payout team</label><textarea class="input" id="fl-q-n">The Vauxhall return was on Thursday, not Wednesday – is that the same order?</textarea></div><p class="hint" style="margin:0">They reply within 2 working days. Your payout isn't held up.</p></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent to the payout team.')">Send</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-route"><div class="sh-head"><div class="h3">Add a route</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body">
+            <div class="field"><label for="fl-r-l">Name</label><input class="input" id="fl-r-l" value="Home from work"></div>
+            <div class="field"><label for="fl-r-f">From (postcode)</label><input class="input" id="fl-r-f" value="EC2A 4NE"></div>
+            <div class="field"><label for="fl-r-t">To (postcode)</label><input class="input" id="fl-r-t" value="SE15 4QL"></div>
+            <div class="field"><label>Days</label><div class="wrap-chips"><span class="chip on">Mon</span><span class="chip on">Tue</span><span class="chip on">Wed</span><span class="chip on">Thu</span><span class="chip">Fri</span><span class="chip">Sat</span><span class="chip">Sun</span></div></div>
+            <div class="field"><label for="fl-r-w">Usually leaving</label><input class="input" id="fl-r-w" value="17:30 – 18:30"></div>
+          </div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Route saved. We will tell you what fits it.')">Save route</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-requested">
+          <div class="sh-body" style="text-align:center;padding-top:16px"><div class="caps muted">Requested</div><h2 class="h1" style="margin:8px 0 10px">The studio will confirm soon.</h2><p class="soft sm" style="margin:0 0 6px">Usually within 15 minutes. You'll get a notification with the full address.</p></div>
+          <div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet();App.tab('fl-board')">More deliveries</button><button class="btn" onclick="App.closeSheet();App.tab('fl-mine')">My deliveries</button></div></div>
+
+        `;
+  while(extra.firstChild)app.appendChild(extra.firstChild);
+  const notes=document.getElementById('notes');
+  if(notes){const n=document.createElement('div');n.id='fl-notes';n.className='notes';
+    n.innerHTML=`<h4>Курьер-фрилансер (Sam)</h4><div class="fl-ctl" id="fl-vt"><button data-v="1" class="on">Проверен</button><button data-v="0">Ждёт проверки</button></div>
+      <div style="margin:6px 0 4px" class="eyebrow">Показать пуш</div>
+      <button class="fl-push" onclick="FL.push('route')">Новая доставка по маршруту</button><button class="fl-push" onclick="FL.push('confirm')">Студия подтвердила</button><button class="fl-push" onclick="FL.push('near')">Рядом со студией</button><button class="fl-push" onclick="FL.push('reply')">Ответ студии</button>
+      <div id="fl-notes-body" style="margin-top:22px"></div>
+      <h4>Связь с Dana</h4><ul><li><b>Dana</b> – черновик контура self-employed от 21.10 (вкладка My jobs, инвойсы, Hire &amp; Reward). <b>Sam</b> – режим фрилансера, утверждённый Tatiana 23.10: пять вкладок Deliveries / Mine / My way / Earnings / Studio, профиль – кружок сверху, слова deliveries / request вместо jobs / apply. Предлагаю свести их в одного Sam.</li></ul>`;
+    notes.insertBefore(n,notes.firstChild);
+    n.querySelectorAll('#fl-vt button').forEach(b=>b.onclick=()=>FL.setV(+b.dataset.v))}
+  /* small interactions */
+  document.addEventListener('click',e=>{
+    const t=e.target.closest('.fl-tiles .tile');if(t){t.parentNode.querySelectorAll('.tile').forEach(x=>x.classList.toggle('on',x===t));return}
+    const sg=e.target.closest('.fl .seg button');if(sg){sg.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===sg));return}
+    const ch=e.target.closest('.fl .chips .chip');if(ch){ch.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===ch));return}
+    const r=e.target.closest('#sheet-inner .radio, .fl .radio');if(r){const box=r.parentNode;box.querySelectorAll(':scope > .radio').forEach(x=>x.classList.toggle('on',x===r));return}
+    const q=e.target.closest('.fl .qopt');if(q){q.classList.add(q.dataset.ok==='1'?'right':'wrong');if(q.dataset.ok==='1')document.getElementById('fl-quiz-fb').hidden=false}
+  });
+  FL.render();
+})();
+</script>
+<!-- ============ /FREELANCE COURIER MODE ============ -->
+
 </body>
 </html>
