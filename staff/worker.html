@@ -4771,6 +4771,8 @@ S.report=function(){
 
 
 
+
+
 <!-- ============ FREELANCE COURIER MODE (Sam) – 23.10.2026 ============ -->
 
 <style>
@@ -4854,7 +4856,7 @@ const NOTES={
  'fl-board':['Доступные доставки','<ul><li><code>GET /freelance/jobs?date=</code> – уже есть.</li><li>Карточка как в боте: слот, район, км, оплата, Peak / Hard window / 18+.</li><li>Фильтры: по маршрутам, по районам, «забрать сейчас».</li><li>Чёрная плашка – «рядом со студией» (геозона 2 мили вместо живой геопозиции Telegram).</li></ul>'],
  'fl-dlv':['Карточка доставки','<ul><li>Точный адрес – только после подтверждения, телефон – только после забора (как в боте).</li><li><code>POST /jobs/{id}/apply</code>; ответы CRM показываются текстом: не проверен, алкоголь без обучения, лимит £99 для новичка.</li><li>Withdraw без последствий – прямо на экране.</li></ul>'],
  'fl-mine':['Мои доставки','<ul><li><code>GET /freelance/my</code>.</li><li>Активная – сверху чёрной плашкой; ниже – ждут подтверждения студии и выполненные за неделю.</li><li>Возврат в студию – отдельной строкой с оплатой +50 %.</li></ul>'],
- 'fl-run':['Доставка в работе','<ul><li>Шаги: I\'m on my way → Picked up (фото) → Delivered (фото). Нажимайте кнопки – шаги двигаются.</li><li>PIN выключен с 25.09 – не спрашиваем; код готов, если CRM снова включит.</li><li>Алкоголь: перед фото – вопрос про документ или отказ с причиной.</li><li>«Problem with delivery» – 4 причины, как в боте.</li><li>Фото – через очередь офлайн приложения: уйдёт, когда появится сеть.</li></ul>'],
+ 'fl-run':['Доставка в работе','<ul><li>Шаги: I\'m on my way → Picked up (фото) → Delivered (фото). Нажимайте кнопки – шаги двигаются.</li><li>PIN выключен с 25.09 – не спрашиваем; код готов, если CRM снова включит.</li><li>Алкоголь: перед фото – вопрос про документ или отказ с причиной.</li><li>«Problem with delivery» – 4 причины, как в боте, + пятая «I can’t continue – I’ll bring it back».</li><li><b>Отказ после забора</b>: Withdraw исчезает после фото забора (CRM тоже не даёт). Остаётся «Problem with delivery» → менеджер звонит и решает: вернуть в студию или передать другому курьеру. Решение Tatiana 23.10: если курьер сам не может продолжить – платим 50 % ставки за возврат (при отказе получателя у двери – полная ставка + 50 %).</li><li>Фото – через очередь офлайн приложения: уйдёт, когда появится сеть.</li></ul>'],
  'fl-done':['Вручено','<ul><li>Сумма сразу в неделю.</li><li>Фото уходит заказчику с сообщением о доставке (как сейчас).</li></ul>'],
  'fl-way':['Куда едешь?','<ul><li><code>POST /freelance/route-check</code>: откуда (геопозиция или посткод) → куда → транспорт → доставки с крюком и оплатой.</li><li>Навигация – только ссылкой в Google Maps, свой навигатор не строим.</li></ul>'],
  'fl-saved':['Маршруты и районы','<ul><li><code>GET/POST/DELETE /routes</code>, до 3 маршрутов; <code>/areas</code> – outcode.</li><li>По ним CRM шлёт пуши о новых доставках (уже работает для бота и приложения).</li></ul>'],
@@ -5384,7 +5386,7 @@ const BOARD=[
           <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('The studio knows. Bring it back when you can.')">Tell the studio</button></div></div>
 
         <div class="fl-sheet-src" hidden id="fl-sh-problem"><div class="sh-head"><div class="h3">Problem with delivery</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
-          <div class="sh-body"><button class="radio on"><span class="rd"></span><span class="rl">Recipient isn't answering</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't find the address</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't deliver for another reason</span></button><button class="radio"><span class="rd"></span><span class="rl">The bouquet got damaged</span></button>
+          <div class="sh-body"><button class="radio on"><span class="rd"></span><span class="rl">Recipient isn't answering</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't find the address</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't deliver for another reason</span></button><button class="radio"><span class="rd"></span><span class="rl">The bouquet got damaged</span></button><button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">I can't continue – I'll bring it back</span><span class="rdd" style="display:block">Bike broke, something urgent. You're paid 50% for bringing it back.</span></span></button>
             <div class="field" style="margin-top:14px"><label for="fl-pr-n">Anything to add</label><textarea class="input" id="fl-pr-n">Rang three times, no answer. Waiting outside.</textarea></div></div>
           <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent. The studio will reply here.')">Send to the studio</button></div></div>
 
