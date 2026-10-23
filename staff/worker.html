@@ -1426,7 +1426,7 @@ window.STAFF=[
  {id:"oleh",n:"Oleh",role:"courier",title:"Courier",initials:"OL",onShift:true},
  {id:"max",n:"Max",role:"courier",title:"Seasonal courier",staff_type:"seasonal",initials:"MX"}
 ];
-window.PERSONAS=[{id:"kamila",label:"Florist"},{id:"andrii",label:"Courier"},{id:"valeria",label:"Manager"},{id:"ayana",label:"Trainee"}];
+window.PERSONAS=[{id:"kamila",label:"Florist · staff"},{id:"andrii",label:"Courier · staff"},{id:"valeria",label:"Manager"},{id:"ayana",label:"Trainee"}];
 const T=(h,m=0,dayOffset=0)=>{const d=new Date(2026,9,20,h,m);d.setDate(d.getDate()+dayOffset);return d.toISOString()};
 window.TASKS=[
  {id:101,title:"Opening checklist – shop floor",desc:"Daily opening routine before 8:30. Tick each step; the fridge temperature needs a number in the comment.",assignee:"kamila",by:"valeria",status:"done",due:T(8,30),repeat:"Every day · 8:30",tags:["shop"],checklist:[{t:"Lights, music, door sign",d:true},{t:"Fridge temperature logged",d:true},{t:"Buckets: fresh water + Chrysal",d:true},{t:"Till float counted",d:true},{t:"Pavement display out",d:true}],comments:[{by:"kamila",t:"Fridge 4 °C",at:T(8,21)}],doneAt:T(8,22)},
@@ -4378,7 +4378,7 @@ S.report=function(){
   const origWork=window.mount_work;window.mount_work=function(p){if(!isCtr())return origWork&&origWork(p);A.go('jobs',{},{replace:true})};
   const origSplash=window.mount_splash;window.mount_splash=function(){origSplash();if(isCtr()){document.getElementById('sp-eyebrow').textContent='Floritta Jobs · self-employed';document.querySelector('.sp-lead').textContent='Jobs with a fixed fee. Take what suits you.'}};
   /* persona + nav */
-  const pe=document.getElementById('persona');if(pe&&!pe.querySelector('[data-id="dana"]')){const u=A.user('dana');const b=document.createElement('button');b.dataset.id='dana';b.innerHTML=`${A.avatar(u,'--sm')}<span>${u.n}</span><small>Self-employed</small>`;b.onclick=()=>A.setUser('dana');pe.insertBefore(b,pe.children[1]||null)}
+  const pe=document.getElementById('persona');if(pe&&!pe.querySelector('[data-id="dana"]')){const u=A.user('dana');const b=document.createElement('button');b.dataset.id='dana';b.innerHTML=`${A.avatar(u,'--sm')}<span>${u.n}</span><small>Courier · self-employed</small>`;b.onclick=()=>A.setUser('dana');pe.insertBefore(b,pe.children[1]||null)}
   const nav=document.getElementById('nav-list');if(nav){[['jobs','Jobs board'],['statements','Statements & invoices'],['bizprofile','Business profile'],['taxstatus','Tax & status']].forEach(([id,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.setUser('dana');App.go('${id}')"><span>${l}</span><small>self-employed</small></button>`;nav.appendChild(li)});
     const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур self-employed (Dana)</h4><ul><li><b>Jobs board</b> – работы с фиксированной ценой за задачу; Apply / Withdraw без последствий.</li><li><b>Send a substitute</b> – без нашего разрешения, только 18+ и проверка права на работу (закон).</li><li><b>Statements & invoices</b> – gross, без вычетов, без holiday pay; можно слать свой счёт.</li><li><b>Business profile</b> – добровольно, раз в квартал: UTR, другие клиенты, страховка.</li><li>Нет смен, роты, задач, уроков и табеля. Три вкладки вместо пяти.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
   tabs();
@@ -4512,7 +4512,7 @@ S.report=function(){
   /* ---- people ---- */
   STAFF.push({id:'lina',n:'Lina',role:'florist',title:'Florist · in the reserve',initials:'LI',engagement:'reserve'});
   STAFF.push({id:'mira',n:'Mira',role:'florist',title:'Florist · self-employed',initials:'MI',engagement:'contractor'});
-  if(window.PERSONAS){PERSONAS.splice(1,0,{id:'lina',label:'Reserve · new'},{id:'mira',label:'Florist · s-e'})}
+  if(window.PERSONAS){PERSONAS.splice(1,0,{id:'lina',label:'Reserve · new'},{id:'mira',label:'Florist · self-employed'})}
   const isRes=u=>(u||A.me()).engagement==='reserve';
   const isMira=u=>(u||A.me()).id==='mira';
   const isMgr=u=>(u||A.me()).role==='manager';
@@ -4775,6 +4775,8 @@ S.report=function(){
 
 
 
+
+
 <!-- ============ FREELANCE COURIER MODE (Sam) – 23.10.2026 ============ -->
 
 <style>
@@ -4844,8 +4846,8 @@ S.report=function(){
 <script>
 (function(){
   const A=window.App;
-  STAFF.push({id:'sam',n:'Sam',role:'courier',title:'Freelance courier',initials:'SK',engagement:'freelance'});
-  PERSONAS.push({id:'sam',label:'Freelance courier'});
+  STAFF.push({id:'sam',n:'Sam',role:'courier',title:'Freelance courier · self-employed',initials:'SK',engagement:'freelance'});
+  PERSONAS.push({id:'sam',label:'Freelance courier · self-employed'});
 const NOTES={
  'fl-welcome':['Вход в приложение','<ul><li>Один экран для всех: сотрудник студии входит как раньше, новый курьер жмёт <b>Become a Floritta courier</b>.</li><li>Кнопка показывается только в воркспейсе Floritta.</li><li>«I already use the Telegram bot» – связка с ботом, без второй регистрации.</li></ul><h4>Статус</h4><ul><li>Нет слов shift / job / employee. «Deliveries», «request».</li></ul>'],
  'fl-signin':['Вход','<ul><li><code>POST /api/v1/auth/login</code> – уже есть.</li><li>Роль <code>freelance</code> → приложение показывает только 5 вкладок курьера, ни одного экрана сотрудника.</li><li>Восстановление пароля – уже есть.</li></ul>'],
