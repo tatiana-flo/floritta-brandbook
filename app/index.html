@@ -336,8 +336,8 @@ textarea.input{height:auto;min-height:96px;padding:14px;resize:none;line-height:
   <div class="sp-foot caps muted">Hand-tied in Bermondsey</div>
 </section>
 
-<!-- ============ ONBOARDING ============ -->
-<section class="scr" id="s-onboarding" data-nav="Onboarding" data-group="Start">
+<!-- ============ ONBOARDING (not used at launch) ============ -->
+<section class="scr" id="s-onboarding"><!-- kept for reference, not in launch path or side nav (guest-first rule) -->
   <div class="ob-slides" id="ob-slides">
     <div class="ob-slide">
       <div class="ob-ph"><img src="img/hero-basket.webp" alt=""><div class="ob-ov"></div></div>
@@ -2258,8 +2258,8 @@ window.App=App;
     clearTimeout(spT);
     spT=setTimeout(()=>{
       if(App.state.current!=="splash")return;
-      let seen=false;try{seen=!!sessionStorage.getItem(OB_KEY)}catch(e){}
-      App.go(seen?"home":"onboarding",{},{replace:true});
+      // guest-first: the app always opens on Home, never on sign-in/onboarding
+      App.go("home",{},{replace:true});
       App.state.history=[];
     },1400);
   };
@@ -2805,7 +2805,7 @@ const SUGG=["Happy birthday — with all my love","Thinking of you today","Congr
 let ck=null;
 function ckInit(params){
   const days=App.nextDays(7);
-  ck={who:"other",name:"Anna",phone:"7700 900123",anon:false,addr:0,postcode:"SE1 5SY",door:"",notes:"",save:false,
+  ck={sname:"",email:"",keep:false,acct:false,who:"other",name:"Anna",phone:"7700 900123",anon:false,addr:0,postcode:"SE1 5SY",door:"",notes:"",save:false,
       day:0,win:2,precise:false,msg:"",hide:true,photo:true,chan:"In the app",pay:params.express?"apple":"card",bill:true,tip:0,days,busy:false};
 }
 function ckTotal(){return App.total()+(ck.precise?6:0)+ck.tip}
@@ -2813,8 +2813,15 @@ function ckRender(){
   const body=$("#ck-body");
   const b=App.state.bag,ps=b.map(l=>App.product(l.id));
   body.innerHTML=`
-  <!-- recipient -->
+  <!-- your details (guest) -->
   <div class="sec" id="ck-delivery">
+    <div class="caps muted mb8">Your details <span style="text-transform:none;letter-spacing:0">· no account needed</span></div>
+    <div class="field"><label>Your name</label><input class="input" id="ck-sname" value="${esc(ck.sname)}" placeholder="For the order confirmation"></div>
+    <div class="field"><label>Email</label><input class="input" id="ck-email" type="email" inputmode="email" value="${esc(ck.email)}" placeholder="Receipt and tracking link"></div>
+    <div class="xs muted">We'll send the receipt and the tracking link here.</div>
+  </div>
+  <!-- recipient -->
+  <div class="sec">
     <div class="caps muted mb8">Recipient</div>
     <div class="seg mb16"><button data-who="other" class="${ck.who==="other"?"on":""}">Someone else</button><button data-who="me" class="${ck.who==="me"?"on":""}">Myself</button></div>
     <div class="field"><label>Name</label><input class="input" id="ck-name" value="${esc(ck.who==="me"?App.state.user.name:ck.name)}" placeholder="Recipient's name"></div>
@@ -2888,14 +2895,22 @@ function ckRender(){
     <div class="tips">${[0,2,5].map(t=>`<button class="chip ${ck.tip===t?"on":""}" data-tip="${t}">${t?"£"+t:"No tip"}</button>`).join("")}</div>
     <div class="sum tt"><span>Total</span><span id="ck-total">${App.fmt(ckTotal())}</span></div>
     <div class="lock">${App.icon("lock")}Secure checkout · Stripe</div>
+  </div>
+  <!-- optional account offer – quiet, at the very bottom -->
+  <div class="sec ck-acct">
+    <div class="sw" style="padding-top:0;border:0"><div class="t">Save my details on this phone for next time<small>Optional · stays on this device only</small></div><button class="switch ${ck.keep?"on":""}" data-sw="keep" aria-label="Save my details on this phone"></button></div>
+    <button class="textbtn xs" id="ck-acct" style="color:var(--grey);border-bottom:1px solid var(--light);padding:0 0 1px">${ck.acct?"Account will be created with "+esc(ck.email||"your email")+" · undo":"Create an account"}</button>
   </div>`;
   ckCta();
   bind();
   function bind(){
     $$("[data-who]",body).forEach(x=>x.onclick=()=>{ck.who=x.dataset.who;if(ck.who==="me"){ck.name=App.state.user.name;ck.anon=false}else ck.name="Anna";ckRender()});
+    $("#ck-sname").oninput=e=>ck.sname=e.target.value;$("#ck-email").oninput=e=>ck.email=e.target.value;
+    $("#ck-acct").onclick=()=>{ck.acct=!ck.acct;ckRender();App.toast(ck.acct?"We'll create your account after payment · nothing else changes":"OK – checking out as a guest")};
     $("#ck-name").oninput=e=>ck.name=e.target.value;$("#ck-phone").oninput=e=>ck.phone=e.target.value;
     $$("[data-sw]",body).forEach(s=>s.onclick=()=>{const k=s.dataset.sw;ck[k]=!ck[k];s.classList.toggle("on",ck[k]);App.haptic();
       if(k==="anon"&&ck.anon)App.toast("Sender hidden on the card and the courier app");
+      if(k==="keep")App.toast(ck.keep?"Your details will be filled in next time":"Nothing saved – guest checkout");
       if(k==="photo")App.toast(ck.photo?"We'll send a photo before it leaves":"No photo – you can change this later")});
     $$("[data-addr]",body).forEach(a=>a.onclick=()=>{ck.addr=+a.dataset.addr;ckRender();if(ck.addr===-1)setTimeout(()=>$("#ck-pc").focus(),50)});
     const pc=$("#ck-pc");if(pc){pc.oninput=e=>{ck.postcode=e.target.value;if(/^se1\b/i.test(e.target.value.trim())&&e.target.value.trim().length<=4)acSheet()};
@@ -2928,6 +2943,7 @@ function ckCta(){
 function ckPay(){
   if(ck.busy)return;
   if(ck.pay==="new"){const n=$("#ck-newcard input").value.replace(/\s/g,"");if(n.length<16){App.toast("Please enter a full card number");$("#ck-newcard input").focus();return}}
+  if(!/^\S+@\S+\.\S+$/.test(ck.email.trim())){App.toast("Add your email for the receipt");$("#ck-body").scrollTop=0;$("#ck-email").focus();return}
   if(!ck.name.trim()){App.toast("Who is it for? Add a recipient name");$("#ck-body").scrollTop=0;$("#ck-name").focus();return}
   ck.busy=true;App.haptic();ckCta();
   const finish=()=>{
@@ -2936,7 +2952,7 @@ function ckPay(){
     const addr=ck.addr>=0?SAVED[ck.addr]:{l:ck.door||ck.postcode,d:"London "+ck.postcode};
     App.state.order={id:"#"+Math.floor(100000+Math.random()*900000),lines:App.state.bag.map(l=>({...l,addons:[...l.addons],name:App.product(l.id).n,img:App.product(l.id).img})),
       total:ckTotal(),subtotal:App.subtotal(),tip:ck.tip,date:d.d,dateLabel:ck.day===0?"Today":ck.day===1?"Tomorrow":App.dateLabel(d.d),window:win,
-      recipient:ck.name.trim(),anon:ck.anon,postcode:(addr.d.match(/SE\d\w*/)||[ck.postcode.split(" ")[0]])[0].split(" ")[0],address:addr.l+", "+addr.d,message:ck.msg,photo:ck.photo,chan:ck.chan,pay:ck.pay,placed:new Date()};
+      recipient:ck.name.trim(),anon:ck.anon,postcode:(addr.d.match(/SE\d\w*/)||[ck.postcode.split(" ")[0]])[0].split(" ")[0],address:addr.l+", "+addr.d,message:ck.msg,photo:ck.photo,chan:ck.chan,pay:ck.pay,sender:ck.sname.trim(),email:ck.email.trim(),account:ck.acct,keep:ck.keep,placed:new Date()};
     ck.busy=false;App.clearBag();App.go("success",{},{replace:true});
   };
   const t=App.fmt(ckTotal());
@@ -2993,7 +3009,7 @@ window.mount_success=function(){
   const body=$("#su-body");
   body.innerHTML=`
     <svg class="mark" viewBox="0 0 88 88"><rect x=".5" y=".5" width="87" height="87"/><path d="M27 45l11 11 23-25"/></svg>
-    <div class="h1 fade-up">Thank you,<br>${esc(App.state.user.name)}</div>
+    <div class="h1 fade-up">Thank you${o.sender?`,<br>${esc(o.sender)}`:""}</div>
     <p class="soft fade-up" style="margin:14px 0 0;animation-delay:.1s">Your order <b>${o.id}</b> is with our florists. ${o.dateLabel}, ${o.window} to ${esc(o.recipient)}, ${o.postcode}.</p>
     ${o.photo?`<div class="panel --ok mt24 fade-up" style="animation-delay:.2s;display:flex;gap:12px;align-items:center">${App.icon("camera").replace("<svg",'<svg style="width:22px;height:22px;stroke:var(--ok);fill:none;stroke-width:1.5;flex:none"')}<div class="f1"><div class="sm">We'll send a photo of the bouquet here, in the app, before it leaves the shop</div><div class="xs muted mt4">You'll get a push · approve it or ask for a change in one tap</div></div></div>`:""}
     <div class="nxt fade-up" style="animation-delay:.3s">
@@ -3012,9 +3028,14 @@ window.mount_success=function(){
       <div class="flex g8 mt12"><button class="btn --ghost f1" id="su-cal">Add to calendar</button><button class="btn --ghost f1" id="su-share">Share with recipient</button></div>
       <button class="btn --secondary --block mt12" onclick="App.tab('home')">Back to home</button>
     </div>
-    <p class="xs muted tc mt24">Confirmation sent to your email · Floritta, 80 Willow Walk, Bermondsey SE1 5SY</p>`;
+    ${o.account?`<div class="panel mt24 fade-up" style="animation-delay:.45s"><div class="sm">Your account is ready</div><div class="xs muted mt4">Sign-in link sent to ${esc(o.email||"your email")} · your orders will be there on every device</div></div>`
+      :`<div class="panel mt24 fade-up su-acct" id="su-acct" style="animation-delay:.45s"><div class="sm">Create an account to see your orders on every device</div><div class="xs muted mt4">Optional · this order is already confirmed</div>
+      <div class="flex g8 mt12"><button class="btn --secondary f1" id="su-acct-yes">Create account</button><button class="btn --ghost f1" id="su-acct-no">Not now</button></div></div>`}
+    <p class="xs muted tc mt24">Confirmation sent to ${o.email?esc(o.email):"your email"} · Floritta, 80 Willow Walk, Bermondsey SE1 5SY</p>`;
   // restart stroke animation
   const p=body.querySelector(".mark path");p.style.animation="none";void p.offsetWidth;p.style.animation="";
+  const acc=$("#su-acct");if(acc){$("#su-acct-no").onclick=()=>{acc.remove()};
+    $("#su-acct-yes").onclick=()=>{o.account=true;App.toast("Sign-in link sent to "+esc(o.email||"your email"));window.mount_success()}}
   $("#su-cal").onclick=()=>App.toast(`Added “Flowers for ${esc(o.recipient)}” to your calendar`);
   $("#su-share").onclick=()=>App.toast("Link copied – share it with "+esc(o.recipient),{action:{label:"Open",onclick:"App.go('tracking')"}});
 };
