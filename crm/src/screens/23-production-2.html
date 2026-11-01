@@ -158,7 +158,7 @@ function d23stopCard(o){
   return `<div class="d23-stop ${late?"--late":""}">
     <div class="top"><b>#${o.id}</b>${App.orderPill(o)}${f.ageRestricted?`<span class="d23-18">18+</span>`:""}<span class="sp"></span><button class="textbtn" onclick="App.go('driver-order',{id:${o.id}})">Open</button></div>
     <div class="rcp">${d23esc(o.recipient)}</div>
-    <div class="addr">${pc} · ${d23esc(o.addr)}, London</div>
+    <div class="addr">${pc} · ${d23esc(o.addr.replace(/,?\s*London.*$/,""))}, London ${pc}</div>
     <div class="slot">${d23ic("clock")} ${d23slot(o)}</div>
     ${f.instructions||f.addrNotes?`<div class="instr">${f.instructions?"Instructions: "+d23esc(f.instructions):""}${f.addrNotes?`<small>${d23esc(f.addrNotes)}</small>`:""}</div>`:""}
     <div class="acts"><button class="btn --ghost" onclick="App.toast('Google Maps · ${pc} (new tab)')">${d23ic("map")} Route</button><button class="btn --ghost" onclick="App.toast('Calling ${d23esc(c.phone)}')">${d23ic("phone")} Call</button><button class="btn" onclick="D23_deliverPhoto(${o.id})">${d23ic("photo")} Delivered – add photo</button></div>
@@ -206,7 +206,7 @@ function d23ordRender(){
     <!-- ids: PWDR-153 — 18+ banner, alcohol line, «ID checked» -->
     ${f.ageRestricted?`<div class="note-box --accent"><b>18+</b> – Age-restricted – check the recipient's ID before handing over.${f.isAlcohol?`<div class="mt8">ALCOHOL – Challenge 25, sealed container</div>`:""}${verified?`<div class="mt8 ok">${d23ic("check")} ID checked ${App.fmtTime(verified)}</div>`:""}</div>`:""}
     <!-- ids: PWDR-154 PWDR-155 — Recipient block; PII hidden for the courier after closing -->
-    <div class="d23-sect"><div class="h4">Recipient</div>${piiHidden?`<div class="muted">Delivery closed - contact details are hidden.</div>`:`<div class="rcp" style="font-size:16px;font-weight:500">${d23esc(o.recipient)}</div><div class="sm soft">${d23esc(o.addr)}, London</div>${f.instructions?`<div class="sm mt8">Instructions: ${d23esc(f.instructions)}</div>`:""}<div class="btn-row mt8"><button class="btn --ghost --sm" onclick="App.toast('Google Maps · ${pc} (new tab)')">${d23ic("map")} Route</button><button class="btn --ghost --sm" onclick="App.toast('Calling ${d23esc(c.phone)}')">${d23ic("phone")} Call</button></div>`}</div>
+    <div class="d23-sect"><div class="h4">Recipient</div>${piiHidden?`<div class="muted">Delivery closed - contact details are hidden.</div>`:`<div class="rcp" style="font-size:16px;font-weight:500">${d23esc(o.recipient)}</div><div class="sm soft">${d23esc(o.addr.replace(/,?\s*London.*$/,""))}, London ${pc}</div>${f.instructions?`<div class="sm mt8">Instructions: ${d23esc(f.instructions)}</div>`:""}<div class="btn-row mt8"><button class="btn --ghost --sm" onclick="App.toast('Google Maps · ${pc} (new tab)')">${d23ic("map")} Route</button><button class="btn --ghost --sm" onclick="App.toast('Calling ${d23esc(c.phone)}')">${d23ic("phone")} Call</button></div>`}</div>
     <div class="grid g2">
       <!-- ids: PWDR-156 — QR with the CRM code (not the platform number) -->
       <div class="d23-sect"><div class="h4">QR</div><div class="row" style="align-items:flex-start;gap:14px">${d23qr(d23code(o))}<div><div class="p23-mono">${d23code(o)}</div><div class="d23-hint mt8">CRM code – type this one in Scan, not the platform number.</div></div></div></div>
