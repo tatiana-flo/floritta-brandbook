@@ -1,8 +1,52 @@
+<style>
+#s-notifications .nt-week{margin:0 var(--gutter) 4px}
+#s-notifications .nt-week .row{padding-left:0;padding-right:0}
+#s-notifications .nt-empty{padding:72px var(--gutter) 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+#s-notifications .nt-empty svg{width:32px;height:32px;stroke:var(--grey);fill:none;stroke-width:1.5}
+#s-notifications .nt-empty .btn{width:100%;margin-top:10px}
+</style>
+<!-- Notifications inbox is a prototype addition: the app today has no inbox – only local reminder notifications (banner + list, no sound, no badge)
+     and the bell on Home → Reminders. Here the bell opens this inbox with "This week" (reminders due within 7 days) on top. -->
 <section class="scr" id="s-notifications" data-nav="Notifications" data-group="Extras">
+  <!-- ids: APP-SHELL-075 – Back: history, or Home when opened from a link -->
   <div class="appbar">
     <button class="ib" onclick="App.back()" aria-label="Back">${back}</button>
     <div class="ttl">Notifications</div>
     <button class="textbtn" onclick="Extras.ntReadAll()">Mark all read</button>
   </div>
-  <div class="scr-body" id="nt-list"></div>
+  <div class="scr-body">
+    <!-- ids: APP-HOME-004 APP-HOME-005 – "This week": reminders due within 7 days (the bell badge counts these), "All reminders" → Reminders -->
+    <div id="nt-week"></div>
+    <!-- ids: APP-SHELL-006 APP-SHELL-007 APP-SHELL-008 – reminder notification shown as banner + listed even while the app is open (no sound, no icon badge);
+         tap → its screen (reminder → occasion category) both from cold start and while running. "Send test push" on System shows the banner. -->
+    <!-- ids: APP-SHELL-077 – empty state: icon, title, text, full-width action -->
+    <div id="nt-list"></div>
+  </div>
 </section>
+<script>
+(function(){
+  const $=App.$;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const NT=window.NT=[
+    {g:"Today",t:"Your bouquet is ready – here's the photo",d:"Peach garden posy for Emma, hand-tied by Vita. Tap to see it before it leaves.",tm:"14:05",img:"img/peach-posy.webp",go:"tracking",p:{id:1},un:true},
+    {g:"Today",t:"Courier on the way",d:"Arriving in the 15:00–18:00 window. Follow the route live.",tm:"14:32",ic:"truck",go:"tracking",p:{id:1},un:true},
+    {g:"Today",t:"Sophie & Tom's anniversary in 3 days",d:"Flowers can be delivered that morning – three picks in your budget.",tm:"09:00",ic:"calendar",go:"category",p:{occasion:"Anniversary"},un:true},
+    {g:"Earlier",t:"Welcome – 12% off in the app",d:"Use FLOAPP12 at checkout on orders over £98.",tm:"Mon",ic:"gift",go:"shop",un:false},
+    {g:"Earlier",t:"Delivered: 20 velvety red roses",d:"Left with the recipient at 18:40. Rate your delivery.",tm:"Sun",img:"img/red-roses.webp",go:"orders",un:false},
+    {g:"Earlier",t:"New in: autumn peonies",d:"Short season, Bermondsey only – while they last.",tm:"Sat",ic:"leaf",go:"category",p:{occasion:"Autumn edit"},un:false}
+  ];
+  window.NTunread=()=>NT.filter(n=>n.un).length;
+  window.mount_notifications=function(){
+    const D=window.ShellDemo;
+    const up=D&&!D.noReminders?D.reminders.filter(r=>r.days<=7):[];
+    $("#nt-week").innerHTML=up.length?`<div class="grp caps muted">This week</div><div class="nt-week">${up.map(r=>`<button class="row" onclick="App.go('reminders')">${App.icon("calendar").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">${esc(r.who)} · ${esc(r.occ)}</div><div class="d">in ${r.days} day${r.days===1?"":"s"} · we remind you a week before and the day before</div></div>${App.icon("chev").replace("<svg",'<svg class="chev"')}</button>`).join("")}<button class="textbtn mt12" onclick="App.go('reminders')">All reminders</button></div>`:"";
+    const l=$("#nt-list");let g="";
+    const items=D&&D.emptyInbox?[]:NT;
+    l.innerHTML=items.map((n,i)=>{const h=n.g!==g?`<div class="grp caps muted">${n.g}</div>`:"";g=n.g;
+      return h+`<button class="nt ${n.un?"unread":""}" onclick="Extras.ntOpen(${i})"><div class="ic">${n.img?`<img src="${n.img}" alt="">`:App.icon(n.ic)}</div><div class="f1"><div class="t">${n.t}</div><div class="d">${n.d}</div><div class="tm">${n.tm}</div></div><span class="ud"></span></button>`}).join("")
+      ||`<div class="nt-empty">${App.icon("bell")}<div class="h3">You're all caught up</div><div class="sm soft">Reminders and order updates will appear here.</div><button class="btn" onclick="App.go('reminders')">Set a reminder</button></div>`;
+  };
+  Extras.ntOpen=i=>{const n=NT[i];n.un=false;App.go(n.go,n.p||{})};
+  Extras.ntReadAll=()=>{NT.forEach(n=>n.un=false);window.mount_notifications();App.toast("All notifications marked as read")};
+})();
+</script>

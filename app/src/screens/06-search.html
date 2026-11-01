@@ -1,11 +1,30 @@
+<!-- Экран поиска /search – реестр 02-shop-search-saved.md. Логика – ShopX в 04-shop.html (mount_search, ShopX.search/groups/remember). -->
 <section class="scr" id="s-search" data-nav="Search" data-group="Shop">
+  <!-- ids: APP-SEARCH-001 APP-SEARCH-002 APP-SEARCH-003 APP-SEARCH-004 APP-SEARCH-005 – своя шапка: поле с автофокусом (без автокоррекции, клавиша «search», ?q= из deep link), крестик «Clear search», Cancel; Enter запоминает запрос -->
   <div class="appbar">
     <div class="input-wrap f1">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-      <input class="input" id="search-in" type="search" placeholder="Search flowers, occasions…" autocomplete="off" autocorrect="off" spellcheck="false">
-      <button class="mic" onclick="App.toast('Listening…')" aria-label="Voice search"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+      <input class="input" id="search-in" type="search" enterkeyhint="search" placeholder="Search flowers, occasions…" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+      <button class="xbtn" id="search-x" onclick="ShopX.clearQuery()" aria-label="Clear search" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></button>
     </div>
-    <button class="textbtn" style="border:0" onclick="App.back('shop')">Cancel</button>
+    <button class="textbtn" style="border:0" onclick="App.back('home')">Cancel</button>
   </div>
-  <div class="scr-body" id="search-body"></div>
+  <!-- ids: APP-SEARCH-006 APP-SEARCH-007 APP-SEARCH-008 APP-SEARCH-009 APP-SEARCH-010 APP-SEARCH-011 APP-SEARCH-012 APP-SEARCH-013 APP-SEARCH-014 APP-SEARCH-015 APP-SEARCH-016 APP-SEARCH-017 APP-SEARCH-018 – тело: пустое поле → Recent (до 8, часы, Clear, «saved on this phone»), Popular now с «N designs», Occasions; ввод → «N results», чипы-группы с иконкой тега, строки 64×80 с подсветкой и старой ценой (≤40); ничего → «No results for …» + Ask a florist + All designs. Прокрутка списка прячет клавиатуру (blur on scroll). -->
+  <div class="scr-body" id="search-body" onscroll="document.activeElement&&document.activeElement.id==='search-in'&&document.activeElement.blur()"></div>
 </section>
+<style>
+/* search */
+#s-search .appbar{gap:8px;padding-bottom:12px;border-bottom:1px solid var(--hair)}
+#s-search .input-wrap .input{height:48px;padding-right:48px;background:var(--silver);border-color:var(--silver)}
+#s-search .input-wrap .input:focus{border-color:var(--ink);background:var(--paper)}
+#s-search .input::-webkit-search-cancel-button{-webkit-appearance:none}
+#s-search .xbtn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;color:var(--grey)}
+#s-search .xbtn[hidden]{display:none}
+#s-search .xbtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+#s-search .chip-grid{display:flex;flex-wrap:wrap;gap:8px;padding:0 var(--gutter)}
+#s-search .chip svg{width:14px;height:14px}
+#s-search .empty{padding:56px var(--gutter) 24px}
+#s-search .empty p{margin:6px 0 20px}
+#s-search mark{background:none;color:inherit;font-weight:500}
+#s-search .mini .pr s{font-weight:300;margin-left:4px;font-size:12px}
+</style>

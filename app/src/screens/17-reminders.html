@@ -124,19 +124,188 @@
 #s-occasions .oc .cap .h3{color:#fff;font-weight:300;font-size:24px}
 #s-occasions .oc .cap small{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-top:3px}
 </style>
+<style>
+/* ---- reminders: additions (owner: app-extras) ---- */
+#s-reminders .rem-card .pill.--soft{background:var(--silver);color:var(--graphite)}
+#s-reminders .rem-card .thumb.--none{display:grid;place-items:center;color:var(--grey)}
+#s-reminders .rem-card .thumb.--none svg{width:22px;height:22px;stroke:var(--grey);fill:none;stroke-width:1.5}
+#s-reminders .rem-card .acts .edit{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--graphite)}
+#s-reminders .rem-empty svg{width:32px;height:32px;stroke:var(--grey);fill:none;stroke-width:1.4;margin:0 auto 12px;display:block}
+#s-reminders .rem-empty .h3{color:var(--ink);margin-bottom:6px}
+#s-reminders .rem-sk{padding:16px var(--gutter);display:grid;grid-template-columns:1fr 72px;gap:14px;border-bottom:1px solid var(--hair)}
+#s-reminders .rem-sk .skeleton{display:block}
+#s-reminders .rem-off{margin:12px var(--gutter) 0;display:flex;gap:12px;align-items:center}
+#s-reminders .rem-off .btn{flex:none}
+#s-reminders .rem-sync{padding:10px var(--gutter) 0;font-size:11px;color:var(--grey);letter-spacing:.04em}
+#s-reminders .demo{margin:28px var(--gutter) 24px;border:1px dashed var(--light);padding:12px}
+#s-reminders .demo .caps{font-size:10px;color:var(--grey)}
+#s-reminders .demo .sw{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#s-reminders .demo .sw:last-child{border-bottom:0}
+/* sheet (new / edit reminder) */
+.rm-months{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.rm-months::-webkit-scrollbar{display:none}
+.rm-months .chip{flex:none}
+.rm-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.rm-days .chip{height:40px;padding:0;justify-content:center;font-size:14px}
+.rm-err{color:var(--accent);font-size:12px;margin-top:6px;display:none}
+.rm-err.on{display:block}
+.rm-note{font-size:12px;color:var(--grey);margin-top:16px}
+.rm-perm{border:1px solid var(--light);padding:16px;margin:4px 0 8px;text-align:center}
+.rm-perm .h4{margin-bottom:4px}
+.rm-perm .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+</style>
+<!-- ids: APP-REM-001 APP-REM-002 -->
+<!-- sheet "New reminder" / "Edit reminder" (Extras.remSheet / remEdit in the script below): ids: APP-REM-020 APP-REM-021 APP-REM-022 APP-REM-023 APP-REM-024 APP-REM-025 APP-REM-026 APP-REM-027 APP-REM-028 APP-REM-029 APP-REM-030 APP-REM-031 APP-REM-032 -->
 <section class="scr" id="s-reminders" data-nav="Reminders" data-group="Extras">
   <div class="appbar">
-    <button class="ib" onclick="App.back()" aria-label="Back">${back}</button>
+    <button class="ib" onclick="App.back('home')" aria-label="Back">${back}</button>
     <div class="ttl">Reminders</div>
     <button class="ib" onclick="Extras.remSheet()" aria-label="Add reminder">${plus}</button>
   </div>
   <div class="scr-body">
-    <p class="rem-intro">We'll nudge you 7 days before, with ideas ready.</p>
+    <!-- ids: APP-REM-003 -->
+    <p class="rem-intro">Add birthdays and anniversaries once. We'll nudge you 7 days and 1 day before.</p>
+    <!-- ids: APP-REM-014 APP-REM-015 -->
+    <div class="rem-off panel --warn" id="rem-off" style="display:none">
+      <div class="f1"><div class="sm">Notifications are off</div><div class="xs soft mt4">We can't nudge you before these dates.</div></div>
+      <button class="btn --sm" id="rem-off-btn" onclick="Extras.remTurnOn()">Turn on</button>
+    </div>
+    <!-- ids: APP-REM-016 APP-REM-047 -->
+    <div class="rem-sync" id="rem-sync"></div>
+    <!-- ids: APP-REM-004 APP-REM-005 APP-REM-006 APP-REM-007 APP-REM-008 APP-REM-009 APP-REM-010 APP-REM-011 APP-REM-012 -->
     <div id="rem-list" class="mt16"></div>
-    <div class="rem-note panel">
+    <!-- ids: APP-REM-013 -->
+    <div class="rem-note panel" id="rem-note">
       <div class="h4">Never miss a date</div>
-      <p class="sm soft" style="margin:0">Add birthdays and anniversaries once. Flora picks a bouquet in your budget and we hold a same-day slot for you.</p>
-      <button class="btn --secondary --sm mt12" onclick="Extras.remSheet()">Add a reminder</button>
+      <p class="sm soft" style="margin:0">Same-day delivery across London until 10 pm, so even a last-minute nudge is enough.</p>
+      <button class="btn --secondary --sm mt12" onclick="Extras.remSheet()">Add reminder</button>
+    </div>
+    <!-- stand-only demo switches: OS permission / profile toggle / scheduling failure -->
+    <!-- ids: APP-REM-047 APP-REM-048 -->
+    <div class="demo" id="rem-demo">
+      <div class="caps">Stand demo · not in the app</div>
+      <div class="sw"><span>OS allows notifications</span><button class="switch on" data-k="osPerm" onclick="Extras.remDemo(this)"></button></div>
+      <div class="sw"><span>Notifications switch in You</span><button class="switch on" data-k="profileOn" onclick="Extras.remDemo(this)"></button></div>
+      <div class="sw"><span>OS fails to schedule</span><button class="switch" data-k="schedFail" onclick="Extras.remDemo(this)"></button></div>
+      <div class="sw"><span>Empty list</span><button class="switch" data-k="empty" onclick="Extras.remDemo(this)"></button></div>
+      <button class="textbtn mt8" onclick="App.go('ex-nudges')">Open nudges & permission demo</button>
     </div>
   </div>
 </section>
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const OCC=["Birthday","Anniversary","Christmas","Special day"];
+  const SLUG={Birthday:"birthday",Anniversary:"anniversary",Christmas:"christmas","Special day":"just-because"};
+  const OCCIMG={Birthday:5,Anniversary:12,Christmas:9,"Special day":null};
+  const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const DIM=[31,29,31,30,31,30,31,31,30,31,30,31];
+  const isLeap=y=>(y%4===0&&y%100!==0)||y%400===0;
+  const today=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
+  /* on-device store `reminders.v1` – demo copy */
+  let seq=4;
+  const REM=[{id:"rem-1",who:"Mum",occ:"Birthday",m:10,d:1},{id:"rem-2",who:"Anna & James",occ:"Anniversary",m:10,d:14},{id:"rem-3",who:"Office",occ:"Christmas",m:11,d:20}];
+  const DEMO={hydrated:false,osPerm:true,profileOn:true,osAsked:true,schedFail:false,empty:false,lastSync:""};
+  const store=()=>DEMO.empty?[]:REM;
+  // APP-REM-044: 29 Feb in a non-leap year fires on 28 Feb
+  const dateInYear=(y,m,d)=>new Date(y,m,(m===1&&d===29&&!isLeap(y))?28:d);
+  const nextOcc=r=>{const t=today();let x=dateInYear(t.getFullYear(),r.m,r.d);if(x<t)x=dateInYear(t.getFullYear()+1,r.m,r.d);return x};
+  const daysUntil=r=>Math.round((nextOcc(r)-today())/864e5);
+  const countdown=n=>n===0?"Today":n===1?"Tomorrow":"in "+n+" days";
+  const fmtMD=r=>r.d+" "+MONTHS[r.m];
+  const enabled=()=>DEMO.osPerm&&DEMO.profileOn;
+  // APP-REM-041..043, 047: triggers 9:00 London, 7 and 1 day before, only in the future
+  function triggers(){
+    if(!enabled())return [];
+    const now=new Date(),out=[];
+    store().forEach(r=>{[7,1].forEach(lead=>{const f=new Date(nextOcc(r));f.setDate(f.getDate()-lead);f.setHours(9,0,0,0);
+      if(f>now)out.push({r,lead,at:f,title:lead===1?`${r.who}'s ${r.occ.toLowerCase()} is tomorrow`:`${r.who}'s ${r.occ.toLowerCase()} in ${lead} days`,body:"Plan the flowers now – same-day delivery across London until 10 pm.",url:"/category/"+SLUG[r.occ]})})});
+    return out.sort((a,b)=>a.at-b.at);
+  }
+  function sync(why){
+    const n=triggers().length;
+    DEMO.lastSync=enabled()?`Nudges synced · ${n} scheduled · 9:00 London`+(DEMO.schedFail?" · OS error, reminders still saved":""):`Nudges removed · ${!DEMO.osPerm?"no OS permission":"switched off in You"}`;
+    const el=$("#rem-sync");if(el)el.textContent=(why?why+" · ":"")+DEMO.lastSync;
+    document.dispatchEvent(new CustomEvent("rem-sync"));
+  }
+  window.ExRem={REM,DEMO,triggers,sync,enabled,store,nextOcc,daysUntil,SLUG,MONTHS,upcoming7:()=>store().filter(r=>daysUntil(r)<=7).length};
+
+  function render(){
+    const l=$("#rem-list"),list=[...store()].sort((a,b)=>daysUntil(a)-daysUntil(b));
+    const off=list.length&&DEMO.osAsked&&!enabled();
+    $("#rem-off").style.display=off?"":"none";
+    $("#rem-off-btn").textContent=DEMO.osPerm?"Turn on":"Open settings";
+    $("#rem-note").style.display=list.length?"":"none";
+    if(!list.length){l.innerHTML=`<div class="rem-empty">${App.icon("calendar")}<div class="h3">No reminders yet</div><div class="sm">Add Mum's birthday first – we'll take it from there.</div><button class="btn --secondary --sm mt16" onclick="Extras.remSheet()">Add reminder</button></div>`;return}
+    l.innerHTML=list.map((r,i)=>{const n=daysUntil(r),pid=OCCIMG[r.occ],p=pid?App.product(pid):null;
+      return `<div class="rem-card fade-up" style="animation-delay:${i*60}ms"><div>
+        <div class="who">${esc(r.who)}</div>
+        <div class="what">${esc(r.occ)} · ${fmtMD(r)}</div>
+        <span class="pill ${n<=14?"--soon":"--soft"}">${countdown(n)}</span>
+        <div class="acts"><button class="textbtn" onclick="App.go('category',{cat:'${SLUG[r.occ]}',title:'${esc(r.occ)}'})">Plan flowers</button><button class="edit" onclick="Extras.remEdit('${r.id}')">Edit</button><button class="del" onclick="Extras.remAskRemove('${r.id}')">Remove</button></div>
+      </div>${p?`<img class="thumb" src="${p.img}" alt="" onclick="App.go('category',{cat:'${SLUG[r.occ]}',title:'${esc(r.occ)}'})">`:`<div class="thumb --none">${App.icon("flower")}</div>`}</div>`}).join("");
+  }
+  window.mount_reminders=function(){
+    if(!DEMO.hydrated){$("#rem-list").innerHTML=[1,2].map(()=>`<div class="rem-sk"><div><span class="skeleton" style="width:60%;height:22px"></span><span class="skeleton mt8" style="width:40%;height:12px"></span><span class="skeleton mt12" style="width:70px;height:20px"></span></div><span class="skeleton" style="width:72px;height:90px"></span></div>`).join("");
+      $("#rem-off").style.display="none";$("#rem-note").style.display="none";
+      setTimeout(()=>{DEMO.hydrated=true;render();sync("On open")},450);return}
+    render();sync("On open");
+  };
+  Extras.remDemo=el=>{el.classList.toggle("on");DEMO[el.dataset.k]=el.classList.contains("on");render();sync("Demo")};
+  // APP-REM-015: Turn on (OS allows, switched off in You) / Open settings (OS denies)
+  Extras.remTurnOn=()=>{
+    if(DEMO.osPerm){DEMO.profileOn=true;$$('#rem-demo [data-k="profileOn"]').forEach(b=>b.classList.add("on"));render();sync("Turned on");App.toast("Notifications on · we'll nudge you 7 days and 1 day before");return}
+    Extras.remOsPrompt(ok=>{if(ok){DEMO.osPerm=true;DEMO.profileOn=true;$$('#rem-demo [data-k]').forEach(b=>{if(b.dataset.k==="osPerm"||b.dataset.k==="profileOn")b.classList.add("on")});render();sync("Permission granted")}
+      else App.toast("Opening Settings → Floritta → Notifications…")});
+  };
+  // system permission dialog (demo of the OS prompt)
+  Extras.remOsPrompt=cb=>{DEMO.osAsked=true;App.sheet(`<div class="sh-body"><div class="rm-perm"><div class="h4">“Floritta” would like to send you notifications</div><div class="xs soft">Reminders about the dates you save – 9:00, 7 days and 1 day before.</div><div class="acts"><button class="btn --secondary --sm" id="rm-perm-no">Don't allow</button><button class="btn --sm" id="rm-perm-ok">Allow</button></div></div><p class="xs muted tc" style="margin:4px 0 0">System dialog – shown once per install</p></div>`,{onOpen:r=>{$("#rm-perm-ok",r).onclick=()=>{App.closeSheet();cb(true)};$("#rm-perm-no",r).onclick=()=>{App.closeSheet();cb(false)}}})};
+  // APP-REM-011/012: remove with system-style dialog, destructive button, no undo
+  Extras.remAskRemove=id=>{const r=REM.find(x=>x.id===id);if(!r)return;
+    App.sheet(`<div class="sh-head"><div class="h3">Remove the reminder for ${esc(r.who)}?</div></div><div class="sh-body"><p class="soft sm" style="margin:0">Scheduled nudges for this date are cancelled too.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn --accent" id="rm-rm">Remove</button></div>`,{onOpen:x=>{$("#rm-rm",x).onclick=()=>{App.closeSheet();REM.splice(REM.indexOf(r),1);render();sync("Removed");App.toast("Reminder removed")}}})};
+  /* ---- sheet: new / edit ---- */
+  let draft=null;
+  function openSheet(r){
+    const t=new Date();t.setDate(t.getDate()+21); // APP-REM-026 default +21 days
+    draft=r?{id:r.id,who:r.who,occ:r.occ,m:r.m,d:r.d}:{id:null,who:"",occ:"Birthday",m:t.getMonth(),d:t.getDate()};
+    App.sheet(`<div class="sh-head"><div class="h3">${r?"Edit reminder":"New reminder"}</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
+    <div class="sh-body">
+      <div class="field"><label>Who is it for?</label><input class="input" id="rm-who" placeholder="e.g. Mum" maxlength="40" autocapitalize="words" value="${esc(draft.who)}" oninput="Extras.remInput(this)"><div class="rm-err" id="rm-err">Add a name first</div></div>
+      <div class="field"><label>Occasion</label><div class="chips" style="padding:0;flex-wrap:wrap" id="rm-occ"></div></div>
+      <div class="field"><label>Month</label><div class="rm-months" id="rm-months"></div></div>
+      <div class="field"><label id="rm-daylbl">Day</label><div class="rm-days" id="rm-days"></div></div>
+      <div class="rm-note">Reminder at 9:00, 7 days and 1 day before. Every year.</div>
+      <div class="xs muted mt8">Saved on this phone only.</div>
+    </div>
+    <div class="sh-foot"><button class="btn --block" onclick="Extras.remSave()">Save reminder</button></div>`,{full:true,onOpen:x=>{renderPick();if(!r)setTimeout(()=>$("#rm-who",x).focus(),350)}});
+  }
+  function renderPick(){
+    $("#rm-occ").innerHTML=OCC.map(o=>`<button class="chip ${o===draft.occ?"on":""}" onclick="Extras.remPickOcc('${o}')">${o}</button>`).join("");
+    $("#rm-months").innerHTML=MONTHS.map((m,i)=>`<button class="chip ${i===draft.m?"on":""}" onclick="Extras.remPickM(${i})">${m}</button>`).join("");
+    const max=DIM[draft.m];draft.d=Math.min(draft.d,max);
+    $("#rm-daylbl").textContent="Day · "+MONTHS[draft.m];
+    $("#rm-days").innerHTML=Array.from({length:max},(_,i)=>i+1).map(d=>`<button class="chip ${d===draft.d?"on":""}" onclick="Extras.remPickD(${d})">${d}</button>`).join("");
+  }
+  Extras.remSheet=()=>openSheet(null);
+  Extras.remEdit=id=>{const r=REM.find(x=>x.id===id);if(r)openSheet(r)};
+  Extras.remInput=el=>{draft.who=el.value;if(el.value.trim())$("#rm-err").classList.remove("on")};
+  Extras.remPickOcc=o=>{draft.occ=o;renderPick()};
+  Extras.remPickM=m=>{draft.m=m;renderPick()};
+  Extras.remPickD=d=>{draft.d=d;renderPick()};
+  Extras.remSave=()=>{
+    const who=($("#rm-who")||{value:draft.who}).value.trim();
+    if(!who){$("#rm-err").classList.add("on");$("#rm-who").focus();return}
+    const first=!REM.length;
+    if(draft.id){const r=REM.find(x=>x.id===draft.id);Object.assign(r,{who,occ:draft.occ,m:draft.m,d:draft.d})}
+    else REM.push({id:"rem-"+(seq++),who,occ:draft.occ,m:draft.m,d:draft.d});
+    DEMO.empty=false;$$('#rem-demo [data-k="empty"]').forEach(b=>b.classList.remove("on"));
+    App.closeSheet();App.haptic();
+    const done=()=>{render();sync("Saved");
+      App.toast(enabled()?`<span class="ok">${esc(who)} saved.</span> We'll nudge you 7 days and 1 day before.`:`${esc(who)} saved. Turn on notifications to get a nudge.`)};
+    // APP-REM-029: first reminder asks the OS once if notifications aren't enabled yet
+    if(first&&!enabled()&&!DEMO.osAsked){Extras.remOsPrompt(ok=>{if(ok){DEMO.osPerm=true;DEMO.profileOn=true;$$('#rem-demo [data-k="osPerm"],#rem-demo [data-k="profileOn"]').forEach(b=>b.classList.add("on"))}done()});return}
+    done();
+  };
+})();
+</script>

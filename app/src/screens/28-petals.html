@@ -1,23 +1,91 @@
+<style>
+/* ---- petals: additions (owner: app-extras); base styles live in 30-community.html ---- */
+#s-petals .demo{margin:0 var(--gutter) 8px;border:1px dashed var(--light);padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:12px;color:var(--graphite);flex-wrap:wrap}
+#s-petals .demo .caps{font-size:10px;color:var(--grey);width:100%}
+#s-petals .demo .sw{display:flex;align-items:center;gap:8px}
+#s-petals .flagoff{padding:72px var(--gutter);text-align:center}
+#s-petals .spend .it .btn.is-disabled{opacity:.45}
+#s-petals .hist-empty{padding:24px var(--gutter);color:var(--grey);font-size:14px}
+#s-petals .devnote{padding:16px var(--gutter) 0;font-size:12px;color:var(--grey)}
+</style>
+<!-- ids: APP-PETALS-010 -->
 <section class="scr" id="s-petals" data-nav="Petals & status" data-group="Social">
   <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Petals</div></div>
   <div class="scr-body">
-    <div class="pad">
-      <div class="pt-big"><span data-petals>1,240</span><span class="pt-unit">Petals</span></div>
-      <div class="ladder mt24" id="pt-ladder"></div>
-      <div class="sm soft mt16" id="pt-next"></div>
+    <!-- stand-only switches -->
+    <div class="demo"><span class="caps">Stand demo · not in the app</span>
+      <div class="sw"><span>Flag petals off</span><button class="switch" id="pt-flag" onclick="this.classList.toggle('on');window.mount_petals()"></button></div>
+      <div class="sw"><span>Empty history</span><button class="switch" id="pt-nohist" onclick="this.classList.toggle('on');window.mount_petals()"></button></div>
+      <button class="chip" style="height:28px;font-size:11px" onclick="App.state.petals=Math.max(0,App.state.petals-1000);App.toast('−1,000 Petals (stand)');window.mount_petals()">−1,000</button>
+      <button class="chip" style="height:28px;font-size:11px" onclick="App.state.petals+=1000;App.toast('+1,000 Petals (stand)');window.mount_petals()">+1,000</button>
     </div>
-
-    <div class="sec-head"><div class="h2">How to earn</div></div>
-    <div id="pt-earn"></div>
-
-    <div class="sec-head"><div class="h2">Your perks</div></div>
-    <div class="pad" id="pt-perks"></div>
-
-    <div class="sec-head"><div class="h2">Spend Petals</div><span class="muted sm">Never discounts</span></div>
-    <div class="spend pad" id="pt-spend"></div>
-
-    <div class="sec-head"><div class="h2">History</div></div>
-    <div id="pt-hist"></div>
+    <!-- ids: APP-PETALS-011 -->
+    <div class="flagoff" id="pt-flagoff" style="display:none"><div class="h2">Petals</div><p class="sm muted mt8">Feature flag off – the screen shows only its title.</p></div>
+    <div id="pt-main">
+      <!-- ids: APP-PETALS-012 APP-PETALS-013 APP-PETALS-014 -->
+      <div class="pad">
+        <div class="pt-big"><span data-petals>1,240</span><span class="pt-unit">Petals</span></div>
+        <div class="ladder mt24" id="pt-ladder"></div>
+        <div class="sm soft mt16" id="pt-next"></div>
+      </div>
+      <!-- ids: APP-PETALS-015 -->
+      <div class="sec-head"><div class="h2">How to earn</div></div>
+      <div id="pt-earn"></div>
+      <!-- ids: APP-PETALS-016 -->
+      <div class="sec-head"><div class="h2">Your perks</div></div>
+      <div class="pad" id="pt-perks"></div>
+      <!-- ids: APP-PETALS-017 APP-PETALS-018 APP-PETALS-019 APP-PETALS-020 APP-PETALS-021 -->
+      <div class="sec-head"><div class="h2">Spend Petals</div><span class="muted sm">Never discounts</span></div>
+      <div class="spend pad" id="pt-spend"></div>
+      <!-- ids: APP-PETALS-022 APP-PETALS-023 -->
+      <div class="sec-head"><div class="h2">History</div></div>
+      <div id="pt-hist"></div>
+      <!-- ids: APP-PETALS-024 -->
+      <div class="devnote">Petals are kept on this device for now.</div>
+    </div>
     <div style="height:32px"></div>
   </div>
 </section>
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  const TIERS=[["Seed",0],["Bloom",1000],["Florist's Circle",1500],["Botanist",3000]];
+  const EARN=[["Order delivered","+50"],["Daily open","+3"],["Liked or voted","+1"],["Care check-in","+5"],["Posted a bouquet","+20"],["Friend's first order","+100"]];
+  const PERKS=[["Seed","Welcome",["Photo of the bouquet before delivery","Same-day until 10 pm"]],["Bloom","At 1,000",["Free handwritten card on every order"]],["Florist's Circle","At 1,500",["Priority slot on peak days","Choose your florist","Vase upgrade"]],["Botanist","At 3,000",["Early access to collections","Calligraphy","A named florist"]]];
+  const REWARDS=[{id:"wrap",n:"Premium wrap",d:"Linen & raw silk ribbon",c:150,ic:"gift"},{id:"hour",n:"Exact-hour delivery",d:"Instead of a 3-hour window",c:200,ic:"clock"},{id:"calli",n:"Calligraphy card",d:"Hand-lettered by Vita",c:120,ic:"edit"},{id:"rare",n:"Rare stem in builder",d:"Garden rose or anemone",c:80,ic:"sparkle"}];
+  // petals.v1 on the device – demo history (newest first)
+  const HIST=window.PETALS_HIST=window.PETALS_HIST||[{t:"Order 715529 placed",d:"Sat 18 Oct",n:50},{t:"Keep it alive · Fresh water",d:"Sun 19 Oct",n:5},{t:"Liked a bouquet",d:"Mon 20 Oct",n:1},{t:"Posted a bouquet",d:"Tue 21 Oct",n:20},{t:"Welcome · first order",d:"1 Sep 2026",n:100}];
+  const fmt=n=>n.toLocaleString("en-GB");
+  const tierIdx=p=>{let i=0;TIERS.forEach((t,j)=>{if(p>=t[1])i=j});return i};
+  const flagOff=()=>$("#pt-flag").classList.contains("on");
+  function renderLadder(){
+    const p=App.state.petals,ci=tierIdx(p),pct=t=>Math.min(100,t/TIERS[3][1]*100);
+    $("#pt-ladder").innerHTML=`<div class="ln"><i id="pt-fill"></i></div>`+TIERS.map((t,i)=>`<div class="nd ${i<ci?"done":""} ${i===ci?"now":""}" style="left:${pct(t[1])}%"><b></b><span>${t[0]}</span></div>`).join("");
+    requestAnimationFrame(()=>{const f=$("#pt-fill");if(f)f.style.width=pct(p)+"%"});
+    const nx=TIERS[ci+1];$("#pt-next").innerHTML=nx?`You're <b>${TIERS[ci][0]}</b> · <b>${fmt(nx[1]-p)}</b> to ${nx[0]}`:`You're Botanist – the top of the garden`;
+    $("#pt-perks").innerHTML=PERKS.map((x,i)=>`<div class="perk ${i>ci?"locked":""}"><div class="tt"><span>${x[0]}<span class="tag ${i===ci?"--ink":"--soft"}">${i===ci?"Current":i<ci?"Unlocked":x[1]}</span></span></div><ul>${x[2].map(l=>`<li>${l}</li>`).join("")}</ul></div>`).join("");
+  }
+  function renderSpend(){$("#pt-spend").innerHTML=REWARDS.map(s=>`<div class="it">${App.icon(s.ic)}<div class="n">${s.n}<div class="xs muted mt4">${s.d}</div></div><div class="c">${s.c}<small>Petals</small></div><button class="btn --secondary --sm --block ${App.state.petals<s.c?"is-disabled":""}" ${App.state.petals<s.c?"disabled":""} onclick="window.ptRedeem('${s.id}')">Redeem</button></div>`).join("")}
+  function renderHist(){const empty=$("#pt-nohist").classList.contains("on");$("#pt-hist").innerHTML=empty||!HIST.length?`<div class="hist-empty">Your Petals will show up here.</div>`:HIST.slice(0,20).map(h=>`<div class="row hist"><div class="rt"><div class="l">${h.t}</div><div class="d">${h.d}</div></div><span class="val ${h.n<0?"neg":"pos"}">${h.n<0?"−":"+"}${Math.abs(h.n)}</span></div>`).join("")}
+  window.mount_petals=function(){
+    const off=flagOff();$("#pt-flagoff").style.display=off?"":"none";$("#pt-main").style.display=off?"none":"";if(off)return;
+    $$("[data-petals]").forEach(e=>e.textContent=fmt(App.state.petals));
+    $("#pt-earn").innerHTML=EARN.map(e=>`<div class="row earn"><div class="rt"><div class="l">${e[0]}</div></div><span class="val">${e[1]}</span></div>`).join("");
+    renderLadder();renderSpend();renderHist();
+  };
+  window.ptRedeem=function(id){
+    const s=REWARDS.find(x=>x.id===id);if(!s||App.state.petals<s.c)return;
+    App.sheet(`<div class="sh-head"><div class="h3">Redeem ${s.n}?</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">${s.c} Petals · ${s.d}. Added to your next order – nothing to pay.</p><p class="xs muted" style="margin:0">Prototype note: the reward is recorded on this phone; it does not reach the bag or checkout yet.</p></div><div class="sh-foot"><button class="btn" id="pt-ok">Redeem</button></div>`,{onOpen:r=>{$("#pt-ok",r).onclick=()=>{App.closeSheet();App.state.petals-=s.c;HIST.unshift({t:"Redeemed · "+s.n,d:"Today",n:-s.c});document.dispatchEvent(new CustomEvent("petals"));App.toast(`<b>−${s.c} Petals</b> · ${s.n} added to your next order`);window.mount_petals()}}});
+  };
+  // keep our tiers after the shell re-renders on the global "petals" event
+  document.addEventListener("petals",()=>{if(document.getElementById("s-petals").classList.contains("on"))window.mount_petals()});
+  // earning hooks used by the entries demo (39-extras): one award per order / per post
+  const awardedOrders=new Set(["715529"]),awardedLikes=new Set();
+  window.PetalsEarn={
+    order:code=>{if(awardedOrders.has(code))return false;awardedOrders.add(code);App.state.petals+=50;HIST.unshift({t:`Order ${code} placed`,d:"Today",n:50});$$("[data-petals]").forEach(e=>e.textContent=fmt(App.state.petals));document.dispatchEvent(new CustomEvent("petals"));return true},
+    like:postId=>{if(awardedLikes.has(postId))return false;awardedLikes.add(postId);HIST.unshift({t:"Liked a bouquet",d:"Today",n:1});App.addPetals(1,"Liked a bouquet");return true},
+    post:()=>{HIST.unshift({t:"Posted a bouquet",d:"Today",n:20});App.addPetals(20,"Posted a bouquet")},
+    care:(n,reason)=>{HIST.unshift({t:reason,d:"Today",n});App.addPetals(n,reason)}
+  };
+})();
+</script>

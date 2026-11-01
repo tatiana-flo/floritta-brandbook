@@ -78,19 +78,385 @@
 #s-home .home-sheet .addr{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
 #s-home .home-sheet .addr svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none}
 </style>
+<!-- Экран Shop (таб «Shop») – реестр 02-shop-search-saved.md, раздел /shop. Логика раздела (магазин, категория, поиск, избранное, карточка) – в скрипте ниже (window.ShopX), переопределяет mount_shop/mount_category/mount_search/mount_saved и Shop.* шелла. -->
 <section class="scr" id="s-shop" data-tab="shop" data-nav="Shop" data-group="Main">
+  <!-- ids: APP-SHOP-010 APP-SHOP-011 -->
   <div class="appbar">
     <div class="ttl">Shop</div>
-    <button class="ib" onclick="App.go('search')" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
-    <button class="ib" onclick="App.go('saved')" aria-label="Saved"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></svg><span class="dot" id="shop-fav-dot" data-n="0"></span></button>
+    <button class="ib" onclick="App.go('search')" aria-label="Search the shop"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+    <button class="ib" onclick="App.go('saved')" aria-label="Saved designs"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></svg><span class="dot" id="shop-fav-dot" data-n="0"></span></button>
   </div>
   <div class="scr-body has-tab">
-    <div class="pad"><button class="search" onclick="App.go('search')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Search peonies, roses, birthday…</button></div>
-    <div class="cat-list" id="shop-cats"></div>
-    <div class="sec-head"><div class="h2">Occasions</div><button class="link" onclick="App.go('occasions')">All</button></div>
-    <div class="chip-grid pad" id="shop-occ"></div>
+    <!-- ids: APP-SHOP-012 -->
+    <div class="pad"><button class="search" role="search" onclick="App.go('search')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Search roses, hydrangeas, birthday…</button></div>
+    <!-- ids: APP-SHOP-013 APP-SHOP-014 – фото-плитки 16:7 в порядке SHOP_SECTION_ORDER, пустые разделы (Balloons) скрыты, фото не повторяются -->
+    <div class="cat-list" id="shopx-cats"></div>
+    <!-- ids: APP-SHOP-015 – категории без плитки -->
+    <div id="shopx-more-wrap">
+      <div class="sec-head"><div class="h2">More to explore</div></div>
+      <div class="chip-grid pad" id="shopx-more"></div>
+    </div>
+    <!-- ids: APP-SHOP-016 – непустые поводы -->
+    <div id="shopx-occ-wrap">
+      <div class="sec-head"><div class="h2">Occasions</div><button class="link" onclick="document.getElementById('s-occasions')?App.go('occasions'):App.go('category',{slug:'birthday'})">All</button></div>
+      <div class="chip-grid pad" id="shopx-occ"></div>
+    </div>
+    <!-- ids: APP-SHOP-017 – чипы цены → /category/all?price=&title= -->
     <div class="sec-head"><div class="h2">Price</div></div>
-    <div class="chips" id="shop-price"></div>
+    <div class="chips" id="shopx-price"></div>
+    <!-- ids: APP-SHOP-018 – строка доверия, статичный текст -->
     <div class="trust mt32"><span><b>4.6</b> Google · 590 reviews</span><span class="sep"></span><span>Same-day until 10 pm</span><span class="sep"></span><span>BFA member</span></div>
+    <div class="pad mt16 tc"><button class="textbtn" style="border:0;color:var(--grey)" onclick="App.go('shx-demo')">Prototype states</button></div>
   </div>
 </section>
+<style>
+/* shop */
+#s-shop .cat-list{display:flex;flex-direction:column;gap:10px;padding:16px var(--gutter) 0}
+#s-shop .ctile{position:relative;aspect-ratio:16/7;overflow:hidden;background:var(--silver);width:100%;text-align:left}
+#s-shop .ctile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--m-ease)}
+#s-shop .ctile:active img{transform:scale(1.04)}
+#s-shop .ctile .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,26,23,0) 35%,rgba(30,26,23,.6) 100%)}
+#s-shop .ctile .tx{position:absolute;left:16px;right:16px;bottom:12px;color:#fff;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+#s-shop .ctile .tx .nm{font-family:var(--f-display);font-weight:300;font-size:28px;line-height:1.05;letter-spacing:.01em}
+#s-shop .ctile .tx .ct{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.85;white-space:nowrap}
+#s-shop .chip-grid{display:flex;flex-wrap:wrap;gap:8px}
+#s-shop .ib .dot{background:var(--ink)}
+/* карточка товара раздела (ShopX.card): фото 4:5, до 2 меток, сердце, название 2 строки, цена + старая, квадратная кнопка-сумка */
+.shx-card .nm{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.shx-card .prow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.shx-card .qa{width:40px;height:40px;border:1px solid var(--ink);display:inline-flex;align-items:center;justify-content:center;flex:none;color:var(--ink);transition:all var(--m-fast)}
+.shx-card .qa svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.shx-card .qa.done{background:var(--ink);color:var(--paper)}
+.shx-sk .ph{aspect-ratio:4/5}
+.shx-sk .l1{height:14px;margin-top:12px;width:85%}
+.shx-sk .l2{height:14px;margin-top:8px;width:40%}
+</style>
+<script>
+/* ShopX – логика раздела «Магазин, категория, поиск, избранное» по реестру 02-shop-search-saved.md.
+   Переопределяет mount_shop / mount_category / mount_search / mount_saved и методы window.Shop из шелла
+   (шелл не трогаем – правило BRIEF №1). Всё локально, как в приложении: каталог, фильтры, поиск – на устройстве. */
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)], P=window.PRODUCTS;
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const X=window.ShopX={late:false,recent:["Peonies","Red roses","Birthday"],OC:{day:null,win:null,card:null,anon:false}};
+
+  /* ---- время: Europe/London, отсечка same-day 22:00; X.late – демо-состояние «после 10 pm» ---- */
+  X.now=()=>{const d=new Date();if(X.late){d.setHours(22,30,0,0)}return d};
+  X.sameDayOpen=()=>X.now().getHours()<22;
+
+  /* ---- каталог: категории, поводы, виртуальные коллекции ---- */
+  const COLOUR={1:"peach",2:"mixed",3:"pink",4:"white",5:"pink",6:"red",7:"pink",8:"pink",9:"mixed",10:"white",11:"mixed",12:"pink",13:"purple"};
+  const isPet=p=>p.t.some(t=>/pet/i.test(t)), isReady=p=>!!p.fast, isSale=p=>!!p.o||p.t.some(t=>/sale/i.test(t));
+  const CATS={
+    bouquets:{n:"Bouquets",img:"img/pink-garden.webp",ids:()=>P.map(p=>p.id)},
+    hydrangeas:{n:"Hydrangeas",img:"img/pink-manifesto.webp",ids:()=>[3,12,2]},
+    roses:{n:"Roses",img:"img/red-roses.webp",ids:()=>P.filter(p=>p.cat==="roses").map(p=>p.id)},
+    balloons:{n:"Balloons",img:"img/addon-balloon.webp",ids:()=>[]},
+    gifts:{n:"Gifts",img:"img/charmingly.webp",ids:()=>[8,9,11]},
+    "flower-boxes":{n:"Flower boxes",img:"img/daydream-basket.webp",ids:()=>[8,9]},
+    plants:{n:"Plants",img:"img/veronica.webp",ids:()=>[10,4,9,7]},
+    "flower-baskets":{n:"Flower baskets",img:"img/peony-basket.webp",ids:()=>P.filter(p=>p.cat==="baskets").map(p=>p.id)},
+    "autumn-flowers":{n:"Autumn flowers",img:"img/peach-posy.webp",ids:()=>[1,13,11,12]},
+    letterbox:{n:"Letterbox",ids:()=>[5,7,1,4,13]},
+    "add-ons":{n:"Add-ons",ids:()=>[11,3,13,10,2]}
+  };
+  const OCC={birthday:{n:"Birthday",ids:[1,2,12,11,7,5]},anniversary:{n:"Anniversary",ids:[6,3,8,13]},sympathy:{n:"Sympathy",ids:[4,10,9]},"thank-you":{n:"Thank you",ids:[1,7,5,13]},"new-baby":{n:"New baby",ids:[4,10,7,1]},"get-well":{n:"Get well",ids:[1,5,10,13]},congratulations:{n:"Congratulations",ids:[12,2,11,6]},"just-because":{n:"Just because",ids:[2,5,7,12,1,13,10]},"mothers-day":{n:"Mother’s Day",ids:[]}};
+  const VIRT={all:{n:"All flowers",f:()=>true},sale:{n:"Sale",f:isSale},"ready-now":{n:"Ready now",f:isReady},"pet-friendly":{n:"Pet-friendly",f:isPet},"best-selling":{n:"Best sellers",f:p=>p.cat==="bestsellers"||p.t.some(t=>/best/i.test(t))}};
+  const TILE_ORDER=["bouquets","hydrangeas","roses","balloons","gifts","sympathy","flower-boxes","plants","flower-baskets","autumn-flowers","all"];
+  const catName=p=>({bestsellers:"Best sellers",roses:"Roses",baskets:"Flower baskets"})[p.cat]||"Bouquets";
+  const slugify=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const humanise=s=>{s=String(s||"").replace(/-/g," ").trim();return s?s[0].toUpperCase()+s.slice(1):"Category"};
+  /* APP-CAT-001: slug → коллекция: категория, повод, all/sale/ready-now/pet-friendly/best-selling, <colour>-flowers; пустой = all; неизвестный → пусто */
+  X.resolve=function(slug){
+    slug=slugify(slug||"all")||"all";
+    if(CATS[slug])return {slug,n:CATS[slug].n,kind:"cat",pool:CATS[slug].ids().map(App.product).filter(Boolean)};
+    if(OCC[slug])return {slug,n:OCC[slug].n,kind:"occ",pool:OCC[slug].ids.map(App.product).filter(Boolean)};
+    if(VIRT[slug])return {slug,n:VIRT[slug].n,kind:"virt",pool:P.filter(VIRT[slug].f)};
+    const m=slug.match(/^([a-z]+)-flowers$/);
+    if(m&&Object.values(COLOUR).includes(m[1]))return {slug,n:humanise(slug),kind:"colour",pool:P.filter(p=>COLOUR[p.id]===m[1])};
+    return {slug,n:null,kind:"unknown",pool:[]};
+  };
+  X.occasions=()=>Object.keys(OCC).map(k=>({slug:k,n:OCC[k].n,count:OCC[k].ids.length}));
+  X.categories=()=>Object.keys(CATS).map(k=>({slug:k,n:CATS[k].n,count:CATS[k].ids().length}));
+  X.catName=catName;X.COLOUR=COLOUR;X.isPet=isPet;X.isReady=isReady;X.isSale=isSale;
+
+  /* ---- цены ---- */
+  const PRICE={under50:{l:"Under £50",a:0,b:50},"50-75":{l:"£50–£75",a:50,b:75},"75-100":{l:"£75–£100",a:75,b:100},"100-150":{l:"£100–£150",a:100,b:150},"150plus":{l:"£150+",a:150,b:1e9},"50-100":{l:"£50–£100",a:50,b:100},"100plus":{l:"£100+",a:100,b:1e9}};
+  const SHOP_PRICE=["under50","50-100","100plus"], SHEET_PRICE=["under50","50-75","75-100","100-150","150plus"];
+  const inPrice=(p,k)=>{const r=PRICE[k];return r?p.p>=r.a&&p.p<r.b:true};
+  const SORTS=[["rec","Recommended"],["asc","Price low–high"],["desc","Price high–low"],["new","Newest"]];
+  const SWATCH={pink:"#e9b9c4",white:"#f6f1ea",red:"#9b2f38",blue:"#aebfd9",purple:"#c9b6d9",peach:"#f3c3a6",mixed:"linear-gradient(135deg,#e9b9c4 0 33%,#f3c3a6 33% 66%,#c9b6d9 66%)"};
+
+  /* ---- выбор доставки на весь заказ (стор order-choice.v1 – на устройстве) ---- */
+  X.days=()=>App.nextDays(7);
+  /* APP-SHOP-006 / APP-PDP-026: сохранённый выбор ещё доступен – остаётся; иначе ближайший день (сегодня до 22:00, иначе завтра) и окно «any» */
+  X.ensureDelivery=function(){
+    const oc=X.OC;const open=X.sameDayOpen();
+    const stale=oc.day===null||oc.day>6||(oc.day===0&&!open);
+    if(stale){oc.day=open?0:1;oc.win="any"}
+    if(oc.day===0)oc.win="today";
+    X.syncDelivery();
+  };
+  X.syncDelivery=function(){const d=X.days()[X.OC.day||0];App.state.delivery={date:d.d,label:d.label,win:X.winLabel(X.OC.win)}};
+  X.winLabel=k=>({today:"Today, by 10 pm",any:"Any time","9-13":"9–13","13-18":"13–18","18-23":"18–23"})[k]||null;
+
+  /* ---- карточка в сетке (APP-SHOP-001…007) ---- */
+  X.card=function(p){
+    const tags=(p.t||[]).slice(0,2).map(t=>{const [k,v]=t.includes(":")?t.split(":"):["soft",t];return `<span class="tag --${k}">${v}</span>`}).join("");
+    return `<div class="card shx-card" data-id="${p.id}">
+      <div class="ph" onclick="App.go('pdp',{id:${p.id}})"><img loading="lazy" src="${p.img}" alt=""><div class="tags">${tags}</div>
+        <button class="fav ${App.state.fav.has(p.id)?"on":""}" onclick="event.stopPropagation();App.toggleFav(${p.id},this)" aria-label="${App.state.fav.has(p.id)?"Remove from favourites":"Save to favourites"}">${App.icon("heart")}</button></div>
+      <div class="nm" onclick="App.go('pdp',{id:${p.id}})">${p.n}</div>
+      <div class="prow"><div class="pr">${App.fmt(p.p)}${p.o?`<s>${App.fmt(p.o)}</s>`:""}</div><button class="qa" onclick="ShopX.quickAdd(${p.id},this)" aria-label="Add to bag">${App.icon("bag")}</button></div>
+    </div>`;
+  };
+  /* APP-SHOP-005…007: быстрое добавление – размер по умолчанию («as on the photo»), без доп., qty 1; одинаковая строка суммирует qty, макс. 20; тост с «View bag» */
+  X.quickAdd=function(id,btn){
+    const line=App.state.bag.find(l=>l.id==id&&l.size==="Standard"&&!l.addons.length);
+    if(line&&line.qty>=20){App.toast("You already have 20 of this design in your bag");return}
+    App.addToBag(id,{size:"Standard",silent:true});X.ensureDelivery();App.haptic();
+    if(btn){btn.classList.add("done");btn.innerHTML=App.icon("check");setTimeout(()=>{btn.classList.remove("done");btn.innerHTML=App.icon("bag")},1300)}
+    App.toast("Added to bag",{action:{label:"View bag",onclick:"App.tab('bag')"},ms:3200});
+  };
+  X.skeleton=(n=4)=>`<div class="grid-2 mt16">${Array.from({length:n}).map(()=>`<div class="shx-sk"><div class="skeleton ph"></div><div class="skeleton l1"></div><div class="skeleton l2"></div></div>`).join("")}</div>`;
+
+  /* ================= SHOP ================= */
+  window.mount_shop=function(){
+    /* APP-SHOP-013/014: плитки в порядке SHOP_SECTION_ORDER, пустые скрыты, фото не повторяются */
+    const used=new Set();const tiles=[];
+    TILE_ORDER.forEach(slug=>{
+      const c=X.resolve(slug);if(!c.pool.length)return;
+      let img=(CATS[slug]||{}).img;if(!img||used.has(img))img=c.pool.map(p=>p.img).find(i=>!used.has(i))||c.pool[0].img;used.add(img);
+      tiles.push(`<button class="ctile" onclick="App.go('category',{slug:'${slug}'})"><img loading="lazy" src="${img}" alt=""><div class="ov"></div><div class="tx"><span class="nm">${slug==="all"?"All items":c.n}</span><span class="ct">${c.pool.length} designs</span></div></button>`);
+    });
+    tiles.push(`<button class="ctile" onclick="document.getElementById('s-builder')?App.go('builder'):App.toast('Builder is coming soon')"><img loading="lazy" src="img/hero-white.webp" alt=""><div class="ov"></div><div class="tx"><span class="nm">Build your own</span><span class="ct">From £45</span></div></button>`);
+    $("#shopx-cats").innerHTML=tiles.join("");
+    /* APP-SHOP-015 */
+    const more=X.categories().filter(c=>!TILE_ORDER.includes(c.slug)&&c.count>0).concat([{slug:"best-selling",n:"Best sellers"},{slug:"ready-now",n:"Ready now"},{slug:"pet-friendly",n:"Pet-friendly"},{slug:"sale",n:"Sale"}]);
+    $("#shopx-more-wrap").hidden=!more.length;
+    $("#shopx-more").innerHTML=more.map(c=>`<button class="chip" onclick="App.go('category',{slug:'${c.slug}'})">${c.n}</button>`).join("");
+    /* APP-SHOP-016 */
+    const occ=X.occasions().filter(o=>o.count>0);
+    $("#shopx-occ-wrap").hidden=!occ.length;
+    $("#shopx-occ").innerHTML=occ.map(o=>`<button class="chip" onclick="App.go('category',{slug:'${o.slug}'})">${o.n}</button>`).join("");
+    /* APP-SHOP-017 */
+    $("#shopx-price").innerHTML=SHOP_PRICE.map(k=>`<button class="chip" onclick="App.haptic();App.go('category',{slug:'all',price:'${k}',title:'${PRICE[k].l}'})">${PRICE[k].l}</button>`).join("");
+    favDot();
+  };
+  /* APP-SHOP-011: бейдж = число id в сторе (и тех, которых уже нет в снимке) */
+  function favDot(){const d=$("#shop-fav-dot");if(d){d.dataset.n=App.state.fav.size;d.textContent=App.state.fav.size||""}}
+  document.addEventListener("fav",favDot);
+
+  /* ================= CATEGORY ================= */
+  const EMPTY={sort:"rec",delivery:null,price:null,colours:new Set(),pet:false,ready:false,under60:false,sale:false};
+  const F=Object.assign({},EMPTY,{colours:new Set(),shown:8});
+  let key=null,coll=null,ctx={},skT=null;
+  const clone=f=>Object.assign({},f,{colours:new Set(f.colours)});
+  function reset(keepSort){Object.assign(F,EMPTY,{colours:new Set(),shown:8,sort:keepSort?F.sort:"rec"})}
+  /* APP-CAT-005: фильтры из query (deep link): price, sort, delivery, colour, pet, ready, under60, sale */
+  function fromParams(q){
+    const yes=v=>v===true||v===1||/^(1|true|yes)$/i.test(String(v));
+    if(q.price!=null){F.price=typeof q.price==="number"?SHOP_PRICE[q.price]:(PRICE[q.price]?q.price:null)}
+    if(q.sort&&SORTS.some(s=>s[0]===q.sort))F.sort=q.sort;
+    if(q.delivery==="today"||q.delivery==="tomorrow")F.delivery=q.delivery;
+    if(q.colour)String(q.colour).split(",").map(c=>c.trim().toLowerCase()).filter(c=>SWATCH[c]).forEach(c=>F.colours.add(c));
+    if(q.pet!=null&&yes(q.pet))F.pet=true;if(q.ready!=null&&yes(q.ready))F.ready=true;if(q.under60!=null&&yes(q.under60))F.under60=true;if(q.sale!=null&&yes(q.sale))F.sale=true;
+  }
+  /* старые параметры шелла/соседних экранов → slug */
+  function normalise(params){
+    const q=Object.assign({},params||{});
+    if(!q.slug){
+      if(q.q)q.slug="all";
+      else if(q.occasion){const o=Object.keys(OCC).find(k=>OCC[k].n.toLowerCase()===String(q.occasion).toLowerCase());q.slug=o||(/autumn/i.test(q.occasion)?"autumn-flowers":slugify(q.occasion));if(!o&&!q.title&&/autumn/i.test(q.occasion))q.title=q.occasion}
+      else if(q.cat){const c=Object.keys(CATS).find(k=>CATS[k].n.toLowerCase()===String(q.cat).toLowerCase());q.slug=c||slugify(q.cat)}
+      else q.slug="all";
+    }
+    return q;
+  }
+  window.mount_category=function(params){
+    const q=normalise(params);
+    const k=JSON.stringify(q);
+    if(k!==key){
+      key=k;ctx=q;reset(false);
+      coll=X.resolve(q.slug);
+      if(q.q){const s=q.q.toLowerCase();coll={slug:"all",n:`“${q.q}”`,kind:"search",pool:P.filter(p=>p.n.toLowerCase().includes(s))}}
+      fromParams(q);
+      /* APP-CAT-002: заголовок – ?title= → имя из каталога → виртуальные → slug → «Category» */
+      $("#cat-title").textContent=q.title||coll.n||humanise(coll.slug);
+      /* APP-CAT-019: скелетон 4 карточек на время анимации перехода */
+      const b=$("#catx-body");b.scrollTop=0;$("#cat-grid").innerHTML=X.skeleton(4);$("#cat-grid").style.display="";$("#cat-more").innerHTML="";$("#cat-empty").hidden=true;$("#catx-empty-coll").hidden=true;$("#cat-count").textContent="…";
+      clearTimeout(skT);skT=setTimeout(render,400);
+      renderTools();return;
+    }
+    render();
+  };
+  function apply(f){
+    const open=X.sameDayOpen();
+    let out=coll.pool.filter(p=>{
+      /* APP-CAT-010: «Today» после 22:00 скрывает всё; «Tomorrow» и «Today» до 22:00 не отсекают */
+      if(f.delivery==="today"&&!open)return false;
+      if(f.price&&!inPrice(p,f.price))return false;
+      if(f.colours.size&&!f.colours.has(COLOUR[p.id]))return false;
+      if(f.pet&&!isPet(p))return false;
+      if(f.ready&&!isReady(p))return false;
+      if(f.under60&&p.p>=60)return false;
+      if(f.sale&&!isSale(p))return false;
+      return true});
+    const s=f.sort;
+    if(s==="asc")out.sort((a,b)=>a.p-b.p);else if(s==="desc")out.sort((a,b)=>b.p-a.p);else if(s==="new")out.sort((a,b)=>b.id-a.id);
+    else out.sort((a,b)=>(VIRT["best-selling"].f(b)?1:0)-(VIRT["best-selling"].f(a)?1:0));
+    return out;
+  }
+  /* APP-CAT-008: число активных фильтров – с быстрыми чипами, без сортировки */
+  const nFilters=f=>(f.delivery?1:0)+(f.price?1:0)+f.colours.size+(f.pet?1:0)+(f.ready?1:0)+(f.under60?1:0)+(f.sale?1:0);
+  function renderTools(){
+    $("#cat-sort-l").textContent=SORTS.find(s=>s[0]===F.sort)[1];
+    $("#cat-filter-n").textContent=nFilters(F)||"";
+    /* APP-CAT-009 */
+    $("#cat-quick").innerHTML=[["ready","Ready now"],["pet","Pet-friendly"],["under60","Under £60"],["sale","Sale"]].map(([k,l])=>`<button class="chip ${F[k]?"on":""}" onclick="Shop.quick('${k}')">${l}</button>`).join("");
+    /* APP-CAT-017: снимаемые чипы – доставка, цена, цвета, нестандартная сортировка (быстрые чипы сюда не попадают) */
+    const ap=[];
+    if(F.delivery)ap.push(["delivery",F.delivery==="today"?"Today":"Tomorrow"]);
+    if(F.price)ap.push(["price",PRICE[F.price].l]);
+    F.colours.forEach(c=>ap.push(["colour:"+c,humanise(c)]));
+    if(F.sort!=="rec")ap.push(["sort",SORTS.find(s=>s[0]===F.sort)[1]]);
+    $("#cat-applied").innerHTML=ap.map(([k,l])=>`<button class="chip" onclick="Shop.remove('${k}')" aria-label="Remove ${l}">${l}${App.icon("close")}</button>`).join("");
+  }
+  function render(){
+    renderTools();
+    const grid=$("#cat-grid"),more=$("#cat-more"),empty=$("#cat-empty"),ec=$("#catx-empty-coll");
+    if(!coll.pool.length){ /* APP-CAT-025 */
+      $("#cat-count").textContent="0 designs";grid.style.display="none";grid.innerHTML="";more.innerHTML="";empty.hidden=true;ec.hidden=false;return;
+    }
+    ec.hidden=true;
+    const list=apply(F),n=list.length;
+    $("#cat-count").textContent=n===1?"1 design":`${n} designs`;
+    empty.hidden=n>0;grid.style.display=n?"":"none";
+    grid.innerHTML=list.slice(0,F.shown).map((p,i)=>X.card(p).replace('class="card shx-card"',`class="card shx-card fade-up" style="animation-delay:${Math.min(i,7)*40}ms"`)).join("");
+    /* APP-CAT-020 / APP-CAT-021 */
+    more.innerHTML=n>F.shown?`<button class="btn --ghost --block" onclick="Shop.more()">Show more <span class="muted" style="letter-spacing:0;text-transform:none">· ${n-F.shown} left</span></button>`:(n?`<p class="xs muted tc" style="margin:8px 0 0">You’ve seen all ${n} designs · Hand-tied in Bermondsey</p>`:"");
+  }
+  const commit=()=>{F.shown=8;$("#catx-body").scrollTop=0;render()};
+  const Shop=window.Shop||(window.Shop={});
+  Object.assign(Shop,{
+    quick(k){F[k]=!F[k];App.haptic();commit()},
+    remove(k){if(k==="delivery")F.delivery=null;else if(k==="price")F.price=null;else if(k==="sort")F.sort="rec";else if(k.startsWith("colour:"))F.colours.delete(k.slice(7));commit()},
+    /* APP-CAT-023: сброс всего, включая сортировку */
+    clear(){reset(false);commit();App.toast("Filters cleared")},
+    more(){F.shown+=8;render();App.haptic()},
+    browseAll(){App.go("category",{slug:"all"},{replace:true})},
+    /* APP-CAT-006 / APP-CAT-007 */
+    sortSheet(){
+      App.sheet(`<div class="sh-head"><div class="h3">Sort by</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body">${SORTS.map(([k,l])=>`<button class="radio ${F.sort===k?"on":""}" onclick="Shop.setSort('${k}')"><span class="rd"></span><span class="f1">${l}</span></button>`).join("")}</div>`);
+    },
+    setSort(k){F.sort=k;App.haptic();App.closeSheet();commit()},
+    /* APP-CAT-008 / 010…016: шторка фильтров, черновик с текущих */
+    filterSheet(){
+      const D=clone(F);
+      const note=()=>{const open=X.sameDayOpen();if(D.delivery==="today"&&open)return ["Same-day across London until 10 pm.",""];if(!open)return ["Same-day orders close at 10 pm – choose Tomorrow.","accent"];return ["Pick your delivery window at checkout · photo sent before delivery.",""]};
+      const body=()=>`<div class="fs-sec"><div class="fs-t">Delivery</div>
+          <div class="seg" id="fs-del">${[["today","Today"],["tomorrow","Tomorrow"]].map(([k,l])=>`<button class="${D.delivery===k?"on":""}" data-k="${k}">${l}</button>`).join("")}</div>
+          <div class="xs mt12 ${note()[1]||"muted"}" id="fs-del-note">${note()[0]}</div>
+        </div>
+        <div class="fs-sec"><div class="fs-t">Price</div><div class="wrap" id="fs-price">${SHEET_PRICE.map(k=>`<button class="chip ${D.price===k?"on":""}" data-k="${k}">${PRICE[k].l}</button>`).join("")}</div></div>
+        <div class="fs-sec"><div class="fs-t">Colour</div><div class="wrap" id="fs-col">${Object.keys(SWATCH).map(c=>`<div><button class="sw ${D.colours.has(c)?"on":""}" data-c="${c}" aria-label="${humanise(c)}"><i style="background:${SWATCH[c]}"></i></button><div class="swl">${c}</div></div>`).join("")}</div></div>
+        <div class="fs-sec">
+          <div class="fs-row"><div><div class="l">Pet-friendly</div><div class="d">No lilies or other blooms toxic to cats and dogs</div></div><button class="switch ${D.pet?"on":""}" id="fs-pet" role="switch" aria-checked="${D.pet}" aria-label="Pet-friendly"></button></div>
+          <div class="fs-row"><div><div class="l">Ready now</div><div class="d">Already made up in the shop, ready to go out</div></div><button class="switch ${D.ready?"on":""}" id="fs-ready" role="switch" aria-checked="${D.ready}" aria-label="Ready now"></button></div>
+        </div>`;
+      const html=`<div class="sh-head"><div class="h3">Filter</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
+      <div class="sh-body fsheet" id="fs-body">${body()}</div>
+      <div class="sh-foot"><button class="btn --secondary" id="fs-clear">Clear</button><button class="btn" id="fs-show"></button></div>`;
+      const wire=r=>{
+        const upd=()=>{const n=apply(D).length;const b=$("#fs-show",r);b.textContent=n?`Show ${n} design${n===1?"":"s"}`:"No designs";b.disabled=!n;const nt=$("#fs-del-note",r);const [t,c]=note();nt.textContent=t;nt.className="xs mt12 "+(c||"muted")};
+        $$("#fs-del button",r).forEach(b=>b.onclick=()=>{const k=b.dataset.k;D.delivery=D.delivery===k?null:k;$$("#fs-del button",r).forEach(x=>x.classList.toggle("on",x.dataset.k===D.delivery));upd()});
+        $$("#fs-price .chip",r).forEach(b=>b.onclick=()=>{const k=b.dataset.k;D.price=D.price===k?null:k;$$("#fs-price .chip",r).forEach(x=>x.classList.toggle("on",x.dataset.k===D.price));upd()});
+        $$("#fs-col .sw",r).forEach(b=>b.onclick=()=>{const c=b.dataset.c;D.colours.has(c)?D.colours.delete(c):D.colours.add(c);b.classList.toggle("on",D.colours.has(c));upd()});
+        $("#fs-pet",r).onclick=e=>{D.pet=!D.pet;e.currentTarget.classList.toggle("on",D.pet);e.currentTarget.setAttribute("aria-checked",D.pet);upd()};
+        $("#fs-ready",r).onclick=e=>{D.ready=!D.ready;e.currentTarget.classList.toggle("on",D.ready);e.currentTarget.setAttribute("aria-checked",D.ready);upd()};
+        upd();
+      };
+      App.sheet(html,{full:true,onOpen(r){
+        wire(r);
+        /* APP-CAT-015: Clear – сброс черновика, сортировка остаётся (сбрасывает и Under £60/Sale) */
+        $("#fs-clear",r).onclick=()=>{Object.assign(D,EMPTY,{colours:new Set(),sort:D.sort});$("#fs-body",r).innerHTML=body();wire(r);App.haptic()};
+        /* APP-CAT-016: применить – лёгкий хаптик, сетка в начало */
+        $("#fs-show",r).onclick=()=>{Object.assign(F,D,{colours:new Set(D.colours)});App.closeSheet();App.haptic();commit()};
+      }});
+    }
+  });
+
+  /* ================= SEARCH ================= */
+  const POPULAR=[["Autumn flowers",{slug:"autumn-flowers"}],["Roses",{slug:"roses"}],["Sympathy flowers",{slug:"sympathy"}],["Pet-friendly",{q:"pet-friendly"}]];
+  const stem=w=>w.length>3&&w.endsWith("s")?w.slice(0,-1):w;
+  const words=p=>[p.n,...p.t.map(t=>t.split(":").pop()),catName(p),...Object.keys(OCC).filter(k=>OCC[k].ids.includes(p.id)).flatMap(k=>[OCC[k].n,k]),isPet(p)?"pet-friendly pet friendly":""].join(" ").toLowerCase().split(/[^a-z0-9£]+/).filter(Boolean);
+  const nameWords=p=>p.n.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  /* APP-SEARCH-010: каждое слово запроса начинает слово в названии/тегах/категории/поводах; roses → rose; сначала совпадения в названии */
+  X.search=function(q){
+    const qs=q.toLowerCase().split(/[^a-z0-9£]+/).filter(Boolean).map(stem);if(!qs.length)return [];
+    const hit=(ws,w)=>ws.some(x=>x.startsWith(w));
+    const hits=P.filter(p=>{const ws=words(p).map(stem);return qs.every(w=>hit(ws,w))});
+    hits.sort((a,b)=>(qs.every(w=>hit(nameWords(b).map(stem),w))?1:0)-(qs.every(w=>hit(nameWords(a).map(stem),w))?1:0));
+    return hits.slice(0,40);
+  };
+  /* APP-SEARCH-012: группы – категории/поводы, чьё имя содержит запрос целиком или слово ≥3 букв */
+  X.groups=function(q){
+    const ql=q.toLowerCase().trim();const ws=ql.split(/\s+/).filter(w=>w.length>=3);
+    const all=X.categories().concat(X.occasions()).concat([{slug:"pet-friendly",n:"Pet-friendly",count:P.filter(isPet).length},{slug:"sale",n:"Sale",count:P.filter(isSale).length}]);
+    return all.filter(c=>{const n=c.n.toLowerCase();return n.includes(ql)||ws.some(w=>n.includes(w))});
+  };
+  /* APP-SEARCH-006: недавние – новый сверху, без дублей без учёта регистра, ≥2 символов, до 8 */
+  X.remember=function(q){q=q.trim();if(q.length<2)return;X.recent=[q].concat(X.recent.filter(r=>r.toLowerCase()!==q.toLowerCase())).slice(0,8)};
+  const hi=(name,q)=>{let out=esc(name);q.toLowerCase().split(/\s+/).filter(Boolean).forEach(w=>{const re=new RegExp("(^|[^a-z0-9])("+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"[a-z0-9]*)","i");out=out.replace(re,(m,a,b)=>a+"<mark>"+b+"</mark>")});return out};
+  let sT;
+  window.mount_search=function(params){
+    const inp=$("#search-in");inp.value=(params&&params.q)||"";   /* APP-SEARCH-002: ?q= из deep link */
+    renderSearch(inp.value);
+    setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},360);
+    inp.oninput=()=>{clearTimeout(sT);$("#search-x").hidden=!inp.value;sT=setTimeout(()=>renderSearch(inp.value),80)};
+    /* APP-SEARCH-005: Enter – запомнить запрос */
+    inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();if(inp.value.trim()){X.remember(inp.value);inp.blur();App.toast("Saved to your recent searches")}}};
+    $("#search-x").hidden=!inp.value;
+  };
+  X.clearQuery=()=>{const inp=$("#search-in");inp.value="";$("#search-x").hidden=true;renderSearch("");inp.focus()};
+  X.clearRecent=()=>{X.recent=[];renderSearch("")};
+  X.openGroup=(slug,q)=>{X.remember(q);App.go("category",{slug})};
+  X.openProduct=(id,q)=>{X.remember(q);$("#search-in").blur();App.go("pdp",{id})};
+  function renderSearch(q){
+    const b=$("#search-body");q=q.trim();
+    if(!q){
+      const pop=POPULAR.map(([l,t])=>{const n=t.slug?X.resolve(t.slug).pool.length:X.search(t.q).length;const go=t.slug?`App.go('category',{slug:'${t.slug}'})`:`Shop.search('${t.q}')`;return `<button class="row" onclick="${go}"><svg class="ic" viewBox="0 0 24 24"><path d="M4 16l5-6 4 4 3-3 4 5"/></svg><div class="rt"><div class="l">${l}</div><div class="d">${n} design${n===1?"":"s"}</div></div>${App.icon("chev").replace("<svg",'<svg class="chev"')}</button>`}).join("");
+      b.innerHTML=`${X.recent.length?`<!-- APP-SEARCH-006 APP-SEARCH-007 --><div class="sec-head" style="margin-top:20px"><div class="h3">Recent</div><button class="link" onclick="ShopX.clearRecent()">Clear</button></div>
+        <div class="chip-grid">${X.recent.map(r=>`<button class="chip" onclick="Shop.search('${esc(r)}')">${App.icon("clock")}${esc(r)}</button>`).join("")}</div>
+        <div class="xs muted pad mt8">Saved on this phone only</div>`:""}
+        <!-- APP-SEARCH-008 --><div class="sec-head"><div class="h3">Popular now</div></div>${pop}
+        <!-- APP-SEARCH-009 --><div class="sec-head"><div class="h3">Occasions</div></div>
+        <div class="chip-grid" style="padding-bottom:24px">${X.occasions().map(o=>`<button class="chip" onclick="App.go('category',{slug:'${o.slug}'})">${o.n}</button>`).join("")}</div>`;
+      return;
+    }
+    const hits=X.search(q),groups=X.groups(q);
+    if(!hits.length&&!groups.length){ /* APP-SEARCH-016…018 */
+      b.innerHTML=`<div class="empty"><div class="h2">No results for “${esc(q)}”</div><p class="soft sm">Check the spelling, or tell our florists what you are after – they will suggest something.</p><div class="flex g8"><button class="btn --sm" onclick="App.go('flora',{q:'${esc(q)}'})">${App.icon("chat")}Ask a florist</button><button class="btn --ghost --sm" onclick="App.go('category',{slug:'all'})">All designs</button></div></div>`;
+      return;
+    }
+    b.innerHTML=`${hits.length?`<div class="xs muted pad" style="padding-top:14px" aria-live="polite">${hits.length} result${hits.length===1?"":"s"}</div>`:""}
+      ${groups.length?`<div class="chip-grid" style="padding-top:10px">${groups.map(g=>`<button class="chip" onclick="ShopX.openGroup('${g.slug}','${esc(q)}')"><svg viewBox="0 0 24 24"><path d="M3 12l9-9h9v9l-9 9z"/><circle cx="16" cy="8" r="1.5"/></svg>${g.n}</button>`).join("")}</div>`:""}
+      <div class="pad mt8">${hits.map(p=>`<a class="mini" onclick="ShopX.openProduct(${p.id},'${esc(q)}')"><img src="${p.img}" alt=""><div class="f1"><div class="nm">${hi(p.n,q)}</div><div class="pr">${App.fmt(p.p)}${p.o?` <s class="muted">${App.fmt(p.o)}</s>`:""}</div></div>${App.icon("chev").replace("<svg",'<svg class="chev" style="width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5"')}</a>`).join("")}</div>`;
+  }
+  Shop.search=q=>{const inp=$("#search-in");inp.value=q;$("#search-x").hidden=!q;X.remember(q);renderSearch(q);App.haptic();inp.focus()};
+
+  /* ================= SAVED ================= */
+  window.mount_saved=function(){renderSaved()};
+  function renderSaved(){
+    const b=$("#savedx-body");if(!b)return;
+    /* APP-SAVED-001/004/006: новые сверху; id, которых нет в снимке, пропускаются */
+    const list=[...App.state.fav].reverse().map(App.product).filter(Boolean);
+    if(!list.length){b.innerHTML=`<!-- APP-SAVED-008 --><div class="empty"><div class="h2">Nothing saved yet</div><p class="soft sm">Tap the heart on any design and it will wait for you here.</p><button class="btn --secondary" onclick="App.go('category',{slug:'best-selling'})">Browse bestsellers</button></div>`;return}
+    b.innerHTML=`<!-- APP-SAVED-003 --><div class="sub">${list.length} design${list.length===1?"":"s"} · tap the heart to remove</div>
+      <div class="grid-2 mt16">${list.map(X.card).join("")}</div>
+      <div class="pad mt32"><button class="btn --ghost --block" onclick="App.go('category',{slug:'bouquets'})">Find more to save</button></div>
+      <p class="xs muted tc pad mt12">Saved on this phone only · not linked to your account</p>`;
+  }
+  document.addEventListener("fav",()=>{if(App.state.current==="saved")setTimeout(renderSaved,420);else renderSaved()});
+})();
+</script>

@@ -1,0 +1,229 @@
+<style>
+/* ---- checkout · secure payment (registry 05-checkout, /checkout/pay + PendingPaymentWatcher) ---- */
+#s-ck-pay .st{display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 28px 0}
+#s-ck-pay .st>svg{width:44px;height:44px;stroke:var(--ink);fill:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;margin-bottom:20px}
+#s-ck-pay .st.--err>svg{stroke:var(--accent)}
+#s-ck-pay .st .h2{margin-bottom:10px}
+#s-ck-pay .st p{margin:0 0 20px;line-height:1.5}
+#s-ck-pay .st .acts{display:flex;flex-direction:column;gap:10px;width:100%}
+#s-ck-pay .spin{width:22px;height:22px;border:1px solid var(--light);border-top-color:var(--ink);animation:cpspin 1s linear infinite;margin-bottom:20px}
+@keyframes cpspin{to{transform:rotate(360deg)}}
+#s-ck-pay .skel{display:grid;gap:10px;width:100%;margin-top:8px}
+#s-ck-pay .skel i{display:block;height:44px}
+#s-ck-pay .cpb{display:flex;gap:10px;align-items:flex-start;padding:12px var(--gutter);background:var(--silver);font-size:13px;line-height:1.4}
+#s-ck-pay .cpb.--warn{background:var(--warn-bg)}
+#s-ck-pay .cpb svg{width:18px;height:18px;flex:none;stroke:var(--ink);fill:none;stroke-width:1.5;margin-top:1px}
+#s-ck-pay .site{margin:12px var(--gutter) 0;border:1px solid var(--hair)}
+#s-ck-pay .site .url{display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:11px;color:var(--grey);background:var(--silver);border-bottom:1px solid var(--hair)}
+#s-ck-pay .site .url svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-ck-pay .sstep{border-bottom:1px solid var(--hair);padding:12px 14px}
+#s-ck-pay .sstep .sh{display:flex;justify-content:space-between;align-items:center;font-size:14px;gap:10px}
+#s-ck-pay .sstep .sh b{font-weight:400;display:flex;align-items:center;gap:8px}
+#s-ck-pay .sstep .sh b i{width:18px;height:18px;border:1px solid var(--ink);display:grid;place-items:center;font-style:normal;font-size:10px;flex:none}
+#s-ck-pay .sstep.done .sh b i{background:var(--ink);color:var(--paper)}
+#s-ck-pay .sstep.bad{box-shadow:inset 3px 0 0 var(--accent)}
+#s-ck-pay .sstep .sd{font-size:12.5px;color:var(--grey);margin-top:4px;line-height:1.45;padding-left:26px}
+#s-ck-pay .sstep .sd .accent{color:var(--accent)}
+#s-ck-pay .sstep .btn{height:36px;padding:0 12px;font-size:11px}
+#s-ck-pay .srow{display:flex;justify-content:space-between;font-size:13px;padding:8px 14px;border-bottom:1px solid var(--hair);font-variant-numeric:tabular-nums}
+#s-ck-pay .srow.tt{font-size:15px;padding:12px 14px}
+#s-ck-pay .slinks{padding:10px 14px;font-size:11px;color:var(--grey);display:flex;gap:10px;flex-wrap:wrap}
+#s-ck-pay .slinks button{border-bottom:1px solid var(--light);color:var(--graphite)}
+#s-ck-pay .cf{border:1px solid var(--hair);padding:18px;margin:0 var(--gutter);font-size:13px}
+#s-ck-pay .cf .box{display:flex;align-items:center;gap:12px;border:1px solid var(--light);padding:12px;margin-top:12px}
+#s-ck-pay .cf .box i{width:20px;height:20px;border:1px solid var(--grey);display:grid;place-items:center;flex:none}
+#s-ck-pay .cf .box i::after{content:"";width:10px;height:10px;border:1px solid var(--grey);border-top-color:transparent;border-radius:50%;animation:cpspin 1s linear infinite}
+#s-ck-pay .saved{font-size:11px;color:var(--grey);display:flex;align-items:center;gap:6px;justify-content:center;padding:14px var(--gutter) 0}
+#s-ck-pay .saved svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-ck-pay .demo+.demo{border-top:0;padding-top:0}
+/* system browser sheet (SFSafariViewController / Custom Tab) – payment page */
+.sb-bar{display:flex;justify-content:space-between;align-items:center;padding:4px var(--gutter) 10px;border-bottom:1px solid var(--hair);font-size:12px;color:var(--grey)}
+.sb-bar span{display:flex;align-items:center;gap:6px}
+.sb-bar svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5}
+.sb-bar .textbtn{font-size:12px}
+.sb-body{padding:16px var(--gutter) 20px}
+.sb-or{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin:16px 0 12px}
+.sb-or::before,.sb-or::after{content:"";flex:1;height:1px;background:var(--hair)}
+.sb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.sb-grid .full{grid-column:1/-1}
+.sb-face{width:48px;height:48px;border:1.5px solid var(--ink);position:relative;margin:0 auto}
+.sb-face::before{content:"";position:absolute;inset:12px;border:1.5px solid var(--ink);border-radius:50%;transition:all .3s}
+.sb-face.ok::before{border-radius:0;inset:16px 14px;border:0;border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg) translate(2px,-4px);width:18px;height:9px}
+.sb-otp{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.sb-otp i{height:48px;border:1px solid var(--light);display:grid;place-items:center;font-style:normal;font-size:18px}
+.sb-otp i.on{border-color:var(--ink)}
+</style>
+<section class="scr" id="s-ck-pay" data-nav="Checkout · payment" data-group="Checkout">
+  <!-- ids: APP-PAY-001 – «Secure payment» with back and Close (both ask «Leave checkout?» while the site form is open); iOS swipe-back disabled in the app -->
+  <div class="appbar"><button class="ib" id="cp-back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Secure payment</div><button class="ib" id="cp-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <!-- ids: APP-PAY-029 – back / Close during the site form → «Leave checkout?» / «Your bag stays as it is.» (Stay / Leave) -->
+  <!-- stand-only demo switches: outcome of the payment + situations; «WebView killed» = ids: APP-PAY-031 (the current step restarts) -->
+  <div class="demo" id="cp-demo1"></div>
+  <div class="demo" id="cp-demo2"></div>
+  <!-- ids: APP-PAY-002 APP-PAY-003 – start: an unfinished payment younger than 24 h is probed first (no new order over a possibly paid one); ?resume=1 from the bag card probes the saved link straight away -->
+  <!-- ids: APP-PAY-004 APP-PAY-005 – no draft / empty bag → back to details / bag; chosen day passed → details with «Please choose a delivery day again – the one you picked has passed» -->
+  <!-- ids: APP-PAY-032 APP-PAY-033 APP-PAY-034 APP-PAY-035 – paid: success haptic, order (site number or web-<hash>, time, tracking link, lines, total, recipient, postcode, date, window, sender, card, anonymous) written to orders.v1 on the phone, +50 Petals once per real number, details saved if asked, bag / delivery choice / draft cleared, pending reset → Order placed -->
+  <!-- ids: APP-PAY-036 APP-PAY-037 – PendingPaymentWatcher: hidden 1×1 web view probes the saved link on launch and foreground (≤ 1/min, 20 s cut-off, not on this screen); paid → order recorded + toast «Payment received – order #N is placed» (demo chip «Paid in background» in the bag) -->
+  <div class="scr-body" id="cp-body"></div>
+</section>
+<script>
+(function(){
+const $=App.$,$$=App.$$;
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const CP=window.CKPay={phase:null,pending:null,outcome:"paid",retries:0,timer:null,D:{challenge:false,unmapped:false,soldout:false,stepbad:false,neterr:false},paidInBrowser:false};
+const I={lock:App.icon("lock"),card:App.icon("card"),check:App.icon("check"),info:App.icon("info"),clock:App.icon("clock"),truck:App.icon("truck"),close:App.icon("close"),apple:App.icon("apple"),bag:App.icon("bag"),phone:App.icon("phone")};
+const B=()=>window.BagX,K=()=>window.CKX;
+const PROMO_RATE=.12,PROMO_MIN=98;
+/* fallback draft when the pay screen is opened straight from the stand list (no details filled in) */
+const DEF=()=>({recipient:"Anna",rphone:"7700 900123",when:"Tomorrow",window:"any time",pc:"SE1 5SY",street:"80 Willow Walk",flat:"Flat 3, blue door",town:"London",msg:"Happy birthday, Anna – with all my love",photo:true,sname:App.state.user.name,email:"tatiana@example.com",sphone:"7700 900456",save:true,anon:false,dayIdx:1});
+function siteTotal(){const b=B();const s=b.sub(),fee=b.fee(s);const promo=App.state.promo;const disc=promo==="FLOAPP12"&&s>=PROMO_MIN?Math.round(s*PROMO_RATE*100)/100:0;return {s,fee,disc,tot:Math.max(0,s-disc+fee),promo}}
+function t(ms,fn){clearTimeout(CP.timer);CP.timer=setTimeout(()=>{if(App.state.current==="ck-pay")fn()},ms)}
+/* ---------- demo ---------- */
+function demo(){
+  $("#cp-demo1").innerHTML=`<span class="caps muted">Outcome</span>${[["paid","Paid"],["processing","Bank processing"],["failed","Declined"],["unpaid","Left unpaid"]].map(([k,l])=>`<button class="chip ${CP.outcome===k?"on":""}" data-o="${k}">${l}</button>`).join("")}`;
+  $("#cp-demo2").innerHTML=`<span class="caps muted">Demo</span>${[["challenge","Cloudflare check"],["unmapped","Item without site id"],["soldout","Sold out on site"],["stepbad","Site step invalid"],["neterr","No connection"]].map(([k,l])=>`<button class="chip ${CP.D[k]?"on":""}" data-d="${k}">${l}</button>`).join("")}<button class="chip" data-d="killed">WebView killed</button><button class="chip" data-d="restart">Restart flow</button>`;
+  $$("#cp-demo1 [data-o]").forEach(b=>b.onclick=()=>{CP.outcome=b.dataset.o;demo()});
+  $$("#cp-demo2 [data-d]").forEach(b=>b.onclick=()=>{const k=b.dataset.d;
+    if(k==="killed"){/* APP-PAY-031 */App.toast("The web page was closed by the system – restarting this step");setPhase(CP.phase||"preparing");return}
+    if(k==="restart"){CP.pending=null;if(B())B().D.pending=false;start({});return}
+    CP.D[k]=!CP.D[k];demo();if(["unmapped","soldout","neterr","challenge"].includes(k))build()});
+}
+/* ---------- phases ---------- */
+function setPhase(p){CP.phase=p;render()}
+function start(params){
+  demo();CP.paidInBrowser=false;
+  /* APP-PAY-003 – ?resume=1 from the bag card: check the saved pay link first */
+  if(params&&params.resume){if(!CP.pending)setPending();CP.mode="show";setPhase("confirming");t(1400,probeResult);return}
+  /* APP-PAY-002 APP-PAY-027 – an unfinished payment younger than 24 h is checked first; bag/details changed → old link probed and, if unpaid, silently replaced */
+  if(CP.pending){CP.mode="restart";setPhase("confirming");t(1400,()=>{if(CP.outcome==="paid"){probeResult();return}CP.pending=null;if(B())B().D.pending=false;App.toast("Your earlier unpaid order was replaced with this one");build()});return}
+  build();
+}
+function build(){
+  /* APP-PAY-004 – no draft or empty bag → back to details / bag */
+  if(!App.state.bag.length){App.go("bag",{},{replace:true});return}
+  if(!K().saved){const prev=App.state.history[App.state.history.length-1];if(prev==="bag"){App.toast("Please fill in the delivery details first");App.go("checkout",{},{replace:true});return}K().saved=DEF()}
+  /* APP-PAY-005 – the chosen day passed → back to details with a toast */
+  if(K().D.late&&K().saved.dayIdx===0){App.toast("Please choose a delivery day again – the one you picked has passed",{ms:3200});App.go("checkout",{keep:true},{replace:true});return}
+  if(CP.D.unmapped){setPhase("unmapped");return}
+  setPhase("preparing");
+  t(1500,()=>{if(CP.D.neterr){setPhase("error");return}if(CP.D.soldout){setPhase("unavailable");return}setPhase("filling");
+    t(1200,()=>{if(CP.D.challenge){setPhase("challenge");t(1800,()=>setPhase("review"));return}setPhase("review")})});
+}
+function setPending(){/* APP-PAY-017 */CP.pending={payUrl:"floritta.uk/basket/pay/7f3a…",at:new Date(),total:siteTotal().tot,save:K().saved?K().saved.save:true,key:App.state.bag.map(l=>l.key).join(";")};if(B())B().D.pending=true}
+CP.setPending=setPending;
+function openBrowser(){
+  /* APP-PAY-016 – «Pay now» on the site opens the signed pay link in the system browser (Stripe: Apple Pay / Google Pay / card) */
+  setPending();setPhase("paying");
+  const {tot}=siteTotal();
+  App.sheet(`<div class="sb-bar"><span>${I.lock}pay.floritta.uk · Stripe</span><button class="textbtn" onclick="window.CKPay.browserClosed()">Done</button></div>
+    <div class="sb-body" id="sb">
+      <div class="caps muted">Floritta Ltd · order for ${esc(K().saved.recipient)}</div>
+      <div class="h2 mt4">Pay ${App.fmt(tot)}</div>
+      <button class="btn --apple --block mt16" id="sb-apple">${I.apple}Pay</button>
+      <div class="sb-or">or pay by card</div>
+      <div class="sb-grid"><input class="input full" value="•••• •••• •••• 4242" disabled aria-label="Card number"><input class="input" value="12 / 29" disabled aria-label="Expiry"><input class="input" value="•••" disabled aria-label="CVC"><input class="input full" value="${esc(K().saved.sname||"Name on card")}" disabled aria-label="Name on card"></div>
+      <button class="btn --block mt12" id="sb-card">Pay ${App.fmt(tot)}</button>
+      <p class="xs muted tc mt12" style="margin-bottom:0">Secured by Stripe · 3-D Secure 2 · demo card only</p>
+    </div>`,{full:true,onOpen:r=>{
+      $("#sb-apple",r).onclick=()=>{App.haptic();$("#sb",r).innerHTML=`<div class="caps muted tc">Apple Pay</div><div class="h2 tc mt4">${App.fmt(tot)}</div><p class="sm soft tc">Visa •••• 4242 · Floritta Ltd</p><div class="sb-face mt16" id="sb-face"></div><p class="xs muted tc mt12">Confirm with side button</p>`;
+        setTimeout(()=>{const f=$("#sb-face");f&&f.classList.add("ok")},1300);setTimeout(()=>CP.browserPaid(),2100)};
+      $("#sb-card",r).onclick=()=>{App.haptic();$("#sb",r).innerHTML=`<div class="caps muted">Confirm your payment</div><div class="h3 mt4">${App.fmt(tot)} to Floritta Ltd</div><p class="sm soft mt8">Visa •••• 4242 · we've sent a code to +44 ••••• 456</p><div class="sb-otp mt16" id="sb-otp">${[0,1,2,3,4,5].map(()=>"<i></i>").join("")}</div><p class="xs muted mt12">Auto-filled from Messages</p>`;
+        "482913".split("").forEach((c,i)=>setTimeout(()=>{const el=$$("#sb-otp i")[i];if(el){el.textContent=c;el.classList.add("on")}},400+i*140));setTimeout(()=>CP.browserPaid(),2300)};
+    }});
+}
+CP.browserPaid=function(){CP.paidInBrowser=true;App.closeSheet();/* APP-PAY-021 – iOS: probe right after the browser closes */setPhase("confirming");t(1400,probeResult)};
+CP.browserClosed=function(){App.closeSheet();setPhase("confirming");t(1200,()=>{CP.paidInBrowser?probeResult():setPhase("unpaid")})};
+function probeResult(){
+  /* APP-PAY-022 – the pay link is loaded again in a hidden web view: success URL / «Thank you» = paid; /in_progress = bank; /fail = declined; pay link again = unpaid */
+  const o=CP.paidInBrowser||CP.mode==="show"||CP.mode==="restart"?CP.outcome:"unpaid";
+  if(o==="paid"){finish();return}
+  if(o==="processing"){setPhase("processing");scheduleRetry();return}
+  if(o==="failed"){setPhase("failed");return}
+  setPhase("unpaid");
+}
+function scheduleRetry(){/* APP-PAY-023 – auto retry 3 × every 15 s (demo: 6 s) */if(CP.retries>=3)return;t(6000,()=>{CP.retries++;setPhase("confirming");t(1000,()=>{if(CP.outcome==="processing"){setPhase("processing");scheduleRetry()}else probeResult()})})}
+function finish(){
+  /* APP-PAY-032 APP-PAY-033 APP-PAY-034 APP-PAY-035 APP-BAG-009 – paid: haptic, order written to orders.v1 on the device, +50 Petals once per site number, details saved if asked, bag + delivery choice + draft cleared, pending reset → Order placed */
+  const d=K().saved||DEF(),st=siteTotal();const code=String(715500+Math.floor(Math.random()*400));
+  App.haptic();
+  App.state.order={id:"#"+code,code,hash:"7f3a9c2e",track:"floritta.uk/basket/order/7f3a9c2e",placed:new Date(),
+    lines:App.state.bag.filter(B().avail).map(l=>({...l,addons:[...l.addons],name:App.product(l.id).n,img:App.product(l.id).img})),
+    subtotal:st.s,total:st.tot,promo:st.promo,discount:st.disc,fee:st.fee,
+    date:d.date,dateLabel:d.when,window:d.window,recipient:d.recipient,anon:d.anon,postcode:(d.pc||"").trim(),address:[d.street,d.flat,d.town+" "+d.pc].filter(Boolean).join(", "),
+    message:d.msg,photo:d.photo,sender:d.sname,email:d.email,saved:d.save,pay:CP.paidInBrowser?"card":"card"};
+  App.clearBag();CP.pending=null;if(B()){B().D.pending=false;B().choice={dayIdx:1,win:"any",src:"nearest day"}}
+  K().saved=null;K().draft=null;CP.retries=0;
+  App.addPetals(50,"Order #"+code);
+  App.go("success",{code},{replace:true});
+}
+/* ---------- PendingPaymentWatcher (background, not on this screen) ---------- */
+CP.bgConfirm=function(){
+  /* ids: APP-PAY-036 APP-PAY-037 – hidden 1×1 web view probes the saved pay link on launch / foreground (≤ 1 per minute, 20 s cut-off); paid → order recorded + toast, no navigation */
+  if(!CP.pending){App.toast("No unfinished payment to check");return}
+  const code=String(715500+Math.floor(Math.random()*400));
+  const d=K().saved||DEF();
+  App.state.order={id:"#"+code,code,placed:new Date(),lines:App.state.bag.filter(l=>App.product(l.id)).map(l=>({...l,name:App.product(l.id).n,img:App.product(l.id).img})),total:CP.pending.total,subtotal:CP.pending.total,dateLabel:d.when,window:d.window,recipient:d.recipient,postcode:d.pc,address:d.street+", "+d.town+" "+d.pc,message:d.msg,photo:d.photo,sender:d.sname,email:d.email,pay:"card"};
+  App.clearBag();CP.pending=null;if(B())B().D.pending=false;App.state.petals+=50;document.dispatchEvent(new CustomEvent("petals"));
+  App.toast(`Payment received – order #${code} is placed`,{action:{label:"View",onclick:`App.go('success',{code:'${code}'})`},ms:4000});
+};
+/* ---------- render ---------- */
+function state(svg,title,text,acts,cls){return `<div class="st ${cls||""}">${svg}<div class="h2">${title}</div><p class="sm soft">${text}</p><div class="acts">${acts||""}</div></div>`}
+const backBag=`<button class="btn --secondary --block" onclick="App.go('bag',{},{replace:true})">Back to bag</button>`;
+function render(){
+  const body=$("#cp-body"),p=CP.phase,st=siteTotal(),d=K().saved||DEF();
+  const savedNote=`<!-- ids: APP-PAY-017 --><div class="saved">${I.lock}Unfinished payment is saved on this phone for 24 h · link also sent to ${esc(d.email||"your email")}</div>`;
+  let h="";
+  if(p==="preparing")h=`<!-- ids: APP-PAY-007 --><div class="st"><div class="spin"></div><div class="h2">Preparing your order…</div><p class="sm soft">Adding your bouquets to our secure checkout</p><div class="skel"><i class="skeleton"></i><i class="skeleton"></i><i class="skeleton" style="width:60%"></i></div><p class="xs muted mt16">floritta.uk/basket · hidden web view · up to 45 s</p></div>`;
+  else if(p==="unmapped")h=`<!-- ids: APP-PAY-006 -->`+state(I.info,"Some items cannot be ordered in the app yet","Please remove them from your bag, or order on our website.",backBag+`<button class="btn --ghost --block" onclick="App.toast('Opens floritta.uk in the browser with your bag')">Order on our website</button>`,"--err");
+  else if(p==="unavailable")h=`<!-- ids: APP-PAY-008 -->`+state(I.bag,"Something in your bag is no longer available","A bouquet may have just sold out. Please check your bag and try again.",backBag,"--err");
+  else if(p==="filling")h=`<!-- ids: APP-PAY-009 APP-PAY-010 --><div class="st"><div class="spin"></div><div class="h2">Filling in your details…</div><p class="sm soft">floritta.uk/basket/checkout${st.promo?"?promocode="+esc(st.promo):""}</p><div class="skel"><i class="skeleton"></i><i class="skeleton"></i><i class="skeleton"></i><i class="skeleton" style="width:40%"></i></div><p class="xs muted mt16">Recipient, address, window, card message and your contact go into the site form. We never submit it for you.</p></div>`;
+  else if(p==="challenge")h=`<!-- ids: APP-PAY-015 --><div class="cpb">${I.info}<span>Our website is making sure this is a real phone – one moment.</span></div><div class="cf mt16"><div class="caps muted">floritta.uk</div><div class="h3 mt4">Just a moment…</div><div class="box"><i></i><span>Verifying your browser · Cloudflare</span></div></div>`;
+  else if(p==="review"){
+    const bad=CP.D.stepbad;
+    h=`<!-- ids: APP-PAY-011 APP-PAY-012 -->
+    ${bad?`<div class="cpb --warn">${I.info}<span>Please check “Delivery” below and tap Continue, then Pay now</span></div>`:`<div class="cpb">${I.lock}<span>Check your details, then tap Pay now</span></div>`}
+    <!-- ids: APP-PAY-013 APP-PAY-014 APP-PAY-030 – site form visible (header, footer, breadcrumbs, cookie banner hidden; non-essential cookies declined); site total becomes the order total; tel / WhatsApp links open outside the app -->
+    <div class="site">
+      <div class="url">${I.lock}floritta.uk/basket/checkout${st.promo?"?promocode="+esc(st.promo):""} · site header and cookie banner hidden</div>
+      <div class="sstep done"><div class="sh"><b><i>${I.check}</i>Recipient</b><button class="btn --secondary" onclick="window.CKPay.editStep('recipient')">Edit</button></div><div class="sd">${esc(d.recipient||"Anna")} · +44 ${esc(d.rphone||"7700 900123")}${d.anon?" · anonymous sender":""}</div></div>
+      <div class="sstep ${bad?"bad":"done"}" id="cp-step-delivery"><div class="sh"><b><i>${bad?"2":I.check}</i>Delivery</b>${bad?`<button class="btn" onclick="window.CKPay.fixStep()">Continue</button>`:`<button class="btn --secondary" onclick="window.CKPay.editStep('delivery')">Edit</button>`}</div><div class="sd">${esc([d.street,d.flat,d.town+" "+d.pc].filter(Boolean).join(", "))}<br>${esc(d.when||"Tomorrow")}, ${esc(d.window||"any time")}${bad?`<br><span class="accent">Please choose a delivery slot</span>`:""}</div></div>
+      <div class="sstep done"><div class="sh"><b><i>${I.check}</i>Card message</b><button class="btn --secondary" onclick="window.CKPay.editStep('message')">Edit</button></div><div class="sd">${d.msg?"“"+esc(d.msg)+"”":"No card"}${d.photo===false?" · No photo needed before delivery (app)":""}</div></div>
+      <div class="sstep done"><div class="sh"><b><i>${I.check}</i>Your details</b><button class="btn --secondary" onclick="window.CKPay.editStep('you')">Edit</button></div><div class="sd">${esc(d.sname||"")} · ${esc(d.email||"")} · +44 ${esc(d.sphone||"")}</div></div>
+      <div class="srow"><span>Subtotal</span><span>${App.fmt(st.s)}</span></div>
+      <div class="srow"><span>Delivery</span><span>${st.fee?App.fmt(st.fee):"Free"}</span></div>
+      ${st.promo?`<div class="srow ${st.disc?"ok":""}"><span>Promo · ${esc(st.promo)}${st.disc?"":" · not valid for this order"}</span><span>${st.disc?"−"+App.fmt(st.disc):"£0"}</span></div>`:""}
+      <div class="srow"><span>Gift card</span><button class="textbtn" style="font-size:11px" onclick="App.toast('Gift cards are redeemed here, on the website checkout')">Add</button></div>
+      <div class="srow tt"><b>Pay now</b><b>${App.fmt(st.tot)}</b></div>
+      <div style="padding:12px 14px"><button class="btn --block" id="cp-paynow" ${bad?"disabled":""}>Pay now · ${App.fmt(st.tot)}</button></div>
+      <div class="slinks"><span>Questions?</span><button onclick="App.toast('Opens in Phone, outside the app')">Call +44 7700 900100</button><button onclick="App.toast('Opens in WhatsApp, outside the app')">WhatsApp</button><button onclick="App.toast('Opens in Mail, outside the app')">Email</button></div>
+    </div>
+    <p class="xs muted tc mt12" style="padding:0 16px">Payment opens in a secure window (Apple Pay, Google Pay or card). This page is floritta.uk inside the app.</p>`;
+  }
+  else if(p==="paying")h=`<!-- ids: APP-PAY-018 APP-PAY-019 APP-PAY-020 APP-PAY-021 -->`+state(I.lock,"Complete payment in the secure window","When you have paid, come back here and we will confirm your order.",`<button class="btn --block" onclick="window.CKPay.checkAgain()">I've paid – check now</button><button class="btn --secondary --block" onclick="window.CKPay.reopen()">Open payment again</button>`)+`<p class="xs muted tc" style="padding:0 28px">iPhone: we check as soon as the payment window closes · Android: after you return to the app</p>`+savedNote;
+  else if(p==="confirming")h=`<!-- ids: APP-PAY-022 APP-PAY-027 --><div class="st"><div class="spin"></div><div class="h2">Confirming your payment…</div><p class="sm soft">Checking the payment link with floritta.uk</p><p class="xs muted">${CP.mode==="restart"?"Your bag or details changed since the link was issued – if the old order is unpaid, it will be replaced.":"Success page or “Thank you” = paid · pay link again = not paid · 5 s limit"}</p></div>`;
+  else if(p==="processing")h=`<!-- ids: APP-PAY-023 -->`+state(I.clock,"Your bank is still processing the payment","This usually takes a few seconds."+(CP.retries<3?` We'll check again automatically (${CP.retries}/3).`:" Automatic checks are done – try again or come back later."),`<button class="btn --block" onclick="window.CKPay.checkAgain()">Try again</button>${backBag}`)+savedNote;
+  else if(p==="failed")h=`<!-- ids: APP-PAY-024 -->`+state(I.card,"Payment was not completed","No money was taken. You can try again or use another card.",`<button class="btn --block" onclick="window.CKPay.reopen()">Try again</button>${backBag}`,"--err");
+  else if(p==="unpaid")h=`<!-- ids: APP-PAY-025 APP-PAY-026 -->`+state(I.info,"Payment not finished","Your order is saved and waiting for payment – the link was also sent to your email.",`<button class="btn --block" onclick="window.CKPay.reopen()">Resume payment</button><button class="btn --secondary --block" onclick="window.CKPay.startAgain()">Start again</button>`)+savedNote;
+  else if(p==="error")h=`<!-- ids: APP-PAY-028 -->`+state(I.info,"We could not open the checkout","Please check your connection and try again.",`<button class="btn --block" onclick="window.CKPay.retry()">Try again</button>${backBag}`,"--err");
+  body.innerHTML=h;
+  const pn=$("#cp-paynow");if(pn)pn.onclick=()=>{App.haptic();openBrowser()};
+}
+CP.checkAgain=function(){/* APP-PAY-019 */setPhase("confirming");t(1200,probeResult)};
+CP.reopen=function(){/* APP-PAY-020 */openBrowser()};
+CP.retry=function(){CP.D.neterr=false;demo();build()};
+CP.fixStep=function(){CP.D.stepbad=false;demo();App.toast("Delivery slot chosen – now tap Pay now");render()};
+CP.editStep=function(step){App.toast("Edit on the site form, or go back to change it in the app",{action:{label:"Back",onclick:"App.go('checkout',{keep:true})"}})};
+CP.startAgain=function(){
+  /* APP-PAY-026 – «Start a new order?» then the old link is probed once more; new order only if it is unpaid */
+  App.confirm("Start a new order?","The saved order stays unpaid – you can still pay it from the link in your email.","Start again",()=>{CP.mode="restart";setPhase("confirming");t(1200,()=>{if(CP.outcome==="paid"){finish();return}CP.pending=null;if(B())B().D.pending=false;build()})});
+};
+function leave(){
+  /* APP-PAY-029 – «Leave checkout?» during the site form (review, challenge, filling) */
+  if(["review","challenge","filling"].includes(CP.phase)){App.confirm("Leave checkout?","Your bag stays as it is.","Leave",()=>{clearTimeout(CP.timer);App.back("bag")});return}
+  clearTimeout(CP.timer);if(App.state.history.length)App.back("bag");else App.go("bag",{},{replace:true});
+}
+$("#cp-back").onclick=leave;$("#cp-close").onclick=leave;
+window.mount_ck_pay=function(params){CP.retries=0;start(params||{})};
+document.addEventListener("screen",e=>{if(e.detail.id!=="ck-pay")clearTimeout(CP.timer)});
+})();
+</script>

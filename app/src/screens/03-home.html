@@ -1,23 +1,69 @@
+<style>
+/* home – additions on top of the base styles (base #s-home rules live in 04-shop.html) */
+#s-home .hd-loc.--empty b{font-weight:400;color:var(--graphite);border-bottom:1px solid var(--light)}
+#s-home .home-ptr{height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);transition:height var(--m-base) var(--m-ease)}
+#s-home .home-ptr.on{height:36px}
+#s-home .home-ptr i{width:14px;height:14px;border:1.5px solid var(--light);border-top-color:var(--ink);border-radius:50%;animation:hspin .8s linear infinite;margin-right:8px}
+@keyframes hspin{to{transform:rotate(360deg)}}
+#s-home .live.--closed .live-dot{background:var(--light);animation:none}
+#s-home .live .live-book{height:30px;padding:0 10px;font-size:11px;flex:none}
+#s-home .live .live-book[hidden],#s-home .live .live-cd[hidden]{display:none}
+#s-home .chip.--all svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-home .home-best .card .pr{padding-right:44px}
+#s-home .card .qa{position:absolute;right:0;bottom:0;width:36px;height:36px;border:1px solid var(--light);background:var(--paper);display:grid;place-items:center;color:var(--ink)}
+#s-home .card .qa svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-home .card .qa.done{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+#s-home.no-ready .home-ready-sec{display:none}
+#s-home .home-never{display:flex;align-items:center;gap:14px}
+#s-home .home-sd{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:6px}
+#sheet-inner .home-sheet .field.--err .input{border-color:var(--accent)}
+#sheet-inner .home-sheet .field .err{display:none;font-size:12px;color:var(--accent);margin-top:2px}
+#sheet-inner .home-sheet .field.--err .err{display:block}
+#sheet-inner .home-sheet .addr{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+#sheet-inner .home-sheet .addr svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none}
+#sheet-inner .home-sd{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:6px}
+#sheet-inner .home-perm{margin:8px 0 4px;border:1px solid var(--light);text-align:center;padding:22px 20px 0}
+#sheet-inner .home-perm .h3{font-size:17px;font-family:var(--f-body);font-weight:500;line-height:1.3}
+#sheet-inner .home-perm p{font-size:13px;color:var(--graphite);margin:8px 0 18px;line-height:1.45}
+#sheet-inner .home-perm .pb{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--light);margin:0 -20px}
+#sheet-inner .home-perm .pb button{height:48px;font-size:15px;color:var(--ink)}
+#sheet-inner .home-perm .pb button+button{border-left:1px solid var(--light);font-weight:500}
+</style>
+<!-- ids: APP-SHELL-010 APP-SHELL-020 APP-SHELL-021 APP-SHELL-022 APP-SHELL-023 APP-SHELL-024 APP-SHELL-025 APP-SHELL-026
+     Tab bar (Home · Shop · Bag with square accent qty badge · Community behind flags.community · You, caps labels, hairline, no shadow)
+     lives in shell.html; this screen is the "Home" tab. Community tab is hidden and its screens redirect here when the flag is
+     switched off on the System screen (35-shell-extra). Stack: every screen has its own AppBar, system header hidden. -->
 <section class="scr" id="s-home" data-tab="home" data-nav="Home" data-group="Main">
+  <!-- ids: APP-HOME-001 – header pinned above the scroll; hairline appears after 8 pt of scroll (class .collapsed) -->
   <div class="hd" id="home-hd">
     <div class="hd-row">
-      <button class="hd-loc" onclick="window.home_location()" id="hd-loc">__PIN__<span>Deliver to <b id="hd-pc">SE1 5SY</b></span><svg class="hd-car" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
-      <button class="ib" onclick="App.go('notifications')" aria-label="Notifications">__BELL__<span class="dot" data-n="2">2</span></button>
+      <!-- ids: APP-HOME-002 APP-HOME-003 APP-SHELL-055 – "Deliver to <postcode>" chip (saved on device, home.deliver-to.v1); without a postcode reads "Deliver to Add postcode"; tap opens the postcode sheet -->
+      <button class="hd-loc" onclick="window.home_location()" id="hd-loc" aria-label="Delivering to SE1 5SY. Change postcode">__PIN__<span>Deliver to <b id="hd-pc">SE1 5SY</b></span><svg class="hd-car" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+      <!-- ids: APP-HOME-004 APP-HOME-005 APP-SHELL-076 – bell → notifications & reminders; badge = reminders due within 7 days (+ unread), 99+ cap -->
+      <button class="ib" onclick="App.go('notifications')" aria-label="Reminders" id="hd-bell">__BELL__<span class="dot" id="hd-bell-n" data-n="0"></span></button>
     </div>
-    <div class="hd-search"><button class="search" onclick="App.go('search')">__SEARCH__<span>Search flowers, occasions, colours</span></button></div>
+    <!-- ids: APP-HOME-006 – search field is a button → Search screen (not editable here) -->
+    <div class="hd-search"><button class="search" onclick="App.go('search')" role="search">__SEARCH__<span>Search flowers, occasions, colours</span></button></div>
   </div>
   <div class="scr-body has-tab" id="home-body">
+    <!-- ids: APP-HOME-007 – pull-to-refresh: haptic, spinner 0.4 s, recomputes only the same-day status (catalogue is bundled); "Up to date" toast -->
+    <div class="home-ptr" id="home-ptr"><i></i>Refreshing</div>
 
-    <div class="live">
+    <!-- ids: APP-HOME-008 APP-HOME-009 APP-HOME-010 APP-HOME-011 – live strip: before 22:00 London green dot + countdown (recomputed every 15 s and on return to foreground);
+         after 22:00 grey dot, "Same-day closed for today · next tomorrow, 9 am – 1 pm" and "Book ahead" (sets next day · any time, opens all flowers). Demo: double-tap the strip or System → Home demo states -->
+    <div class="live" id="home-live" ondblclick="ShellDemo.toggle('sameDayClosed')">
       <span class="live-dot"></span>
-      <span class="f1">Same-day by 10 pm · next slot <b>14:00–17:00</b></span>
+      <span class="f1" id="home-live-tx">Same-day until 10 pm · delivered today</span>
       <span class="live-cd" id="home-cd">Order within 2 h 14 m</span>
+      <button class="btn --sm live-book" id="home-book" hidden onclick="window.home_bookAhead()" aria-label="Book ahead – browse all flowers for the next delivery day">Book ahead</button>
     </div>
 
+    <!-- ids: APP-HOME-012 APP-HOME-013 – first 7 occasions of the catalogue → occasion category; last chip "All occasions" (grid icon) → Occasions screen -->
     <div class="chips home-occ" id="home-occ"></div>
 
+    <!-- ids: APP-HOME-014 – hero "New season / Autumn edit": photo and button both open the hero category (autumn-flowers, else first category with a photo) -->
     <div class="pad mt24">
-      <div class="banner home-hero" onclick="App.go('category',{occasion:'Autumn edit'})">
+      <div class="banner home-hero" onclick="App.go('category',{occasion:'Autumn edit'})" aria-label="Autumn edit. Shop the edit">
         <img src="img/hero-basket.webp" alt="">
         <div class="ov"></div>
         <div class="tx">
@@ -28,44 +74,48 @@
       </div>
     </div>
 
+    <!-- ids: APP-HOME-015 – three static facts -->
     <div class="usp mt16">
       <div><b>10 pm</b>Same-day cut-off</div>
       <div><b>Photo</b>before delivery</div>
-      <div><b>3 h</b>delivery windows</div>
+      <div><b>3 windows</b>morning · afternoon · evening</div>
     </div>
 
-    <div class="sec-head"><div><h2 class="h2">Ready now</h2><div class="xs muted mt4 flex ai-c g6">__TRUCK_S__ Delivery today · hand-tied this morning</div></div><button class="link" onclick="App.go('shop',{filter:'fast'})">See all</button></div>
-    <div class="hscroll" id="home-ready"></div>
+    <!-- ids: APP-HOME-016 APP-HOME-017 APP-HOME-018 APP-HOME-021 APP-HOME-022 APP-SHELL-072 APP-SHELL-078 – "Ready now": only when readyNow products exist (System → "No ready-now products" hides the block),
+         up to 12 cards 156 wide, skeleton cards on the first frame, heart saves to favourites (haptic), tap → product; no quick-add here; "See all" → ready-now collection -->
+    <div class="home-ready-sec">
+      <div class="sec-head"><div><h2 class="h2">Ready now</h2><div class="xs muted mt4 flex ai-c g6">__TRUCK_S__ Delivery today · hand-tied this morning</div></div><button class="link" onclick="App.go('category',{cat:'Bouquets',collection:'ready-now'})">See all</button></div>
+      <div class="hscroll" id="home-ready"></div>
+    </div>
 
-    <div class="sec-head"><h2 class="h2">Bestsellers</h2><button class="link" onclick="App.tab('shop')">View all</button></div>
-    <div class="grid-2" id="home-best"></div>
+    <!-- ids: APP-HOME-019 APP-HOME-020 APP-HOME-023 APP-SHELL-079 APP-SHELL-071 APP-SHELL-070 – Bestsellers 2×2 ("Best selling" tag, topped up in catalogue order), "See all" → best-selling collection;
+         square quick-add (bag icon → tick for 1.3 s): first size, no add-ons, qty 1, keeps saved delivery if still available, haptic + toast "Added to bag" with "View bag" -->
+    <div class="sec-head"><h2 class="h2">Bestsellers</h2><button class="link" onclick="App.go('category',{cat:'Bouquets',collection:'best-selling'})">See all</button></div>
+    <div class="grid-2 home-best" id="home-best"></div>
 
+    <!-- ids: APP-HOME-024 APP-HOME-025 APP-SHELL-050 – app offer panel; dashed FLOAPP12 button puts the promo code into the bag (saved on device with the bag), success haptic, toast; it does not copy to the clipboard -->
     <div class="pad mt32">
       <div class="panel --accent home-promo">
         <div class="f1">
-          <div class="caps" style="color:var(--accent-dark)">First order</div>
-          <div class="h3 mt4">10% off your first bouquet</div>
-          <div class="sm soft mt4">Apply at checkout. One per customer.</div>
+          <div class="caps" style="color:var(--accent-dark)">App offer</div>
+          <div class="h3 mt4">12% off in the app</div>
+          <div class="sm soft mt4">Orders over £98, once per customer. Applied at checkout.</div>
         </div>
-        <button class="home-code" onclick="window.home_copy()" aria-label="Copy code">NEW10<svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/></svg></button>
+        <button class="home-code" onclick="window.home_copy()" aria-label="Promo code FLOAPP12. Add it to your bag"><span style="user-select:text">FLOAPP12</span><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></button>
       </div>
     </div>
 
-    <div class="pad mt16">
-      <div class="panel home-nudge">
-        <div class="home-nudge-ic">__CAL__</div>
-        <div class="f1">
-          <div class="h4">Mum's birthday in 12 days</div>
-          <div class="sm soft mt4">1 November · we can deliver that morning.</div>
-        </div>
-        <button class="btn --sm" onclick="App.go('reminders')">Plan flowers</button>
-      </div>
-    </div>
+    <!-- ids: APP-HOME-026 APP-SHELL-054 – reminders block: with an upcoming reminder shows the nudge ("Mum's birthday in 12 days"), otherwise the generic "Never miss a date"; both → Reminders -->
+    <div class="pad mt16" id="home-rem"></div>
 
+    <!-- addition (not in the app registry): community picks and "Share yours" – filled by the shell's screen listener -->
     <div class="sec-head"><div class="h2">From your homes</div><a class="link" onclick="App.tab('community')">Community</a></div>
     <div class="hscroll" id="home-bloom"></div>
+
+    <!-- ids: APP-HOME-027 – "Your way / Build your own bouquet / Start building": in the app today this opens the site builder in /web with the title "Build your own" (see Web page screen);
+         the prototype also has a native Builder – both reachable, decision for Tatiana in the notes -->
     <div class="pad mt16">
-      <div class="banner home-build" onclick="App.go('builder')">
+      <div class="banner home-build" onclick="window.home_build()" aria-label="Build your own bouquet. Start building">
         <img src="img/white-spray.webp" alt="">
         <div class="ov"></div>
         <div class="tx">
@@ -76,24 +126,205 @@
       </div>
     </div>
 
+    <!-- ids: APP-HOME-028 – trust line (figures hard-coded in strings) -->
     <div class="trust mt32">
       <span><b>Google 4.6</b> · 590 reviews</span><span class="sep"></span><span><b>BFA</b> member</span><span class="sep"></span><span>Hand-tied in <b>Bermondsey</b></span>
     </div>
 
+    <!-- addition (not in the app registry): journal teasers -->
     <div class="sec-head"><h2 class="h2">From the journal</h2></div>
     <div class="home-journal pad">
-      <button class="home-art" onclick="App.toast('Journal · opens article')">
+      <button class="home-art" onclick="window.home_article('care')">
         <img src="img/pink-garden.webp" alt="">
         <div class="caps muted mt8">Care guide</div>
         <div class="home-art-t">How to keep garden roses fresh for a week</div>
       </button>
-      <button class="home-art" onclick="App.toast('Journal · opens article')">
+      <button class="home-art" onclick="window.home_article('studio')">
         <img src="img/daydream-basket.webp" alt="">
         <div class="caps muted mt8">Behind the studio</div>
         <div class="home-art-t">A morning at Willow Walk, 7 am</div>
       </button>
     </div>
 
+    <!-- ids: APP-HOME-029 – footer -->
     <div class="home-foot caps muted">Floritta · 80 Willow Walk SE1 5SY · 8:00–22:00</div>
   </div>
+  <!-- ids: APP-HOME-030 APP-SHELL-015 – 2 s after the first Home the system asks for notification permission once per install (sheet styled as the iOS alert; "asked" flag saved in profile.v1). System → Notifications → "Ask again" -->
+  <!-- ids: APP-HOME-040 APP-HOME-041 APP-HOME-042 APP-HOME-043 APP-HOME-044 APP-HOME-045 APP-HOME-046 APP-HOME-047 APP-SHELL-073 APP-SHELL-081 APP-SHELL-053
+       Postcode sheet "Where are we delivering?" (window.home_location): Postcode field (caps, prefilled, e.g. SW3 1AA), Confirm / Enter saves "SE1 5SY" and closes,
+       invalid → accent border + "Please enter a full UK postcode, e.g. SW3 1AA" + warning haptic, error clears while typing; toast differs for London areas (E, EC, N, NW, SE, SW, W, WC) vs the rest;
+       Saved addresses from profile.v1 confirm with one tap; note "Same-day across London until 10 pm. Free delivery over £120."; close = cross / scrim / Android back; no "Clear postcode" button (only in code – shown on System) -->
 </section>
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  /* ---------- shared demo state for the shell / home area (System screen toggles it) ---------- */
+  const D=window.ShellDemo=window.ShellDemo||{
+    flags:{community:true,petals:true,bloomLive:false},
+    sameDayClosed:false, noPostcode:false, noReminders:false, noReady:false, emptyInbox:false,
+    notifAsked:false, notifAllowed:null,
+    reminders:[{who:"Mum",occ:"Birthday",days:12},{who:"Sophie & Tom",occ:"Anniversary",days:3}],
+    addresses:[{l:"Home",s:"80 Willow Walk",pc:"SE1 5SY"},{l:"Work",s:"12 Bermondsey Street",pc:"SE1 2ER"},{l:"Mum",s:"4 Clapham Common North Side",pc:"SW4 0QW"}],
+    delivery:{date:"today",window:"afternoon"},
+    listeners:[],
+    on(fn){this.listeners.push(fn)},
+    emit(){this.listeners.forEach(f=>{try{f()}catch(e){console.warn(e)}})},
+    toggle(k){this[k]=!this[k];this.emit();App.toast(`Demo · ${k} ${this[k]?"on":"off"}`)},
+    set(k,v){this[k]=v;this.emit()}
+  };
+  D.upcoming=()=>D.noReminders?0:D.reminders.filter(r=>r.days<=7).length;
+  D.unread=()=>D.emptyInbox?0:(window.NTunread?window.NTunread():0);
+
+  const OCC=["Birthday","Anniversary","Just because","Sympathy","Congratulations","New baby","Thank you"];
+  const LONDON=/^(EC|WC|NW|SW|SE|E|N|W)\d/;
+  let cdT,bestMounted=false,readyMounted=false,qaT={};
+
+  /* ---------- same-day status (Europe/London) ---------- */
+  function status(){
+    const now=new Date();const lon=new Date(now.toLocaleString("en-US",{timeZone:"Europe/London"}));
+    const cut=new Date(lon);cut.setHours(22,0,0,0);let ms=cut-lon;
+    const open=!D.sameDayClosed&&ms>0&&lon.getHours()>=8;
+    const tm=Math.ceil(Math.max(ms,0)/6e4),h=Math.floor(tm/60),m=tm%60;
+    return {open,left:(h?h+" h"+(m?" ":""):"")+(m||!h?m+" m":"")};
+  }
+  function tick(){
+    const s=status(),live=$("#home-live"),cd=$("#home-cd"),tx=$("#home-live-tx"),bk=$("#home-book");
+    if(!live)return;
+    live.classList.toggle("--closed",!s.open);
+    if(s.open){tx.textContent="Same-day until 10 pm · delivered today";cd.hidden=false;cd.textContent="Order within "+s.left;bk.hidden=true}
+    else{tx.textContent="Same-day closed for today · next tomorrow, 9 am – 1 pm";cd.hidden=true;bk.hidden=false}
+  }
+  window.home_bookAhead=function(){
+    App.haptic();
+    D.delivery={date:"tomorrow",window:"any"};
+    App.toast("Delivery set to <b>tomorrow · any time</b> · saved on device");
+    App.go("category",{cat:"Bouquets"});
+  };
+
+  /* ---------- cards ---------- */
+  function sk(n){return Array(n).fill('<div class="sk-card"><div class="ph skeleton"></div><div class="skeleton sk-l"></div><div class="skeleton sk-p"></div><div class="skeleton sk-b"></div></div>').join("")}
+  function renderReady(){
+    const fast=D.noReady?[]:PRODUCTS.filter(p=>p.fast).slice(0,12);
+    $("#s-home").classList.toggle("no-ready",!fast.length);
+    $("#home-ready").innerHTML=fast.map(p=>`<div style="width:156px;flex:none">${App.card(p,{meta:false,add:false})}</div>`).join("");
+  }
+  function renderBest(){
+    const tagged=PRODUCTS.filter(p=>p.t.some(t=>t.includes("Best selling")));
+    const rest=PRODUCTS.filter(p=>!tagged.includes(p));
+    const best=tagged.concat(rest).slice(0,4);
+    $("#home-best").innerHTML=best.map(p=>App.card(p,{meta:false,add:false})).join("");
+    $$("#home-best .card").forEach(c=>{const b=document.createElement("button");b.className="qa";b.setAttribute("aria-label","Add to bag");b.innerHTML=App.icon("bag");b.onclick=e=>{e.stopPropagation();window.home_quick(+c.dataset.id,b)};c.appendChild(b)});
+  }
+  window.home_quick=function(id,btn){
+    App.haptic();
+    App.addToBag(id,{silent:true});
+    if(btn){btn.classList.add("done");btn.innerHTML=App.icon("check");clearTimeout(qaT[id]);qaT[id]=setTimeout(()=>{btn.classList.remove("done");btn.innerHTML=App.icon("bag")},1300)}
+    App.toast("Added to bag",{action:{label:"View bag",onclick:"App.tab('bag')"},ms:3200});
+  };
+
+  /* ---------- reminders block & bell ---------- */
+  function renderRem(){
+    const next=D.noReminders?null:D.reminders.slice().sort((a,b)=>a.days-b.days)[0];
+    const el=$("#home-rem");
+    if(next){
+      el.innerHTML=`<div class="panel home-nudge"><div class="home-nudge-ic">${App.icon("calendar")}</div><div class="f1"><div class="h4">${esc(next.who)}'s ${esc(next.occ.toLowerCase())} in ${next.days} days</div><div class="sm soft mt4">We remind you a week before and the day before.</div></div><button class="btn --sm" onclick="App.go('reminders')">Plan flowers</button></div>`;
+    }else{
+      el.innerHTML=`<div class="panel home-never"><div class="home-nudge-ic">${App.icon("calendar")}</div><div class="f1"><div class="h4">Never miss a date</div><div class="sm soft mt4">Add birthdays and anniversaries – we'll remind you a week before and the day before.</div></div><button class="btn --sm" onclick="App.go('reminders')">Set a reminder</button></div>`;
+    }
+    const n=D.upcoming()+D.unread();
+    const dot=$("#hd-bell-n");dot.dataset.n=n;dot.textContent=n>99?"99+":(n||"");
+    $("#hd-bell").setAttribute("aria-label",D.upcoming()?`Reminders, ${D.upcoming()} coming up this week`:"Reminders");
+  }
+
+  /* ---------- postcode ---------- */
+  function renderPc(){
+    const pc=D.noPostcode?"":App.state.user.postcode;
+    const loc=$("#hd-loc");loc.classList.toggle("--empty",!pc);
+    $("#hd-pc").textContent=pc||"Add postcode";
+    loc.setAttribute("aria-label",pc?`Delivering to ${pc}. Change postcode`:"Add your delivery postcode");
+  }
+  function normalise(v){
+    v=(v||"").toUpperCase().replace(/\s+/g,"");
+    if(!/^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(v))return null;
+    return v.slice(0,-3)+" "+v.slice(-3);
+  }
+  window.home_setpc=function(v){
+    const f=$("#loc-field"),pc=normalise(v);
+    if(!pc){if(f){f.classList.add("--err");try{navigator.vibrate&&navigator.vibrate([10,30,10])}catch(e){}}return}
+    App.state.user.postcode=pc;D.noPostcode=false;renderPc();App.closeSheet();App.haptic();
+    App.toast(LONDON.test(pc)?`Delivering to <b>${pc}</b> · same-day available until 10 pm`:`Delivering to <b>${pc}</b> · we'll confirm delivery at checkout`);
+  };
+  window.home_location=function(){
+    const cur=D.noPostcode?"":App.state.user.postcode;
+    App.sheet(`<div class="sh-head"><div class="h3">Where are we delivering?</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
+      <div class="sh-body home-sheet">
+        <div class="field" id="loc-field"><label>Postcode</label><div class="input-wrap">${App.icon("pin")}<input class="input" id="loc-pc" placeholder="e.g. SW3 1AA" autocapitalize="characters" autocomplete="postal-code" value="${esc(cur)}" oninput="this.value=this.value.toUpperCase();document.getElementById('loc-field').classList.remove('--err')" onkeydown="if(event.key==='Enter')window.home_setpc(this.value)"></div><div class="err">Please enter a full UK postcode, e.g. SW3 1AA</div></div>
+        <button class="btn --ghost --block" onclick="window.home_setpc('SE1 5SY')">${App.icon("pin")}Use my location</button>
+        <div class="caps muted" style="margin:24px 0 4px">Saved addresses</div>
+        ${D.addresses.map(a=>`<button class="addr" onclick="window.home_setpc('${a.pc}')">${App.icon("pin")}<div class="f1"><div>${esc(a.l)}</div><div class="xs muted">${esc(a.s)}, ${a.pc}</div></div>${App.icon("chev").replace("<svg",'<svg style="stroke:var(--grey)"')}</button>`).join("")||`<div class="xs muted">No saved addresses yet – they appear here after your first order.</div>`}
+        <div class="xs muted mt16">Same-day across London until 10 pm. Free delivery over £120.</div>
+        <div class="home-sd">Saved on this device · used at checkout</div>
+      </div>
+      <div class="sh-foot"><button class="btn" onclick="window.home_setpc(document.getElementById('loc-pc').value)">Confirm</button></div>`,
+      {onOpen:r=>setTimeout(()=>{const t=r.querySelector("#loc-pc");t&&t.focus()},350)});
+  };
+
+  /* ---------- promo, build, journal ---------- */
+  window.home_copy=function(){
+    try{navigator.vibrate&&navigator.vibrate([8,20,8])}catch(e){}
+    App.state.promo="FLOAPP12";
+    App.toast("<b>FLOAPP12</b> added to your bag – applied at checkout",{action:{label:"View bag",onclick:"App.tab('bag')"},ms:3200});
+    document.dispatchEvent(new CustomEvent("bag"));
+  };
+  window.home_build=function(){
+    App.sheet(`<div class="sh-head"><div class="h3">Build your own bouquet</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
+      <div class="sh-body"><p class="soft sm" style="margin:0 0 12px">Today the app opens the site builder inside the app (/web). The prototype also has a native builder – pick the one to keep.</p>
+      <button class="row" onclick="App.closeSheet();App.go('web',{url:'https://floritta.uk/build-a-bouquet',title:'Build your own'})">${App.icon("flower").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Site builder in the app</div><div class="d">floritta.uk/build-a-bouquet · as today</div></div>${App.icon("chev").replace("<svg",'<svg class="chev"')}</button>
+      <button class="row" onclick="App.closeSheet();document.getElementById('s-builder')?App.go('builder'):App.toast('Native builder is not in this build')">${App.icon("sparkle").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Native builder</div><div class="d">Prototype screen · proposal</div></div>${App.icon("chev").replace("<svg",'<svg class="chev"')}</button></div>`);
+  };
+  window.home_article=function(k){
+    const a=k==="care"?{t:"How to keep garden roses fresh for a week",img:"img/pink-garden.webp",tx:"Trim 2 cm off each stem at an angle, change the water every two days and keep the vase away from fruit and radiators."}:{t:"A morning at Willow Walk, 7 am",img:"img/daydream-basket.webp",tx:"The van from the market arrives at 6:40. By seven the first buckets are conditioned and the day's same-day orders are on the bench."};
+    App.sheet(`<div class="sh-head"><div class="h3">${a.t}</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body"><img src="${a.img}" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--silver)"><p class="soft sm" style="margin:12px 0 0">${a.tx}</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();document.getElementById('s-care')?App.go('care'):App.toast('Care guides are not in this build')">Care guides</button></div>`);
+  };
+
+  /* ---------- notification permission (once per install, 2 s after first Home) ---------- */
+  let permT;
+  window.home_permPrompt=function(force){
+    if(D.notifAsked&&!force)return;
+    D.notifAsked=true;
+    App.sheet(`<div class="sh-body"><div class="home-perm"><div class="h3">“Floritta” Would Like to Send You Notifications</div><p>Reminders for the dates you save – a week before and the day before. No marketing pushes.</p>
+      <div class="pb"><button onclick="ShellDemo.notifAllowed=false;App.closeSheet();App.toast('Notifications off · change in Settings')">Don't Allow</button><button onclick="ShellDemo.notifAllowed=true;App.closeSheet();App.toast('Reminder notifications on')">Allow</button></div></div>
+      <div class="xs muted mt12" style="text-align:center">System dialog · asked once per install, result saved in profile.v1</div></div>`);
+  };
+
+  /* ---------- pull to refresh ---------- */
+  let ptrBusy=false,py=0;
+  function refresh(){
+    if(ptrBusy)return;ptrBusy=true;App.haptic();
+    const el=$("#home-ptr");el.classList.add("on");
+    setTimeout(()=>{tick();el.classList.remove("on");ptrBusy=false;App.toast("Up to date")},400);
+  }
+  const body=$("#home-body");
+  body.addEventListener("touchstart",e=>{py=e.touches[0].clientY},{passive:true});
+  body.addEventListener("touchmove",e=>{if(body.scrollTop<=0&&e.touches[0].clientY-py>70)refresh()},{passive:true});
+  body.addEventListener("wheel",e=>{if(body.scrollTop<=0&&e.deltaY<-30)refresh()},{passive:true});
+  $("#home-ptr").onclick=refresh;
+
+  /* ---------- mount ---------- */
+  window.mount_home=function(){
+    $("#home-occ").innerHTML=OCC.map(o=>`<button class="chip" onclick="App.go('category',{occasion:'${o}'})">${o}</button>`).join("")
+      +`<button class="chip --all" onclick="App.go('occasions')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>All occasions</button>`;
+    if(!readyMounted){readyMounted=true;$("#home-ready").innerHTML=sk(3).replace(/class="sk-card"/g,'class="sk-card" style="width:156px;flex:none"');setTimeout(renderReady,350)}else renderReady();
+    if(!bestMounted){bestMounted=true;$("#home-best").innerHTML=sk(4);setTimeout(renderBest,400)}else renderBest();
+    renderPc();renderRem();
+    tick();clearInterval(cdT);cdT=setInterval(tick,15000);
+    $("#s-home").classList.remove("collapsed");
+    clearTimeout(permT);if(!D.notifAsked)permT=setTimeout(()=>{if(App.state.current==="home")window.home_permPrompt()},2000);
+  };
+  D.on(()=>{if(App.state.current==="home"){tick();renderPc();renderRem();renderReady()}});
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&App.state.current==="home")tick()});
+  document.addEventListener("fav",()=>{if(App.state.current!=="home")return;$$("#s-home .card").forEach(c=>{const f=c.querySelector(".fav");f&&f.classList.toggle("on",App.state.fav.has(+c.dataset.id))})});
+})();
+</script>

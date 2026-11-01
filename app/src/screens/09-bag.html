@@ -1,8 +1,209 @@
+<style>
+/* ---- bag (base rules duplicated from 12-orders.html until they move here) ---- */
+#s-bag .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b));padding-bottom:12px;border-bottom:1px solid var(--hair)}
+#s-bag .scr-body.has-tab.has-cta{padding-bottom:calc(var(--tab-h) + var(--safe-b) + var(--btn-h) + 40px)}
+#s-bag .line{display:grid;grid-template-columns:72px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--hair)}
+#s-bag .line img{width:72px;height:90px;object-fit:cover;background:var(--silver)}
+#s-bag .line .nm{font-size:15px;line-height:1.3}
+#s-bag .line .sz{font-size:13px;color:var(--grey);margin-top:2px}
+#s-bag .line .ad{font-size:12px;color:var(--grey);margin-top:4px;line-height:1.4}
+#s-bag .line .ft{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:10px}
+#s-bag .line .pr{font-size:15px;font-variant-numeric:tabular-nums}
+#s-bag .line .rm{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--light);padding-bottom:1px}
+#s-bag .ship{padding:14px 16px}
+#s-bag .ship .t{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px}
+#s-bag .promo{display:flex;gap:8px}
+#s-bag .promo .input{flex:1;text-transform:uppercase;letter-spacing:.06em}
+#s-bag .promo .btn{flex:none;height:52px}
+#s-bag .promo-msg{font-size:13px;margin-top:8px;min-height:1.4em}
+#s-bag .addon{width:140px;border:1px solid var(--hair);padding:10px;display:flex;flex-direction:column;gap:4px;min-height:132px;text-align:left}
+#s-bag .addon img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--silver);margin-bottom:6px}
+#s-bag .addon .n{font-size:13px;line-height:1.3;min-height:2.6em}
+#s-bag .addon .d{font-size:11px;color:var(--grey);line-height:1.35}
+#s-bag .addon .b{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+#s-bag .addon.in .b .act{color:var(--grey);border-color:transparent}
+#s-bag .sum{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;font-variant-numeric:tabular-nums}
+#s-bag .sum.tt{font-size:17px;font-weight:400;border-top:1px solid var(--ink);margin-top:8px;padding-top:14px}
+#s-bag .empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:80px 32px 0}
+#s-bag .empty svg{width:48px;height:48px;stroke:var(--light);fill:none;stroke-width:1;margin-bottom:20px}
+/* ---- bag: additions (registry 04-bag) ---- */
+#s-bag .demo,#s-checkout .demo,#s-ck-pay .demo,#s-success .demo{display:flex;gap:6px;align-items:center;padding:6px var(--gutter);border-bottom:1px dashed var(--light);overflow-x:auto;scrollbar-width:none;flex:none;background:var(--silver)}
+#s-bag .demo::-webkit-scrollbar,#s-checkout .demo::-webkit-scrollbar,#s-ck-pay .demo::-webkit-scrollbar,#s-success .demo::-webkit-scrollbar{display:none}
+#s-bag .demo .caps,#s-checkout .demo .caps,#s-ck-pay .demo .caps,#s-success .demo .caps{flex:none;font-size:10px}
+#s-bag .demo .chip,#s-checkout .demo .chip,#s-ck-pay .demo .chip,#s-success .demo .chip{height:26px;font-size:11px;padding:0 10px;flex:none}
+#s-bag .pend{display:flex;align-items:center;gap:12px;padding:14px 16px}
+#s-bag .pend .btn{flex:none}
+#s-bag .line.gone img{opacity:.35}
+#s-bag .line.gone .nm{color:var(--grey)}
+#s-bag .line .gone-t{font-size:13px;color:var(--accent);margin-top:8px;line-height:1.4}
+#s-bag .qty button[disabled]{color:var(--light)}
+#s-bag .addon .act{font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--light);padding-bottom:1px}
+#s-bag .promo-hint{border:1px solid var(--hair);padding:12px 14px;margin-top:12px;font-size:13px;display:flex;gap:12px;align-items:center;line-height:1.4}
+#s-bag .promo-hint .textbtn{flex:none;font-size:11px}
+#s-bag .promo .btn[disabled]{opacity:.4}
+#s-bag .undo{position:absolute;left:16px;right:16px;bottom:calc(var(--tab-h) + var(--safe-b) + var(--btn-h) + 40px);background:var(--ink);color:var(--paper);padding:12px 16px;display:flex;align-items:center;gap:12px;font-size:14px;z-index:31}
+#s-bag .undo[hidden],#s-bag .cta-bar[hidden]{display:none}
+#s-bag .undo button{margin-left:auto;font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--paper);border-bottom:1px solid rgba(253,253,253,.5)}
+#s-bag .undo .bar{position:absolute;left:0;bottom:0;height:2px;background:var(--paper);opacity:.6;animation:bagundo 5s linear forwards}
+@keyframes bagundo{from{width:100%}to{width:0}}
+#s-bag .dchoice{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--grey);padding:10px 0;border-bottom:1px solid var(--hair)}
+#s-bag .dchoice svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+#s-bag .dchoice b{color:var(--ink);font-weight:400}
+#s-bag .gift-sub{font-size:12px;color:var(--grey);padding:0 var(--gutter);margin:-8px 0 12px}
+</style>
+<!-- ids: APP-BAG-001 APP-BAG-002 – tab «Bag» + accent badge with item count: in the shell tab bar (#bag-dot, data-n = sum of qty of all lines, incl. lines gone from the catalogue) -->
+<!-- ids: APP-BAG-003 APP-BAG-005 – quick «Add to bag» on cards (Home / Shop / Saved / product page): App.addToBag → haptic + toast «added to bag» with «View bag»; first size, no add-ons, 1 pc -->
 <section class="scr" id="s-bag" data-tab="bag" data-nav="Bag" data-group="Checkout">
+  <!-- ids: APP-BAG-010 – title «Bag · N» -->
   <div class="appbar"><div class="ttl">Bag <span id="bag-ttl-n" class="muted" style="font-size:18px"></span></div><button class="ib" onclick="App.go('saved')" aria-label="Saved"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></svg></button></div>
+  <!-- stand-only demo switches (not part of the app UI); «Paid in background» = PendingPaymentWatcher (ids: APP-PAY-036 APP-PAY-037) -->
+  <div class="demo" id="bag-demo"></div>
+  <!-- ids: APP-BAG-009 – bag (and the delivery choice) is cleared only after a confirmed payment, and only if it was not changed after the pay link was issued (see 37-checkout-extra finish) -->
+  <!-- ids: APP-BAG-043 – haptics: selection on stepper / add-on / promo / Undo, light impact on Remove (App.haptic in every handler) -->
+  <!-- ids: APP-BAG-046 – scroll view: taps go through with the keyboard open -->
   <div class="scr-body has-tab" id="bag-body"></div>
+  <!-- ids: APP-BAG-024 APP-BAG-025 – «{Name} removed» bar for 5 s with «Undo» (also over the empty state); Undo puts the line back in its place, or adds qty if the same line was added again -->
+  <div class="undo" id="bag-undo" hidden><span class="f1" id="bag-undo-t"></span><button id="bag-undo-b">Undo</button><i class="bar"></i></div>
+  <!-- ids: APP-BAG-041 APP-BAG-042 – sticky «Checkout» with the estimated total (a11y «Checkout, estimated total £X»); disabled while an unavailable line is in the bag -->
   <div class="cta-bar" id="bag-cta" hidden>
-    <button class="btn --apple sq" onclick="App.go('checkout',{express:true})" aria-label="Apple Pay"></button>
-    <button class="btn" onclick="App.go('checkout')">Checkout <span class="btn-price" id="bag-cta-total"></span></button>
+    <button class="btn --apple sq" style="display:none" aria-hidden="true" tabindex="-1"></button>
+    <button class="btn" id="bag-go">Checkout <span class="btn-price" id="bag-cta-total"></span></button>
   </div>
 </section>
+<script>
+(function(){
+const $=App.$,$$=App.$$;
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const FREE=120,FEE=4.99,MAXQ=20,WELCOME="FLOAPP12";
+/* APP-BAG-008 / APP-BAG-045: the bag lives on the device only (bag.v1); lines gone from the catalogue stay until removed by hand */
+const BX=window.BagX={D:{pending:false,gone:false},undo:null,undoT:null,choice:{dayIdx:1,win:"any",src:"from the bouquet page"}};
+const avail=l=>!l.gone&&!!App.product(l.id);
+const sub=()=>App.state.bag.filter(avail).reduce((a,l)=>a+App.lineTotal(l),0);
+const fee=s=>s>=FREE?0:FEE;
+const total=()=>{const s=sub();return s+fee(s)};
+Object.assign(BX,{avail,sub,fee,total,FEE,FREE,WELCOME});
+const clock='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+function demo(){
+  $("#bag-demo").innerHTML=`<span class="caps muted">Demo</span>
+    <button class="chip ${BX.D.pending?"on":""}" data-d="pending">Pending payment</button>
+    ${BX.D.pending?`<button class="chip" data-d="bg">Paid in background</button>`:""}
+    <button class="chip ${BX.D.gone?"on":""}" data-d="gone">Item gone from catalogue</button>
+    <button class="chip" data-d="fill">Fill bag</button>
+    <button class="chip" data-d="empty">Empty bag</button>`;
+  $$("#bag-demo [data-d]").forEach(b=>b.onclick=()=>{const k=b.dataset.d;
+    if(k==="bg"){/* APP-PAY-036 APP-PAY-037 – background PendingPaymentWatcher confirmed the payment */if(window.CKPay)window.CKPay.bgConfirm();return}
+    if(k==="fill"){App.addToBag(2,{silent:true});App.addToBag(6,{size:"Deluxe",extra:25,addons:["card","vase"],silent:true});return}
+    if(k==="empty"){App.state.bag.slice().forEach(l=>App.removeLine(l.key));App.state.promo=null;return}
+    if(k==="gone"){BX.D.gone=!BX.D.gone;
+      if(BX.D.gone){if(!App.state.bag.length)App.addToBag(2,{silent:true});App.state.bag.push({key:"gone|Grand|",id:13,size:"Grand",extra:30,addons:[],qty:1,gone:true});App.setQty("gone|Grand|",1)}
+      else App.state.bag.filter(l=>l.gone).forEach(l=>App.removeLine(l.key));
+      return}
+    BX.D.pending=!BX.D.pending;if(window.CKPay){if(BX.D.pending)window.CKPay.setPending();else window.CKPay.pending=null}render()});
+}
+function lineHtml(l){const p=App.product(l.id),ok=avail(l);
+  const ads=l.addons.map(id=>ADDONS.find(a=>a.id===id)).filter(Boolean);
+  return `<div class="line ${ok?"":"gone"}" data-key="${esc(l.key)}">
+    <img src="${p.img}" alt="" data-pdp>
+    <div class="f1">
+      <div class="nm" data-pdp>${p.n}</div>
+      <div class="sz">${l.size}${l.extra?` · +${App.fmt(l.extra)}`:""}</div>
+      ${ads.length?`<div class="ad">${ads.map(a=>`+ ${a.n} · ${a.p?App.fmt(a.p):"Free"}`).join("<br>")}</div>`:""}
+      ${ok?`<div class="ft"><div class="qty"><button data-q="-1" aria-label="Less" ${l.qty<=1?"disabled":""}>−</button><span>${l.qty}</span><button data-q="1" aria-label="More" ${l.qty>=MAXQ?"disabled":""}>+</button></div><div class="pr">${App.fmt(App.lineTotal(l))}</div></div>`
+          :`<div class="gone-t">No longer available – remove it to continue</div>`}
+      <div class="mt8"><button class="rm" data-rm>Remove</button></div>
+    </div></div>`}
+function render(){
+  const body=$("#bag-body"),cta=$("#bag-cta");demo();
+  const n=App.bagCount();$("#bag-ttl-n").textContent=n?`· ${n}`:"";
+  const bag=App.state.bag;
+  /* APP-BAG-014 APP-BAG-015 – unfinished payment younger than 24 h (checkout.v1 on the device) */
+  const pend=BX.D.pending?`<div class="pad mt8"><!-- ids: APP-BAG-014 APP-BAG-015 --><div class="panel --warn pend"><div class="f1"><div class="sm">Payment not finished</div><div class="xs muted mt4">Your order is waiting for payment.</div></div><button class="btn --sm --secondary" onclick="App.go('ck-pay',{resume:1})">Resume</button></div></div>`:"";
+  if(!bag.length){
+    body.className="scr-body has-tab";cta.hidden=true;
+    body.innerHTML=`${pend}<!-- ids: APP-BAG-011 APP-BAG-012 APP-BAG-013 --><div class="empty fade-up">
+      <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      <div class="h2">Your bag is empty</div>
+      <p class="soft sm" style="margin:10px 0 28px">Hand-tied in Bermondsey, delivered across London the same day.</p>
+      <button class="btn --block" onclick="App.go('shop')">Shop bestsellers</button>
+      <button class="btn --ghost --block mt12" onclick="App.go('saved')">Saved items</button>
+    </div>`;
+    return;
+  }
+  body.className="scr-body has-tab has-cta";cta.hidden=false;
+  const s=sub(),left=FREE-s,ok=left<=0,gone=bag.some(l=>!avail(l));
+  const gift=bag.find(avail);
+  const addons=gift?ADDONS.map(a=>{const inb=gift.addons.includes(a.id);return `<button class="addon ${inb?"in":""}" data-addon="${a.id}" ${inb?"disabled":""} aria-label="${esc(a.n)}" title="${esc(a.n)} added to ${esc(App.product(gift.id).n)}">
+      ${a.img?`<img src="${a.img}" alt="" loading="lazy">`:""}<div class="n">${a.n}</div><div class="d">${a.d}</div>
+      <div class="b"><span>${a.p?App.fmt(a.p):"Free"}</span><span class="act">${inb?"Added":"+ Add"}</span></div></button>`}).join(""):"";
+  const promo=App.state.promo;
+  const d=App.nextDays(7)[BX.choice.dayIdx];
+  body.innerHTML=`
+    ${pend}
+    <!-- ids: APP-BAG-004 – delivery day/window remembered from quick add (order-choice.v1 on the device): last choice, or the nearest day + «any» -->
+    <div class="pad"><div class="dchoice">${clock}<span class="f1">Delivery <b>${BX.choice.dayIdx===0?"Today":BX.choice.dayIdx===1?"Tomorrow":d.label+" "+d.day}, ${BX.choice.win==="any"?"any time":BX.choice.win}</b> · ${BX.choice.src} · change at checkout</span></div></div>
+    <!-- ids: APP-BAG-016 APP-BAG-017 APP-BAG-018 APP-BAG-019 APP-BAG-020 APP-BAG-021 APP-BAG-022 APP-BAG-023 APP-BAG-006 APP-BAG-007 – lines: photo 72×90 + name → product page; size «Large · +£X»; add-ons «+ Name · £X»; stepper 1..20 (minus disabled at 1, plus at 20; same product+size+add-ons merge into one line); line total; «No longer available» replaces stepper and price; «Remove» -->
+    <div class="pad">${bag.map(lineHtml).join("")}</div>
+    <!-- ids: APP-BAG-026 APP-BAG-027 – progress to free delivery (£120) / «You've unlocked free delivery» -->
+    <div class="pad mt16"><div class="panel ship ${ok?"--ok":""}" role="progressbar" aria-valuemin="0" aria-valuemax="${FREE}" aria-valuenow="${Math.min(FREE,s)}">
+      <div class="t"><span>${ok?"You've unlocked free delivery":`Add <b>${App.fmt(left)}</b> for free delivery`}</span><span class="muted">${App.fmt(FREE)}</span></div>
+      <div class="progress ${ok?"--ok":""}"><i style="width:${Math.min(100,s/FREE*100)}%"></i></div>
+    </div></div>
+    ${gift?`<!-- ids: APP-BAG-028 APP-BAG-029 APP-BAG-030 APP-BAG-044 – «Complete the gift»: horizontal strip of all catalogue add-ons; «+ Add» attaches to the first available bouquet, tile becomes «Added»; a11y hint «{add-on} added to {bouquet}» (title) -->
+    <div class="sec-head"><div class="h2">Complete the gift</div></div>
+    <div class="gift-sub">Added to ${esc(App.product(gift.id).n)}</div>
+    <div class="hscroll" id="bag-addons">${addons}</div>`:""}
+    <!-- ids: APP-BAG-031 APP-BAG-032 APP-BAG-033 APP-BAG-034 APP-BAG-035 – promo code: FLOAPP12 placeholder, upper-case, Done = Apply, Apply disabled when empty; after apply «CODE will be applied at payment» + «Remove»; hint «Use FLOAPP12»; «Codes are checked on the secure payment page.» -->
+    <div class="pad mt32">
+      <div class="caps muted mb8">Promo code</div>
+      ${promo?`<div class="promo"><input class="input" value="${esc(promo)}" disabled aria-label="Promo code"><button class="btn --secondary" id="bag-apply">Remove</button></div>
+        <div class="promo-msg ok">${esc(promo)} will be applied at payment</div>`
+      :`<div class="promo"><input class="input" id="bag-promo" placeholder="FLOAPP12" autocapitalize="characters" enterkeyhint="done" aria-label="Promo code"><button class="btn --secondary" id="bag-apply" disabled>Apply</button></div>
+        <div class="promo-hint"><span class="f1">Ordering in the app? Use ${WELCOME} for 12% off orders over £98.</span><button class="textbtn" id="bag-use">Use ${WELCOME}</button></div>`}
+      <p class="xs muted mt8">Codes are checked on the secure payment page.</p>
+    </div>
+    <!-- ids: APP-BAG-036 APP-BAG-037 APP-BAG-038 APP-BAG-039 APP-BAG-040 – Subtotal (available lines only), Delivery (Free over £120 / £4.99 from the catalogue bundle), «Promo · CODE – At payment», Estimated total without the promo + footnote, trust line -->
+    <div class="pad mt24">
+      <div class="sum"><span>Subtotal</span><span>${App.fmt(s)}</span></div>
+      <div class="sum"><span>Delivery</span><span>${fee(s)?App.fmt(fee(s)):"Free"}</span></div>
+      ${promo?`<div class="sum ok"><span>Promo · ${esc(promo)}</span><span>At payment</span></div>`:""}
+      <div class="sum tt"><span>Estimated total</span><span>${App.fmt(total())}</span></div>
+      <p class="xs muted mt8">Final total is confirmed on the secure payment page.</p>
+      <p class="xs muted mt8">Same-day across London until 10 pm · Photo of the bouquet before it leaves the shop</p>
+      <!-- ids: APP-BAG-008 APP-BAG-045 -->
+      <p class="xs muted mt8">Your bag is saved on this phone only – it stays after you close the app and is not synced to your account.</p>
+    </div>`;
+  $("#bag-cta-total").textContent=App.fmt(total());
+  const go=$("#bag-go");go.disabled=gone;go.setAttribute("aria-label",`Checkout, estimated total ${App.fmt(total())}`);
+  go.onclick=()=>{if(gone){App.toast("Remove the unavailable item to continue");return}App.go("checkout")};
+  /* handlers – APP-BAG-043: selection haptic on stepper / add-on / promo / Undo, light impact on Remove */
+  $$("#bag-body .line").forEach(row=>{
+    const key=row.dataset.key;const l=bag.find(x=>x.key===key);
+    $$("[data-pdp]",row).forEach(e=>e.onclick=()=>{if(App.product(l.id))App.go("pdp",{id:l.id})});
+    $$("[data-q]",row).forEach(b=>b.onclick=()=>{const q=l.qty+(+b.dataset.q);if(q<1)return;if(q>MAXQ){App.toast(`Up to ${MAXQ} per line`);return}App.haptic();App.setQty(key,q)});
+    $("[data-rm]",row).onclick=()=>{App.haptic();const idx=bag.indexOf(l);const snap={...l,addons:[...l.addons]};App.removeLine(key);showUndo(snap,idx)};
+  });
+  $$("#bag-addons .addon").forEach(a=>a.onclick=()=>{const id=a.dataset.addon;const l=App.state.bag.find(avail);if(!l||l.addons.includes(id))return;App.haptic();
+    const addons=[...l.addons,id].sort();const key=l.id+"|"+l.size+"|"+addons.join(",");
+    const same=App.state.bag.find(x=>x.key===key);
+    if(same){same.qty+=l.qty;App.state.bag=App.state.bag.filter(x=>x!==l)}else{l.addons=addons;l.key=key}
+    App.setQty(key,App.state.bag.find(x=>x.key===key).qty)});
+  const apply=$("#bag-apply"),inp=$("#bag-promo");
+  if(promo){apply.onclick=()=>{App.haptic();App.state.promo=null;render()}}
+  else{inp.oninput=()=>{inp.value=inp.value.toUpperCase();apply.disabled=!inp.value.trim()};
+    inp.onkeydown=e=>{if(e.key==="Enter")apply.click()};
+    apply.onclick=()=>{const v=inp.value.trim().toUpperCase();if(!v)return;App.haptic();App.state.promo=v;render()};
+    $("#bag-use").onclick=()=>{App.haptic();App.state.promo=WELCOME;render()}}
+}
+function showUndo(snap,idx){
+  BX.undo={snap,idx};const u=$("#bag-undo");$("#bag-undo-t").innerHTML=`<b>${esc(App.product(snap.id).n)}</b> removed`;
+  u.hidden=false;const bar=$(".bar",u);bar.style.animation="none";void bar.offsetWidth;bar.style.animation="";
+  clearTimeout(BX.undoT);BX.undoT=setTimeout(()=>{u.hidden=true;BX.undo=null},5000);
+}
+$("#bag-undo-b").onclick=()=>{const x=BX.undo;if(!x)return;App.haptic();$("#bag-undo").hidden=true;BX.undo=null;clearTimeout(BX.undoT);
+  const same=App.state.bag.find(l=>l.key===x.snap.key);
+  if(same){App.setQty(same.key,same.qty+x.snap.qty)}else{App.state.bag.splice(Math.min(x.idx,App.state.bag.length),0,x.snap);App.setQty(x.snap.key,x.snap.qty)}};
+window.mount_bag=function(){render()};
+document.addEventListener("bag",()=>{if(App.state.current==="bag")render()});
+document.addEventListener("screen",e=>{if(e.detail.id!=="bag"){$("#bag-undo").hidden=true}});
+})();
+</script>

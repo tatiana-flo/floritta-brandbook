@@ -1,11 +1,40 @@
+<style>
+/* ---- living: additions (owner: app-extras); base styles live in 30-community.html ---- */
+#s-living .demo{margin:8px var(--gutter) 0;border:1px dashed var(--light);padding:10px 12px}
+#s-living .demo .caps{font-size:10px;color:var(--grey);display:block;margin-bottom:6px}
+#s-living .demo .chips{padding:0;flex-wrap:wrap;gap:6px}
+#s-living .demo .chip{height:28px;font-size:11px}
+#s-living .demo .rowl{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--graphite)}
+#s-living .demo .seg{flex:1}
+#s-living .demo .seg button{font-size:11px}
+#s-living .lv-card{font-style:normal}
+</style>
+<!-- ids: APP-LIVING-011 -->
 <section class="scr" id="s-living" data-nav="Living Flower (recipient)" data-group="Social">
-  <div class="appbar"><button class="ib" onclick="App.back('home')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl caps" style="flex:1">Living Flower</div><button class="ib" onclick="App.toast('Share link copied')" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button></div>
+  <div class="appbar"><button class="ib" onclick="App.back('home')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl caps" style="flex:1">Living Flower</div></div>
   <div class="scr-body">
+    <!-- stand-only: which order / day / flag the stand shows -->
+    <!-- ids: APP-LIVING-010 APP-LIVING-024 -->
+    <div class="demo">
+      <span class="caps">Stand demo · not in the app</span>
+      <div class="chips" id="lv-src">
+        <button class="chip on" data-src="demo" onclick="window.lvSrc(this)">Demo (Anna from Tatiana)</button>
+        <button class="chip" data-src="order" onclick="window.lvSrc(this)">Order 715529</button>
+        <button class="chip" data-src="anon" onclick="window.lvSrc(this)">Anonymous</button>
+        <button class="chip" data-src="cardonly" onclick="window.lvSrc(this)">Card, no sender</button>
+        <button class="chip" data-src="noname" onclick="window.lvSrc(this)">No recipient name</button>
+      </div>
+      <div class="rowl"><span>Day</span><div class="seg" id="lv-dayseg"><button class="on" onclick="window.lvSetDay(1,this)">1</button><button onclick="window.lvSetDay(5,this)">5 (store “Simulate day 5”)</button><button onclick="window.lvSetDay(7,this)">7</button></div></div>
+      <div class="rowl"><span class="f1">Flag <code>petals</code> off → redirect to Home</span><button class="switch" onclick="window.lvFlagOff(this)"></button></div>
+    </div>
+    <!-- ids: APP-LIVING-012 -->
     <div class="bloom-wrap"><div id="lv-flower"></div></div>
+    <!-- ids: APP-LIVING-013 APP-LIVING-014 -->
     <div class="pad tc">
       <div class="h1 lv-t1" id="lv-t1">Anna, someone sent you flowers</div>
       <div class="soft lv-t2 mt12" id="lv-t2"></div>
     </div>
+    <!-- ids: APP-LIVING-015 APP-LIVING-016 -->
     <div class="pad mt24">
       <div class="lv-real">
         <img id="lv-img" src="img/poem-petals.webp" alt="">
@@ -13,11 +42,70 @@
       </div>
       <div class="lv-day mt16"><span class="caps muted" id="lv-day">Day 1 of 7 · fresh</span><div class="progress mt8"><i id="lv-bar" style="width:14%"></i></div></div>
     </div>
+    <!-- ids: APP-LIVING-017 APP-LIVING-018 APP-LIVING-019 APP-LIVING-020 APP-LIVING-021 APP-LIVING-022 -->
     <div class="pad mt24 flex col g8">
       <button class="btn --block" onclick="window.lvKeep()">Keep this flower</button>
       <button class="btn --secondary --block" id="lv-thanks" onclick="window.lvThanks()">Say thanks</button>
+      <div class="xs muted tc mt4">Thanks are remembered on this phone only · the reaction is not sent anywhere yet</div>
     </div>
+    <!-- ids: APP-LIVING-023 -->
     <div class="pad mt24"><div class="acc"><details><summary>Care tips for this bouquet</summary><div class="acc-b">Trim 1 cm off each stem at an angle, fresh cool water every two days, away from fruit and radiators. Spray roses like a cool room; mist the heads lightly.</div></details></div></div>
-    <div class="tc" style="padding:24px 0 32px"><button class="textbtn muted" id="lv-sim" onclick="window.lvSim()">Simulate day 5</button></div>
+    <button id="lv-sim" style="display:none" onclick="window.lvSim()">Simulate day 5</button>
+    <div style="height:32px"></div>
   </div>
 </section>
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  const orig=window.mount_living;
+  const V={src:"demo",day:1};
+  const THANKED=new Set(); // living.v1 on the device
+  const SRC={
+    demo:{key:"demo",name:"Anna",sender:"Tatiana",card:"Happy birthday, with all my love",pid:2},
+    order:{key:"715529",name:"Emma",sender:"Tatiana",card:"Hope these brighten the week",pid:1},
+    anon:{key:"715530",name:"Anna",anon:true,card:"Happy birthday, with all my love",pid:2},
+    cardonly:{key:"715531",name:"Anna",sender:"",card:"Thinking of you",pid:4},
+    noname:{key:"715532",name:"",sender:"Tatiana",card:"",pid:2}
+  };
+  const stage=d=>d<=3?`Day ${d} of 7 · fresh`:d<=5?`Day ${d} · still lovely · change the water`:`Day ${d} of 7 · last day`;
+  function apply(){
+    const s=SRC[V.src],p=App.product(s.pid);
+    $("#lv-img").src=p.img;$("#lv-name").textContent=p.n;
+    $("#lv-t1").textContent=(s.name||"Hello")+", someone sent you flowers";
+    const t2=$("#lv-t2");
+    t2.innerHTML=s.anon?"From a secret admirer"+(s.card?` <span class="lv-card">· with a card: “${s.card}”</span>`:"")
+      :s.sender&&s.card?`From ${s.sender}, with a card: <span class="lv-card">“${s.card}”</span>`
+      :s.sender?`From ${s.sender}`:s.card?`With a card: <span class="lv-card">“${s.card}”</span>`:"Someone who loves you";
+    $("#lv-day").textContent=stage(V.day);$("#lv-bar").style.width=Math.round(V.day/7*100)+"%";
+    const f=$("#lv-flower");f.classList.toggle("day5",V.day>=4);if(V.day>=4)f.classList.remove("open");else f.classList.add("open");
+    const b=$("#lv-thanks"),done=THANKED.has(s.key);b.textContent=done?"Thanks sent":"Say thanks";b.classList.toggle("is-disabled",done);
+  }
+  window.mount_living=function(params){params=params||{};if(params.order){V.src="order"}orig({id:SRC[V.src].pid,anon:SRC[V.src].anon});$$("#lv-src .chip").forEach(c=>c.classList.toggle("on",c.dataset.src===V.src));setTimeout(apply,30)};
+  window.lvSrc=el=>{V.src=el.dataset.src;window.mount_living()};
+  window.lvSetDay=(d,el)=>{V.day=d;$$("#lv-dayseg button").forEach(b=>b.classList.toggle("on",b===el));if(d===1)window.mount_living();else apply()};
+  window.lvSim=()=>{window.lvSetDay(V.day===5?1:5,$$("#lv-dayseg button")[V.day===5?0:1])};
+  window.lvFlagOff=el=>{el.classList.toggle("on");if(el.classList.contains("on")){App.toast("Flag petals is off · redirected to Home");setTimeout(()=>{App.go("home",{},{replace:true});el.classList.remove("on")},600)}};
+  // APP-LIVING-017/018: profile sheet is a stub – nothing is created
+  window.lvKeep=function(){
+    App.sheet(`<div class="sh-head"><div class="h3">Create your profile</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body">
+      <p class="soft" style="margin:0 0 16px">Keep this flower forever, see who sent it, and get a reminder when it's their turn. Free, takes ten seconds.</p>
+      <button class="btn --block" onclick="App.closeSheet();App.toast('Your flower is saved')">Continue</button>
+      <p class="muted xs tc" style="margin:14px 0 0">No marketing emails. Your sender never sees your details.</p>
+      <p class="muted xs tc" style="margin:8px 0 0">Prototype note: no profile is created yet – only this toast.</p>
+    </div>`);
+  };
+  // APP-LIVING-019..022
+  window.lvThanks=function(){
+    const s=SRC[V.src];if(THANKED.has(s.key))return;
+    const R=[["heart","Thank you"],["sparkle","Made my day"],["star","So beautiful"],["leaf","Speechless"]];
+    App.sheet(`<div class="sh-head"><div class="h3">Say thanks</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body">
+      <p class="soft" style="margin:0 0 14px">${s.anon||!s.sender?"Your reaction goes to whoever sent them – still anonymous.":s.sender+" will see your reaction."}</p>
+      <div class="lv-react" id="lv-r">${R.map(([ic,t],i)=>`<button class="${i===0?"on":""}">${App.icon(ic)}${t}</button>`).join("")}</div>
+      <div class="field" style="margin-top:14px"><label>A note (optional)</label><input class="input" placeholder="They're on my desk and everyone asks"></div>
+    </div><div class="sh-foot"><button class="btn" id="lv-send">Send</button></div>`,{onOpen:r=>{
+      $$("#lv-r button",r).forEach(b=>b.onclick=()=>{$$("#lv-r button",r).forEach(x=>x.classList.remove("on"));b.classList.add("on")});
+      $("#lv-send",r).onclick=()=>{THANKED.add(s.key);App.closeSheet();apply();App.toast("Thanks sent")};
+    }});
+  };
+})();
+</script>

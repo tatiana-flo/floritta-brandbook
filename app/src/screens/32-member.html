@@ -1,8 +1,14 @@
+<!-- Профиль участника /community/member/[id]: чужой, флорист и свой «Your profile» (id=me). Рендер – Comm.mountMember (40-community-extra.html). -->
 <section class="scr cmz" id="s-member" data-nav="Member profile" data-group="Social">
+  <!-- ids: APP-COMM-071 – шапка «Member» / «Floritta florist» / «Your profile»; «…» только у чужого → лист «Member options» -->
   <div class="appbar">
     <button class="ib" onclick="App.back('community')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl caps" id="mb-ttl">Member</div>
-    <button class="ib" onclick="App.toast('Profile link copied')" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button>
+    <button class="ib" id="mb-more" onclick="Comm.opts('member',Comm.S.curM)" aria-label="Member options"><svg viewBox="0 0 24 24" style="fill:var(--ink);stroke:none"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
   </div>
+  <!-- ids: APP-COMM-070 – «Member not found»; APP-COMM-072 – аватар 84, имя, «Florist», строка места (флорист / участник / свой «London · SE1»), метка «Example» у чужого; APP-COMM-073 – био -->
+  <!-- ids: APP-COMM-074 – заблокирован: «You blocked <Имя>» + «Unblock»; APP-COMM-075 – Posts / Followers / Following; APP-COMM-076 – Follow / Following с тостами -->
+  <!-- ids: APP-COMM-077 – «Edit profile» (Display name ≤40, Bio ≤160, Save → «Profile updated», инициалы меняются); APP-COMM-078 – «New post»; APP-COMM-079 – «Bouquets at home» / «Saved» -->
+  <!-- ids: APP-COMM-080 – сетка 3 в ряд с «Day N» и сердцем; APP-COMM-081 – «No posts yet» / «Nothing saved yet»; APP-COMM-082 – строка «Hidden and blocked · N hidden · M blocked» → лист; APP-COMM-083 – список заблокированных с «Unblock» / «You have not blocked anyone.»; APP-COMM-084 – «Show hidden posts again» -->
   <div class="scr-body" id="mb-body"></div>
 </section>

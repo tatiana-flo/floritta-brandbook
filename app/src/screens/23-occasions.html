@@ -1,12 +1,38 @@
+<style>
+#s-occasions .oc-rem{display:flex;align-items:center;gap:14px}
+#s-occasions .oc-ic{width:44px;height:44px;border:1px solid var(--light);display:grid;place-items:center;flex:none}
+#s-occasions .oc-ic svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5}
+</style>
 <section class="scr" id="s-occasions" data-nav="Occasions" data-group="Extras">
+  <!-- ids: APP-OCC-001 APP-OCC-002 APP-SHELL-075 – AppBar "Occasions": Back (history, else Home), search icon → Search -->
   <div class="appbar">
     <button class="ib" onclick="App.back()" aria-label="Back">${back}</button>
     <div class="ttl">Occasions</div>
     <button class="ib" onclick="App.go('search')" aria-label="Search">${search}</button>
   </div>
   <div class="scr-body">
+    <!-- ids: APP-OCC-003 – intro -->
     <p class="soft pad" style="margin:0 0 20px;font-size:14px">Whatever the moment, we'll say it with flowers.</p>
+    <!-- ids: APP-OCC-004 APP-OCC-005 APP-OCC-006 – tiles: photo, name, "N designs · From £X" (counted from the catalogue, occasions without products are skipped);
+         2 columns, first tile full width 16:10, last tile full width too when the count is even; tap → occasion category -->
     <div class="og" id="oc-grid"></div>
-    <div class="pad mt32"><div class="panel --ok flex ai-c g12"><div class="f1"><div class="h4">Not sure what's right?</div><div class="sm soft mt4">Flora picks a bouquet for the occasion and your budget.</div></div><button class="btn --sm" onclick="App.go('flora')">Ask Flora</button></div></div>
+    <!-- ids: APP-OCC-007 – "Remember the date" card, "Add reminder" → Reminders (the add sheet does not open by itself – noted for redesign) -->
+    <div class="pad mt24"><div class="panel oc-rem"><div class="oc-ic">${calendar}</div><div class="f1"><div class="h4">Remember the date</div><div class="sm soft mt4">Save birthdays and anniversaries – we nudge you a week before.</div></div><button class="btn --sm" onclick="App.go('reminders')">Add reminder</button></div></div>
+    <!-- ids: APP-OCC-008 – "Not sure what is right?" → Flora chat (CRM app.floritta.ai) -->
+    <div class="pad mt12"><div class="panel --ok flex ai-c g12"><div class="f1"><div class="h4">Not sure what is right?</div><div class="sm soft mt4">Message our florists – they will help you choose for the occasion and your budget.</div></div><button class="btn --sm" onclick="App.go('flora')">Ask a florist</button></div></div>
   </div>
 </section>
+<script>
+(function(){
+  const $=App.$;
+  // occasion → product ids (mirrors the catalogue's product.occasions; same map as the Shop area)
+  const MAP={"Birthday":[1,2,12,11,7,5],"Anniversary":[6,3,8,13],"Thank you":[1,7,5,13],"Sympathy":[4,10,9],"New baby":[4,10,7,1],"Get well":[1,5,10,13],"Just because":[2,5,7,12,1,13,10],"Congratulations":[12,2,11,6],"Mother's Day":[],"Valentine's":[6,11,3],"Christmas":[9,8]};
+  const IMG={"Birthday":"img/peach-posy.webp","Anniversary":"img/red-roses.webp","Thank you":"img/belgravia.webp","Sympathy":"img/white-spray.webp","New baby":"img/powdered-rose.webp","Get well":"img/veronica.webp","Just because":"img/pink-garden.webp","Congratulations":"img/pink-manifesto.webp","Valentine's":"img/charmingly.webp","Christmas":"img/peony-basket.webp"};
+  window.mount_occasions=function(){
+    const tiles=Object.keys(MAP).map(n=>{const ps=MAP[n].map(App.product).filter(Boolean);return ps.length?{n,count:ps.length,from:Math.min(...ps.map(p=>p.p)),img:IMG[n]||ps[0].img}:null}).filter(Boolean);
+    const even=tiles.length%2===0;
+    $("#oc-grid").innerHTML=tiles.map((o,i)=>{const wide=i===0||(i===tiles.length-1&&even);
+      return `<button class="oc ${wide?"--wide":""} fade-up" style="animation-delay:${i*40}ms" onclick="App.go('category',{occasion:'${o.n.replace(/'/g,"\\'")}'})"><img loading="lazy" src="${o.img}" alt=""><div class="ov"></div><div class="cap"><div class="h3">${o.n}</div><small>${o.count} design${o.count===1?"":"s"} · From ${App.fmt(o.from)}</small></div></button>`}).join("");
+  };
+})();
+</script>
