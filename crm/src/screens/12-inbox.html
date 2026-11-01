@@ -1,8 +1,9 @@
 <style>
 /* ===== 12 · Inbox (Comms) – scoped #s-inbox ===== */
 #s-inbox .scr-head{gap:8px}
-#s-inbox .cnav{display:flex;gap:0;flex-wrap:wrap;align-items:center;min-width:0}
-#s-inbox .cnav button{height:32px;padding:0 10px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);border-bottom:2px solid transparent;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+#s-inbox .cnav{display:flex;gap:0;flex-wrap:nowrap;align-items:center;min-width:0;flex:1 1 0;overflow-x:auto;scrollbar-width:none}
+#s-inbox #ib-mail{flex:1;min-height:0}
+#s-inbox .cnav button{height:32px;padding:0 8px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);border-bottom:2px solid transparent;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
 #s-inbox .cnav button.on{color:var(--ink);border-bottom-color:var(--sel)}
 #s-inbox .cnav button:hover:not(.on){color:var(--ink)}
 #s-inbox .cnav button .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
@@ -137,11 +138,14 @@
 [data-size="ipad"] #s-inbox .ib-info{display:inline-flex}
 [data-size="ipad"] #s-inbox .msg{max-width:84%}
 [data-size="phone"] #s-inbox .ib-back,[data-size="phone"] #s-inbox .ib-info{display:inline-flex}
+[data-size="phone"] #s-inbox .split>*:not(.ph-on){display:none}
+[data-size="phone"] #s-inbox .cdots,[data-size="phone"] #s-inbox .ib-head .ph-x{display:none}
+[data-size="phone"] #s-inbox .ib-msgs{padding:10px}
 [data-size="phone"] #s-inbox .ctx-col{display:none}
 [data-size="phone"] #s-inbox .msg{max-width:92%}
 [data-size="phone"] #s-inbox .cnav button{padding:0 7px}
 [data-size="phone"] #s-inbox .ib-head .who{min-width:0}
-[data-size="phone"] #s-inbox .scr-head .live{display:none}
+[data-size="phone"] #s-inbox .scr-head .live,[data-size="ipad"] #s-inbox .scr-head .live{display:none}
 </style>
 
 <section class="scr" id="s-inbox" data-nav="Inbox" data-group="Inbox &amp; Customers" data-title="Inbox" data-sub="Customers &amp; comms" data-roles="owner manager">
@@ -149,7 +153,7 @@
   <!-- Comms sub-navigation (Inbox · Customers · Due to reorder · Scripts · Flora facts · Flora autonomy (owner only) · Facts review · More…), active tab highlighting, screen actions on the right.
        CMIN-006: on Phone the global ☰ in the topbar opens the drawer (shell). CMIN-007: in the new design the global chrome (search ⌘K, bell, avatar) is kept on Comms screens – decided to keep it, height is saved by a one-line sub-nav.
        CMIN-008: global layers – impersonation banner (demo state), toasts (App.toast), alcohol-hours modal (demo state). -->
-  <div class="scr-head" id="ib-head"></div>
+  <div class="scr-head" id="ib-head" style="flex-wrap:nowrap"></div>
   <div class="scr-body flush">
     <!-- ids: CMIN-009 CMIN-010 -->
     <!-- Native module off: stub with "Open Floritta Comms ↗" / "not configured yet" + red "Unpaid orders: N" link → orders (demo state «Native module off») -->
@@ -163,6 +167,8 @@
       <div id="ib-list-col"></div>
       <!-- ids: CMIN-046 CMIN-047 CMIN-048 CMIN-049 CMIN-050 CMIN-051 CMIN-052 CMIN-053 CMIN-054 CMIN-055 CMIN-056 CMIN-057 CMIN-058 CMIN-059 CMIN-060 CMIN-061 CMIN-062 CMIN-063 CMIN-064 CMIN-065 CMIN-066 CMIN-067 CMIN-068 CMIN-069 CMIN-070 CMIN-071 CMIN-072 CMIN-073 CMIN-074 CMIN-075 CMIN-076 CMIN-077 CMIN-078 CMIN-079 CMIN-080 CMIN-081 CMIN-082 CMIN-083 CMIN-084 CMIN-085 CMIN-086 CMIN-227 CMIN-228 CMIN-229 -->
       <!-- Centre: thread header (avatar, name, channel, @username · phone, follow-up pill, unresolved chip, ✓ Resolved, colour dots, Call, Create order, No follow-up, Remind later popover, ⋯ menu: Pin, status Open/Pending/Closed, Mark unread, Hand over, Take it/Release, Export transcript, Delete conversation with confirm → thread closes), message feed (8 s refresh, AI suggestion queued on open, linked order re-synced, Show earlier messages (60, cap 500), stick-to-bottom, day separators, author captions, Flora · AI badge, ticks, edited/deleted/forwarded/quote, reaction, story reply, media types, lightbox, voice player + transcript, Reply, React (Meta only), To approval, Use this draft, Flora got it wrong modal, saved-facts line with edit → customer card, drag-and-drop files, empty thread state, every action confirms with a toast) -->
+      <!-- ids: CMIN-087 CMIN-088 CMIN-089 CMIN-090 CMIN-091 CMIN-092 CMIN-093 CMIN-094 CMIN-095 CMIN-096 CMIN-097 CMIN-098 CMIN-099 CMIN-100 CMIN-101 CMIN-102 CMIN-103 CMIN-104 CMIN-105 CMIN-106 CMIN-107 CMIN-108 CMIN-109 CMIN-110 CMIN-111 CMIN-230 CMIN-231 -->
+      <!-- Composer (inside the chat column): growing textarea (max 45 vh), Enter sends / Shift+Enter new line (hint shown), Send with toast, suggestion auto-applied once into an empty field, payment link appended to the draft + toast, Flora's draft frame (check and send / edited) with priority chip, Rewrite popover + custom wish (Enter runs it), Clear, Flora got it wrong on the draft, Flora L2 countdown bar with Cancel (demo state), Order from Flora card (collapsed / expanded, Missing, Open the order form, Reject with confirm), Ask when it fits chips, Attach (up to 10, thumbnails, Remove, server-accepted types only), text first then files, Emoji 16, Quick replies 6, Tone check hint / toast, Replying to strip, Reply not needed, AI caption under the field, AI telemetry → author caption «Flora, as is / edited»; drafts and file queues are kept per chat (fixed), reply quote and tone are cleared after any send (fixed) -->
       <div id="ib-chat-col"></div>
       <!-- ids: CMIN-112 CMIN-113 CMIN-114 CMIN-115 CMIN-116 CMIN-117 CMIN-118 CMIN-119 CMIN-120 CMIN-121 CMIN-122 CMIN-123 CMIN-124 CMIN-125 CMIN-126 CMIN-127 CMIN-128 CMIN-129 CMIN-232 -->
       <!-- Right column (on iPad/phone the same content opens as a sheet from the ⓘ button – money actions are no longer lost on tablets): Follow up card, Flora's note / escalation, customer card block (recipients, occasions, missing, Open the card), contact, linked order (Link/Change via picker, re-synced on refresh), Payment link Order/Tip with amount recomputed per chat, links without a filled-in order + Fill in the order, Occasion form, Copy tagged link, Marketing consent WA/SMS/Email, Recent calls (Ringover), AI block -->
@@ -218,7 +224,7 @@ function seed(){
   if(i===1){c.msgs[0].forwarded="Oliver Barrington";c.msgs[1].quoteOf="Hello, I'd like to order the Peony Basket…";c.msgs[1].edited=true;c.msgs.push({id:c.id*10+8,at:A().T(9,41),me:false,t:"Ok, let me think about it",deleted:true})}
   if(i===5){c.msgs.push({id:c.id*10+8,at:A().T(10,30),me:true,t:"Updated to Flat 12 – the courier has been told.",origin:"flora_edited",who:"valeria",tick:"sent",decision:"d-77"})}
   if(i===2){c.msgs[1].decision="d-42";c.msgs[1].origin="flora_sent"}
-  c.msgs.sort((a,b)=>new Date(a.at)-new Date(b.at));
+  c.msgs.forEach((m,k)=>{m.at=A().T(8,20+k*9+i*3)});if(c.msgs.length)c.last=c.msgs[c.msgs.length-1].at;
  });
 }
 const lanesOf=()=>{const all=convos().filter(c=>!c.x.hidden);return{managers:all.filter(c=>c.x.lane==="managers"),support:all.filter(c=>c.x.lane==="support")}};
@@ -238,16 +244,16 @@ function filtered(){
 const counts=()=>{const all=convos().filter(c=>!c.x.hidden);const lane=all.filter(c=>c.x.lane===st.lane);const s=lane.map(statusOf);return{managers:all.filter(c=>c.x.lane==="managers"&&isWaiting(c)).length,support:all.filter(c=>c.x.lane==="support"&&isWaiting(c)).length,action:s.filter(x=>x.waiting||x.unresolved||x.draft||x.follow).length,waiting:s.filter(x=>x.waiting).length,unresolved:s.filter(x=>x.unresolved).length,draft:s.filter(x=>x.draft).length,follow_up:s.filter(x=>x.follow).length,all:lane.length,lane_all:all.filter(c=>c.x.lane==="managers"||seesAll()).length,attention:all.filter(c=>isWaiting(c)&&waitMin(c)>3||!!c.x.unresolved).length,unread:all.filter(c=>c.unread).length}};
 
 /* ---- head: comms nav + actions ---- */
-function nav(active){
+function nav(active){seed();
  const owner=A().role()==="owner";
  const items=[["inbox","Inbox",counts().unread],["customers","Customers"],["customers-due","Due to reorder"],["scripts","Scripts"],["flora-facts","Flora facts"]].concat(owner?[["flora-autonomy","Flora autonomy"]]:[]).concat([["facts-review","Facts review"]]);
  return `<div class="cnav">${items.map(([id,n,c])=>`<button class="${active===id||(active==="customers"&&id==="customers")?"on":""}" onclick="T12.navGo('${id}')">${n}${c?`<span class="n">${c}</span>`:""}</button>`).join("")}<button onclick="T12.navMore(event)">More ${ic("down")}</button></div>`;
 }
 function renderHead(){
  const h=document.getElementById("ib-head");const email=st.chan==="@";
- h.innerHTML=`${nav("inbox")}<span class="sp"></span>
-  <span class="live" title="List refreshes every 10 s, the open thread every 8 s"><span class="dot --ok"></span>Live · <span id="ib-live">just now</span></span>
-  <button class="btn --ghost --sm" onclick="T12.demoMenu(event)">${ic("columns")} Demo state</button>
+ h.innerHTML=`${nav("inbox")}
+  <span class="live" title="Live · list refreshes every 10 s, the open thread every 8 s"><span class="dot --ok"></span><span id="ib-live">live</span></span>
+  <button class="ib" title="Demo state" onclick="T12.demoMenu(event)">${ic("columns")}</button>
   ${email?"":`<button class="ib" title="${st.muted?"Unmute notifications (sound only)":"Mute notifications (sound only)"}" onclick="T12.mute()">${ic(st.muted?"pause":"bell")}</button><button class="btn --sm" onclick="T12.compose()">${ic("plus")} New chat</button>`}`;
 }
 function renderStub(){
@@ -322,9 +328,9 @@ function renderChat(){
   ${c.x.unresolved?`<span class="tag" style="background:var(--warn-bg);color:var(--warn)">unresolved: ${INTENTS[c.x.unresolved]}</span><button class="btn --ghost --sm" onclick="T12.resolved()">${ic("check")} Resolved</button>`:""}
   <span class="cdots" title="Chat tag">${[["upsell","Sale + upsell","var(--ok)"],["sale","Sale","var(--sel)"],["nosale","No sale","var(--accent)"]].map(([k,l,col])=>`<button class="${c.x.colour===k?"on":""}" title="${l}" onclick="T12.colour('${k}')"><i style="background:${col}"></i></button>`).join("")}</span>
   <button class="ib" title="Call ${esc(u.phone)} · Ringover" onclick="T12.call()">${ic("phone")}</button>
-  <button class="ib" title="Create order from this chat" onclick="App.go('order-new',{customer:${u.id},conversation:${c.id}})">${ic("plus")}</button>
-  <button class="ib" title="No follow-up" ${c.x.noReply?"disabled style='opacity:.4'":""} onclick="T12.noFollow()">${ic("flag")}</button>
-  <button class="ib" title="${fu&&fu.remind?"Reminder · "+fu.remind:"Remind later"}" onclick="T12.remind(event)">${ic("clock")}</button>
+  <button class="ib ph-x" title="Create order from this chat" onclick="App.go('order-new',{customer:${u.id},conversation:${c.id}})">${ic("plus")}</button>
+  <button class="ib ph-x" title="No follow-up" ${c.x.noReply?"disabled style='opacity:.4'":""} onclick="T12.noFollow()">${ic("flag")}</button>
+  <button class="ib ph-x" title="${fu&&fu.remind?"Reminder · "+fu.remind:"Remind later"}" onclick="T12.remind(event)">${ic("clock")}</button>
   <button class="ib ib-info" title="Customer and context" onclick="T12.ctxSheet()">${ic("info")}</button>
   <button class="ib" title="More actions" onclick="T12.menu(event)">${ic("dots")}</button></div>
  <div class="ib-msgs" id="ib-msgs" ondragover="event.preventDefault();this.dataset.drop=1" ondragleave="this.dataset.drop=''" ondrop="event.preventDefault();this.dataset.drop='';T12.addFiles(['dropped-photo.jpg'])">${msgs}</div>
@@ -527,7 +533,7 @@ window.mount_inbox=function(p){
  if(open){if(st.status!=="all"&&!filtered().includes(open))st.status="all";st.cur=open.id;open.unread=false;st.ph="chat";if(p.draft)st.drafts[open.id]=p.draft}
  else if(!st.cur)st.ph="list";
  renderAll();
- clearInterval(st.timer);st.timer=setInterval(()=>{if(A().state.current!=="inbox"){clearInterval(st.timer);const t=document.getElementById("tb-title");return}st.tick++;const e=document.getElementById("ib-live");if(e)e.textContent=(st.tick*10)%60+" s ago";if(st.tick%3===0)renderList()},10000);
+ clearInterval(st.timer);st.timer=setInterval(()=>{if(A().state.current!=="inbox"){clearInterval(st.timer);const t=document.getElementById("tb-title");return}st.tick++;const e=document.getElementById("ib-live");if(e)e.textContent="live · "+(st.tick*10)%60+" s";if(st.tick%3===0)renderList()},10000);
  A().registerCommands([{g:"Actions",t:"New WhatsApp chat",ic:"chat",fn:()=>api.compose()},{g:"Actions",t:"Open e-mail (Gmail)",ic:"mail",fn:()=>{A().go("inbox",{filter:"email"})}},{g:"Go to",t:"Customers · Due to reorder",ic:"customers",fn:()=>A().go("customers-due")}]);
 };
 document.addEventListener("orders",()=>{if(A().state.current==="inbox")renderCtx()});
