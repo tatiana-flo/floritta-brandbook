@@ -315,14 +315,14 @@ function pendingHtml(){
 /* ---- Stock (classic inventory, embedded) – compact stand-in; the full screen is the Stock section ---- */
 function stockHtml(){
   const rows=[['Quicksand roses','38 stems','low'],['Garden roses · peach','120 stems',''],['Eucalyptus','14 bunches',''],['Dried grasses','2 bunches','low'],['Ivory satin ribbon 25 mm','4 rolls','low'],['Chrysal sachets','60','']];
-  return `<div class="pad mt16 flex ai-c jc-sb"><div class="h3">Stock today</div><button class="textbtn" onclick="App.toast('Count mode – full screen lives in the Stock section')">Count</button></div>
-  <div class="mt12" style="border-top:1px solid var(--hair)">${rows.map(([n,q,f])=>`<button class="wx-row" onclick="App.toast('${esc(n)} · ${esc(q)}')"><div class="rt"><div class="l">${n}</div><div class="d">${q}</div></div>${f?`<span class="pill --late">Low</span>`:''}</button>`).join('')}</div>
-  <div class="wx-cap">${ic('repeat',14)} Pull down to refresh · the inventory screen of the classic app, embedded</div>`;
+  return `<div class="pad mt16 flex ai-c jc-sb"><div class="h3">Stock today</div><button class="textbtn" onclick="App.go('stk-inv')">Open stock</button></div>
+  <div class="mt12" style="border-top:1px solid var(--hair)">${rows.map(([n,q,f])=>`<button class="wx-row" onclick="App.go('stk-inv')"><div class="rt"><div class="l">${n}</div><div class="d">${q}</div></div>${f?`<span class="pill --late">Low</span>`:''}</button>`).join('')}</div>
+  <div class="wx-cap">${ic('repeat',14)} Pull down to refresh · <a href="#" onclick="App.go('stk-out');return false">Ran out – needs ordering</a> · <a href="#" onclick="App.go('stk-showcase');return false">Showcase</a></div>`;
 }
 /* ---- Chats (client dialogues, embedded) – compact stand-in; the full screen is the Comms section ---- */
 function chatsHtml(){
   const ch=[{c:'Mrs Harper · 715602',l:'Smoked glass please, thank you!',t:'10:52',n:1},{c:'James O. · 715611',l:'Can the balloons say “40”?',t:'09:40',n:2},{c:'Anna K. · 715619',l:'Photo received – looks lovely',t:'Yesterday',n:0}];
-  return `<div class="pad mt16"><div class="h3">Client chats</div></div>
+  return `<div class="pad mt16 flex ai-c jc-sb"><div class="h3">Client chats</div><button class="textbtn" onclick="App.go('cm-inbox')">All chats</button></div>
   <div class="mt12" style="border-top:1px solid var(--hair)">${ch.map((c,i)=>`<button class="wx-row" onclick="WX.x('chat',${i})"><div class="rt"><div class="l">${c.c}</div><div class="d">${esc(c.l)}</div></div>${c.n?`<span class="cnt">${c.n}</span>`:''}<span class="xs muted">${c.t}</span></button>`).join('')}</div>
   <div class="wx-cap">${ic('repeat',14)} Pull down to refresh · the inbox of the classic app, embedded</div>`;
 }

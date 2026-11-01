@@ -3408,7 +3408,7 @@ S.report=function(){
       const l=r.querySelector('.l');if(!l)return;const t=l.textContent.trim();
       if(t==='Schedule'){l.textContent='Shift offers';r.querySelector('.d').innerHTML=`<span class="accent">${W.offers.filter(o=>o.status==='open').length} open</span> · ${W.offers.filter(o=>o.status==='accepted').length} booked`}
       if(t==='Time sheet'){r.querySelector('.d').textContent='Hours inside your booked shifts'}
-      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.go('agreement')">${A.icon('help').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">My agreement</div><div class="d">Casual worker · from 1 Nov 2026 · ends 15 Mar 2027 (peak season)</div></span><span class="val">${(window.AG&&AG.signed('worker'))?'Signed':'To sign'}</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button><button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
+      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.go('pay-agreement')">${A.icon('help').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">My agreement</div><div class="d">Casual worker · from 1 Nov 2026 · ends 15 Mar 2027 (peak season)</div></span><span class="val">${(window.AG&&AG.signed('worker'))?'Signed':'To sign'}</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button><button class="row" onclick="App.go('pay-w')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
     });
     const pills=el.querySelector('.pillrow');if(pills)pills.innerHTML=`<span class="pill --plain">Casual worker</span><span class="pill --plain">Shop floor</span>`;
     const wk=el.querySelector('.sec-head .h2');if(wk&&wk.textContent==='This week')wk.textContent='This week · booked';
@@ -3459,7 +3459,7 @@ S.report=function(){
       <li><b>Менеджер</b> (View as Valeria → Schedule) видит доску открытых смен и может только публиковать, не назначать.</li>
       <li><b>Срок договора</b> – «My agreement» в Me (worker и self-employed) с датой окончания; у менеджера в Schedule – «Agreements ending soon» с датой решения за 2 недели.</li><li><b>My agreement</b> – краткое содержание договора, галочка «прочитала», подпись пальцем (Clear / Sign), после подписи – дата, версия, картинка подписи. У Zhadra не подписан (на Today – напоминание), у Dana подписан на бумаге (скан от HR).</li><li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
   /* ---- start as Zhadra ---- */
-  A.setUser('zhadra');A.state.clockedIn=false;
+  A.state.clockedIn=false; /* стенд стартует с персоны по умолчанию */
   document.title='Floritta Staff — worker contour (copy)';
   if(A.state.current){A.go(A.state.current,{},{replace:true})}
 })();
@@ -3567,7 +3567,7 @@ S.report=function(){
       <div class="wk-kv --info"><span class="soft">Income tax & NI</span><span>yours to declare (Self Assessment)</span><span class="soft">Trading allowance</span><span>first £1,000 a year tax-free</span><span class="soft">From us</span><span>weekly statement or your invoice, paid gross</span></div>
       <div class="grp">Not included</div>
       <div class="wk-kv --info"><span class="soft">Holiday pay</span><span>no</span><span class="soft">Sick pay</span><span>no</span><span class="soft">Pension</span><span>no</span><span class="soft">Minimum wage</span><span>no – a price per job instead</span></div>
-      <div class="note">Agreement v1.0 signed 03.10.2026 · <button class="textbtn" onclick="App.go('agreement')">Open</button></div>`;
+      <div class="note">Agreement v1.0 signed 03.10.2026 · <button class="textbtn" onclick="App.go('pay-agreement')">Open</button></div>`;
   };
 
   /* ---- home / me / tabs for a contractor ---- */
@@ -3585,12 +3585,12 @@ S.report=function(){
       <div class="pillrow" style="padding:14px var(--gutter) 0"><span class="pill --plain">Self-employed</span><span class="pill --plain">Own car</span><span class="pill --plain">Also on Deliveroo</span></div>
       <div class="grp">Jobs</div><div class="rows">
         ${R('calendar','Jobs board',`${C.jobs.filter(j=>j.status!=='mine').length} open · ${C.jobs.filter(j=>j.status==='mine').length} taken`,'',"App.go('jobs')")}
-        ${R('award','Statements & invoices','Weekly · gross · or your own invoice','£127.00',"App.go('statements')")}
+        ${R('award','Statements & invoices','Weekly · gross · or your own invoice','£127.00',"App.go('se-statements')")}
       </div>
       <div class="grp">Your business</div><div class="rows">
-        ${R('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
-        ${R('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
-        ${R('calendar','My agreement','Services agreement · 3 Oct 2026 – 30 Sep 2027 · renew by 1 Sep',(window.AG&&AG.signed('contractor'))?'Signed':'To sign',"App.go('agreement')")}
+        ${R('users','Business profile','UTR, other clients, insurance – optional','',"App.go('se-bizprofile')")}
+        ${R('help','Tax & status','Self-employed · agreement v1.0','',"App.go('se-taxstatus')")}
+        ${R('calendar','My agreement','Services agreement · 3 Oct 2026 – 30 Sep 2027 · renew by 1 Sep',(window.AG&&AG.signed('contractor'))?'Signed':'To sign',"App.go('pay-agreement')")}
       </div>
       <div class="grp">Preferences</div><div class="rows">
         ${R('bell','Job alerts','By area and time · max 6 a day · quiet 21–08','On',"App.go('settings')")}
@@ -3682,10 +3682,10 @@ S.report=function(){
   /* Today: reminder for an unsigned worker */
   const origHome=window.mount_home;window.mount_home=function(){origHome();const k=kind();if(!k||G.signed(k))return;const body=document.getElementById('td-body');if(!body)return;
     const b=document.createElement('div');b.className='panel blk';b.style.margin='0 var(--gutter) 14px';b.style.borderColor='var(--ink)';
-    b.innerHTML=`<div class="caps muted">Before your first ${k==='worker'?'shift':'job'}</div><div class="h3 mt8">Sign your agreement</div><div class="sm soft mt4">Takes a minute. Or sign on paper with HR at the studio.</div><button class="btn --sm mt16" onclick="App.go('agreement')">Read and sign</button>`;
+    b.innerHTML=`<div class="caps muted">Before your first ${k==='worker'?'shift':'job'}</div><div class="h3 mt8">Sign your agreement</div><div class="sm soft mt4">Takes a minute. Or sign on paper with HR at the studio.</div><button class="btn --sm mt16" onclick="App.go('pay-agreement')">Read and sign</button>`;
     body.insertBefore(b,body.firstChild)};
   /* nav */
-  const nav=document.getElementById('nav-list');if(nav){const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="agreement" onclick="App.go('agreement')"><span>My agreement · sign</span><small>worker / s-e</small></button>`;nav.appendChild(li)}
+  const nav=document.getElementById('nav-list');if(nav){const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="agreement" onclick="App.go('pay-agreement')"><span>My agreement · sign</span><small>worker / s-e</small></button>`;nav.appendChild(li)}
 })();
 </script>
 
@@ -3938,11 +3938,11 @@ S.report=function(){
       <div class="pillrow" style="padding:14px var(--gutter) 0"><span class="pill --plain">Self-employed</span><span class="pill --plain">Own tools</span><span class="pill --plain">Other clients</span></div>
       <div class="rs-grp">Jobs</div><div class="rows">
         ${Rw('calendar','Event jobs',`${R.jobs.filter(j=>j.status!=='mine').length} open · ${R.jobs.filter(j=>j.status==='mine').length} taken`,'',"App.go('jobs')")}
-        ${Rw('award','Statements & invoices','Per job · gross · or your own invoice','£610',"App.go('statements')")}
+        ${Rw('award','Statements & invoices','Per job · gross · or your own invoice','£610',"App.go('se-statements')")}
       </div>
       <div class="rs-grp">Your business</div><div class="rows">
-        ${Rw('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
-        ${Rw('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
+        ${Rw('users','Business profile','UTR, other clients, insurance – optional','',"App.go('se-bizprofile')")}
+        ${Rw('help','Tax & status','Self-employed · agreement v1.0','',"App.go('se-taxstatus')")}
       </div>
       <div class="rs-grp">Preferences</div><div class="rows">${Rw('bell','Job alerts','Weddings, installs · max 6 a day · quiet 21–08','On',"App.go('settings')")}${Rw('eye','View as','','',"ME5.openViewAs()")}</div>
       <div class="rs-note tc" style="padding:28px var(--gutter) 8px">No shifts, no clock-in, no tasks, no lessons. Each job comes with its brief.</div>`};

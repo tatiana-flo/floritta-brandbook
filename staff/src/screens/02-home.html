@@ -120,7 +120,7 @@ const ic=(n,s=18,x='')=>A.icon(n).replace('<svg',`<svg style="width:${s}px;heigh
 /* ---------- contours: the shell's contour layer already sets `engagement` on STAFF (employee / worker / contractor / reserve / freelance)
    and adds Lina (reserve), Mira (self-employed), Dana (self-employed courier), Sam (freelance). Here only the admin persona is added. ---------- */
 const STAFF=window.STAFF;const P=window.PERSONAS;const addP=(id,label)=>{if(STAFF.some(s=>s.id===id)&&!P.some(p=>p.id===id))P.push({id,label})};
-addP("tatiana","Admin · owner");addP("dana","Courier · self-employed");
+addP("tatiana","Admin · owner"); /* dana добавляет шелл */
 const ENG2C={employee:"employee",worker:"worker",contractor:"self_employed",reserve:"reserve"};
 
 /* ---------- shared shell state for this prototype ---------- */
