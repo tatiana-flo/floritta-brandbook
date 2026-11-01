@@ -86,6 +86,10 @@
 .an-scr .an-gate{max-width:520px;margin:40px auto}
 .an-scr .an-tip{border-bottom:1px dotted var(--grey);cursor:help}
 [data-size="phone"] .an-scr .an-hm{display:none}
+[data-size="phone"] .an-scr .an-ctl .seg-ctl{flex-wrap:wrap;height:auto}
+[data-size="phone"] .an-scr .an-ctl .seg-ctl button{height:30px}
+[data-size="phone"] .an-scr .an-sel{min-width:120px}
+[data-size="phone"] .an-scr .grid.g6{grid-template-columns:repeat(2,minmax(0,1fr))}
 [data-size="phone"] .an-scr .an-cols2,[data-size="phone"] .an-scr .an-cols3{grid-template-columns:minmax(0,1fr)}
 [data-size="phone"] .an-scr .an-bar{grid-template-columns:100px minmax(0,1fr) 60px}
 [data-size="phone"] .an-scr .an-bar .s{display:none}
@@ -203,6 +207,7 @@ window.A16=(()=>{
 
   /* ---- nav (ANLT-003/004/005) ---- */
   function nav(cur){
+    if(A.state.size==="phone")return `<div class="an-nav"><select class="select" style="height:32px" onchange="A16.open(this.value)">${florist()?`<option value="florist-bonus">Florist bonus</option>`:GROUPS.map(([g,ids])=>`<optgroup label="${g}">${ids.map(id=>`<option value="${id}" ${id===cur?"selected":""}>${tab(id)[1]}${!canRead()&&id!=="florist-bonus"?" · 403":""}</option>`).join("")}</optgroup>`).join("")}</select></div>`;
     if(florist())return `<div class="an-nav"><span class="g">Analytics</span><button class="on" onclick="App.go('florist-bonus')">Florist bonus</button><span class="an-hint">Florists see their bonus only</span></div>`;
     let h=`<div class="an-nav">`;
     GROUPS.forEach(([g,ids])=>{h+=`<span class="g">${g}</span>`;ids.forEach(id=>{const t=tab(id);const locked=!canRead()&&id!=="florist-bonus";h+=`<button class="${id===cur?"on":""} ${locked?"lock":""}" onclick="A16.open('${id}')" title="${locked?"403 · needs analytics.view":"/analytics/"+t[2]}">${locked?ic("lock"):""}${esc(t[1])}</button>`})});
@@ -229,7 +234,7 @@ window.A16=(()=>{
   function custCheck(id){const f=$("#an-from-"+id).value,t=$("#an-to-"+id).value;const b=$("#an-apply-"+id);const ok=f&&t&&f<=t;b.disabled=!ok;S[id].from=f;S[id].to=t}
   function applyCustom(id){const s=S[id];const d=Math.round((new Date(s.to)-new Date(s.from))/864e5)+1;if(d>366){A.toast("Range over 366 days – server falls back to the page default");s.mode="preset";A.remount();return}s.applied=true;A.remount();A.toast("Custom range · "+fmtD(s.from)+" – "+fmtD(s.to))}
   function len(id){const s=S[id];if(s.mode==="day")return 1;if(s.mode==="custom")return s.applied?Math.max(1,Math.round((new Date(s.to)-new Date(s.from))/864e5)+1):LEN[s.period]||30;return LEN[s.period]||30}
-  function url(id,q){const parts=[];const s=S[id];if(s&&q!==false){if(s.mode==="day")parts.push("period=custom&from="+s.day+"&to="+s.day);else if(s.mode==="custom"&&s.applied)parts.push("period=custom&from="+s.from+"&to="+s.to);else if(s.mode==="preset"&&s.period)parts.push("period="+s.period)}if(q)parts.push(q);$("#url").textContent="app.floritta.ai/analytics/"+slug(id)+(parts.length?"?"+parts.join("&"):"")}
+  function url(id,q){const parts=[];const s=S[id];if(s&&q!==false&&!(q&&q.includes("period="))){if(s.mode==="day")parts.push("period=custom&from="+s.day+"&to="+s.day);else if(s.mode==="custom"&&s.applied)parts.push("period=custom&from="+s.from+"&to="+s.to);else if(s.mode==="preset"&&s.period)parts.push("period="+s.period)}if(q)parts.push(q);$("#url").textContent="app.floritta.ai/analytics/"+slug(id)+(parts.length?"?"+parts.join("&"):"")}
 
   /* ---- head / gate / demo ---- */
   function head(id,o={}){
@@ -239,8 +244,8 @@ window.A16=(()=>{
     S[id].demo=o.demo||[];
   }
   function gate(id,o={}){
-    if(o.cost&&!admin()&&!D.cost){$("#b-"+id).innerHTML=`<div class="empty an-gate">${ic("lock")}<div class="h3">403 · needs inventory.cost</div><div class="sm">The Margin tab is visible to everyone with analytics.view, but the server refuses the page without the inventory.cost right. Turn it on in Demo or ask the owner.</div><button class="btn --secondary --sm" onclick="A16.toggle('cost')">Grant inventory.cost (demo)</button></div>`;return false}
     if(!canRead()&&id!=="florist-bonus"){$("#b-"+id).innerHTML=`<div class="empty an-gate">${ic("lock")}<div class="h3">403 · needs analytics.view</div><div class="sm">Reading Analytics needs the owner role or the analytics.view right (Settings → Team → Grant). Writes – OKR check-in, Popularity, monthly metrics – stay with the owner.</div><button class="btn --secondary --sm" onclick="A16.toggle('view')">Grant analytics.view (demo)</button></div>`;return false}
+    if(o.cost&&!admin()&&!D.cost){$("#b-"+id).innerHTML=`<div class="empty an-gate">${ic("lock")}<div class="h3">403 · needs inventory.cost</div><div class="sm">The Margin tab is visible to everyone with analytics.view, but the server refuses the page without the inventory.cost right. Turn it on in Demo or ask the owner.</div><button class="btn --secondary --sm" onclick="A16.toggle('cost')">Grant inventory.cost (demo)</button></div>`;return false}
     return true;
   }
   const GLOBAL=[["view","Manager has analytics.view"],["cost","Manager has inventory.cost"],["empty","Empty data (no orders)"]];
@@ -257,7 +262,7 @@ window.A16=(()=>{
     if(!rows.length)return empty(o.empty||"No data",o.emptySub||"",o.icon);
     const th=cols.map(c=>`<th class="${c.num?"num":""} ${c.sort?"sort":""} ${c.hm?"an-hm":""}" ${c.sort?`onclick="${c.sort}" title="Sort"`:""}>${c.l}${c.sorted?(c.sorted==="desc"?" ↓":" ↑"):""}</th>`).join("");
     const tr=rows.map((r,i)=>`<tr class="${o.click?"r":""} ${o.row?o.row(r,i):""}" ${o.click?`onclick="${o.click(r,i)}"`:""}>${cols.map(c=>`<td class="${c.num?"num":""} ${c.hm?"an-hm":""} ${c.wrap?"wrap":""} ${c.cls?c.cls(r):""}">${c.r?c.r(r,i):esc(r[c.k])}</td>`).join("")}</tr>`).join("");
-    return `<div class="tbl-wrap ${o.flush?"--flush":""}" ${o.h?`style="max-height:${o.h}px"`:""}><table class="tbl"><thead><tr>${th}</tr></thead><tbody>${o.pre||""}${tr}</tbody>${o.foot?`<tfoot><tr>${o.foot}</tr></tfoot>`:""}</table></div>`;
+    return `<div class="tbl-wrap ${o.flush?"--flush":""}" ${o.h?`style="max-height:${o.h}px"`:""}><table class="tbl" style="min-width:${o.minw||(cols.length>7?cols.length*118:0)}px"><thead><tr>${th}</tr></thead><tbody>${o.pre||""}${tr}</tbody>${o.foot?`<tfoot><tr>${o.foot}</tr></tfoot>`:""}</table></div>`;
   }
   /* stacked daily chart + optional AOV step line; click a column → visible detail line (touch-friendly) */
   function daily(id,days,keys,o={}){
@@ -271,7 +276,7 @@ window.A16=(()=>{
   function detail(id,i){const s=S[id];const d=s._days[i];if(!d)return;$("#an-detail-"+id).innerHTML=`<b>${esc(d.label)}</b> · ${s._keys.map(k=>k.l+" <b>"+n(d[k.k]||0)+"</b>").join(" · ")}${s._aov?" · average order <b>"+fmt(d.aov||0)+"</b>":""}`;$$(".an-chart .c",document.getElementById("s-"+id)).forEach((c,k)=>c.classList.toggle("on",k===i))}
   const $$=(s,r=document)=>[...r.querySelectorAll(s)];
   /* daily series oldest → newest with channel split */
-  function series(id,seed=1,scale=1){const N=len(id);return Array.from({length:N},(_,k)=>{const i=N-1-k;const d=new Date(A.NOW);d.setDate(d.getDate()-i);const dow=d.getDay();const wk=(dow===0||dow===6)?1.3:1;const by={};let orders=0,rev=0;CH.forEach((c,ci)=>{const base=[14,5,3,6,4,2,3][ci];const v=D.empty?0:Math.round(base*wk*scale*(0.6+hsh(i,seed+ci)*0.9));by[c]=v;orders+=v;rev+=v*ri(i,seed+ci+40,68,138)});return {i,date:d,label:d.toLocaleDateString("en-GB",{day:"numeric",month:"short"}),dow,by,orders,rev,aov:orders?Math.round(rev/orders):0}})}
+  function series(id,seed=1,scale=1){const N=len(id);const s=S[id];const end=s.mode==="day"?new Date(s.day+"T12:00:00"):(s.mode==="custom"&&s.applied)?new Date(s.to+"T12:00:00"):new Date(A.NOW);return Array.from({length:N},(_,k)=>{const i=N-1-k;const d=new Date(end);d.setDate(d.getDate()-i);const dow=d.getDay();const wk=(dow===0||dow===6)?1.3:1;const by={};let orders=0,rev=0;CH.forEach((c,ci)=>{const base=[14,5,3,6,4,2,3][ci];const v=D.empty?0:Math.round(base*wk*scale*(0.6+hsh(i,seed+ci)*0.9));by[c]=v;orders+=v;rev+=v*ri(i,seed+ci+40,68,138)});return {i,date:d,label:d.toLocaleDateString("en-GB",{day:"numeric",month:"short"}),dow,by,orders,rev,aov:orders?Math.round(rev/orders):0}})}
   const sum=(arr,f)=>arr.reduce((s,x)=>s+f(x),0);
   const delta=(a,b)=>b?`<span class="${a>=b?"pos":"neg"}">${a>=b?"↑":"↓"} ${Math.abs(Math.round((a-b)/b*100))}%</span> vs previous period`:"nothing to compare with";
   const pager=(id,page,pages,total,per,fn)=>`<div class="an-pager"><span>${total?`${(page-1)*per+1}–${Math.min(total,page*per)} of ${n(total)}`:""}</span><span class="sp"></span><button class="btn --ghost --sm" ${page<=1?"disabled":""} onclick="${fn}(${page-1})">${ic("back")}</button><span>Page ${page} / ${pages||1}</span><button class="btn --ghost --sm" ${page>=pages?"disabled":""} onclick="${fn}(${page+1})">${ic("chev")}</button><span class="xs">?page=${page}</span></div>`;
@@ -288,7 +293,7 @@ window.mount_analytics=function(){
   const s=X.st(id,{period:"30d",basis:"fulfil"});
   A.registerCommands(X.TABS.map(t=>({g:"Analytics",t:"Analytics · "+t[1],ic:"growth",fn:()=>X.open(t[0])})));
   X.head(id,{period:["today","7d","30d","month","prevMonth","quarter"],fresh:"Data as of 10:42 · last order came in 10:31",demo:[["subs","Active subscriptions"],["ratings","Platform ratings synced"],["survey","Survey answers"],["lowCoverage","Recipe coverage < 50 %"]],
-    controls:`<span class="an-lbl">Count by</span><div class="seg-ctl"><button class="${s.basis==="placed"?"on":""}" onclick="A16.S.analytics.basis='placed';App.remount()">Order date (paid)</button><button class="${s.basis==="fulfil"?"on":""}" onclick="A16.S.analytics.basis='fulfil';App.remount()">Delivery date</button></div><span class="an-hint">${s.basis==="placed"?"Paid orders by the day the money came in (London)":"Orders by the day they were delivered – the default"}</span>`});
+    controls:`<span class="an-lbl">Count by</span><div class="seg-ctl"><button class="${s.basis==="placed"?"on":""}" onclick="A16.S.analytics.basis='placed';App.remount()">Order date (paid)</button><button class="${s.basis==="fulfil"?"on":""}" onclick="A16.S.analytics.basis='fulfil';App.remount()">Delivery date</button></div><span class="an-hint">${s.basis==="placed"?"by the day the money came in (London)":"by delivery day – the default"}</span>`});
   X.url(id,"basis="+s.basis);
   if(!X.gate(id))return;
   const days=X.series(id,1);const orders=X.sum(days,d=>d.orders),rev=X.sum(days,d=>d.rev);const free=D.empty?0:3;const cust=Math.round(orders*0.82);
