@@ -1,15 +1,95 @@
+<style>
+/* ---- care: additions (owner: app-extras); base styles live in 30-community.html ---- */
+#s-care .demo{margin:0 var(--gutter) 16px;border:1px dashed var(--light);padding:8px 12px;font-size:12px;color:var(--graphite)}
+#s-care .demo .caps{font-size:10px;color:var(--grey);display:block;margin-bottom:6px}
+#s-care .demo .chips{padding:0;flex-wrap:wrap;gap:6px}
+#s-care .demo .chip{height:28px;font-size:11px}
+#s-care .demo .sw{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+#s-care .days div.missed{opacity:.45}
+#s-care .task.on .l{text-decoration:line-through}
+#s-care .task.on .bx svg{stroke-dashoffset:0}
+#s-care .empty{padding:72px var(--gutter);text-align:center}
+#s-care .empty svg{width:36px;height:36px;stroke:var(--grey);fill:none;stroke-width:1.3;margin:0 auto 16px;display:block}
+#s-care .hd img{width:56px;height:70px;object-fit:cover;flex:none;background:var(--silver)}
+#s-care .badge-ok{border-color:var(--ink)}
+#s-care .nonote{padding:0 var(--gutter);font-size:12px;color:var(--grey)}
+</style>
+<!-- ids: APP-CARE-010 APP-CARE-011 -->
 <section class="scr" id="s-care" data-nav="Keep it alive (after delivery)" data-group="Social">
   <div class="appbar"><button class="ib" onclick="App.back('orders')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Keep it alive</div></div>
   <div class="scr-body">
-    <div class="pad flex ai-c g12">
-      <img src="img/powdered-rose.webp" alt="" style="width:56px;height:70px;object-fit:cover;flex:none">
-      <div class="f1"><div class="sm">Powdered rose · delivered Sat 18 Oct</div><div class="xs muted mt4">7-day care programme · day 3 of 7</div></div>
+    <!-- stand-only: which order the screen picked, which day it is, camera permission, flag -->
+    <div class="demo"><span class="caps">Stand demo · not in the app</span>
+      <div class="chips" id="care-src">
+        <button class="chip on" data-src="order" onclick="window.careSrc(this)">?order=715529 · day 3</button>
+        <button class="chip" data-src="recent" onclick="window.careSrc(this)">Latest delivered · day 1</button>
+        <button class="chip" data-src="demo" onclick="window.careSrc(this)">Demo order · day 2</button>
+        <button class="chip" data-src="over" onclick="window.careSrc(this)">Day 8 · finished</button>
+        <button class="chip" data-src="badge" onclick="window.careSrc(this)">Day 7 · badge earned</button>
+        <button class="chip" data-src="none" onclick="window.careSrc(this)">No order, demo off</button>
+      </div>
+      <div class="sw"><span>Camera access denied</span><button class="switch" id="care-nocam" onclick="this.classList.toggle('on')"></button></div>
+      <div class="sw"><span>Flag petals off → redirect to Home</span><button class="switch" onclick="window.careFlagOff(this)"></button></div>
     </div>
-    <div class="days pad mt24" id="care-days"></div>
-    <div class="sec-head"><div class="h2">Today</div><span class="muted sm">+5 Petals each</span></div>
-    <div id="care-tasks"></div>
-    <div class="pad mt24"><button class="btn --secondary --block" onclick="App.toast('Photo saved · day 3 looks lovely');App.addPetals(5,'Day 3 check-in')"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Check in with a photo</button></div>
-    <div class="pad mt24"><div class="panel flex ai-c g12"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg><div class="f1"><div class="sm">Day 7 reward · Caretaker badge</div><div class="xs muted mt4">Keep the bouquet 7 days and earn the Caretaker badge on your profile</div></div></div></div>
+    <!-- ids: APP-CARE-012 -->
+    <div class="empty" id="care-empty" style="display:none"><svg viewBox="0 0 24 24"><path d="M5 19C5 9 11 5 20 4c-1 9-5 15-15 15z"/><path d="M5 19c4-5 7-8 10-10"/></svg><div class="h3">Nothing to look after yet</div><p class="soft sm mt8">Once a bouquet is delivered, its 7-day care programme appears here.</p><button class="btn --secondary --sm mt16" onclick="App.tab('orders')">See orders</button></div>
+    <div id="care-main">
+      <!-- ids: APP-CARE-013 -->
+      <div class="pad flex ai-c g12 hd"><img id="care-img" src="img/powdered-rose.webp" alt=""><div class="f1"><div class="sm" id="care-title">Powdered rose · delivered Sat 18 Oct</div><div class="xs muted mt4" id="care-sub">7-day care programme · day 3 of 7</div></div></div>
+      <!-- ids: APP-CARE-014 -->
+      <div class="days pad mt24" id="care-days"></div>
+      <!-- ids: APP-CARE-015 APP-CARE-016 APP-CARE-017 APP-CARE-018 APP-CARE-023 -->
+      <div id="care-today">
+        <div class="sec-head"><div class="h2">Today</div><span class="muted sm">+5 Petals each</span></div>
+        <div id="care-tasks"></div>
+        <!-- ids: APP-CARE-019 APP-CARE-020 APP-CARE-021 APP-CARE-022 -->
+        <div class="pad mt24"><button class="btn --secondary --block" id="care-photo" onclick="window.carePhoto()"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Check in with a photo</span></button><div class="xs muted mt8 tc">Camera only · the photo stays on your phone, only the check-in is recorded</div></div>
+      </div>
+      <!-- ids: APP-CARE-024 APP-CARE-025 -->
+      <div class="pad mt24"><div class="panel flex ai-c g12" id="care-badge"></div></div>
+      <!-- ids: APP-CARE-026 -->
+      <div class="nonote mt16">No reminders from us for the programme – open this screen each day. Progress is saved on this phone.</div>
+    </div>
     <div style="height:32px"></div>
   </div>
 </section>
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  const TASKS=[["trim","Trim stems 1 cm","At an angle, under running water"],["water","Fresh water","Cool, with the sachet if you still have it"],["away","Away from fruit and heat","Ripening fruit releases ethylene – petals drop"]];
+  // care.v1 on the device: ticks[order][day] = {trim,water,away,photo}
+  const STORE={"715529":{1:{trim:1,water:1,away:1,photo:1},2:{trim:1,water:1,away:1}},"demo":{1:{trim:1,water:1,away:1}},"badge":{1:{trim:1,water:1,away:1},2:{trim:1,water:1,away:1},3:{trim:1,water:1,away:1},5:{trim:1,water:1,away:1},6:{trim:1,water:1,away:1},7:{trim:1,water:1,away:1,photo:1}},"over":{1:{trim:1,water:1,away:1},3:{trim:1,water:1,away:1}}};
+  const SRC={order:{code:"715529",pid:3,date:"Sat 18 Oct",day:3},recent:{code:"715540",pid:1,date:"Today",day:1},demo:{code:"demo",pid:2,date:"Thu 30 Oct",day:2},over:{code:"over",pid:12,date:"Fri 10 Oct",day:8},badge:{code:"badge",pid:7,date:"Sat 25 Oct",day:7},none:null};
+  let cur="order";
+  const dayRec=(code,d)=>{STORE[code]=STORE[code]||{};STORE[code][d]=STORE[code][d]||{};return STORE[code][d]};
+  const dayDone=(code,d)=>{const r=(STORE[code]||{})[d]||{};return TASKS.every(t=>r[t[0]])};
+  function render(){
+    const s=SRC[cur];
+    $("#care-empty").style.display=s?"none":"";$("#care-main").style.display=s?"":"none";if(!s)return;
+    const p=App.product(s.pid),day=Math.min(s.day,7),over=s.day>7;
+    $("#care-img").src=p.img;$("#care-title").textContent=`${p.n} · delivered ${s.date}`;
+    $("#care-sub").textContent=over?"The 7-day programme for this bouquet has finished.":`7-day care programme · day ${day} of 7`;
+    $("#care-days").innerHTML=[1,2,3,4,5,6,7].map(d=>{const st=d<s.day?(dayDone(s.code,d)?"done":"missed"):d===s.day?"now":"";return `<div class="${st}"><b>${d}</b>${st==="done"?"done":st==="missed"?"missed":st==="now"?"today":"day"}</div>`}).join("");
+    $("#care-today").style.display=over?"none":"";
+    if(!over){const r=dayRec(s.code,day);
+      $("#care-tasks").innerHTML=TASKS.map(t=>`<button class="task ${r[t[0]]?"on":""}" onclick="window.careTick('${t[0]}',this)"><span class="bx"><svg viewBox="0 0 24 24"><path pathLength="1" d="m5 12 5 5 9-10"/></svg></span><div class="rt f1"><div class="l">${t[1]}</div><div class="d xs muted">${t[2]}</div></div></button>`).join("");
+      const pb=$("#care-photo");pb.disabled=!!r.photo;pb.classList.toggle("is-disabled",!!r.photo);pb.querySelector("span").textContent=r.photo?"Photo checked in today":"Check in with a photo"}
+    const completed=[1,2,3,4,5,6,7].filter(d=>dayDone(s.code,d)).length,earned=s.day>=7&&completed>=5;
+    $("#care-badge").className="panel flex ai-c g12"+(earned?" badge-ok":"");
+    $("#care-badge").innerHTML=`<svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--ink);fill:${earned?"var(--ink)":"none"};stroke-width:1.5;flex:none"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg><div class="f1">${earned?`<div class="sm">Caretaker badge earned</div><div class="xs muted mt4">Thank you for looking after your flowers. The badge lives on your profile.</div>`:`<div class="sm">Day 7 reward · Caretaker badge</div><div class="xs muted mt4">Finish the daily tasks on 5 of the 7 days and earn the Caretaker badge on your profile.</div><div class="xs mt4">${completed} of 5 days done</div>`}</div>`;
+  }
+  window.mount_care=function(params){if(params&&params.order){cur="order"}$$("#care-src .chip").forEach(c=>c.classList.toggle("on",c.dataset.src===cur));render()};
+  window.careSrc=el=>{cur=el.dataset.src;window.mount_care()};
+  window.careFlagOff=el=>{el.classList.toggle("on");if(el.classList.contains("on")){App.toast("Flag petals is off · redirected to Home");setTimeout(()=>{App.go("home",{},{replace:true});el.classList.remove("on")},600)}};
+  const earn=(n,reason)=>window.PetalsEarn?window.PetalsEarn.care(n,reason):App.addPetals(n,reason);
+  window.careTick=function(key,el){const s=SRC[cur];if(!s)return;const r=dayRec(s.code,Math.min(s.day,7));if(r[key])return;r[key]=1;el.classList.add("on");App.haptic();
+    earn(5,"Keep it alive · "+TASKS.find(t=>t[0]===key)[1]);
+    if(TASKS.every(t=>r[t[0]]))setTimeout(()=>App.toast(`Day ${Math.min(s.day,7)} complete · see you tomorrow`),2600);
+    setTimeout(render,300)};
+  window.carePhoto=function(){const s=SRC[cur];if(!s)return;const day=Math.min(s.day,7),r=dayRec(s.code,day);if(r.photo)return;
+    if($("#care-nocam").classList.contains("on")){
+      App.sheet(`<div class="sh-head"><div class="h3">Check in with a photo</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">Allow camera access in Settings to check in with a photo.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Opening Settings → Floritta → Camera…')">Settings</button></div>`);return}
+    App.sheet(`<div class="sh-head"><div class="h3">Camera</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body"><div class="skeleton" style="aspect-ratio:3/4;display:block"></div><p class="xs muted tc mt8" style="margin-bottom:0">System camera · no gallery · cancel keeps the day unticked</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="care-shot">Take photo</button></div>`,{onOpen:x=>{$("#care-shot",x).onclick=()=>{App.closeSheet();r.photo=1;App.haptic();earn(5,`Care check-in · day ${day}`);setTimeout(()=>App.toast(`Photo saved · day ${day} looks lovely`),1400);render()}}});
+  };
+})();
+</script>

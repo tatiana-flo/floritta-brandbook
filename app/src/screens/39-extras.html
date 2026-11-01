@@ -1,0 +1,171 @@
+<style>
+/* ---- extras (owner: app-extras): entries on You & order, reminder nudges, legal, webview ---- */
+.ex-demo{margin:8px var(--gutter) 16px;border:1px dashed var(--light);padding:10px 12px;font-size:12px;color:var(--graphite)}
+.ex-demo .caps{font-size:10px;color:var(--grey);display:block;margin-bottom:6px}
+.ex-demo .sw{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.ex-demo .chips{padding:0;flex-wrap:wrap;gap:6px}
+.ex-demo .chip{height:28px;font-size:11px}
+#s-ex-entries .ocard{margin:0 var(--gutter);border:1px solid var(--hair);padding:14px}
+#s-ex-entries .ocard .h4{margin-bottom:2px}
+#s-ex-entries .evt{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px var(--gutter);border-bottom:1px solid var(--hair);font-size:14px}
+#s-ex-entries .evt .d{font-size:12px;color:var(--grey);margin-top:2px}
+#s-ex-entries .loy .pts{font-family:var(--f-display);font-size:40px;font-weight:300;line-height:1}
+#s-ex-entries .loy .lk{font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:inherit;opacity:.8}
+#s-ex-nudges .ntf{margin:0 var(--gutter) 8px;border:1px solid var(--hair);padding:12px 14px;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;text-align:left;width:calc(100% - 2*var(--gutter))}
+#s-ex-nudges .ntf .ic{width:36px;height:36px;background:var(--ink);color:var(--paper);display:grid;place-items:center}
+#s-ex-nudges .ntf .ic svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-ex-nudges .ntf .ap{font-size:10px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);display:flex;justify-content:space-between}
+#s-ex-nudges .ntf .t{font-size:14px;margin-top:2px}
+#s-ex-nudges .ntf .b{font-size:13px;color:var(--graphite);margin-top:2px}
+#s-ex-nudges .rule{display:flex;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair);font-size:13px;color:var(--graphite)}
+#s-ex-nudges .rule b{font-weight:400;color:var(--ink);display:block;font-size:14px}
+#s-ex-nudges .rule svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none;margin-top:2px}
+#s-ex-nudges .bell{position:relative;width:44px;height:44px;border:1px solid var(--light);display:grid;place-items:center}
+#s-ex-nudges .bell svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5}
+#s-ex-nudges .bell .dot{position:absolute;top:6px;right:6px;min-width:16px;height:16px;background:var(--ink);color:var(--paper);font-size:10px;display:grid;place-items:center;padding:0 4px}
+#s-ex-nudges .bell .dot:empty{display:none}
+#s-ex-nudges .empty{padding:24px var(--gutter);color:var(--grey);font-size:14px}
+#s-ex-legal .co{padding:24px var(--gutter);font-size:12px;color:var(--grey)}
+#s-ex-web .url{display:flex;align-items:center;gap:8px;padding:8px var(--gutter);background:var(--silver);font-size:12px;color:var(--graphite);border-bottom:1px solid var(--hair)}
+#s-ex-web .url svg{width:14px;height:14px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+#s-ex-web .page{padding:24px var(--gutter)}
+#s-ex-web .page .ln{height:10px;background:var(--silver);margin-bottom:10px}
+#s-ex-web .page .ln.--s{width:60%}
+</style>
+
+<!-- ============ ENTRIES: You tab and order card (demo of other screens' entry points) ============ -->
+<!-- ids: APP-PETALS-001 APP-CARE-001 APP-LIVING-001 APP-CARE-002 APP-LIVING-002 -->
+<section class="scr" id="s-ex-entries" data-nav="Petals · entries on You & order" data-group="Social">
+  <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back">${back}</button><div class="ttl">Entries · Petals, Care, Living</div></div>
+  <div class="scr-body">
+    <div class="ex-demo"><span class="caps">Stand demo · where the three screens are reached from, and what earns Petals</span>
+      <div class="sw"><span>Flag <code>petals</code> on</span><button class="switch on" id="ex-flag" onclick="this.classList.toggle('on');window.exEntriesRender()"></button></div>
+      <div class="sw"><span>Order phase: <span id="ex-phase-t">delivered, day 3</span></span><div class="seg" style="width:220px"><button class="on" onclick="window.exPhase('delivered',this)">Delivered</button><button onclick="window.exPhase('scheduled',this)">Scheduled</button><button onclick="window.exPhase('old',this)">Day 9</button></div></div>
+    </div>
+    <div id="ex-entries-body"></div>
+    <div style="height:32px"></div>
+  </div>
+</section>
+
+<!-- ============ REMINDER NUDGES & PERMISSION (local notifications, cross-cutting) ============ -->
+<!-- ids: APP-REM-040 APP-REM-041 APP-REM-042 APP-REM-043 APP-REM-044 APP-REM-045 APP-REM-046 APP-REM-047 APP-REM-048 APP-REM-049 -->
+<section class="scr" id="s-ex-nudges" data-nav="Reminder nudges (local notifications)" data-group="Extras">
+  <div class="appbar"><button class="ib" onclick="App.back('reminders')" aria-label="Back">${back}</button><div class="ttl">Reminder nudges</div></div>
+  <div class="scr-body">
+    <div class="ex-demo"><span class="caps">Stand demo · what the phone schedules for the reminders list</span>
+      <div class="chips">
+        <button class="chip" onclick="window.exFirstLaunch()">First launch prompt (after 2 s)</button>
+        <button class="chip" onclick="window.exRemFail(this)">OS fails to schedule</button>
+        <button class="chip" onclick="App.go('reminders')">Edit reminders</button>
+      </div>
+    </div>
+    <!-- ids: APP-REM-049 -->
+    <div class="pad flex ai-c g12"><div class="bell">${bell}<span class="dot" id="ex-bell"></span></div><div class="f1"><div class="sm">Bell on Home</div><div class="xs muted mt4" id="ex-bell-t">Badge = reminders in the next 7 days</div></div></div>
+    <div class="sec-head"><div class="h2">Scheduled on this phone</div><span class="muted sm" id="ex-sched-n"></span></div>
+    <div id="ex-sched"></div>
+    <div class="sec-head"><div class="h2">How nudges work</div></div>
+    <div id="ex-rules"></div>
+    <div style="height:32px"></div>
+  </div>
+</section>
+
+<!-- ============ LEGAL & PRIVACY ============ -->
+<!-- ids: APP-LEGAL-001 -->
+<section class="scr" id="s-ex-legal" data-nav="Legal & privacy" data-group="Extras">
+  <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back">${back}</button><div class="ttl">Legal &amp; privacy</div></div>
+  <div class="scr-body">
+    <div class="mt8">
+      <!-- ids: APP-LEGAL-002 -->
+      <button class="row" onclick="App.go('ex-web',{title:'Privacy policy',url:'https://floritta.uk/privacy-policy'})"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div class="rt"><div class="l">Privacy policy</div><div class="d">floritta.uk/privacy-policy</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      <!-- ids: APP-LEGAL-003 -->
+      <button class="row" onclick="App.go('ex-web',{title:'Terms and conditions',url:'https://floritta.uk/terms-and-conditions'})"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg><div class="rt"><div class="l">Terms and conditions</div><div class="d">floritta.uk/terms-and-conditions</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    </div>
+    <!-- ids: APP-LEGAL-004 -->
+    <div class="pad mt24"><div class="panel"><div class="h4">On this device</div><p class="sm soft" style="margin:4px 0 0">Your details, addresses, orders and reminders are kept only on this phone. When you order, checkout and payment happen on floritta.uk, and Stripe handles your card – the app never sees it.</p></div></div>
+    <!-- ids: APP-LEGAL-005 -->
+    <div class="co tc">Floritta LTD · 80 Willow Walk, London SE1 5SY</div>
+  </div>
+</section>
+
+<!-- ============ IN-APP WEBVIEW (/web?url=&title=) ============ -->
+<!-- ids: APP-LEGAL-002 APP-LEGAL-003 -->
+<section class="scr" id="s-ex-web">
+  <div class="appbar"><button class="ib" onclick="App.back('ex-legal')" aria-label="Close">${close}</button><div class="ttl" id="ex-web-t">Privacy policy</div><button class="ib" onclick="App.toast('Opening in Safari…')" aria-label="Open in browser">${share}</button></div>
+  <div class="url">${lock}<span id="ex-web-u">floritta.uk/privacy-policy</span></div>
+  <div class="scr-body"><div class="page"><div class="caps muted">floritta.uk · in-app browser</div><h2 class="h2 mt8" id="ex-web-h">Privacy policy</h2><p class="sm soft">The live page from the website loads here – the text is never copied into the app.</p><div class="mt24"><div class="ln"></div><div class="ln"></div><div class="ln --s"></div><div class="ln"></div><div class="ln --s"></div></div></div></div>
+</section>
+
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  ["ex-entries","ex-nudges","ex-legal","ex-web"].forEach(id=>{const el=document.getElementById("s-"+id);if(el)el.innerHTML=el.innerHTML.replace(/\$\{(\w+)\}/g,(m,n)=>App.icon(n)||m)});
+  const fmt=n=>n.toLocaleString("en-GB");
+  const TIERS=[["Seed",0],["Bloom",1000],["Florist's Circle",1500],["Botanist",3000]];
+  const tierOf=p=>{let i=0;TIERS.forEach((t,j)=>{if(p>=t[1])i=j});return i};
+
+  /* ---------- entries ---------- */
+  const EX={phase:"delivered",day:3,liked:false,orderSeq:715541};
+  window.exPhase=(ph,el)=>{EX.phase=ph;$$("#s-ex-entries .seg button").forEach(b=>b.classList.toggle("on",b===el));$("#ex-phase-t").textContent=ph==="delivered"?"delivered, day 3":ph==="scheduled"?"scheduled (not delivered yet)":"delivered 9 days ago";window.exEntriesRender()};
+  window.exEntriesRender=function(){
+    const on=$("#ex-flag").classList.contains("on"),p=App.state.petals,ti=tierOf(p),nx=TIERS[ti+1];
+    const body=$("#ex-entries-body");
+    if(!on){body.innerHTML=`<div class="pad"><div class="caps muted">You</div><p class="sm soft mt8">With the flag off, the Petals card and the Keep it alive / Living Flower rows are not on You, and the order card shows nothing extra.</p></div>`;return}
+    const careCard=EX.phase==="delivered",livingRow=EX.phase!=="scheduled";
+    body.innerHTML=`
+      <div class="pad"><div class="caps muted">You tab</div></div>
+      <div class="pad"><button class="panel --ink loy" style="width:100%;text-align:left" onclick="App.go('petals')"><div class="flex jc-sb ai-c"><span class="caps" style="opacity:.7">Petals</span><span class="lk">${TIERS[ti][0]}</span></div><div class="pts mt8" data-petals>${fmt(p)}</div><div class="sm mt8" style="opacity:.8">${nx?`${fmt(nx[1]-p)} to ${nx[0]}`:"You're Botanist – the top of the garden"}</div><div class="xs mt8" style="opacity:.6">Tap to open ›</div></button></div>
+      <button class="row" onclick="App.go('care')"><svg class="ic" viewBox="0 0 24 24"><path d="M5 19C5 9 11 5 20 4c-1 9-5 15-15 15z"/><path d="M5 19c4-5 7-8 10-10"/></svg><div class="rt"><div class="l">Keep it alive</div><div class="d">Daily care tasks · earn Petals</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      <button class="row" onclick="App.go('living')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg><div class="rt"><div class="l">Living Flower</div><div class="d">What a recipient sees after delivery (example)</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      <div class="sec-head"><div class="h2">Order 715529</div><span class="muted sm">${EX.phase==="delivered"?"Delivered Sat 18 Oct":EX.phase==="scheduled"?"Scheduled for Fri":"Delivered 9 days ago"}</span></div>
+      ${careCard?`<div class="ocard"><div class="h4">Keep it alive</div><p class="sm soft" style="margin:0 0 12px">7-day care programme · day 3 of 7. Earn Petals for looking after your flowers.</p><button class="btn --secondary --sm" onclick="App.go('care',{order:'715529'})">Open the programme</button></div>`:`<div class="pad"><p class="xs muted" style="margin:0">${EX.phase==="scheduled"?"Care card appears once the bouquet is delivered.":"Care card is hidden after day 7."}</p></div>`}
+      ${livingRow?`<button class="row mt8" onclick="App.go('living',{order:'715529'})"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg><div class="rt"><div class="l">Show the Living Flower</div><div class="d">The screen your recipient sees</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`:`<div class="pad"><p class="xs muted" style="margin:0">Living Flower row appears once the order is out for delivery or delivered.</p></div>`}
+      <div class="sec-head"><div class="h2">What earns Petals</div><span class="muted sm">kept on this phone</span></div>
+      <!-- ids: APP-PETALS-002 -->
+      <div class="evt"><div><div>Order paid on floritta.uk</div><div class="d">+50 once per order code · no toast · only with a real order number</div></div><button class="btn --secondary --xs" onclick="window.exEarn('order')">Pay order</button></div>
+      <!-- ids: APP-PETALS-003 -->
+      <div class="evt"><div><div>First like on a bouquet post</div><div class="d">+1 once per post, forever · unlike and like again – nothing</div></div><button class="btn --secondary --xs" onclick="window.exEarn('like')">${EX.liked?"Like again":"Like post"}</button></div>
+      <!-- ids: APP-PETALS-004 -->
+      <div class="evt"><div><div>Publish a bouquet post</div><div class="d">+20 every post · no limit</div></div><button class="btn --secondary --xs" onclick="window.exEarn('post')">Publish</button></div>
+      <!-- ids: APP-PETALS-005 -->
+      <div class="evt"><div><div>Care task or photo check-in</div><div class="d">+5 each, only the first tick · demo order pays too</div></div><button class="btn --secondary --xs" onclick="App.go('care')">Open care</button></div>`;
+  };
+  window.exEarn=k=>{
+    if(k==="order"){const code=String(EX.orderSeq++);const ok=window.PetalsEarn?window.PetalsEarn.order(code):false;App.toast(ok?`Order ${code} paid · +50 Petals recorded, no toast in the app`:`Order ${code} already awarded`);}
+    if(k==="like"){const ok=window.PetalsEarn?window.PetalsEarn.like("post-42"):false;if(!ok)App.toast("Already awarded for this post – liked again, no Petals");EX.liked=true}
+    if(k==="post"){window.PetalsEarn&&window.PetalsEarn.post()}
+    window.exEntriesRender();
+  };
+  window.mount_ex_entries=window.exEntriesRender;
+
+  /* ---------- nudges ---------- */
+  const fmtAt=d=>d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})+" · 09:00";
+  const dst=d=>{const jan=new Date(d.getFullYear(),0,1).getTimezoneOffset(),jul=new Date(d.getFullYear(),6,1).getTimezoneOffset();return d.getTimezoneOffset()<Math.max(jan,jul)?"BST":"GMT"};
+  let remFail=false;
+  window.exRemFail=el=>{remFail=!remFail;el.classList.toggle("on",remFail);if(window.ExRem){window.ExRem.DEMO.schedFail=remFail;window.ExRem.sync("Demo")}renderNudges()};
+  function renderNudges(){
+    const R=window.ExRem;if(!R)return;
+    const tr=R.triggers(),on=R.enabled();
+    const up=R.upcoming7();$("#ex-bell").textContent=up||"";$("#ex-bell-t").textContent=up?`${up} date${up>1?"s":""} in the next 7 days`:"No dates in the next 7 days – no badge";
+    $("#ex-sched-n").textContent=on?`${tr.length} · 9:00 London`:"none";
+    $("#ex-sched").innerHTML=!on?`<div class="empty">${!R.DEMO.osPerm?"No OS permission":"Switched off in You"} – every scheduled nudge is removed. Reminders themselves stay saved.</div>`
+      :remFail?`<div class="empty">The OS refused to schedule (demo). Reminders are still saved – the list keeps working, nudges just won't fire.</div>`
+      :tr.length?tr.map(t=>`<button class="ntf" onclick="App.go('category',{cat:'${t.url.split('/').pop()}',title:'${t.r.occ}'});App.toast('Opened from the nudge · also on cold start')"><div class="ic">${App.icon("flower")}</div><div><div class="ap"><span>Floritta · Reminders</span><span>${fmtAt(t.at)} ${dst(t.at)}</span></div><div class="t">${t.title}</div><div class="b">${t.body}</div></div></button>`).join("")
+      :`<div class="empty">Nothing to schedule – no reminders, or every date this year has passed 9:00.</div>`;
+    $("#ex-rules").innerHTML=[
+      ["clock","9:00 London time","Scheduled for 9:00 Europe/London on the day – summer and winter time are followed, whatever the phone's zone."],
+      ["calendar","7 days and 1 day before","Two nudges per date. Today or tomorrow after 9:00 – nothing this year; next year is booked after the date passes."],
+      ["calendar","29 February","In a non-leap year the date fires on 28 February."],
+      ["bell","Tap opens the occasion","Birthday → birthday, Anniversary → anniversary, Christmas → christmas, Special day → just-because. Works on cold start too."],
+      ["repeat","Recomputed often","On app start, every open of Reminders, every save and when turned on in the banner: old nudges cancelled, new ones booked."],
+      ["cog","Android channel “Reminders”","Normal importance, so nudges are quiet but visible."],
+      ["info","First launch","2 s after Home shows for the first time, the OS asks once per install. “Don't allow” switches Notifications off in You."]
+    ].map(r=>`<div class="rule">${App.icon(r[0])}<div><b>${r[1]}</b>${r[2]}</div></div>`).join("");
+  }
+  window.mount_ex_nudges=renderNudges;
+  document.addEventListener("rem-sync",()=>{if(document.getElementById("s-ex-nudges").classList.contains("on"))renderNudges()});
+  window.exFirstLaunch=()=>{App.toast("Home shown · asking in 2 s…",{ms:1800});setTimeout(()=>{if(!window.ExRem)return;window.ExRem.DEMO.osAsked=false;window.Extras.remOsPrompt(ok=>{window.ExRem.DEMO.osPerm=ok;window.ExRem.DEMO.profileOn=ok;window.ExRem.sync(ok?"Allowed":"Declined · switched off in You");App.toast(ok?"Notifications on by default":"Declined · Notifications switched off in You");renderNudges()})},2000)};
+
+  /* ---------- webview ---------- */
+  window.mount_ex_web=function(p){p=p||{};$("#ex-web-t").textContent=p.title||"Privacy policy";$("#ex-web-h").textContent=p.title||"Privacy policy";$("#ex-web-u").textContent=(p.url||"https://floritta.uk/privacy-policy").replace("https://","")};
+})();
+</script>
