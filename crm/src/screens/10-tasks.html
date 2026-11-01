@@ -1,0 +1,992 @@
+<style>
+/* ===== 10 · Tasks & Floritta Active (scoped section.t10) ===== */
+section.t10 .scr-head{gap:8px 14px;padding-top:10px;padding-bottom:10px}
+section.t10 .tn{display:flex;gap:2px;border-bottom:1px solid var(--hair);width:100%;align-items:center}
+section.t10 .tn button{height:36px;padding:0 12px;font-size:13px;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+section.t10 .tn button.on{color:var(--ink);border-bottom-color:var(--sel)}
+section.t10 .tn button:hover:not(.on){color:var(--ink)}
+section.t10 .tn .bdg{min-width:18px;height:18px;padding:0 5px;background:var(--accent);color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+section.t10 .tn .sp{flex:1}
+section.t10 .tn .right{display:flex;gap:8px;align-items:center;padding-bottom:4px}
+section.t10 .sub-nav{display:flex;gap:2px;width:100%;align-items:center;flex-wrap:wrap}
+section.t10 .sub-nav button.tab{height:30px;padding:0 10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+section.t10 .sub-nav button.tab.on{color:var(--ink);box-shadow:inset 0 -2px 0 var(--sel)}
+section.t10 .tb{display:flex;gap:14px;flex-wrap:wrap;align-items:center;width:100%}
+section.t10 .tb .g{display:flex;align-items:center;gap:6px}
+section.t10 .tb .g .lbl{font-size:11px}
+section.t10 .seg-ctl button .n{font-size:11px;opacity:.7;font-variant-numeric:tabular-nums}
+section.t10 .seg-ctl button .n.hot{color:var(--accent);opacity:1}
+section.t10 .seg-ctl button.on .n.hot{color:#fff}
+section.t10 .more{border:1px solid var(--hair);background:var(--silver);padding:12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+section.t10 .more .csv{grid-column:1/-1;display:flex;gap:10px;align-items:flex-end;border-top:1px solid var(--hair);padding-top:10px}
+section.t10 .trow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;padding:12px 14px;border-bottom:1px solid var(--hair);align-items:start;position:relative}
+section.t10 .trow.--urgent{box-shadow:inset 3px 0 0 var(--accent)}
+section.t10 .trow.--cancelled .tt{color:var(--grey);text-decoration:line-through}
+section.t10 .trow.--cancelled{opacity:.6}
+section.t10 .trow .tt{font-size:14.5px;cursor:pointer}
+section.t10 .trow .tt:hover{text-decoration:underline}
+section.t10 .trow .bd{font-size:13px;color:var(--graphite);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px}
+section.t10 .tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}
+section.t10 .meta{font-size:12px;color:var(--grey);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
+section.t10 .meta .accent{color:var(--accent)}
+section.t10 .flags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+section.t10 .flags .tag{background:var(--warn-bg);color:var(--warn)}
+section.t10 .thumbs{display:flex;gap:6px;margin-top:8px}
+section.t10 .thumbs .thumb{cursor:zoom-in}
+section.t10 .acts2{display:flex;gap:6px;align-items:center;flex:none}
+section.t10 .thread{grid-column:2/-1;margin-top:8px;border-top:1px solid var(--hair);padding-top:10px}
+section.t10 .cmt{display:flex;gap:10px;padding:6px 0;font-size:13px}
+section.t10 .cmt .c{flex:1;min-width:0}.cmt .c small{display:block;color:var(--grey);font-size:11.5px}
+section.t10 .cmt .files{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
+section.t10 .cmt .files .f{font-size:11.5px;border:1px solid var(--hair);padding:2px 6px;color:var(--graphite)}
+section.t10 .compose{display:flex;gap:8px;align-items:flex-start;margin-top:8px}
+section.t10 .compose textarea{flex:1}
+section.t10 .att{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+section.t10 .att .f{font-size:11.5px;border:1px solid var(--light);padding:2px 6px;display:inline-flex;gap:6px;align-items:center}
+section.t10 .att .f.--big{border-color:var(--accent);color:var(--accent)}
+section.t10 .pager{display:flex;gap:4px;padding:12px 0;justify-content:center}
+section.t10 .pager button{min-width:30px;height:30px;padding:0 8px;font-size:12px;border:1px solid transparent}
+section.t10 .pager button.on{border-color:var(--ink)}
+section.t10 .kcard.--amber{box-shadow:inset 3px 0 0 var(--warn)}
+section.t10 .kcard.--red{box-shadow:inset 3px 0 0 var(--accent)}
+section.t10 .kcard .next{font-size:12px;color:var(--graphite)}
+section.t10 .kcard .next.--none{color:var(--accent)}
+section.t10 .kcard .ord{display:flex;flex-direction:column;gap:0;position:absolute;right:6px;top:6px}
+section.t10 .kcard{position:relative}
+section.t10 .kcard .ord button{width:20px;height:16px;display:grid;place-items:center;color:var(--grey)}
+section.t10 .kcard .ord button:hover{color:var(--ink)}
+section.t10 .kcard .ord svg{width:12px;height:12px}
+section.t10 .kcol.drop{background:var(--sel-bg)}
+section.t10 .kcard[draggable]{cursor:grab}
+section.t10 .hd-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+section.t10 .hd-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+section.t10 .hd-col{border:1px solid var(--hair);background:var(--paper-2);display:flex;flex-direction:column;min-height:120px;position:relative}
+section.t10 .hd-col.now{box-shadow:inset 0 0 0 1px var(--ink)}
+section.t10 .hd-col .nowlbl{position:absolute;top:-1px;right:-1px;background:var(--sel);color:var(--on-sel);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px}
+section.t10 .hd-col .k-head{padding:10px 12px;border-bottom:1px solid var(--hair);font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--graphite)}
+section.t10 .hd-col .k-head small{display:block;text-transform:none;letter-spacing:0;color:var(--grey);font-size:11px;margin-top:2px}
+section.t10 .hd-col .k-body{padding:8px;display:flex;flex-direction:column;gap:8px}
+section.t10 .hd-col.--wide{grid-column:1/-1}
+section.t10 .hcard{background:var(--paper);border:1px solid var(--hair);padding:8px 10px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:start}
+section.t10 .hcard.--done .ht{color:var(--grey);text-decoration:line-through}
+section.t10 .hcard .circ{width:20px;height:20px;border:1px solid var(--light);border-radius:50%;display:grid;place-items:center;margin-top:1px;cursor:pointer;flex:none}
+section.t10 .hcard .circ:hover{border-color:var(--ink)}
+section.t10 .hcard .circ.on{background:var(--ok);border-color:var(--ok);color:#fff}
+section.t10 .hcard .circ svg{width:12px;height:12px}
+section.t10 .hcard .ht{font-size:13.5px;cursor:pointer;line-height:1.3}
+section.t10 .hcard .ht:hover{text-decoration:underline}
+section.t10 .hcard .hf{grid-column:2;font-size:12px;color:var(--grey);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+section.t10 .hcard .tags{margin-top:2px;grid-column:2}
+section.t10 .hcard .tags .tag.--red{background:var(--accent-bg);color:var(--accent)}
+section.t10 .hcard .tags .tag.--amber{background:var(--warn-bg);color:var(--warn)}
+section.t10 .hcard .tags .tag.--ok{background:var(--ok-bg);color:var(--ok)}
+section.t10 .hd-side{display:flex;flex-direction:column;gap:12px}
+section.t10 .tile{border:1px solid var(--hair);padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+section.t10 .tile .v{font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+section.t10 .tile.--ok{box-shadow:inset 0 3px 0 var(--ok)}.tile.--warn{box-shadow:inset 0 3px 0 var(--warn)}.tile.--accent{box-shadow:inset 0 3px 0 var(--accent)}
+section.t10 .tile.--none{opacity:.5}
+section.t10 .ib-grid{display:grid;grid-template-columns:208px minmax(0,1fr) 380px;height:100%;min-height:0}
+section.t10 .ib-grid>*{min-width:0;min-height:0;overflow:auto}
+section.t10 .ib-grid>*+*{border-left:1px solid var(--hair)}
+section.t10 .ib-groups{padding:10px 0}
+section.t10 .ib-groups .hd{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);padding:12px 14px 4px}
+section.t10 .ib-groups button{display:flex;width:100%;align-items:center;gap:8px;height:32px;padding:0 14px;font-size:13px;color:var(--graphite)}
+section.t10 .ib-groups button .n{margin-left:auto;font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+section.t10 .ib-groups button .n.hot{color:var(--accent)}
+section.t10 .ib-groups button.on{background:var(--sel-bg);color:var(--ink);box-shadow:inset 3px 0 0 var(--sel)}
+section.t10 .ib-groups button:hover:not(.on){background:var(--silver)}
+section.t10 .qrow{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-bottom:1px solid var(--hair);cursor:pointer}
+section.t10 .qrow:hover{background:var(--silver)}
+section.t10 .qrow.on{background:var(--sel-bg);box-shadow:inset 3px 0 0 var(--sel)}
+section.t10 .qrow .q{flex:1;min-width:0}
+section.t10 .qrow .q b{display:block;font-weight:400;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+section.t10 .qrow .q small{display:block;font-size:12px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+section.t10 .qrow .age{font-size:11px;color:var(--grey);white-space:nowrap;margin-top:3px}
+section.t10 .qrow .age.hot{color:var(--accent)}
+section.t10 .ib-detail{padding:18px 20px;position:sticky;top:0}
+section.t10 .opt{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+section.t10 .opt button{border:1px solid var(--light);padding:8px 10px;font-size:13.5px;text-align:left}
+section.t10 .opt button.on{border-color:var(--sel);background:var(--sel-bg)}
+section.t10 .ib-banner{display:flex;gap:10px;align-items:center;padding:10px 14px;background:var(--warn-bg);color:var(--warn);font-size:13px;border-bottom:1px solid var(--hair)}
+section.t10 .ib-result{display:flex;gap:12px;align-items:center;padding:10px 14px;background:var(--ok-bg);color:var(--ok);font-size:13px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+section.t10 .strip{display:flex;gap:14px;padding:4px 0 16px;overflow-x:auto}
+section.t10 .strip button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--graphite)}
+section.t10 .strip .ring.--late{background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--hair) 0)}
+section.t10 .pp-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px;align-items:start}
+section.t10 .lane{border:1px solid var(--hair);margin-bottom:10px}
+section.t10 .lane.drop{background:var(--sel-bg)}
+section.t10 .lane .l-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer}
+section.t10 .lane .l-head .cnts{margin-left:auto;display:flex;gap:10px;font-size:12px;color:var(--grey);white-space:nowrap}
+section.t10 .lane .l-body{border-top:1px solid var(--hair);padding:6px 14px 10px}
+section.t10 .lane .grp{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);padding:8px 0 4px;display:flex;gap:6px;align-items:center}
+section.t10 .lrow{display:flex;gap:8px;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid var(--hair);cursor:grab}
+section.t10 .lrow:last-child{border-bottom:0}
+section.t10 .lrow .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+section.t10 .lrow.--init{box-shadow:inset 3px 0 0 var(--sel);padding-left:8px}
+section.t10 .pool{position:sticky;top:0}
+section.t10 .pool .pc{padding:8px 12px;border-bottom:1px solid var(--hair);font-size:13px;cursor:grab}
+section.t10 .pool .pc.--late{box-shadow:inset 3px 0 0 var(--accent)}
+section.t10 .zrow{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:4px 14px;padding:12px 14px;border-bottom:1px solid var(--hair);align-items:center}
+section.t10 .zrow.--off{opacity:.5}
+section.t10 .zrow .zk{font-size:12.5px;color:var(--graphite);display:flex;gap:14px;flex-wrap:wrap}
+section.t10 .cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+section.t10 .tpl{border:1px solid var(--hair);padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+section.t10 .tpl.--off{opacity:.55}
+section.t10 .tpl .ru{font-size:12.5px;color:var(--grey)}
+section.t10 .tpl .ds{font-size:12.5px;color:var(--graphite)}
+section.t10 .tpl .bt{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+section.t10 .plaque{border:1px solid var(--hair);padding:16px 18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+section.t10 .bdg{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;font-size:11px;letter-spacing:.04em;background:var(--silver);color:var(--graphite);border:1px solid var(--hair)}
+section.t10 .bdg svg{width:12px;height:12px}
+section.t10 .goal{border:1px solid var(--hair);padding:14px 16px;margin-bottom:12px}
+section.t10 .goal .g-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+section.t10 .rw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+section.t10 .rw{border:1px solid var(--hair);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+section.t10 .rw.--off{opacity:.55}
+section.t10 .rw .pts{font-family:var(--f-display);font-weight:300;font-size:26px;line-height:1}
+section.t10 .lb{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--hair)}
+section.t10 .lb .rk{width:28px;font-variant-numeric:tabular-nums;color:var(--grey);text-align:center;font-size:13px}
+section.t10 .lb.--top{box-shadow:inset 3px 0 0 var(--sel)}
+section.t10 .lb .who{flex:1;min-width:0}
+section.t10 .lb .who b{font-weight:400;display:block}
+section.t10 .lb .who small{color:var(--grey);font-size:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+section.t10 .lb .m{min-width:90px;text-align:right;font-variant-numeric:tabular-nums}
+section.t10 .lb .m small{display:block;font-size:11px;color:var(--grey)}
+section.t10 .lb .m.dim{color:var(--grey)}
+section.t10 .lb .lbacts{display:flex;gap:4px}
+section.t10 .skel{height:70px;background:var(--silver);margin-bottom:8px}
+section.t10 .ccard{border:1px solid var(--hair);padding:10px 12px;display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+section.t10 .ccard .ch{display:flex;gap:8px;align-items:center}
+section.t10 .ccard .as{display:flex;gap:6px;align-items:center;margin-top:4px}
+section.t10 .steps .st{display:flex;gap:8px;align-items:center;padding:4px 0;font-size:13.5px}
+section.t10 .steps .st .x{opacity:0;margin-left:auto}
+section.t10 .steps .st:hover .x{opacity:1}
+section.t10 .steps .st .sm2{font-size:11.5px;color:var(--grey)}
+section.t10 .steps .st .sm2.hot{color:var(--accent)}
+section.t10 .hint{font-size:12px;color:var(--grey)}
+section.t10 .stage-empty{margin-left:auto}
+[data-size="ipad"] section.t10 .hd-grid,[data-size="ipad"] section.t10 .pp-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] section.t10 .ib-grid{grid-template-columns:180px minmax(0,1fr) 300px}
+[data-size="ipad"] section.t10 .cat-grid,[data-size="ipad"] section.t10 .rw-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] section.t10 .hd-cols,[data-size="phone"] section.t10 .cat-grid,[data-size="phone"] section.t10 .rw-grid,[data-size="phone"] section.t10 .hd-grid,[data-size="phone"] section.t10 .pp-grid,[data-size="phone"] section.t10 .ib-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] section.t10 .more{grid-template-columns:1fr}
+[data-size="phone"] section.t10 .trow{grid-template-columns:auto minmax(0,1fr)}
+[data-size="phone"] section.t10 .trow .acts2{grid-column:2;justify-content:flex-end}
+[data-size="phone"] section.t10 .kanban{grid-auto-columns:82%}
+[data-size="phone"] section.t10 .zrow{grid-template-columns:minmax(0,1fr) auto}
+[data-size="phone"] section.t10 .tn button{padding:0 8px}
+</style>
+
+<!-- ids: TASK-001 TASK-002 TASK-003 TASK-004 TASK-005 TASK-006 TASK-007 TASK-130 TASK-155 — TasksNav (Today · All tasks · People · Floritta Active · Task catalog), PeopleNav and ActiveNav are rendered by T10.nav() into every scr-head below -->
+<!-- ids: TASK-008 TASK-009 TASK-010 TASK-011 TASK-012 TASK-013 TASK-014 TASK-015 TASK-016 TASK-194 — Task catalog drawer (right sheet): skeleton / error / Retry, All · My zone · category chips, Take / Assign…, today summary, Manage the catalog (T10.catalog) -->
+<!-- ids: TASK-017 TASK-018 TASK-019 TASK-020 TASK-021 TASK-022 — TaskToolbar What / View / Whose / Where (T10.toolbar) on list, board and inbox -->
+<!-- ids: TASK-023 TASK-024 TASK-025 TASK-026 TASK-027 TASK-028 TASK-029 TASK-030 TASK-031 TASK-032 TASK-033 TASK-034 TASK-035 TASK-036 TASK-037 TASK-038 TASK-039 TASK-040 TASK-041 TASK-042 TASK-043 TASK-044 TASK-045 TASK-046 TASK-047 TASK-048 TASK-049 TASK-050 TASK-051 TASK-052 TASK-053 TASK-054 TASK-055 TASK-056 TASK-057 TASK-058 TASK-059 TASK-060 TASK-061 TASK-062 TASK-063 TASK-064 TASK-065 TASK-066 TASK-067 TASK-068 TASK-196 TASK-197 TASK-198 — All tasks list: filters, bulk reassign, CSV, task rows with the unified verb matrix, thread, forms and action modals -->
+<section class="scr t10" id="s-tasks" data-nav="All tasks" data-group="Tasks" data-title="Tasks" data-sub="All tasks" data-parent="tasks">
+  <div class="scr-head" id="t10-list-head"></div>
+  <div class="scr-body" id="t10-list-body"></div>
+</section>
+
+<!-- ids: TASK-069 TASK-070 TASK-071 TASK-072 TASK-073 TASK-074 TASK-075 TASK-076 TASK-077 TASK-078 TASK-079 TASK-080 TASK-081 TASK-082 TASK-083 TASK-084 TASK-085 TASK-086 TASK-087 TASK-088 TASK-089 TASK-195 TASK-199 — Projects board: zone chips, four columns, drag-and-drop = Start / Done / Approve / Send back, manual order arrows, project card sheet with steps and thread -->
+<section class="scr t10" id="s-tasks-board" data-nav="Board" data-group="Tasks" data-title="Tasks" data-sub="Projects board" data-parent="tasks">
+  <div class="scr-head" id="t10-board-head"></div>
+  <div class="scr-body" id="t10-board-body"></div>
+</section>
+
+<!-- ids: TASK-090 TASK-091 TASK-092 TASK-093 TASK-094 TASK-095 TASK-096 TASK-097 TASK-098 TASK-099 TASK-100 TASK-101 TASK-102 TASK-103 TASK-104 TASK-105 TASK-106 TASK-107 TASK-108 TASK-200 TASK-201 — Today (morning huddle): KPI tiles, day blocks with the live «now» mark, one-click done, pool Take it / Assign, catalog block, focus, orders, on shift, routine handed out, team goal and care days -->
+<section class="scr t10" id="s-tasks-huddle" data-nav="Today (huddle)" data-group="Tasks" data-title="Tasks" data-sub="Today" data-parent="tasks">
+  <div class="scr-head" id="t10-hud-head"></div>
+  <div class="scr-body" id="t10-hud-body"></div>
+</section>
+
+<!-- ids: TASK-109 TASK-110 TASK-111 TASK-112 TASK-113 TASK-114 TASK-115 TASK-116 TASK-117 TASK-118 TASK-119 TASK-120 TASK-121 TASK-122 TASK-123 TASK-124 TASK-125 TASK-126 TASK-127 TASK-128 TASK-129 TASK-202 TASK-203 TASK-204 — Questions inbox: groups, list with shift-range selection, bulk close / reassign / put off, result plaque, zone-report banner, question panel with answer form, hotkeys -->
+<section class="scr t10" id="s-tasks-inbox" data-nav="Questions" data-group="Tasks" data-title="Tasks" data-sub="Questions" data-parent="tasks">
+  <div class="scr-head" id="t10-ib-head"></div>
+  <div class="scr-body flush" id="t10-ib-body"></div>
+</section>
+
+<!-- ids: TASK-131 TASK-132 TASK-133 TASK-134 TASK-135 TASK-136 TASK-137 TASK-138 TASK-139 TASK-205 TASK-206 — By people: review queue, avatar rings, lanes with routine / one-offs / initiatives, awaiting review, shift pool, drag to hand over and «Hand to…» menu -->
+<section class="scr t10" id="s-tasks-people" data-nav="People · Load" data-group="Tasks" data-title="Tasks" data-sub="By people" data-roles="owner manager" data-parent="tasks">
+  <div class="scr-head" id="t10-pp-head"></div>
+  <div class="scr-body" id="t10-pp-body"></div>
+</section>
+
+<!-- ids: TASK-140 TASK-141 TASK-142 — Routine health: five weekly traffic lights, waiting for review over 3 days, most-skipped templates -->
+<section class="scr t10" id="s-tasks-health" data-nav="People · Routine health" data-group="Tasks" data-title="Tasks" data-sub="Routine health" data-roles="owner manager" data-parent="tasks">
+  <div class="scr-head" id="t10-hl-head"></div>
+  <div class="scr-body" id="t10-hl-body"></div>
+</section>
+
+<!-- ids: TASK-143 TASK-144 TASK-145 TASK-146 — Zones: owner / deputy / curator / metric / weekly limit per category, zone modal with the «three different people» rule -->
+<section class="scr t10" id="s-tasks-zones" data-nav="People · Zones" data-group="Tasks" data-title="Tasks" data-sub="Zones" data-parent="tasks">
+  <div class="scr-head" id="t10-zn-head"></div>
+  <div class="scr-body" id="t10-zn-body"></div>
+</section>
+
+<!-- ids: TASK-147 TASK-148 TASK-149 TASK-150 TASK-151 TASK-152 TASK-153 TASK-154 TASK-207 — Task catalog (library): new / edit template with schedule fields, one-off urgent block, Use, Retire / Restore -->
+<section class="scr t10" id="s-tasks-catalog" data-nav="People · Catalog" data-group="Tasks" data-title="Tasks" data-sub="Task catalog" data-roles="owner manager" data-parent="tasks">
+  <div class="scr-head" id="t10-ct-head"></div>
+  <div class="scr-body" id="t10-ct-body"></div>
+</section>
+
+<!-- ids: TASK-156 TASK-157 TASK-158 TASK-159 TASK-160 TASK-161 — My week (Floritta Active landing): level plaque, four numbers, team goal, praise, thank a colleague -->
+<section class="scr t10" id="s-tasks-my-week" data-nav="Active · My week" data-group="Tasks" data-title="Floritta Active" data-sub="My week" data-parent="tasks">
+  <div class="scr-head" id="t10-mw-head"></div>
+  <div class="scr-body" id="t10-mw-body"></div>
+</section>
+
+<!-- ids: TASK-162 TASK-163 TASK-164 TASK-165 TASK-166 TASK-167 TASK-168 — Team goal: monthly goals with fund, fund split preview, goal modal, close -->
+<section class="scr t10" id="s-team-goal" data-nav="Active · Team goal" data-group="Tasks" data-title="Floritta Active" data-sub="Team goal" data-parent="tasks">
+  <div class="scr-head" id="t10-tg-head"></div>
+  <div class="scr-body" id="t10-tg-body"></div>
+</section>
+
+<!-- ids: TASK-169 TASK-170 TASK-171 TASK-172 TASK-173 TASK-174 TASK-175 TASK-176 TASK-177 TASK-178 TASK-179 TASK-180 TASK-181 TASK-208 — Rewards shop and queue: balance, redeem, propose, my requests, manager catalogue and approvals -->
+<section class="scr t10" id="s-rewards" data-nav="Active · Rewards" data-group="Tasks" data-title="Floritta Active" data-sub="Rewards" data-parent="tasks">
+  <div class="scr-head" id="t10-rw-head"></div>
+  <div class="scr-body" id="t10-rw-body"></div>
+</section>
+
+<!-- ids: TASK-182 TASK-183 TASK-184 TASK-185 TASK-186 TASK-187 TASK-188 TASK-189 — Leaderboard: month / year, sort, medals and levels, say thanks, recognition, award badge -->
+<section class="scr t10" id="s-leaderboard" data-nav="Active · Leaderboard" data-group="Tasks" data-title="Floritta Active" data-sub="Leaderboard" data-roles="owner manager" data-parent="tasks">
+  <div class="scr-head" id="t10-lb-head"></div>
+  <div class="scr-body" id="t10-lb-body"></div>
+</section>
+
+<!-- ids: TASK-190 TASK-191 TASK-192 TASK-193 — Bonuses (payroll): month picker, points / money rewards / redemptions per employee, CSV -->
+<section class="scr t10" id="s-payroll" data-nav="Active · Bonuses" data-group="Tasks" data-title="Floritta Active" data-sub="Bonuses" data-roles="owner manager" data-parent="tasks">
+  <div class="scr-head" id="t10-pr-head"></div>
+  <div class="scr-body" id="t10-pr-body"></div>
+</section>
+<script>
+(()=>{
+/* 07-team.html still carries a simplified #s-tasks; while both files are built, the earlier copy is dropped so this full section owns the id. */
+document.querySelectorAll('section#s-tasks').forEach((s,i,a)=>{if(a.length>1&&i<a.length-1)s.remove()});
+const A=App,E=s=>A.esc(s),I=n=>A.icon(n),tt=(m,a,f)=>A.toast(m,a,f);
+const ME=()=>A.me(),MEID=()=>ME().id,MGR=()=>A.isMgr(),ADMIN=()=>A.role()==="owner";
+const NOW=A.NOW,T=A.T,S=A.data.staff,U=id=>A.user(id),NM=id=>U(id)?U(id).n:(id==="system"?"System":"–");
+const AV=(id,c="--s")=>A.avatar(id,c);
+const P=A.data.products,IMG=n=>"img/"+n+".webp";
+/* ---------- reference data ---------- */
+const CATS=["general","notes","delivery","other","shop","floristry","service","sales","product","content","inventory","purchasing","fresh","balloons","packaging","plants","training","growth"];
+const ZONE_CATS=["shop","floristry","delivery","service","sales","product","content","inventory","purchasing","fresh","balloons","packaging","plants","training","growth"];
+const CL=c=>c==="fresh"?"Fresh flowers":c==="growth"?"Growth & kaizen":c==="notes"?"Notes":c[0].toUpperCase()+c.slice(1);
+const SYSTEM_CATS=["notes"];
+const ANCHORS=[["opening","Opening","07–11",7,11],["midday","Midday","11–15",11,15],["pre_dispatch","Before dispatch","15–18",15,18],["closing","Closing","18–23",18,23]];
+const AL=a=>{const x=ANCHORS.find(z=>z[0]===a);return x?x[1]:"Any time"};
+const ZONES=[
+ {cat:"shop",ru:"Магазин",owner:"svetlana",deputy:"marina",curator:"valeria",metric:"Opening checklist done by 08:15",limit:50,active:true},
+ {cat:"floristry",ru:"Флористика",owner:"svetlana",deputy:"olesya",curator:null,metric:"Photo approval rate",limit:0,active:true},
+ {cat:"delivery",ru:"Доставка",owner:"daniel",deputy:"george",curator:"valeria",metric:"On-time deliveries %",limit:30,active:true},
+ {cat:"service",ru:"Сервис",owner:"eliza",deputy:null,curator:"valeria",metric:"Reviews answered within 24 h",limit:0,active:true},
+ {cat:"sales",ru:"Продажи",owner:"valeria",deputy:"eliza",curator:"tatiana",metric:"Corporate quotes sent / week",limit:100,active:true},
+ {cat:"product",ru:"Продукт",owner:"tatiana",deputy:"svetlana",curator:null,metric:"New SKUs live",limit:200,active:true},
+ {cat:"content",ru:"Контент",owner:"marina",deputy:"anna",curator:"tatiana",metric:"Posts published / week",limit:40,active:true},
+ {cat:"inventory",ru:"Склад",owner:"anna",deputy:"lina",curator:"valeria",metric:"Stocktake variance %",limit:0,active:true},
+ {cat:"purchasing",ru:"Закупки",owner:"valeria",deputy:"kamila",curator:null,metric:"RFH order sent by Mon 18:00",limit:1500,active:true},
+ {cat:"fresh",ru:"Свежие цветы",owner:"marina",deputy:"svetlana",curator:"valeria",metric:"Waste stems / week",limit:0,active:true},
+ {cat:"balloons",ru:"Шары",owner:"olesya",deputy:null,curator:null,metric:"Helium litres / set",limit:60,active:true},
+ {cat:"packaging",ru:"Упаковка",owner:null,deputy:null,curator:null,metric:"",limit:0,active:true},
+ {cat:"plants",ru:"Растения",owner:null,deputy:null,curator:null,metric:"",limit:0,active:false},
+ {cat:"training",ru:"Обучение",owner:"svetlana",deputy:null,curator:"tatiana",metric:"Lessons passed / week",limit:0,active:true},
+ {cat:"growth",ru:"Рост и кайдзен",owner:"tatiana",deputy:"valeria",curator:null,metric:"Improvements shipped / month",limit:300,active:true}
+];
+const zone=c=>ZONES.find(z=>z.cat===c);
+const zoneRole=(uid,c)=>{const z=zone(c);return !!(z&&z.active&&(z.owner===uid||z.deputy===uid||z.curator===uid))};
+const myZones=()=>ZONES.filter(z=>z.active&&zoneRole(MEID(),z.cat)).map(z=>z.cat);
+const TPL=[
+ {id:1,t:"Opening checklist – shop floor",ru:"Чек-лист открытия – торговый зал",cat:"shop",pts:10,min:15,rec:"daily",role:"florist",anchor:"opening",why:"The first customer at 08:00 sees a ready shop: lights, music, water, till float.",proof:"photo",due:"08:15",copy:true,active:true},
+ {id:2,t:"Fridge temperature log",ru:"Журнал температуры холодильника",cat:"fresh",pts:5,min:5,rec:"daily",role:"any",anchor:"opening",why:"Two readings a day keep the flowers (and the food-hygiene file) safe.",proof:"comment",due:"09:00",copy:false,active:true},
+ {id:3,t:"Water change – shop floor buckets",ru:"Смена воды – вёдра в зале",cat:"fresh",pts:8,min:20,rec:"daily",role:"florist",anchor:"midday",why:"Fresh water every day is the cheapest way to add two days of vase life.",proof:"photo",due:"14:00",copy:false,active:true},
+ {id:4,t:"Condition the RFH delivery",ru:"Обработать поставку RFH",cat:"fresh",pts:15,min:60,rec:"weekly",days:["Tue","Thu","Sat"],role:"florist",anchor:"opening",why:"Stems cut and hydrated within an hour of arrival last a week longer.",proof:"photo",due:"11:00",copy:false,active:true},
+ {id:5,t:"Photograph today's best bouquet",ru:"Сфотографировать лучший букет дня",cat:"content",pts:12,min:15,rec:"daily",role:"florist",anchor:"pre_dispatch",why:"One good photo a day feeds Instagram, the site and Ready now.",proof:"photo",due:"17:00",copy:false,active:true},
+ {id:6,t:"Closing checklist",ru:"Чек-лист закрытия",cat:"shop",pts:10,min:15,rec:"daily",role:"florist",anchor:"closing",why:"Fridge closed, buckets topped, till counted, alarm set.",proof:"photo",due:"22:00",copy:false,active:true},
+ {id:7,t:"Count ribbon & wrap stock",ru:"Пересчитать ленты и упаковку",cat:"inventory",pts:8,min:20,rec:"weekly",days:["Mon"],role:"any",anchor:"any",why:"Monday count means Tuesday's order is right.",proof:"comment",due:"",copy:false,active:true},
+ {id:8,t:"Helium cylinder gauge check",ru:"Проверить манометр гелия",cat:"balloons",pts:5,min:5,rec:"daily",role:"any",anchor:"opening",why:"An empty cylinder on a Saturday means no balloon sets all weekend.",proof:"comment",due:"10:00",copy:false,active:true},
+ {id:9,t:"Clean the photo station",ru:"Прибрать фотозону",cat:"content",pts:6,min:15,rec:"weekly",days:["Fri"],role:"any",anchor:"any",why:"Ivory backdrop, no petals, no tape – photos look expensive.",proof:"photo",due:"",copy:false,active:true},
+ {id:10,t:"Van check – lights, tyres, fuel",ru:"Проверка фургона – свет, шины, топливо",cat:"delivery",pts:6,min:10,rec:"daily",role:"courier",anchor:"opening",why:"Five minutes before the first run saves a missed slot.",proof:"comment",due:"09:00",copy:false,active:true},
+ {id:11,t:"Reply to Google reviews",ru:"Ответить на отзывы Google",cat:"service",pts:10,min:20,rec:"weekly",days:["Wed"],role:"manager",anchor:"any",why:"Every review answered within a week – good and bad.",proof:"comment",due:"",copy:false,active:true},
+ {id:12,t:"Window display refresh",ru:"Обновить витрину",cat:"shop",pts:25,min:90,rec:"monthly",dom:"1, 15",role:"florist",anchor:"any",why:"The window sells to Willow Walk twice a month.",proof:"photo",due:"",copy:false,active:true},
+ {id:13,t:"Dust the plant shelf",ru:"Протереть полку с растениями",cat:"plants",pts:4,min:10,rec:"daily",role:"any",anchor:"midday",why:"",proof:"none",due:"",copy:false,active:false},
+ {id:14,t:"Pack sympathy ribbon stock",ru:"Собрать запас траурных лент",cat:"packaging",pts:6,min:20,rec:"none",role:"any",anchor:"any",why:"Sympathy orders cannot wait for ribbon.",proof:"comment",due:"",copy:false,active:true}
+];
+const tpl=id=>TPL.find(t=>t.id===id);
+let NID=500;
+const mk=o=>Object.assign({id:++NID,body:"",kind:"project",cat:"general",prio:"normal",status:"open",who:[],by:"valeria",due:null,pts:0,init:false,photos:[],comments:[],steps:[],anchor:"any",proof:"none",tpl:null,order:null,ai:null,claimedBy:null,cancelReq:null,approved:null,doneAt:null,startedAt:null,cancelled:null,moved:T(9,0,0),created:T(8,0,-1),pos:0},o);
+const C=(who,h,m,d,t,files)=>({who,at:T(h,m,d||0),t,files:files||[]});
+const O=A.data.orders;
+let TASKS=[
+ /* routine today */
+ mk({t:"Opening checklist – shop floor",kind:"routine",cat:"shop",who:["anna"],by:"system",status:"done",due:T(8,15),pts:10,anchor:"opening",proof:"photo",tpl:1,photos:[IMG("hero-white")],comments:[C("anna",8,20,0,"Lights, music, buckets, float £100 – done.")],doneAt:T(8,20),startedAt:T(8,2),approved:{by:"valeria",at:T(9,5)},created:T(4,20)}),
+ mk({t:"Fridge temperature log",kind:"routine",cat:"fresh",who:["anna"],by:"system",due:T(9,0),pts:5,anchor:"opening",proof:"comment",tpl:2,ai:"same block as the opening checklist",created:T(4,20)}),
+ mk({t:"Van check – lights, tyres, fuel",kind:"routine",cat:"delivery",who:["daniel"],by:"system",status:"done",due:T(9,0),pts:6,anchor:"opening",proof:"comment",tpl:10,comments:[C("daniel",8,55,0,"All fine, fuel 3/4.")],doneAt:T(8,55),approved:{by:"valeria",at:T(9,6)},created:T(4,20)}),
+ mk({t:"Helium cylinder gauge check",kind:"routine",cat:"balloons",who:[],by:"system",due:T(10,0),pts:5,anchor:"opening",proof:"comment",tpl:8,created:T(4,20)}),
+ mk({t:"Condition the RFH delivery",kind:"routine",cat:"fresh",who:["svetlana","marina"],by:"system",status:"in_progress",due:T(11,0),pts:15,anchor:"opening",proof:"photo",tpl:4,startedAt:T(8,40),created:T(4,20)}),
+ mk({t:"Water change – shop floor buckets",kind:"routine",cat:"fresh",who:["lina"],by:"system",due:T(14,0),pts:8,anchor:"midday",proof:"photo",tpl:3,ai:"lightest load on the early shift",created:T(4,20)}),
+ mk({t:"Photograph today's best bouquet",kind:"routine",cat:"content",who:["marina"],by:"system",due:T(17,0),pts:12,anchor:"pre_dispatch",proof:"photo",tpl:5,created:T(4,20)}),
+ mk({t:"Closing checklist",kind:"routine",cat:"shop",who:[],by:"system",due:T(22,0),pts:10,anchor:"closing",proof:"photo",tpl:6,created:T(4,20)}),
+ mk({t:"Count ribbon & wrap stock",kind:"routine",cat:"inventory",who:["lina"],by:"system",status:"done",due:T(12,0),pts:8,anchor:"any",proof:"comment",tpl:7,comments:[C("lina",10,15,0,"Counted: 14 reels satin ivory, 96 sheets wrap.")],doneAt:T(10,15),startedAt:T(10,14),flags:["Done in <1 min"],created:T(4,20)}),
+ mk({t:"Reply to Google reviews",kind:"routine",cat:"service",who:["valeria"],by:"system",due:T(18,0),pts:10,anchor:"any",proof:"comment",tpl:11,created:T(4,20)}),
+ mk({t:"Dust the plant shelf",kind:"routine",cat:"plants",who:["svetlana"],by:"system",due:T(12,0),pts:4,anchor:"midday",proof:"none",tpl:13,cancelReq:{who:"svetlana",at:T(9,30),reason:"Shelf was cleared for the Halloween display"},created:T(4,20)}),
+ mk({t:"Clean the photo station",kind:"routine",cat:"content",who:["anna"],by:"anna",due:T(16,0),pts:0,init:true,anchor:"any",proof:"photo",tpl:9,fromCatalog:true,created:T(9,50)}),
+ mk({t:"Return vases to supplier",kind:"routine",cat:"delivery",who:["daniel"],by:"valeria",status:"in_progress",due:T(14,0),pts:10,anchor:"midday",proof:"comment",order:O[6].id,startedAt:T(10,5),body:"7 glass cylinders from the Barrington event, signed note required.",created:T(17,0,-1)}),
+ mk({t:"Call RFH re: Thursday order",kind:"project",cat:"purchasing",who:["valeria"],by:"tatiana",prio:"urgent",due:T(15,0),pts:15,anchor:"any",proof:"comment",body:"Confirm the peony substitute (garden rose Juliet) and the Thursday van slot.",steps:[{t:"Confirm peonies substitute",done:false,who:"valeria",due:T(15,0)},{t:"Confirm Thu van slot",done:false}],created:T(18,0,-1)}),
+ /* projects */
+ mk({t:"Halloween window display",kind:"project",cat:"shop",who:["marina"],by:"valeria",due:T(18,0,2),pts:40,proof:"photo",body:"Pumpkins, dried stems, black ribbon. Keep the ivory backdrop – no orange paper.",steps:[{t:"Sketch with Valeria",done:true,by:"marina",doneAt:T(16,0,-1)},{t:"Pumpkins & dried stems from RFH",done:false,who:"marina",due:T(12,0,1)},{t:"Build Thursday evening",done:false}],comments:[C("valeria",16,10,-1,"Sketch approved – go for the dried hydrangea."),C("marina",16,40,-1,"RFH has dried stems on Thursday only.")],moved:T(16,0,-1),pos:1,created:T(10,0,-5)}),
+ mk({t:"Photograph 12 new autumn bouquets",kind:"project",cat:"content",who:["svetlana"],by:"tatiana",status:"in_progress",due:T(16,0),pts:30,proof:"photo",body:"4:5 crop, steam the backdrop, upload to Catalog drafts.",steps:[{t:"Steam backdrop, ivory sheet",done:true,by:"svetlana",doneAt:T(9,0,-2)},{t:"Shoot 12 bouquets · 4:5",done:false,who:"svetlana",due:T(15,0)},{t:"Upload to Catalog drafts",done:false}],photos:[IMG("pink-garden")],comments:[C("svetlana",9,5,-2,"Backdrop done, shooting Tuesday.",[{n:"backdrop.jpg",img:IMG("pink-garden")}])],startedAt:T(9,0,-2),moved:T(9,0,-2),pos:2,created:T(11,0,-6)}),
+ mk({t:"Christmas wreath range – price list",kind:"project",cat:"product",who:["valeria"],by:"tatiana",status:"in_progress",due:T(18,0,20),pts:25,proof:"comment",body:"Three sizes £60 / £90 / £150, cut-off 18 Dec.",startedAt:T(10,0,-9),moved:T(10,0,-9),pos:3,created:T(10,0,-12)}),
+ mk({t:"Website FAQ · delivery zones",kind:"project",cat:"content",who:["eliza"],by:"tatiana",status:"done",due:T(18,0,-1),pts:20,proof:"comment",body:"Rewrite the delivery FAQ with the SE1 / zone 2 / outer London fees.",photos:[IMG("hero-basket")],comments:[C("eliza",15,30,-1,"Draft live on dev.floritta.uk/faq – screenshot attached.",[{n:"faq.png",img:IMG("hero-basket")}])],steps:[{t:"Draft the three zones",done:true,by:"eliza",doneAt:T(14,0,-1)},{t:"Check fees with Tatiana",done:true,by:"eliza",doneAt:T(15,0,-1)}],startedAt:T(11,0,-3),doneAt:T(15,30,-1),moved:T(15,30,-1),pos:4,created:T(10,0,-7)}),
+ mk({t:"Corporate pitch deck for Shad Thames offices",kind:"project",cat:"sales",who:["valeria"],by:"tatiana",status:"done",due:T(18,0,-2),pts:35,proof:"photo",body:"12 slides, weekly desk flowers from £65.",comments:[C("valeria",17,0,-2,"Deck sent to Tatiana by email.")],startedAt:T(9,0,-6),doneAt:T(17,0,-2),moved:T(17,0,-2),pos:5,flags:["Outside its window"],created:T(9,0,-10)}),
+ mk({t:"Workshop kits · Saturday",kind:"project",cat:"training",who:["olesya"],by:"valeria",prio:"urgent",due:T(17,0,3),pts:15,proof:"photo",body:"12 kits, 15 stems each, scissors, wire, name cards.",steps:[{t:"12 kits · 15 stems each",done:false},{t:"Scissors & wire",done:false},{t:"Name cards",done:false}],moved:T(9,0,0),pos:6,created:T(9,0,0)}),
+ mk({t:"Reorganise the ribbon drawer",kind:"project",cat:"packaging",who:["lina"],by:"svetlana",status:"done",due:T(18,0,-5),pts:8,init:true,proof:"photo",photos:[IMG("powdered-rose")],comments:[C("lina",16,0,-5,"By colour, labels on the front.")],steps:[{t:"Sort by colour",done:true,by:"lina",doneAt:T(15,0,-5)}],doneAt:T(16,0,-5),approved:{by:"svetlana",at:T(17,0,-5)},moved:T(17,0,-5),pos:7,created:T(9,0,-8)}),
+ mk({t:"Move helium cylinders to the back store",kind:"project",cat:"balloons",who:[],by:"valeria",due:T(18,0,-2),pts:12,proof:"photo",body:"Two cylinders, chain them to the wall bracket.",moved:T(10,0,-16),pos:8,created:T(10,0,-16)}),
+ mk({t:"Instagram reel · wrapping tutorial",kind:"project",cat:"content",who:["anna"],by:"marina",status:"done",due:T(18,0,-12),pts:15,proof:"photo",photos:[IMG("veronica")],comments:[C("anna",12,0,-12,"Posted – 1.2k views in a day.")],steps:[{t:"Film",done:true,by:"anna",doneAt:T(11,0,-12)},{t:"Post",done:true,by:"anna",doneAt:T(12,0,-12)}],doneAt:T(12,0,-12),approved:{by:"marina",at:T(14,0,-12)},moved:T(14,0,-12),pos:9,created:T(9,0,-15)}),
+ mk({t:"Trainee handbook v2",kind:"project",cat:"training",who:["svetlana"],by:"tatiana",status:"cancelled",due:T(18,0,5),pts:20,proof:"comment",cancelled:{by:"tatiana",at:T(11,0,-3),reason:"Merged into the Learning module"},moved:T(11,0,-3),pos:10,created:T(9,0,-20)}),
+ mk({t:"Kaizen: pre-cut ribbon lengths for Standard bouquets",kind:"project",cat:"growth",who:["svetlana"],by:"svetlana",status:"done",due:T(18,0,-1),pts:0,init:true,proof:"photo",photos:[IMG("red-roses")],comments:[C("svetlana",17,0,-1,"Saves ~40 s per bouquet; box by the wrap station.")],doneAt:T(17,0,-1),moved:T(17,0,-1),pos:11,created:T(9,0,-4)}),
+ mk({t:"Order ivory wrap · 200 sheets",kind:"routine",cat:"purchasing",who:["kamila"],by:"valeria",due:T(18,0,1),pts:5,proof:"comment",order:null,moved:T(9,0,0),pos:12,created:T(9,0,0)}),
+ /* questions (asks) */
+ mk({t:"Peonies are out – swap to garden roses on #"+O[1].id+"?",kind:"ask",cat:"fresh",who:["valeria"],by:"system",prio:"urgent",due:T(12,0),body:"The customer ordered the Peony Basket for today. Juliet garden roses are in stock at the same price.",ask:{from:"system",opts:["Swap and tell the customer","Call the customer first","Refund the difference"],fields:[]},created:T(8,40)}),
+ mk({t:"Weekly zone report · Fresh flowers · w/c 12 Oct",kind:"ask",cat:"fresh",who:["marina"],by:"system",due:T(18,0,-7),body:"Please fill in the weekly numbers for your zone.",ask:{from:"system",opts:[],fields:["Waste this week (stems)","Top issue"],zr:true},created:T(7,0,-9)}),
+ mk({t:"Weekly zone report · Delivery · w/c 28 Sep",kind:"ask",cat:"delivery",who:["daniel"],by:"system",due:T(18,0,-20),body:"Please fill in the weekly numbers for your zone.",ask:{from:"system",opts:[],fields:["Late deliveries","Top issue"],zr:true},created:T(7,0,-22)}),
+ mk({t:"Weekly zone report · Sales · w/c 21 Sep",kind:"ask",cat:"sales",who:["valeria"],by:"system",due:T(18,0,-27),body:"Please fill in the weekly numbers for your zone.",ask:{from:"system",opts:[],fields:["Quotes sent","Top issue"],zr:true},created:T(7,0,-29)}),
+ mk({t:"Can Lina do the 13–22 shift on Saturday?",kind:"ask",cat:"training",who:["svetlana"],by:"valeria",due:T(18,0,1),body:"Olesya asked for Saturday off. Is Lina ready for a late shift on her own with you?",ask:{from:"valeria",opts:["Yes, with me on the floor","Not yet – one more week","Only until 19:00"],fields:[]},created:T(16,0,-1)}),
+ mk({t:"Which vase size for the Barrington boardroom standing order?",kind:"ask",cat:"product",who:["tatiana"],by:"eliza",due:T(18,0,1),body:"They asked for 'something bigger' from November.",ask:{from:"eliza",opts:["Glass cylinder 25 cm","Low bowl 30 cm"],fields:["Weekly budget (£)"]},created:T(10,0,-3)}),
+ mk({t:"Do we keep CORP20 running in November?",kind:"ask",cat:"sales",who:["tatiana"],by:"valeria",due:T(18,0,-10),body:"28 uses in October, mostly repeat offices.",ask:{from:"valeria",opts:["Keep it","Drop to 15%","Stop it"],fields:[]},created:T(10,0,-16)}),
+ mk({t:"Helium regulator – replace or repair?",kind:"ask",cat:"balloons",who:[],by:"olesya",due:T(18,0,2),body:"Gauge sticks at 20 bar. BOC quotes £85 for a new one.",ask:{from:"olesya",opts:["Replace (£85)","Repair first"],fields:[],src:"boc.co.uk/regulators"},created:T(15,0,-5)}),
+ mk({t:"Approve £140 for dried stems (Halloween)?",kind:"ask",cat:"shop",who:["valeria"],by:"marina",prio:"urgent",due:T(13,0),body:"Needed for the window – RFH Thursday delivery.",ask:{from:"marina",opts:["Approve","Approve up to £100","No"],fields:[]},created:T(6,40)}),
+ mk({t:"Is the fridge 2 thermostat fixed?",kind:"ask",cat:"shop",who:["valeria"],by:"anna",status:"done",due:T(18,0,-1),body:"Reading 9 °C on Sunday.",ask:{from:"anna",opts:["Yes","Not yet"],fields:[],answer:{by:"valeria",at:T(9,10,-1),opt:"Yes",text:"Engineer came Monday – reads 4 °C now."}},doneAt:T(9,10,-1),created:T(8,0,-2)}),
+ mk({t:"Uber Eats menu sync failed – who owns this?",kind:"ask",cat:"service",who:["tatiana"],by:"system",status:"done",due:T(18,0,-2),body:"Sync failed 08:12 twice this week.",ask:{from:"system",opts:[],fields:[],answer:{by:"tatiana",at:T(11,0,-2),text:"Eliza – reconnect in Settings, then message Igor if it fails again."}},doneAt:T(11,0,-2),created:T(8,20,-3)}),
+ mk({t:"Last year's Christmas wreath prices?",kind:"ask",cat:"product",who:["valeria"],by:"svetlana",status:"cancelled",due:T(18,0,-4),body:"",ask:{from:"svetlana",opts:[],fields:[]},cancelled:{by:"valeria",at:T(12,0,-4),reason:"Not relevant"},created:T(9,0,-6)})
+];
+const task=id=>TASKS.find(t=>t.id===Number(id));
+/* ---------- points, goals, rewards, badges (fictional) ---------- */
+const PTS={svetlana:[310,1840,"2021"],marina:[265,1460,"2022"],anna:[190,620,"Jun 2026"],lina:[140,310,"Sep 2026"],olesya:[120,980,"2023"],valeria:[95,640,"2022"],eliza:[80,420,"2025"],daniel:[70,530,"2024"],kamila:[40,210,"2025"],george:[25,140,"2026"],omar:[10,60,"Aug 2026"],tatiana:[0,0,"2009"]};
+const MONTHS_IN={svetlana:10,marina:10,anna:5,lina:2,olesya:10,valeria:10,eliza:10,daniel:10,kamila:9,george:6,omar:3,tatiana:10};
+const BAL={svetlana:1240,marina:1180,anna:470,lina:290,olesya:760,valeria:520,eliza:380,daniel:410,kamila:190,george:140,omar:60,tatiana:0};
+const LEVELS=[["Spark",0,0],["Flame",200,5],["Torch",500,10],["Beacon",1000,15]];
+const level=p=>LEVELS.slice().reverse().find(l=>p>=l[1]);
+const LV_IC={Spark:"sparkle",Flame:"zap",Torch:"sun",Beacon:"flag"};
+const BADGES=[["rescuer","Rescuer",5,"Closed an urgent task on time"],["kaizen_hero","Kaizen hero",10,"Shipped an improvement"],["early_bird","Early bird",3,"Opening checklist before 08:10 five days running"],["photo_pro","Photo pro",5,"Twenty approved photos"],["mentor","Mentor",8,"Buddy for a trainee"]];
+const HELD={svetlana:["mentor","photo_pro","kaizen_hero"],marina:["photo_pro","rescuer"],anna:["early_bird"],lina:[],olesya:["rescuer"],valeria:["rescuer"],eliza:[],daniel:["early_bird"],kamila:[],george:[],omar:[],tatiana:[]};
+const STREAK={svetlana:6,marina:4,anna:12,lina:2,olesya:0,valeria:3,eliza:1,daniel:9,kamila:0,george:0,omar:0,tatiana:0};
+let KUDOS_LEFT=3;
+const KUDOS=[{to:"svetlana",from:"marina",pts:2,note:"Covered my Saturday rush",at:T(18,0,-2)},{to:"svetlana",from:"valeria",pts:1,note:"Peony substitutes handled beautifully",at:T(12,0,-1)},{to:"marina",from:"svetlana",pts:2,note:"Window sketch",at:T(17,0,-1)},{to:"valeria",from:"svetlana",pts:1,note:"Sorted the RFH van",at:T(9,0,0)}];
+const PRAISE=[{to:"svetlana",from:"valeria",text:"Lovely clean wrap on the Barrington order.",task:"Opening checklist – shop floor"},{to:"svetlana",from:"tatiana",text:"The autumn photos are the best we've had.",task:"Photograph 12 new autumn bouquets"},{to:"marina",from:"valeria",text:"Fast and tidy conditioning this morning.",task:"Condition the RFH delivery"},{to:"valeria",from:"tatiana",text:"Deck looks sharp.",task:"Corporate pitch deck"}];
+const GOALS=[
+ {id:1,t:"October without late deliveries",month:"2026-10",metric:"Deliveries on time %",target:97,current:95.4,fund:300,status:"open"},
+ {id:2,t:"500 five-star photos",month:"2026-09",metric:"Approved photos",target:500,current:540,fund:250,status:"achieved"},
+ {id:3,t:"Marketplace rating 4.8",month:"2026-08",metric:"Average rating",target:4.8,current:4.6,fund:200,status:"closed"}
+];
+const MPTS={"2026-10":PTS,"2026-09":{svetlana:[280],marina:[240],anna:[160],lina:[60],olesya:[150],valeria:[110],eliza:[70],daniel:[90],kamila:[30],george:[20],omar:[15],tatiana:[0]},"2026-08":{svetlana:[260],marina:[210],anna:[120],lina:[0],olesya:[170],valeria:[90],eliza:[60],daniel:[80],kamila:[20],george:[10],omar:[0],tatiana:[0]}};
+const REWARDS=[
+ {id:1,t:"£20 cash bonus",pts:200,type:"money",gbp:20,ds:"Paid with the next salary.",active:true},
+ {id:2,t:"Half-day off",pts:350,type:"timeoff",ds:"Any weekday, agreed with the rota a week ahead.",active:true},
+ {id:3,t:"Floristry masterclass · Covent Garden",pts:600,type:"course",ds:"One-day class, travel included.",active:true},
+ {id:4,t:"Day trip to the Dutch flower auction",pts:1500,type:"trip",ds:"Aalsmeer with Tatiana, early train.",active:true},
+ {id:5,t:"Pick the shop playlist for a week",pts:60,type:"custom",ds:"Within reason.",active:true},
+ {id:6,t:"Coffee for the team",pts:80,type:"other",ds:"Retired – now free on Fridays.",active:false}
+];
+const RTYPE={money:"Money · £",timeoff:"Time off",course:"Course",trip:"Trip",custom:"Custom",other:"Other"};
+let RID=20;
+const REDEMP=[
+ {id:11,who:"marina",reward:2,status:"requested",at:T(10,0,-2),cost:350},
+ {id:12,who:"anna",reward:1,status:"requested",at:T(15,0,-1),cost:200},
+ {id:13,who:"svetlana",reward:3,status:"approved",at:T(9,0,-4),cost:600,decided:{by:"valeria",at:T(10,0,-3)}},
+ {id:14,who:"lina",reward:null,custom:"Lunch voucher · Borough Market",note:"After the first solo Saturday",status:"requested",at:T(12,0,-1),cost:0},
+ {id:15,who:"olesya",reward:1,status:"fulfilled",at:T(9,0,-9),cost:200,decided:{by:"tatiana",at:T(10,0,-8)}},
+ {id:16,who:"daniel",reward:5,status:"rejected",at:T(9,0,-12),cost:60,decided:{by:"valeria",at:T(10,0,-11)}},
+ {id:17,who:"svetlana",reward:5,status:"fulfilled",at:T(9,0,-30),cost:60,decided:{by:"valeria",at:T(10,0,-29)}}
+];
+const MONEY={"2026-10":{olesya:20,svetlana:0},"2026-09":{marina:20,svetlana:20},"2026-08":{anna:20}};
+const SKIPS=[["Dust the plant shelf",3],["Helium cylinder gauge check",1]];
+const CARE=[{who:"anna",what:"Birthday",when:"Thu 22 Oct"},{who:"daniel",what:"2 years with us",when:"Sat 24 Oct"}];
+/* ---------- state ---------- */
+const st={kind:"all",scope:"mine",stage:"todo",q:"",flag:null,status:"",assignee:"",cat:"",prio:"",more:false,page:1,sel:new Set(),from:"2026-10-01",to:"2026-10-20",threads:new Set(),
+ zone:"",hudView:null,expanded:new Set(),ibGroup:"mine",ibStage:"todo",ibSel:new Set(),ibTask:null,ibOlder:0,ibResult:null,ibLast:null,lanes:new Set(),rwTab:"shop",lbTab:"month",lbSort:"pm",month:"2026-10",empty:{}};
+window.T10_STATE=st;
+/* ---------- task predicates ---------- */
+const live=t=>t.status==="open"||t.status==="in_progress";
+const pool=t=>live(t)&&!t.who.length&&!SYSTEM_CATS.includes(t.cat);
+const overdue=t=>live(t)&&t.due&&new Date(t.due)<NOW;
+const awaiting=t=>t.status==="done"&&!t.approved;
+const mine=t=>t.who.includes(MEID());
+const vis=t=>MGR()?true:(mine(t)||t.by===MEID()||pool(t));
+const V=()=>TASKS.filter(vis);
+const canAct=t=>live(t)&&(mine(t)||MGR());
+const claimable=t=>pool(t);
+const canReview=t=>awaiting(t)&&((t.by===MEID()&&!mine(t))||ADMIN());
+const approveBlock=t=>!t.photos.length?"A photo proof is required before approval.":!t.comments.length?"A comment describing what was done is required.":(t.init&&!t.pts)?"Set points via “Edit” first.":null;
+const canUndo=t=>awaiting(t)&&(mine(t)||MGR());
+const canReopen=t=>(t.status==="done"||t.status==="cancelled")&&!t.approved&&(t.by===MEID()||ADMIN());
+const canEdit=t=>t.by===MEID()||MGR();
+const canCancel=t=>live(t)&&(t.by===MEID()||MGR());
+const canAskCancel=t=>live(t)&&!MGR()&&(zoneRole(MEID(),t.cat)||(t.tpl&&mine(t)));
+const canRelease=t=>MGR()&&live(t)&&!!t.claimedBy;
+const stageOf=t=>t.status==="cancelled"?"cancelled":t.status==="done"?(t.approved?"done":"awaiting"):overdue(t)?"overdue":"todo";
+const days=iso=>Math.floor((NOW-new Date(iso))/864e5);
+const stale=t=>t.status==="done"&&t.approved?0:days(t.moved);
+const fmtDue=t=>t.due?A.fmtDay(t.due)+" · "+A.fmtTime(t.due):"–";
+const since=t=>{const m=Math.round((NOW-new Date(t.due))/6e4);return m<60?m+" min":m<1440?Math.floor(m/60)+" h "+(m%60)+" min":Math.floor(m/1440)+" d"};
+const ageTxt=iso=>{const m=Math.round((NOW-new Date(iso))/6e4);return m<60?m+" min":m<1440?Math.round(m/60)+" h":Math.round(m/1440)+" d"};
+const asksMine=()=>TASKS.filter(t=>t.kind==="ask"&&live(t)&&mine(t)).length;
+const log=(t,who,txt)=>{t.comments.push(C(who,NOW.getHours(),NOW.getMinutes(),0,txt));t.moved=NOW.toISOString()};
+const move=t=>{t.moved=NOW.toISOString()};
+const emit=()=>{document.dispatchEvent(new CustomEvent("t10"));A.renderSidebar()};
+const re=()=>{const cur=A.state.current;const fn=window["mount_"+cur.replace(/-/g,"_")];if(fn&&cur.match(/^(tasks|team-goal|rewards|leaderboard|payroll)/))fn(A.state.params)};
+const pushTo=(ids,title,body)=>ids.filter(i=>i!==MEID()).forEach(i=>A.push(title,body+" · "+NM(i),{icon:"check",type:"task",go:["tasks",{}]}));
+const v=id=>{const e=document.getElementById(id);return e?(e.type==="checkbox"?e.checked:e.value):""};
+const sel=(id,opts,val,extra="")=>`<select class="select" id="${id}" ${extra}>${opts.map(o=>`<option value="${E(o[0])}" ${String(o[0])===String(val)?"selected":""}>${E(o[1])}</option>`).join("")}</select>`;
+const people=(x=[])=>S.filter(s=>!x.includes(s.id)).map(s=>[s.id,s.n+" · "+s.title]);
+const tag=(t,c="")=>`<span class="tag ${c}">${t}</span>`;
+const emptyBox=(ic,h,s,act)=>`<div class="empty">${I(ic)}<div class="h3">${h}</div>${s?`<div class="sm">${s}</div>`:""}${act||""}</div>`;
+const demoEmpty=k=>`<button class="textbtn stage-empty" onclick="T10.toggleEmpty('${k}')" title="Stand only: preview the empty state">${st.empty[k]?"Show data":"Empty state"}</button>`;
+/* ---------- navs ---------- */
+function nav(cur,sub){
+  const peopleGo=MGR()?"tasks-people":"tasks-zones";
+  const doors=[["tasks-huddle","Today",["tasks-huddle"]],["tasks","All tasks",["tasks","tasks-board","tasks-inbox"]],[peopleGo,"People",["tasks-people","tasks-health","tasks-zones","tasks-catalog"]],["tasks-my-week","Floritta Active",["tasks-my-week","team-goal","rewards","leaderboard","payroll"]]];
+  const n=asksMine();
+  let h=`<div class="tn">${doors.map(d=>`<button class="${d[2].includes(cur)?"on":""}" onclick="App.go('${d[0]}')">${d[1]}${d[0]==="tasks"&&n?`<span class="bdg" title="${n} open question${n>1?"s":""} assigned to you">${n}</span>`:""}</button>`).join("")}<span class="sp"></span><div class="right"><button class="btn --ghost --sm" onclick="T10.catalog()">${I("book")} Task catalog</button></div></div>`;
+  if(sub==="people"){const tabs=[["tasks-people","Load",true],["tasks-health","Routine health",true],["tasks-zones","Zones",false],["tasks-catalog","Catalog",true]].filter(x=>!x[2]||MGR());if(tabs.length>1)h+=`<div class="sub-nav">${tabs.map(x=>`<button class="tab ${x[0]===cur?"on":""}" onclick="App.go('${x[0]}')">${x[1]}</button>`).join("")}</div>`}
+  if(sub==="active"){const tabs=[["tasks-my-week","My week"],["team-goal","Team goal"],["rewards","Rewards"],["leaderboard","Leaderboard",true],["payroll","Bonuses",true]].filter(x=>!x[2]||MGR());h+=`<div class="sub-nav">${tabs.map(x=>`<button class="tab ${x[0]===cur?"on":""}" onclick="App.go('${x[0]}')">${x[1]}</button>`).join("")}</div>`}
+  return h;
+}
+function counts(){const vv=V();const k=t=>st.kind==="all"||(st.kind==="routine"&&t.kind==="routine")||(st.kind==="project"&&t.kind==="project")||(st.kind==="ask"&&t.kind==="ask");
+  return{all:vv.filter(t=>t.kind!=="ask"&&live(t)).length,routine:vv.filter(t=>t.kind==="routine"&&live(t)).length,project:vv.filter(t=>t.kind==="project"&&live(t)).length,ask:vv.filter(t=>t.kind==="ask"&&live(t)).length,
+   mine:vv.filter(t=>k(t)&&mine(t)&&live(t)).length,free:vv.filter(t=>k(t)&&pool(t)).length,
+   todo:vv.filter(t=>k(t)&&live(t)).length,overdue:vv.filter(t=>k(t)&&overdue(t)).length,awaiting:vv.filter(t=>k(t)&&awaiting(t)).length,done:vv.filter(t=>k(t)&&t.status==="done").length}}
+function toolbar(view){
+  const c=counts();const seg=(lbl,items,cur,fn)=>`<div class="g"><span class="lbl">${lbl}</span><div class="seg-ctl">${items.map(i=>`<button class="${cur===i[0]?"on":""}" onclick="${fn}('${i[0]}')">${i[1]}${i[2]!=null?`<span class="n ${i[3]?"hot":""}">${i[2]}</span>`:""}</button>`).join("")}</div></div>`;
+  let h=`<div class="tb">`;
+  h+=seg("What",[["all","All",c.all],["routine","Routine",c.routine],["project","Projects",c.project],["ask","Questions",c.ask]],view==="inbox"?"ask":st.kind,"T10.setKind");
+  if(view!=="inbox"){h+=seg("View",[["list","List"],["board","Board"]],view,"T10.setView")}
+  const whose=[["mine","Mine",c.mine]];if(MGR())whose.push(["all","Whole team"]);if(view!=="inbox"||MGR())whose.push(["free","Free",c.free]);
+  h+=seg("Whose",whose,view==="board"&&!MGR()&&st.scope==="all"?"":st.scope,"T10.setScope");
+  const where=[["todo","To do",c.todo],["overdue","Overdue",c.overdue,c.overdue>0]];if(view!=="inbox")where.push(["awaiting","Awaiting review",c.awaiting]);where.push(["done","Done",c.done]);
+  h+=seg("Where",where,view==="inbox"?st.ibStage:st.stage,"T10.setStage");
+  return h+`</div>`;
+}
+function setKind(k){st.kind=k;st.status="";st.flag=null;st.page=1;if(k==="ask"){A.go("tasks-inbox");return}if(A.state.current==="tasks-inbox"){A.go("tasks");return}re()}
+function setView(vw){if(vw==="board"){st.kind=st.kind==="all"?"project":st.kind;A.go("tasks-board")}else A.go("tasks")}
+function setScope(s){if(s==="all"&&!MGR())return;st.scope=s;st.page=1;re()}
+function setStage(s){if(A.state.current==="tasks-inbox"){st.ibStage=st.ibStage===s?"":s;st.ibSel.clear();re();return}st.stage=st.stage===s?"":s;st.status="";if(["overdue","awaiting"].includes(st.flag))st.flag=null;st.page=1;re()}
+/* ================= ALL TASKS · LIST ================= */
+const PAGE=10;
+function listFilter(){
+  let L=V().filter(t=>t.kind!=="ask");
+  if(st.kind==="routine")L=L.filter(t=>t.kind==="routine");if(st.kind==="project")L=L.filter(t=>t.kind==="project");
+  if(st.scope==="mine")L=L.filter(mine);if(st.scope==="free")L=L.filter(pool);
+  if(st.status)L=L.filter(t=>t.status===st.status);
+  else if(st.flag==="awaiting")L=L.filter(awaiting);else if(st.flag==="unassigned")L=L.filter(pool);else if(st.flag==="cancelRequested")L=L.filter(t=>t.cancelReq&&live(t));else if(st.flag==="overdue")L=L.filter(overdue);
+  else if(st.stage==="todo")L=L.filter(live);else if(st.stage==="overdue")L=L.filter(overdue);else if(st.stage==="awaiting")L=L.filter(awaiting);else if(st.stage==="done")L=L.filter(t=>t.status==="done");
+  else L=L.filter(t=>t.status!=="cancelled");
+  if(st.q){const q=st.q.toLowerCase();L=L.filter(t=>t.t.toLowerCase().includes(q)||t.body.toLowerCase().includes(q))}
+  if(st.assignee&&MGR())L=L.filter(t=>t.who.includes(st.assignee));
+  if(st.cat)L=L.filter(t=>t.cat===st.cat);if(st.prio)L=L.filter(t=>t.prio===st.prio);
+  const rank={open:0,in_progress:1,done:2,cancelled:3};
+  return L.sort((a,b)=>rank[a.status]-rank[b.status]||(b.prio==="urgent")-(a.prio==="urgent")||(new Date(a.due||"2099")-new Date(b.due||"2099"))||b.id-a.id);
+}
+function mountList(p={}){
+  if(!st.scopeInit){st.scopeInit=true;if(MGR())st.scope="all"}
+  if(p.mine)st.scope="mine";if(p.kind)st.kind=p.kind;if(p.scope)st.scope=p.scope;if(p.stage!=null)st.stage=p.stage;if(p.flag){st.flag=p.flag;st.stage="";st.status=""}if(p.q!=null)st.q=p.q;if(p.status){st.status=p.status;st.stage=""}if(p.category){st.cat=p.category;st.more=true}
+  if(st.scope==="all"&&!MGR())st.scope="mine";
+  const H=A.$("#t10-list-head");
+  H.innerHTML=nav("tasks")+toolbar("list")+`<div class="row" style="width:100%;gap:8px;flex-wrap:wrap"><button class="btn --sm" onclick="T10.form()">${I("plus")} New task</button>${demoEmpty("list")}</div>`;
+  A.registerCommands([{g:"Tasks",t:"New task (form)",ic:"check",fn:()=>form()},{g:"Tasks",t:"Open the task catalog",ic:"book",fn:()=>catalog()},{g:"Tasks",t:"Today's huddle",ic:"today",fn:()=>A.go("tasks-huddle")},{g:"Tasks",t:"Questions inbox",ic:"inbox",fn:()=>A.go("tasks-inbox")}]);
+  const B=A.$("#t10-list-body");
+  const vv=V();const un=vv.filter(t=>t.kind!=="ask"&&pool(t)).length,cr=vv.filter(t=>t.cancelReq&&live(t)).length;
+  const active=st.q||st.flag||st.status||st.assignee||st.cat||st.prio;
+  if(st.assignee||st.cat||st.prio||st.status)st.more=true;
+  let h=`<div class="toolbar"><label class="search">${I("search")}<input id="t10-q" placeholder="Search by title or text…" value="${E(st.q)}"></label>
+   ${un||st.flag==="unassigned"?`<button class="chip ${st.flag==="unassigned"?"on":""}" onclick="T10.flag('unassigned')">Unassigned <span class="n">${un}</span></button>`:""}
+   ${MGR()&&(cr||st.flag==="cancelRequested")?`<button class="chip ${st.flag==="cancelRequested"?"on":""}" onclick="T10.flag('cancelRequested')">Cancellation requested <span class="n">${cr}</span></button>`:""}
+   <button class="textbtn" onclick="T10.more()">${st.more?"Fewer filters":"More filters"}</button>${active?`<button class="textbtn" onclick="T10.reset()">Reset filters</button>`:""}</div>`;
+  if(st.more)h+=`<div class="more"><div class="field"><label>Status</label>${sel("t10-st",[["","All statuses"],["open","Open"],["in_progress","In progress"],["done","Done"],["cancelled","Cancelled"]],st.status,`onchange="T10.setF('status',this.value)"`)}</div>
+   ${MGR()?`<div class="field"><label>Assignee</label>${sel("t10-as",[["","Any assignee"],...S.map(s=>[s.id,s.n])],st.assignee,`onchange="T10.setF('assignee',this.value)"`)}</div>`:""}
+   <div class="field"><label>Category</label>${sel("t10-ca",[["","Any category"],...[...new Set(TASKS.map(t=>t.cat))].sort().map(c=>[c,CL(c)])],st.cat,`onchange="T10.setF('cat',this.value)"`)}</div>
+   <div class="field"><label>Priority</label>${sel("t10-pr",[["","Any priority"],["normal","Normal"],["urgent","Urgent"]],st.prio,`onchange="T10.setF('prio',this.value)"`)}</div>
+   ${MGR()?`<div class="csv"><div class="field"><label>From</label><input class="input" type="date" id="t10-from" value="${st.from}"></div><div class="field"><label>To</label><input class="input" type="date" id="t10-to" value="${st.to}"></div><button class="btn --ghost --sm" onclick="T10.csv()">${I("download")} Export CSV</button><span class="hint">Current filters apply · created in the period · columns ID, Title, Category, Priority, Status, Points, Initiative, Assignees, Created, Due, Started, Done, Approved, Cancelled</span></div>`:""}</div>`;
+  if(st.kind==="routine")h+=`<div class="note-box mb16">${I("info")} The day’s routine lives on “Today” and on the phone – this list is for searching and review.</div>`;
+  const L=st.empty.list?[]:listFilter();const pages=Math.max(1,Math.ceil(L.length/PAGE));if(st.page>pages)st.page=pages;const pg=L.slice((st.page-1)*PAGE,st.page*PAGE);
+  if(MGR()&&pg.length)h+=`<div class="row mb8" style="gap:14px"><label class="check"><input type="checkbox" id="t10-all" ${pg.every(t=>st.sel.has(t.id))?"checked":""} onchange="T10.selAll(this.checked)"> Select all on this page</label></div>`;
+  if(st.sel.size)h+=`<div class="bulk"><b>${st.sel.size} selected</b>${sel("t10-ba",[["","Keep assignee"],...S.map(s=>[s.id,s.n])],"",`style="width:160px;height:30px"`)}${sel("t10-bp",[["","Keep priority"],["normal","Normal"],["urgent","Urgent"]],"",`style="width:140px;height:30px"`)}<button class="btn" onclick="T10.bulk()">Reassign</button><button class="textbtn x" onclick="T10.clearSel()">Clear selection</button></div>`;
+  h+=`<div class="list" style="border:1px solid var(--hair)">`+(pg.length?pg.map(row).join(""):emptyBox("check",active||st.stage?"No tasks match these filters.":"No tasks.",active?"Try fewer filters or another scope.":"","<button class='btn --ghost --sm' onclick='T10.form()'>New task</button>"))+`</div>`;
+  if(pages>1)h+=`<div class="pager">${pager(pages)}</div>`;
+  B.innerHTML=h;
+  const q=A.$("#t10-q");let tm;q.oninput=()=>{clearTimeout(tm);tm=setTimeout(()=>{st.q=q.value;st.page=1;const pos=q.selectionStart;mountList();const q2=A.$("#t10-q");q2.focus();q2.setSelectionRange(pos,pos)},400)};
+  if(p.new||p.one_off||p.from_template||p.new_order){const o={};if(p.one_off&&MGR())o.prio="urgent";if(p.from_template){const x=tpl(p.from_template);if(x)Object.assign(o,{t:x.t,body:x.why,cat:x.cat,pts:x.pts,tpl:x.id})}if(p.new_order&&MGR())o.order=p.new_order;form(null,o);A.state.params={}}
+}
+function pager(n){const cur=st.page;const set=new Set([1,2,n-1,n,cur-1,cur,cur+1].filter(x=>x>=1&&x<=n));let h="",last=0;[...set].sort((a,b)=>a-b).forEach(x=>{if(x-last>1)h+=`<span class="muted">…</span>`;h+=`<button class="${x===cur?"on":""}" onclick="T10.page(${x})">${x}</button>`;last=x});return h}
+function row(t){
+  const z=zone(t.cat);const od=overdue(t);const tags=[];
+  if(t.prio==="urgent")tags.push(tag("Urgent","--accent"));tags.push(tag(CL(t.cat)));if(z&&z.owner)tags.push(tag("zone: "+NM(z.owner),"--line"));
+  tags.push(A.pill(t.status==="open"?"todo":t.status==="in_progress"?"doing":t.status==="done"?(t.approved?"done":"review"):"cancelled",t.status==="open"?"Open":t.status==="in_progress"?"In progress":t.status==="done"?(t.approved?"Done":"Done · awaiting review"):"Cancelled"));
+  if(t.init)tags.push(tag("Initiative","--ink"));if(t.pts)tags.push(tag(t.pts+" pts"));if(t.approved)tags.push(tag("Approved","--ok"));if(od)tags.push(tag("Overdue","--accent"));if(t.cancelReq&&live(t))tags.push(tag("Cancellation requested","--accent"));
+  if(t.order)tags.push(`<button class="tag --line" onclick="event.stopPropagation();App.openOrder(${t.order})">Order #${t.order}</button>`);
+  const meta=[];if(t.ai)meta.push(`<span>Why: ${E(t.ai)}</span>`);
+  meta.push(t.who.length?`<span>Assigned to: ${t.who.map(NM).join(", ")}${t.claimedBy?" · Taken by "+NM(t.claimedBy):t.ai?" · Assigned by AI":t.by!=="system"?" · Assigned by "+NM(t.by):""}</span>`:`<span class="accent">Unassigned</span>`);
+  if(t.cancelled)meta.push(`<span>Cancelled by ${NM(t.cancelled.by)} · ${E(t.cancelled.reason||"no reason")}</span>`);
+  if(t.due)meta.push(`<span class="${od?"accent":""}">Due: ${fmtDue(t)}</span>`);
+  const prim=primary(t,"T10.re()");const open=st.threads.has(t.id);
+  return `<div class="trow ${t.prio==="urgent"&&live(t)?"--urgent":""} ${t.status==="cancelled"?"--cancelled":""}" data-id="${t.id}">
+   <div style="padding-top:2px">${MGR()?`<label class="check"><input type="checkbox" ${st.sel.has(t.id)?"checked":""} onchange="T10.sel(${t.id},this.checked)"></label>`:`<span class="dot ${od?"--accent":t.status==="done"?"--ok":""}"></span>`}</div>
+   <div style="min-width:0"><div class="tt" onclick="T10.open(${t.id})">${E(t.t)}</div>${t.body?`<div class="bd">${E(t.body)}</div>`:""}<div class="tags">${tags.join("")}</div>
+    ${MGR()&&awaiting(t)&&t.flags?`<div class="flags">${t.flags.map(f=>tag(f)).join("")}<span class="hint">signals for the reviewer – not a block</span></div>`:""}
+    ${MGR()&&t.cancelReq&&live(t)?`<div class="note-box --accent mt8">${E(NM(t.cancelReq.who))} asks to cancel this task: ${E(t.cancelReq.reason)} <button class="textbtn --accent" style="margin-left:8px" onclick="T10.dismissReq(${t.id})">Dismiss request</button></div>`:""}
+    <div class="meta">${meta.join("")}</div>
+    ${t.photos.length?`<div class="thumbs">${t.photos.map((p,i)=>`<div class="thumb" onclick="T10.lightbox(${t.id},${i})"><img src="${p}" alt=""></div>`).join("")}</div>`:""}
+    <div class="mt8"><button class="textbtn" onclick="T10.thread(${t.id})">${open?"Hide comments":"Comments ("+t.comments.length+")"}</button></div></div>
+   <div class="acts2">${prim}<button class="ib" title="More actions" onclick="T10.menu(event,${t.id})">${I("dots")}</button></div>
+   ${open?`<div class="thread">${threadHtml(t)}</div>`:""}</div>`;
+}
+function primary(t,after){
+  if(claimable(t))return `<button class="btn --sm" onclick="T10.claim(${t.id},()=>${after})">Take it on</button>`;
+  if(canReview(t)){const b=approveBlock(t);return `<button class="btn --sm ${b?"is-disabled":""}" title="${E(b||"Approve and award points")}" onclick="T10.approveModal(${t.id},()=>${after})">Approve</button>${b?`<span class="hint" style="max-width:150px">${E(b)}</span>`:""}`}
+  if(live(t)&&canAct(t))return `<button class="btn --sm" onclick="T10.doneModal(${t.id},()=>${after})">Done</button>`;
+  return "";
+}
+function menuItems(t,after){
+  const it=[];const a=f=>()=>{f();after&&after()};
+  if(t.status==="open"&&!claimable(t)&&canAct(t))it.push({t:"Start",ic:"play",fn:a(()=>start(t.id))});
+  if(canUndo(t))it.push({t:"Return to work",ic:"undo",fn:a(()=>undone(t.id))});
+  if(canReopen(t))it.push({t:"Reopen",ic:"refresh",fn:()=>reopenModal(t.id,after)});
+  if(canEdit(t))it.push({t:"Edit",ic:"edit",fn:()=>form(t,null,after)});
+  if(canRelease(t))it.push({t:"Back to pool",ic:"customers",fn:a(()=>release(t.id))});
+  if(canCancel(t))it.push({t:"Cancel task",ic:"close",fn:()=>cancelModal(t.id,after)});else if(canAskCancel(t))it.push({t:"Ask to cancel",ic:"chat",fn:()=>askCancelModal(t.id,after)});
+  if(MGR()){if(it.length)it.push("-");it.push({t:"Delete",ic:"trash",cls:"--accent",fn:()=>del(t.id,after)})}
+  return it;
+}
+function menu(ev,id){const t=task(id);const it=menuItems(t,re);if(!it.length){tt("No more actions for this task");return}A.pop(ev,it)}
+function threadHtml(t,ro){
+  const list=t.comments.length?t.comments.map(c=>`<div class="cmt">${AV(c.who)}<div class="c"><b style="font-weight:400">${E(NM(c.who))}</b> <small>${A.fmtDay(c.at)} ${A.fmtTime(c.at)}</small><div>${linkify(c.t)}</div>${c.files&&c.files.length&&!ro?`<div class="files">${c.files.map(f=>f.img?`<div class="thumb --s" style="cursor:pointer" onclick="T10.lightboxImg('${f.img}')"><img src="${f.img}" alt=""></div>`:`<span class="f" onclick="App.toast('Opens in a new tab (demo)')">${E(f.n)} · ${E(f.size||"12 KB")}</span>`).join("")}</div>`:""}</div></div>`).join(""):`<div class="hint">${MGR()?"No comments yet – ask a question or leave a note for the assignee.":"No comments yet – write what was done or a link to proof."}</div>`;
+  if(ro)return list;
+  return list+`<div class="compose"><div style="flex:1"><textarea class="textarea" id="t10-c-${t.id}" rows="2" maxlength="2000" placeholder="Comment: what was done, a link to proof… (@Name to mention)" oninput="T10.cmtState(${t.id})"></textarea><div class="att" id="t10-att-${t.id}"></div></div><div class="col" style="gap:6px"><button class="btn --sm is-disabled" id="t10-send-${t.id}" onclick="T10.comment(${t.id})">${I("send")} Send</button><button class="btn --ghost --sm" id="t10-attb-${t.id}" onclick="T10.attach(${t.id})" title="Up to 5 files, 15 MB each">${I("link")} Attach</button></div></div>`;
+}
+const linkify=s=>E(s).replace(/((?:https?:\/\/)?[a-z0-9.-]+\.(?:uk|com|co\.uk|ai)(?:\/[^\s]*)?)/gi,m=>`<a class="link" style="text-transform:none;letter-spacing:0;font-size:inherit" onclick="App.toast('Opens ${E(m)} in a new tab')">${m}</a>`);
+const ATT={};
+function attach(id){const a=ATT[id]=ATT[id]||[];if(a.length>=5)return;const demo=[["photo-"+(a.length+1)+".jpg","3.1 MB",false],["count.xlsx","24 KB",false],["video.mov","18.4 MB",true]][a.length%3];a.push({n:demo[0],size:demo[1],big:demo[2]});renderAtt(id);cmtState(id)}
+function renderAtt(id){const a=ATT[id]||[];const box=document.getElementById("t10-att-"+id);if(!box)return;box.innerHTML=a.map((f,i)=>`<span class="f ${f.big?"--big":""}">${E(f.n)} · ${f.size}<button onclick="T10.unattach(${id},${i})">${I("close")}</button></span>`).join("")+(a.some(f=>f.big)?`<span class="accent xs" style="width:100%">A file is over 15 MB – remove it to send.</span>`:"");const b=document.getElementById("t10-attb-"+id);if(b)b.style.display=a.length>=5?"none":""}
+function unattach(id,i){ATT[id].splice(i,1);renderAtt(id);cmtState(id)}
+function cmtState(id){const ta=document.getElementById("t10-c-"+id),b=document.getElementById("t10-send-"+id);if(!ta||!b)return;const a=ATT[id]||[];b.classList.toggle("is-disabled",!(ta.value.trim()||a.length)||a.some(f=>f.big))}
+function comment(id){const t=task(id);const ta=document.getElementById("t10-c-"+id);const a=ATT[id]||[];if(!(ta.value.trim()||a.length))return;t.comments.push(C(MEID(),NOW.getHours(),NOW.getMinutes(),0,ta.value.trim(),a.map(f=>({n:f.n,size:f.size}))));ATT[id]=[];const m=(ta.value.match(/@([A-Z][a-z]+)/g)||[]).map(x=>x.slice(1).toLowerCase());pushTo([...new Set([...t.who,...m])].filter(x=>U(x)),"New comment",t.t);tt("Comment sent");re();if(A.$("#sheet").classList.contains("on"))open(id)}
+function lightbox(id,i){const t=task(id);lightboxImg(t.photos[i],t.t)}
+function lightboxImg(src,cap){A.modal({title:E(cap||"Photo"),wide:true,body:`<div class="photo --4x5" style="max-height:60vh;aspect-ratio:auto;height:60vh"><img src="${src}" alt=""></div><div class="hint mt8">Click outside or press Esc to close.</div>`,foot:null})}
+/* ---- list state helpers ---- */
+function flag(f){st.flag=st.flag===f?null:f;st.stage="";st.status="";st.page=1;mountList()}
+function more(){st.more=!st.more;mountList()}
+function reset(){Object.assign(st,{q:"",flag:null,status:"",assignee:"",cat:"",prio:"",page:1,stage:"todo"});mountList()}
+function setF(k,val){st[k]=val;if(k==="status")st.stage="";st.page=1;mountList()}
+function page(n){st.page=n;mountList();A.$("#t10-list-body").scrollTop=0}
+function selOne(id,on){on?st.sel.add(id):st.sel.delete(id);mountList()}
+function selAll(on){listFilter().slice((st.page-1)*PAGE,st.page*PAGE).forEach(t=>on?st.sel.add(t.id):st.sel.delete(t.id));mountList()}
+function clearSel(){st.sel.clear();mountList()}
+function thread(id){st.threads.has(id)?st.threads.delete(id):st.threads.add(id);mountList()}
+function bulk(){const who=v("t10-ba"),pr=v("t10-bp");if(!who&&!pr){tt("Pick a new assignee or a priority first");return}const ids=[...st.sel];
+  A.confirm(`Reassign ${ids.length} task${ids.length>1?"s":""}?`,`${who?"New assignee: "+NM(who):"Assignee unchanged"} · ${pr?"New priority: "+pr:"Priority unchanged"}. Only visible, editable tasks are changed.`,"Reassign",()=>{let n=0;ids.forEach(id=>{const t=task(id);if(!t||!canEdit(t))return;n++;if(who){t.who=[who];t.claimedBy=null;t.ai=null;if(t.status==="in_progress"&&!t.who.length)t.status="open"}if(pr)t.prio=pr;move(t)});if(who)pushTo([who],"New task for you",ids.length+" task(s)");st.sel.clear();tt(`${n} task${n>1?"s":""} reassigned`);emit();re()})}
+function csv(){const n=listFilter().filter(t=>t.created>=st.from&&t.created<=st.to+"T23:59").length;tt(`tasks-${st.from}_${st.to}.csv · ${n} rows · downloading (demo)`)}
+/* ---- task actions ---- */
+function claim(id,after){const t=task(id);if(t.race||!pool(t)){t.race=false;if(!t.who.length){t.who=["olesya"];t.claimedBy="olesya";t.status="in_progress"}tt("Someone else has already taken this task.");emit();after&&after();return}t.who=[MEID()];t.claimedBy=MEID();t.status="in_progress";t.startedAt=NOW.toISOString();move(t);tt("Taken: "+t.t);emit();after&&after()}
+function start(id){const t=task(id);t.status="in_progress";t.startedAt=NOW.toISOString();move(t);tt("Started · "+t.t);emit()}
+function undone(id){const t=task(id);t.status="in_progress";t.doneAt=null;move(t);tt("Back in work · "+t.t);emit()}
+function release(id){const t=task(id);const w=t.claimedBy;t.who=t.who.filter(x=>x!==w);t.claimedBy=null;t.ai=null;if(!t.who.length)t.status="open";move(t);tt(t.who.length?"Claim removed":"Task returned to the pool");emit()}
+function dismissReq(id){const t=task(id);const w=t.cancelReq.who;t.cancelReq=null;pushTo([w],"Task stays",t.t);tt("Request dismissed – the task stays");emit();re()}
+function del(id,after){const t=task(id);A.confirm(`Delete task “${E(t.t)}”?`,"The task and its thread are removed. This cannot be undone.","Delete",()=>{TASKS=TASKS.filter(x=>x.id!==id);A.closeSheet();tt("Task deleted");emit();after&&after()},{danger:true})}
+function doneModal(id,after){const t=task(id);let photos=[];const render=()=>{A.$("#t10-dp").innerHTML=photos.map((p,i)=>`<div class="thumb --l" style="position:relative"><img src="${p}" alt=""><button class="ib" style="position:absolute;top:0;right:0;width:22px;height:22px;background:var(--paper)" onclick="T10._dpRm(${i})">${I("close")}</button></div>`).join("")+(photos.length<8?`<button class="thumb --l" style="display:grid;place-items:center" onclick="T10._dpAdd()">${I("plus")}</button>`:"");A.$("#t10-dw").style.display=photos.length?"none":""};
+  T10._dpAdd=()=>{photos.push(IMG(["red-roses","peony-basket","white-spray","lilac-dream","peach-posy","belgravia","charmingly","veronica"][photos.length]));render()};T10._dpRm=i=>{photos.splice(i,1);render()};
+  A.modal({title:"Mark done",body:`<div class="sm">Attach a photo of the finished work – the reviewer cannot approve without it.</div><div class="note-box --accent mt8" id="t10-dw">${I("alert")} No photo yet${t.proof==="photo"?" – this task requires one":""}.</div><div class="row mt16" style="gap:8px;flex-wrap:wrap" id="t10-dp"></div><div class="hint mt8">jpeg / png / webp · up to 8 photos · 15 MB each</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="t10-dok">Done</button>`,onMount:b=>{render();A.$("#t10-dok",b).onclick=()=>{t.photos.push(...photos);t.status="done";t.doneAt=NOW.toISOString();t.steps.forEach(s=>{});move(t);A.closeModal();tt("Done · "+t.t+(photos.length?"":" · no photo – approval will be blocked"));emit();after&&after()}}})}
+function approveModal(id,after){const t=task(id);const b=approveBlock(t);if(b){tt(b);return}
+  A.modal({title:"Approve and award points",body:`<div class="sm">Base <b>${t.pts} pts</b> – the assignee's streak and level bonus are added automatically.</div><div class="caps mt16">Situational multiplier</div><div class="opt" id="t10-mul">${[["none","None ×1"],["holiday","Holiday ×2"],["hard","Hard slot ×1.5"],["init","Initiative ×1.5"]].map(o=>`<button data-m="${o[0]}">${o[1]}</button>`).join("")}</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="t10-aok">Approve</button>`,onMount:box=>{let m=null;A.$$("#t10-mul button",box).forEach(x=>x.onclick=()=>{m=x.dataset.m;A.$$("#t10-mul button",box).forEach(y=>y.classList.toggle("on",y===x))});
+   A.$("#t10-aok",box).onclick=()=>{const mul={none:1,holiday:2,hard:1.5,init:1.5}[m||"none"];t.approved={by:MEID(),at:NOW.toISOString()};move(t);let msg=[];t.who.forEach(w=>{const streak=STREAK[w]>=5?1.2:1;const lv=level(PTS[w]?PTS[w][1]:0);const got=Math.round(t.pts*mul*streak*(1+lv[2]/100));if(PTS[w]){PTS[w][0]+=got;PTS[w][1]+=got;BAL[w]+=got}msg.push(NM(w)+" +"+got);const badge=t.prio==="urgent"?"rescuer":t.cat==="growth"?"kaizen_hero":null;if(badge&&!HELD[w].includes(badge)){HELD[w].push(badge);const bd=BADGES.find(x=>x[0]===badge);BAL[w]+=bd[2];A.push("Badge earned",NM(w)+" · "+bd[1]+" · +"+bd[2]+" pts",{icon:"award"})}});A.closeModal();tt("Approved · "+msg.join(", "));emit();after&&after()}}})}
+function reasonModal(title,cta,fn,required){A.modal({title,body:`<div class="field"><label>Reason${required?"":" (optional)"}</label><textarea class="textarea" id="t10-rs" placeholder="${required?"Why should this task be cancelled?":"A short note – it goes into the thread"}"></textarea><div class="accent xs mt8" id="t10-rse" style="display:none">A reason is required.</div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="t10-rok">${cta}</button>`,onMount:b=>{A.$("#t10-rok",b).onclick=()=>{const r=v("t10-rs").trim();if(required&&!r){A.$("#t10-rse",b).style.display="";return}A.closeModal();fn(r)}}})}
+function reopenModal(id,after){const t=task(id);if(t.approved){tt("An approved task cannot be reopened");return}reasonModal("Send back into work","Reopen",r=>{t.status="open";t.doneAt=null;t.startedAt=null;t.cancelled=null;if(r){log(t,MEID(),"Sent back: "+r);pushTo(t.who,"Sent back",r)}move(t);tt("Reopened · "+t.t);emit();after&&after()})}
+function cancelModal(id,after){const t=task(id);if(t.approved){tt("An approved task cannot be cancelled");return}reasonModal("Cancel task","Cancel task",r=>{t.status="cancelled";t.cancelled={by:MEID(),at:NOW.toISOString(),reason:r};if(t.cancelReq){pushTo([t.cancelReq.who],"Task cancelled",t.t);t.cancelReq=null}move(t);A.closeSheet();tt("Cancelled · "+t.t);emit();after&&after()})}
+function askCancelModal(id,after){const t=task(id);reasonModal("Ask a manager to cancel","Send request",r=>{t.cancelReq={who:MEID(),at:NOW.toISOString(),reason:r};SKIPS_ADD(t);tt(t.cancelReq?"Request sent to the manager":"");emit();after&&after()},true)}
+const SKIPS_ADD=t=>{if(!t.tpl)return;const x=SKIPS.find(s=>s[0]===tpl(t.tpl).t);x?x[1]++:SKIPS.push([tpl(t.tpl).t,1])};
+/* ---- task form (new / edit) ---- */
+function form(t,pre,after){
+  const o=t||Object.assign({t:"",body:"",prio:"normal",cat:"general",due:"",pts:0,who:[],photos:[],order:null,tpl:null},pre||{});const edit=!!t;let who=[...o.who],photos=[];let dirty=false;
+  const closeDirty=()=>{if(dirty||A.$("#t10-ft").value!==o.t){A.confirm("Close without saving?","Everything you typed will be lost.","Close",()=>A.closeModal());return}A.closeModal()};
+  T10._fclose=closeDirty;
+  const body=`${o.order?`<div class="note-box mb16">${I("orders")} Linked order: <button class="textbtn" onclick="App.openOrder(${o.order})">#${o.order}</button></div>`:""}
+   <div class="field"><label>Title</label><input class="input" id="t10-ft" value="${E(o.t)}" placeholder="What needs doing"><div class="accent xs" id="t10-fte" style="display:none">Title is required.</div></div>
+   <div class="field mt16"><label>Description</label><textarea class="textarea" id="t10-fb" placeholder="Details, links, where to find things">${E(o.body)}</textarea></div>
+   <div class="grid g2 mt16"><div class="field"><label>Priority</label>${sel("t10-fp",[["normal","Normal"],["urgent","Urgent"]],o.prio,MGR()?"":"disabled")}</div><div class="field"><label>Category</label>${sel("t10-fc",CATS.map(c=>[c,CL(c)]),o.cat,edit&&!MGR()?"disabled":"")}</div>
+   <div class="field"><label>Deadline (London time)</label><input class="input" type="datetime-local" id="t10-fd" value="${o.due?o.due.slice(0,16):""}"></div>${MGR()?`<div class="field"><label>Points (0–1000)</label><input class="input" type="number" min="0" max="1000" id="t10-fpt" value="${o.pts}"></div>`:""}</div>
+   <div class="field mt16"><label>Assignees</label><div class="chips" id="t10-fw">${S.map(s=>`<button class="chip ${who.includes(s.id)?"on":""}" data-w="${s.id}">${E(s.n)}</button>`).join("")}</div><div class="hint">Optional – leave empty to put the task in the shift pool.</div></div>
+   <div class="field mt16"><label>Photos</label><div class="row" style="gap:8px;flex-wrap:wrap" id="t10-fph"></div></div>`;
+  A.modal({title:edit?"Edit task":"New task",wide:true,body,foot:`<button class="btn --secondary --sm" onclick="T10._fclose()">Cancel</button><button class="btn --sm" id="t10-fok">${edit?"Save":"Create task"}</button>`,onMount:b=>{
+    const renderPh=()=>{A.$("#t10-fph",b).innerHTML=o.photos.map(p=>`<div class="thumb --l"><img src="${p}" alt=""></div>`).join("")+photos.map((p,i)=>`<div class="thumb --l" style="position:relative"><img src="${p}" alt=""><button class="ib" style="position:absolute;top:0;right:0;width:22px;height:22px;background:var(--paper)" onclick="T10._fphRm(${i})">${I("close")}</button></div>`).join("")+`<button class="thumb --l" style="display:grid;place-items:center" onclick="T10._fphAdd()">${I("plus")}</button>`};
+    T10._fphAdd=()=>{photos.push(IMG(["daydream-basket","poem-petals","pink-manifesto"][photos.length%3]));dirty=true;renderPh()};T10._fphRm=i=>{photos.splice(i,1);renderPh()};renderPh();
+    A.$$("#t10-fw .chip",b).forEach(c=>c.onclick=()=>{const w=c.dataset.w;who.includes(w)?who.splice(who.indexOf(w),1):who.push(w);c.classList.toggle("on");dirty=true});
+    A.$$("input,textarea,select",b).forEach(x=>x.oninput=()=>dirty=true);
+    A.$("#t10-fok",b).onclick=()=>{const title=v("t10-ft").trim();if(!title){A.$("#t10-fte",b).style.display="";return}
+      const data={t:title,body:v("t10-fb"),prio:MGR()?v("t10-fp"):(t?t.prio:"normal"),cat:(edit&&!MGR())?t.cat:v("t10-fc"),due:v("t10-fd")?new Date(v("t10-fd")).toISOString():null,pts:MGR()?Number(v("t10-fpt"))||0:(t?t.pts:0)};
+      if(edit){const added=who.filter(w=>!t.who.includes(w));Object.assign(t,data);t.who=who;t.photos.push(...photos);move(t);if(added.length)pushTo(added,"New task for you",t.t);tt("Saved");}
+      else{const n=mk(Object.assign(data,{kind:o.order?"routine":"project",who,by:MEID(),init:!MGR(),photos,order:o.order||null,tpl:o.tpl||null,created:NOW.toISOString(),moved:NOW.toISOString(),pos:TASKS.length+1}));TASKS.push(n);tt("Task created"+(who.length?"":" · in the shift pool"));}
+      A.closeModal();emit();after?after():re()}}});
+}
+/* ---- unified task sheet (list row · board card · day card share this) ---- */
+function open(id){
+  const t=task(id);if(!t){tt("Task not found");return}const z=zone(t.cat);const od=overdue(t);const col=t.status==="open"?"Queue":t.status==="in_progress"?"In progress":t.status==="done"?(t.approved?"Done":"In review"):"Cancelled";
+  const tags=[A.pill(t.status==="open"?"todo":t.status==="in_progress"?"doing":t.status==="done"?(t.approved?"done":"review"):"cancelled",col),z?tag(CL(t.cat)):""];if(t.prio==="urgent"&&live(t))tags.push(tag("Urgent","--accent"));if(od)tags.push(tag("Overdue","--accent"));const sd=stale(t);if(live(t)&&sd>=7)tags.push(tag(sd+" d. still",sd>=14?"--accent":""));if(t.pts)tags.push(tag(t.pts+" pts"));if(t.init)tags.push(tag("Initiative","--ink"));if(t.cancelReq&&live(t))tags.push(tag("Cancellation requested","--accent"));
+  const steps=t.steps;const done=steps.filter(s=>s.done).length;const act=canAct(t);const users=MGR()||A.state.current!=="tasks-huddle";
+  const body=`<div class="tags" style="margin-top:0">${tags.join("")}</div>
+   ${t.cancelReq&&live(t)&&MGR()?`<div class="note-box --accent mt8">${E(NM(t.cancelReq.who))} asks to cancel: ${E(t.cancelReq.reason)} <button class="textbtn --accent" style="margin-left:8px" onclick="T10.dismissReq(${t.id});T10.open(${t.id})">Dismiss request</button></div>`:""}
+   <dl class="kv mt16"><dt>Assigned to</dt><dd>${t.who.length?t.who.map(w=>AV(w)+" "+E(NM(w))).join(" · ")+(t.claimedBy?" · taken":"")+(t.ai?" · by AI":""):"<span class='accent'>Unassigned · in the shift pool</span>"}</dd>
+   ${t.ai?`<dt>Why</dt><dd>${E(t.ai)}</dd>`:""}<dt>Zone</dt><dd>${z?E(CL(t.cat))+" · "+(z.owner?E(NM(z.owner)):"no owner yet"):E(CL(t.cat))}</dd><dt>Due</dt><dd class="${od?"accent":""}">${t.due?A.fmtDay(t.due)+" "+A.fmtTime(t.due):"–"}</dd><dt>Raised by</dt><dd>${E(NM(t.by))} · ${A.fmtDay(t.created)}</dd>
+   ${t.order?`<dt>Order</dt><dd><button class="link" onclick="App.openOrder(${t.order})">#${t.order}</button></dd>`:""}${t.approved?`<dt>Approved</dt><dd>${E(NM(t.approved.by))} · ${A.fmtDay(t.approved.at)} ${A.fmtTime(t.approved.at)}</dd>`:""}${t.cancelled?`<dt>Cancelled</dt><dd>${E(NM(t.cancelled.by))} · ${E(t.cancelled.reason||"no reason")}</dd>`:""}</dl>
+   ${t.body?`<div class="sm mt16">${linkify(t.body)}</div>`:""}
+   ${t.photos.length?`<div class="row mt16" style="gap:6px;flex-wrap:wrap">${t.photos.map((p,i)=>`<div class="thumb --l" style="cursor:zoom-in" onclick="T10.lightbox(${t.id},${i})"><img src="${p}" alt=""></div>`).join("")}</div>`:""}
+   <div class="sec-head"><div class="h3">Next steps <span class="muted sm">${done}/${steps.length}</span></div></div>
+   <div class="steps">${steps.length?steps.map((s,i)=>`<div class="st"><label class="check"><input type="checkbox" ${s.done?"checked":""} ${act?"":"disabled"} onchange="T10.stepToggle(${t.id},${i},this.checked)"></label><span style="${s.done?"color:var(--grey);text-decoration:line-through":""}">${E(s.t)}</span>
+     ${s.done?`<span class="sm2">· ${E(NM(s.by||MEID()))}</span>`:act&&users?`<select class="select" style="width:130px;height:26px;font-size:12px" onchange="T10.stepWho(${t.id},${i},this.value)"><option value="">Nobody</option>${S.map(x=>`<option value="${x.id}" ${s.who===x.id?"selected":""}>${E(x.n)}</option>`).join("")}</select><input class="input" type="date" style="width:130px;height:26px;font-size:12px" value="${s.due?s.due.slice(0,10):""}" onchange="T10.stepDue(${t.id},${i},this.value)">`:`<span class="sm2 ${s.due&&new Date(s.due)<NOW?"hot":""}">${s.who?"· "+E(NM(s.who)):""}${s.due?" · by "+A.fmtDate(s.due):""}</span>`}
+     ${act?`<button class="ib x" title="Remove this step" onclick="T10.stepDel(${t.id},${i})">${I("close")}</button>`:""}</div>`).join(""):`<div class="accent sm">No next step yet – add the first one.</div>`}
+    ${act?`<div class="row mt8"><input class="input" id="t10-ns" placeholder="Next step…" onkeydown="if(event.key==='Enter')T10.stepAdd(${t.id})"><button class="btn --ghost --sm" onclick="T10.stepAdd(${t.id})">Add</button></div>`:""}</div>
+   <div class="sec-head"><div class="h3">Thread <span class="muted sm">${t.comments.length}</span></div></div>${threadHtml(t)}
+   <div class="hint mt16">Last movement: ${ageTxt(t.moved)} ago</div>`;
+  const prim=primary(t,`T10.open(${t.id})`);
+  const items=menuItems(t,()=>open(id));
+  A.sheet({eyebrow:`${t.kind==="routine"?"Routine":t.kind==="project"?"Project":"Question"} · #${t.id}`,title:E(t.t),body,foot:`${items.length?`<button class="ib" title="More actions" onclick="T10.sheetMenu(event,${t.id})">${I("dots")}</button>`:""}<span class="sp"></span>${prim}`,_replace:A.$("#sheet").classList.contains("on")});
+}
+function sheetMenu(ev,id){A.pop(ev,menuItems(task(id),()=>open(id)))}
+function stepToggle(id,i,on){const t=task(id);const s=t.steps[i];s.done=on;s.by=on?MEID():null;s.doneAt=on?NOW.toISOString():null;move(t);open(id);tt(on?"Step done":"Step reopened")}
+function stepDel(id,i){const t=task(id);A.confirm("Remove this step?",E(t.steps[i].t),"Remove",()=>{t.steps.splice(i,1);open(id);tt("Step removed")})}
+function stepAdd(id){const t=task(id);const val=v("t10-ns").trim();if(!val)return;t.steps.push({t:val,done:false});move(t);open(id);tt("Step added")}
+function stepWho(id,i,w){const t=task(id);t.steps[i].who=w||null;if(w)pushTo([w],"Your step",t.steps[i].t);open(id)}
+function stepDue(id,i,d){const t=task(id);t.steps[i].due=d?new Date(d+"T18:00").toISOString():null;tt("Step deadline saved")}
+/* ---- catalog drawer ---- */
+let CAT_TAKEN=new Set([9]),CAT_FILTER="all",CAT_ERR=false,CAT_ASSIGN=null;
+function catalog(){A.sheet({eyebrow:"Extra work for points – take a task or hand it to someone",title:"Task catalog",narrow:true,body:`<div class="skel"></div><div class="skel"></div><div class="skel"></div>`,onMount:()=>setTimeout(renderCatalog,280)});CAT_ASSIGN=null}
+function renderCatalog(){
+  const sh=A.$("#sh-body");if(!sh||!A.$("#sheet").classList.contains("on"))return;
+  if(CAT_ERR){sh.innerHTML=`<div class="empty">${I("alert")}<div class="h3">Could not load the catalog.</div><button class="btn --ghost --sm" onclick="T10.catRetry()">Retry</button></div>`;return}
+  const lib=TPL.filter(t=>t.active);const mz=myZones();const cats=[...new Set(lib.map(t=>t.cat))];
+  const list=CAT_FILTER==="all"?lib:CAT_FILTER==="mine"?lib.filter(t=>mz.includes(t.cat)):lib.filter(t=>t.cat===CAT_FILTER);
+  const today=TASKS.filter(t=>t.fromCatalog&&days(t.created)===0);
+  const chip=(k,l,n)=>`<button class="chip ${CAT_FILTER===k?"on":""}" onclick="T10.catFilter('${k}')">${l} <span class="n">${n}</span></button>`;
+  sh.innerHTML=`<div class="chips mb16">${chip("all","All",lib.length)}${mz.length?chip("mine","My zone",lib.filter(t=>mz.includes(t.cat)).length):""}${cats.map(c=>chip(c,CL(c),lib.filter(t=>t.cat===c).length)).join("")}</div>
+   ${lib.length?list.length?list.map(t=>`<div class="ccard"><div class="ch">${tag(CL(t.cat))}<span class="tag --ink">+${t.pts}</span><span class="sp"></span><span class="hint">~${t.min} min</span></div><div>${E(t.t)}</div><div class="ru">${E(t.ru)}</div>
+     <div class="as">${CAT_TAKEN.has(t.id)?`<button class="btn --ghost --sm is-disabled">Taken</button>`:`<button class="btn --sm" onclick="T10.catTake(${t.id})">Take</button>`}${MGR()?(CAT_ASSIGN===t.id?`${sel("t10-cw",[["","Choose a person"],...S.map(s=>[s.id,s.n])],"",`style="width:150px;height:30px"`)}<button class="btn --sm" onclick="T10.catAssign(${t.id})">Assign</button><button class="textbtn" onclick="T10.catAssignOpen(null)">Cancel</button>`:`<button class="btn --ghost --sm" onclick="T10.catAssignOpen(${t.id})">Assign…</button>`):""}</div></div>`).join(""):`<div class="empty"><div class="sm">No tasks in this section.</div></div>`:`<div class="empty"><div class="sm">The catalog is empty right now.</div></div>`}
+   <div class="hr"></div><div class="sm" aria-live="polite">${today.length?`Today from the catalog: <b>${today.length} task${today.length>1?"s":""} · +${today.reduce((a,t)=>a+(t.pts||tpl(t.tpl)?.pts||0),0)} pts</b><div class="hint">${[...new Set(today.flatMap(t=>t.who))].map(w=>NM(w)+" × "+today.filter(t=>t.who.includes(w)).length).join(", ")}</div>`:"Nothing taken from the catalog today yet"}</div>
+   ${MGR()?`<div class="mt16"><button class="textbtn" onclick="App.closeSheet();App.go('tasks-catalog')">Manage the catalog</button></div>`:""}<div class="mt16"><button class="textbtn muted" onclick="T10.catFail()" title="Stand only">Demo: simulate a load error</button></div>`;
+}
+function catFilter(k){CAT_FILTER=k;renderCatalog()}
+function catFail(){CAT_ERR=true;renderCatalog()}function catRetry(){CAT_ERR=false;A.$("#sh-body").innerHTML=`<div class="skel"></div><div class="skel"></div>`;setTimeout(renderCatalog,280)}
+function catTake(id){const x=tpl(id);if(!x.active){tt("Could not complete this. Try again.");return}if(TASKS.some(t=>t.tpl===id&&live(t)&&mine(t))){tt("You already have this task in work");return}
+  TASKS.push(mk({t:x.t,kind:"routine",cat:x.cat,who:[MEID()],by:MEID(),pts:0,init:!MGR(),anchor:x.anchor,proof:x.proof,tpl:id,fromCatalog:true,created:NOW.toISOString(),due:x.due?T(+x.due.slice(0,2),+x.due.slice(3),0):null}));CAT_TAKEN.add(id);tt("Task taken: "+x.t);emit();renderCatalog();document.dispatchEvent(new CustomEvent("task-catalog:changed"))}
+function catAssignOpen(id){CAT_ASSIGN=id;renderCatalog()}
+function catAssign(id){const w=v("t10-cw");if(!w){tt("Pick an active team member.");return}const x=tpl(id);if(TASKS.some(t=>t.tpl===id&&live(t)&&t.who.includes(w))){tt(NM(w)+" already has this task in work");return}
+  TASKS.push(mk({t:x.t,kind:"routine",cat:x.cat,who:[w],by:MEID(),pts:x.pts,anchor:x.anchor,proof:x.proof,tpl:id,fromCatalog:true,created:NOW.toISOString(),due:x.due?T(+x.due.slice(0,2),+x.due.slice(3),0):null}));pushTo([w],"New task for you",x.t);CAT_ASSIGN=null;tt("Assigned to "+NM(w));emit();renderCatalog();document.dispatchEvent(new CustomEvent("task-catalog:changed"))}
+/* ================= BOARD ================= */
+const COLS=[["queue","Queue"],["doing","In progress"],["review","In review"],["done","Done"]];
+const colOf=t=>t.status==="open"?"queue":t.status==="in_progress"?"doing":t.status==="done"?(t.approved?"done":"review"):null;
+let DRAG=null;
+function mountBoard(p={}){
+  if(p.zone!=null)st.zone=p.zone;if(st.kind==="all")st.kind="project";
+  A.$("#t10-board-head").innerHTML=nav("tasks")+toolbar("board")+`<div class="row" style="width:100%;gap:8px;flex-wrap:wrap"><button class="btn --sm" onclick="T10.form()">${I("plus")} New task</button>${demoEmpty("board")}</div>`;
+  let L=V().filter(t=>t.kind==="project"&&colOf(t));
+  if(st.scope==="mine")L=L.filter(mine);if(st.scope==="free")L=L.filter(pool);
+  if(st.zone)L=L.filter(t=>t.cat===st.zone);
+  L=L.filter(t=>colOf(t)!=="done"||days(t.approved.at)<=30);
+  if(st.empty.board)L=[];
+  const mz=myZones();const chips=[["","All zones"],...(mz.length&&st.zone!==mz[0]?[[mz[0],"My zone"]]:[]),...ZONES.filter(z=>z.active).map(z=>[z.cat,CL(z.cat)+(z.owner?" · "+U(z.owner).av:"")])];
+  let h=`<div class="chips mb16">${chips.map(c=>`<button class="chip ${st.zone===c[0]?"on":""}" onclick="T10.zoneChip('${c[0]}')">${E(c[1])}</button>`).join("")}</div>`;
+  if(!L.length)h+=emptyBox("board","No projects on the board yet.","Raise one with “New task”.",`<button class="btn --ghost --sm" onclick="T10.form()">New task</button>`);
+  else h+=`<div class="kanban" style="height:auto;min-height:60%">${COLS.map(c=>{const cards=L.filter(t=>colOf(t)===c[0]).sort((a,b)=>a.pos-b.pos);return `<div class="kcol" data-col="${c[0]}"><div class="k-head">${c[1]}${c[0]==="done"?" <small style='text-transform:none;letter-spacing:0'>· last 30 days</small>":""}<span class="n">${cards.length}</span></div><div class="k-body">${cards.map((t,i)=>card(t,c[0],i,cards.length)).join("")||`<div class="hint" style="padding:8px">Nothing here</div>`}</div></div>`}).join("")}</div>`;
+  A.$("#t10-board-body").innerHTML=h;
+  A.$$("#s-tasks-board .kcard").forEach(k=>{k.ondragstart=e=>{DRAG=+k.dataset.id;e.dataTransfer.effectAllowed="move"};k.ondragend=()=>{DRAG=null;A.$$("#s-tasks-board .kcol").forEach(c=>c.classList.remove("drop"))}});
+  A.$$("#s-tasks-board .kcol").forEach(c=>{c.ondragover=e=>{e.preventDefault();c.classList.add("drop")};c.ondragleave=()=>c.classList.remove("drop");c.ondrop=e=>{e.preventDefault();c.classList.remove("drop");if(DRAG)onMove(DRAG,c.dataset.col)}});
+}
+function card(t,col,i,n){const z=zone(t.cat);const od=overdue(t);const sd=stale(t);const next=t.steps.find(s=>!s.done);
+  return `<div class="kcard ${col!=="done"&&sd>=14?"--red":col!=="done"&&sd>=7?"--amber":""}" draggable="true" data-id="${t.id}" onclick="T10.open(${t.id})">
+   <div class="k-title" title="${E(t.t)}">${E(t.t)}</div>
+   ${col!=="done"?`<div class="next ${next?"":"--none"}">${next?"→ "+E(next.t):"No next step"}</div>`:""}
+   <div class="tags" style="margin-top:0">${z?tag(CL(t.cat)):""}${t.prio==="urgent"&&col!=="done"?tag("Urgent","--accent"):""}${od?tag("Overdue","--accent"):""}${col!=="done"&&sd>=7?tag(sd+" d. still",sd>=14?"--accent":""):""}</div>
+   <div class="k-foot">${t.steps.length?`<span>${I("check")} ${t.steps.filter(s=>s.done).length}/${t.steps.length}</span>`:""}${t.comments.length?`<span>${I("chat")} ${t.comments.length}</span>`:""}${t.due?`<span class="${od?"accent":""}">${A.fmtDate(t.due)}</span>`:""}${t.pts?`<span>${t.pts} pts</span>`:""}<span class="sp"></span>${t.who.length?`<span class="avatars">${t.who.slice(0,4).map(w=>AV(w)).join("")}</span>`:`<span class="accent xs">Unassigned</span>`}</div>
+   <div class="row" style="gap:6px;margin-top:2px"><button class="textbtn" onclick="event.stopPropagation();T10.moveMenu(event,${t.id})">move</button></div>
+   ${MGR()?`<div class="ord"><button title="Move up" ${i===0?"disabled style='opacity:.3'":""} onclick="event.stopPropagation();T10.reorder(${t.id},-1)"><svg viewBox="0 0 24 24" class="i"><path d="m6 15 6-6 6 6"/></svg></button><button title="Move down" ${i===n-1?"disabled style='opacity:.3'":""} onclick="event.stopPropagation();T10.reorder(${t.id},1)"><svg viewBox="0 0 24 24" class="i"><path d="m6 9 6 6 6-6"/></svg></button></div>`:""}</div>`}
+function zoneChip(z){st.zone=z;mountBoard()}
+function onMove(id,to){const t=task(id);const from=colOf(t);if(from===to)return;
+  if(from==="queue"&&to==="doing"&&canAct(t)){start(id);mountBoard();return}
+  if((from==="queue"||from==="doing")&&to==="review"&&canAct(t)){doneModal(id,mountBoard);return}
+  if(from==="review"&&to==="done"){if(canReview(t)){const b=approveBlock(t);if(b){tt(b);return}approveModal(id,mountBoard)}else tt("Only the author (or an admin) can approve this card.");return}
+  if(from==="review"&&to==="queue"&&canReopen(t)){reopenModal(id,mountBoard);return}
+  tt("That move is not available for this card.")}
+function moveMenu(ev,id){const t=task(id);const from=colOf(t);const it=[];COLS.forEach(c=>{if(c[0]!==from)it.push({t:"→ "+c[1],ic:"chev",fn:()=>onMove(id,c[0])})});A.pop(ev,["Move to",...it])}
+function reorder(id,d){const t=task(id);const col=colOf(t);const list=TASKS.filter(x=>x.kind==="project"&&colOf(x)===col&&vis(x)).sort((a,b)=>a.pos-b.pos);const i=list.indexOf(t);const j=i+d;if(j<0||j>=list.length)return;const o=list[j];[t.pos,o.pos]=[o.pos,t.pos];mountBoard();tt("Order saved")}
+/* ================= TODAY · HUDDLE ================= */
+function dayTasks(){return TASKS.filter(t=>t.kind!=="ask"&&t.status!=="cancelled"&&(t.kind==="routine"||t.due&&days(t.due)===0)&&(t.due?days(t.due)===0:true)&&days(t.created)<=0)}
+function mountHuddle(){
+  if(!MGR())st.hudView="mine";else if(!st.hudView)st.hudView="team";
+  const team=st.hudView==="team";
+  A.$("#t10-hud-head").innerHTML=nav("tasks-huddle")+`<div class="row" style="width:100%;gap:12px;flex-wrap:wrap"><div><div class="h3">Tuesday, 20 October</div><div class="hint">Questions, projects and the full list are in the «All tasks» tab</div></div><span class="sp"></span>${MGR()?`<div class="seg-ctl"><button class="${team?"on":""}" onclick="T10.hudView('team')">Whole team</button><button class="${team?"":"on"}" onclick="T10.hudView('mine')">Mine</button></div>`:""}<button class="btn --sm" onclick="T10.form()">${I("plus")} New task</button>${demoEmpty("hud")}</div>`;
+  let all=dayTasks().filter(t=>vis(t));const L=st.empty.hud?[]:(team?all:all.filter(t=>mine(t)||pool(t)));
+  const done=L.filter(t=>t.status==="done").length,od=L.filter(overdue),noas=L.filter(pool).length;
+  const todayPts=L.filter(t=>t.approved&&days(t.approved.at)===0).reduce((a,t)=>a+t.pts,0);const fromCat=TASKS.filter(t=>t.fromCatalog&&days(t.created)===0);
+  const hour=NOW.getHours();const nowA=ANCHORS.find(a=>hour>=a[3]&&hour<a[4]);
+  const blockOf=t=>{const a=t.anchor&&t.anchor!=="any"?t.anchor:(t.due?ANCHORS.find(x=>new Date(t.due).getHours()<x[4])?.[0]||"closing":"any");return a};
+  const odBlock=od.length?(()=>{const b=blockOf(od[0]);return b==="any"?"Any time":AL(b)})():null;
+  const sortD=(a,b)=>(overdue(b)-overdue(a))||((b.prio==="urgent")-(a.prio==="urgent"))||(new Date(a.due||"2099")-new Date(b.due||"2099"));
+  const colHtml=(key,lbl,hrs,wide)=>{const ts=L.filter(t=>blockOf(t)===key).sort(sortD);if(key==="any"&&!ts.length)return"";const dn=ts.filter(t=>t.status==="done").length;const full=ts.length&&dn===ts.length;const exp=st.expanded.has(key);const show=full&&!exp?ts.slice(0,2):ts;
+    return `<div class="hd-col ${key===(nowA?nowA[0]:"")?"now":""} ${wide?"--wide":""}">${key===(nowA?nowA[0]:"")?`<span class="nowlbl">now</span>`:""}<div class="k-head">${lbl} <small>${hrs?hrs+" · ":""}${ts.length?`${dn} of ${ts.length}${full?" ✓":""}`:"Nothing here"}</small>${ts.length?`<div class="progress mt8 ${full?"--ok":""}"><i style="width:${Math.round(dn/ts.length*100)}%"></i></div>`:""}</div>
+     <div class="k-body">${show.map(hcard).join("")}${full&&!exp&&ts.length>2?`<button class="textbtn" onclick="T10.expand('${key}')">+ ${ts.length-2} more done</button>`:full&&exp?`<button class="textbtn" onclick="T10.collapse('${key}')">Collapse</button>`:""}</div></div>`};
+  const g=GOALS.find(x=>x.month==="2026-10");const onShift=S.filter(s=>s.on&&s.role!=="owner");
+  const windows=A.SLOTS.map(s=>[s,O.filter(o=>o.n===0&&o.slot===s&&o.status!=="cancelled").length]);const notPaid=O.filter(o=>o.n===0&&o.paid!=="paid"&&o.status!=="cancelled").length;
+  const focus=notPaid?`${notPaid} order${notPaid>1?"s":""} not paid yet – chase before the slot.`:`Busiest window ${windows.sort((a,b)=>b[1]-a[1])[0][0]}.`;
+  const onPeople=all.filter(t=>t.kind==="routine"&&t.who.length&&live(t)).length,inPool=all.filter(t=>t.kind==="routine"&&pool(t)).length,closed=all.filter(t=>t.kind==="routine"&&t.status==="done").length,nofit=all.filter(t=>t.kind==="routine"&&blockOf(t)==="any").length;
+  const myD=all.filter(mine);
+  A.$("#t10-hud-body").innerHTML=`<div class="hd-grid"><div>
+   <div class="grid g4 mb16"><div class="tile"><span class="caps">Done today</span><span class="v">${done} <span class="muted" style="font-size:18px">/ ${L.length}</span></span><div class="progress"><i style="width:${L.length?Math.round(done/L.length*100):0}%"></i></div></div>
+    <div class="tile ${od.length?"--accent":""}"><span class="caps">Overdue</span><span class="v ${od.length?"accent":""}">${od.length}</span><span class="hint">${od.length?od.length+" in «"+odBlock+"»":"nothing is late"}</span></div>
+    <div class="tile"><span class="caps">No assignee</span><span class="v">${noas}</span><span class="hint">in the shift pool</span></div>
+    <div class="tile"><span class="caps">Points today</span><span class="v ok">+${todayPts}</span><span class="hint">${fromCat.length?"from the catalog: "+fromCat.length+" task"+(fromCat.length>1?"s":""):"from the catalog: none yet"}</span></div></div>
+   ${L.length?`<div class="hd-cols">${ANCHORS.map(a=>colHtml(a[0],a[1],a[2])).join("")}${colHtml("any","Any time","",true)}</div>`:emptyBox("today","No routine for today yet.","The night distribution runs at 04:20; take something from the catalog meanwhile.",`<button class="btn --ghost --sm" onclick="T10.catalog()">Open the catalog</button>`)}
+   </div><div class="hd-side">
+   <div class="card"><span class="caps">${fromCat.some(t=>mine(t))&&!myD.some(live)?"All done for today":"Task catalog"}</span><div class="sm">Taken today: <b>${fromCat.length} task${fromCat.length===1?"":"s"} · +${fromCat.reduce((a,t)=>a+(t.pts||tpl(t.tpl)?.pts||0),0)} pts</b></div><div class="col mt8" style="gap:4px">${TPL.filter(t=>t.active).slice(0,3).map(t=>`<div class="row sm" style="gap:8px"><span class="tag --ink">+${t.pts}</span><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${E(t.t)}</span></div>`).join("")}</div><button class="btn --ghost --sm --block mt8" onclick="T10.catalog()">Open the catalog</button></div>
+   <div class="card"><span class="caps">Today's focus</span><div class="sm">${focus}</div></div>
+   <div class="card"><span class="caps">Orders today</span>${st.empty.hud?`<div class="hint">No paid orders for today yet.</div>`:`<div class="kpi-s">${O.filter(o=>o.n===0&&o.status!=="cancelled").length}</div><div class="col mt8" style="gap:2px">${A.SLOTS.map(s=>`<div class="row sm" style="gap:8px"><span class="muted tnum" style="width:92px">${s}</span><span class="tnum">${O.filter(o=>o.n===0&&o.slot===s&&o.status!=="cancelled").length}</span></div>`).join("")}</div><div class="sm mt8 ${notPaid?"accent":""}">Not paid: ${notPaid}</div>`}</div>
+   <div class="card"><span class="caps">On shift</span>${st.empty.hud?`<div class="hint">Nobody on the florist rota today.</div>`:`<div class="col" style="gap:6px">${onShift.map(s=>`<div class="row sm" style="gap:8px">${AV(s.id)}<span style="flex:1">${E(s.n)}</span><span class="muted">${all.filter(t=>t.who.includes(s.id)&&t.status==="in_progress").length} in progress</span></div>`).join("")}</div>`}</div>
+   <div class="card"><span class="caps">Routine handed out</span>${st.empty.hud?`<div class="hint">Last night's distribution has not run for today.</div>`:team?`<div class="sm">${onPeople} on people · ${inPool} in the shift pool · ${closed} already closed${nofit?`<div class="hint">${nofit} did not fit an anchor – shown under «Any time»</div>`:""}</div>`:`<div class="sm">My day: <b>${myD.filter(t=>t.status==="done").length} of ${myD.length}</b></div>${myD.length?`<div class="progress mt8"><i style="width:${Math.round(myD.filter(t=>t.status==="done").length/myD.length*100)}%"></i></div>`:`<div class="hint">Nothing is assigned to you today.</div>`}`}</div>
+   <div class="card"><span class="caps">The team goal</span>${g?`<div class="sm">${E(g.t)}</div><div class="progress mt8"><i style="width:${Math.min(100,Math.round(g.current/g.target*100))}%"></i></div><div class="hint mt8">${g.current} of ${g.target} ${E(g.metric)} – ${Math.round(g.current/g.target*100)}%</div>`:`<div class="hint">No goal set for this month yet.</div>`}${CARE.length?`<div class="hr" style="margin:12px 0"></div>${CARE.map(c=>`<div class="row sm" style="gap:8px">${I("gift")}<span>${E(NM(c.who))} · ${E(c.what)} · ${c.when}</span></div>`).join("")}`:""}</div>
+   </div></div>`;
+}
+function hcard(t){const od=overdue(t);const done=t.status==="done";const pl=pool(t);const act=canAct(t);const needPhoto=t.proof==="photo";
+  const tags=[];if(needPhoto&&!done)tags.push(tag("photo"));if(t.prio==="urgent"&&!done)tags.push(tag("urgent","--red"));if(od)tags.push(tag("overdue "+since(t),"--red"));if(t.comments.length)tags.push(tag(t.comments.length+" comment"+(t.comments.length>1?"s":"")));if(t.order)tags.push(`<button class="tag --line" onclick="event.stopPropagation();App.openOrder(${t.order})">#${t.order}</button>`);if(t.ai&&(mine(t)||pl))tags.push(tag("for you: "+E(t.ai)));if(done)tags.push(t.approved?tag("accepted","--ok"):tag("awaiting review","--amber"));
+  return `<div class="hcard ${done?"--done":""}">${pl?`<span></span>`:`<button class="circ ${done?"on":""}" title="${done?"Done":act&&!needPhoto?"Mark done":"Open the task"}" onclick="T10.circle(${t.id})">${done?I("check"):""}</button>`}
+   <div class="ht" onclick="T10.open(${t.id})">${E(t.t)}</div>${tags.length?`<div class="tags">${tags.join("")}</div>`:""}
+   <div class="hf">${t.who.length?`${AV(t.who[0])} ${E(NM(t.who[0]))}${t.who.length>1?" +"+(t.who.length-1):""}`:`<span>in the pool</span>`}<span>${done?"done "+A.fmtTime(t.doneAt):t.due?"by "+A.fmtTime(t.due):""}</span>${zone(t.cat)&&zone(t.cat).owner?`<span>zone: ${E(NM(zone(t.cat).owner))}</span>`:""}<span class="sp"></span>${pl?MGR()?`<button class="btn --ghost --sm" onclick="T10.assignOne(${t.id})">Assign</button>`:`<button class="btn --sm" onclick="T10.claimQuiet(${t.id})">Take it</button>`:""}</div></div>`}
+function circle(id){const t=task(id);if(canAct(t)&&t.proof!=="photo"&&t.status!=="done"){t.status="done";t.doneAt=NOW.toISOString();move(t);tt("Done · "+t.t,"Undo",()=>{t.status="in_progress";t.doneAt=null;emit();re()});emit();mountHuddle();return}open(id)}
+function claimQuiet(id){const t=task(id);if(pool(t)){t.who=[MEID()];t.claimedBy=MEID();t.status="in_progress";move(t);tt("Taken: "+t.t)}emit();mountHuddle()}
+function assignOne(id){const t=task(id);A.modal({title:"Assign the task",body:`<div class="sm mb16">${E(t.t)}</div><div class="field"><label>Assignee</label>${sel("t10-aw",S.map(s=>[s.id,s.n+(s.on?"":" · off shift")]),"")}</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._assignGo(${id})">Assign</button>`})}
+function _assignGo(id){const t=task(id);const w=v("t10-aw");t.who=[w];t.claimedBy=null;move(t);pushTo([w],"New task for you",t.t);A.closeModal();tt("Assigned to "+NM(w));emit();re()}
+function hudView(x){st.hudView=x;mountHuddle()}
+function expand(k){st.expanded.add(k);mountHuddle()}function collapse(k){st.expanded.delete(k);mountHuddle()}
+setInterval(()=>{if(A.state.current==="tasks-huddle"){/* the «now» mark follows the shop clock once a minute */}},60000);
+document.addEventListener("task-catalog:changed",()=>{if(A.state.current==="tasks-huddle")mountHuddle()});
+/* ================= QUESTIONS · INBOX ================= */
+function asks(){return TASKS.filter(t=>t.kind==="ask"&&(ADMIN()||mine(t)||t.by===MEID()||pool(t)||MGR()))}
+function ibGroups(){const Q=asks().filter(live);const old=Q.filter(t=>days(t.created)>7);return[["mine","Mine",Q.filter(mine).length],["old","Waiting over 7 days",old.length,old.length>0],["system","From Flora and the system",Q.filter(t=>t.by==="system").length],...(MGR()?[["team","Team",Q.filter(t=>!pool(t)).length],["free","Nobody's yet",Q.filter(pool).length]]:[])]}
+function ibList(){let Q=asks();const g=st.ibGroup;
+  if(g==="mine")Q=Q.filter(mine);else if(g==="old")Q=Q.filter(t=>days(t.created)>7);else if(g==="system")Q=Q.filter(t=>t.by==="system");else if(g==="team")Q=Q.filter(t=>!pool(t));else if(g==="free")Q=Q.filter(pool);else if(g==="zr")Q=Q.filter(t=>t.ask.zr);else if(g==="urgent")Q=Q.filter(t=>t.prio==="urgent"&&mine(t));else if(g.startsWith("cat:"))Q=Q.filter(t=>t.cat===g.slice(4));
+  if(st.ibOlder)Q=Q.filter(t=>days(t.created)>=st.ibOlder);
+  const s=st.ibStage;if(s==="todo")Q=Q.filter(live).sort((a,b)=>new Date(a.created)-new Date(b.created));else if(s==="overdue")Q=Q.filter(overdue).sort((a,b)=>new Date(a.due)-new Date(b.due));else if(s==="done")Q=Q.filter(t=>t.ask.answer).sort((a,b)=>new Date(b.doneAt)-new Date(a.doneAt));else Q=Q.filter(t=>live(t)||t.ask.answer);
+  return Q}
+function mountInbox(p={}){
+  if(p.group){st.ibGroup=p.group;st.ibTask=null}if(p.older){st.ibOlder=p.older;st.ibSel=new Set(ibList().map(t=>t.id))}if(p.task){st.ibTask=p.task}
+  if(!MGR()&&st.scope==="all")st.scope="mine";
+  A.$("#t10-ib-head").innerHTML=nav("tasks")+toolbar("inbox")+`<div class="row" style="width:100%"><span class="hint">Up / Down – pick, Enter – answer</span>${demoEmpty("ib")}</div>`;
+  const Q=st.empty.ib?[]:ibList();const total=Q.length;const cap=st.ibStage==="done"?50:300;const rows=Q.slice(0,cap);
+  if(st.ibTask&&!task(st.ibTask))st.ibTask=null;
+  const cur=st.ibTask?task(st.ibTask):null;
+  const groups=ibGroups();const cats=[...new Set(asks().filter(live).map(t=>t.cat))];const zr=asks().filter(t=>live(t)&&t.ask.zr).length;const oldZr=asks().filter(t=>live(t)&&t.ask.zr&&days(t.created)>14).length;
+  const gb=(k,l,n,hot)=>`<button class="${st.ibGroup===k?"on":""}" onclick="T10.ibGroup('${k}')">${l}<span class="n ${hot?"hot":""}">${n}</span></button>`;
+  const left=`<div class="ib-groups">${groups.map(g=>gb(g[0],g[1],g[2],g[3])).join("")}<div class="hd">Groups</div>${zr?gb("zr","Zone reports",zr):""}${cats.map(c=>gb("cat:"+c,CL(c),asks().filter(t=>live(t)&&t.cat===c).length)).join("")}<div class="hd">Saved</div>${gb("urgent","My urgent",asks().filter(t=>live(t)&&t.prio==="urgent"&&mine(t)).length)}</div>`;
+  const mid=`${MGR()&&oldZr&&st.ibGroup!=="zr"?`<div class="ib-banner">${I("alert")}<span style="flex:1">Weekly zone reports older than 14 days: ${oldZr}</span><button class="textbtn" onclick="T10.ibOpen('zr',14)">Review and close</button></div>`:""}
+   ${st.ibResult?`<div class="ib-result"><b>${st.ibResult.verb}: ${st.ibResult.n}</b>${st.ibResult.left?`<span>Left alone: ${st.ibResult.left} (${st.ibResult.why})</span>`:""}<span class="sp"></span><button class="textbtn" onclick="T10.ibDismiss()">Dismiss</button></div>`:""}
+   ${MGR()&&st.ibSel.size?`<div class="bulk" style="margin:0;border-left:0;border-right:0"><b>Selected: ${st.ibSel.size}</b><button class="textbtn" onclick="T10.ibClear()">Clear selection</button><span class="sp"></span><button class="btn" onclick="T10.bulkConfirm('close')">Close as not relevant</button><button class="btn" onclick="T10.bulkConfirm('reassign')">Reassign</button><button class="btn" onclick="T10.bulkConfirm('snooze')">Put off until Monday</button></div>`:MGR()&&rows.length?`<div class="row" style="padding:8px 14px;border-bottom:1px solid var(--hair)"><label class="check sm"><input type="checkbox" onchange="T10.ibSelAll(this.checked)"> Select all shown</label></div>`:""}
+   ${rows.length?rows.map(t=>{const a=days(t.created);return `<div class="qrow ${cur&&cur.id===t.id?"on":""}" data-id="${t.id}" onclick="T10.ibPick(${t.id},event)">${MGR()?`<label class="check" onclick="event.stopPropagation()"><input type="checkbox" ${st.ibSel.has(t.id)?"checked":""} onclick="T10.ibSel(${t.id},this.checked,event)"></label>`:""}${AV(t.by==="system"?"":t.by)}<div class="q"><b>${E(t.t)}</b><small>${E((t.body||"").slice(0,140))}</small><div class="tags" style="margin-top:4px">${t.prio==="urgent"?tag("Urgent","--accent"):""}${tag(CL(t.cat))}</div></div><span class="age ${a>14?"hot":""}">${ageTxt(t.created)}</span></div>`}).join("")+(total>cap?`<div class="hint" style="padding:10px 14px">Showing the first ${cap} of ${total} – narrow it with a group</div>`:""):emptyBox("inbox",st.ibStage==="done"?"No answers yet.":"Nothing is waiting on you.","")}`;
+  A.$("#t10-ib-body").innerHTML=`<div class="ib-grid">${left}<div>${mid}</div><div class="ib-detail">${cur?ibDetail(cur):`<div class="empty">${I("chat")}<div class="sm">Pick a question on the left.</div></div>`}</div></div>`;
+}
+function ibDetail(t){const a=t.ask;const od=overdue(t);const age=days(t.created);const canAns=live(t)&&(mine(t)||MGR());const canClose=MGR()&&live(t);
+  let h=`<div class="tags" style="margin-top:0">${tag(CL(t.cat))}${t.prio==="urgent"?tag("Urgent","--accent"):""}${od?tag("Overdue","--accent"):""}</div><div class="h3 mt8">${E(t.t)}</div>
+   <dl class="kv mt16" style="grid-template-columns:100px 1fr"><dt>Asks</dt><dd>${a.from==="system"?"System (automatic question)":E(NM(a.from))}</dd><dt>Assigned to</dt><dd>${t.who.length?t.who.map(NM).join(", "):"<span class='accent'>Nobody yet</span>"}</dd><dt>Due</dt><dd class="${od?"accent":""}">${t.due?A.fmtDay(t.due)+" · "+A.fmtTime(t.due):"–"} · waiting ${age} d</dd><dt>Replies</dt><dd>${t.comments.length}</dd>${a.src?`<dt>Source</dt><dd><button class="link" onclick="App.toast('Opens ${E(a.src)}')">source</button></dd>`:""}</dl>
+   ${t.body?`<div class="sm mt16">${linkify(t.body)}</div>`:""}`;
+  if(t.status==="cancelled")h+=`<div class="note-box mt16">Closed as not relevant: ${E(t.cancelled.reason)} · ${E(NM(t.cancelled.by))} · ${A.fmtDay(t.cancelled.at)}</div>${(t.by===MEID()||ADMIN())?`<button class="btn --ghost --sm mt8" onclick="T10.ibPutBack(${t.id})">Put back to work</button>`:""}`;
+  else if(a.answer)h+=`<div class="note-box --ok mt16">Answered by ${E(NM(a.answer.by))} · ${A.fmtDay(a.answer.at)} ${A.fmtTime(a.answer.at)}${a.answer.opt?`<div><b>${E(a.answer.opt)}</b></div>`:""}${a.answer.fields?Object.entries(a.answer.fields).map(f=>`<div>${E(f[0])}: ${E(f[1])}</div>`).join(""):""}${a.answer.text?`<div>${E(a.answer.text)}</div>`:""}</div>`;
+  else{
+    if(canClose&&age>14)h+=`<div class="note-box --warn mt16">Waiting ${age} days – maybe it no longer matters. Close as not relevant?</div>`;
+    h+=`<div class="btn-row mt16">${canClose?`<button class="btn --ghost --sm" onclick="T10.bulkConfirm('close',[${t.id}])">Not relevant, close</button>`:""}${canAns?`<button class="btn --ghost --sm" onclick="T10.ibFocus()">Answer now</button>`:""}${canClose?`<button class="btn --ghost --sm" onclick="T10.bulkConfirm('snooze',[${t.id}])">Put off</button>`:""}</div>`;
+    if(canAns)h+=`<div class="mt16">${a.opts.length?`<div class="caps">Pick an answer</div><div class="opt" id="t10-ao">${a.opts.map((o,i)=>`<button data-o="${E(o)}" onclick="T10.ibOpt(this)">(${"abc"[i]}) ${E(o)}</button>`).join("")}</div>`:""}${a.fields.map((f,i)=>`<div class="field mt8"><label>${E(f)}</label><input class="input" id="t10-af${i}"></div>`).join("")}<div class="field mt8"><textarea class="textarea" id="t10-at" placeholder="${a.opts.length||a.fields.length?"Add a line if needed…":"Your answer…"}"></textarea><div class="accent xs" id="t10-ae" style="display:none">Pick an option or write an answer.</div></div><button class="btn --sm mt8" onclick="T10.ibAnswer(${t.id})">Answer and close</button></div>`;
+    else h+=`<div class="note-box mt16">Addressed to somebody else – you can read it, they answer.</div>`;
+  }
+  h+=`<div class="sec-head"><div class="h3">Thread <span class="muted sm">${t.comments.length}</span></div></div>${threadHtml(t,true)}`;
+  return h}
+let IB_OPT=null;
+function ibOpt(b){IB_OPT=b.dataset.o;A.$$("#t10-ao button").forEach(x=>x.classList.toggle("on",x===b))}
+function ibFocus(){const ta=A.$("#t10-at");if(ta){ta.focus()}}
+function ibAnswer(id){const t=task(id);const a=t.ask;const text=v("t10-at").trim();const fields={};a.fields.forEach((f,i)=>fields[f]=v("t10-af"+i));if(!IB_OPT&&!text&&!a.fields.some((f,i)=>v("t10-af"+i))){A.$("#t10-ae").style.display="";return}
+  a.answer={by:MEID(),at:NOW.toISOString(),opt:IB_OPT,fields:a.fields.length?fields:null,text};t.status="done";t.doneAt=NOW.toISOString();log(t,MEID(),"ANSWER "+NM(MEID())+" "+A.fmtDate(NOW.toISOString())+": "+(IB_OPT||"")+" "+text);IB_OPT=null;
+  const list=ibList().filter(x=>live(x)&&x.id!==id);st.ibTask=list.length?list[0].id:null;tt("Answered · "+t.t.slice(0,40));emit();mountInbox()}
+function ibPutBack(id){const t=task(id);t.status="open";t.cancelled=null;tt("Back in work");emit();mountInbox()}
+function ibGroup(g){st.ibGroup=g;st.ibTask=null;st.ibOlder=0;st.ibSel.clear();mountInbox()}
+function ibOpen(g,older){st.ibGroup=g;st.ibStage="todo";st.ibOlder=older;st.ibSel=new Set(ibList().map(t=>t.id));mountInbox()}
+function ibPick(id,ev){if(ev&&ev.shiftKey&&st.ibLast!=null&&MGR()){const ids=ibList().map(t=>t.id);const a=ids.indexOf(st.ibLast),b=ids.indexOf(id);ids.slice(Math.min(a,b),Math.max(a,b)+1).forEach(x=>st.ibSel.add(x));mountInbox();return}st.ibTask=id;st.ibLast=id;IB_OPT=null;mountInbox();const el=A.$(`#s-tasks-inbox .qrow[data-id="${id}"]`);if(el)el.scrollIntoView({block:"nearest"})}
+function ibSel(id,on,ev){if(ev&&ev.shiftKey&&st.ibLast!=null){const ids=ibList().map(t=>t.id);const a=ids.indexOf(st.ibLast),b=ids.indexOf(id);ids.slice(Math.min(a,b),Math.max(a,b)+1).forEach(x=>st.ibSel.add(x))}else on?st.ibSel.add(id):st.ibSel.delete(id);st.ibLast=id;mountInbox()}
+function ibSelAll(on){ibList().forEach(t=>on?st.ibSel.add(t.id):st.ibSel.delete(t.id));mountInbox()}
+function ibClear(){st.ibSel.clear();mountInbox()}function ibDismiss(){st.ibResult=null;mountInbox()}
+function bulkConfirm(kind,ids){ids=ids||[...st.ibSel];const ts=ids.map(task).filter(Boolean);const names=ts.slice(0,5).map(t=>`<div>· ${E(t.t)}</div>`).join("")+(ts.length>5?`<div class="hint">and ${ts.length-5} more</div>`:"");const n=ts.length;
+  const mon=A.fmtDate(T(9,0,6-NOW.getDay()+1));
+  const cfg={close:["Close as not relevant?",`${n} question${n>1?"s":""} will be closed with a reason – not deleted, they can be put back to work.`+names+`<div class="field mt16"><label>Reason (optional)</label><input class="input" id="t10-br" value="Not relevant"></div>`,"Close "+n],
+   reassign:["Reassign",`${names}<div class="field mt16"><label>To whom</label>${sel("t10-bw",[["","–"],...S.map(s=>[s.id,s.n])],"")}</div>`,"Reassign "+n],
+   snooze:["Put off until Monday",`The due date of ${n} will move to ${mon}, and reminders stay quiet until then.${names}`,"Put off "+n]}[kind];
+  A.modal({title:cfg[0],body:cfg[1],foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._bulkGo('${kind}',[${ids}])">${cfg[2]}</button>`})}
+function _bulkGo(kind,ids){let n=0,left=[];const w=v("t10-bw"),r=v("t10-br");ids.forEach(id=>{const t=task(id);if(!t){left.push("not found");return}if(t.kind!=="ask"){left.push("not a question");return}if(t.approved){left.push("already approved");return}
+  if(kind==="close"){if(!live(t)){left.push("already answered or closed");return}t.status="cancelled";t.cancelled={by:MEID(),at:NOW.toISOString(),reason:r||"Not relevant"};if(t.cancelReq)pushTo([t.cancelReq.who],"Task cancelled",t.t);n++}
+  else if(kind==="reassign"){if(!w||t.who.includes(w)){left.push("not allowed");return}t.who=[w];pushTo([w],"New task for you",t.t);n++}
+  else{if(!live(t)){left.push("already answered or closed");return}t.due=T(18,0,8-NOW.getDay());n++}});
+  st.ibResult={verb:{close:"Closed",reassign:"Reassigned",snooze:"Put off"}[kind],n,left:left.length,why:[...new Set(left)].join(", ")};st.ibSel.clear();st.ibOlder=0;A.closeModal();emit();mountInbox()}
+document.addEventListener("keydown",e=>{if(A.state.current!=="tasks-inbox")return;const tg=(e.target.tagName||"").toLowerCase();if(["input","textarea","select"].includes(tg)||e.ctrlKey||e.metaKey||e.altKey||A.$("#modal").classList.contains("on"))return;
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();const ids=ibList().map(t=>t.id);if(!ids.length)return;let i=ids.indexOf(st.ibTask);i=e.key==="ArrowDown"?Math.min(ids.length-1,i+1):Math.max(0,i-1);ibPick(ids[i])}
+  else if(e.key==="Enter"&&st.ibTask){e.preventDefault();ibFocus()}});
+/* ================= PEOPLE · LOAD ================= */
+let PDRAG=null;
+function mountPeople(){
+  const staff=S.filter(s=>s.role!=="owner");const L=TASKS.filter(t=>t.kind!=="ask"&&vis(t));
+  const rq=L.filter(awaiting).length;
+  A.$("#t10-pp-head").innerHTML=nav("tasks-people","people")+`<div class="row" style="width:100%"><span class="sp"></span><button class="btn --ghost --sm" onclick="App.go('tasks',{flag:'awaiting',scope:'all'})">${I("eye")} Review queue (${rq})</button>${demoEmpty("pp")}</div>`;
+  if(st.empty.pp){A.$("#t10-pp-body").innerHTML=emptyBox("customers","No active employees.","Add people in Settings → Team & roles.");return}
+  const of=s=>L.filter(t=>t.who.includes(s.id));
+  const strip=`<div class="strip">${staff.map(s=>{const ts=of(s).filter(t=>days(t.due||t.created)===0);const dn=ts.filter(t=>t.status==="done").length;const p=ts.length?Math.round(dn/ts.length*100):0;const late=of(s).some(overdue);return `<button onclick="T10.laneGo('${s.id}')"><span class="ring ${late?"--late":""}" style="--p:${p}" data-v="${s.av}"></span>${E(s.n)}</button>`}).join("")}</div>`;
+  const lane=s=>{const ts=of(s);const open=ts.filter(live).length,od=ts.filter(overdue).length,aw=ts.filter(awaiting).length,dn=ts.filter(t=>t.status==="done"&&days(t.doneAt)===0).length;const has=ts.some(t=>live(t)||awaiting(t));const exp=st.lanes.has(s.id)?!has:has;
+    const grp=(lbl,ic,list,cls)=>list.length?`<div class="grp">${ic?I(ic):""}${lbl}</div>${list.map(t=>`<div class="lrow ${cls||""}" draggable="true" data-id="${t.id}" title="${lbl==="Daily routine"?"From the daily routine (template)":""}"><span class="t" onclick="T10.open(${t.id})">${E(t.t)}</span>${t.prio==="urgent"?tag("Urgent","--accent"):""}<span class="xs ${overdue(t)?"accent":"muted"}">${t.due?A.fmtDay(t.due)+" "+A.fmtTime(t.due):""}</span>${t.pts?`<span class="xs muted">${t.pts} pt</span>`:""}<button class="ib" style="width:24px;height:24px" onclick="T10.handMenu(event,${t.id},'${s.id}')">${I("dots")}</button></div>`).join("")}`:"";
+    const liveT=ts.filter(live);
+    return `<div class="lane" id="t10-lane-${s.id}" data-p="${s.id}"><div class="l-head" onclick="T10.laneToggle('${s.id}')">${AV(s.id)}<b style="font-weight:400">${E(s.n)}</b><span class="hint">${E(s.title)}</span><span class="cnts"><span>${open} open</span>${od?`<span class="accent">${od} overdue</span>`:""}${aw?`<span class="warn">${aw} awaiting review</span>`:""}<span>${dn} done today</span></span></div>
+     ${exp?`<div class="l-body">${liveT.length||aw?grp("Daily routine","refresh",liveT.filter(t=>t.tpl))+grp("One-offs",null,liveT.filter(t=>!t.tpl&&!t.init))+grp("Initiatives",null,liveT.filter(t=>!t.tpl&&t.init),"--init")+(aw?`<div class="grp">Awaiting review</div>${ts.filter(awaiting).map(t=>`<div class="lrow" draggable="false"><span class="t">${E(t.t)}</span>${t.photos.length?"":tag("no photo","--accent")}<button class="textbtn" onclick="App.go('tasks',{q:'${E(t.t).replace(/'/g,"")}',status:'done',scope:'all'})">Review</button></div>`).join("")}`:""):`<div class="hint" style="padding:6px 0">Nothing live – free hands.</div>`}</div>`:""}</div>`};
+  const poolT=L.filter(pool);
+  A.$("#t10-pp-body").innerHTML=strip+`<div class="pp-grid"><div>${staff.map(lane).join("")}</div><div class="panel pool"><div class="p-head"><div class="h4">Shift pool <span class="muted">${poolT.length}</span></div></div><div class="p-body">${poolT.length?poolT.map(t=>`<div class="pc ${overdue(t)?"--late":""}" draggable="true" data-id="${t.id}" data-p=""><div style="cursor:pointer" onclick="T10.open(${t.id})">${E(t.t)}</div><div class="tags" style="margin-top:4px">${tag(CL(t.cat))}${t.prio==="urgent"?tag("Urgent","--accent"):""}${t.due?`<span class="xs ${overdue(t)?"accent":"muted"}">${A.fmtDay(t.due)} ${A.fmtTime(t.due)}</span>`:""}</div><button class="textbtn mt8" onclick="T10.handMenu(event,${t.id},'')">Hand to…</button></div>`).join(""):`<div class="empty"><div class="sm">Everything is in someone's hands.</div></div>`}</div></div></div>`;
+  A.$$("#s-tasks-people [draggable='true']").forEach(r=>{r.ondragstart=e=>{PDRAG={id:+r.dataset.id,from:r.closest("[data-p]")?.dataset.p||""};e.dataTransfer.effectAllowed="move"};r.ondragend=()=>{PDRAG=null;A.$$("#s-tasks-people .lane").forEach(l=>l.classList.remove("drop"))}});
+  A.$$("#s-tasks-people .lane").forEach(l=>{l.ondragover=e=>{if(PDRAG&&PDRAG.from!==l.dataset.p){e.preventDefault();l.classList.add("drop")}};l.ondragleave=()=>l.classList.remove("drop");l.ondrop=e=>{e.preventDefault();l.classList.remove("drop");if(PDRAG&&PDRAG.from!==l.dataset.p)hand(PDRAG.id,l.dataset.p)}});
+}
+function hand(id,w){const t=task(id);t.who=[w];t.claimedBy=null;t.ai=null;if(t.status==="open"&&!t.who.length)t.status="open";move(t);pushTo([w],"New task for you",t.t);tt("1 task reassigned");emit();re()}
+function handMenu(ev,id,cur){A.pop(ev,["Hand to…",...S.filter(s=>s.id!==cur&&s.role!=="owner").map(s=>({t:s.n+" · "+TASKS.filter(t=>t.who.includes(s.id)&&live(t)).length+" open",ic:"user",fn:()=>hand(id,s.id)}))])}
+function laneGo(id){const l=document.getElementById("t10-lane-"+id);if(l)l.scrollIntoView({behavior:"smooth",block:"start"})}
+function laneToggle(id){st.lanes.has(id)?st.lanes.delete(id):st.lanes.add(id);mountPeople()}
+/* ================= HEALTH ================= */
+function mountHealth(){
+  A.$("#t10-hl-head").innerHTML=nav("tasks-health","people")+`<div class="row" style="width:100%"><span class="hint">Last 7 days · targets under each number</span>${demoEmpty("hl")}</div>`;
+  const e=st.empty.hl;
+  const tiles=[["Routine on time",e?null:86,"%","≥ 90% green · ≥ 75% amber",v=>v>=90?"--ok":v>=75?"--warn":"--accent"],["Sent back",e?null:3,"%","< 5% green · < 10% amber",v=>v<5?"--ok":v<10?"--warn":"--accent"],["Median to review",e?null:31," h","< 24 h green · < 48 h amber",v=>v<24?"--ok":v<48?"--warn":"--accent"],["Proof coverage",e?null:97,"%","≥ 95% green · ≥ 85% amber",v=>v>=95?"--ok":v>=85?"--warn":"--accent"],["Skip requests",e?null:SKIPS.reduce((a,s)=>a+s[1],0),"","0 = green",v=>v===0?"--ok":"--accent"]];
+  const wait=TASKS.filter(t=>awaiting(t)&&days(t.doneAt)>=3).slice(0,10);
+  A.$("#t10-hl-body").innerHTML=`<div class="grid g6" style="grid-template-columns:repeat(5,minmax(0,1fr))">${tiles.map(t=>`<div class="tile ${t[1]==null?"--none":t[4](t[1])}"><span class="caps">${t[0]}</span><span class="v">${t[1]==null?"–":t[1]+t[2]}</span><span class="hint">${t[3]}</span></div>`).join("")}</div>
+   <div class="grid g2 mt24"><div class="panel"><div class="p-head"><div class="h4">Waiting for review over 3 days</div></div><div class="p-body">${!e&&wait.length?`<div class="list">${wait.map(t=>`<div class="li" onclick="App.go('tasks',{flag:'awaiting',q:'${E(t.t).replace(/'/g,"")}',scope:'all'})"><div class="t"><b>${E(t.t)}</b><small>done ${A.fmtDay(t.doneAt)} · ${t.who.map(NM).join(", ")}</small></div>${I("chev")}</div>`).join("")}</div>`:`<div class="empty"><div class="sm">Nothing is stuck – the queue moves.</div></div>`}</div></div>
+   <div class="panel"><div class="p-head"><div class="h4">Most-skipped templates</div></div><div class="p-body">${!e&&SKIPS.length?`<div class="list">${SKIPS.slice().sort((a,b)=>b[1]-a[1]).slice(0,5).map(s=>`<div class="li" style="cursor:default"><div class="t"><b>${E(s[0])}</b></div><span class="tnum">×${s[1]}</span></div>`).join("")}</div><div class="hint" style="padding:10px 14px">If the same template is skipped every week – fix the template, not the people.</div>`:`<div class="empty"><div class="sm">No skip requests this week.</div></div>`}</div></div></div>`;
+}
+/* ================= ZONES ================= */
+function mountZones(){
+  A.$("#t10-zn-head").innerHTML=nav("tasks-zones","people")+`<div class="row" style="width:100%"><span class="hint">Who answers for each category: owner, deputy, curator, the weekly metric and the spend limit.</span>${demoEmpty("zn")}</div>`;
+  if(st.empty.zn){A.$("#t10-zn-body").innerHTML=emptyBox("map","No zones yet","Zones appear when task categories are seeded.");return}
+  A.$("#t10-zn-body").innerHTML=`<div style="border:1px solid var(--hair)">${ZONES.map((z,i)=>`<div class="zrow ${z.active?"":"--off"}"><div><div><b style="font-weight:400">${E(CL(z.cat))}</b> <span class="hint">${E(z.ru)}</span></div>${z.active?"":tag("Inactive")}</div>
+   <div class="zk"><span>${z.owner?"Owner: "+E(NM(z.owner)):"<span class='accent'>No owner yet</span>"}</span>${z.deputy?`<span>Deputy: ${E(NM(z.deputy))}</span>`:""}${z.curator?`<span>Curator: ${E(NM(z.curator))}</span>`:""}${z.metric?`<span>Metric: ${E(z.metric)}</span>`:""}${z.limit?`<span>Limit ${A.fmt(z.limit)}/week</span>`:""}</div>
+   <div>${MGR()?`<button class="textbtn" onclick="T10.zoneModal(${i})">Edit</button>`:""}</div></div>`).join("")}</div>`;
+}
+function zoneModal(i){const z=ZONES[i];const opt=ex=>[["","–"],...S.filter(s=>!ex.includes(s.id)).map(s=>[s.id,s.n])];
+  A.modal({title:E(CL(z.cat)),body:`<div class="grid g3"><div class="field"><label>Owner</label>${sel("t10-zo",opt([]),z.owner||"",`onchange="T10._zoneSync()"`)}</div><div class="field"><label>Deputy</label>${sel("t10-zd",opt([z.owner]),z.deputy||"")}</div><div class="field"><label>Curator</label>${sel("t10-zc",opt([z.owner,z.deputy]),z.curator||"")}</div></div>
+   <div class="grid g2 mt16"><div class="field"><label>Weekly metric</label><input class="input" id="t10-zm" value="${E(z.metric)}" placeholder="One number the owner reports weekly"></div><div class="field"><label>Spend limit per week (£)</label><input class="input" type="number" id="t10-zl" value="${z.limit}"><div class="hint">£0.00 = not agreed</div></div></div>
+   <label class="check mt16"><input type="checkbox" id="t10-za" ${z.active?"checked":""}> Zone is active</label><div class="accent xs mt8" id="t10-ze" style="display:none">Owner, deputy and curator must be three different people.</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._zoneSave(${i})">Save</button>`})}
+function _zoneSync(){const o=v("t10-zo");["t10-zd","t10-zc"].forEach(id=>{const s=document.getElementById(id);if(s.value===o)s.value=""})}
+function _zoneSave(i){const o=v("t10-zo"),d=v("t10-zd"),c=v("t10-zc");const set=[o,d,c].filter(Boolean);if(new Set(set).size!==set.length){A.$("#t10-ze").style.display="";return}Object.assign(ZONES[i],{owner:o||null,deputy:d||null,curator:c||null,metric:v("t10-zm"),limit:Number(v("t10-zl"))||0,active:v("t10-za")});A.closeModal();tt("Zone saved");mountZones()}
+/* ================= CATALOG (library) ================= */
+function mountCatalog(){
+  A.$("#t10-ct-head").innerHTML=nav("tasks-catalog","people")+`<div class="row" style="width:100%"><span class="sp"></span><button class="btn --sm" onclick="T10.tplModal()">${I("plus")} New template</button>${demoEmpty("ct")}</div>`;
+  const list=st.empty.ct?[]:TPL;const cats=[...new Set(list.map(t=>t.cat))];
+  A.$("#t10-ct-body").innerHTML=`<div class="card --flat mb16"><div class="row" style="gap:16px;flex-wrap:wrap"><div style="flex:1;min-width:220px"><div class="h4">Urgent · One-off priority task</div><div class="sm soft">A task outside the routine – someone drops everything and does it now. Opens the form with priority Urgent.</div></div><button class="btn --sm" onclick="App.go('tasks',{one_off:1})">Create one-off task</button></div></div>
+   ${list.length?cats.map(c=>`<div class="sec-head"><div class="h3">${E(CL(c))}</div></div><div class="cat-grid">${list.filter(t=>t.cat===c).map(t=>`<div class="tpl ${t.active?"":"--off"}"><div class="row" style="gap:8px"><span class="tag --ink">${t.pts} pts</span>${t.active?"":tag("Retired")}<span class="sp"></span><span class="hint">${{none:"Manual",daily:"Every day",weekly:"Weekly · "+(t.days||[]).join(" "),monthly:"Monthly · "+(t.dom||"")}[t.rec]}</span></div><div>${E(t.t)}</div><div class="ru">${E(t.ru)}</div>${t.why?`<div class="ds">${E(t.why)}</div>`:""}<div class="hint">${AL(t.anchor)} · ${t.role==="any"?"Anyone on shift":t.role} · ${{photo:"Photo required",comment:"Comment is enough",none:"No proof needed"}[t.proof]}</div>
+    <div class="bt"><button class="btn --ghost --sm" onclick="App.go('tasks',{from_template:${t.id}})">Use</button><button class="btn --ghost --sm" onclick="T10.tplModal(${t.id})">Edit</button><button class="textbtn" onclick="T10.tplToggle(${t.id})">${t.active?"Retire":"Restore"}</button></div></div>`).join("")}</div>`).join(""):emptyBox("book","No templates yet.","",`<button class="btn --ghost --sm" onclick="T10.tplModal()">New template</button>`)}`;
+}
+function tplToggle(id){const t=tpl(id);t.active=!t.active;tt(t.active?"Restored · "+t.t:"Retired · "+t.t+" – gone from the drawer and the night distribution");mountCatalog()}
+function tplModal(id){const t=id?tpl(id):{t:"",ru:"",cat:"shop",pts:5,rec:"none",days:[],dom:"",role:"any",anchor:"any",why:"",proof:"photo",due:"",min:15,copy:false};
+  const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  A.modal({title:id?"Edit template":"New template",wide:true,body:`<div class="grid g2"><div class="field"><label>Title (EN)</label><input class="input" id="t10-tt" value="${E(t.t)}"><div class="accent xs" id="t10-tte" style="display:none">Title is required.</div></div><div class="field"><label>Название (RU)</label><input class="input" id="t10-tr" value="${E(t.ru)}"></div>
+   <div class="field"><label>Category</label>${sel("t10-tc",ZONE_CATS.map(c=>[c,CL(c)]),t.cat)}</div><div class="field"><label>Points</label><input class="input" type="number" id="t10-tp" value="${t.pts}"></div>
+   <div class="field"><label>Repeats</label>${sel("t10-trc",[["none","Manual"],["daily","Every day"],["weekly","Certain weekdays"],["monthly","Certain days of the month"]],t.rec,`onchange="T10._tplRec()"`)}</div><div class="field"><label>Who it is for</label>${sel("t10-trl",[["any","Anyone on shift"],["florist","Florist"],["manager","Manager"],["courier","Courier"]],t.role)}</div>
+   <div class="field"><label>Time of day</label>${sel("t10-ta",[...ANCHORS.map(a=>[a[0],a[1]]),["any","Any time"]],t.anchor)}</div><div class="field"><label>Proof of completion</label>${sel("t10-tpr",[["photo","Photo required"],["comment","Comment is enough"],["none","No proof needed"]],t.proof)}</div></div>
+   <div id="t10-tsch" class="mt16"><div class="field" data-for="weekly"><label>Days of the week</label><div class="chips">${DAYS.map(d=>`<button class="chip ${(t.days||[]).includes(d)?"on":""}" data-d="${d}" onclick="this.classList.toggle('on')">${d}</button>`).join("")}</div></div>
+   <div class="field" data-for="monthly"><label>Days of the month (comma separated)</label><input class="input" id="t10-tdom" value="${E(t.dom||"")}" placeholder="1, 15"></div>
+   <div class="grid g3 mt16" data-for="rep"><div class="field"><label>Due by</label><input class="input" type="time" id="t10-tdue" value="${t.due}"></div><div class="field"><label>Takes about (min)</label><input class="input" type="number" id="t10-tmin" value="${t.min}"></div><label class="check" style="align-self:end"><input type="checkbox" id="t10-tcp" ${t.copy?"checked":""}> A copy for each person on shift</label></div></div>
+   <div class="field mt16"><label>Why this matters</label><textarea class="textarea" id="t10-tw" maxlength="300">${E(t.why)}</textarea></div><div class="hint mt8">The schedule feeds the night distributor (04:20) and the hourly top-up 07:00–21:30. Weekly or monthly without days is saved as Manual.</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._tplSave(${id||0})">Save</button>`,onMount:()=>_tplRec()})}
+function _tplRec(){const r=v("t10-trc");A.$$("#t10-tsch [data-for]").forEach(el=>{const f=el.dataset.for;el.style.display=(f==="weekly"&&r==="weekly")||(f==="monthly"&&r==="monthly")||(f==="rep"&&r!=="none")?"":"none"})}
+function _tplSave(id){const title=v("t10-tt").trim();if(!title){A.$("#t10-tte").style.display="";return}let rec=v("t10-trc");const days=A.$$("#t10-tsch .chip.on").map(c=>c.dataset.d);const dom=v("t10-tdom").trim();if((rec==="weekly"&&!days.length)||(rec==="monthly"&&!dom))rec="none";
+  const data={t:title,ru:v("t10-tr"),cat:v("t10-tc"),pts:Number(v("t10-tp"))||0,rec,days,dom,role:v("t10-trl"),anchor:v("t10-ta"),proof:v("t10-tpr"),due:v("t10-tdue"),min:Number(v("t10-tmin"))||0,copy:v("t10-tcp"),why:v("t10-tw")};
+  if(id)Object.assign(tpl(id),data);else TPL.push(Object.assign({id:TPL.length+1,active:true},data));A.closeModal();tt(id?"Template saved":"Template created");mountCatalog()}
+/* ================= ACTIVE · MY WEEK ================= */
+const goalBlock=g=>g?`<div class="sm">${E(g.t)}</div><div class="progress mt8 ${g.status==="achieved"?"--ok":""}"><i style="width:${Math.min(100,Math.round(g.current/g.target*100))}%"></i></div><div class="hint mt8">${g.current} of ${g.target} ${E(g.metric)} – ${Math.round(g.current/g.target*100)}%${g.status!=="open"?" · Reached. Well done, everyone.":""}</div>`:`<div class="hint">No goal set for this month yet.</div>`;
+function mountMyWeek(){
+  const me=MEID();const p=PTS[me]||[0,0,""];const lv=level(p[1]);const mineT=TASKS.filter(t=>t.who.includes(me)&&t.kind!=="ask");
+  const wk=t=>t.doneAt&&days(t.doneAt)<=6;
+  A.$("#t10-mw-head").innerHTML=nav("tasks-my-week","active")+`<div class="row" style="width:100%"><span class="hint">Mon 19 – Sun 25 Oct · your week, no comparison with colleagues</span>${demoEmpty("mw")}</div>`;
+  const praise=st.empty.mw?[]:PRAISE.filter(x=>x.to===me);const kd=st.empty.mw?[]:KUDOS.filter(k=>k.to===me);
+  const others=S.filter(s=>s.id!==me&&s.role!=="owner");
+  A.$("#t10-mw-body").innerHTML=`<div class="plaque">${AV(me,"--l --ink")}<div style="flex:1;min-width:200px"><div class="h3">${E(ME().n)}</div><div class="sm soft">Level: <b>${lv[0]}</b> · ${p[1]} points in total${STREAK[me]?` · ${STREAK[me]}-day streak`:""}</div></div><div class="row" style="gap:6px;flex-wrap:wrap">${(HELD[me]||[]).map(b=>{const x=BADGES.find(y=>y[0]===b);return `<span class="bdg" title="${E(x[3])}">${I("award")}${E(x[1])}</span>`}).join("")||`<span class="hint">No badges yet</span>`}</div></div>
+   <div class="grid g4 mt16"><div class="tile"><span class="caps">Closed this week</span><span class="v">${mineT.filter(t=>t.status==="done"&&wk(t)).length}</span></div><div class="tile"><span class="caps">Accepted</span><span class="v">${mineT.filter(t=>t.approved&&wk(t)).length}</span></div><div class="tile"><span class="caps">Still open</span><span class="v">${mineT.filter(live).length}</span></div><div class="tile"><span class="caps">Points this week</span><span class="v ok">+${st.empty.mw?0:Math.round(p[0]*0.3)}</span></div></div>
+   <div class="grid g2 mt16"><div class="card"><span class="caps">The team goal</span>${goalBlock(GOALS.find(g=>g.month==="2026-10"))}</div>
+   <div class="card"><span class="caps">Said about my work</span>${praise.length?praise.map(x=>`<div class="sm" style="margin-bottom:8px">“${E(x.text)}” <span class="hint">– ${E(NM(x.from))} · ${E(x.task)}</span></div>`).join(""):`<div class="hint">Nothing this week yet.</div>`}<div class="hr" style="margin:10px 0"></div><div class="sm">${kd.reduce((a,k)=>a+k.pts,0)} thank-you points received${kd.length?`: ${kd.map(k=>E(NM(k.from))+" – “"+E(k.note)+"”").join("; ")}`:""}</div></div></div>
+   <div class="card mt16"><span class="caps">Thank a colleague</span><div class="row" style="gap:16px;flex-wrap:wrap"><div style="flex:1;min-width:200px" class="sm soft">${KUDOS_LEFT} left this week · up to 5 points a week, they land on the colleague's balance and the leaderboard.</div><button class="btn --sm ${KUDOS_LEFT&&others.length?"":"is-disabled"}" onclick="T10.thankModal()">Say thank you</button></div></div>`;
+}
+function thankModal(to,title){const others=S.filter(s=>s.id!==MEID()&&s.role!=="owner");
+  A.modal({title:title||"Say thank you",body:`<div class="field"><label>Who</label>${sel("t10-kw",others.map(s=>[s.id,s.n]),to||others[0].id,to?"disabled":"")}</div><div class="field mt16"><label>Points (up to ${KUDOS_LEFT})</label><input class="input" type="number" min="1" max="${KUDOS_LEFT}" id="t10-kp" value="1"></div><div class="field mt16"><label>What for</label><input class="input" id="t10-kn" placeholder="One line – it shows on their week"><div class="accent xs mt8" id="t10-ke" style="display:none"></div></div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._thankGo()">Send</button>`})}
+function _thankGo(){const w=v("t10-kw"),p=Number(v("t10-kp")),n=v("t10-kn").trim();const err=A.$("#t10-ke");if(!n){err.textContent="Write what it is for.";err.style.display="";return}if(!p||p>KUDOS_LEFT){err.textContent=`You have ${KUDOS_LEFT} thank-you points left this week.`;err.style.display="";return}
+  KUDOS_LEFT-=p;KUDOS.push({to:w,from:MEID(),pts:p,note:n,at:NOW.toISOString()});BAL[w]+=p;if(PTS[w]){PTS[w][0]+=p;PTS[w][1]+=p}A.closeModal();tt("Thank you sent to "+NM(w)+" · +"+p);re()}
+/* ================= TEAM GOAL ================= */
+function mountGoal(){
+  A.$("#t10-tg-head").innerHTML=nav("team-goal","active")+`<div class="row" style="width:100%"><span class="sp"></span>${MGR()?`<button class="btn --sm" onclick="T10.goalModal()">${I("plus")} New goal</button>`:""}${demoEmpty("tg")}</div>`;
+  const list=st.empty.tg?[]:GOALS.slice().sort((a,b)=>b.month.localeCompare(a.month));
+  const mon=m=>new Date(m+"-01").toLocaleDateString("en-GB",{month:"long",year:"numeric"});
+  A.$("#t10-tg-body").innerHTML=list.length?list.map(g=>{const pct=Math.round(g.current/g.target*100);const mp=MPTS[g.month]||{};const sum=Object.values(mp).reduce((a,x)=>a+Math.max(0,x[0]),0);
+   return `<div class="goal"><div class="g-head"><div class="h3" style="flex:1">${E(g.t)}</div>${A.pill(g.status==="open"?"doing":g.status==="achieved"?"done":"todo",g.status[0].toUpperCase()+g.status.slice(1))}${MGR()?`<button class="textbtn" onclick="T10.goalModal(${g.id})">Edit</button>`:""}${MGR()&&g.status!=="closed"?`<button class="textbtn --accent" onclick="T10.goalClose(${g.id})">Close</button>`:""}</div>
+    <div class="hint mt8">${mon(g.month)} · ${E(g.metric)} · Fund ${A.fmt(g.fund)}</div><div class="row mt8" style="gap:12px"><span class="kpi-s">${g.current} / ${g.target}</span><span class="muted sm">${pct}%</span></div><div class="progress mt8 ${g.status==="achieved"?"--ok":""}"><i style="width:${Math.min(100,pct)}%"></i></div>
+    ${g.status!=="open"&&g.fund>0&&sum?`<div class="sec-head"><div class="h4">Fund split</div><span class="hint">Preview – payout is manual</span></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Employee</th><th class="num">Points</th><th class="num">Share</th></tr></thead><tbody>${Object.entries(mp).filter(x=>x[1][0]>0).sort((a,b)=>b[1][0]-a[1][0]).map(x=>`<tr><td>${E(NM(x[0]))}</td><td class="num">${x[1][0]}</td><td class="num">${A.fmt(Math.round(g.fund*x[1][0]/sum))}</td></tr>`).join("")}</tbody></table></div>`:""}</div>`}).join(""):emptyBox("flag","No team goals yet.","",MGR()?`<button class="btn --ghost --sm" onclick="T10.goalModal()">New goal</button>`:"");
+}
+function goalModal(id){const g=id?GOALS.find(x=>x.id===id):{t:"",month:"2026-11",metric:"",target:100,current:0,fund:0};
+  A.modal({title:id?"Edit goal":"New goal",body:`<div class="field"><label>Title</label><input class="input" id="t10-gt" value="${E(g.t)}"></div><div class="grid g2 mt16"><div class="field"><label>Month</label><input class="input" type="month" id="t10-gm" value="${g.month}"></div><div class="field"><label>Metric</label><input class="input" id="t10-gme" value="${E(g.metric)}" placeholder="What we count"></div><div class="field"><label>Target</label><input class="input" type="number" id="t10-gta" value="${g.target}"></div><div class="field"><label>Current</label><input class="input" type="number" id="t10-gc" value="${g.current}"></div><div class="field"><label>Fund (£)</label><input class="input" type="number" id="t10-gf" value="${g.fund}"></div></div><div class="hint mt8">Status is worked out automatically: Achieved when Current ≥ Target, otherwise Open. Progress is entered by hand.</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._goalSave(${id||0})">Save</button>`})}
+function _goalSave(id){const d={t:v("t10-gt").trim(),month:v("t10-gm"),metric:v("t10-gme"),target:Number(v("t10-gta"))||0,current:Number(v("t10-gc"))||0,fund:Number(v("t10-gf"))||0};if(!d.t){tt("Give the goal a title");return}const g=id?GOALS.find(x=>x.id===id):null;if(g){Object.assign(g,d);if(g.status!=="closed")g.status=d.current>=d.target?"achieved":"open"}else GOALS.push(Object.assign({id:GOALS.length+1,status:d.current>=d.target?"achieved":"open"},d));A.closeModal();tt(id?"Goal saved":"Goal created");mountGoal()}
+function goalClose(id){const g=GOALS.find(x=>x.id===id);A.confirm("Close this goal?","Closed for good – editing will not reopen it. The fund split stays as a preview.","Close goal",()=>{g.status="closed";tt("Goal closed");mountGoal()},{danger:true})}
+/* ================= REWARDS ================= */
+function mountRewards(){
+  if(!MGR())st.rwTab="shop";const me=MEID();const q=REDEMP.filter(r=>["requested","approved"].includes(r.status)).sort((a,b)=>new Date(a.at)-new Date(b.at));
+  A.$("#t10-rw-head").innerHTML=nav("rewards","active")+`<div class="row" style="width:100%;gap:12px;flex-wrap:wrap"><span class="kpi-s">${BAL[me]||0} <span class="muted" style="font-size:14px">pts</span></span>${MGR()?`<div class="seg-ctl"><button class="${st.rwTab==="shop"?"on":""}" onclick="T10.rwTab('shop')">Shop</button><button class="${st.rwTab==="queue"?"on":""}" onclick="T10.rwTab('queue')">Queue <span class="n">${q.length}</span></button></div>`:""}<span class="sp"></span>${MGR()?`<button class="btn --sm" onclick="T10.rewardModal()">${I("plus")} New reward</button>`:""}${demoEmpty("rw")}</div>`;
+  const B=A.$("#t10-rw-body");
+  if(st.rwTab==="queue"){B.innerHTML=q.length&&!st.empty.rw?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Status</th><th>Employee</th><th>Reward</th><th>Note</th><th class="num">Cost</th><th></th></tr></thead><tbody>${q.map(r=>`<tr><td>${A.pill(r.status==="requested"?"todo":"doing",r.status[0].toUpperCase()+r.status.slice(1))}</td><td>${E(NM(r.who))}</td><td>${r.reward?E(REWARDS.find(x=>x.id===r.reward).t):E(r.custom)+" "+tag("custom")}</td><td class="wrap">${E(r.note||"")}</td><td class="num">${r.cost||"–"}</td><td style="text-align:right">${r.status==="requested"?`<button class="textbtn" onclick="T10.rwApprove(${r.id})">Approve</button> `:`<button class="textbtn" onclick="T10.rwFulfil(${r.id})">Fulfil</button> `}<button class="textbtn --accent" onclick="T10.rwReject(${r.id})">Reject</button></td></tr>`).join("")}</tbody></table></div>`:emptyBox("gift","Nothing to review.","");return}
+  const list=st.empty.rw?[]:REWARDS.filter(r=>r.active||MGR());const mineR=REDEMP.filter(r=>r.who===me).slice(0,50);
+  B.innerHTML=`<div class="rw-grid">${list.map(r=>{const can=(BAL[me]||0)>=r.pts;return `<div class="rw ${r.active?"":"--off"}"><div class="row" style="gap:8px"><span class="pts">${r.pts} <span class="muted" style="font-size:13px">pts</span></span><span class="sp"></span>${tag(RTYPE[r.type]+(r.type==="money"?" "+r.gbp:""))}</div><div>${E(r.t)}</div><div class="hint">${E(r.ds)}</div><div class="btn-row mt8"><button class="btn --sm ${can?"":"is-disabled"}" onclick="T10.redeem(${r.id})">${can?"Redeem":"Not enough points"}</button>${MGR()?`<button class="textbtn" onclick="T10.rewardModal(${r.id})">Edit</button><button class="textbtn" onclick="T10.rwToggle(${r.id})">${r.active?"Retire":"Restore"}</button>`:""}</div></div>`}).join("")}</div>${list.length?"":`<div class="hint">The shop is empty${MGR()?" – add a reward.":"."}</div>`}
+   <div class="sec-head"><div class="h3">My requests</div><button class="textbtn" onclick="T10.proposeModal()">Propose your own</button></div>${mineR.length?`<div class="list" style="border:1px solid var(--hair)">${mineR.map(r=>`<div class="li" style="cursor:default">${A.pill({requested:"todo",approved:"doing",fulfilled:"done",rejected:"cancelled"}[r.status],r.status[0].toUpperCase()+r.status.slice(1))}<div class="t"><b>${r.reward?E(REWARDS.find(x=>x.id===r.reward).t):E(r.custom)}</b><small>${A.fmtDay(r.at)}${r.custom?" · custom":""}</small></div><span class="tnum">${r.cost||"–"}</span></div>`).join("")}</div>`:`<div class="hint">No requests yet.</div>`}`;
+}
+function rwTab(t){st.rwTab=t;mountRewards()}
+function redeem(id){const r=REWARDS.find(x=>x.id===id);const me=MEID();if(!r.active){tt("This reward is not available.");return}if((BAL[me]||0)<r.pts){tt("Not enough points");return}A.confirm("Redeem “"+E(r.t)+"”?",`${r.pts} points are taken from your balance now; a manager approves the request.`,"Redeem",()=>{BAL[me]-=r.pts;REDEMP.unshift({id:++RID,who:me,reward:id,status:"requested",at:NOW.toISOString(),cost:r.pts});tt("Requested · "+r.t);mountRewards()})}
+function proposeModal(){A.modal({title:"Propose a reward",body:`<div class="field"><label>Title</label><input class="input" id="t10-pt" placeholder="What would you like?"><div class="accent xs" id="t10-pte" style="display:none">Title is required.</div></div><div class="field mt16"><label>What would you like?</label><textarea class="textarea" id="t10-pn"></textarea></div><div class="hint mt8">No points are taken until a manager sets a price.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._proposeGo()">Send</button>`})}
+function _proposeGo(){const t=v("t10-pt").trim();if(!t){A.$("#t10-pte").style.display="";return}REDEMP.unshift({id:++RID,who:MEID(),reward:null,custom:t,note:v("t10-pn"),status:"requested",at:NOW.toISOString(),cost:0});A.closeModal();tt("Proposal sent");mountRewards()}
+function rwToggle(id){const r=REWARDS.find(x=>x.id===id);r.active=!r.active;tt((r.active?"Restored · ":"Retired · ")+r.t);mountRewards()}
+function rewardModal(id){const r=id?REWARDS.find(x=>x.id===id):{t:"",ds:"",pts:100,type:"money",gbp:0};
+  A.modal({title:id?"Edit reward":"New reward",body:`<div class="field"><label>Title</label><input class="input" id="t10-rt" value="${E(r.t)}"></div><div class="field mt16"><label>Description</label><textarea class="textarea" id="t10-rd">${E(r.ds)}</textarea></div><div class="grid g3 mt16"><div class="field"><label>Cost (points)</label><input class="input" type="number" id="t10-rp" value="${r.pts}"></div><div class="field"><label>Type</label>${sel("t10-rty",Object.entries(RTYPE),r.type,`onchange="document.getElementById('t10-rgb').style.display=this.value==='money'?'':'none'"`)}</div><div class="field" id="t10-rgb" style="${r.type==="money"?"":"display:none"}"><label>£ value</label><input class="input" type="number" id="t10-rg" value="${r.gbp||0}"></div></div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._rewardSave(${id||0})">Save</button>`})}
+function _rewardSave(id){const d={t:v("t10-rt").trim(),ds:v("t10-rd"),pts:Number(v("t10-rp"))||0,type:v("t10-rty")};d.gbp=d.type==="money"?Number(v("t10-rg"))||0:0;if(!d.t){tt("Give the reward a title");return}if(id)Object.assign(REWARDS.find(x=>x.id===id),d);else REWARDS.push(Object.assign({id:REWARDS.length+1,active:true},d));A.closeModal();tt(id?"Reward saved":"Reward created");mountRewards()}
+function rwApprove(id){const r=REDEMP.find(x=>x.id===id);A.modal({title:"Approve for "+E(NM(r.who)),body:`<div class="sm">${r.reward?E(REWARDS.find(x=>x.id===r.reward).t):E(r.custom)+" (own proposal)"}</div>${r.reward?"":`<div class="field mt16"><label>Cost in points</label><input class="input" type="number" id="t10-rc" value="150"><div class="hint">Taken from the balance now – ${E(NM(r.who))} has ${BAL[r.who]} pts.</div></div>`}`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._rwApproveGo(${id})">Approve</button>`})}
+function _rwApproveGo(id){const r=REDEMP.find(x=>x.id===id);if(!r.reward){const c=Number(v("t10-rc"))||0;if(BAL[r.who]<c){tt("Employee does not have enough points");return}BAL[r.who]-=c;r.cost=c}r.status="approved";r.decided={by:MEID(),at:NOW.toISOString()};A.closeModal();tt("Approved for "+NM(r.who));mountRewards()}
+function rwFulfil(id){const r=REDEMP.find(x=>x.id===id);A.confirm("Mark as fulfilled?",(r.reward&&REWARDS.find(x=>x.id===r.reward).type==="money"?"Money rewards go to Bonuses for this month.":"The request is closed as done."),"Fulfil",()=>{r.status="fulfilled";r.decided={by:MEID(),at:NOW.toISOString()};const rw=r.reward&&REWARDS.find(x=>x.id===r.reward);if(rw&&rw.type==="money"){MONEY["2026-10"][r.who]=(MONEY["2026-10"][r.who]||0)+rw.gbp}tt("Fulfilled");mountRewards()})}
+function rwReject(id){const r=REDEMP.find(x=>x.id===id);A.confirm("Reject this request?",`${r.cost?r.cost+" points go back to "+NM(r.who)+".":"Nothing was charged."}`,"Reject",()=>{if(r.cost&&!r.refunded){BAL[r.who]+=r.cost;r.refunded=true}r.status="rejected";r.decided={by:MEID(),at:NOW.toISOString()};tt("Rejected");mountRewards()},{danger:true})}
+/* ================= LEADERBOARD ================= */
+function mountLeaderboard(){
+  A.$("#t10-lb-head").innerHTML=nav("leaderboard","active")+`<div class="row" style="width:100%;gap:12px;flex-wrap:wrap"><div class="seg-ctl"><button class="${st.lbTab==="month"?"on":""}" onclick="T10.lbTab('month')">Month</button><button class="${st.lbTab==="year"?"on":""}" onclick="T10.lbTab('year')">Year</button></div><span class="hint">Points ranking – ${st.lbTab==="month"?"October 2026":"2026"}</span>${st.lbTab==="year"?`<div class="g row" style="gap:6px"><span class="hint">Sort by</span><div class="seg-ctl"><button class="${st.lbSort==="pm"?"on":""}" onclick="T10.lbSort('pm')">Points/month</button><button class="${st.lbSort==="total"?"on":""}" onclick="T10.lbSort('total')">Total</button></div></div>`:""}<span class="sp"></span><span class="note-box" style="padding:6px 10px">${KUDOS_LEFT} thank-you points left this week</span>${demoEmpty("lb")}</div>`;
+  const rows=st.empty.lb?[]:Object.keys(PTS).filter(k=>k!=="tatiana").map(k=>({id:k,m:PTS[k][0],y:PTS[k][1],pm:Math.round(PTS[k][1]/MONTHS_IN[k]),since:PTS[k][2]}));
+  const key=st.lbTab==="month"?"m":st.lbSort==="pm"?"pm":"y";rows.sort((a,b)=>b[key]-a[key]);
+  A.$("#t10-lb-body").innerHTML=rows.length?`<div style="border:1px solid var(--hair)">${rows.map((r,i)=>{const lv=level(r.y);const top=i<3&&r[key]>0;return `<div class="lb ${top?"--top":""}"><span class="rk">${top?["1st","2nd","3rd"][i]:i+1}</span>${AV(r.id,"--l")}<div class="who"><b>${E(NM(r.id))} <span class="hint">${I(LV_IC[lv[0]])} ${lv[0]}</span></b><small>${HELD[r.id].map(b=>`<span class="bdg">${I("award")}${E(BADGES.find(x=>x[0]===b)[1])}</span>`).join("")}<span>With us since ${r.since}</span><span>${KUDOS.filter(k=>k.to===r.id&&days(k.at)<30).length} this month</span></small></div>
+    <div class="m ${st.lbTab==="year"&&st.lbSort!=="pm"?"dim":""}">${st.lbTab==="month"?r.m:r.pm}<small>${st.lbTab==="month"?"This month":"Pts/month"}</small></div><div class="m ${st.lbTab==="month"||st.lbSort==="pm"?"dim":""}">${r.y}<small>Year total</small></div>
+    <div class="lbacts">${r.id!==MEID()&&KUDOS_LEFT>0?`<button class="btn --ghost --sm" onclick="T10.thankModal('${r.id}','Say thanks to ${E(NM(r.id))}')">Say thanks</button>`:""}${r.id!==MEID()?`<button class="btn --ghost --sm" onclick="T10.recogModal('${r.id}')">+ recognition</button>`:""}<button class="btn --ghost --sm" onclick="T10.badgeModal('${r.id}')">Award badge</button></div></div>`}).join("")}</div>`:emptyBox("cup","No points awarded yet.","");
+}
+function lbTab(t){st.lbTab=t;mountLeaderboard()}function lbSort(s){st.lbSort=s;mountLeaderboard()}
+function recogModal(w){A.modal({title:"Recognise "+E(NM(w)),body:`<div class="field"><label>Points (1–3)</label>${sel("t10-rcp",[[1,"1"],[2,"2"],[3,"3"]],1)}</div><div class="field mt16"><label>Reason</label><input class="input" id="t10-rcr" placeholder="Required"><div class="accent xs mt8" id="t10-rce" style="display:none">A reason is required.</div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._recogGo('${w}')">Give</button>`})}
+function _recogGo(w){const r=v("t10-rcr").trim();if(!r){A.$("#t10-rce").style.display="";return}const p=Number(v("t10-rcp"));PTS[w][0]+=p;PTS[w][1]+=p;BAL[w]+=p;A.closeModal();tt("Recognition · "+NM(w)+" +"+p);mountLeaderboard()}
+function badgeModal(w){A.modal({title:"Award a badge to "+E(NM(w)),body:`<div class="field"><label>Badge</label>${sel("t10-bg",BADGES.map(b=>[b[0],b[1]+" · +"+b[2]+" pts – "+b[3]]),BADGES[0][0])}</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T10._badgeGo('${w}')">Award</button>`})}
+function _badgeGo(w){const b=v("t10-bg");A.closeModal();if(HELD[w].includes(b)){tt("Badge already held");return}HELD[w].push(b);const x=BADGES.find(y=>y[0]===b);BAL[w]+=x[2];PTS[w][0]+=x[2];PTS[w][1]+=x[2];tt("Badge granted · "+x[1]);mountLeaderboard()}
+/* ================= PAYROLL · BONUSES ================= */
+function mountPayroll(p={}){
+  if(p.month)st.month=/^\d{4}-\d{2}$/.test(p.month)?p.month:"2026-10";
+  A.$("#t10-pr-head").innerHTML=nav("payroll","active")+`<div class="row" style="width:100%;gap:12px;flex-wrap:wrap"><div class="field" style="width:180px"><label>Month</label><input class="input" type="month" value="${st.month}" onchange="T10.month(this.value)"></div><span class="sp"></span><button class="btn --ghost --sm" onclick="App.toast('floritta-bonuses-${st.month}.csv · downloading (demo)')">${I("download")} Download CSV</button>${demoEmpty("pr")}</div>`;
+  const mp=MPTS[st.month];const mo=MONEY[st.month]||{};
+  if(!mp||st.empty.pr){A.$("#t10-pr-body").innerHTML=emptyBox("pound","No data for this month.","");return}
+  const rows=S.filter(s=>s.role!=="owner");
+  A.$("#t10-pr-body").innerHTML=`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Employee</th><th class="num">Points earned</th><th class="num">Money rewards</th><th class="num">Redemptions</th></tr></thead><tbody>${rows.map(s=>{const red=REDEMP.filter(r=>r.who===s.id&&r.at.slice(0,7)===st.month).length;return `<tr><td>${E(s.n)}<span class="sub">${E(s.id)}@floritta.uk</span></td><td class="num">${mp[s.id]?mp[s.id][0]:0}</td><td class="num">${mo[s.id]?A.fmt(mo[s.id]):"–"}</td><td class="num">${red||"–"}</td></tr>`}).join("")}</tbody><tfoot><tr><td>Positive ledger entries without redemptions · money rewards fulfilled in the month</td><td class="num">${rows.reduce((a,s)=>a+(mp[s.id]?mp[s.id][0]:0),0)}</td><td class="num">${A.fmt(Object.values(mo).reduce((a,x)=>a+x,0))}</td><td></td></tr></tfoot></table></div>`;
+}
+function month(m){st.month=m;mountPayroll()}
+function toggleEmpty(k){st.empty[k]=!st.empty[k];re()}
+/* ---------- exports & mounts ---------- */
+window.T10={re,open,sheetMenu,menu,form,catalog,catFilter,catFail,catRetry,catTake,catAssignOpen,catAssign,setKind,setView,setScope,setStage,flag,more,reset,setF,page,sel:selOne,selAll,clearSel,thread,bulk,csv,claim,claimQuiet,start,undone,release,dismissReq,del,doneModal,approveModal,reopenModal,cancelModal,askCancelModal,attach,unattach,cmtState,comment,lightbox,lightboxImg,stepToggle,stepDel,stepAdd,stepWho,stepDue,
+ zoneChip,moveMenu,reorder,circle,assignOne,_assignGo,hudView,expand,collapse,ibGroup,ibOpen,ibPick,ibSel,ibSelAll,ibClear,ibDismiss,ibOpt,ibFocus,ibAnswer,ibPutBack,bulkConfirm,_bulkGo,
+ hand,handMenu,laneGo,laneToggle,zoneModal,_zoneSync,_zoneSave,tplToggle,tplModal,_tplRec,_tplSave,thankModal,_thankGo,goalModal,_goalSave,goalClose,rwTab,redeem,proposeModal,_proposeGo,rwToggle,rewardModal,_rewardSave,rwApprove,_rwApproveGo,rwFulfil,rwReject,lbTab,lbSort,recogModal,_recogGo,badgeModal,_badgeGo,month,toggleEmpty};
+window.mount_tasks=mountList;window.mount_tasks_board=mountBoard;window.mount_tasks_huddle=mountHuddle;window.mount_tasks_inbox=mountInbox;window.mount_tasks_people=mountPeople;window.mount_tasks_health=mountHealth;window.mount_tasks_zones=mountZones;window.mount_tasks_catalog=mountCatalog;window.mount_tasks_my_week=mountMyWeek;window.mount_team_goal=mountGoal;window.mount_rewards=mountRewards;window.mount_leaderboard=mountLeaderboard;window.mount_payroll=mountPayroll;
+document.addEventListener("t10",()=>{});
+})();
+</script>
