@@ -561,7 +561,7 @@ const App=(()=>{
   function lineTotal(l){const p=product(l.id);const ad=l.addons.reduce((a,id)=>{const x=ADDONS.find(a2=>a2.id===id);return a+(x?x.p:0)},0);return (p.p+l.extra+ad)*l.qty}
   function subtotal(){return state.bag.reduce((a,l)=>a+lineTotal(l),0)}
   function deliveryFee(){return subtotal()>=120||subtotal()===0?0:7.95}
-  function discount(){return state.promo==="NEW10"?Math.round(subtotal()*.1*100)/100:0}
+  function discount(){const s=subtotal();if(state.promo==="NEW10")return Math.round(s*.1*100)/100;if(state.promo==="FLOAPP12"&&s>=98)return Math.round(s*.12*100)/100;return 0}
   function total(){return Math.max(0,subtotal()-discount()+deliveryFee())}
   function renderBagBadge(){const n=bagCount();$$("#bag-dot,[data-bag-count]").forEach(e=>{e.dataset.n=n;e.textContent=n||""})}
   function clearBag(){state.bag=[];state.promo=null;renderBagBadge();document.dispatchEvent(new CustomEvent("bag"))}

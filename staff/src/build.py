@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Склейка прототипа CRM: shell.html + screens/*.html + notes.html → index.html.
-Файлы экранов идут в естественном порядке (11-order-card.html раньше 11-order-card-2.html);
+Файлы экранов идут в естественном порядке (60-stock.html раньше 60-stock-2.html: расширение отрезается до разбиения);
 дубль id="s-…" между файлами – ошибка сборки."""
 import glob,os,re,sys
 base=os.path.dirname(os.path.abspath(__file__))
 shell=open(os.path.join(base,'shell.html'),encoding='utf8').read()
 def natkey(p):
-    name=os.path.basename(p)
+    name=os.path.splitext(os.path.basename(p))[0]
     return [int(t) if t.isdigit() else t.lower() for t in re.split(r'(\d+)',name)]
 files=sorted(glob.glob(os.path.join(base,'screens','*.html')),key=natkey)
 sections=[];scripts=[];seen={}
