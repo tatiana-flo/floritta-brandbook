@@ -133,7 +133,7 @@
 
 <script>
 /* ===== 22 · Storefront / SEO / Content – shared runtime + Storefront screens (fictional demo data) ===== */
-window.SF22_STATE=window.SF22_STATE||{configured:true,ownerWs:true,token:true,siteSettings:true,migrated:true,translate:true,quiet:false,errors:false,gsc:true,ga4:true,audited:true,analyst:false};
+window.SF22_STATE=window.SF22_STATE||{};Object.assign(window.SF22_STATE,{configured:true,ownerWs:true,token:true,siteSettings:true,migrated:true,translate:true,quiet:false,errors:false,gsc:true,ga4:true,audited:true,analyst:false}); /* same object as in 22-storefront-2.html (loads first) */
 window.SF22_DEFS=window.SF22_DEFS||{};
 (()=>{
 const S=window.SF22_STATE, DEFS=window.SF22_DEFS;
@@ -178,12 +178,12 @@ function mount(id,params){
 Object.assign(window,{}); // no-op
 window.SF22={S,DEFS,esc,ic,fld,chk,val,err,need,tag,tbl,url,saveFoot,enterSubmits,live,translated,canWrite,isOwner,mount,NAVS,re(){const c=App.state.current;if(DEFS[c])mount(c,App.state.params)}};
 const SF=window.SF22;
-window.SFX={
+window.SFX=Object.assign(window.SFX||{},{
   demo(ev){const t=(k,a,b)=>({t:(S[k]?a:b),ic:S[k]?"check":"close",fn:()=>{S[k]=!S[k];SF.re();App.toast(S[k]?a:b)}});
     App.pop(ev,["Demo state",t("configured","Storefront DB configured","Storefront DB not configured"),t("ownerWs","Workspace owns floritta.uk","Floritta One client workspace"),t("token","Internal API token set","Internal API token missing"),t("siteSettings","site_settings table deployed","site_settings not deployed"),t("migrated","Shoppable-blog migrated","Shoppable-blog not migrated"),t("translate","AI translation on","AI translation off"),"-",t("gsc","GSC data synced","GSC: no data yet"),t("ga4","GA4 connected","GA4 not connected"),t("audited","AI-search audit done","AI-search: never audited"),t("analyst","SEO analyst enabled","SEO analyst disabled"),"-",t("quiet","Data present","Empty states"),t("errors","Server accepts saves","Server returns validation errors")])},
   cnt(id,max){const e=document.getElementById(id),c=document.getElementById(id+"-cnt");if(!e||!c)return;const n=e.value.length;c.textContent=n+"/"+max;c.className="xs "+(n>max?"warn":"muted")},
   go(id){App.go(id)}
-};
+});
 /* ===== DEMO DATA ===== */
 const RED=[["/catalog/peonies-2025","/catalog/peonies",1,[]],["/catalog/valentines-roses","/catalog/red-roses",1,[]],["/blog/old-wedding-guide","/blog/wedding-flowers-london-guide",1,[]],["/catalog/loop-test","/catalog/loop-test",1,["loop"]],["/catalog/spring-tulips","/catalog/tulips",1,["chain"]],["/catalog/tulips","/catalog/spring-flowers",1,[]],["/catalog/xmas-2024","/catalog/christmas-wreaths-2024",1,["dead"]],["/delivery-info","https://floritta.uk/delivery",0,[]]].map((r,i)=>({id:412-i,old:r[0],to:r[1],on:!!r[2],flags:r[3]}));
 const MENUS={
