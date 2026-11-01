@@ -1,5 +1,7 @@
 # BRIEF – ТЗ для агентов-сборщиков экранов CRM Floritta (редизайн 2026-10)
 
+> ⚠ **С 01.11.2026 палитра – как на сайте** (решение Tatiana): фон `#fdfdfd`, подложка `#f2f2f4`, линии `#e6e6e6`, текст и основная кнопка `#1e1a17`, акцент `#b4595f`. Ivory и Petal ниже – история, не канон. Эталон – `../../site/index.html`.
+
 Папка: `~/Documents/Claude/Floritta_Brain_Main/Дизайн-и-брендинг/CRM_Redesign_2026-10/`.
 Перед работой прочитать: этот файл, `shell.html` (целиком – токены, CSS-классы, демо-данные, рантайм `App`), `research/01_audit_frontend.md`, `research/02_audit_domain.md`, `research/03_benchmark.md`. Эталон архитектуры – `../../../..` не нужен: всё, что надо, уже в `shell.html`.
 

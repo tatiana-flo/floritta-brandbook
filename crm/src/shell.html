@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="en" data-theme="ivory" data-density="comfortable" data-size="desktop" data-role="manager" data-btn="rose7">
+<html lang="en" data-theme="ivory" data-density="comfortable" data-size="desktop" data-role="manager" data-btn="ink">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#fdfbf8">
+<meta name="theme-color" content="#fdfdfd">
 <title>Floritta CRM — redesign mockup</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-/* ============ TOKENS (Floritta Brandbook 2026-10 · Ivory · SQUARE) ============ */
+/* ============ TOKENS (Floritta Brandbook 2026-11 · site palette · SQUARE) ============ */
 :root{
-  --paper:#fdfbf8; --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378; --light:#d9d2c7; --hair:#e8e2d9; --silver:#f5f1eb;
-  --accent:#b4595f; --accent-dark:#9a474c; --accent-bg:#f7dee3; --ok:#7a8a6b; --ok-bg:#eef0e9; --warn:#b8862e; --warn-bg:#f6ecd8;
-  --paper-2:#faf7f2; /* panel / sidebar */
-  --sel:#c98c91; --sel-h:#bd7f85; --sel-bg:#f6e4e5; --sel-ink:#9c646b; --on-sel:#fff; /* selection / primary accent (Petal, decided 21.10.2026) */
+  --paper:#fdfdfd; --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378; --light:#cecece; --hair:#e6e6e6; --silver:#f2f2f4;
+  --accent:#b4595f; --accent-dark:#9a474c; --accent-bg:#f3e1e1; --ok:#7a8a6b; --ok-bg:#eef0e9; --warn:#9a6a0a; --warn-bg:#fbf1d4;
+  --paper-2:#fdfdfd; /* panel / sidebar */
+  --sel:#1e1a17; --sel-h:#5c5450; --sel-bg:#f2f2f4; --sel-ink:#1e1a17; --on-sel:#fff; /* selection / primary accent (Petal, decided 21.10.2026) */
   --f-display:"Cormorant Infant",Georgia,serif; --f-body:"Jost","Helvetica Neue",Arial,sans-serif;
   --r:0px;
   --btn-h:40px; --btn-h-s:32px; --row-h:44px; --input-h:36px; --sidebar-w:232px; --topbar-h:56px;
@@ -23,10 +23,10 @@
   --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-6:24px; --s-8:32px; --s-12:48px;
   --pad:24px;
   --shadow-sheet:-12px 0 40px rgba(30,26,23,.14); --shadow-float:0 8px 28px rgba(30,26,23,.14); --shadow-pop:0 6px 24px rgba(30,26,23,.16);
-  --stage-bg:#efeae2;
+  --stage-bg:#ececee;
 }
 [data-theme="ink"]{
-  --paper:#1b1816; --paper-2:#211d1a; --ink:#f5f1eb; --graphite:#c9c1b5; --grey:#8b8378; --light:#4a433d; --hair:#2f2a26; --silver:#2a2522;
+  --paper:#1b1816; --paper-2:#211d1a; --ink:#f2f2f4; --graphite:#c9c1b5; --grey:#8b8378; --light:#4a433d; --hair:#2f2a26; --silver:#2a2522;
   --accent:#c9737a; --accent-dark:#b4595f; --accent-bg:#3a2628; --ok:#9aa88a; --ok-bg:#262a22; --warn:#d1a24f; --warn-bg:#352c1c;
   --shadow-sheet:-12px 0 40px rgba(0,0,0,.5); --shadow-float:0 8px 28px rgba(0,0,0,.5); --shadow-pop:0 6px 24px rgba(0,0,0,.5);
 }
@@ -49,14 +49,14 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .stage-title{font-family:var(--f-display);font-weight:300;font-size:36px;line-height:1.02;letter-spacing:.01em;margin:0 0 8px;color:#1e1a17}
 .stage-sub{color:#5c5450;font-size:13px;margin:0 0 18px}
 .eyebrow{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:#8b8378;font-weight:400}
-.seg{display:flex;border:1px solid #d9d2c7;margin:6px 0 16px}
-.seg button{flex:1 0 auto;min-width:60px;height:32px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#5c5450;border-right:1px solid #d9d2c7}
+.seg{display:flex;border:1px solid #cecece;margin:6px 0 16px}
+.seg button{flex:1 0 auto;min-width:60px;height:32px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#5c5450;border-right:1px solid #cecece}
 .seg button:last-child{border-right:0}
-.seg button.on{background:#1e1a17;color:#fdfbf8}
+.seg button.on{background:#1e1a17;color:#fdfdfd}
 .nav-list{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:2px}
 .nav-list button,.nav-list a>button{display:flex;align-items:center;justify-content:space-between;width:100%;padding:7px 10px;font-size:13.5px;border:1px solid transparent;transition:all var(--m-fast);color:#1e1a17}
-.nav-list button:hover{background:#f5f1eb}
-.nav-list button.on{background:#1e1a17;color:#fdfbf8}
+.nav-list button:hover{background:#f2f2f4}
+.nav-list button.on{background:#1e1a17;color:#fdfdfd}
 .nav-list button small{opacity:.55;font-size:11px}
 .nav-list .grp{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8b8378;padding:10px 10px 4px}
 .notes{font-size:13px;color:#5c5450;line-height:1.5}
@@ -188,16 +188,16 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
 /* ============ ACCENT VARIANTS (stand toggle, html[data-btn]) ============ */
-[data-btn="ink"]{--sel:#1e1a17;--sel-h:#5c5450;--sel-bg:#f5f1eb;--sel-ink:#1e1a17}
-[data-btn="graphite"]{--sel:#5c5450;--sel-h:#1e1a17;--sel-bg:#f5f1eb;--sel-ink:#5c5450}
+[data-btn="ink"]{--sel:#1e1a17;--sel-h:#5c5450;--sel-bg:#f2f2f4;--sel-ink:#1e1a17}
+[data-btn="graphite"]{--sel:#5c5450;--sel-h:#1e1a17;--sel-bg:#f2f2f4;--sel-ink:#5c5450}
 [data-btn="sage"]{--sel:#7a8a6b;--sel-h:#66765a;--sel-bg:#eef0e9;--sel-ink:#5f6d52}
 [data-btn="rose"]{--sel:#b4767c;--sel-h:#a06a77}
-[data-btn="rose2"]{--sel:#ad7076;--sel-h:#9c646b}
+[data-btn="rose2"]{--sel:#ad7076;--sel-h:#1e1a17}
 [data-btn="rose3"]{--sel:#a86f76;--sel-h:#95616a}
 [data-btn="rose4"]{--sel:#a06a77;--sel-h:#8c5c68}
-[data-btn="rose5"]{--sel:#bd7f85;--sel-h:#ad7076}
+[data-btn="rose5"]{--sel:#5c5450;--sel-h:#ad7076}
 [data-btn="rose6"]{--sel:#c28186;--sel-h:#b4767c}
-[data-btn="rose7"]{--sel:#c98c91;--sel-h:#bd7f85}
+[data-btn="ink"]{--sel:#1e1a17;--sel-h:#5c5450}
 [data-btn="rose8"]{--sel:#d0989d;--sel-h:#c28186}
 
 /* ============ INPUTS ============ */
@@ -455,11 +455,11 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
   <aside class="gutter-l">
     <img src="logo.svg" alt="Floritta" style="width:150px;margin-bottom:18px">
     <h1 class="stage-title">CRM<br>redesign</h1>
-    <p class="stage-sub">app.floritta.ai · Brandbook 2026-10 · Ivory · Square · desktop + iPad</p>
+    <p class="stage-sub">app.floritta.ai · Brandbook 2026-11 · палитра сайта · Square · desktop + iPad</p>
     <div class="eyebrow">Theme</div>
-    <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Ivory</button></div>
-    <div class="eyebrow">Accent (Petal chosen)</div>
-    <div class="seg" id="tg-btn" style="flex-wrap:wrap"><button data-v="ink">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Dusty</button><button data-v="rose2">Clay</button><button data-v="rose3">Old rose</button><button data-v="rose4">Mauve</button><button data-v="rose5">Blush</button><button data-v="rose6">Canon</button><button data-v="rose7" class="on">Petal</button><button data-v="rose8">Powder</button></div>
+    <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Paper</button></div>
+    <div class="eyebrow">Accent (Ink – как на сайте)</div>
+    <div class="seg" id="tg-btn" style="flex-wrap:wrap"><button data-v="ink" class="on">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Dusty</button><button data-v="rose2">Clay</button><button data-v="rose3">Old rose</button><button data-v="rose4">Mauve</button><button data-v="rose5">Blush</button><button data-v="rose6">Canon</button><button data-v="rose7">Petal</button><button data-v="rose8">Powder</button></div>
     <div class="eyebrow">Density</div>
     <div class="seg" id="tg-density"><button data-v="comfortable" class="on">Comfortable</button><button data-v="compact">Compact</button></div>
     <div class="eyebrow">Role</div>
@@ -852,7 +852,7 @@ const App=(()=>{
   });
   document.addEventListener("click",e=>{if(!e.target.closest("#pop"))closePop()});
   /* ---- STAND TOGGLES ---- */
-  function setTheme(v){state.theme=v;document.documentElement.dataset.theme=v;$$("#tg-theme button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));toast(v==="ink"?"Ink theme":"Ivory theme")}
+  function setTheme(v){state.theme=v;document.documentElement.dataset.theme=v;$$("#tg-theme button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));toast(v==="ink"?"Ink theme":"Paper theme")}
   function setDensity(v){state.density=v;document.documentElement.dataset.density=v;$$("#tg-density button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));remount()}
   function setRole(v){state.role=v;document.documentElement.dataset.role=v;$$("#tg-role button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));const cur=state.current;const s=document.getElementById("s-"+cur);if(s&&s.dataset.roles&&!s.dataset.roles.split(/[ ,]+/).includes(v))go("today",{},{replace:true});else remount();toast(`Viewing as ${me().n} · ${me().title}`)}
   function setSize(v){state.size=v;const sb=$("#sidebar");sb.style.transition="none";setTimeout(()=>sb.style.transition="",350);document.documentElement.dataset.size=v;$$("#tg-size button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));drawer(false);fit();remount()}
