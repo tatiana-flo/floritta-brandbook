@@ -1,3 +1,9 @@
+<style>
+#s-announcement .td-text,#s-announcement .h1{user-select:text;-webkit-user-select:text}
+#s-announcement .nf{padding:48px var(--gutter);text-align:center;color:var(--grey);font-size:14px;line-height:1.5}
+#s-announcement .ackt{margin:0 var(--gutter);padding:14px;background:var(--ok-bg);display:flex;gap:12px;align-items:center;font-size:14px}
+</style>
+<!-- ids: TM-ANN-020 TM-ANN-021 TM-ANN-022 TM-ANN-023 TM-ANN-024 TM-ANN-025 TM-ANN-026 -->
 <section class="scr" id="s-announcement" data-nav="Announcement" data-group="Today">
   <div class="appbar">
     <button class="ib" aria-label="Back" id="an-back"></button>
@@ -7,3 +13,33 @@
   <div class="scr-body" id="an-body"></div>
   <div class="cta-bar" id="an-cta" style="display:none"></div>
 </section>
+<script>
+(function(){
+const A=window.App;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isMgr=()=>A.role()==='manager'||A.role()==='owner';
+const orig=window.mount_announcement;
+const AN={mode:'live'};window.ANX=AN;
+window.mount_announcement=function(p){
+  const id=+((p&&p.id)||1);
+  const own=ANNOUNCEMENTS.find(a=>a.id===id);
+  const extra=window.CM&&CM.annExtra&&CM.annExtra.find(a=>a.id===id);
+  const body=$('#an-body'),cta=$('#an-cta'),more=$('#an-more');
+  $('#an-back').innerHTML=A.icon('back');$('#an-back').onclick=()=>A.back('home');
+  if(!own&&!extra){ /* not found / unavailable / error (TM-ANN-025) */
+    more.style.visibility='hidden';cta.style.display='none';body.classList.remove('has-cta');
+    body.innerHTML=`<div class="nf">${AN.mode==='na'?'Announcements are not available on this CRM.':AN.mode==='error'?'Could not load the announcement.<br><button class="btn --secondary --sm" style="margin-top:14px" onclick="App.go(\'announcement\',{id:1})">Try again</button>':'This announcement is no longer in the list.'}<br><button class="btn --ghost --sm" style="margin-top:14px" onclick="App.back('cm-anns')">Back to announcements</button></div>`;return}
+  if(extra){ /* informational, no acknowledgement */
+    more.style.visibility='hidden';cta.style.display='none';body.classList.remove('has-cta');const u=A.user(extra.by);
+    body.innerHTML=`<div class="td-wrap"><div class="caps muted">Announcement · ${A.fmtDay(extra.at)} ${A.fmtTime(extra.at)}</div><h1 class="h1 mt8">${esc(extra.title)}</h1><div class="td-by">${A.avatar(extra.by,'')}<div><div style="font-size:15px;line-height:1.2">${u?u.n:''}</div><div class="xs muted">${u?u.title:''} · ${extra.roles?extra.roles.join(', ')+'s':'everyone'}</div></div></div><p class="td-text">${esc(extra.body)}</p><div class="xs muted" style="margin-top:18px">No “Got it” needed for this one. Text can be selected and copied.</div></div><div style="height:24px"></div>`;return}
+  orig(p);
+  /* acknowledged-at plaque (TM-ANN-022) + remind “too soon” (TM-ANN-024) */
+  const rec=(window.ACK_BY&&ACK_BY[id]||[]).find(x=>x.id===A.state.me);
+  const box=body.querySelector('.td-ackbox.ok');
+  if(box&&rec){const d=box.querySelector('.sm');if(d)d.textContent=`Got it · ${A.fmtTime(rec.at)}${new Date(rec.at).toDateString()!==A.NOW.toDateString()?' · '+A.fmtDay(rec.at):''}. The author sees this.`}
+  if(isMgr()){const b=cta.querySelector('button[disabled]');if(b&&/Reminded at/.test(b.textContent)){b.disabled=false;b.onclick=()=>A.toast('Too soon – one reminder per hour')}}
+  const meta=body.querySelector('.td-meta');if(meta)meta.insertAdjacentHTML('afterend','<div class="xs muted" style="padding:6px var(--gutter) 0">The text is taken from the list – no separate request. Select to copy.</div>');
+};
+})();
+</script>

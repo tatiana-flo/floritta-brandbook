@@ -1,0 +1,416 @@
+<style>
+/* ---- Comms: client chats + announcements (tm-me-comms) ---- */
+.cm .demo{display:flex;align-items:center;gap:8px;padding:8px var(--gutter);background:var(--silver);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.cm .demo .seg{height:30px;flex:1;border-color:var(--light)}
+.cm .demo .seg button{font-size:10px;letter-spacing:.06em}
+.cm .srch{padding:10px var(--gutter) 10px}
+.cm .conv{display:flex;gap:12px;padding:14px var(--gutter) 14px 12px;border-bottom:1px solid var(--hair);width:100%;text-align:left;position:relative;border-left:4px solid transparent}
+.cm .conv.--wait{border-left-color:var(--accent)}
+.cm .conv.--unres{border-left-color:var(--warn)}
+.cm .conv.--draft{outline:1px dashed var(--accent);outline-offset:-5px}
+.cm .conv .ch{width:36px;height:36px;border:1px solid var(--hair);display:grid;place-items:center;flex:none;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
+.cm .conv .ch svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+.cm .conv .nm{display:flex;align-items:center;gap:6px;font-size:15px;line-height:1.2}
+.cm .conv .nm .tagdot{width:8px;height:8px;border-radius:50%;flex:none}
+.cm .conv .nm .pinico{width:14px;height:14px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+.cm .conv .pv{font-size:13px;color:var(--graphite);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm .conv .bd{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.cm .conv .rt{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none;font-size:12px;color:var(--grey);font-variant-numeric:tabular-nums}
+.cm .conv .rt .wait{color:var(--graphite)}
+.cm .conv .rt .wait.red,.cm .conv .rt .unans{color:var(--accent)}
+.cm .conv .rt .cnt{min-width:20px;height:20px;padding:0 6px;background:var(--ink);color:var(--paper);font-size:11px;display:grid;place-items:center}
+.cm .tag.--warn{background:var(--warn-bg);color:var(--warn)}
+.cm .tag.--acc{background:var(--accent-bg);color:var(--accent)}
+.cm .tag.--line{background:transparent;border:1px solid var(--light);color:var(--graphite)}
+.cm .foot{font-size:12px;color:var(--grey);padding:14px var(--gutter) 32px;line-height:1.5}
+.cm .empty{padding:48px var(--gutter);text-align:center;color:var(--grey);font-size:14px;line-height:1.5}
+.cm .td-grp{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px var(--gutter) 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.cm .search input{flex:1;min-width:0;border:0;background:transparent;font-size:15px;outline:none;font-family:inherit;color:var(--ink)}
+/* chat */
+#s-cm-chat .appbar .ttl{font-size:20px}
+#s-cm-chat .sub{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);margin-top:2px}
+#s-cm-chat .plaque{display:flex;align-items:center;gap:10px;padding:10px var(--gutter);border-bottom:1px solid var(--hair);font-size:13px;width:100%;text-align:left}
+#s-cm-chat .plaque.--warn{background:var(--warn-bg)}
+#s-cm-chat .plaque .f1{flex:1;min-width:0}
+#s-cm-chat .msgs{padding:12px var(--gutter);display:flex;flex-direction:column;gap:10px}
+#s-cm-chat .m{max-width:82%;display:flex;flex-direction:column;gap:4px}
+#s-cm-chat .m.in{align-self:flex-start}
+#s-cm-chat .m.out{align-self:flex-end;align-items:flex-end}
+#s-cm-chat .m .bub{padding:10px 12px;font-size:14px;line-height:1.45;background:var(--silver);color:var(--ink);user-select:text}
+#s-cm-chat .m.out .bub{background:var(--ink);color:var(--paper)}
+#s-cm-chat .m.out .bub.draft{background:transparent;color:var(--ink);border:1px dashed var(--accent)}
+#s-cm-chat .m .q{border-left:2px solid var(--light);padding:2px 8px;margin-bottom:6px;font-size:12px;opacity:.75;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#s-cm-chat .m .meta{font-size:11px;color:var(--grey);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#s-cm-chat .m .cap{font-size:11px;color:var(--grey)}
+#s-cm-chat .m .ph{width:160px;height:120px;background:var(--silver);display:grid;place-items:center;color:var(--grey);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+#s-cm-chat .m .textbtn{font-size:11px}
+#s-cm-chat .sys{align-self:center;font-size:12px;color:var(--grey);text-align:center;padding:4px 0}
+#s-cm-chat .odraft{margin:4px var(--gutter);border:1px solid var(--hair)}
+#s-cm-chat .odraft .oh{display:flex;align-items:center;gap:10px;padding:12px 14px;width:100%;text-align:left}
+#s-cm-chat .odraft .ob{padding:0 14px 14px;font-size:13px}
+#s-cm-chat .odraft .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin-top:8px}
+#s-cm-chat .odraft .kv span:nth-child(odd){color:var(--grey)}
+#s-cm-chat .snote{margin:4px var(--gutter);border-left:2px solid var(--light);padding:8px 12px;font-size:13px;width:calc(100% - 2*var(--gutter));text-align:left}
+#s-cm-chat .snote.--att{border-left-color:var(--warn)}
+#s-cm-chat .snote.--urg{border-left-color:var(--accent)}
+#s-cm-chat .abar{display:flex;gap:8px;align-items:center;padding:8px var(--gutter);border-top:1px solid var(--hair);flex-wrap:wrap}
+#s-cm-chat .abar .col{width:26px;height:26px;border:1px solid var(--light);flex:none}
+#s-cm-chat .abar .col.on{outline:2px solid var(--ink);outline-offset:2px}
+#s-cm-chat .abar .btn{height:30px;padding:0 10px;font-size:11px}
+#s-cm-chat .compose{border-top:1px solid var(--hair);padding:8px var(--gutter) calc(10px + var(--safe-b));background:var(--paper)}
+#s-cm-chat .frame{border:1px dashed var(--accent);padding:8px 10px 6px}
+#s-cm-chat .frame .fl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;justify-content:space-between;align-items:center}
+#s-cm-chat .compose textarea{width:100%;border:0;background:transparent;font-size:15px;line-height:1.45;min-height:44px;resize:none;outline:none;padding:6px 0;font-family:inherit}
+#s-cm-chat .crow{display:flex;align-items:center;gap:8px}
+#s-cm-chat .crow .ib.send[disabled]{opacity:.3}
+#s-cm-chat .tools{display:flex;gap:8px;padding:8px 0 2px}
+#s-cm-chat .tools .btn{height:34px;padding:0 12px;font-size:11px}
+#s-cm-chat .qr{display:flex;gap:8px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+#s-cm-chat .qr button{flex:none;height:32px;padding:0 12px;border:1px solid var(--light);font-size:12px;white-space:nowrap}
+#s-cm-chat .rw{display:flex;gap:8px;align-items:center;padding:6px 0 2px}
+#s-cm-chat .rw .input{height:36px;font-size:13px}
+#s-cm-chat .err{font-size:12px;color:var(--accent);padding:4px 0}
+#s-cm-chat .kb{font-size:11px;color:var(--grey);text-align:center;padding-top:6px}
+#s-cm-chat .scr-body{display:flex;flex-direction:column;padding:0}
+#s-cm-chat .scroll{flex:1;overflow-y:auto;min-height:0}
+.cm-sh .kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px;padding:6px 0 14px}
+.cm-sh .kv span:nth-child(odd){color:var(--grey);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+.cm-sh .call{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.cm-sh .call .k{color:var(--grey)}
+.cm-sh .sw{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+/* announcements */
+#s-cm-anns .arow{display:block;width:100%;text-align:left;padding:14px var(--gutter);border-bottom:1px solid var(--hair);position:relative}
+#s-cm-anns .arow.--need{outline:1px solid var(--accent);outline-offset:-1px}
+#s-cm-anns .arow .t{font-size:15px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#s-cm-anns .arow .by{font-size:12px;color:var(--grey);margin-top:3px}
+#s-cm-anns .arow .bd{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+#s-cm-anns .ban{margin:8px var(--gutter) 0;border:1px solid var(--accent);padding:12px 14px}
+#s-cm-anns .ban .t{font-size:14px}
+#s-cm-anns .ban .s{font-size:12px;color:var(--grey);margin-top:2px}
+#s-cm-ann-new .cnt{font-size:11px;color:var(--grey);text-align:right;margin-top:-10px;margin-bottom:12px}
+#s-cm-ann-new .cnt.over{color:var(--accent)}
+</style>
+
+<!-- ids: TM-CHAT-001 TM-CHAT-002 -->
+<section class="scr cm" id="s-cm-inbox" data-nav="Client chats" data-group="Comms" data-tab="work">
+  <div class="appbar">
+    <button class="ib" aria-label="Back" onclick="App.back('work')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl">Client chats</div>
+    <!-- ids: TM-CHAT-003 -->
+    <button class="ib" aria-label="New chat" onclick="App.go('cm-new')"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  </div>
+  <div class="scr-body has-tab" id="cmi-body"></div>
+</section>
+
+<!-- ids: TM-CHAT-020 TM-CHAT-063 -->
+<section class="scr cm" id="s-cm-chat" data-nav="Chat with a client" data-group="Comms">
+  <div class="appbar">
+    <button class="ib" aria-label="Inbox" onclick="App.back('cm-inbox')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="f1" style="min-width:0"><div class="ttl" id="cmc-ttl">Chat</div><div class="sub" id="cmc-sub"></div></div>
+    <!-- ids: TM-CHAT-055 -->
+    <button class="ib" aria-label="Contact" onclick="CM.contact()"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
+  </div>
+  <div class="scr-body" id="cmc-body"></div>
+</section>
+
+<!-- ids: TM-CHAT-070 TM-CHAT-073 -->
+<section class="scr cm" id="s-cm-new" data-nav="New chat" data-group="Comms">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('cm-inbox')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">New chat</div></div>
+  <div class="scr-body" id="cmn-body"></div>
+</section>
+
+<!-- ids: TM-ANN-001 TM-ANN-005 TM-ANN-009 -->
+<section class="scr cm" id="s-cm-anns" data-nav="Announcements · list" data-group="Comms">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Announcements</div><button class="ib" aria-label="Refresh" onclick="CM.annRefresh()"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="cma-body"></div>
+</section>
+
+<!-- ids: TM-ANN-030 TM-ANN-031 TM-ANN-032 TM-ANN-033 TM-ANN-034 -->
+<section class="scr cm" id="s-cm-ann-new" data-nav="New announcement" data-group="Comms">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('cm-anns')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">New announcement</div></div>
+  <div class="scr-body" id="cmw-body" style="padding-bottom:32px"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App;const CM={};window.CM=CM;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ic=(n,s=18,x='')=>A.icon(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;${x}"`);
+const isMgr=()=>A.role()==='manager'||A.role()==='owner';
+const NOW=A.NOW;
+const T=(h,m=0,d=0)=>{const x=new Date(2026,9,20,h,m);x.setDate(x.getDate()+d);return x.toISOString()};
+const tm=iso=>A.fmtTime(iso);
+const minsAgo=iso=>Math.max(0,Math.round((NOW-new Date(iso))/6e4));
+const fmtWait=m=>m<60?`${m} min`:m<1440?`${Math.round(m/60)} h`:`${Math.round(m/1440)} d`;
+const WAIT_RED=3;
+CM.state={filter:'all',q:'',mode:'live',net:'ok',more:false,tools:false,qr:false,rw:false,aiText:'',aiOrigin:null,text:'',draftOpen:false};
+
+/* ---------- demo conversations (fictional) ---------- */
+const CH={whatsapp:'WA',instagram:'IG',telegram:'TG',messenger:'MS',sms:'SMS',email:'@'};
+CM.convs=[
+ {id:1,ch:'whatsapp',name:'Eleanor Harper',phone:'+44 7700 900412',email:'eleanor.h@example.com',user:'',note:'Orders for her mum every birthday · likes peach tones',customer:true,pinned:true,tag:'olive',last:'Perfect. And could it arrive before 2 pm?',at:T(11,3),waiting:T(11,3),unread:2,draftReady:true,lane:'managers',assigned:null,order:{id:'715602',status:'In production'}},
+ {id:2,ch:'instagram',name:'',user:'@rosie.blooms',phone:'',email:'',note:'',pinned:false,tag:null,last:'Do you deliver to Clapham on Sundays?',at:T(11,10),waiting:T(11,10),unread:0,attention:true,lane:'managers',assigned:'valeria'},
+ {id:3,ch:'telegram',name:'Daniel Okafor',phone:'+44 7700 900188',email:'',user:'@dokafor',note:'',pinned:false,tag:null,last:'Thanks, I will wait for your call after two.',at:T(10,22),waiting:null,unread:0,unresolved:'delivery time',followUp:'call back after 14:00',lane:'managers',assigned:'sasha'},
+ {id:4,ch:'sms',name:'',phone:'+44 7700 900321',email:'',user:'',note:'',pinned:false,tag:null,last:'Hi, is the shop open on Sunday?',at:T(10,58),waiting:T(10,58),unread:1,lane:'support',assigned:null},
+ {id:5,ch:'messenger',name:'Priya Nair',phone:'+44 7700 900277',email:'priya.n@example.com',user:'',note:'Corporate · monthly office flowers',customer:true,pinned:false,tag:'danger',last:'You: Invoice sent – thank you, Priya.',at:T(9,40),waiting:null,unread:0,lane:'managers',assigned:'valeria'},
+ {id:6,ch:'email',name:'James Whitfield',phone:'',email:'james.w@example.com',user:'',note:'',pinned:false,tag:'warning',last:'You: Your wreath order is confirmed for 18 Dec.',at:T(16,5,-1),waiting:null,unread:0,lane:'support',assigned:'sasha'}
+];
+CM.msgs={1:[
+ {id:1,dir:'in',t:"Hi! It's about order 715602 – the vase. Can I have the smoked one instead of clear?",at:T(10,58)},
+ {id:2,dir:'out',t:"Of course – smoked glass it is. I've noted it on the order.",at:T(10,59),origin:'flora_auto',flora:true,status:'read',reaction:'heart'},
+ {id:3,dir:'in',t:"Perfect. And could it arrive before 2 pm?",at:T(11,3),quoted:{by:'Floritta',t:"Of course – smoked glass it is. I've noted it on the order."}},
+ {id:4,dir:'in',media:'image',at:T(11,4)},
+ {id:5,dir:'in',media:'audio',at:T(11,4)},
+ {id:6,dir:'in',t:'',deleted:true,at:T(11,5)},
+ {id:7,dir:'out',t:"Yes – your delivery is booked for the 12:00–14:00 slot, so it will be with your mum before 2 pm.",at:T(11,6),origin:'flora_draft',flora:true,draft:true}
+]};
+CM.thread={1:{suggested:"Yes – your delivery is booked for the 12:00–14:00 slot, so it will be with your mum before 2 pm.",suggestedDecision:'d-501',note:{t:'Client asked twice about timing – confirm the 12–14 slot with Andrii before replying.',p:'attention'},orderDraft:{status:'needs',missing:['Recipient phone','Card text confirmed'],lines:[['Pink Manifesto · Deluxe','£85.00'],['Vase · smoked glass','£18.00']],total:'£103.00',when:'Tue 20 Oct · 12:00–14:00',where:'14 Elm Grove, SW11 (fictional)',to:'Margaret Harper',card:'Happy birthday, Mum – love E.',buyer:'Eleanor Harper',note:'—',paymentLinkSent:false},consent:{whatsapp:true,sms:false,email:true},calls:[{k:'Outgoing',t:'Today 09:12',d:'2 min 10 s'},{k:'Incoming',t:'Yesterday 18:40',d:'Missed'},{k:'Incoming',t:'Fri 17 Oct',d:'Voicemail · 0:41'}]},
+ 3:{suggested:'',note:null,orderDraft:null,consent:{whatsapp:true,sms:true,email:false},calls:[{k:'Outgoing',t:'Today 10:20',d:'1 min 05 s'}]}};
+CM.QR=['Thank you for your order – it is in production.','Your courier is on the way, ETA within the hour.','We are open Mon–Sat 8:00–22:00, Sunday 9:00–18:00.','Could you share the delivery postcode, please?'];
+const TAGC={olive:'var(--ok)',danger:'var(--accent)',warning:'var(--warn)'};
+const chIcon=ch=>ch==='email'?ic('send',18):ch==='sms'?ic('chat',18):`<span>${CH[ch]}</span>`;
+const nameOf=c=>c.name||c.user||c.phone||'Unknown';
+
+/* =============================================== INBOX (list) */
+let tick=null;
+function rowMarks(c){const w=c.waiting?minsAgo(c.waiting):(c.attention&&!c.unread?minsAgo(c.at):null);return {wait:w,red:w!==null&&w>=WAIT_RED}}
+function matchF(c){const f=CM.state.filter,me=A.state.me;
+  if(f==='mine')return c.assigned===me;if(f==='managers')return c.lane==='managers';if(f==='support')return c.lane==='support';
+  if(f==='attention')return !!(c.waiting||c.attention||c.unresolved||c.unread);return true}
+function convRow(c){const m=rowMarks(c);const cls=`conv${m.wait!==null?' --wait':c.unresolved?' --unres':''}${c.draftReady?' --draft':''}`;
+  /* ids: TM-CHAT-006 TM-CHAT-007 TM-CHAT-008 TM-CHAT-009 TM-CHAT-010 TM-CHAT-011 TM-CHAT-012 TM-CHAT-013 TM-CHAT-014 TM-CHAT-015 */
+  return `<button class="${cls}" onclick="CM.open(${c.id})">
+    <span class="ch">${chIcon(c.ch)}</span>
+    <span class="f1" style="min-width:0"><span class="nm">${c.tag?`<i class="tagdot" style="background:${TAGC[c.tag]}"></i>`:''}${c.pinned?ic('pin',14,'stroke:var(--grey)'):''}<span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(nameOf(c))}</span></span>
+      <span class="pv">${esc(c.last)}</span>
+      ${c.draftReady||c.unresolved||c.followUp?`<span class="bd">${c.draftReady?'<span class="tag --acc">Flora draft ready</span>':''}${c.unresolved?`<span class="tag --warn">Unresolved · ${esc(c.unresolved)}</span>`:''}${c.followUp?`<span class="tag --line">Follow up · ${esc(c.followUp)}</span>`:''}</span>`:''}</span>
+    <span class="rt">${m.wait!==null?`<span class="wait ${m.red?'red':''}">${fmtWait(m.wait)}</span>`:`<span>${new Date(c.at).toDateString()===NOW.toDateString()?tm(c.at):A.fmtDay(c.at)}</span>`}${c.unread?`<span class="cnt">${c.unread}</span>`:(c.attention?'<span class="unans">Unanswered</span>':'')}</span>
+  </button>`}
+window.mount_cm_inbox=function(){
+  const el=$('#cmi-body');
+  if(!isMgr()){/* ids: TM-CHAT-002 */ A.toast('Client chats are for managers – back to Today');A.go('home',{},{replace:true});return}
+  const st=CM.state;
+  let list=CM.convs.filter(matchF).filter(c=>!st.q||nameOf(c).toLowerCase().includes(st.q)||c.last.toLowerCase().includes(st.q));
+  list=list.slice().sort((a,b)=>(b.pinned-a.pinned)||(new Date(b.at)-new Date(a.at)));
+  const chip=(k,l)=>`<button class="chip ${st.filter===k?'on':''}" onclick="CM.filter('${k}')">${l}</button>`;
+  let body='';
+  if(st.mode==='loading')body=`<div class="empty"><div class="skeleton" style="height:14px;width:60%;margin:0 auto 10px"></div><div class="skeleton" style="height:14px;width:80%;margin:0 auto"></div><div class="xs muted" style="margin-top:14px">Loading conversations…</div></div>`;
+  else if(st.mode==='error')body=`<div class="empty">Couldn't load the inbox.<br><button class="btn --secondary --sm" style="margin-top:14px" onclick="CM.refresh()">Try again</button></div>`;
+  else if(st.mode==='empty'||!list.length)body=`<div class="empty">${st.q||st.filter!=='all'?'No conversations match.':'No conversations yet. Clients who write to WhatsApp, Instagram, Telegram, Messenger, SMS or email appear here.'}</div>`;
+  else body=list.map(convRow).join('');
+  el.innerHTML=`<!-- ids: TM-CHAT-016 TM-CHAT-017 TM-CHAT-018 -->
+    <div class="demo"><span>Demo</span><div class="seg"><button class="${st.mode==='live'?'on':''}" onclick="CM.mode('live')">Live</button><button class="${st.mode==='loading'?'on':''}" onclick="CM.mode('loading')">Loading</button><button class="${st.mode==='empty'?'on':''}" onclick="CM.mode('empty')">Empty</button><button class="${st.mode==='error'?'on':''}" onclick="CM.mode('error')">Error</button></div></div>
+    <!-- ids: TM-CHAT-004 -->
+    <div class="srch"><div class="search">${A.icon('search')}<input id="cmi-q" placeholder="Search name, number or message" value="${esc(st.q)}" oninput="CM.search(this.value)"></div></div>
+    <!-- ids: TM-CHAT-005 -->
+    <div class="chips">${chip('all','All')}${chip('mine','Mine')}${chip('managers','Managers')}${chip('support','Support')}${chip('attention','Attention')}</div>
+    <div class="td-grp" style="margin-top:6px"><span>${st.mode==='live'?list.length+' conversations':''}</span><button class="textbtn" onclick="CM.refresh()">Pull to refresh</button></div>
+    ${body}
+    <div class="foot">${ic('timer',14,'vertical-align:-2px')} Refreshes every 15 s while open · last check ${tm(NOW)} · wait timers tick every 30 s and turn red after ${WAIT_RED} min.<br>Messages are sent by the CRM – the app is only a window on it. <button class="textbtn" onclick="App.toast('In the classic app this was the Inbox tab (managers only). In B it lives under Work → Chats.')">Where did the Inbox tab go?</button></div>`;
+  clearInterval(tick);tick=setInterval(()=>{if(A.state.current==='cm-inbox')window.mount_cm_inbox()},30000);
+};
+let qT=null;
+CM.search=v=>{clearTimeout(qT);qT=setTimeout(()=>{CM.state.q=v.trim().toLowerCase();const f=$('#cmi-q');const pos=f&&f.selectionStart;window.mount_cm_inbox();const nf=$('#cmi-q');if(nf){nf.focus();nf.setSelectionRange(pos,pos)}},300)};
+CM.filter=k=>{CM.state.filter=k;A.haptic();window.mount_cm_inbox()};
+CM.mode=m=>{CM.state.mode=m;window.mount_cm_inbox()};
+CM.refresh=()=>{CM.state.mode='live';A.toast('Refreshed · '+tm(NOW));window.mount_cm_inbox()};
+CM.open=id=>{A.go('cm-chat',{id})};
+
+/* =============================================== CHAT */
+const conv=()=>CM.convs.find(c=>c.id===+(A.state.params&&A.state.params.id||1))||CM.convs[0];
+function caption(m){if(!m.origin)return 'Sent by hand · '+(A.user('valeria').n);return {flora_auto:'Flora · sent automatically',flora_draft:'Flora · draft',flora_edit:'Flora · edited by '+A.user('valeria').n,auto:'Automatic message'}[m.origin]||''}
+const MEDIA={image:'Photo',audio:'Voice message',video:'Video',document:'Document'};
+function msg(m,c){
+  if(m.deleted)return `<div class="m ${m.dir}"><div class="bub" style="opacity:.6">Message deleted</div><div class="meta">${tm(m.at)}</div></div>`;
+  const body=m.media?(m.media==='image'?`<div class="ph">Photo</div>`:`<div class="bub">${MEDIA[m.media]} · ${m.media==='audio'?'playback not available in the app':'open in the CRM'}</div>`):`<div class="bub ${m.draft?'draft':''}">${m.quoted?`<div class="q"><b>${esc(m.quoted.by)}</b> · ${esc(m.quoted.t)}</div>`:''}${esc(m.t)}</div>`;
+  const badges=`${m.draft?'<span class="tag --acc">draft</span>':''}${m.flora?'<span class="tag --line">Flora</span>':''}`;
+  const meta=`<div class="meta">${m.dir==='out'?`<span class="cap">${caption(m)}</span>`:''}<span>${tm(m.at)}</span>${m.edited?'<span>edited</span>':''}${m.status?`<span>${m.status}</span>`:''}${m.reaction?`<span>reaction · ${m.reaction}</span>`:''}</div>`;
+  const wrong=m.flora&&!m.draft?`<button class="textbtn" onclick="CM.wrong('msg',${m.id})">Flora got it wrong</button>`:'';
+  return `<div class="m ${m.dir}">${badges?`<div class="meta">${badges}</div>`:''}${body}${meta}${wrong}</div>`;
+}
+window.mount_cm_chat=function(p){
+  const c=conv(),th=CM.thread[c.id]||{suggested:'',note:null,orderDraft:null,consent:{whatsapp:false,sms:false,email:false},calls:[]};
+  const st=CM.state;const el=$('#cmc-body');
+  $('#cmc-ttl').textContent=nameOf(c);$('#cmc-sub').textContent=`${c.ch} · ${c.lane} lane${c.assigned?' · '+A.user(c.assigned).n:' · unassigned'}`;
+  /* ids: TM-CHAT-023 */
+  if(c.unread){c.unread=0;c.readAt=NOW.toISOString()}
+  /* ids: TM-CHAT-046 */
+  if(th.suggested&&!st.text&&st.aiOrigin===null&&!st.sugUsed){st.text=th.suggested;st.aiOrigin='suggestion';st.aiOrig=th.suggested;st.sugUsed=true}
+  const msgs=(CM.msgs[c.id]||[{id:1,dir:'in',t:c.last,at:c.at}]).map(m=>msg(m,c)).join('');
+  const od=th.orderDraft;
+  const odChip=od?`<button class="oh" onclick="CM.toggleDraft()">${ic('flower',18)}<span class="f1" style="font-size:14px">Order draft by Flora · <span class="${od.status==='needs'?'accent':''}">${od.status==='needs'?'missing '+od.missing.length:od.status==='ready'?'ready':'in progress'}</span></span>${ic('chev',16,`transform:rotate(${st.draftOpen?'-90':'90'}deg);stroke:var(--grey)`)}</button>`:'';
+  const odBody=od&&st.draftOpen?`<div class="ob">${od.lines.map(l=>`<div class="flex jc-sb"><span>${l[0]}</span><span>${l[1]}</span></div>`).join('')}<div class="flex jc-sb" style="margin-top:6px;border-top:1px solid var(--hair);padding-top:6px"><b>Items</b><b>${od.total}</b></div>
+    <div class="kv"><span>When</span><span>${od.when}</span><span>Where</span><span>${od.where}</span><span>Recipient</span><span>${od.to}</span><span>Card</span><span>${esc(od.card)}</span><span>Buyer</span><span>${od.buyer}</span><span>Note</span><span>${od.note}</span></div>
+    ${od.missing.length?`<div class="sm" style="margin-top:10px;color:var(--accent)">Still missing: ${od.missing.join(', ')}</div>`:''}
+    <div class="xs muted" style="margin-top:8px">Opens by itself once the payment link is sent.</div>
+    <div class="flex g8" style="margin-top:12px;gap:8px"><button class="btn --secondary --sm" onclick="CM.discardDraft()">Discard draft</button><button class="btn --sm" onclick="App.toast('Payment link is sent from the CRM order')">Send payment link</button></div></div>`:'';
+  const frame=st.aiOrigin?`<div class="fl"><span>${st.aiOrigin==='regen'?'Flora · rewritten':st.text===st.aiOrig?"Flora's draft":"Flora's draft (edited)"}</span>${st.aiOrigin==='suggestion'?`<button class="textbtn" style="color:var(--accent)" onclick="CM.wrong('decision','${th.suggestedDecision||''}')">Flora got it wrong</button>`:''}</div>`:'';
+  el.innerHTML=`<div class="scroll" id="cmc-scroll">
+    <!-- ids: TM-CHAT-032 TM-CHAT-060 -->
+    ${c.order?`<button class="plaque" onclick="CM.goOrder('${c.order.id}')">${ic('flower',18)}<span class="f1">Order № ${c.order.id} · ${c.order.status}</span>${ic('chev',16,'stroke:var(--grey)')}</button>`:''}
+    <!-- ids: TM-CHAT-033 -->
+    ${c.unresolved?`<div class="plaque --warn">${ic('flag',18,'color:var(--warn)')}<span class="f1">Unresolved · ${esc(c.unresolved)}</span><button class="btn --xs" onclick="CM.resolve()">Resolved</button></div>`:''}
+    <!-- ids: TM-CHAT-021 TM-CHAT-022 TM-CHAT-024 TM-CHAT-025 TM-CHAT-026 TM-CHAT-027 TM-CHAT-028 TM-CHAT-029 TM-CHAT-030 TM-CHAT-062 -->
+    <div class="msgs"><div class="sys">${A.fmtDay(c.at)} · refreshes every 12 s while open · marked read on opening</div>${msgs}${st.notice?`<div class="sys" style="color:var(--accent)">${esc(st.notice)}</div>`:''}<div class="sys" style="font-size:11px">Auto-scrolls to the end only when you are already at the bottom.</div></div>
+    <!-- ids: TM-CHAT-034 TM-CHAT-035 -->
+    ${od?`<div class="odraft">${odChip}${odBody}</div>`:''}
+    <!-- ids: TM-CHAT-036 -->
+    ${th.note?`<button class="snote ${th.note.p==='attention'?'--att':th.note.p==='urgent'?'--urg':''}" onclick="this.classList.toggle('open');this.querySelector('.nt').style.webkitLineClamp=this.classList.contains('open')?'unset':'1'"><div class="xs muted" style="letter-spacing:.06em;text-transform:uppercase">Flora · note for the manager · ${th.note.p}</div><div class="nt" style="display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px">${esc(th.note.t)}</div></button>`:''}
+  </div>
+  <!-- ids: TM-CHAT-037 TM-CHAT-038 TM-CHAT-039 TM-CHAT-040 TM-CHAT-041 TM-CHAT-042 TM-CHAT-043 -->
+  <div class="abar">
+    ${['olive','warning','danger'].map(k=>`<button class="col ${c.tag===k?'on':''}" style="background:${TAGC[k]}" aria-label="${k} tag" onclick="CM.colour('${k}')"></button>`).join('')}
+    ${c.waiting||c.attention?`<button class="btn --secondary" onclick="CM.answered()">Answered</button>`:''}
+    <button class="btn --ghost" onclick="CM.more()">${st.more?'Less':'More'}</button>
+    ${st.more?`<button class="btn --ghost" onclick="CM.unread()">Unread</button>${c.lane?`<button class="btn --ghost" onclick="CM.lane('${c.lane==='managers'?'support':'managers'}')">${c.lane==='managers'?'To support':'To managers'}</button>`:''}${c.assigned===null?`<button class="btn --ghost" onclick="CM.claim()">Take it</button>`:''}<button class="btn --ghost" onclick="CM.hide()">Hide</button><button class="btn --ghost" onclick="CM.net()">${st.net==='ok'?'Demo: network fails':'Demo: network ok'}</button>`:''}
+  </div>
+  <!-- ids: TM-CHAT-044 TM-CHAT-045 TM-CHAT-047 TM-CHAT-048 TM-CHAT-049 TM-CHAT-050 TM-CHAT-051 TM-CHAT-052 TM-CHAT-053 TM-CHAT-054 -->
+  <div class="compose">
+    ${st.pendingPhoto?`<div class="err">Photo not sent – network error. <button class="textbtn" style="color:var(--accent)" onclick="CM.retryPhoto()">Retry</button> (the same photo is kept in memory until you leave the chat)</div>`:''}
+    ${st.sendErr?`<div class="err">Not sent – try again.</div>`:''}
+    <div class="${st.aiOrigin?'frame':''}">${frame}<div class="crow"><button class="ib" aria-label="Tools" onclick="CM.tools()">${A.icon(st.tools?'close':'plus')}</button><textarea id="cmc-text" placeholder="Write a reply…" rows="1" oninput="CM.typing(this.value)">${esc(st.text)}</textarea><button class="ib send" aria-label="Send" ${st.text.trim()&&!st.busy?'':'disabled'} onclick="CM.send()">${A.icon('send')}</button></div></div>
+    ${st.tools?`<div class="tools"><button class="btn --ghost" onclick="CM.aiMenu()">${ic('sparkle',14)} AI</button><button class="btn --ghost ${st.qr?'on':''}" onclick="CM.quick()">${ic('zap',14)} Quick replies</button><button class="btn --ghost" onclick="CM.photo()">${ic('camera',14)} Photo</button></div>`:''}
+    ${st.qr?`<div class="qr">${CM.QR.map((q,i)=>`<button onclick="CM.addQuick(${i})">${esc(q.length>36?q.slice(0,34)+'…':q)}</button>`).join('')}</div>`:''}
+    ${st.rw?`<div class="rw"><span class="xs muted" style="flex:none">Rewrite</span><input class="input" id="cmc-wish" placeholder="e.g. shorter, warmer, more formal"><button class="btn --sm" onclick="CM.go()">Go</button></div>`:`<div class="rw"><button class="textbtn" onclick="CM.state.rw=true;window.mount_cm_chat()">${ic('sparkle',12,'vertical-align:-1px')} Rewrite with Flora</button></div>`}
+    <div class="kb">Keyboard pushes this bar up on iOS; sent as ${c.ch} by the CRM</div>
+  </div>`;
+  const sc=$('#cmc-scroll');if(sc)sc.scrollTop=sc.scrollHeight;
+};
+CM.typing=v=>{CM.state.text=v;const b=$('#s-cm-chat .send');if(b)b.disabled=!v.trim();const fl=$('#s-cm-chat .frame .fl span');if(fl&&CM.state.aiOrigin==='suggestion')fl.textContent=v===CM.state.aiOrig?"Flora's draft":"Flora's draft (edited)"};
+CM.send=()=>{const st=CM.state,c=conv();if(!st.text.trim())return;st.busy=true;const b=$('#s-cm-chat .send');if(b)b.disabled=true;
+  setTimeout(()=>{st.busy=false;if(st.net==='fail'){st.sendErr=true;window.mount_cm_chat();return}
+    const list=CM.msgs[c.id]=CM.msgs[c.id]||[];const draft=list.find(m=>m.draft);if(draft)list.splice(list.indexOf(draft),1);
+    list.push({id:Date.now(),dir:'out',t:st.text,at:NOW.toISOString(),origin:st.aiOrigin==='suggestion'?(st.text===st.aiOrig?'flora_draft':'flora_edit'):st.aiOrigin==='regen'?'flora_edit':null,flora:!!st.aiOrigin,status:'sent'});
+    c.last='You: '+st.text;c.at=NOW.toISOString();c.waiting=null;c.attention=false;c.draftReady=false;
+    st.text='';st.aiOrigin=null;st.sendErr=false;A.haptic();A.toast('Sent via '+c.ch);window.mount_cm_chat()},500)};
+CM.tools=()=>{CM.state.tools=!CM.state.tools;if(!CM.state.tools)CM.state.qr=false;window.mount_cm_chat()};
+CM.quick=()=>{CM.state.qr=!CM.state.qr;window.mount_cm_chat()};
+CM.addQuick=i=>{const st=CM.state;st.text=(st.text?st.text.replace(/\s*$/,' '):'')+CM.QR[i];window.mount_cm_chat()};
+CM.go=()=>{const w=($('#cmc-wish')||{}).value||'';const st=CM.state;st.busy=true;A.toast('Flora is rewriting'+(w?' · '+w:'')+'…');
+  setTimeout(()=>{st.busy=false;st.text=w.includes('short')?'Booked for 12–14 today – with your mum before 2 pm.':'Yes, of course – your delivery is booked for the 12:00–14:00 slot today, so the flowers will be with your mum well before 2 pm. Thank you, Eleanor!';st.aiOrigin='regen';st.aiOrig=st.text;st.rw=false;window.mount_cm_chat()},700)};
+CM.aiMenu=()=>{const row=(k,l,d)=>`<button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();CM.ai('${k}')">${ic('sparkle',20)}<span class="rt"><div class="l">${l}</div><div class="d">${d}</div></span></button>`;
+  A.sheet(`<div class="sh-head"><div class="h3">Flora</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body">${row('draft','Draft a reply','Into the reply field, with the dashed frame')}${row('summary','Summarise the chat','Result appears in the thread')}${row('improve','Improve my text','Rewrites what is in the field')}${row('translate','Translate','Last client message → English, into the thread')}${row('extract','Extract order details','Updates the order draft card')}</div>`)};
+CM.ai=k=>{const st=CM.state,c=conv();A.haptic();
+  if(k==='draft'){st.rw=true;window.mount_cm_chat();setTimeout(()=>CM.go(),50);return}
+  if(k==='improve'){if(!st.text.trim()){A.toast('Write something first');return}st.text=st.text.replace(/\s+/g,' ').trim()+' Thank you!';st.aiOrigin='regen';st.aiOrig=st.text;window.mount_cm_chat();return}
+  const list=CM.msgs[c.id]=CM.msgs[c.id]||[];
+  const txt={summary:'Summary · client wants the smoked vase and delivery before 2 pm; slot 12–14 is booked; recipient phone still missing.',translate:'Translation · “Perfect. And could it arrive before 2 pm?” (already English)',extract:'Extracted · 2 items, recipient Margaret Harper, SW11, card text present, phone missing → order draft updated.'}[k];
+  list.push({id:Date.now(),dir:'out',t:txt,at:NOW.toISOString(),origin:'auto',flora:true,internal:true,status:'only you see this'});window.mount_cm_chat()};
+CM.wrong=(kind,id)=>{A.sheet(`<div class="sh-head"><div class="h3">How it should have been</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 12px">Flora learns from this. Write the answer you would have sent${kind==='decision'?' instead of the suggestion':''}.</p><div class="field"><label>Better answer</label><textarea class="input" id="cmc-better" placeholder="e.g. We deliver to SW11 until 10 pm, no Sunday surcharge"></textarea></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="CM.wrongSend()">Send to Flora</button></div>`)};
+CM.wrongSend=()=>{const v=($('#cmc-better')||{}).value||'';A.closeSheet();if(!v.trim()){A.toast('Nothing written – not sent');return}A.haptic();A.toast(v.length>40?'Recorded – Flora saved it as a fact about this client':'Recorded – Flora will answer differently next time')};
+CM.toggleDraft=()=>{CM.state.draftOpen=!CM.state.draftOpen;window.mount_cm_chat()};
+CM.discardDraft=()=>{A.confirm('Discard the order draft?','Flora will start a new one if the client keeps ordering.','Discard',()=>{const th=CM.thread[conv().id];th.orderDraft=null;A.toast('Draft discarded');window.mount_cm_chat()})};
+CM.resolve=()=>{const c=conv();c.unresolved=null;A.haptic();A.toast('Marked as resolved');window.mount_cm_chat()};
+CM.colour=k=>{const c=conv();c.tag=c.tag===k?null:k;A.haptic();window.mount_cm_chat()};
+CM.answered=()=>{const c=conv();c.waiting=null;c.attention=false;A.toast('Marked answered – no message sent');window.mount_cm_chat()};
+CM.more=()=>{CM.state.more=!CM.state.more;window.mount_cm_chat()};
+CM.unread=()=>{const c=conv();c.unread=1;A.toast('Back in unread');A.back('cm-inbox')};
+CM.lane=l=>{const c=conv();c.lane=l;A.toast('Moved to '+l);window.mount_cm_chat()};
+CM.claim=()=>{const c=conv();c.assigned=A.state.me;A.toast('It is yours now');window.mount_cm_chat()};
+CM.hide=()=>{A.confirm('Hide this conversation?','It leaves the inbox. It comes back if the client writes again.','Hide',()=>{const c=conv();CM.convs.splice(CM.convs.indexOf(c),1);A.toast('Hidden');A.back('cm-inbox')})};
+CM.net=()=>{CM.state.net=CM.state.net==='ok'?'fail':'ok';A.toast(CM.state.net==='fail'?'Demo: next send and photo fail':'Demo: network back');window.mount_cm_chat()};
+CM.photo=()=>{A.sheet(`<div class="sh-head"><div class="h3">Photo</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();CM.sendPhoto('camera')">${ic('camera',22)}<span class="rt"><div class="l">Take a photo</div><div class="d">Asks for camera permission the first time</div></span></button><button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();CM.sendPhoto('gallery')">${ic('photo',22)}<span class="rt"><div class="l">Choose from gallery</div><div class="d">Resized to 1280 px, JPEG – quick to send</div></span></button><p class="xs muted" style="margin:12px 0 0">If the camera is refused you see a line about the permission instead of a photo.</p></div>`)};
+CM.sendPhoto=src=>{const st=CM.state,c=conv();A.toast('Compressing…');setTimeout(()=>{if(st.net==='fail'){st.pendingPhoto={src};window.mount_cm_chat();return}const list=CM.msgs[c.id]=CM.msgs[c.id]||[];list.push({id:Date.now(),dir:'out',media:'image',at:NOW.toISOString(),status:'sent'});st.pendingPhoto=null;A.haptic();window.mount_cm_chat()},600)};
+CM.retryPhoto=()=>{const st=CM.state;if(st.net==='fail'){A.toast('Still no network – demo switch is in More');return}CM.sendPhoto(st.pendingPhoto.src)};
+CM.goOrder=id=>{if(document.getElementById('s-order'))A.go('order',{id});else A.toast('Order '+id)};
+CM.contact=()=>{const c=conv(),th=CM.thread[c.id]||{consent:{},calls:[]};const can=A.role()==='manager'||A.role()==='owner';
+  /* ids: TM-CHAT-056 TM-CHAT-057 TM-CHAT-058 TM-CHAT-059 TM-CHAT-061 */
+  A.sheet(`<div class="sh-head"><div class="h3">Contact</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body cm-sh">
+    <div class="kv"><span>Name</span><span>${esc(c.name||'—')}</span><span>Phone</span><span>${esc(c.phone||'—')}</span><span>Email</span><span>${esc(c.email||'—')}</span><span>Username</span><span>${esc(c.user||'—')}</span><span>Note</span><span>${esc(c.note||'—')}</span></div>
+    <div class="flex" style="gap:8px;flex-wrap:wrap">${c.phone?`<button class="btn --sm" onclick="CM.call()">${ic('phone',14)} Call via CRM</button>`:''}${c.customer&&can?`<button class="btn --sm --secondary" onclick="App.closeSheet();App.toast('Customer card opens (shared screen)')">Customer card</button>`:''}${c.order?`<button class="btn --sm --ghost" onclick="CM.unlink()">Unlink order ${c.order.id}</button>`:''}</div>
+    <div class="caps muted" style="margin:18px 0 4px">Marketing consent</div>
+    ${['whatsapp','sms','email'].map(k=>`<div class="sw"><span>${k==='sms'?'SMS':k.charAt(0).toUpperCase()+k.slice(1)}</span><button class="switch ${th.consent[k]?'on':''}" role="switch" aria-checked="${!!th.consent[k]}" onclick="CM.consent('${k}',this)"></button></div>`).join('')}
+    <div class="caps muted" style="margin:18px 0 4px">Recent calls${c.phone?'':' · no phone'}</div>
+    ${c.phone?(th.calls||[]).map(x=>`<div class="call"><span class="k">${x.k}</span><span>${x.t}</span><span>${x.d}</span></div>`).join('')||'<div class="sm muted">No calls yet.</div>':'<div class="sm muted">Calls need a phone number.</div>'}
+    <div style="height:12px"></div></div>`,{full:true})};
+CM.call=()=>{A.closeSheet();A.toast('Calling via Ringover… your phone rings first');setTimeout(()=>{if(Math.random()<0.15)A.toast('Call failed – try from the CRM')},1500)};
+CM.consent=(k,b)=>{const th=CM.thread[conv().id];if(!th)return;th.consent[k]=!th.consent[k];b.classList.toggle('on',th.consent[k]);b.setAttribute('aria-checked',th.consent[k]);A.haptic()};
+CM.unlink=()=>{A.closeSheet();A.confirm('Unlink the order?','The chat stays, only the link to order '+conv().order.id+' goes.','Unlink',()=>{conv().order=null;A.toast('Order unlinked');window.mount_cm_chat()})};
+
+/* =============================================== NEW CHAT */
+window.mount_cm_new=function(){const el=$('#cmn-body');CM.nc=CM.nc||{phone:'',name:'',text:''};const n=CM.nc;
+  el.innerHTML=`<div class="blk" style="padding-top:8px"><p class="sm soft" style="margin:0 0 18px">Write to a client first. The message goes as WhatsApp from the shop number; if the number has no WhatsApp, as SMS.</p>
+    <div class="field"><label>Phone</label><input class="input" id="cmn-phone" inputmode="numeric" placeholder="+44 7700 900000" value="${esc(n.phone)}" oninput="CM.ncIn('phone',this.value)"></div>
+    <div class="field"><label>Name (optional)</label><input class="input" id="cmn-name" placeholder="How the client is called" value="${esc(n.name)}" oninput="CM.ncIn('name',this.value)"></div>
+    <div class="field"><label>First message</label><textarea class="input" id="cmn-text" placeholder="Hello! This is Floritta about your order…" oninput="CM.ncIn('text',this.value)">${esc(n.text)}</textarea></div>
+    <!-- ids: TM-CHAT-071 TM-CHAT-072 -->
+    ${n.err?`<div class="sm" style="color:var(--accent);margin-bottom:10px">${esc(n.err)}</div>`:''}
+    <button class="btn --block" id="cmn-go" ${n.phone.replace(/\D/g,'').length>=7&&n.text.trim()&&!n.busy?'':'disabled'} onclick="CM.ncSend()">${n.busy?'Starting…':'Start chat'}</button>
+    <p class="xs muted" style="margin:12px 0 0">Needs a phone of at least 7 digits and a message. Not queued offline – if there is no network the button simply fails. The keyboard moves the form up.</p></div>`};
+CM.ncIn=(k,v)=>{CM.nc[k]=v;CM.nc.err='';const b=$('#cmn-go');if(b)b.disabled=!(CM.nc.phone.replace(/\D/g,'').length>=7&&CM.nc.text.trim())};
+CM.ncSend=()=>{const n=CM.nc;n.busy=true;window.mount_cm_new();setTimeout(()=>{n.busy=false;
+  if(CM.state.net==='fail'){n.err='Could not start the chat – no network.';window.mount_cm_new();return}
+  if(/^\+?44\s?7700\s?900000$/.test(n.phone.trim())){n.err='CRM: this number is blocked for marketing.';window.mount_cm_new();return}
+  const id=Date.now()%100000;CM.convs.unshift({id,ch:'whatsapp',name:n.name,phone:n.phone,email:'',user:'',note:'',pinned:false,tag:null,last:'You: '+n.text,at:NOW.toISOString(),waiting:null,unread:0,lane:'managers',assigned:A.state.me});
+  CM.msgs[id]=[{id:1,dir:'out',t:n.text,at:NOW.toISOString(),status:'sent'}];CM.nc={phone:'',name:'',text:''};A.haptic();A.go('cm-chat',{id},{replace:true})},600)};
+
+/* =============================================== ANNOUNCEMENTS LIST */
+CM.anns={mode:'live'};
+/* local extra announcements (no acknowledgement needed) – kept out of window.ANNOUNCEMENTS so Today is unaffected */
+CM.annExtra=[{id:41,title:'Fridge deep clean on Friday – move your buckets by 7:30',body:'Vita and Sofiia clean the cold room on Friday 24 Oct from 7:30. Please take your conditioned stock to the back-shop fridge the evening before. No reply needed.',by:'valeria',at:T(14,30,-2),req:false,roles:['florist']}];
+function seedAck(){window.ACK_BY=window.ACK_BY||{};ANNOUNCEMENTS.forEach(a=>{if(ACK_BY[a.id])return;
+  if(a.id===1)ACK_BY[1]=[{id:'valeria',at:T(8,12)},{id:'svetlana',at:T(8,20)},{id:'vita',at:T(8,34)}];
+  else if(a.id===2||a.id===3){const off=a.id===2?-1:-3;ACK_BY[a.id]=STAFF.filter(s=>s.id!==a.by).map((s,i)=>({id:s.id,at:T(9+Math.floor(i/3),(i*17)%60,off)}))}
+  else ACK_BY[a.id]=[{id:a.by,at:a.at}]})}
+const ackRec=(a,uid=A.state.me)=>a.by===uid?{at:a.at}:(ACK_BY[a.id]||[]).find(x=>x.id===uid);
+const aud=a=>STAFF.filter(s=>s.id!==a.by&&!['reserve','freelance'].includes(s.engagement)&&(!a.roles||a.roles.includes(s.role)||s.role==='owner'));
+const ackN=a=>(ACK_BY[a.id]||[]).filter(x=>x.id!==a.by&&aud(a).some(s=>s.id===x.id)).length;
+CM.allAnns=()=>{seedAck();const own=ANNOUNCEMENTS.map(a=>Object.assign({req:a.req!==false},a));return own.concat(CM.annExtra)};
+CM.pending=()=>CM.allAnns().filter(a=>a.req&&!ackRec(a));
+window.mount_cm_anns=function(){const el=$('#cma-body'),mg=isMgr(),st=CM.anns;
+  const list=CM.allAnns().sort((a,b)=>{const pa=a.req&&!ackRec(a),pb=b.req&&!ackRec(b);return (pb-pa)||(new Date(b.at)-new Date(a.at))});
+  const pend=CM.pending();
+  const row=a=>{const rec=ackRec(a),need=a.req&&!rec;const u=A.user(a.by);
+    /* ids: TM-ANN-006 TM-ANN-007 */
+    return `<button class="arow ${need?'--need':''}" onclick="App.go('announcement',{id:${a.id}})"><div class="t">${esc(a.title)}</div><div class="by">${u?u.n:''} · ${A.fmtDay(a.at)} ${tm(a.at)}${a.roles?' · '+a.roles.join(', ')+'s':''}</div>
+      ${a.req?`<div class="bd">${need?'<span class="tag --acc">Got it · needed</span>':`<span class="tag --ok">Got it${rec&&rec.at?' · '+tm(rec.at):''}</span>`}${mg?`<span class="xs muted">read ${ackN(a)} of ${aud(a).length}</span>`:''}</div>`:'<div class="bd"><span class="xs muted">No reply needed</span></div>'}</button>`};
+  let body='';
+  if(st.mode==='error')body=`<div class="empty">Couldn't load announcements.<br><button class="btn --secondary --sm" style="margin-top:14px" onclick="CM.annRefresh()">Try again</button></div>`;
+  else if(st.mode==='na')body=`<div class="empty">Announcements are not available on this CRM yet.</div>`;
+  else if(st.mode==='empty')body=`<div class="empty">No announcements yet.</div>`;
+  else body=list.map(row).join('')+`<button class="arow" onclick="App.go('announcement',{id:99})"><div class="t soft">Archived: Easter opening hours</div><div class="by">Sasha · Apr 2026 · removed from the list</div><div class="bd"><span class="xs muted">Demo: opens the “not found” state</span></div></button>`;
+  el.innerHTML=`<!-- ids: TM-ANN-010 -->
+    <div class="demo"><span>Demo</span><div class="seg"><button class="${st.mode==='live'?'on':''}" onclick="CM.annMode('live')">Live</button><button class="${st.mode==='empty'?'on':''}" onclick="CM.annMode('empty')">Empty</button><button class="${st.mode==='error'?'on':''}" onclick="CM.annMode('error')">Error</button><button class="${st.mode==='na'?'on':''}" onclick="CM.annMode('na')">No module</button></div></div>
+    <!-- ids: TM-ANN-002 TM-ANN-003 TM-ANN-004 -->
+    ${pend.length&&st.mode==='live'?`<div class="ban"><button style="display:block;width:100%;text-align:left" onclick="App.go('announcement',{id:${pend[0].id}})"><div class="t">${esc(pend[0].title)}</div><div class="s">${pend.length>1?`and ${pend.length-1} more waiting for your “Got it”`:'waiting for your “Got it”'} · this banner also sits above Tasks and on Today</div></button><div style="margin-top:10px"><button class="btn --xs" onclick="CM.ackQuick(${pend[0].id})">Got it</button></div></div>`:''}
+    <!-- ids: TM-ANN-008 -->
+    ${mg?`<div class="blk" style="padding:14px 0 4px"><button class="btn --secondary --block" onclick="App.go('cm-ann-new')">${ic('megaphone',16)} New announcement</button></div>`:''}
+    <div class="td-grp" style="margin-top:6px"><span>${pend.length?pend.length+' to acknowledge':'All read'}</span><button class="textbtn" onclick="CM.annRefresh()">Pull to refresh</button></div>
+    ${body}
+    <div class="foot">Unacknowledged first, then newest. No background polling – refresh by pulling or when something changes.</div>`};
+CM.annMode=m=>{CM.anns.mode=m;window.mount_cm_anns()};
+CM.annRefresh=()=>{CM.anns.mode='live';A.toast('Refreshed');window.mount_cm_anns()};
+CM.ackQuick=id=>{if(ANNOUNCEMENTS.find(a=>a.id===id)){window.TD.ack(id)}else{const l=ACK_BY[id]=ACK_BY[id]||[];l.push({id:A.state.me,at:NOW.toISOString()})}A.haptic();A.toast('Thank you – marked as read');window.mount_cm_anns()};
+document.addEventListener('ann',()=>{if(A.state.current==='cm-anns')window.mount_cm_anns()});
+document.addEventListener('user',()=>{if(A.state.current==='cm-anns')window.mount_cm_anns();if(A.state.current==='cm-inbox')window.mount_cm_inbox()});
+
+/* =============================================== NEW ANNOUNCEMENT */
+const TITLE_MAX=160,BODY_MAX=20000;
+window.mount_cm_ann_new=function(){const el=$('#cmw-body');CM.na=CM.na||{title:'',body:'',roles:[],ack:true};const n=CM.na;
+  if(!isMgr()){A.toast('Only managers publish announcements');A.back('cm-anns');return}
+  const chip=(k,l)=>`<button class="chip ${k==='all'?(!n.roles.length?'on':''):(n.roles.includes(k)?'on':'')}" onclick="CM.naRole('${k}')">${l}</button>`;
+  el.innerHTML=`<div class="blk" style="padding-top:8px">
+    <div class="field"><label>Title</label><input class="input" id="cmw-title" maxlength="${TITLE_MAX}" placeholder="Short and clear" value="${esc(n.title)}" oninput="CM.naIn('title',this.value)"></div><div class="cnt" id="cmw-tc">${n.title.length} / ${TITLE_MAX}</div>
+    <div class="field"><label>Text</label><textarea class="input" id="cmw-body" style="min-height:140px" placeholder="What changes, from when, what to do" oninput="CM.naIn('body',this.value)">${esc(n.body)}</textarea></div><div class="cnt" id="cmw-bc">${n.body.length} / ${BODY_MAX} · longer text is cut</div>
+    <div class="caps muted" style="margin:8px 0 10px">Who sees it</div></div>
+    <div class="chips">${chip('all','Everyone')}${chip('manager','Managers')}${chip('florist','Florists')}${chip('courier','Couriers')}</div>
+    <div class="blk" style="margin-top:18px"><div class="row" style="padding-left:0;padding-right:0"><span class="rt"><div class="l">Ask for “Got it”</div><div class="d">Everyone must acknowledge; you see who has not</div></span><button class="switch ${n.ack?'on':''}" role="switch" aria-checked="${n.ack}" onclick="CM.naAck(this)"></button></div>
+    ${n.err?`<div class="sm" style="color:var(--accent);margin:14px 0 0">${esc(n.err)}</div>`:''}
+    <button class="btn --block" style="margin-top:18px" onclick="CM.naPublish()">${n.busy?'Publishing…':'Publish'}</button>
+    <p class="xs muted" style="margin:12px 0 0">Pushes go out from the server to the chosen roles. Empty selection = everyone.</p></div>`};
+CM.naIn=(k,v)=>{const n=CM.na;n[k]=k==='body'?v.slice(0,BODY_MAX):v;n.err='';const c=$(k==='title'?'#cmw-tc':'#cmw-bc');if(c)c.textContent=k==='title'?`${v.length} / ${TITLE_MAX}`:`${n.body.length} / ${BODY_MAX} · longer text is cut`};
+CM.naRole=k=>{const n=CM.na;if(k==='all')n.roles=[];else n.roles=n.roles.includes(k)?n.roles.filter(x=>x!==k):n.roles.concat(k);window.mount_cm_ann_new()};
+CM.naAck=b=>{CM.na.ack=!CM.na.ack;b.classList.toggle('on',CM.na.ack);b.setAttribute('aria-checked',CM.na.ack);A.haptic()};
+CM.naPublish=()=>{const n=CM.na;if(!n.title.trim()||!n.body.trim()){n.err='Title and text are both required.';window.mount_cm_ann_new();return}
+  if(/test/i.test(n.title)){n.err='CRM: the title looks like a test – change it (422).';window.mount_cm_ann_new();return}
+  n.busy=true;window.mount_cm_ann_new();
+  setTimeout(()=>{n.busy=false;const id=Math.max(...ANNOUNCEMENTS.map(a=>a.id),10)+1;const a={id,title:n.title.trim(),body:n.body.trim(),by:A.state.me,at:NOW.toISOString(),ack:false,req:n.ack};
+    if(n.roles.length)a.roles=n.roles.slice();
+    if(n.ack){ANNOUNCEMENTS.push(a);document.dispatchEvent(new CustomEvent('ann'))}else CM.annExtra.unshift(a);
+    const to=n.roles.length?n.roles.map(r=>r+'s').join(', '):'everyone';CM.na=null;A.haptic();A.toast('Published to '+to);
+    setTimeout(()=>A.push('Announcement · '+A.me().n,a.title,{icon:'megaphone',to,go:['announcement',{id}]}),700);
+    A.go('announcement',{id},{replace:true})},600)};
+})();
+</script>
+<!-- rendered by script above: TM-CHAT-031 TM-CHAT-006 TM-CHAT-007 TM-CHAT-008 TM-CHAT-009 TM-CHAT-010 TM-CHAT-011 TM-CHAT-012 TM-CHAT-013 TM-CHAT-014 TM-CHAT-015 TM-CHAT-023 TM-CHAT-046 TM-CHAT-056 TM-CHAT-057 TM-CHAT-058 TM-CHAT-059 TM-CHAT-061 TM-ANN-006 TM-ANN-007 -->
