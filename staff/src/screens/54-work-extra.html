@@ -1,0 +1,940 @@
+<style>
+/* ---------- wx- : Work segments, Jobs board, Shifts & jobs (manager), Task catalog, Tasks extras ---------- */
+.wx-eyebrow{padding:4px var(--gutter) 0;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.wx-seg{display:flex;gap:0;margin:12px var(--gutter) 0;border:1px solid var(--ink);height:40px;overflow-x:auto;scrollbar-width:none}
+.wx-seg::-webkit-scrollbar{display:none}
+.wx-seg button{flex:1 0 auto;min-width:0;padding:0 12px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:all var(--m-fast)}
+.wx-seg button.on{background:var(--ink);color:var(--paper)}
+.wx-seg button b{font-weight:400;margin-left:5px;opacity:.7}
+.wx-scope{display:flex;gap:0;margin:0 var(--gutter);border:1px solid var(--ink);height:44px}
+.wx-scope button{flex:1;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:all var(--m-fast)}
+.wx-scope button.on{background:var(--ink);color:var(--paper)}
+.wx-scope button b{font-weight:400;font-size:11px;opacity:.65;font-variant-numeric:tabular-nums}
+.wx-demo{display:flex;gap:6px;overflow-x:auto;padding:10px var(--gutter) 0;scrollbar-width:none;align-items:center}
+.wx-demo::-webkit-scrollbar{display:none}
+.wx-demo .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);flex:none;margin-right:2px}
+.wx-demo .chip{height:28px;padding:0 10px;font-size:11px;flex:none}
+.wx-card{border:1px solid var(--hair);background:var(--paper);padding:14px;margin:0 var(--gutter) 10px}
+.wx-card.mine{border-color:var(--ink)}
+.wx-card.gone{opacity:.45}
+.wx-card .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.wx-card .fee{font-family:var(--f-display);font-size:30px;font-weight:300;line-height:1;margin-top:8px}
+.wx-card .fee small{font-family:var(--f-body);font-size:12px;color:var(--grey);margin-left:8px}
+.wx-card .tt{font-size:15px;line-height:1.35;margin-top:6px}
+.wx-card .meta{font-size:13px;color:var(--graphite);margin-top:6px;line-height:1.45}
+.wx-card .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.wx-card .btns{display:flex;gap:8px;margin-top:14px}
+.wx-card .btns .btn{flex:1;padding:0 10px}
+.wx-card .brief{margin-top:12px;padding-top:12px;border-top:1px solid var(--hair);font-size:14px;color:var(--graphite);line-height:1.5}
+.wx-card .brief ul{margin:8px 0 0 18px;padding:0}
+.wx-tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--light);color:var(--graphite)}
+.wx-tag.--warn{background:var(--warn-bg);color:var(--warn);border-color:var(--warn-bg)}
+.wx-grp{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:26px var(--gutter) 12px}
+.wx-grp .h3{flex:1}
+.wx-grp .n{font-size:13px;color:var(--grey);font-variant-numeric:tabular-nums}
+.wx-grp .sum{font-family:var(--f-display);font-size:22px;font-weight:400}
+.wx-empty{padding:28px var(--gutter);text-align:center;color:var(--grey);font-size:14px;line-height:1.5}
+.wx-empty .h3{color:var(--ink);margin-bottom:6px}
+.wx-err{margin:16px var(--gutter);padding:14px;border-left:2px solid var(--accent);background:var(--accent-bg);font-size:14px;line-height:1.45}
+.wx-err .btn{margin-top:10px}
+.wx-cap{padding:14px var(--gutter) 6px;font-size:12px;color:var(--grey);display:flex;gap:8px;align-items:center;justify-content:center;text-align:center}
+.wx-cap svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+.wx-rules{margin:8px var(--gutter) 0;padding:16px;background:var(--silver)}
+.wx-rules ul{margin:8px 0 0 16px;padding:0;font-size:13.5px;color:var(--graphite);line-height:1.55}
+.wx-row{display:flex;align-items:center;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.wx-row .rt{flex:1;min-width:0}
+.wx-row .l{font-size:15px;line-height:1.3}
+.wx-row .d{font-size:12.5px;color:var(--grey);margin-top:2px;line-height:1.4}
+.wx-row .chev{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+.wx-row .ic{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none}
+.wx-row .cnt{min-width:22px;height:22px;padding:0 6px;background:var(--ink);color:var(--paper);font-size:11px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.wx-sk{margin:16px var(--gutter);display:grid;gap:10px}
+.wx-sk i{display:block;height:64px;background:var(--silver)}
+.wx-ask{margin:0 var(--gutter) 12px;border:1px solid var(--hair);padding:14px}
+.wx-ask .hd{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--grey)}
+.wx-ask .hd b{color:var(--ink);font-weight:500}
+.wx-ask .wait{margin-left:auto;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.wx-ask .wait.y{color:var(--warn)}.wx-ask .wait.r{color:var(--accent)}
+.wx-ask .q{font-size:16px;line-height:1.4;margin-top:10px}
+.wx-ask .b{font-size:14px;color:var(--graphite);margin-top:4px;line-height:1.45}
+.wx-ask .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.wx-ask .send{display:flex;gap:8px;margin-top:12px;align-items:center}
+.wx-ask .send .btn{flex:none}
+.wx-ask .done{margin-top:12px;font-size:13px;color:var(--ok)}
+.wx-banner{display:flex;align-items:center;gap:12px;margin:12px var(--gutter) 0;padding:12px 14px;background:var(--warn-bg);width:calc(100% - 2*var(--gutter));text-align:left}
+.wx-banner .t{font-size:14px;font-weight:500}
+.wx-banner .d{font-size:12.5px;color:var(--graphite);margin-top:2px;line-height:1.35}
+.wx-banner svg{width:18px;height:18px;stroke:var(--warn);fill:none;stroke-width:1.5;flex:none}
+.wx-qa{margin:12px var(--gutter) 0;border:1px solid var(--hair)}
+.wx-qa .line{display:flex;align-items:center;gap:10px;padding:12px 14px;width:100%;text-align:left;font-size:15px;color:var(--grey)}
+.wx-qa .line svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none}
+.wx-qa .line .mic{margin-left:auto;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--light)}
+.wx-qa .form{padding:0 14px 14px}
+.wx-qa .form .input{margin-bottom:8px}
+.wx-qa .form .tk-ta{min-height:64px}
+.wx-qa .form .chips{padding:0;margin:8px 0}
+.wx-qa .form .err{color:var(--accent);font-size:13px;margin:6px 0}
+.wx-qa .form .btns{display:flex;gap:8px;margin-top:10px;align-items:center}
+.wx-qa .form .btns .textbtn{margin-left:auto}
+.wx-cat{display:flex;gap:12px;align-items:center;padding:12px var(--gutter);border-bottom:1px solid var(--hair)}
+.wx-cat.mine{border-left:2px solid var(--accent)}
+.wx-cat .rt{flex:1;min-width:0}
+.wx-cat .tt{font-size:15px;line-height:1.3}
+.wx-cat .dd{font-size:12.5px;color:var(--grey);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wx-cat .pts{font-family:var(--f-display);font-size:24px;font-weight:300;line-height:1;flex:none;text-align:right;min-width:48px}
+.wx-cat .pts small{display:block;font-family:var(--f-body);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:3px}
+.wx-catcard{margin:20px var(--gutter) 0;border:1px solid var(--ink);padding:14px}
+.wx-catcard .r{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.wx-catcard .r:last-of-type{border-bottom:0}
+.wx-catcard .r b{font-weight:400;color:var(--grey);white-space:nowrap}
+.wx-kv{display:grid;grid-template-columns:1fr auto;margin:0 var(--gutter);border-top:1px solid var(--hair)}
+.wx-kv>span{padding:11px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.wx-kv>span:nth-child(even){text-align:right;color:var(--graphite);padding-left:12px}
+.wx-edit{display:flex;gap:8px;flex-wrap:wrap;padding:12px var(--gutter) 0}
+.wx-edit .chip{height:32px;font-size:12px}
+.wx-ph-row{display:flex;gap:8px;padding:8px var(--gutter) 0;flex-wrap:wrap}
+.wx-ph-row .th{position:relative;width:56px;height:56px;background:var(--silver)}
+.wx-ph-row .th img{width:100%;height:100%;object-fit:cover}
+.wx-ph-row .th button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--ink);color:var(--paper);display:grid;place-items:center}
+.wx-ph-row .th button svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
+#sheet .wx-rec{display:flex;flex-direction:column;align-items:center;gap:14px;padding:18px 0 6px}
+#sheet .wx-rec .dot{width:14px;height:14px;border-radius:50%;background:var(--accent);animation:wxpulse 1s ease-in-out infinite}
+#sheet .wx-rec .tm{font-family:var(--f-display);font-size:44px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums}
+@keyframes wxpulse{0%,100%{opacity:1}50%{opacity:.25}}
+#sheet .wx-step{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:12px}
+#sheet .wx-step .qty{height:44px}
+#sheet .wx-step .qty button{width:44px}
+#sheet .wx-prev{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--silver);display:block}
+#sheet .wx-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#sheet .wx-err{margin:8px 0 12px}
+#sheet .wx-mv{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 0;border-bottom:1px solid var(--hair);font-size:15px}
+#sheet .wx-mv svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+#sheet .wx-mv .d{font-size:12.5px;color:var(--grey);margin-top:1px}
+#sheet .wx-mv .need{margin-left:auto;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);white-space:nowrap}
+#sheet .wx-people .check{padding:10px 0}
+#sheet .wx-people .avatar{flex:none}
+#sheet .wx-people .who{flex:1}
+#sheet .wx-people .who small{display:block;font-size:12px;color:var(--grey)}
+#sheet .wx-cnt{font-size:12px;color:var(--grey);text-align:right;margin-top:-8px;margin-bottom:10px}
+.wx-shift-list .wx-card .top .caps{font-size:12px}
+.wx-routes .wx-row .avatar{flex:none}
+.wx-map{margin:12px var(--gutter) 0;height:150px;position:relative}
+.wx-map .pin{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%)}
+.wx-map .pin.ok{background:var(--ok)}
+.wx-map .cap{position:absolute;left:10px;bottom:8px;font-size:11px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase}
+.wx-toggle{display:flex;gap:0;border:1px solid var(--light);height:32px}
+.wx-toggle button{padding:0 12px;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.wx-toggle button.on{background:var(--ink);color:var(--paper)}
+.wx-note{padding:10px var(--gutter) 0;font-size:12.5px;color:var(--grey);line-height:1.45}
+#s-tasks .wx-ann{margin:8px var(--gutter) 0;display:flex;gap:12px;align-items:center;width:calc(100% - 2*var(--gutter));text-align:left}
+#s-tasks .wx-ann svg{width:18px;height:18px;flex:none;stroke:var(--ink);fill:none;stroke-width:1.5}
+#s-tasks .wx-ann .f1{min-width:0}
+#s-tasks .wx-ann .t{font-size:14px;line-height:1.3}
+#s-tasks .wx-ann .d{font-size:12px;color:var(--grey);margin-top:2px}
+#s-tasks .wx-fail{padding:48px var(--gutter);text-align:center}
+#s-tasks .wx-fail pre{font-size:12px;color:var(--graphite);white-space:pre-wrap;text-align:left;background:var(--silver);padding:10px;margin:14px 0;max-height:5.6em;overflow:hidden;font-family:ui-monospace,Menlo,monospace}
+</style>
+
+<!-- ============ Work · Jobs board (self-employed) – standalone copy of the Work → Jobs segment ============ -->
+<!-- ids: TM-WORK-005 TM-WORK-020 TM-WORK-021 TM-WORK-022 TM-WORK-023 TM-WORK-024 TM-WORK-025 TM-WORK-026 TM-WORK-027 TM-WORK-028 TM-WORK-029 TM-WORK-030 -->
+<section class="scr" id="s-wx-jobs" data-tab="work" data-nav="Work · Jobs (self-employed)" data-group="Work">
+  <div class="appbar"><div class="ttl">Work</div><button class="ib" onclick="WX.x('pushes')" aria-label="Demo pushes"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></button></div>
+  <div class="scr-body has-tab" id="wxj-body"></div>
+</section>
+
+<!-- ============ Shifts & jobs – manager board (Work → Shifts segment and B → Me → «Shifts & jobs») ============ -->
+<!-- ids: TM-WORK-010 TM-MGR-001 TM-MGR-002 TM-MGR-003 TM-MGR-004 TM-MGR-005 TM-MGR-006 TM-MGR-007 TM-MGR-008 TM-MGR-009 TM-MGR-010 TM-MGR-011 TM-MGR-012 TM-MGR-013 TM-MGR-014 TM-MGR-015 TM-MGR-016 -->
+<section class="scr" id="s-wx-shifts-jobs" data-nav="Shifts & jobs · manager" data-group="Work">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('work')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl">Shifts &amp; jobs</div>
+    <button class="ib" onclick="WX.x('mgrRefresh')" aria-label="Refresh"><svg viewBox="0 0 24 24"><path d="M4 10a8 8 0 0 1 14-4l2 2M20 14a8 8 0 0 1-14 4l-2-2"/><path d="M20 4v4h-4M4 20v-4h4"/></svg></button>
+  </div>
+  <div class="scr-body" id="wxm-body"></div>
+</section>
+
+<!-- ============ Task catalog (classic /task-catalog) – «Take extra work» for points ============ -->
+<!-- ids: TM-BTASK-024 TM-TASK-027 TM-TASK-090 TM-TASK-091 TM-TASK-092 TM-TASK-093 TM-TASK-094 -->
+<section class="scr" id="s-wx-catalog" data-nav="Task catalog" data-group="Tasks">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('tasks')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl">Task catalog</div>
+    <button class="ib" onclick="WX.x('catRefresh')" aria-label="Refresh"><svg viewBox="0 0 24 24"><path d="M4 10a8 8 0 0 1 14-4l2 2M20 14a8 8 0 0 1-14 4l-2-2"/><path d="M20 4v4h-4M4 20v-4h4"/></svg></button>
+  </div>
+  <div class="scr-body" id="wxc-body"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ic=(n,s=16)=>A.icon(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;flex:none"`);
+const ric=n=>A.icon(n).replace('<svg','<svg class="ic"');
+const chev=A.icon('chev').replace('<svg','<svg class="chev"');
+const NOWI=()=>A.NOW.toISOString();
+const first=id=>{const u=A.user(id);return u?u.n:'—'};
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
+const lab=off=>{const d=dOf(off);return `${DAYS[(d.getDay()+6)%7]} ${d.getDate()} ${['Oct','Nov','Dec'][d.getMonth()-9]}`};
+const dlab=off=>off===0?'Today':off===1?'Tomorrow':lab(off);
+const gbp=n=>'£'+(Math.round(n*100)/100).toFixed(n%1?2:0);
+const shHead=(t,extra)=>`<div class="sh-head"><div class="h3">${t}</div>${extra||''}<button class="ib" onclick="App.closeSheet()" aria-label="Close">${A.icon('close')}</button></div>`;
+const alertSheet=(t,text,ok,fn)=>{A.sheet(`${shHead(t)}<div class="sh-body"><p class="soft" style="margin:0 0 8px">${text}</p></div><div class="sh-foot"><button class="btn" id="wx-ok">${ok||'OK'}</button></div>`);$('#wx-ok').onclick=()=>{A.closeSheet();fn&&fn()}};
+
+/* ---------- who am I: role and contour ---------- */
+const eng=u=>(u||A.me()).engagement||'employee';
+const isSE=()=>eng()==='contractor';
+const isRes=()=>eng()==='reserve';
+const isFree=()=>eng()==='freelance';
+const isAdmin=()=>A.role()==='owner';
+const isMgr=()=>A.role()==='manager'||isAdmin();
+const limited=()=>A.isTrainee()||A.me().staff_type==='seasonal';
+const canDictate=()=>['tatiana','valeria'].includes(A.me().id);
+const tasksHidden=()=>A.role()==='courier'||isSE()||isRes()||isFree();
+
+/* ---------- stand persona: admin (owner) – «All» scope, dictation, admin lens ---------- */
+if(window.PERSONAS&&!PERSONAS.find(p=>p.id==='tatiana'))PERSONAS.push({id:'tatiana',label:'Owner · admin'});
+
+/* ---------- demo data (fictional) ---------- */
+const X=window.WX_STATE={offline:false,tdemo:'normal',scope:null,view:'list',questions:false,answered:{},inFlight:{},
+  workView:null,seenParam:null,wkDemo:'normal',jobsDemo:'normal',agreementSigned:true,openBrief:{},
+  mgrSeg:'shifts',mgrDemo:'normal',serverErr:false,catF:'all',catDemo:'normal',cmtPhotos:[],proofNote:{},qa:null,edit:{}};
+
+/* self-employed jobs with a fixed fee */
+X.jobs=[
+ {id:21,off:2,when:'Thu 22 Oct · from 09:00',title:'Wedding table arrangements · 8 centrepieces',fee:180,extra:20,place:'SE1 studio → Dulwich SE21',tags:['Hard window','Special'],role:'florist',status:'taken',by:'mira',brief:'Eight low centrepieces in the client’s vessels, blush and cream. Set up at the venue by 11:00, photos to the manager before you leave.',materials:['Garden roses ×40','Spray roses ×30','Eucalyptus ×12','Vessels ×8 (client’s)']},
+ {id:22,off:0,when:'Today · 15:00–18:00',title:'Halloween window install at SW6',fee:95,place:'SW6 shop',tags:['Peak'],role:'florist',status:'open',brief:'Dark dahlias, dried grasses, black ribbon. Reference photos in the brief. Shop stays open while you work.',materials:['Dried grasses ×6 bunches','Dahlias ×30','Black ribbon 25 mm']},
+ {id:23,off:null,when:'Date to agree',title:'Corporate reception · 6 tall arrangements',fee:240,place:'City EC2',tags:['Special'],role:'florist',status:'open',brief:'Six tall arrangements for a reception desk and stage. Date to agree with the client – early November.',materials:['Delphinium','Lilies (no – allergy, use orchids)','Tall vases ×6'],race:true},
+ {id:24,off:3,when:'Fri 23 Oct · 10:00–12:00',title:'Stock run SW6 → SE1 · 12 boxes',fee:28,place:'SW6 shop → SE1 studio',tags:[],role:'courier',status:'open',brief:'Collect 12 boxes of hard goods at SW6, deliver to the SE1 studio.'},
+ {id:25,off:-3,when:'Sat 17 Oct',title:'Funeral spray · 2 pieces',fee:120,place:'SE1 studio',tags:[],role:'florist',status:'done',by:'mira',doneDay:'Sat 17 Oct',brief:'Two sprays in white and green, collected by the family at 14:00.'}
+];
+/* manager board: published shifts for casual workers */
+X.offers=[
+ {id:1,off:0,role:'florist',start:'15:00',end:'22:00',place:'SE1 studio',spots:1,booked:['zhadra'],status:'started'},
+ {id:2,off:2,role:'florist',start:'08:00',end:'15:00',place:'SE1 studio',spots:2,booked:['zhadra'],status:'open'},
+ {id:3,off:3,role:'courier',start:'12:00',end:'20:00',place:'SE1 studio',spots:1,booked:['max'],status:'full',note:'Pre-Halloween · expect a busy day'},
+ {id:4,off:5,role:'florist',start:'08:00',end:'15:00',place:'SW6 shop',spots:2,booked:[],status:'open'}
+];
+X.ending=[
+ {who:'max',kind:'Casual worker',ends:'12 Nov 2026',days:23,decide:'29 Oct',left:9},
+ {who:'dana',kind:'Self-employed',ends:'18 Nov 2026',days:29,decide:'4 Nov',left:15}
+];
+/* catalog: typical errands for points (Floritta Active) */
+X.catalog=[
+ {id:'c1',title:'Wipe down and re-stack the wrapping station',pts:5,desc:'Clear the bench, wipe it, ribbons back in the drawer by colour.',mine:true},
+ {id:'c2',title:'Re-label the cold room shelves',pts:10,desc:'Print labels from the CRM template, one per shelf, variety and date.',mine:true},
+ {id:'c3',title:'Photograph 3 new add-ons for the website',pts:15,desc:'White backdrop, 4:5 crop, two angles each. Upload to Add-ons.',mine:false},
+ {id:'c4',title:'Wash and dry the delivery boxes',pts:8,desc:'All boxes from the van, dry overnight on the rack.',mine:false},
+ {id:'c5',title:'Remove dead heads from the plant corner',pts:5,desc:'Plants only – do not touch the cut flowers.',mine:true},
+ {id:'c6',title:'Count ribbons and card envelopes',pts:6,desc:'Write what is below 20 pieces in the comment.',mine:false}
+];
+/* questions to me (kind = ask) – addressed to whoever is looking */
+X.asks=[
+ {id:901,from:'valeria',title:'Can you cover Thursday 12:00–22:00?',body:'Svetlana is off. Say yes, only until 18:00, or no – I need to close the rota today.',options:['Yes, the full shift','Only until 18:00','No, sorry'],wait:1,urgent:false},
+ {id:902,from:'tatiana',title:'Which supplier for the dried grasses?',body:'For Thursday’s window. Name the supplier and the price per bunch so I can approve the spend.',fields:['Supplier','Price per bunch'],wait:2,urgent:true}
+];
+/* a few touches on the shared demo tasks: links in text, «why it matters», proof by comment, my step in someone else’s task */
+(function seed(){
+  const t102=A.task(102);if(t102&&!/https?:/.test(t102.desc)){t102.desc+=' Guide: https://floritta.uk/photo-standard';const s=t102.checklist.find(c=>/Peony basket/.test(c.t));if(s)s.who='kamila'}
+  const t110=A.task(110);if(t110&&t110.checklist[1])t110.checklist[1].who='ayana';
+  const t112=A.task(112);if(t112)t112.whyMatters='Without a proof photo we cannot defend a “not delivered” claim – the client gets a refund and we lose the order.';
+  const t113=A.task(113);if(t113)t113.whyMatters='A rejected marketplace order lowers our ranking for the whole day.';
+  const t107=A.task(107);if(t107)t107.proof='comment';
+})();
+const ASK=id=>X.asks.find(a=>a.id==id);
+const openAsks=()=>X.asks.filter(a=>!X.answered[a.id]);
+
+/* ---------- offline demo: every write fails with an error sheet, nothing is queued ---------- */
+const offlineFail=()=>{alertSheet('Couldn’t save','No connection. Nothing was sent – your text and photo stay on the screen. Try again when you are back online.','OK');return true};
+['setTaskStatus','toggleCheck','attachPhoto','addComment','addTask'].forEach(k=>{const o=A[k];A[k]=function(){if(X.offline){offlineFail();return}return o.apply(this,arguments)}});
+
+/* =====================================================================
+   WORK – segments by role and contour
+   ===================================================================== */
+const VL={jobs:'Jobs',orders:'Orders',deliveries:'Deliveries',stock:'Stock',chats:'Chats',manage:'Shifts'};
+function views(){
+  const r=A.role();const v=[];
+  if(isSE())v.push('jobs');
+  if(r==='courier')return ['deliveries'];
+  if(limited())return v.concat(['orders']);
+  if(r==='florist'){v.push('orders','stock');return v}
+  if(isMgr())return ['orders','deliveries','stock','chats','manage'];
+  return v.length?v:['orders'];
+}
+const chainWork=window.mount_work;
+window.mount_work=function(p){
+  p=p||{};
+  if(isRes()||isFree()){X.workView=null;return chainWork&&chainWork(p)}   /* reserve and freelance courier: their own Work screens (other sections) */
+  const vs=views();
+  if(p.view&&vs.includes(p.view)&&p.view!==X.seenParam){X.workView=p.view;X.seenParam=p.view}
+  if(!X.workView||!vs.includes(X.workView))X.workView=vs[0];
+  const v=X.workView;
+  const bar=$('#wk-bar'),body=$('#wk-body'),cta=$('#wk-cta');
+  const useOrig=(v==='orders'&&!isSE())||(v==='deliveries'&&A.role()==='courier');
+  if(useOrig){chainWork(p);const tt=bar.querySelector('.ttl');if(tt)tt.textContent=A.role()==='courier'?'Route':'Work'}
+  else{
+    bar.innerHTML=`<div class="ttl">${A.role()==='courier'?'Route':'Work'}</div>`;
+    body.innerHTML=({jobs:jobsHtml,orders:ordersLiteHtml,deliveries:mgrDeliveriesHtml,stock:stockHtml,chats:chatsHtml,manage:mgrHtml})[v]();
+    body.classList.remove('wk-hascta');cta.innerHTML='';cta.style.display='none';
+  }
+  if(!bar.querySelector('.wx-push'))bar.insertAdjacentHTML('beforeend',`<button class="ib wx-push" onclick="WX.x('pushes')" aria-label="Demo pushes">${A.icon('bell')}</button>`);
+  const head=`<div class="wx-eyebrow">The shop’s work</div>`+(vs.length>1?`<div class="wx-seg">${vs.map(k=>`<button class="${k===v?'on':''}" onclick="WX.x('view','${k}')">${VL[k]}</button>`).join('')}</div>`:'')+(p.tab&&v==='orders'?`<div class="wx-note">Opened on the <b>${esc(p.tab)}</b> tab from a push / Today link.</div>`:'');
+  body.insertAdjacentHTML('afterbegin',head);
+  if(useOrig&&v==='orders'&&p.tab){const chips=body.querySelector('.chips');if(chips){const want={mine:'All',attention:'Queue',today:'All'}[p.tab];$$('.chip',chips).forEach(c=>c.classList.toggle('on',c.textContent.trim().startsWith(want||'All')))}}
+};
+function stubBodyBase(){return `<div class="wx-note" style="padding-top:12px">Each segment brings its own list and pull-to-refresh – the Work screen itself does not scroll.</div>`}
+
+/* ---- Orders (self-employed florist): the classic orders board, embedded, read-only for Mira ---- */
+function ordersLiteHtml(){
+  const tabs=[['today','Today'],['todo','To do'],['mine','Mine'],['handover','Handover'],['delivering','Delivering'],['tomorrow','Tomorrow'],['attention','Attention'],['date','Date'],['closed','Closed']];
+  const cur=X.ordTab||'todo';
+  const F={today:o=>!/Tomorrow|Yesterday/.test(o.window),todo:o=>o.status==='queue',mine:o=>o.florist===A.me().id,handover:o=>o.status==='photo'||o.status==='ready',delivering:o=>o.status==='out',tomorrow:o=>/Tomorrow/.test(o.window),attention:o=>!o.florist&&o.status==='queue',date:o=>true,closed:o=>o.status==='delivered'};
+  const l=ORDERS.filter(F[cur]||(()=>true));
+  return `<div class="chips mt12">${tabs.map(([k,t])=>`<button class="chip ${cur===k?'on':''}" onclick="WX.x('ordTab','${k}')">${t}</button>`).join('')}</div>
+  <div class="pad mt12"><button class="search" onclick="WX.x('ordSearch')">${A.icon('search')}<span>Order number or client</span></button></div>
+  <div class="mt12" style="border-top:1px solid var(--hair)">${l.map(A.orderCard).join('')||`<div class="wx-empty"><div class="h3">Nothing here</div>Orders on this tab show up as they come in.</div>`}</div>
+  <div class="wx-cap">${ic('repeat',14)} Scroll for more · updates every 30 s on “Mine”</div>`;
+}
+
+/* ---- Deliveries (manager): all couriers’ routes, list or map, trips waiting for confirmation ---- */
+function mgrDeliveriesHtml(){
+  const cs=[{id:'andrii',drops:ROUTE.length,done:ROUTE.filter(r=>r.status==='done').length,next:'715619 · Battersea',eta:'12:25'},{id:'oleh',drops:5,done:2,next:'715588 · Chelsea (re-delivery)',eta:'13:10'},{id:'max',drops:0,done:0,next:'Shift from 12:00',eta:''}];
+  const map=X.dlvMap;
+  return `${pendingHtml()}
+  <div class="flex ai-c jc-sb pad mt16"><div class="h3">Routes today</div><div class="wx-toggle"><button class="${map?'':'on'}" onclick="WX.x('dlvMap',false)">List</button><button class="${map?'on':''}" onclick="WX.x('dlvMap',true)">Map</button></div></div>
+  ${map?`<div class="map wx-map"><span class="pin ok" style="left:22%;top:38%"></span><span class="pin" style="left:48%;top:55%"></span><span class="pin" style="left:70%;top:30%"></span><span class="pin" style="left:60%;top:72%"></span><span class="cap">Live positions · 3 couriers</span></div>`:''}
+  <div class="wx-routes mt12" style="border-top:1px solid var(--hair)">${cs.map(c=>`<button class="wx-row" onclick="App.go('route')">${A.avatar(c.id,'--shift')}<div class="rt"><div class="l">${first(c.id)}${c.drops?` · ${c.done} of ${c.drops} drops`:' · no route yet'}</div><div class="d">${c.next}${c.eta?' · ETA '+c.eta:''}</div></div>${chev}</button>`).join('')}</div>
+  <div class="wx-cap">${ic('repeat',14)} Pull down to refresh</div>`;
+}
+function pendingHtml(){
+  const n=X.tripsOk?0:2;
+  return n?`<button class="wx-banner" onclick="WX.x('trips')">${A.icon('truck')}<div class="f1"><div class="t">${n} trips wait for your confirmation</div><div class="d">Oleh · 2 extra drops · Andrii · return to shop. Tap to review.</div></div></button>`:`<div class="wx-note" style="padding-top:12px">${ic('check',14)} All trips confirmed.</div>`;
+}
+
+/* ---- Stock (classic inventory, embedded) – compact stand-in; the full screen is the Stock section ---- */
+function stockHtml(){
+  const rows=[['Quicksand roses','38 stems','low'],['Garden roses · peach','120 stems',''],['Eucalyptus','14 bunches',''],['Dried grasses','2 bunches','low'],['Ivory satin ribbon 25 mm','4 rolls','low'],['Chrysal sachets','60','']];
+  return `<div class="pad mt16 flex ai-c jc-sb"><div class="h3">Stock today</div><button class="textbtn" onclick="App.toast('Count mode – full screen lives in the Stock section')">Count</button></div>
+  <div class="mt12" style="border-top:1px solid var(--hair)">${rows.map(([n,q,f])=>`<button class="wx-row" onclick="App.toast('${esc(n)} · ${esc(q)}')"><div class="rt"><div class="l">${n}</div><div class="d">${q}</div></div>${f?`<span class="pill --late">Low</span>`:''}</button>`).join('')}</div>
+  <div class="wx-cap">${ic('repeat',14)} Pull down to refresh · the inventory screen of the classic app, embedded</div>`;
+}
+/* ---- Chats (client dialogues, embedded) – compact stand-in; the full screen is the Comms section ---- */
+function chatsHtml(){
+  const ch=[{c:'Mrs Harper · 715602',l:'Smoked glass please, thank you!',t:'10:52',n:1},{c:'James O. · 715611',l:'Can the balloons say “40”?',t:'09:40',n:2},{c:'Anna K. · 715619',l:'Photo received – looks lovely',t:'Yesterday',n:0}];
+  return `<div class="pad mt16"><div class="h3">Client chats</div></div>
+  <div class="mt12" style="border-top:1px solid var(--hair)">${ch.map((c,i)=>`<button class="wx-row" onclick="WX.x('chat',${i})"><div class="rt"><div class="l">${c.c}</div><div class="d">${esc(c.l)}</div></div>${c.n?`<span class="cnt">${c.n}</span>`:''}<span class="xs muted">${c.t}</span></button>`).join('')}</div>
+  <div class="wx-cap">${ic('repeat',14)} Pull down to refresh · the inbox of the classic app, embedded</div>`;
+}
+
+/* =====================================================================
+   JOBS BOARD (self-employed) – fixed fee, take / withdraw / done with photo
+   ===================================================================== */
+const seJobs=()=>X.jobs.filter(j=>isMgr()||j.role===A.role());
+function jobCard(j){
+  const mine=j.status==='taken'&&j.by===A.me().id,done=j.status==='done';
+  const showRole=isMgr();
+  const total=j.fee+(j.extra||0);
+  const tags=(j.tags||[]).map(t=>`<span class="wx-tag --warn">${t}</span>`).join('')+(showRole?`<span class="wx-tag">${j.role==='courier'?'Courier job':'Florist job'}</span>`:'');
+  let btns='';
+  if(done)btns='';
+  else if(mine)btns=`<div class="btns"><button class="btn --sm --secondary" onclick="WX.x('withdraw',${j.id})">Withdraw</button><button class="btn --sm" onclick="WX.x('jobDone',${j.id})">Mark as done</button></div>`;
+  else if(j.status==='open'&&!isMgr())btns=`<div class="btns"><button class="btn --sm" ${X.inFlight['j'+j.id]?'disabled':''} onclick="WX.x('takeJob',${j.id})">${X.inFlight['j'+j.id]?'Taking…':'Take this job'}</button></div>`;
+  const ob=X.openBrief[j.id];
+  return `<div class="wx-card ${mine?'mine':''}" id="wxj-${j.id}">
+    <div class="top"><span class="caps muted">${j.off==null?'Date to agree':esc(j.when)}</span>${mine?'<span class="pill --done">Yours</span>':done?`<span class="pill --todo">Done ${j.doneDay}</span>`:j.status==='taken'?`<span class="pill --doing">Taken by ${first(j.by)}</span>`:''}</div>
+    <div class="tt">${esc(j.title)}</div>
+    <div class="fee">${gbp(total)}${j.extra?`<small>incl. ${gbp(j.extra)} extra</small>`:''}</div>
+    <div class="meta">${esc(j.place)}</div>
+    ${tags?`<div class="tags">${tags}</div>`:''}
+    <button class="textbtn mt12" onclick="WX.x('brief',${j.id})">${ob?'Hide brief':'Brief'}</button>
+    ${ob?`<div class="brief">${esc(j.brief||'No brief yet – the manager adds it before the day.')}${j.materials?`<div class="caps muted mt12">Materials</div><ul>${j.materials.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}</div>`:''}
+    ${btns}</div>`;
+}
+function jobsHtml(){
+  const d=X.jobsDemo;
+  const demo=`<div class="wx-demo"><span class="lbl">Demo</span>${[['normal','Normal'],['loading','Loading'],['error','Error'],['empty','Empty'],['unsigned','No agreement'],['offline','Offline']].map(([k,l])=>`<button class="chip ${(k==='offline'?X.offline:k==='unsigned'?!X.agreementSigned:d===k)?'on':''}" onclick="WX.x('jobsDemo','${k}')">${l}</button>`).join('')}</div>`;
+  if(d==='loading')return demo+`<div class="wx-sk"><i></i><i></i><i></i></div><div class="wx-cap">Loading your jobs…</div>`;
+  if(d==='error')return demo+`<div class="wx-err">Could not load the jobs. Pull to try again.<br><button class="btn --sm --secondary" onclick="WX.x('jobsDemo','normal')">Try again</button></div>`;
+  const all=d==='empty'?[]:seJobs();
+  const me=A.me().id;
+  const mine=all.filter(j=>j.status==='taken'&&j.by===me),open=all.filter(j=>j.status==='open'),done=all.filter(j=>j.status==='done'&&j.by===me);
+  const sum=mine.reduce((s,j)=>s+j.fee+(j.extra||0),0);
+  let h=demo;
+  h+=`<div class="wx-grp"><div class="h3">Your jobs</div>${mine.length?`<span class="sum">${gbp(sum)}</span>`:''}</div>`;
+  h+=mine.length?mine.map(jobCard).join(''):`<div class="wx-empty">You have not taken a job yet.</div>`;
+  h+=`<div class="wx-grp"><div class="h3">Jobs board</div><span class="n">${open.length}</span></div>`;
+  h+=open.length?open.map(jobCard).join(''):`<div class="wx-empty">No open jobs right now – we send a push when one appears.</div>`;
+  if(done.length)h+=`<div class="wx-grp"><div class="h3">Done · waiting for the statement</div><span class="n">${done.length}</span></div>`+done.map(jobCard).join('');
+  h+=`<div class="wx-cap">${ic('repeat',14)} Pull down to refresh</div>`;
+  h+=`<div class="wx-rules"><div class="h4">How this works</div><ul><li>The fee is fixed per job – no hourly rate, no overtime.</li><li>You do the job yourself or send a substitute you trust.</li><li>You can hand a job back before it starts – no fee, no rating, no questions.</li><li>Working for other clients is fine; we do not ask.</li><li>No holiday or sick pay – you run your own business.</li></ul></div><div style="height:24px"></div>`;
+  return h;
+}
+window.mount_wx_jobs=function(){$('#wxj-body').innerHTML=`<div class="wx-eyebrow">Work · Jobs</div>`+jobsHtml()};
+function rerenderJobs(){const c=A.state.current;if(c==='wx-jobs')window.mount_wx_jobs();else if(c==='work')window.mount_work(A.state.params);else if(c==='wx-shifts-jobs')window.mount_wx_shifts_jobs()}
+
+/* job done sheet */
+function jobDoneSheet(id){
+  const j=X.jobs.find(x=>x.id==id);X.jd={id,photos:[],note:'',sending:false};renderJD();
+}
+function renderJD(){
+  const s=X.jd;const j=X.jobs.find(x=>x.id==s.id);
+  const ph=s.photos.length;
+  A.sheet(`${shHead('Job done')}<div class="sh-body">
+    <div class="sm soft" style="margin:-4px 0 12px">${esc(j.title)} · ${gbp(j.fee+(j.extra||0))}</div>
+    ${ph?`<img class="wx-prev" src="${s.photos[ph-1]}" alt=""><div class="xs muted mt8">${ph} photo${ph>1?'s':''} · the photo is the basis for payment</div>`:''}
+    <div class="wx-two mt12"><button class="btn --secondary --sm" onclick="WX.x('jdPhoto','camera')">${ic('camera',16)} ${ph?'Another photo':'Take a photo'}</button><button class="btn --ghost --sm" onclick="WX.x('jdPhoto','library')">${ic('photo',16)} Choose from library</button></div>
+    <div class="xs muted mt8" style="text-align:center"><button class="link-u" onclick="WX.x('jdDenied')">Demo: camera access is off</button></div>
+    <div class="field mt16"><label>Note (optional)</label><textarea class="tk-ta" id="wx-jdn" maxlength="1000" placeholder="Anything the manager should know" oninput="WX.x('jdNote',this.value)">${esc(s.note)}</textarea></div>
+    <div class="wx-cnt">${s.note.length} / 1000</div>
+    ${ph?'':`<div class="sm" style="color:var(--warn)">${ic('info',14)} Add a photo of the finished work first.</div>`}
+  </div>
+  <div class="sh-foot"><button class="btn --secondary" ${s.sending?'disabled':''} onclick="App.closeSheet()">Cancel</button><button class="btn" ${ph&&!s.sending?'':'disabled'} onclick="WX.x('jdSend')">${s.sending?'Sending…':'Send'}</button></div>`);
+}
+
+/* =====================================================================
+   SHIFTS & JOBS – manager board
+   ===================================================================== */
+const offerPill=s=>s==='open'?'<span class="pill --todo">Open</span>':s==='full'?'<span class="pill --done">Full</span>':s==='started'?'<span class="pill --doing">Started</span>':'<span class="pill --late">Cancelled</span>';
+function offerCard(o){
+  const left=o.spots-o.booked.length;
+  return `<div class="wx-card ${o.status==='cancelled'?'gone':''}" id="wxo-${o.id}"><div class="top"><span class="caps">${dlab(o.off)} · ${o.role==='courier'?'Courier':'Florist'}</span>${offerPill(o.status)}</div>
+  <div class="fee" style="font-size:24px">${o.start}–${o.end}</div>
+  <div class="meta">${esc(o.place)} · ${left} of ${o.spots} place${o.spots>1?'s':''} left</div>
+  <div class="meta">${o.booked.length?'Booked: '+o.booked.map(first).join(', '):'No one yet'}</div>
+  ${o.note?`<div class="meta soft">${esc(o.note)}</div>`:''}
+  ${o.status!=='started'&&o.status!=='cancelled'?`<div class="btns"><button class="btn --sm --ghost" ${X.inFlight['o'+o.id]?'disabled':''} onclick="WX.x('cancelOffer',${o.id})">${X.inFlight['o'+o.id]?'Cancelling…':'Cancel shift'}</button></div>`:''}</div>`;
+}
+function mgrJobCard(j){
+  return `<div class="wx-card ${j.status==='cancelled'?'gone':''}" id="wxmj-${j.id}"><div class="top"><span class="caps">${j.off==null?'Date to agree':esc(j.when)} · ${j.role==='courier'?'Courier':j.role==='florist'?'Florist':'Anyone'}</span>${j.status==='open'?'<span class="pill --todo">Open</span>':j.status==='taken'?`<span class="pill --doing">Taken by ${first(j.by)}</span>`:j.status==='done'?'<span class="pill --done">Done</span>':'<span class="pill --late">Cancelled</span>'}</div>
+  <div class="tt">${esc(j.title)}</div><div class="fee" style="font-size:24px">${gbp(j.fee+(j.extra||0))}</div><div class="meta">${esc(j.place||'')}</div>
+  ${j.brief?`<div class="meta soft" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(j.brief)}</div>`:''}
+  ${j.status==='open'||j.status==='taken'?`<div class="btns"><button class="btn --sm --ghost" ${X.inFlight['mj'+j.id]?'disabled':''} onclick="WX.x('cancelJob',${j.id})">${X.inFlight['mj'+j.id]?'Cancelling…':'Cancel job'}</button></div>`:''}</div>`;
+}
+function mgrHtml(){
+  const d=X.mgrDemo;
+  const demo=`<div class="wx-demo"><span class="lbl">Demo</span>${[['normal','Normal'],['loading','Loading'],['error','Error'],['empty','Empty']].map(([k,l])=>`<button class="chip ${d===k?'on':''}" onclick="WX.x('mgrDemo','${k}')">${l}</button>`).join('')}<button class="chip ${X.serverErr?'on':''}" onclick="WX.x('serverErr')">Server 422</button></div>`;
+  const seg=`<div class="pad mt12"><div class="seg"><button class="${X.mgrSeg==='shifts'?'on':''}" onclick="WX.x('mgrSeg','shifts')">Shifts</button><button class="${X.mgrSeg==='jobs'?'on':''}" onclick="WX.x('mgrSeg','jobs')">Jobs</button></div></div>`;
+  if(!isMgr())return demo+seg+`<div class="pad mt16"><button class="btn --block --secondary" onclick="WX.x('offerForm')">Publish a shift</button></div><div class="wx-err">Could not load. Pull to try again.<div class="xs muted mt8">The board asks the CRM only for managers and admins. Someone who opens it by a direct link sees the form and this message; publishing is refused by the server.</div></div>`;
+  let h=demo+seg;
+  if(d==='loading')return h+`<div class="wx-sk"><i></i><i></i></div>`;
+  if(d==='error')return h+`<div class="wx-err">Could not load. Pull to try again.<br><button class="btn --sm --secondary" onclick="WX.x('mgrDemo','normal')">Try again</button></div>`;
+  if(X.mgrSeg==='shifts'){
+    const list=d==='empty'?[]:X.offers.filter(o=>o.status!=='cancelled'||X.inFlight['o'+o.id]).sort((a,b)=>(a.off-b.off)||a.start.localeCompare(b.start));
+    h+=`<div class="pad mt16"><button class="btn --block" onclick="WX.x('offerForm')">${ic('plus',16)} Publish a shift</button></div><div class="wx-note">Casual workers pick from this list – you publish, you cannot assign. Everyone of the role gets a push.</div>`;
+    h+=`<div class="wx-grp"><div class="h3">Published shifts</div><span class="n">${list.length}</span></div><div class="wx-shift-list">${list.map(offerCard).join('')||`<div class="wx-empty"><div class="h3">No shifts published</div>Publish one – casual workers of that role get a push.</div>`}</div>`;
+  }else{
+    const list=d==='empty'?[]:X.jobs.filter(j=>j.status!=='done').sort((a,b)=>(a.status==='open'?0:1)-(b.status==='open'?0:1));
+    h+=`<div class="pad mt16"><button class="btn --block" onclick="WX.x('jobForm')">${ic('plus',16)} Publish a job</button></div><div class="wx-note">A fixed fee per job for self-employed florists and couriers with a signed agreement. No hourly rate.</div>`;
+    h+=`<div class="wx-grp"><div class="h3">Published jobs</div><span class="n">${list.length}</span></div>${list.map(mgrJobCard).join('')||`<div class="wx-empty"><div class="h3">No jobs published</div>Publish one – self-employed people of that role get a push.</div>`}`;
+  }
+  const en=d==='empty'?[]:X.ending;
+  h+=`<div class="wx-grp"><div class="h3">Agreements ending soon</div><span class="n">30 days</span></div>`;
+  h+=en.length?`<div style="border-top:1px solid var(--hair)">${en.map(e=>`<button class="wx-row" onclick="App.toast('${first(e.who)} · ${e.kind} · opens the agreement in Team')">${A.avatar(e.who,'--sm')}<div class="rt"><div class="l">${first(e.who)}</div><div class="d">${e.kind} · Ends ${e.ends} · ${e.days} days</div></div><span class="pill ${e.left<=14?'--late':'--review'}">Decide by ${e.decide}</span></button>`).join('')}</div>`:`<div class="wx-empty">Nothing ends in the next 30 days.</div>`;
+  h+=`<div class="wx-cap">${ic('repeat',14)} Pull down to refresh shifts, jobs and agreements</div><div style="height:24px"></div>`;
+  return h;
+}
+window.mount_wx_shifts_jobs=function(){$('#wxm-body').innerHTML=mgrHtml()};
+
+/* --- offer form (publish a shift) --- */
+function offerForm(){X.of=X.of||{role:'florist',off:1,date:'',start:'09:00',end:'17:00',place:'',spots:1,note:'',err:''};renderOfferForm()}
+const isoDate=off=>{const d=dOf(off);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const hoursUntil=f=>{const [h,m]=f.start.split(':').map(Number);return f.off*24+h+m/60-(11+12/60)};
+function renderOfferForm(){
+  const f=X.of;const date=f.date||isoDate(f.off);const hu=hoursUntil(f);
+  A.sheet(`${shHead('Publish a shift')}<div class="sh-body">
+    <div class="field"><label>Role</label><div class="seg"><button class="${f.role==='florist'?'on':''}" onclick="WX.x('ofSet','role','florist')">Florist</button><button class="${f.role==='courier'?'on':''}" onclick="WX.x('ofSet','role','courier')">Courier</button></div></div>
+    <div class="field"><label>Date</label><input class="input" value="${date}" placeholder="YYYY-MM-DD" oninput="WX.x('ofSet','date',this.value)"><div class="chips" style="padding:8px 0 0"><button class="chip ${f.off===0&&!f.date?'on':''}" onclick="WX.x('ofDay',0)">Today</button><button class="chip ${f.off===1&&!f.date?'on':''}" onclick="WX.x('ofDay',1)">Tomorrow</button></div></div>
+    <div class="wx-two"><div class="field"><label>Starts</label><input class="input" value="${f.start}" oninput="WX.x('ofSet','start',this.value)"></div><div class="field"><label>Ends</label><input class="input" value="${f.end}" oninput="WX.x('ofSet','end',this.value)"></div></div>
+    <div class="xs muted" style="margin:-6px 0 12px">London time – BST / GMT handled by the app.</div>
+    <div class="field"><label>Place</label><input class="input" value="${esc(f.place)}" placeholder="SE1 studio / SW6 shop" oninput="WX.x('ofSet','place',this.value)"></div>
+    <div class="wx-step"><div><div class="caps muted" style="font-size:12px">Places</div><div class="xs muted">1 to 10</div></div><div class="qty"><button onclick="WX.x('ofSpots',-1)">−</button><span>${f.spots}</span><button onclick="WX.x('ofSpots',1)">+</button></div></div>
+    <div class="field"><label>Note</label><input class="input" value="${esc(f.note)}" placeholder="Optional" oninput="WX.x('ofSet','note',this.value)"></div>
+    ${hu<48?`<div class="sm" style="color:var(--warn)">${ic('info',14)} Short notice – it starts in under 48 h. Workers may not see it in time.</div>`:''}
+    ${f.err?`<div class="wx-err">${esc(f.err)}</div>`:''}
+  </div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="WX.x('ofPublish')">Publish</button></div>`,{full:true});
+}
+/* --- job form (publish a job) --- */
+function jobForm(){X.jf=X.jf||{role:'any',title:'',brief:'',fee:'',place:'',when:'',date:'',time:'',materials:'',err:''};renderJobForm()}
+function renderJobForm(){
+  const f=X.jf;
+  A.sheet(`${shHead('Publish a job')}<div class="sh-body">
+    <div class="field"><label>For</label><div class="seg">${[['any','Anyone'],['florist','Florist'],['courier','Courier']].map(([k,l])=>`<button class="${f.role===k?'on':''}" onclick="WX.x('jfSet','role','${k}')">${l}</button>`).join('')}</div></div>
+    <div class="field"><label>Title</label><input class="input" value="${esc(f.title)}" placeholder="What is the job" oninput="WX.x('jfSet','title',this.value)"></div>
+    <div class="field"><label>Brief</label><textarea class="tk-ta" placeholder="What exactly, where, what to bring" oninput="WX.x('jfSet','brief',this.value)">${esc(f.brief)}</textarea></div>
+    <div class="wx-two"><div class="field"><label>Fee £</label><input class="input" inputmode="decimal" value="${esc(f.fee)}" placeholder="95.00" oninput="WX.x('jfSet','fee',this.value)"></div><div class="field"><label>Place</label><input class="input" value="${esc(f.place)}" placeholder="Optional" oninput="WX.x('jfSet','place',this.value)"></div></div>
+    <div class="field"><label>When (in words)</label><input class="input" value="${esc(f.when)}" placeholder="e.g. Thursday morning" oninput="WX.x('jfSet','when',this.value)"></div>
+    <div class="wx-two"><div class="field"><label>Date</label><input class="input" value="${esc(f.date)}" placeholder="YYYY-MM-DD" oninput="WX.x('jfSet','date',this.value)"></div><div class="field"><label>Time</label><input class="input" value="${esc(f.time)}" placeholder="09:00" oninput="WX.x('jfSet','time',this.value)"></div></div>
+    <div class="xs muted" style="margin:-6px 0 12px">Date without a time is published as 09:00 London time.</div>
+    <div class="field"><label>Materials</label><input class="input" value="${esc(f.materials)}" placeholder="Optional · what we provide" oninput="WX.x('jfSet','materials',this.value)"></div>
+    ${f.err?`<div class="wx-err">${esc(f.err)}</div>`:''}
+  </div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="WX.x('jfPublish')">Publish</button></div>`,{full:true});
+}
+
+/* =====================================================================
+   TASK CATALOG – typical errands for points
+   ===================================================================== */
+function catHtml(){
+  const d=X.catDemo;
+  const demo=`<div class="wx-demo"><span class="lbl">Demo</span>${[['normal','Normal'],['loading','Loading'],['error','Error'],['empty','Empty']].map(([k,l])=>`<button class="chip ${d===k?'on':''}" onclick="WX.x('catDemo','${k}')">${l}</button>`).join('')}</div>`;
+  let h=`<div class="wx-eyebrow">Floritta Active · points for extra work</div>`+demo;
+  h+=`<div class="pad mt12"><div class="seg"><button class="${X.catF==='all'?'on':''}" onclick="WX.x('catF','all')">All</button><button class="${X.catF==='mine'?'on':''}" onclick="WX.x('catF','mine')">My zone</button></div></div>`;
+  if(d==='loading')return h+`<div class="wx-sk"><i></i><i></i><i></i></div>`;
+  if(d==='error')return h+`<div class="wx-err">Loading error.<br><button class="btn --sm --secondary" onclick="WX.x('catDemo','normal')">Try again</button></div>`;
+  const l=d==='empty'?[]:X.catalog.filter(c=>X.catF==='all'||c.mine);
+  h+=`<div class="mt16" style="border-top:1px solid var(--hair)">${l.map(c=>`<div class="wx-cat ${c.mine?'mine':''}"><div class="rt"><div class="tt">${esc(c.title)}</div><div class="dd">${esc(c.desc)}</div></div><div class="pts">${c.pts}<small>points</small></div><button class="btn --xs" ${X.inFlight['c'+c.id]?'disabled':''} onclick="WX.x('catTake','${c.id}')">${X.inFlight['c'+c.id]?'…':'Take'}</button></div>`).join('')||`<div class="wx-empty"><div class="h3">Nothing in the catalog</div>${X.catF==='mine'?'No presets for your zone yet.':'The manager has not added presets yet.'}</div>`}</div>`;
+  h+=`<div class="wx-note">A red edge marks your zone. “Take” creates the task on you and the points land on your profile when it is checked.</div><div class="wx-cap">${ic('repeat',14)} Pull down to refresh</div>`;
+  return h;
+}
+window.mount_wx_catalog=function(){$('#wxc-body').innerHTML=catHtml()};
+
+/* =====================================================================
+   TASKS TAB – scopes, quick add, questions, catalog card, demo states
+   ===================================================================== */
+const openT=t=>t.status!=='done';
+const sameDay=iso=>new Date(iso).toDateString()===A.NOW.toDateString();
+const meId=()=>A.me().id;
+const byMe=()=>TASKS.filter(t=>t.by===meId());
+const cnt=n=>n>99?'99+':n;
+const mySteps=()=>{const m=meId();const out=[];TASKS.forEach(t=>{if(t.assignee===m||(t.also||[]).includes(m))return;(t.checklist||[]).forEach(c=>{if(c.who===m&&!c.d)out.push({t,c})})});return out};
+function scopeBar(){
+  const sc=X.scope;const n={mine:A.openTasks(A.myTasks()).length,byme:byMe().filter(openT).length,all:TASKS.filter(openT).length,pool:$$('#s-tasks .tk-pool').length||6};
+  const scopes=[['mine','Mine'],['byme','By me']].concat(isAdmin()?[['all','All']]:[]).concat([['pool','Pool']]);
+  return `<div class="pad" style="padding-top:4px"><div class="wx-scope">${scopes.map(([k,l])=>`<button class="${sc===k?'on':''}" onclick="WX.x('scope','${k}')">${l}${n[k]?`<b>${cnt(n[k])}</b>`:''}</button>`).join('')}</div></div>`;
+}
+function groupHtml(list,withMySteps){
+  const g={late:[],steps:[],today:[],later:[],review:[],done:[]};
+  list.forEach(t=>{if(t.status==='done'){if(t.doneAt&&sameDay(t.doneAt))g.done.push(t);return}if(t.status==='review'){g.review.push(t);return}if(A.isLate(t)){g.late.push(t);return}if(sameDay(t.due))g.today.push(t);else g.later.push(t)});
+  const allDoneToday=g.done.length&&!g.late.length&&!g.today.length&&!g.later.length&&!g.review.length;
+  let h='';
+  const sec=(l,arr,cls)=>arr.length?`<div class="tk-sh ${cls||''}"><div class="h3">${l}</div><span class="n">${arr.length}</span></div><div class="tlist">${arr.map(t=>A.taskCard(t)).join('')}</div>`:'';
+  h+=sec('Overdue',g.late,'--late');
+  if(withMySteps)h+=stepsHtml();
+  h+=sec('Today',g.today)+sec('Later',g.later)+sec('To check',g.review)+sec(allDoneToday?'Done today':'Done',g.done);
+  if(!h)h=`<div class="wx-empty" style="padding-top:48px"><div class="h3">All clear</div>Nothing here right now.</div>`;
+  return h;
+}
+function stepsHtml(){
+  const s=mySteps();if(!s.length)return'';
+  return `<div class="tk-sh"><div class="h3">My steps</div><span class="n">${s.length}</span></div><div class="tlist">${s.map(({t,c})=>`<button class="tcard" onclick="App.go('task',{id:${t.id}})"><div class="flex ai-c g8" style="margin-bottom:8px">${A.pill(t.status)}</div><div class="tt">${esc(t.title)}</div><div class="tm"><span>${ic('checksq',14)} Your step: ${esc(c.t)}</span><span style="margin-left:auto">${A.avatar(t.assignee,'--sm')}</span></div></button>`).join('')}</div>`;
+}
+function quickAddHtml(){
+  const q=X.qa;
+  if(!q)return `<div class="wx-qa"><button class="line" onclick="WX.x('qaOpen')">${A.icon('plus')}<span>New task…</span>${canDictate()?`<span class="mic" onclick="event.stopPropagation();WX.x('dictate')" role="button" aria-label="Dictate a task">${ic('mic',18)}</span>`:''}</button></div>`;
+  const who=q.who.length===0?'Free (nobody)':q.who.map(id=>id===meId()?'Me':first(id)).slice(0,2).join(', ')+(q.who.length>2?` +${q.who.length-2}`:'');
+  return `<div class="wx-qa"><div class="form" style="padding-top:14px">
+    <input class="input" id="wx-qat" placeholder="Title" maxlength="191" value="${esc(q.title)}" oninput="WX.x('qaSet','title',this.value)">
+    <textarea class="tk-ta" placeholder="Description (optional)" oninput="WX.x('qaSet','body',this.value)">${esc(q.body)}</textarea>
+    <div class="chips"><button class="chip" onclick="WX.x('qaWho')">${ic('user',14)} Who: ${esc(who)}</button></div>
+    <div class="chips">${[['shift','By end of shift · 16:00'],['today','Today 18:00'],['tomorrow','Tomorrow 09:00']].map(([k,l])=>`<button class="chip ${q.due===k?'on':''}" onclick="WX.x('qaSet','due','${k}')">${l}</button>`).join('')}<button class="chip ${q.due==='pick'?'on':''}" onclick="WX.x('qaDue')">${ic('calendar',14)} ${q.due==='pick'?A.fmtDue(q.dueIso):'Pick…'}</button></div>
+    ${q.err?`<div class="err">${esc(q.err)}</div>`:''}
+    <div class="btns"><button class="btn --sm" ${q.busy?'disabled':''} onclick="WX.x('qaCreate')">${q.busy?'Creating…':'Create'}</button><button class="btn --sm --ghost" onclick="WX.x('qaClose')">Cancel</button><button class="textbtn" onclick="WX.x('qaAll')">All fields ›</button></div>
+  </div></div>`;
+}
+function asksBannerHtml(){
+  const a=openAsks();if(!a.length)return'';
+  return `<button class="wx-banner" onclick="WX.x('questions',true)">${A.icon('help')}<div class="f1"><div class="t">${a.length} question${a.length>1?'s':''} wait${a.length>1?'':'s'} for your answer</div><div class="d">${first(a[0].from)}: ${esc(a[0].title)}</div></div>${chev}</button>`;
+}
+function askCard(a,full){
+  const done=X.answered[a.id];const w=a.wait>=2?'r':a.wait>=1?'y':'';
+  const an=X.ans&&X.ans.id===a.id?X.ans:{id:a.id,opt:null,text:'',fields:{},free:false};
+  let form='';
+  if(done)form=`<div class="done">${ic('check',14)} Answered by ${first(meId())} · ${esc(done)}</div>`;
+  else{
+    if(a.options)form+=`<div class="opts">${a.options.map((o,i)=>`<button class="chip ${an.opt===i?'on':''}" onclick="WX.x('askOpt',${a.id},${i})">(${'abc'[i]}) ${esc(o)}</button>`).join('')}</div>`;
+    if(a.fields)form+=a.fields.map(f=>`<input class="input mt8" placeholder="${esc(f)}" value="${esc(an.fields[f]||'')}" oninput="WX.x('askField',${a.id},'${esc(f)}',this.value)">`).join('');
+    if(!a.options&&!a.fields||an.free)form+=`<textarea class="tk-ta mt8" placeholder="Your answer" oninput="WX.x('askText',${a.id},this.value)">${esc(an.text)}</textarea>`;
+    form+=`<div class="send"><button class="btn --sm" onclick="WX.x('askSend',${a.id})">Send</button>${(a.options||a.fields)&&!an.free?`<button class="textbtn" onclick="WX.x('askFree',${a.id})">Write instead</button>`:''}</div>`;
+  }
+  return `<div class="wx-ask" id="wx-ask-${a.id}"><div class="hd">${A.avatar(a.from,'--sm')}<span><b>${first(a.from)}</b> asks</span><span class="wait ${w}">waiting ${a.wait} day${a.wait>1?'s':''}</span></div>
+    ${a.urgent?`<div class="mt8">${A.pill('urgent','Urgent')}</div>`:''}
+    <div class="q">${esc(a.title)}</div><div class="b">${esc(a.body)}</div>${form}
+    ${full?'':`<div class="mt12"><button class="textbtn" onclick="App.go('task',{id:${a.id}})">Open ›</button></div>`}</div>`;
+}
+function questionsHtml(){
+  const a=openAsks();
+  return `<div class="pad mt8"><button class="textbtn" onclick="WX.x('questions',false)">‹ Back to tasks</button></div><div class="pad mt16 mb12"><div class="h2">Questions</div><div class="sm soft mt4">Answer here – the answer stays with the task, not in the chat.</div></div>
+  ${a.length?a.map(x=>askCard(x)).join(''):`<div class="wx-empty"><div class="h3">No questions</div>Nothing waits for your answer.</div>`}
+  <div class="wx-cap">${ic('repeat',14)} Pull down to refresh</div>`;
+}
+function catalogCardHtml(){
+  const top=X.catalog.slice(0,3);
+  return `<div class="wx-catcard"><div class="flex ai-c jc-sb"><div class="h3">Take extra work</div><span class="caps muted">points</span></div><div class="mt8">${top.map(c=>`<div class="r"><span>${esc(c.title)}</span><b>${c.pts} pts</b></div>`).join('')}</div><button class="textbtn mt12" onclick="App.go('wx-catalog')">${X.catalog.length-3} more ›</button></div>`;
+}
+function tasksDemoHtml(){
+  const d=X.tdemo;
+  if(d==='loading')return `<div class="wx-sk" style="margin-top:24px"><i></i><i></i><i></i><i></i></div>`;
+  if(d==='error')return `<div class="wx-err" style="margin-top:24px">Loading error.<br><button class="btn --sm --secondary" onclick="WX.x('tdemo','normal')">Try again</button></div>`;
+  if(d==='empty')return `<div class="wx-empty" style="padding-top:56px"><div class="h3">${({mine:'Nothing for you',byme:'You have not asked anyone yet',all:'No tasks in the shop',pool:'The pool is empty'})[X.scope]||'Nothing here'}</div>Pull down to refresh.</div>`;
+  if(d==='forbidden')return `<div class="wx-empty" style="padding-top:56px"><div class="h3">Admin only</div>The “All” scope is for admins. You see Mine, By me and Pool.</div>`;
+  return'';
+}
+function failHtml(){return `<div class="wx-fail"><div class="h2">This tab didn’t load.</div><pre>TypeError: Cannot read properties of undefined (reading 'counts')
+  at TasksScreen (tasks-screen.tsx:148)
+  at BTasksTab (tasks-tab.tsx:21)
+  …</pre><div class="xs muted mb12">The other tabs still work. The error went to Sentry with the tag section: tasks-tab.</div><button class="btn --sm" onclick="WX.x('tdemo','normal')">Try again</button></div>`}
+
+let decorating=false;
+function decorateTasks(){
+  const el=$('#tk-tin');if(!el||A.state.current!=='tasks'||decorating)return;decorating=true;
+  try{
+    const act=$('#tk-act');
+    if(act&&!act.querySelector('.wx-tact')){
+      act.insertAdjacentHTML('afterbegin',`<button class="ib wx-tact" onclick="WX.x('toggleView')" aria-label="List or board">${A.icon(X.view==='board'?'list':'board')}</button><button class="ib wx-tact" onclick="WX.x('tdemoSheet')" aria-label="Demo states">${A.icon('eye')}</button>`);
+    }
+    if(tasksHidden()){
+      el.innerHTML=`<div class="wx-empty" style="padding-top:64px"><div class="h3">${A.role()==='courier'?'Tasks are not for couriers':'This tab is hidden for you'}</div>${A.role()==='courier'?'Opened by a link, this screen sends you straight home and asks the server for nothing.':'Self-employed, reserve and freelance contours do not have the Tasks tab.'}<div class="mt16"><button class="btn --sm" onclick="App.tab('home')">Go home</button></div></div>`;return;
+    }
+    if(X.tdemo==='failed'){el.innerHTML=failHtml();return}
+    const seg=el.querySelector('.seg');
+    if(X.scope===null)X.scope='mine';
+    if(X.questions){el.innerHTML=questionsHtml();return}
+    const wantView=X.scope==='pool'?'pool':X.view==='board'?'board':'mine';
+    const cur=seg?(['mine','board','pool'][$$('button',seg).findIndex(b=>b.classList.contains('on'))]):null;
+    if((X.scope==='mine'||X.scope==='pool')&&(!seg||cur!==wantView)){decorating=false;window.TSK.setView(wantView);return}
+    let top=scopeBar();
+    const ann=(window.ANNOUNCEMENTS||[]).find(a=>!a.ack);
+    if(ann)top=`<button class="wx-ann ann" onclick="App.go('announcement',{id:${ann.id}})">${ic('megaphone',18)}<div class="f1"><div class="t">${esc(ann.title)}</div><div class="d">${first(ann.by)} · acknowledge</div></div>${chev}</button>`+top;
+    const demo=tasksDemoHtml();
+    if(demo){el.innerHTML=top+demo;return}
+    if(X.scope==='byme'||X.scope==='all'){
+      const list=X.scope==='byme'?byMe():TASKS.slice();
+      el.innerHTML=top+quickAddHtml()+`<div class="mt8">${X.view==='board'?`<div class="wx-note">Board view of this scope – the same four columns.</div>`:''}${groupHtml(list,false)}</div>`+footHtml();bindMoves(el);return;
+    }
+    if(seg)seg.parentElement.outerHTML=top;
+    if(X.scope==='mine'){
+      const sb=el.querySelector('.wx-scope').parentElement;
+      sb.insertAdjacentHTML('afterend',asksBannerHtml()+quickAddHtml());
+      const st=stepsHtml();if(st){const anchor=el.querySelector('.tk-sh')||el.querySelector('.tk-big');if(anchor)anchor.insertAdjacentHTML('beforebegin',st)}
+      el.insertAdjacentHTML('beforeend',learnRow());
+    }
+    if(X.scope==='pool'){
+      const r=[...el.querySelectorAll('.row')].find(x=>/Routines and templates/.test(x.textContent));
+      (r?r.parentElement:el).insertAdjacentHTML('beforebegin',catalogCardHtml());
+      const gone=[...el.querySelectorAll('.tk-pool')].find(p=>/cold room shelves/.test(p.textContent));
+      if(gone&&X.raced){gone.style.opacity='.45';const b=gone.querySelector('.btn');if(b){b.textContent='Taken by Vita';b.disabled=true}}
+    }
+    const sp=el.lastElementChild;if(sp&&sp.style.height==='80px')sp.insertAdjacentHTML('beforebegin',footHtml());
+    bindMoves(el);
+  }finally{decorating=false}
+}
+function learnRow(){const n=A.lessonsDue().length;return `<div style="margin-top:20px"><button class="row" style="border-top:1px solid var(--hair)" onclick="App.tab('learn')">${ric('book')}<div class="rt"><div class="l">Learning</div><div class="d">${n?`${n} lesson${n>1?'s':''} open`:'All lessons done'}</div></div>${n?`<span class="pill --late">${n}</span>`:''}${chev}</button></div>`}
+function footHtml(){return `<div class="wx-cap">${ic('repeat',14)} Pull down to refresh · updates every 30 s while open</div>`}
+/* long-press on a card or a tap on its status pill → «Move to…» */
+function bindMoves(el){
+  $$('.tcard',el).forEach(card=>{
+    const m=/App\.go\('task',\{id:(\d+)\}\)/.exec(card.getAttribute('onclick')||'');if(!m)return;const id=+m[1];
+    const pill=card.querySelector('.pill');if(pill){pill.style.cursor='pointer';pill.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();moveSheet(id)})}
+    let tm;const dn=()=>{tm=setTimeout(()=>{A.haptic();moveSheet(id);card.dataset.lp='1'},350)};const up=()=>clearTimeout(tm);
+    card.addEventListener('pointerdown',dn);card.addEventListener('pointerup',up);card.addEventListener('pointerleave',up);
+    card.addEventListener('click',e=>{if(card.dataset.lp){delete card.dataset.lp;e.stopImmediatePropagation();e.preventDefault()}},true);
+  });
+}
+function moveOptions(t){
+  const me=meId(),mgr=isMgr(),ass=t.assignee===me||(t.also||[]).includes(me),author=t.by===me;
+  const needs=t.photo?'photo':t.proof==='comment'?'comment':null;
+  const o=[];
+  if(t.status==='todo'&&(ass||mgr))o.push({k:'start',l:'Start',i:'play'});
+  if((t.status==='todo'||t.status==='doing')&&(ass||mgr))o.push({k:'finish',l:(t.photo||(t.checklist||[]).length)&&!author?'Finish – to check':'Finish – done',i:'check',need:needs});
+  if(t.status==='review'&&(author||mgr))o.push({k:'approve',l:'Accept – done',i:'checksq'});
+  if((t.status==='review'||t.status==='done')&&(author||mgr))o.push({k:'reopen',l:'Send back',i:'swap',d:'With a reason'});
+  else if(t.status==='done'&&ass)o.push({k:'undo',l:'Undo',i:'repeat',d:'Back to in progress'});
+  return o;
+}
+function moveSheet(id){
+  const t=A.task(id);if(!t)return;const o=moveOptions(t);
+  if(!o.length){App.go('task',{id});return}
+  A.sheet(`${shHead('Move to…')}<div class="sh-body">${o.map(x=>`<button class="wx-mv" onclick="WX.x('move',${id},'${x.k}')">${A.icon(x.i)}<div><div>${x.l}</div>${x.d?`<div class="d">${x.d}</div>`:''}</div>${x.need?`<span class="need">${x.need}</span>`:''}</button>`).join('')}<button class="wx-mv" onclick="App.closeSheet();App.go('task',{id:${id}})">${A.icon('arrow')}<div>Open task ›</div></button></div>`);
+}
+function reasonSheet(title,hint,fn){
+  A.sheet(`${shHead(title)}<div class="sh-body"><div class="sm soft" style="margin:-4px 0 10px">${hint}</div><textarea class="tk-ta" id="wx-rsn" maxlength="2000" placeholder="Reason"></textarea><div class="wx-cnt" id="wx-rsc">0 / 2000</div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="wx-rsok" disabled>Send</button></div>`);
+  const ta=$('#wx-rsn');ta.oninput=()=>{$('#wx-rsc').textContent=ta.value.length+' / 2000';$('#wx-rsok').disabled=!ta.value.trim()};
+  $('#wx-rsok').onclick=()=>{const v=ta.value.trim();if(!v)return;A.closeSheet();fn(v)};
+}
+/* people sheet – multi-select: Free (nobody), Me, on shift first, then the rest */
+function peopleSheet(sel,single,fn){
+  const picked=new Set(sel);
+  const ppl=STAFF.filter(u=>u.role!=='owner'&&u.id!==meId()&&!['reserve','freelance'].includes(u.engagement)).sort((a,b)=>(!!b.onShift-!!a.onShift)||a.n.localeCompare(b.n));
+  const row=(id,n,sub)=>`<button class="check ${picked.has(id)?'on':''}" onclick="WX.x('ppl','${id}')">${id==='__free'?`<span class="avatar --sm">${ic('users',14)}</span>`:A.avatar(id,'--sm')}<span class="who">${n}<small>${sub}</small></span><span class="cb">${A.icon('check')}</span></button>`;
+  X.ppl={picked,single,fn};
+  A.sheet(`${shHead('Who does it')}<div class="sh-body wx-people">${row('__free','Free (nobody)','Anyone on shift can take it')}${row(meId(),'Me',A.me().title)}<div class="caps muted" style="margin:12px 0 4px">On shift</div>${ppl.filter(u=>u.onShift).map(u=>row(u.id,u.n,u.title+(u.id==='sasha'?' · accountant':''))).join('')}<div class="caps muted" style="margin:12px 0 4px">Everyone</div>${ppl.filter(u=>!u.onShift).map(u=>row(u.id,u.n,u.title)).join('')}</div>${single?'':`<div class="sh-foot"><button class="btn" onclick="WX.x('pplDone')">Done</button></div>`}`);
+}
+/* due sheet – 8 days, 30-minute steps 08:00–22:00, Reset / Set */
+function dueSheet(cur,fn){
+  const d=cur?new Date(cur):new Date(A.T(16,0));const off=Math.max(0,Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate())-new Date(2026,9,20))/864e5));
+  X.due={d:Math.min(off,7),h:d.getHours(),m:d.getMinutes(),fn};renderDue();
+}
+function renderDue(){
+  const s=X.due;const days=A.nextDays(8).map((x,i)=>`<button class="tk-day ${s.d===i?'on':''}" onclick="WX.x('dueD',${i})">${x.label.slice(0,3)}<b>${x.day}</b>${x.mon}</button>`).join('');
+  const times=[];for(let m=8*60;m<=22*60;m+=30)times.push(m);
+  A.sheet(`${shHead('Due')}<div class="sh-body"><div class="tk-lbl2">Day</div><div class="tk-dayrow">${days}</div><div class="tk-lbl2">Time · London</div><div class="tk-wrap">${times.map(m=>`<button class="chip ${s.h*60+s.m===m?'on':''}" onclick="WX.x('dueT',${m})">${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}</button>`).join('')}</div></div><div class="sh-foot"><button class="btn --secondary" onclick="WX.x('dueReset')">Reset</button><button class="btn" onclick="WX.x('dueSet')">Set</button></div>`);
+}
+/* dictation sheet */
+function dictate(){
+  X.rec={t:0,timer:null};
+  const render=()=>{const r=X.rec;if(!r)return;A.sheet(`${shHead('Recording')}<div class="sh-body"><div class="wx-rec"><span class="dot"></span><div class="tm">${String(Math.floor(r.t/60)).padStart(2,'0')}:${String(r.t%60).padStart(2,'0')}</div><div class="sm soft">Say who, what and when. Stops by itself at 3:00.</div></div></div><div class="sh-foot"><button class="btn --secondary" onclick="WX.x('recCancel')">Cancel</button><button class="btn" ${r.t<1?'disabled':''} onclick="WX.x('recStop')">Stop</button></div>`)};
+  render();X.rec.timer=setInterval(()=>{if(!X.rec)return;X.rec.t++;if(X.rec.t>=180){WX.x('recStop');return}render()},1000);
+}
+
+/* =====================================================================
+   TASK DETAIL – edit, rows, question, proof by comment, attachments, offline
+   ===================================================================== */
+const chainTask=window.mount_task;
+window.mount_task=function(p){
+  p=p||{};
+  if(p.id&&ASK(p.id)){renderAskDetail(ASK(p.id));return}
+  if(p.id&&!A.task(p.id)){$('#tk-in').innerHTML=`<div class="wx-empty" style="padding-top:72px"><div class="h3">Task not found</div>It may have been cancelled or you no longer have access.<div class="mt16"><button class="btn --sm" onclick="App.back('tasks')">Back to tasks</button></div></div>`;const c=$('#tk-cta');c.style.display='none';$('#tk-body').classList.remove('has-cta');return}
+  chainTask(p);decorateTask();
+};
+function canEdit(t){return isMgr()||t.by===meId()}
+function decorateTask(){
+  const el=$('#tk-in');if(!el)return;
+  const tt=A.task(A.state.params&&A.state.params.id)||A.task(106);if(!tt)return;
+  /* title / description → edit */
+  const title=el.querySelector('.tk-title');
+  if(title&&canEdit(tt)){title.style.cursor='text';title.onclick=()=>editSheet(tt.id);title.title='Tap to edit'}
+  /* links in the text */
+  const desc=el.querySelector('.tk-desc');
+  if(desc&&/https?:\/\/|www\./.test(desc.textContent)){desc.innerHTML=esc(desc.textContent).replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g,u=>`<a class="link-u" href="#" onclick="event.preventDefault();App.toast('Opens ${esc(u)} in the browser')">${u}</a>`)}
+  /* why it matters */
+  if(tt.whyMatters&&desc)desc.insertAdjacentHTML('afterend',`<div class="pad"><div class="panel"><div class="caps muted">Why it matters</div><div class="sm soft mt4">${esc(tt.whyMatters)}</div></div></div>`);
+  /* returned banner */
+  const last=(tt.comments||[]).slice(-1)[0];
+  if(last&&/^Sent back|^Reopened/.test(last.t)&&tt.status!=='done'){const loop=el.querySelector('.tk-loop');(loop||desc||el).insertAdjacentHTML('afterend',`<div class="pad mt12"><div class="panel --warn"><div class="h4">Returned by ${first(last.by)}</div><div class="sm soft mt4">${esc(last.t.replace(/^Sent back\s?[–-]?\s?/,'')||'Please check again')}</div></div></div>`)}
+  /* change rows */
+  const facts=el.querySelector('.tk-facts');
+  if(facts&&canEdit(tt)&&tt.status!=='done'){
+    const pr=tt.urgent?'Urgent':'Normal',pf=tt.photo?'Photo':tt.proof==='comment'?'Comment':'Not needed';
+    facts.insertAdjacentHTML('afterend',`<div class="wx-edit"><button class="chip" onclick="WX.x('edAss',${tt.id})">${ic('users',14)} Assignees</button><button class="chip" onclick="WX.x('edDue',${tt.id})">${ic('clock',14)} Due</button>${isMgr()||tt.urgent?`<button class="chip" onclick="WX.x('edPri',${tt.id})">${ic('zap',14)} Priority: ${pr}</button>`:''}<button class="chip" onclick="WX.x('edProof',${tt.id})">${ic('camera',14)} Proof: ${pf}</button></div>`);
+  }
+  /* my step in the checklist */
+  $$('.tk-chk .check',el).forEach((c,i)=>{const s=(tt.checklist||[])[i];if(s&&s.who){c.insertAdjacentHTML('beforeend',`<span class="xs ${s.who===meId()?'accent':'muted'}" style="margin-left:auto;white-space:nowrap">${s.who===meId()?'Your step':first(s.who)}</span>`)}});
+  /* proof by comment */
+  const me=meId(),ass=tt.assignee===me||(tt.also||[]).includes(me);
+  if(tt.proof==='comment'&&ass&&(tt.status==='todo'||tt.status==='doing')){
+    const anchor=[...el.querySelectorAll('.tk-secs')].find(s=>/Discussion/.test(s.textContent));
+    const v=X.proofNote[tt.id]||'';
+    anchor.insertAdjacentHTML('beforebegin',`<div class="tk-secs"><div class="h2">Proof</div>${A.pill(v.trim()?'done':'review',v.trim()?'Ready':'Comment required')}</div><div class="pad"><textarea class="tk-ta" placeholder="Write what you counted or did – this closes the task" oninput="WX.x('proofNote',${tt.id},this.value)">${esc(v)}</textarea><div class="xs muted mt8">Saved only on this screen until you send it.</div></div>`);
+    const cta=$('#tk-cta .btn:not(.--ghost)');if(cta&&tt.status==='doing'){cta.disabled=!v.trim();if(!v.trim()){$('#tk-cta').insertAdjacentHTML('afterbegin',`<div class="tk-hint">Write the proof comment first</div>`)}}
+  }
+  /* attachments in the compose line */
+  const comp=el.querySelector('.tk-compose');
+  if(comp&&!comp.querySelector('.wx-clip')){
+    comp.insertAdjacentHTML('afterbegin',`<button class="ib wx-clip" onclick="WX.x('clip')" aria-label="Attach">${A.icon('clip')}</button>`);
+    if(X.cmtPhotos.length)comp.insertAdjacentHTML('beforebegin',`<div class="wx-ph-row">${X.cmtPhotos.map((p,i)=>`<span class="th"><img src="${p}" alt=""><button onclick="WX.x('clipRm',${i})">${A.icon('close')}</button></span>`).join('')}<span class="xs muted" style="align-self:center">${X.cmtPhotos.length} / 5</span></div>`);
+  }
+  const sp=el.lastElementChild;if(sp)sp.insertAdjacentHTML('beforebegin',`<div class="wx-cap">${ic('repeat',14)} Refreshes every 20 s while open · pull down to refresh${X.offline?' · <span class="accent">offline</span>':''}</div>`);
+}
+function renderAskDetail(a){
+  const el=$('#tk-in');el.innerHTML=`<div class="tk-top"><div class="caps muted">Question</div><h1 class="h1 tk-title">${esc(a.title)}</h1><div class="flex ai-c g8">${a.urgent?A.pill('urgent','Urgent'):''}${X.answered[a.id]?A.pill('done','Answered'):A.pill('review','Waiting '+a.wait+' d')}</div></div>
+  <div class="tk-facts"><div class="tk-f"><span>From</span><div class="v"><span class="tk-who">${A.avatar(a.from,'--sm')}<span>${first(a.from)}</span></span></div></div><div class="tk-f"><span>To</span><div class="v"><span class="tk-who">${A.avatar(meId(),'--sm')}<span>You</span></span></div></div></div>
+  <div class="pad mt16">${askCard(a,true)}</div><div class="wx-note">Questions have no checklist or proof – only the answer. The answer goes back to ${first(a.from)} with the task.</div><div style="height:40px"></div>`;
+  const c=$('#tk-cta');c.style.display='none';$('#tk-body').classList.remove('has-cta');
+}
+function editSheet(id){
+  const t=A.task(id);
+  A.sheet(`${shHead('Edit task')}<div class="sh-body"><div class="field"><label>Title</label><input class="input" id="wx-et" maxlength="191" value="${esc(t.title)}"></div><div class="field"><label>Description</label><textarea class="tk-ta" id="wx-ed" maxlength="20000" style="min-height:120px">${esc(t.desc||'')}</textarea><div class="wx-cnt" id="wx-edc">${(t.desc||'').length} / 20 000</div></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="WX.x('edSave',${id})">Save</button></div>`);
+  $('#wx-ed').oninput=e=>$('#wx-edc').textContent=e.target.value.length+' / 20 000';
+}
+/* menu additions: ask to cancel / skip routine / open order */
+const origMenu=window.TSK.menu;
+window.TSK.menu=function(){origMenu.apply(this,arguments);const t=A.task(A.state.params.id)||A.task(106);const body=$('#sheet .sh-body');if(!body||!t)return;
+  const me=meId(),ass=t.assignee===me||(t.also||[]).includes(me);
+  const r=(ico,l,d,fn,cls)=>`<button class="tk-mrow ${cls||''}" onclick="${fn}">${A.icon(ico)}<div class="f1"><div>${l}</div>${d?`<div class="d">${d}</div>`:''}</div></button>`;
+  let add='';
+  if(ass&&t.status!=='done'&&!isMgr()){add+=t.repeat?r('moon','Skip today’s routine','With a reason · the next one still comes',`WX.x('skip',${t.id})`):r('close','Ask to cancel','Sends the reason to '+first(t.by),`WX.x('askCancel',${t.id})`)}
+  if(isMgr())add+=r('trash','Cancel task','Removes it from the board – with a confirmation',`WX.x('cancelTask',${t.id})`,'--danger');
+  if(t.order)add+=r('box','Open order '+t.order,'',`App.closeSheet();App.go('order',{code:'${t.order}'})`);
+  body.insertAdjacentHTML('beforeend',add);
+};
+/* send with attachments */
+const origSend=window.TSK.send;
+window.TSK.send=function(){
+  if(X.offline){offlineFail();return}
+  if(X.cmtPhotos.length){const i=$('#tk-cin');const v=(i.value||'').trim();const t=A.task(A.state.params.id)||A.task(106);
+    t.comments.push({by:meId(),t:v||`${X.cmtPhotos.length} photo${X.cmtPhotos.length>1?'s':''}`,at:NOWI(),photo:X.cmtPhotos[0]});X.cmtPhotos=[];i.value='';A.toast('Comment sent');document.dispatchEvent(new CustomEvent('tasks',{detail:{id:t.id}}));return}
+  origSend.apply(this,arguments);
+};
+/* race on the pool: one item is always taken a moment earlier */
+const origTake=window.TSK.take;
+window.TSK.take=function(pid){if(X.offline){offlineFail();return}if(pid==='p6'){X.raced=true;alertSheet('Someone took it first','Vita took “Re-label the cold room shelves” a moment ago. Pick another one.','OK',()=>{window.TSK.setView('pool')});return}origTake.apply(this,arguments)};
+['setView','who','flag'].forEach(k=>{const o=window.TSK[k];window.TSK[k]=function(){o.apply(this,arguments);decorateTasks()}});
+
+/* =====================================================================
+   NEW TASK – prefill, voice draft, urgent only for managers, counters
+   ===================================================================== */
+const chainNew=window.mount_task_new;
+window.mount_task_new=function(p){
+  p=p||{};chainNew(p);
+  if(p.title){window.TSK.title(p.title);const i=$('#tkn-title');if(i)i.value=p.title}
+  if(p.body){window.TSK.desc(p.body);const d=$('#tkn-desc');if(d)d.value=p.body}
+  if(p.who&&p.who.length===1&&A.user(p.who[0]))window.TSK.assignee(p.who[0]);else if(p.who&&p.who.length===0)window.TSK.assignee('pool');
+  const inn=$('#tkn-in');
+  if(p.voice){
+    const v=p.voice;const warn={ai_unavailable:'The assistant was unavailable – the draft is a plain transcript.',unknown_assignee:'Unknown name: '+(v.unknownNames||[]).join(', ')+' – pick the person below.',due_in_past:'The date you said is in the past.',outside_hours:'The time is outside shop hours.'};
+    inn.insertAdjacentHTML('afterbegin',`<div class="pad mt8"><div class="panel --warn"><div class="h4">${ic('mic',16)} Draft from voice</div>${(v.warnings||[]).map(w=>`<div class="sm soft mt4">${warn[w]||w}</div>`).join('')}<details class="mt8"><summary class="sm" style="cursor:pointer">Heard: “${esc((v.transcript||'').slice(0,40))}…”</summary><div class="sm soft mt4">${esc(v.transcript||'')}</div></details></div></div>`);
+  }
+  if(!isMgr()){const row=[...inn.querySelectorAll('.row')].find(r=>/Urgent/.test(r.textContent));if(row)row.remove()}
+  const d=$('#tkn-desc');if(d&&!d.nextElementSibling){d.insertAdjacentHTML('afterend',`<div class="wx-cnt" id="wx-nc" style="margin-top:6px">${(d.value||'').length} / 20 000</div>`);d.addEventListener('input',()=>{const c=$('#wx-nc');if(c)c.textContent=d.value.length+' / 20 000'})}
+  const tpl=$('#tkn-tpl');if(tpl)tpl.insertAdjacentHTML('afterend',`<div class="pad mt8"><button class="textbtn" onclick="WX.x('tplSheet')">${ic('list',14)} All templates</button></div>`);
+};
+
+/* =====================================================================
+   handlers
+   ===================================================================== */
+const WX=window.WX={
+  x(k,...a){const f=H[k];if(!f){console.warn('WX',k);return}return f(...a)}
+};
+const H={
+  /* work */
+  view(v){X.workView=v;X.seenParam=null;window.mount_work({})},
+  ordTab(k){X.ordTab=k;window.mount_work({})},
+  ordSearch(){A.sheet(`${shHead('Search orders')}<div class="sh-body"><div class="input-wrap">${A.icon('search')}<input class="input" placeholder="Order number or client" autofocus></div><div class="xs muted mt8">Searches all tabs of the board.</div></div>`)},
+  dlvMap(v){X.dlvMap=v;window.mount_work({})},
+  trips(){A.sheet(`${shHead('Trips to confirm')}<div class="sh-body">${[['oleh','2 extra drops · 715588 re-delivery + 715631','+£9.40'],['andrii','Return to shop · collect balloons 715611','+£4.20']].map(([id,d,m])=>`<div class="row" style="padding-left:0;padding-right:0">${A.avatar(id,'--sm')}<div class="rt"><div class="l">${first(id)}</div><div class="d">${d}</div></div><span class="val">${m}</span></div>`).join('')}</div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Later</button><button class="btn" onclick="WX.x('tripsOk')">Confirm both</button></div>`)},
+  tripsOk(){X.tripsOk=true;A.closeSheet();A.toast('2 trips confirmed');setTimeout(()=>A.push('Trip confirmed','Oleh · 2 extra drops · goes on this week’s hours',{icon:'truck',to:'Oleh'}),600);window.mount_work({})},
+  chat(i){const c=[['Mrs Harper','Smoked glass please, thank you!','Is the vase clear or smoked?'],['James O.','Can the balloons say “40”?','Hi, order 715611 – a question'],['Anna K.','Photo received – looks lovely','Here is the photo of your bouquet']][i];A.sheet(`${shHead(c[0])}<div class="sh-body"><div class="cmt">${A.avatar('valeria','--sm')}<div class="cb-b"><div class="cb-h"><b>Floritta</b><span>10:40</span></div><div class="cb-t">${c[2]}</div></div></div><div class="cmt"><span class="avatar --sm">${c[0].slice(0,1)}</span><div class="cb-b"><div class="cb-h"><b>${c[0]}</b><span>10:52</span></div><div class="cb-t">${c[1]}</div></div></div><div class="tk-compose mt12" style="padding:0"><input class="input" placeholder="Reply…"><button class="btn" onclick="App.closeSheet();App.toast('Reply sent')">${A.icon('send')}</button></div></div>`)},
+  pushes(){A.sheet(`${shHead('Pushes that open Work')}<div class="sh-body"><div class="xs muted" style="margin:-4px 0 8px">Each push lands on its segment. Tap one to preview.</div>${[['inventory','Stock is low','Quicksand roses · 38 stems left','stock',null],['trip','Trip to confirm','Oleh · 2 extra drops today','deliveries',null],['queue','Your queue moved','715602 is next · window 14:00','orders','mine'],['contractor_job','New job · £95','Halloween window install at SW6 · today 15:00','jobs',null]].map(([k,t,b,v,tab])=>`<button class="tk-mrow" onclick="WX.x('pushGo','${k}','${esc(t)}','${esc(b)}','${v}',${tab?`'${tab}'`:'null'})">${A.icon('bell')}<div class="f1"><div>${t}</div><div class="d">${b} · <span class="caps">${k}</span> → ${VL[v]}</div></div></button>`).join('')}</div>`)},
+  pushGo(k,t,b,v,tab){A.closeSheet();A.push(t,b,{icon:'bell',go:['work',{view:v,tab}]});setTimeout(()=>{if(v==='jobs'&&!isSE()){A.go('wx-jobs');return}const vs=isRes()||isFree()?[]:views();if(!vs.includes(v)){A.toast('This push goes to people who have the '+VL[v]+' segment');return}X.seenParam=null;A.go('work',{view:v,tab:tab||undefined})},900)},
+  /* jobs */
+  jobsDemo(k){if(k==='offline'){X.offline=!X.offline;A.toast(X.offline?'Offline – writes will fail':'Back online')}else if(k==='unsigned'){X.jobsDemo='normal';X.agreementSigned=!X.agreementSigned;A.toast(X.agreementSigned?'Agreement signed':'Agreement not signed – “Take” is refused')}else X.jobsDemo=k;rerenderJobs()},
+  brief(id){X.openBrief[id]=!X.openBrief[id];rerenderJobs()},
+  takeJob(id){const j=X.jobs.find(x=>x.id==id);if(!j||X.inFlight['j'+id])return;
+    if(X.offline){offlineFail();return}
+    if(!X.agreementSigned){A.sheet(`${shHead('Sign your services agreement first')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">Jobs are paid under the Florist Services Agreement. It takes two minutes – read, tick, sign with your finger.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Not now</button><button class="btn" onclick="App.closeSheet();App.go(document.getElementById('s-agreement')?'agreement':'me')">Open agreement</button></div>`);return}
+    X.inFlight['j'+id]=true;rerenderJobs();
+    setTimeout(()=>{delete X.inFlight['j'+id];if(j.race){alertSheet('Someone has already taken this job.','It left the board a moment ago. The push goes to everyone of the role – first come, first served.','OK');j.status='taken';j.by='dana';rerenderJobs();return}
+      j.status='taken';j.by=meId();A.haptic();A.toast('Job is yours · '+gbp(j.fee+(j.extra||0)));setTimeout(()=>A.push(first(meId())+' took a job',j.title,{icon:'flower',to:'Valeria'}),600);rerenderJobs()},700)},
+  withdraw(id){const j=X.jobs.find(x=>x.id==id);A.sheet(`${shHead('Hand this job back?')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">It goes back on the board. No fee, no rating.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn --accent" onclick="WX.x('withdrawDo',${id})">Withdraw</button></div>`)},
+  withdrawDo(id){const j=X.jobs.find(x=>x.id==id);A.closeSheet();if(X.offline){offlineFail();return}j.status='open';j.by=null;A.toast('Back on the board');setTimeout(()=>A.push('Job handed back',j.title+' · open again',{icon:'swap',to:'Valeria'}),600);rerenderJobs()},
+  jobDone(id){jobDoneSheet(id)},
+  jdPhoto(src){const s=X.jd;s.photos.push(ORDERS[(s.photos.length+2)%ORDERS.length].img);renderJD();A.toast(src==='camera'?'Photo taken':'Photo chosen')},
+  jdDenied(){alertSheet('Camera access is off','Allow the camera for Floritta Team in Settings → Privacy → Camera, then try again. You can still choose a photo from the library.','OK',()=>renderJD())},
+  jdNote(v){X.jd.note=v.slice(0,1000);const c=$('#sheet .wx-cnt');if(c)c.textContent=X.jd.note.length+' / 1000'},
+  jdSend(){const s=X.jd;if(!s.photos.length||s.sending)return;if(X.offline){offlineFail();return}s.sending=true;renderJD();
+    setTimeout(()=>{const j=X.jobs.find(x=>x.id==s.id);j.status='done';j.by=meId();j.doneDay='Today';X.jd=null;A.closeSheet();setTimeout(()=>alertSheet('Job done – sent','The photo and your note went to the manager. The fee goes on your next statement.','OK'),200);setTimeout(()=>A.push('Statement updated',gbp(j.fee+(j.extra||0))+' · '+j.title,{icon:'award'}),1400);rerenderJobs()},1100)},
+  /* manager board */
+  mgrSeg(k){X.mgrSeg=k;rerenderJobs()},
+  mgrDemo(k){X.mgrDemo=k;rerenderJobs()},
+  serverErr(){X.serverErr=!X.serverErr;A.toast(X.serverErr?'Demo: the server answers 422 to publishing':'Demo: server OK');rerenderJobs()},
+  mgrRefresh(){A.toast('Shifts, jobs and agreements refreshed');rerenderJobs()},
+  offerForm(){offerForm()},
+  ofSet(k,v){X.of[k]=v;if(k==='role')renderOfferForm()},
+  ofDay(o){X.of.off=o;X.of.date='';renderOfferForm()},
+  ofSpots(d){X.of.spots=Math.min(10,Math.max(1,X.of.spots+d));renderOfferForm()},
+  ofPublish(){const f=X.of;f.err='';
+    const tm=/^\d{2}:\d{2}$/;
+    if(f.date&&!/^\d{4}-\d{2}-\d{2}$/.test(f.date))f.err='Date must be YYYY-MM-DD.';
+    else if(!tm.test(f.start)||!tm.test(f.end))f.err='Starts and Ends must be real times, e.g. 09:00.';
+    else if(f.end<=f.start)f.err='The shift must end after it starts, on the same day.';
+    else if(hoursUntil(f)<0)f.err='The start is in the past.';
+    else if(!f.place.trim())f.err='Place is required.';
+    else if(X.serverErr)f.err='CRM: 422 – a shift for this role already exists at this time.';
+    if(f.err){renderOfferForm();return}
+    if(X.offline){offlineFail();return}
+    const hu=hoursUntil(f);const o={id:Date.now(),off:f.date?Math.max(0,Math.round((new Date(f.date)-new Date(2026,9,20))/864e5)):f.off,role:f.role,start:f.start,end:f.end,place:f.place.trim(),spots:f.spots,booked:[],status:'open',note:f.note.trim()};
+    X.offers.push(o);X.of={role:f.role,off:1,date:'',start:f.start,end:f.end,place:'',spots:1,note:'',err:''};A.closeSheet();
+    setTimeout(()=>alertSheet('Shift published',(hu<48?'Short notice – it starts in under 48 h. ':'')+`Everyone of the role gets a push: ${dlab(o.off)} ${o.start}–${o.end} · ${o.place}.`,'OK'),200);
+    setTimeout(()=>A.push('Open shift · '+dlab(o.off),`${o.start}–${o.end} · ${o.place} · ${o.spots} place${o.spots>1?'s':''}`,{icon:'calendar',to:o.role==='courier'?'Max':'Zhadra'}),1300);rerenderJobs()},
+  cancelOffer(id){const o=X.offers.find(x=>x.id==id);A.sheet(`${shHead('Cancel this shift?')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">Everyone who took it gets a push. Nothing is paid or deducted.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep</button><button class="btn --accent" onclick="WX.x('cancelOfferDo',${id})">Cancel it</button></div>`)},
+  cancelOfferDo(id){A.closeSheet();if(X.offline){offlineFail();return}X.inFlight['o'+id]=true;rerenderJobs();setTimeout(()=>{const o=X.offers.find(x=>x.id==id);o.status='cancelled';delete X.inFlight['o'+id];A.toast('Shift cancelled');if(o.booked.length)setTimeout(()=>A.push('Shift cancelled',`${dlab(o.off)} ${o.start}–${o.end} · nothing is paid or deducted`,{icon:'close',to:first(o.booked[0])}),500);rerenderJobs()},800)},
+  jobForm(){jobForm()},
+  jfSet(k,v){X.jf[k]=v;if(k==='role')renderJobForm()},
+  jfPublish(){const f=X.jf;f.err='';
+    const FEE=/^\d{1,5}(\.\d{1,2})?$/;
+    if(!f.title.trim())f.err='Title is required.';
+    else if(!f.brief.trim())f.err='Brief is required – the person needs to know what to do.';
+    else if(!FEE.test(f.fee.trim())||+f.fee<=0)f.err='Fee: up to 5 digits and 2 decimals, more than 0.';
+    else if(f.date&&!/^\d{4}-\d{2}-\d{2}$/.test(f.date))f.err='Date must be YYYY-MM-DD.';
+    else if(X.serverErr)f.err='CRM: 422 – could not publish. Check the fee and the date.';
+    if(f.err){renderJobForm();return}
+    if(X.offline){offlineFail();return}
+    const off=f.date?Math.max(0,Math.round((new Date(f.date)-new Date(2026,9,20))/864e5)):null;
+    const j={id:Date.now(),off,when:off==null?(f.when.trim()||'Date to agree'):dlab(off)+' · '+(f.time||'09:00')+(f.when?' · '+f.when:''),title:f.title.trim(),fee:+f.fee,place:f.place.trim(),tags:[],role:f.role,status:'open',brief:f.brief.trim(),materials:f.materials.trim()?f.materials.split(',').map(s=>s.trim()):null};
+    X.jobs.unshift(j);X.jf=null;A.closeSheet();
+    setTimeout(()=>alertSheet('Job published',`Self-employed ${f.role==='any'?'florists and couriers':f.role+'s'} with a signed agreement get a push: ${gbp(j.fee)} · ${j.title}.`,'OK'),200);
+    setTimeout(()=>A.push('New job · '+gbp(j.fee),j.title+' · '+j.when,{icon:'flower',to:f.role==='courier'?'Dana':'Mira'}),1300);rerenderJobs()},
+  cancelJob(id){const j=X.jobs.find(x=>x.id==id);A.sheet(`${shHead('Cancel this job?')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">Whoever took it gets a push. Nothing is paid.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep</button><button class="btn --accent" onclick="WX.x('cancelJobDo',${id})">Cancel it</button></div>`)},
+  cancelJobDo(id){A.closeSheet();if(X.offline){offlineFail();return}X.inFlight['mj'+id]=true;rerenderJobs();setTimeout(()=>{const j=X.jobs.find(x=>x.id==id);const by=j.by;j.status='cancelled';delete X.inFlight['mj'+id];A.toast('Job cancelled');if(by)setTimeout(()=>A.push('Job cancelled',j.title+' · nothing is paid',{icon:'close',to:first(by)}),500);rerenderJobs()},800)},
+  /* catalog */
+  catF(k){X.catF=k;window.mount_wx_catalog()},
+  catDemo(k){X.catDemo=k;window.mount_wx_catalog()},
+  catRefresh(){A.toast('Catalog refreshed');window.mount_wx_catalog()},
+  catTake(id){const c=X.catalog.find(x=>x.id===id);if(!c||X.inFlight['c'+id])return;if(X.offline){offlineFail();return}X.inFlight['c'+id]=true;window.mount_wx_catalog();
+    setTimeout(()=>{delete X.inFlight['c'+id];const t=A.addTask({title:c.title,assignee:meId(),by:'valeria',due:A.T(16,0),desc:c.desc+' · '+c.pts+' points when checked.',tags:['shop']});if(t){alertSheet('Taken!','“'+c.title+'” is on your list for this shift. '+c.pts+' points when the manager checks it.','Open task',()=>A.go('task',{id:t.id}))}window.mount_wx_catalog()},700)},
+  /* tasks tab */
+  scope(k){X.scope=k;X.questions=false;if(k==='pool')window.TSK.setView('pool');else if(k==='mine')window.TSK.setView(X.view==='board'?'board':'mine');else decorateTasks()},
+  toggleView(){X.view=X.view==='board'?'list':'board';const b=$('#tk-act .wx-tact');if(b)b.innerHTML=A.icon(X.view==='board'?'list':'board');if(X.scope==='mine')window.TSK.setView(X.view==='board'?'board':'mine');else decorateTasks()},
+  questions(v){X.questions=v;decorateTasks();const b=$('#tk-tbody');if(b)b.scrollTop=0},
+  tdemo(k){if(k==='offline'){X.offline=!X.offline;A.toast(X.offline?'Offline – every write fails, nothing is queued':'Back online')}else X.tdemo=k;A.closeSheet();window.mount_tasks()},
+  tdemoSheet(){const d=X.tdemo;A.sheet(`${shHead('Demo states')}<div class="sh-body">${[['normal','Normal'],['loading','Loading'],['error','Loading error'],['empty','Empty'],['forbidden','Admin only (403 on “All”)'],['failed','Tab failed – error boundary']].map(([k,l])=>`<button class="radio ${d===k?'on':''}" onclick="WX.x('tdemo','${k}')"><span class="rd"></span><span>${l}</span></button>`).join('')}<button class="radio ${X.offline?'on':''}" onclick="WX.x('tdemo','offline')"><span class="rd"></span><span>Offline (writes fail)</span></button></div>`)},
+  qaOpen(){X.qa={title:'',body:'',who:[meId()],due:'shift',dueIso:A.T(16,0),err:''};decorateTasks();setTimeout(()=>{const i=$('#wx-qat');if(i)i.focus()},50)},
+  qaClose(){X.qa=null;decorateTasks()},
+  qaSet(k,v){X.qa[k]=v;if(k==='due'){X.qa.dueIso=v==='shift'?A.T(16,0):v==='today'?A.T(18,0):A.T(9,0,1);decorateTasks()}},
+  qaWho(){peopleSheet(X.qa.who,false,sel=>{X.qa.who=sel;decorateTasks()})},
+  qaDue(){dueSheet(X.qa.dueIso,iso=>{X.qa.due='pick';X.qa.dueIso=iso;decorateTasks()})},
+  qaAll(){const q=X.qa;X.qa=null;A.go('task-new',{title:q.title,body:q.body,who:q.who})},
+  qaCreate(){const q=X.qa;if(!q||q.busy)return;q.err='';
+    if(!q.title.trim())q.err='Title is required.';else if(q.title.length>191)q.err='Title is too long (191).';
+    if(q.err){decorateTasks();return}
+    if(X.offline){q.err='Could not create – no connection.';decorateTasks();return}
+    q.busy=true;decorateTasks();
+    setTimeout(()=>{const who=q.who.length?q.who[0]:null;
+      if(!who){A.toast('Added to the pool');X.qa=null;decorateTasks();return}
+      const t=A.addTask({title:q.title.trim(),assignee:who,also:q.who.slice(1),desc:q.body.trim(),due:q.dueIso,tags:[]});A.haptic();X.qa=null;A.toast('Task created');decorateTasks()},500)},
+  dictate(){dictate()},
+  recCancel(){clearInterval(X.rec.timer);X.rec=null;A.closeSheet();A.toast('Recording discarded')},
+  recStop(){if(!X.rec||X.rec.t<1)return;clearInterval(X.rec.timer);X.rec=null;
+    A.sheet(`${shHead('Transcribing…')}<div class="sh-body"><div class="wx-sk" style="margin:8px 0 16px"><i style="height:20px"></i><i style="height:20px;width:70%"></i></div><div class="sm soft">Sending the recording and building the draft (up to 90 s).</div></div>`);
+    setTimeout(()=>{A.closeSheet();A.go('task-new',{title:'Restock ribbons before the weekend',body:'Check the drawer under the wrapping station, write what is below 20.',voice:{transcript:'Sofia, please restock the ribbons before the weekend, check the drawer under the wrapping station and write what is below twenty, by Friday evening',warnings:['unknown_assignee'],unknownNames:['Sofia']}})},1600)},
+  askOpt(id,i){X.ans=Object.assign({id,opt:null,text:'',fields:{},free:false},X.ans&&X.ans.id===id?X.ans:{});X.ans.opt=i;redrawAsk(id)},
+  askField(id,f,v){X.ans=Object.assign({id,opt:null,text:'',fields:{},free:false},X.ans&&X.ans.id===id?X.ans:{});X.ans.fields[f]=v},
+  askText(id,v){X.ans=Object.assign({id,opt:null,text:'',fields:{},free:false},X.ans&&X.ans.id===id?X.ans:{});X.ans.text=v},
+  askFree(id){X.ans=Object.assign({id,opt:null,text:'',fields:{},free:false},X.ans&&X.ans.id===id?X.ans:{});X.ans.free=true;redrawAsk(id)},
+  askSend(id){const a=ASK(id);const an=X.ans&&X.ans.id===id?X.ans:{opt:null,text:'',fields:{},free:false};
+    let answer='';
+    if(an.free||(!a.options&&!a.fields)){if(!an.text.trim()){A.toast('Write an answer first');return}answer=an.text.trim()}
+    else if(a.options){if(an.opt==null){A.toast('Pick an option');return}answer=a.options[an.opt]}
+    else if(a.fields){const miss=a.fields.find(f=>!(an.fields[f]||'').trim());if(miss){A.toast('Fill in all fields');return}answer=a.fields.map(f=>f+': '+an.fields[f]).join(' · ')}
+    if(X.offline){offlineFail();return}
+    X.answered[id]=answer;X.ans=null;A.haptic();A.toast('Answer sent to '+first(a.from));setTimeout(()=>A.push(first(meId())+' answered',a.title+' – '+answer,{icon:'chat',to:first(a.from)}),600);
+    if(A.state.current==='task')renderAskDetail(a);else decorateTasks()},
+  move(id,k){A.closeSheet();const t=A.task(id);if(!t)return;
+    if(k==='start')A.setTaskStatus(id,'doing');
+    else if(k==='finish'){const need=t.photo&&!(t.comments||[]).some(c=>c.photo)?'photo':t.proof==='comment'&&!(X.proofNote[id]||'').trim()?'comment':null;if(need){A.go('task',{id});setTimeout(()=>A.toast(need==='photo'?'Add the photo first':'Write the proof comment first'),400);return}A.setTaskStatus(id,(t.photo||(t.checklist||[]).length)&&t.by!==meId()?'review':'done')}
+    else if(k==='approve')window.TSK.approve(id);
+    else if(k==='reopen')reasonSheet('Send back','Say what should change – '+first(t.assignee)+' sees the reason on the task.',v=>{t.comments.push({by:meId(),t:'Sent back – '+v,at:NOWI()});A.setTaskStatus(id,'doing',{silent:true});A.toast('Moved to In progress');setTimeout(()=>A.push(first(meId())+' sent it back',t.title+' · '+v,{icon:'swap',to:first(t.assignee),go:['task',{id}]}),600)});
+    else if(k==='undo'){A.setTaskStatus(id,'doing',{silent:true});A.toast('Moved to In progress')}},
+  ppl(id){const p=X.ppl;if(p.single){A.closeSheet();p.fn([id==='__free'?null:id].filter(Boolean));return}
+    if(id==='__free'){p.picked.clear()}else{p.picked.delete('__free');if(p.picked.has(id))p.picked.delete(id);else p.picked.add(id)}
+    $$('#sheet .check').forEach(c=>{const m=/WX\.x\('ppl','([^']+)'\)/.exec(c.getAttribute('onclick'));if(m)c.classList.toggle('on',m[1]==='__free'?p.picked.size===0:p.picked.has(m[1]))})},
+  pplDone(){const p=X.ppl;A.closeSheet();p.fn([...p.picked])},
+  dueD(i){X.due.d=i;renderDue()},
+  dueT(m){X.due.h=Math.floor(m/60);X.due.m=m%60;renderDue()},
+  dueReset(){A.closeSheet();X.due.fn(A.T(16,0));A.toast('Due reset to end of shift')},
+  dueSet(){const s=X.due;A.closeSheet();s.fn(A.T(s.h,s.m,s.d))},
+  tplSheet(){A.sheet(`${shHead('Templates')}<div class="sh-body">${TEMPLATES.map(tp=>`<button class="tk-mrow" onclick="App.closeSheet();TSK.tpl('${tp.id}')">${A.icon('layers')}<div class="f1"><div>${esc(tp.title)}</div><div class="d">${tp.n} steps · ${esc(tp.repeat)} · ${tp.role}</div></div></button>`).join('')}</div>`)},
+  /* task detail */
+  edSave(id){const t=A.task(id);const ti=$('#wx-et').value.trim(),d=$('#wx-ed').value;if(!ti){alertSheet('Title can’t be empty','Give the task a name before saving.','OK',()=>editSheet(id));return}if(X.offline){offlineFail();return}t.title=ti;t.desc=d;A.closeSheet();A.toast('Saved');document.dispatchEvent(new CustomEvent('tasks',{detail:{id}}))},
+  edAss(id){const t=A.task(id);peopleSheet([t.assignee].concat(t.also||[]).filter(Boolean),false,sel=>{if(X.offline){offlineFail();return}if(!sel.length){A.toast('A task with no assignee goes to the pool – use “Hand back” instead');return}t.assignee=sel[0];t.also=sel.slice(1);A.toast('Assignees saved');document.dispatchEvent(new CustomEvent('tasks',{detail:{id}}))})},
+  edDue(id){const t=A.task(id);dueSheet(t.due,iso=>{if(X.offline){offlineFail();return}t.due=iso;A.toast('Due moved to '+A.fmtDue(iso));document.dispatchEvent(new CustomEvent('tasks',{detail:{id}}))})},
+  edPri(id){const t=A.task(id);A.sheet(`${shHead('Priority')}<div class="sh-body"><button class="radio ${!t.urgent?'on':''}" onclick="WX.x('edPriSet',${id},false)"><span class="rd"></span><span>Normal</span></button><button class="radio ${t.urgent?'on':''}" onclick="WX.x('edPriSet',${id},true)"><span class="rd"></span><span>Urgent<small class="muted" style="display:block;font-size:12px">Priority push, ignores quiet hours · managers only</small></span></button></div>`)},
+  edPriSet(id,v){A.closeSheet();if(X.offline){offlineFail();return}const t=A.task(id);t.urgent=v||undefined;A.toast(v?'Marked urgent':'Priority: normal');document.dispatchEvent(new CustomEvent('tasks',{detail:{id}}))},
+  edProof(id){const t=A.task(id);const cur=t.photo?'photo':t.proof==='comment'?'comment':'none';A.sheet(`${shHead('Proof to close')}<div class="sh-body">${[['photo','Photo','A photo is required before it can be sent'],['comment','Comment','A written note is required'],['none','Not needed','Photo or note optional']].map(([k,l,d])=>`<button class="radio ${cur===k?'on':''}" onclick="WX.x('edProofSet',${id},'${k}')"><span class="rd"></span><span>${l}<small class="muted" style="display:block;font-size:12px">${d}</small></span></button>`).join('')}</div>`)},
+  edProofSet(id,k){A.closeSheet();if(X.offline){offlineFail();return}const t=A.task(id);t.photo=k==='photo'||undefined;t.proof=k==='comment'?'comment':undefined;A.toast('Proof: '+({photo:'photo',comment:'comment',none:'not needed'})[k]);document.dispatchEvent(new CustomEvent('tasks',{detail:{id}}))},
+  proofNote(id,v){X.proofNote[id]=v;const cta=$('#tk-cta .btn:not(.--ghost)');const hint=$('#tk-cta .tk-hint');if(cta){cta.disabled=!v.trim();if(v.trim()&&hint)hint.remove()}},
+  clip(){if(X.cmtPhotos.length>=5){A.toast('Up to 5 photos per comment');return}A.sheet(`${shHead('Attach')}<div class="sh-body"><button class="tk-mrow" onclick="WX.x('clipAdd')">${A.icon('camera')}<div class="f1"><div>Take a photo</div></div></button><button class="tk-mrow" onclick="WX.x('clipAdd')">${A.icon('photo')}<div class="f1"><div>From the library</div><div class="d">Up to 5 per comment · ${X.cmtPhotos.length} added</div></div></button></div>`)},
+  clipAdd(){A.closeSheet();X.cmtPhotos.push(ORDERS[(X.cmtPhotos.length+4)%ORDERS.length].img);decorateFromEvent()},
+  clipRm(i){X.cmtPhotos.splice(i,1);decorateFromEvent()},
+  skip(id){A.closeSheet();const t=A.task(id);reasonSheet('Skip today’s routine','Why is it skipped today? '+first(t.by)+' sees the reason; tomorrow’s one still comes.',v=>{t.comments.push({by:meId(),t:'Skipped today – '+v,at:NOWI()});A.setTaskStatus(id,'done',{silent:true});A.toast('Skipped for today');setTimeout(()=>A.push('Routine skipped',t.title+' · '+v,{icon:'moon',to:first(t.by)}),600)})},
+  askCancel(id){A.closeSheet();const t=A.task(id);reasonSheet('Ask to cancel','Only '+first(t.by)+' or a manager can cancel it. Say why.',v=>{t.comments.push({by:meId(),t:'Asked to cancel – '+v,at:NOWI()});t.cancelAsked=true;A.toast('Request sent to '+first(t.by));setTimeout(()=>A.push(first(meId())+' asks to cancel',t.title+' · '+v,{icon:'close',to:first(t.by),go:['task',{id}]}),600);document.dispatchEvent(new CustomEvent('tasks',{detail:{id}}))})},
+  cancelTask(id){A.closeSheet();const t=A.task(id);A.sheet(`${shHead('Cancel this task?')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">${first(t.assignee)} is told and the task leaves the board. It can’t be undone.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep</button><button class="btn --accent" onclick="App.closeSheet();TSK.cancelAsk()">Yes, cancel</button></div>`);setTimeout(()=>{const ok=$('#sheet .btn.--accent');if(ok)ok.onclick=()=>{A.closeSheet();if(X.offline){offlineFail();return}const i=TASKS.indexOf(t);if(i>=0)TASKS.splice(i,1);A.renderBadges();A.back('tasks');A.toast('Task cancelled');setTimeout(()=>A.push('Task cancelled',t.title,{icon:'close',to:first(t.assignee)}),600)}},0)}
+};
+function redrawAsk(id){const a=ASK(id);const el=$('#wx-ask-'+id);if(el)el.outerHTML=askCard(a,A.state.current==='task')}
+function decorateFromEvent(){const c=A.state.current;if(c==='task')window.mount_task(A.state.params);else if(c==='tasks')decorateTasks()}
+document.addEventListener('tasks',()=>{const c=A.state.current;if(c==='tasks')decorateTasks();else if(c==='task')decorateTask()});
+document.addEventListener('user',()=>{X.scope=null;X.questions=false;X.qa=null;X.workView=null;X.seenParam=null;X.cmtPhotos=[];X.ans=null;X.ordTab=null});
+const chainTasks=window.mount_tasks;
+window.mount_tasks=function(p){chainTasks(p);decorateTasks()};
+})();
+</script>
