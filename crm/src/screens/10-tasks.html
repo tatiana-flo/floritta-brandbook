@@ -658,7 +658,7 @@ function stepDue(id,i,d){const t=task(id);t.steps[i].due=d?new Date(d+"T18:00").
 let CAT_TAKEN=new Set([9]),CAT_FILTER="all",CAT_ERR=false,CAT_ASSIGN=null;
 function catalog(){A.sheet({eyebrow:"Extra work for points – take a task or hand it to someone",title:"Task catalog",narrow:true,body:`<div class="skel"></div><div class="skel"></div><div class="skel"></div>`,onMount:()=>setTimeout(renderCatalog,280)});CAT_ASSIGN=null}
 function renderCatalog(){
-  const sh=A.$("#sh-body");if(!sh||!A.$("#sheet").classList.contains("on"))return;
+  const sh=A.$("#sh-body");if(!sh||A.$("#sheet").getAttribute("aria-hidden")==="true")return;
   if(CAT_ERR){sh.innerHTML=`<div class="empty">${I("alert")}<div class="h3">Could not load the catalog.</div><button class="btn --ghost --sm" onclick="T10.catRetry()">Retry</button></div>`;return}
   const lib=TPL.filter(t=>t.active);const mz=myZones();const cats=[...new Set(lib.map(t=>t.cat))];
   const list=CAT_FILTER==="all"?lib:CAT_FILTER==="mine"?lib.filter(t=>mz.includes(t.cat)):lib.filter(t=>t.cat===CAT_FILTER);
@@ -682,6 +682,7 @@ const COLS=[["queue","Queue"],["doing","In progress"],["review","In review"],["d
 const colOf=t=>t.status==="open"?"queue":t.status==="in_progress"?"doing":t.status==="done"?(t.approved?"done":"review"):null;
 let DRAG=null;
 function mountBoard(p={}){
+  if(!st.scopeInit){st.scopeInit=true;st.scope="all"}
   if(p.zone!=null)st.zone=p.zone;if(st.kind==="all")st.kind="project";
   A.$("#t10-board-head").innerHTML=nav("tasks")+toolbar("board")+`<div class="row" style="width:100%;gap:8px;flex-wrap:wrap"><button class="btn --sm" onclick="T10.form()">${I("plus")} New task</button>${demoEmpty("board")}</div>`;
   let L=V().filter(t=>t.kind==="project"&&colOf(t));
