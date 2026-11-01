@@ -1,0 +1,355 @@
+<style>
+/* ===== 14-2 · Delivery – Exceptions · DPD · Tracking · Couriers · Idle · POD · Routes · Run · Presence ===== */
+.d14b-grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+[data-size="ipad"] .d14b-grid5{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] .d14b-grid5{grid-template-columns:repeat(2,minmax(0,1fr))}
+.d14b-kpi{display:flex;flex-direction:column;gap:6px;border:1px solid var(--hair);padding:14px 16px;cursor:pointer}
+.d14b-kpi.--hot{box-shadow:inset 0 3px 0 var(--accent)}
+.d14b-kpi .row{gap:8px}
+.d14b-ex{border:1px solid var(--hair);margin-bottom:10px}
+.d14b-ex .xh{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;flex-wrap:wrap}
+.d14b-ex .xh:hover{background:var(--silver)}
+.d14b-ex .xh .t{flex:1;min-width:0}
+.d14b-ex .xh .t b{font-weight:400}
+.d14b-ex .xh .t small{display:block;color:var(--grey);font-size:12px}
+.d14b-ex .xh .due{font-size:12px;color:var(--grey);white-space:nowrap}
+.d14b-ex .xh .due.--late{color:var(--accent)}
+.d14b-ex .xb{border-top:1px solid var(--hair);padding:12px 14px;font-size:13px}
+.d14b-ex .xb .why{color:var(--accent);margin-bottom:8px}
+.d14b-ex .xb .blk{border:1px solid var(--hair);padding:10px 12px;margin-top:10px}
+.d14b-ex .xb .blk .caps{display:block;margin-bottom:6px}
+.d14b-ex .xb .btn-row{margin-top:10px}
+.d14b-flash{display:flex;align-items:center;gap:10px;border:1px solid var(--ok);background:var(--ok-bg);color:var(--ok);padding:8px 12px;font-size:13px;margin-top:10px}
+.d14b-flash code{font-size:12px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d14b-pick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--hair)}
+.d14b-pick>div{padding:10px 14px;border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);font-size:13px}
+.d14b-pick>div b{font-weight:400;display:block}
+.d14b-pick>div small{color:var(--grey);display:block;font-size:12px}
+.d14b-form{display:grid;grid-template-columns:2fr 1.2fr .7fr .8fr 1fr auto;gap:10px;align-items:end;border:1px solid var(--hair);padding:14px}
+[data-size="ipad"] .d14b-form,[data-size="phone"] .d14b-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+.d14b-trk{position:relative;height:320px;margin-bottom:16px;border:1px solid var(--hair)}
+.d14b-trk .cp{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px;cursor:pointer;z-index:3}
+.d14b-trk .cp small{font-size:11px;background:var(--sel);color:var(--on-sel);padding:1px 6px;white-space:nowrap}
+.d14b-trk .cp .avatar{box-shadow:0 0 0 2px var(--paper)}
+.d14b-trk .ovl{position:absolute;inset:0;display:grid;place-items:center;z-index:2;font-size:13px;color:var(--grey)}
+.d14b-trk .note{position:absolute;left:0;right:0;bottom:0;padding:6px 12px;font-size:11.5px;color:var(--grey);background:var(--paper);border-top:1px solid var(--hair);z-index:4}
+.d14b-pod{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+[data-size="ipad"] .d14b-pod{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] .d14b-pod{grid-template-columns:repeat(2,minmax(0,1fr))}
+.d14b-pod .card{display:flex;flex-direction:column;gap:8px}
+.d14b-pod .ev{font-size:12px;color:var(--grey)}
+.d14b-run .bn{margin-bottom:10px}
+.d14b-run .stop{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.d14b-run .stop .no{width:24px;height:24px;border:1px solid var(--light);display:grid;place-items:center;font-size:11px;flex:none;font-variant-numeric:tabular-nums}
+.d14b-run .stop .t{flex:1;min-width:0}
+.d14b-run .stop .t b{font-weight:400}
+.d14b-run .stop .t small{display:block;color:var(--grey);font-size:12px}
+.d14b-run .stop .ib{width:26px;height:26px}
+.d14b-run .dm{border:1px solid var(--hair);background:var(--silver);height:180px;position:relative}
+.d14b-run .dm svg{width:100%;height:100%}
+.d14b-run .dm svg circle{stroke:var(--paper);stroke-width:1.5}
+.d14b-run .dm .lg{position:absolute;right:8px;bottom:6px;font-size:11px;color:var(--grey);display:flex;gap:10px}
+.d14b-run .dm .lg i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.d14b-pres{border:1px solid var(--hair);background:var(--silver);height:200px;position:relative;margin-bottom:16px}
+.d14b-pres svg{width:100%;height:100%}
+.d14b-pres text{font-family:var(--f-body);font-size:11px;fill:var(--ink)}
+.d14b-pres circle{fill:var(--sel)}
+.d14b-pres .ovl{position:absolute;inset:0;display:grid;place-items:center;color:var(--grey);font-size:13px}
+.d14b-idle td .sub{white-space:normal}
+.d14b-dayrow{display:flex;align-items:center;gap:12px;padding:8px 14px;border-bottom:1px solid var(--hair);font-size:13px;flex-wrap:wrap}
+.d14b-dayrow:last-child{border-bottom:0}
+.d14b-dayrow .d{width:90px;flex:none}
+.d14b-dayrow .m{color:var(--grey);font-size:12px}
+.d14b-dayrow .sp{flex:1}
+</style>
+
+<section class="scr" id="s-delivery-exceptions" data-nav="Exceptions" data-group="Delivery" data-title="Delivery" data-sub="Exceptions" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-ex"></div>
+  <!-- ids: DLOP-100 DLOP-117 – no menu entry in the CRM (direct URL only) – the sub-nav shows no active tab; «All clear» empty state, no auto-refresh -->
+  <div class="scr-head" id="d14-ex-head"></div>
+  <div class="scr-body" id="d14-ex-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-dpd" data-nav="DPD" data-group="Delivery" data-title="Delivery" data-sub="DPD Local" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-dpd"></div>
+  <!-- ids: DLOP-125 DLOP-126 – tabs with counts (?tab=), search «Consignment, order or recipient» (?q=) -->
+  <div class="scr-head" id="d14-dpd-head"></div>
+  <div class="scr-body" id="d14-dpd-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-tracking" data-nav="Tracking" data-group="Delivery" data-title="Delivery" data-sub="Tracking · live" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-trk"></div>
+  <!-- ids: DLOP-132 – polled every 15 s (assigned + in transit) -->
+  <div class="scr-head" id="d14-trk-head"></div>
+  <div class="scr-body" id="d14-trk-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-couriers" data-nav="Couriers (roster)" data-group="Delivery" data-title="Delivery" data-sub="Couriers" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-cr"></div>
+  <!-- ids: DLOP-138 – «+ Add courier» -->
+  <div class="scr-head" id="d14-cr-head"></div>
+  <div class="scr-body" id="d14-cr-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-idle" data-nav="Courier idle" data-group="Delivery" data-title="Delivery" data-sub="Courier idle · admin" data-roles="owner" data-parent="delivery">
+  <div id="d14-nav-idle"></div>
+  <!-- ids: DLOP-143 DLOP-144 – Date (?date=) and the thresholds subtitle; admin only (owner) -->
+  <div class="scr-head" id="d14-idle-head"></div>
+  <div class="scr-body" id="d14-idle-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-pod" data-nav="Proof of delivery" data-group="Delivery" data-title="Delivery" data-sub="Proof of delivery" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-pod"></div>
+  <div class="scr-head" id="d14-pod-head"></div>
+  <div class="scr-body" id="d14-pod-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-routes" data-nav="Routes (runs)" data-group="Delivery" data-title="Delivery" data-sub="Routes" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-rt"></div>
+  <!-- ids: DLOP-158 – New run form: Date · Courier (incl. gateways) · Wave -->
+  <div class="scr-head" id="d14-rt-head"></div>
+  <div class="scr-body" id="d14-rt-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-route" data-nav="Run (one route)" data-group="Delivery" data-title="Delivery" data-sub="Run" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-run"></div>
+  <!-- ids: DLOP-162 DLOP-194 DLOP-163 DLOP-164 DLOP-165 DLOP-166 DLOP-167 DLOP-168 – «← Routes», title «run · date», Delivery Start / Restart, Auto-assign, Optimize, Lock / Unlock, Print run sheet, Close run -->
+  <div class="scr-head" id="d14-run-head"></div>
+  <div class="scr-body" id="d14-run-body"></div>
+</section>
+
+<section class="scr" id="s-delivery-presence" data-nav="Presence" data-group="Delivery" data-title="Delivery" data-sub="Presence" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-pr"></div>
+  <!-- ids: DLOP-179 – polled every 20 s -->
+  <div class="scr-head" id="d14-pr-head"></div>
+  <div class="scr-body" id="d14-pr-body"></div>
+</section>
+
+<script>
+/* ===== 14-2 · state & demo data (file-local) ===== */
+const D14B={ex:{empty:false,notHome:true,drafts:true,open:{},link:null,drafts:{}},dpd:{enabled:true,sandbox:true,tab:"active",q:"",order:"",svc:"",parcels:1,kg:2,date:"2026-10-20",booked:{}},trk:{state:"ok"},cr:{list:[{id:1,n:"Daniel",type:"in_house",phone:"+44 7700 900110",veh:"Van · Transit Connect",rate:14.5,ini:"DA",on:true},{id:2,n:"George",type:"in_house",phone:"+44 7700 900111",veh:"Cargo bike",rate:13,ini:"GE",on:true},{id:3,n:"Omar",type:"in_house",phone:"+44 7700 900112",veh:"Scooter",rate:"",ini:"OM",on:true},{id:4,n:"Stuart (gateway)",type:"gateway",gw:"stuart",on:false},{id:5,n:"Uber Direct (gateway)",type:"gateway",gw:"relay",on:true},{id:6,n:"Pedal Me",type:"",on:false}],form:null},idle:{date:"2026-10-20",enabled:true,empty:false,rev:{}},pod:{block:{},empty:false},rt:{runs:[{id:41,name:"Run 20 Oct · Morning",date:"20 Oct",courier:"Daniel",wave:"Morning · 08–12",stops:5,status:"done"},{id:42,name:"Run 20 Oct · Midday",date:"20 Oct",courier:"Daniel",wave:"Midday · 12–16",stops:6,status:"active"},{id:43,name:"Run 20 Oct · Evening",date:"20 Oct",courier:"George",wave:"Evening · 16–22",stops:3,status:"planned"},{id:38,name:"Run 19 Oct · Midday",date:"19 Oct",courier:"Omar",wave:"Midday · 12–16",stops:7,status:"done"}],empty:false},run:{id:42,locked:false,closed:false,started:"12:05",sched:"2026-10-20T12:00",ts:{}},pr:{enabled:true,geo:true,empty:false}};
+const D14B_EX=()=>{const D14=window.D14;D14.ensure();const t=D14.todays();const pick=i=>t[i%t.length];const s=D14B.ex;
+  return s.empty?[]:[
+   {id:"e1",type:"courier_booking",o:pick(3),reason:"dispatch_outcome_unknown",due:"10:30",late:true},
+   {id:"e2",type:"courier_booking",o:pick(7),reason:"no_coverage",due:"11:00",late:false},
+   {id:"e3",type:"not_home",o:pick(1),since:"10:28",stage:"customer replied",proposal:{intent:"leave",place:"concierge",when:"",note:"Front desk is open until 18:00"},due:"11:15",late:false},
+   {id:"e4",type:"not_home",o:pick(11),since:"09:50",stage:"no reply – your call",proposal:null,due:"10:40",late:true},
+   {id:"e5",type:"failed",o:pick(5),due:"12:00",late:false},
+   {id:"e6",type:"redelivery",o:pick(9),since:"08:15",stage:"sender asked too, waiting",proposal:{intent:"redeliver",when:"tomorrow morning",note:""},due:"Tomorrow 10:00",late:false},
+   {id:"e7",type:"overdue",o:pick(13),due:"Yesterday 18:00",late:true}]};
+const D14B_TYPE={courier_booking:["Courier booking – needs attention","alert"],failed:["Failed","close"],not_home:["Nobody home","user"],redelivery:["Redelivery requested","refresh"],overdue:["Overdue","clock"]};
+const D14B_REASON={dispatch_outcome_unknown:"Booking result unknown – Uber did not answer whether the courier was booked",no_coverage:"Outside both Uber accounts' range (4 and 10 miles)",no_courier_tip2:"Nobody took it even with a £2 tip",rebook_failed:"Repeat booking with a tip did not go through"};
+
+/* ===== Exceptions ===== */
+window.mount_delivery_exceptions=function(){const D14=window.D14,S=D14B.ex,esc=App.esc,ic=App.icon,can=D14.manage();
+  document.getElementById("d14-nav-ex").innerHTML=D14.nav("exceptions");
+  App.$("#d14-ex-head").innerHTML=`<span class="caps">Exceptions · −14…+7 days · most urgent first</span><span class="tag --accent" title="DLOP-100: the CRM has no menu item or inbound link – only the direct URL /delivery/exceptions">no menu entry in the CRM</span><span class="sp"></span><span class="muted xs">no auto-refresh</span><button class="btn --ghost --sm" onclick="EX.demo(event)">${ic("sparkle")} Demo state</button>`;
+  const list=D14B_EX();const cnt=k=>list.filter(x=>x.type===k).length;
+  // <!-- ids: DLOP-101 -->
+  let h=`<div class="d14b-grid5">${Object.keys(D14B_TYPE).map(k=>`<div class="d14b-kpi ${cnt(k)?"--hot":""}" onclick="EX.jump('${k}')"><span class="row">${ic(D14B_TYPE[k][1])}<span class="caps" style="margin:0">${D14B_TYPE[k][0]}</span></span><span class="kpi-s ${cnt(k)?"accent":""}">${cnt(k)}</span></div>`).join("")}</div>`;
+  if(!list.length)h+=`<div class="empty mt24">${ic("check")}<div class="h3">All clear – no delivery exceptions right now.</div></div>`;
+  else{
+    // <!-- ids: DLOP-102 DLOP-103 DLOP-104 DLOP-105 DLOP-106 DLOP-107 DLOP-108 DLOP-109 DLOP-110 DLOP-111 DLOP-112 DLOP-113 DLOP-114 DLOP-115 DLOP-116 -->
+    h+=`<div class="sec-head mt24"><div class="h2">Deliveries</div><span class="muted xs">excluding delivered and cancelled · severity, then the most overdue deadline</span></div>`;
+    list.forEach(x=>{const o=x.o;const open=S.open[x.id];const nh=x.type==="not_home"||x.type==="redelivery";const draft=S.drafts[x.id];
+      h+=`<div class="d14b-ex" id="ex-${x.type}"><div class="xh" onclick="D14B.ex.open['${x.id}']=!D14B.ex.open['${x.id}'];App.remount()"><span class="tag ${x.type==="courier_booking"||x.type==="overdue"?"--accent":""}">${D14B_TYPE[x.type][0]}</span><div class="t"><b><button class="link" onclick="event.stopPropagation();App.openOrder(${o.id})">#${o.id}</button> · ${esc(o.recipient)}</b><small>${D14.pcOf(o)} · ${esc(o.slot)} · ${o.courier?(o.courier==="Uber Direct"?"Uber Direct":esc(App.user(o.courier).n)):"Unassigned"}</small></div><span class="due ${x.late?"--late":""}">Due by ${x.due}</span>${ic(open?"down":"chev")}</div>`;
+      if(open){h+=`<div class="xb">`;
+        if(x.type==="courier_booking"){h+=`<div class="why">${esc(D14B_REASON[x.reason]||x.reason)}</div>`;
+          if(x.reason==="dispatch_outcome_unknown")h+=`<div class="blk"><span class="caps">Booking result unknown</span><div class="sm">«Call courier» is blocked for this order everywhere in the CRM until you check the Uber dashboard and tell us what happened – otherwise a second booking could be charged twice.</div>
+            <div class="grid g3 mt16"><div class="field"><label>Uber delivery ID from the Uber dashboard</label><input class="input" id="ex-uid-${x.id}" placeholder="del_…"></div><div class="field"><label>Uber account</label><select class="select"><option>10-mile account (uber_direct_2)</option><option>UK account (uber_direct)</option></select></div><div class="field"><label>&nbsp;</label><button class="btn --sm" ${can?"":"disabled"} onclick="EX.link('${x.id}')">Uber has it · Link</button></div></div>
+            <div class="btn-row"><button class="btn --ghost --sm" ${can?"":"disabled"} onclick="EX.release('${x.id}')">Uber doesn't have it</button><span class="xs muted">Account defaults to the last attempt's</span></div></div>`;
+          else h+=`<div class="btn-row"><button class="btn --sm" onclick="App.go('delivery',{open:${o.id}})">Open on Dispatch</button><button class="btn --ghost --sm" onclick="D14.assignDpd(${o.id});App.remount()">Assign DPD</button></div>`}
+        if(nh){if(S.notHome){h+=`<div class="blk"><span class="caps">Nobody home</span><div class="sm"><b>${esc(x.stage)}</b> · since ${x.since}${x.proposal?`<br>Proposal: ${x.proposal.place?"leave with "+x.proposal.place:""}${x.proposal.when?"deliver "+x.proposal.when:""}${x.proposal.note?" · "+esc(x.proposal.note):""}`:""}</div>
+            <div class="btn-row">${x.proposal&&x.proposal.place?`<button class="btn --sm" onclick="EX.resolve('${x.id}','leave','${x.proposal.place}')">Leave with: ${esc(x.proposal.place)}</button>`:`<button class="btn --ghost --sm" onclick="EX.resolve('${x.id}','concierge')">Leave with concierge</button><button class="btn --ghost --sm" onclick="EX.resolve('${x.id}','neighbour')">Leave with neighbour</button>`}<button class="btn ${x.proposal&&x.proposal.intent==="redeliver"?"":"--ghost"} --sm" onclick="EX.resolve('${x.id}','redeliver')">Redeliver tomorrow morning</button><button class="btn --ghost --sm" onclick="EX.resolve('${x.id}','returned')">Returned to studio</button>${x.proposal&&x.proposal.intent==="cancel"?`<button class="btn --ghost --sm" onclick="EX.resolve('${x.id}','cancelled')">Cancelled</button>`:""}</div>
+            <div class="btn-row">${x.type==="not_home"?`<button class="textbtn" onclick="EX.copyLink('${x.id}')">Copy link</button>`:""}</div>${S.link===x.id?`<div class="d14b-flash">${ic("link")}<code>floritta.uk/track/t_${o.id}9f3a</code><button class="textbtn" onclick="App.toast('Copied – paste it into WhatsApp')">Copy</button></div>`:""}</div>`}
+          else h+=`<div class="note-box">Nobody-home resolver is off (DELIVERY_NOT_HOME_RESOLVER_ENABLED) – the case block is hidden.</div>`}
+        if(x.type==="failed")h+=`<div class="sm soft">Courier marked it failed · reason: recipient not answering. Re-plan on Dispatch or redeliver.</div><div class="btn-row"><button class="btn --sm" onclick="App.go('delivery',{open:${o.id}})">Open on Dispatch</button></div>`;
+        if(x.type==="overdue")h+=`<div class="sm soft">Due ${x.due} and still not delivered.</div><div class="btn-row"><button class="btn --sm" onclick="App.go('delivery',{open:${o.id}})">Open on Dispatch</button></div>`;
+        if(S.drafts)h+=`<div class="btn-row">${draft?`<button class="btn --ghost --sm" onclick="App.go('inbox',{customer:${o.customer}})">${ic("edit")} Open draft in inbox</button>`:""}<button class="btn --ghost --sm" ${can?"":"disabled"} onclick="EX.draft('${x.id}')">${ic("sparkle")} ${draft?"Draft again":"Draft a message"}</button><span class="xs muted">AI writes to the customer under this exception type – nothing is sent</span></div>`;
+        h+=`</div>`}
+      h+=`</div>`})}
+  App.$("#d14-ex-body").innerHTML=h};
+window.EX={
+  demo(ev){const S=D14B.ex;const t=(k,l)=>({t:l,ic:S[k]?"check":undefined,fn:()=>{S[k]=!S[k];App.remount()}});App.pop(ev,["Demo state",t("empty","All clear (no exceptions)"),t("notHome","Nobody-home resolver flag"),t("drafts","AI drafts flag")])},
+  jump(k){const el=document.getElementById("ex-"+k);if(el)el.scrollIntoView({block:"start"});else App.toast("No exceptions of this type")},
+  link(id){const v=(App.$("#ex-uid-"+id)||{}).value;if(!v){App.toast("Enter the Uber delivery ID first");return}App.toast("Linked · Uber webhooks update the order from here; «Call courier» stays blocked for this order")},
+  release(id){App.confirm("Uber doesn't have it?","You checked the Uber dashboard and there is no booking for this order. The hold is removed, stuck attempts are closed and «Call courier» works again.","Release",()=>{App.toast("Hold removed · Call courier works again")})},
+  resolve(id,r,place){const lbl={leave:"Leave with "+place,concierge:"Leave with concierge",neighbour:"Leave with neighbour",redeliver:"Redeliver tomorrow morning",returned:"Returned to studio",cancelled:"Cancelled"}[r];App.confirm("Record this decision?",lbl+". The instruction is written into the order; if the trip was closed as failed, a redelivery goes to the same courier. The case closes.",lbl,()=>{App.toast("Recorded · "+lbl+(r==="cancelled"?" (the order itself is not cancelled)":""))})},
+  copyLink(id){D14B.ex.link=id;App.remount();App.toast("Tracking link created – the recipient can choose a new delivery there")},
+  draft(id){D14B.ex.drafts[id]=true;App.remount();App.toast("AI draft written · opens the thread in Comms – not sent","Open inbox",()=>App.go("inbox"))}
+};
+document.addEventListener('orders',()=>{if(App.state.current==='delivery-exceptions')window.mount_delivery_exceptions()});
+
+/* ===== DPD ===== */
+const D14B_SHIP=()=>{const D14=window.D14;D14.ensure();const t=App.data.orders.filter(o=>o.type==="delivery").slice(0,9);
+  return t.map((o,i)=>({id:"15501"+i,o,svc:i%3===0?"Next day · by 12":"Next day",parcels:1+(i%2),kg:1.5+(i%3),ship:i<3?"20 Oct":i<6?"19 Oct":"17 Oct",status:i===0?"exception":i<3?"in transit":i<6?"delivered":i===6?"voided":"collected",event:i===0?"Attempted – no access · 09:41":i<3?"Out for delivery · 08:12":i<6?"Delivered · 11:0"+i:i===6?"Voided locally":"Collected from shop · 16:30",hidden:i===2}))};
+window.mount_delivery_dpd=function(){const D14=window.D14,S=D14B.dpd,esc=App.esc,ic=App.icon;
+  document.getElementById("d14-nav-dpd").innerHTML=D14.nav("delivery-dpd");
+  const all=D14B_SHIP();const tabs={active:all.filter(x=>["exception","in transit","collected"].includes(x.status)),today:all.filter(x=>x.ship==="20 Oct"),delivered:all.filter(x=>x.status==="delivered"),voided:all.filter(x=>x.status==="voided"),all};
+  const q=S.q.trim().toLowerCase();const rows=tabs[S.tab].filter(x=>!q||x.id.includes(q)||String(x.o.id).includes(q)||x.o.recipient.toLowerCase().includes(q));
+  App.$("#d14-dpd-head").innerHTML=S.enabled?`<div class="views" style="margin:0;border:0">${Object.keys(tabs).map(k=>`<button class="${S.tab===k?"on":""}" onclick="D14B.dpd.tab='${k}';App.remount()">${k[0].toUpperCase()+k.slice(1)} <span class="n">(${tabs[k].length})</span></button>`).join("")}</div><span class="sp"></span><div class="toolbar" style="margin:0"><div class="search">${ic("search")}<input id="dpd-q" placeholder="Consignment, order or recipient" value="${esc(S.q)}" onkeydown="if(event.key==='Enter')DPD.search()"></div><button class="btn --ghost --sm" onclick="DPD.search()">Search</button></div><button class="btn --ghost --sm" onclick="DPD.demo(event)">${ic("sparkle")} Demo state</button>`:`<span class="sp"></span><button class="btn --ghost --sm" onclick="DPD.demo(event)">${ic("sparkle")} Demo state</button>`;
+  let h="";
+  // <!-- ids: DLOP-118 -->
+  if(!S.enabled){App.$("#d14-dpd-body").innerHTML=`<div class="empty">${ic("box")}<div class="h3">DPD integration is not switched on yet</div><div class="sm">Set DPD_SHIPPING_ENABLED and the API account – every other control on this page stays hidden until then.</div></div>`;return}
+  // <!-- ids: DLOP-119 DLOP-120 DLOP-121 -->
+  if(S.sandbox)h+=`<div class="note-box --warn mb16"><b>Sandbox</b> – Test mode: shipments go to DPD's sandbox, no parcel travels.</div>`;
+  h+=`<div class="sm soft mb16">All DPD consignments: statuses, labels, tracking and the shop pickups.</div>`;
+  const exc=all.filter(x=>x.status==="exception").length;if(exc)h+=`<div class="note-box --accent mb16">${ic("alert")} ${exc} shipment(s) with a delivery problem – check the Active tab</div>`;
+  // <!-- ids: DLOP-122 DLOP-123 -->
+  const days=[["Mon 13 Oct","16:00–18:00",3,4.5,"Collected","C-88121",""],["Fri 17 Oct","16:00–18:00",2,3,"Collected","C-88302",""],["Mon 20 Oct","16:00–18:00",3,5.5,S.booked["20"]?"Booked":"Needs booking",S.booked["20"]||"","Book in MyDPD, then paste the reference – Telegram reminders stop"],["Tue 21 Oct","16:00–18:00",0,0,"Standing pickup","","Regular slot, nothing to book"],["Wed 22 Oct","16:00–18:00",1,1.5,S.booked["22"]?"Booked":"Needs booking",S.booked["22"]||"",""]];
+  h+=`<div class="panel mb16"><div class="p-head"><div class="h4">Shop pickups</div><span class="muted xs">a week back and up to 14 days ahead</span></div><div class="p-body">${days.map((d,i)=>`<div class="d14b-dayrow"><b class="d" style="font-weight:400">${d[0]}</b><span class="m">${d[1]}</span><span class="tnum">${d[2]} places · ${d[3]} kg</span>${App.pill(d[4]==="Collected"?"delivered":d[4]==="Booked"?"ready":d[4]==="Needs booking"?"late":d[4]==="Failed"?"cancelled":"queue",d[4])}${d[5]?`<span class="muted xs tnum">${d[5]}</span>`:""}<span class="sp"></span><span class="m">${d[6]}</span>${d[4]==="Needs booking"?`<button class="btn --sm" onclick="DPD.markBooked('${d[0].slice(-6,-4).trim()}')">Mark booked</button>`:""}</div>`).join("")}</div></div>`;
+  // <!-- ids: DLOP-124 DLOP-191 -->
+  const elig=App.data.orders.filter(o=>o.type==="delivery"&&["queue","making","ready"].includes(o.status)).slice(0,30);
+  h+=`<div class="sec-head"><div class="h3">Book DPD without opening the order</div><span class="muted xs">list capped at 30 orders, earliest fulfil date first, no search in the select</span></div><div class="d14b-form">
+    <div class="field"><label>Order</label><select class="select" onchange="D14B.dpd.order=this.value;D14B.dpd.svc='';App.remount()"><option value="">Pick an order…</option>${elig.map(o=>`<option value="${o.id}" ${String(S.order)===String(o.id)?"selected":""}>#${o.id} · ${esc(o.recipient)} · ${D14.pcOf(o)} · ${App.fmtDay(o.date)}</option>`).join("")}</select></div>
+    <div class="field"><label>Service</label><select class="select" ${S.order?"":"disabled"} onchange="D14B.dpd.svc=this.value"><option>Next day</option><option>Next day · by 12</option><option>Two day</option><option>Default service</option></select></div>
+    <div class="field"><label>Parcels</label><input class="input" type="number" min="1" max="99" value="${S.parcels}" onchange="D14B.dpd.parcels=this.value"></div>
+    <div class="field"><label>Weight (kg)</label><input class="input" type="number" step="0.5" value="${S.kg}" onchange="D14B.dpd.kg=this.value"></div>
+    <div class="field"><label>Ship date <span class="muted" title="Defaults to the browser's UTC date – in the first BST hour that is yesterday">(UTC default)</span></label><input class="input" type="date" value="${S.date}" onchange="D14B.dpd.date=this.value"></div>
+    <div class="field"><label>&nbsp;</label><button class="btn --sm" ${S.order?"":"disabled"} onclick="DPD.book()">${S.busy?"Booking...":"Book DPD"}</button></div></div>`;
+  // <!-- ids: DLOP-127 DLOP-128 DLOP-129 DLOP-130 DLOP-131 -->
+  h+=`<div class="sec-head mt24"><div class="h3">Shipments</div><span class="muted xs">up to 200 rows</span></div>`;
+  h+=rows.length?`<div class="tbl-wrap"><table class="tbl"><tr><th>Order</th><th>Recipient</th><th>Service</th><th class="d14-hide-ph">Parcels</th><th>Ship date</th><th>Consignment</th><th>Status</th><th></th></tr>${rows.map(x=>{const act=["exception","in transit","collected"].includes(x.status);return`<tr class="r"><td><button class="link" onclick="App.openOrder(${x.o.id})">#${x.o.id}</button></td><td>${esc(x.o.recipient)}<span class="sub">London · ${D14.pcOf(x.o)}</span></td><td>${x.svc}</td><td class="d14-hide-ph tnum">${x.parcels} · ${x.kg} kg</td><td>${x.ship}</td><td>${x.hidden?`<span title="Address came from the recipient – tracking hidden">${ic("lock")} ${x.id}</span>`:`<button class="link" onclick="App.toast('DPD tracking opens in a new tab')">${x.id}</button>`}</td><td>${App.pill(x.status==="exception"?"late":x.status==="delivered"?"delivered":x.status==="voided"?"cancelled":x.status==="in transit"?"out":"queue",x.status)}<span class="sub">${esc(x.event)}</span></td><td><span class="acts">${act?`<button class="ib" title="Label – PDF or thermal, new tab" onclick="App.toast('Label opens in a new tab · PDF / thermo')">${ic("printer")}</button><button class="ib" title="Refresh tracking now (otherwise every 15 min)" onclick="App.toast('Tracking refreshed · ${x.id}')">${ic("refresh")}</button><button class="ib" title="Void" onclick="DPD.void('${x.id}')">${ic("close")}</button>`:""}</span></td></tr>`}).join("")}</table></div>`:`<div class="empty">${ic("box")}<div class="h3">No DPD shipments here yet.</div></div>`;
+  App.$("#d14-dpd-body").innerHTML=h};
+window.DPD={
+  demo(ev){const S=D14B.dpd;const t=(k,l)=>({t:l,ic:S[k]?"check":undefined,fn:()=>{S[k]=!S[k];App.remount()}});App.pop(ev,["Demo state",t("enabled","DPD integration enabled"),t("sandbox","Sandbox environment")])},
+  search(){D14B.dpd.q=(App.$("#dpd-q")||{}).value||"";App.remount()},
+  markBooked(d){App.modal({title:"DPD collection reference from MyDPD:",body:`<input class="input" id="dpd-ref" placeholder="C-…">`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="D14B.dpd.booked['${d}']=App.$('#dpd-ref').value||'C-88410';App.closeModal();App.remount();App.toast('Reference saved · Telegram reminders stop')">Save</button>`})},
+  book(){const S=D14B.dpd;S.busy=true;App.remount();setTimeout(()=>{S.busy=false;const id=S.order;S.order="";App.remount();App.toast("#"+id+" booked with DPD · ship date on the order, pickup added to the day, recipient notified by DPD")},600)},
+  void(id){App.confirm("Void this DPD shipment?","The parcel will not travel. The void is local only – there is no cancel in the DPD API – so cancel it in MyDPD as well if it was already booked there.","Void",()=>App.toast(id+" voided · pickup totals reduced"),{danger:true})}
+};
+
+/* ===== Tracking ===== */
+window.mount_delivery_tracking=function(){const D14=window.D14,S=D14B.trk,esc=App.esc,ic=App.icon;D14.ensure();
+  document.getElementById("d14-nav-trk").innerHTML=D14.nav("delivery-tracking");
+  App.$("#d14-trk-head").innerHTML=`<span class="caps">Assigned and in transit · all couriers</span><span class="sp"></span>${D14.live("15 s")}<button class="btn --ghost --sm" onclick="TRK.demo(event)">${ic("sparkle")} Demo state</button>`;
+  const live=D14.todays().filter(o=>["assigned","in_transit"].includes(D14.stage(o)));
+  const located=S.state==="nopos"?[]:["daniel"];
+  // <!-- ids: DLOP-133 DLOP-134 DLOP-192 -->
+  let h=`<div class="map d14b-trk">${located.length?located.map(c=>{const t=D14.T[c];const o=App.order(t.stops[t.cur].id);const p=D14.pos(o);return`<span class="cp" style="left:${p.x-5}%;top:${p.y+6}%" title="${esc(App.user(c).n)} · #${o.id}" onclick="TRK.pop(event,'${c}',${o.id})">${App.avatar(c,"--s --ink")}<small>${esc(App.user(c).n)} · #${o.id}</small></span>`}).join(""):`<div class="ovl">No live courier positions yet – couriers appear once their app sends a consented ping.</div>`}<span class="pin --shop" style="left:${D14.SHOP.x}%;top:${D14.SHOP.y}%"></span><span class="lbl-pin" style="left:${D14.SHOP.x}%;top:${D14.SHOP.y}%">Shop · 51.494, −0.079</span><div class="note">Only our couriers with a live, consented ping · the map re-frames to the points on every 15 s poll (manual zoom is lost) · without points: the shop area</div></div>`;
+  // <!-- ids: DLOP-135 DLOP-136 -->
+  if(S.state==="loading")h+=`<div class="empty">${ic("refresh")}<div class="sm">Loading…</div></div>`;
+  else if(S.state==="error")h+=`<div class="note-box --accent">Could not load live deliveries – retrying in 15 s</div>`;
+  else if(!live.length||S.state==="empty")h+=`<div class="empty">${ic("truck")}<div class="h3">No deliveries in transit.</div></div>`;
+  else h+=`<div class="tbl-wrap"><table class="tbl"><tr><th>Order</th><th>Contact</th><th>Address</th><th>Courier</th><th class="num">ETA</th><th>Last event</th></tr>${live.map(o=>{const c=o.courier;const t=c&&D14.T[c];const s=t&&t.stops.find(x=>x.id===o.id);return`<tr><td><span class="tnum" title="Plain text in the CRM – not a link">#${o.id}</span></td><td>${esc(o.recipient)}</td><td class="tnum">${D14.pcOf(o)}</td><td>${c==="Uber Direct"?"Uber Direct":c?App.avatar(c,"--s")+" "+esc(App.user(c).n):"—"}</td><td class="num">${s?Math.max(1,D14.mins(s.fc)-D14.NOWM)+" min":"—"}</td><td class="muted">${s&&s.status==="picked"?"Picked up · "+(t.left||"10:05"):D14.D[o.id].relay?esc(D14.D[o.id].relay.status):"Assigned · waiting at the shop"}</td></tr>`}).join("")}</table></div>`;
+  App.$("#d14-trk-body").innerHTML=h};
+window.TRK={demo(ev){const S=D14B.trk;const set=v=>({t:v,ic:S.state===v?"check":undefined,fn:()=>{S.state=v;App.remount()}});App.pop(ev,["Demo state",set("ok"),set("nopos"),set("loading"),set("error"),set("empty")])},
+  pop(ev,c,id){App.pop(ev,["#"+id+" · "+App.user(c).n+" · ETA 8 min",{t:"Open order",ic:"orders",fn:()=>App.openOrder(id)},{t:"Courier card · Couriers today",ic:"user",fn:()=>App.go("couriers-today",{courier:c})}])}};
+document.addEventListener('orders',()=>{if(App.state.current==='delivery-tracking')window.mount_delivery_tracking()});
+
+/* ===== Couriers (roster) ===== */
+window.mount_delivery_couriers=function(){const D14=window.D14,S=D14B.cr,esc=App.esc,ic=App.icon;
+  document.getElementById("d14-nav-cr").innerHTML=D14.nav("delivery-couriers");
+  App.$("#d14-cr-head").innerHTML=`<span class="caps">Couriers · in-house and gateways · hourly rate feeds the courier pay report</span><span class="sp"></span><button class="btn --sm" onclick="CR.open()">${ic("plus")} Add courier</button>`;
+  // <!-- ids: DLOP-137 DLOP-141 DLOP-193 -->
+  App.$("#d14-cr-body").innerHTML=S.list.length?`<div class="tbl-wrap"><table class="tbl"><tr><th>Name</th><th>Type</th><th>Phone</th><th>Vehicle</th><th class="num">Hourly rate, £/h</th><th>Active</th><th></th></tr>${S.list.map(c=>`<tr class="r" onclick="CR.open(${c.id})"><td>${esc(c.n)}</td><td>${c.type==="in_house"?"In-house":c.type==="gateway"?"Gateway · "+c.gw:"<span class='muted'>Not set</span>"}</td><td class="tnum">${c.phone||"—"}</td><td>${esc(c.veh||"—")}</td><td class="num">${c.type==="in_house"?(c.rate!==""?c.rate.toFixed(2):"<span class='muted' title='Empty – the default rate from config applies'>default</span>"):"—"}</td><td>${c.on?"✓":"×"}</td><td><button class="textbtn" onclick="event.stopPropagation();CR.open(${c.id})">Edit</button></td></tr>`).join("")}</table></div><div class="xs muted mt8">Buttons are not hidden by permission on this screen – CourierPolicy on the server decides. «Gateway» and «Initials» labels are hard-coded English in the CRM.</div>`:`<div class="empty">${ic("user")}<div class="h3">No data</div><div class="sm">DataTable default – the CRM has no custom empty text here</div></div>`};
+window.CR={
+  // <!-- ids: DLOP-138 DLOP-139 DLOP-140 DLOP-142 -->
+  open(id){const S=D14B.cr;const c=id?S.list.find(x=>x.id===id):{n:"",type:"",phone:"",veh:"",rate:"",ini:"",on:true,gw:"stuart"};S.form=Object.assign({},c);CR.render(!!id)},
+  render(edit){const f=D14B.cr.form,esc=App.esc;const gw=f.type==="gateway",ih=f.type==="in_house";
+    App.modal({title:edit?"Edit courier":"Add courier",body:`<div class="grid g2"><div class="field"><label>Name *</label><input class="input" value="${esc(f.n)}" oninput="D14B.cr.form.n=this.value"></div><div class="field"><label>Type ${edit&&!f.type?"<span class='accent'>(not set – the server requires one)</span>":""}</label><select class="select" onchange="D14B.cr.form.type=this.value;CR.render(${edit})"><option value="" ${!f.type?"selected":""}>Choose…</option><option value="in_house" ${ih?"selected":""}>In-house</option><option value="gateway" ${gw?"selected":""}>Gateway</option></select></div>
+      ${gw?`<div class="field"><label>Gateway</label><select class="select" onchange="D14B.cr.form.gw=this.value">${["stuart","relay","pedalme","gophr"].map(g=>`<option ${f.gw===g?"selected":""}>${g}</option>`).join("")}</select><span class="xs muted">read-only meta – hidden in-house values still travel with the request</span></div>`:""}
+      ${ih?`<div class="field"><label>Phone</label><input class="input" value="${esc(f.phone||"")}" oninput="D14B.cr.form.phone=this.value" placeholder="+44 7700 900…"></div><div class="field"><label>Vehicle</label><input class="input" value="${esc(f.veh||"")}" oninput="D14B.cr.form.veh=this.value"></div><div class="field"><label>Hourly rate, £/h</label><input class="input" type="number" step="0.5" value="${f.rate}" oninput="D14B.cr.form.rate=this.value" placeholder="empty = default from config"></div><div class="field"><label>Initials</label><input class="input" maxlength="4" value="${esc(f.ini||"")}" oninput="D14B.cr.form.ini=this.value"></div>`:""}
+      </div><label class="check mt16"><input type="checkbox" ${f.on?"checked":""} onchange="D14B.cr.form.on=this.checked"> Active</label>`,
+      foot:`${edit?`<button class="btn --ghost --sm" style="margin-right:auto;color:var(--accent)" onclick="CR.remove()">Remove</button>`:""}<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="CR.save()">Save</button>`})},
+  save(){const S=D14B.cr,f=S.form;if(!f.n){App.toast("Name is required");return}if(!f.type){App.toast("Type is required");return}if(f.rate!=="")f.rate=+f.rate;if(f.id){Object.assign(S.list.find(x=>x.id===f.id),f)}else{f.id=Date.now();S.list.push(f)}App.closeModal();App.remount();App.toast("Courier saved · rate sent in pence · audit")},
+  remove(){const S=D14B.cr,f=S.form;S.list=S.list.filter(x=>x.id!==f.id);App.closeModal();App.remount();App.toast("Removed immediately – the CRM asks no confirmation here","Undo",()=>{S.list.push(f);App.remount()})}
+};
+
+/* ===== Courier idle (admin) ===== */
+window.mount_delivery_idle=function(){const D14=window.D14,S=D14B.idle,esc=App.esc,ic=App.icon;
+  document.getElementById("d14-nav-idle").innerHTML=D14.nav("delivery-idle");
+  App.$("#d14-idle-head").innerHTML=`<div class="field" style="flex-direction:row;align-items:center;gap:8px"><label>Date</label><input class="input" type="date" style="width:170px;height:32px" value="${S.date}" onchange="D14B.idle.date=this.value;App.remount();App.toast('Idle review · '+this.value)"></div><span class="sm soft">A courier is asked after <b>8 min</b> standing still; an automatic break starts after <b>15 min</b> without an answer.</span><span class="sp"></span><button class="btn --ghost --sm" onclick="IDL.demo(event)">${ic("sparkle")} Demo state</button>`;
+  let h="";
+  // <!-- ids: DLOP-145 -->
+  if(!S.enabled)h+=`<div class="note-box --warn mb16">The idle watch is off (DELIVERY_IDLE_WATCH=false) – nothing new is recorded; past days stay reviewable.</div>`;
+  // <!-- ids: DLOP-146 DLOP-147 DLOP-148 DLOP-151 -->
+  const idle=S.empty?[]:[{id:1,c:"daniel",start:"10:21",dur:"12 min",ans:"Took a break",auto:"from 10:36 · 15 min",ended:"Drove on",rev:"to review"},{id:2,c:"george",start:"09:12",dur:"23 min",ans:"Says they are working",auto:"running",ended:"Still there",rev:"nothing"},{id:3,c:"omar",start:"08:48",dur:"19 min",ans:"No answer",auto:"from 09:03 · 19 min",ended:"Ended by a manager",rev:"approved",by:"Tatiana · 09:30"},{id:4,c:"daniel",start:"08:30",dur:"9 min",ans:"Waiting for an answer",auto:"—",ended:"Over at 08:39",rev:"rejected",by:"Tatiana · 09:31"}];
+  h+=`<div class="sec-head"><div class="h3">Idle watch</div></div>`;
+  h+=idle.length?`<div class="tbl-wrap"><table class="tbl d14b-idle"><tr><th>Courier</th><th>Start</th><th>Duration</th><th>Place</th><th>Courier's answer</th><th>Automatic break</th><th>Ended</th><th>Review</th><th></th></tr>${idle.map(r=>{const rv=S.rev[r.id]||r.rev;const running=r.auto==="running";return`<tr><td>${App.avatar(r.c,"--s")} ${App.user(r.c).n}</td><td class="tnum">${r.start}</td><td class="tnum">${r.dur}</td><td><button class="textbtn" onclick="App.toast('Opens an external map in a new tab')">Map</button></td><td>${r.ans}</td><td>${r.auto}</td><td>${r.ended}</td><td>${rv==="nothing"?"<span class='muted'>Nothing to review</span>":rv==="approved"?App.pill("done","Approved")+(r.by?`<span class="sub">${r.by}</span>`:""):rv==="rejected"?App.pill("late","Rejected")+(r.by?`<span class="sub">${r.by}</span>`:""):App.pill("review","To review")}</td><td>${rv==="nothing"?"":`<span class="row" style="gap:4px">${rv!=="approved"&&!running?`<button class="btn --ghost --sm" onclick="IDL.rev(${r.id},'approved')">Approve</button>`:""}${rv!=="rejected"&&!running?`<button class="btn --ghost --sm" title="The ${r.dur} break goes back into paid time" onclick="IDL.rev(${r.id},'rejected')">Reject</button>`:""}${running?`<span class="xs muted">break running</span>`:""}</span>`}</td></tr>`}).join("")}</table></div>`:`<div class="empty">${ic("clock")}<div class="h3">No idle stops on this day</div></div>`;
+  // <!-- ids: DLOP-149 -->
+  h+=`<div class="sec-head mt24"><div class="h3">Unexplained stops after the shift</div><span class="muted xs">stops over 10 min that no break or delivery explains</span></div>`;
+  h+=S.empty?`<div class="empty">${ic("clock")}<div class="h3">No unexplained stops on this day</div></div>`:`<div class="tbl-wrap"><table class="tbl"><tr><th>Courier</th><th>Start – end</th><th>Duration</th><th>Place</th><th>Reason</th><th>Review</th></tr><tr><td>${App.avatar("daniel","--s")} Daniel</td><td class="tnum">13:40–13:58</td><td class="tnum">18 min</td><td><button class="textbtn" onclick="App.toast('External map')">Map</button></td><td class="muted">no reason given</td><td>${App.pill("review","To review")}</td></tr><tr><td>${App.avatar("omar","--s")} Omar</td><td class="tnum">09:41–09:55</td><td class="tnum">14 min</td><td><button class="textbtn" onclick="App.toast('External map')">Map</button></td><td>Petrol station</td><td>${App.pill("done","Resolved")}</td></tr></table></div>`;
+  // <!-- ids: DLOP-150 -->
+  h+=`<div class="sec-head mt24"><div class="h3">Route deviation</div></div>`;
+  h+=S.empty?`<div class="empty">${ic("route")}<div class="h3">No finished runs with a route on this day</div></div>`:`<div class="tbl-wrap"><table class="tbl"><tr><th>Courier</th><th>Run</th><th>Plan / driven</th><th>Off route</th><th>No GPS</th><th>Back</th><th>Drop order</th></tr><tr><td>${App.avatar("daniel","--s")} Daniel</td><td>08:15–09:40 · run #41 · 5 drops</td><td class="tnum">11.2 km / 15.1 km · <b>detour 35 %</b></td><td>6 min · up to 420 m off route <button class="textbtn" onclick="App.toast('External map')">Map</button></td><td class="tnum">4 min · 08:52–08:56</td><td class="accent">12 min later than plan</td><td>out of order 2 of 5</td></tr><tr><td>${App.avatar("omar","--s")} Omar</td><td>08:10–09:40 · run #38 · 7 drops</td><td class="tnum">14.0 km / 14.6 km · detour 4 % <span class="muted xs">(straight-line plan)</span></td><td>0 min</td><td>—</td><td class="ok">on time</td><td>in order</td></tr></table></div>`;
+  App.$("#d14-idle-body").innerHTML=h};
+window.IDL={demo(ev){const S=D14B.idle;const t=(k,l)=>({t:l,ic:S[k]?"check":undefined,fn:()=>{S[k]=!S[k];App.remount()}});App.pop(ev,["Demo state",t("enabled","Idle watch flag"),t("empty","Nothing on this day")])},
+  rev(id,d){D14B.idle.rev[id]=d;App.remount();App.toast(d==="approved"?"Break approved · minutes stay deducted from the shift":"Break rejected · minutes go back into paid time")}};
+
+/* ===== Proof of delivery ===== */
+window.mount_delivery_pod=function(){const D14=window.D14,S=D14B.pod,esc=App.esc,ic=App.icon,can=D14.manage();D14.ensure();
+  document.getElementById("d14-nav-pod").innerHTML=D14.nav("delivery-pod");
+  App.$("#d14-pod-head").innerHTML=`<span class="caps">In transit and delivered · all dates</span><span class="tag --line" title="Marked unused in the CRM: order POD photos live on the orders board">dormant screen</span><span class="sp"></span><label class="check xs"><input type="checkbox" ${S.empty?"checked":""} onchange="D14B.pod.empty=this.checked;App.remount()"> Demo: nothing to show</label>`;
+  const list=S.empty?[]:App.data.orders.filter(o=>o.type==="delivery"&&["out","delivered"].includes(o.status)).slice(0,8);
+  // <!-- ids: DLOP-152 DLOP-153 DLOP-154 DLOP-155 DLOP-157 -->
+  App.$("#d14-pod-body").innerHTML=list.length?`<div class="d14b-pod">${list.map(o=>{const p=App.product(o.product);const d=D14.D[o.id]||{};const hasPhoto=o.status==="delivered"&&o.id%3!==0;const pin=o.id%4===0?String(1000+o.id%9000).slice(0,4):"";return`<div class="card"><div class="row"><b style="font-weight:400">#${o.id}</b>${App.pill(o.status==="delivered"?"delivered":"out",o.status==="delivered"?"Delivered":"In transit")}<span class="sp"></span><button class="ib" onclick="App.openOrder(${o.id})">${ic("chev")}</button></div><div class="photo --4x5">${hasPhoto?`<img src="${p.img}" alt="">`:`<div class="empty" style="height:100%;padding:20px 8px">${ic("photo")}<span class="xs">No photo</span></div>`}</div><div class="sm">Photo: ${hasPhoto?"✓":"<span class='accent'>No photo</span>"}${pin?` · PIN ${pin}`:""}${o.status==="delivered"?` · ${App.fmtDate(o.date)} 11:${String(o.id%60).padStart(2,"0")}`:""}</div>${hasPhoto?`<div class="ev">photo · courier upload${d.pod?" · "+d.pod:""}</div><label class="check xs"><input type="checkbox" ${S.block[o.id]?"checked":""} ${can?"":"disabled"} onchange="D14B.pod.block[${o.id}]=this.checked;App.toast(this.checked?'Photo will not be sent to the customer':'Photo sharing allowed again')"> Don't send this photo to the customer</label>`:""}${o.status!=="delivered"&&can?`<button class="btn --sm --block" onclick="POD.open(${o.id})">Record POD</button>`:""}</div>`}).join("")}</div>`:`<div class="empty">${ic("photo")}<div class="h3">Nothing to show.</div></div>`};
+window.POD={
+  // <!-- ids: DLOP-156 -->
+  open(id){App.modal({title:"Record POD · #"+id,body:`<div class="grid g2"><div class="field"><label>Signature</label><input class="input" placeholder="Name of who signed"></div><div class="field"><label>PIN</label><input class="input" maxlength="8" placeholder="up to 8"></div></div><div class="field mt16"><label>Note</label><textarea class="textarea" placeholder="Left with…"></textarea></div><div class="field mt16"><label>Photo <span class="muted">(jpeg / png / webp · shown only when the photo store is ready)</span></label><button class="btn --ghost --sm" onclick="App.toast('File picker (demo)')">${App.icon("upload")} Choose file</button></div><label class="check mt16"><input type="checkbox" checked id="pod-md"> Mark delivered</label>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="POD.save(${id})">Record POD</button>`})},
+  save(id){const md=App.$("#pod-md").checked;App.closeModal();if(md){App.setOrderStatus(id,"delivered",{silent:true})}App.toast("POD recorded · photo auto-sent to the customer unless blocked"+(md?" · order Fulfilled, email, marketplace mirror, courier points":""))}
+};
+document.addEventListener('orders',()=>{if(App.state.current==='delivery-pod')window.mount_delivery_pod()});
+
+/* ===== Routes (runs list) ===== */
+window.mount_delivery_routes=function(){const D14=window.D14,S=D14B.rt,esc=App.esc,ic=App.icon;
+  document.getElementById("d14-nav-rt").innerHTML=D14.nav("delivery-routes");
+  App.$("#d14-rt-head").innerHTML=`<div class="field" style="flex-direction:row;align-items:center;gap:8px"><label>Date *</label><input class="input" type="date" value="2026-10-20" id="rt-date" style="width:160px;height:32px"></div><div class="field" style="flex-direction:row;align-items:center;gap:8px"><label>Courier</label><select class="select" id="rt-c" style="width:200px;height:32px">${D14B.cr.list.filter(c=>c.on).map(c=>`<option>${esc(c.n)}</option>`).join("")}</select></div><div class="field" style="flex-direction:row;align-items:center;gap:8px"><label>Wave</label><select class="select" id="rt-w" style="width:190px;height:32px"><option>Morning · 08–12</option><option>Midday · 12–16</option><option>Evening · 16–22</option></select></div><button class="btn --sm" onclick="RT.create()">${ic("plus")} New run</button><span class="sp"></span><label class="check xs"><input type="checkbox" ${S.empty?"checked":""} onchange="D14B.rt.empty=this.checked;App.remount()"> Demo: no runs</label>`;
+  // <!-- ids: DLOP-159 DLOP-160 DLOP-161 DLOP-195 -->
+  App.$("#d14-rt-body").innerHTML=`<div class="note-box mb16">Old run planner – all runs ever, newest date first, no paging, search or filters. The live picture is on Couriers today.</div>`+(S.empty?`<div class="empty">${ic("route")}<div class="h3">No runs yet</div></div>`:`<div class="tbl-wrap"><table class="tbl"><tr><th>Route planner</th><th>Date</th><th>Courier</th><th>Wave</th><th class="num">Stops</th><th>Status</th><th></th></tr>${S.runs.map(r=>`<tr class="r" onclick="RT.open(${r.id})"><td>${esc(r.name)}</td><td>${r.date}</td><td>${esc(r.courier)}</td><td>${r.wave}</td><td class="num">${r.stops}</td><td><code class="xs">${r.status}</code></td><td><button class="textbtn" onclick="event.stopPropagation();RT.open(${r.id})">Open</button></td></tr>`).join("")}</table></div>`)};
+window.RT={create(){const d=App.$("#rt-date").value,c=App.$("#rt-c").value,w=App.$("#rt-w").value;const id=44+D14B.rt.runs.length;D14B.rt.runs.unshift({id,name:"Run "+new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short"})+" · "+w.split(" ·")[0],date:new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short"}),courier:c,wave:w,stops:0,status:"planned"});App.toast("Run created · planned");RT.open(id)},
+  open(id){D14B.run.id=id;App.go("delivery-route",{id})}};
+
+/* ===== Route (one run) ===== */
+window.mount_delivery_route=function(params){const D14=window.D14,S=D14B.run,esc=App.esc,ic=App.icon;D14.ensure();
+  if(params&&params.id)S.id=params.id;const r=D14B.rt.runs.find(x=>x.id===S.id)||D14B.rt.runs[1];
+  document.getElementById("d14-nav-run").innerHTML=D14.nav("delivery-routes");
+  const cid=r.courier.toLowerCase().split(" ")[0];const t=D14.T[cid]||D14.T.daniel;const stops=S.stops||(S.stops=t.stops.slice(0,r.stops||t.stops.length).map(s=>s.id));
+  const started=S.started&&!S.closed;
+  App.$("#d14-run-head").innerHTML=`<button class="ib" title="← Routes" onclick="App.go('delivery-routes')">${ic("back")}</button><div><div class="h3">${esc(r.name)} · ${r.date}</div><div class="xs muted">${esc(r.courier)}</div></div><span class="sp"></span>
+    ${S.closed?"":`<button class="btn --sm" onclick="RUN.start()">${started?"Restart from now":"Delivery Start"}</button>`}
+    ${S.locked||S.closed?"":`<button class="btn --ghost --sm" onclick="RUN.auto()">Auto-assign</button><button class="btn --ghost --sm" onclick="RUN.optimize()">Optimize route</button>`}
+    <button class="btn --ghost --sm" onclick="RUN.lock()">${ic("lock")} ${S.locked?"Unlock":"Lock"}</button>
+    <button class="btn --ghost --sm" onclick="App.toast('Run sheet opens in a new tab · position, ETA, code, recipient, phone, address, slot, instructions')">${ic("printer")} Print run sheet</button>
+    ${S.closed?"":`<button class="btn --ghost --sm" onclick="RUN.close()">Close run</button>`}`;
+  let h=`<div class="d14b-run">`;
+  // <!-- ids: DLOP-169 DLOP-170 DLOP-171 DLOP-172 -->
+  if(S.locked)h+=`<div class="note-box --warn bn">${ic("lock")} This run is locked – order, start time, optimisation and auto-assign are frozen · locked by ${App.me().n}</div>`;
+  if(S.closed)h+=`<div class="note-box --ok bn">✓ This run is closed · undelivered stops stay incomplete – there is no «open again»</div>`;
+  const unpaid=stops.map(id=>App.order(id)).filter(o=>o&&o.paid!=="paid").length;if(unpaid)h+=`<div class="note-box --accent bn">${ic("alert")} ${unpaid} unpaid order(s) in this run</div>`;
+  h+=`<div class="grid g3 mb16"><div class="card"><span class="caps">Scheduled start · London time</span><div class="row"><input class="input" type="datetime-local" value="${S.sched}" ${S.locked?"disabled":""} onchange="D14B.run.sched=this.value"><button class="btn --sm" ${S.locked?"disabled":""} onclick="App.toast('Scheduled start saved')">Save</button></div>${started?`<div class="sm mt8">▸ Started ${S.started} · on the road – ${D14.hm(D14.NOWM-D14.mins(S.started)+120).slice(0,5).replace(":","h ")}m</div>`:`<div class="sm muted mt8">Working time – not started</div>`}</div>
+    <div class="card"><span class="caps">Punctuality</span><div class="kpi-s">On-time 67%</div><div class="sm">2 late · 1 very late</div></div><div class="card"><span class="caps">Return</span><div class="kpi-s">~ ${t.back||"12:10"}</div><div class="sm">projected, from the last stop</div></div></div>`;
+  // <!-- ids: DLOP-173 -->
+  const pts=stops.map(id=>App.order(id)).filter(Boolean).map((o,i)=>({o,p:D14.pos(o),k:i%3===0?"ok":i%3===1?"warn":"accent"}));
+  h+=pts.length>=2?`<div class="dm mb16"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${pts.map(x=>`<circle cx="${x.p.x}" cy="${x.p.y}" r="2.2" fill="var(--${x.k})"><title>#${x.o.id} · ${x.k==="ok"?"on time":x.k==="warn"?"late":"very late"}</title></circle>`).join("")}<circle cx="${D14.SHOP.x}" cy="${D14.SHOP.y}" r="2.6" fill="var(--ink)"></circle></svg><div class="lg"><span><i style="background:var(--ok)"></i>On time</span><span><i style="background:var(--warn)"></i>Late</span><span><i style="background:var(--accent)"></i>Very late</span></div></div>`:``;
+  // <!-- ids: DLOP-174 DLOP-175 DLOP-176 DLOP-177 -->
+  h+=`<div class="sec-head"><div class="h3">Stops</div><span class="muted xs">${stops.length} · arrows save immediately</span></div>`;
+  h+=stops.length?stops.map((id,i)=>{const o=App.order(id);if(!o)return"";const ts=S.ts[id]||{};const tag=i%3===0?App.pill("done","On time"):i%3===1?App.pill("review","Late"):i===stops.length-1?App.pill("queue","Pending"):App.pill("late","Very late");const p=App.product(o.product);
+    return`<div class="stop"><span class="no">${i+1}</span><span class="thumb --s">${o.status==="delivered"?`<img src="${p.img}" alt="">`:""}</span><div class="t"><b>#${o.id} · ${D14.pcOf(o)}</b> ${tag}${o.paid!=="paid"?` <span class="tag --accent">Unpaid</span>`:""}<small>${esc(o.recipient)} · ETA ${D14.hm(12*60+5+i*20)} · +${(i*4)%13} m${ts.arr?" · arr "+ts.arr:""}${ts.dep?" · dep "+ts.dep:""}</small></div>${S.closed?"":`<button class="btn --ghost --sm" onclick="RUN.ts(${id},'arr')">Mark arrived</button><button class="btn --ghost --sm" onclick="RUN.ts(${id},'dep')">Mark departed</button>`}<button class="ib" ${S.locked||i===0?"disabled":""} onclick="RUN.move(${id},-1)">${ic("down").replace('viewBox','style="transform:rotate(180deg)" viewBox')}</button><button class="ib" ${S.locked||i===stops.length-1?"disabled":""} onclick="RUN.move(${id},1)">${ic("down")}</button></div>`}).join(""):`<div class="empty">${ic("route")}<div class="h3">No stops</div><div class="sm">Auto-assign adds every unplaced delivery of the day</div></div>`;
+  h+=`</div>`;App.$("#d14-run-body").innerHTML=h};
+window.RUN={
+  start(){const S=D14B.run;S.started=window.D14.hm(window.D14.NOWM);App.remount();App.toast("Started · order and ETAs recomputed from now (Google / postcode) · no confirmation in the CRM")},
+  auto(){const S=D14B.run,D14=window.D14;const add=D14.unassigned().map(o=>o.id).filter(id=>!S.stops.includes(id));S.stops=S.stops.concat(add);App.remount();App.toast("Assigned "+add.length+" orders · appended to the end, no confirmation")},
+  optimize(){const S=D14B.run;S.stops=S.stops.slice().sort((a,b)=>window.D14.pos(App.order(a)).x-window.D14.pos(App.order(b)).x);App.remount();App.toast("Optimised · order and ETAs by Google Routes")},
+  lock(){const S=D14B.run;S.locked=!S.locked;App.remount();App.toast(S.locked?"Run locked":"Run unlocked")},
+  close(){const S=D14B.run;S.closed=true;App.remount();App.toast("Run closed · status done · no confirmation in the CRM")},
+  ts(id,k){const S=D14B.run;(S.ts[id]=S.ts[id]||{})[k]=window.D14.hm(window.D14.NOWM);App.remount();App.toast((k==="arr"?"Arrived":"Departed")+" · #"+id+(S.locked?" (allowed on a locked run)":""))},
+  move(id,d){const S=D14B.run;const i=S.stops.indexOf(id),j=i+d;if(j<0||j>=S.stops.length)return;S.stops.splice(i,1);S.stops.splice(j,0,id);App.remount();App.toast("Order saved")}
+};
+
+/* ===== Presence ===== */
+window.mount_delivery_presence=function(){const D14=window.D14,S=D14B.pr,esc=App.esc,ic=App.icon;D14.ensure();
+  document.getElementById("d14-nav-pr").innerHTML=D14.nav("delivery-presence");
+  App.$("#d14-pr-head").innerHTML=`<span class="caps">Who is on shift, where, battery</span><span class="sp"></span>${S.enabled?D14.live("20 s"):""}<button class="btn --ghost --sm" onclick="PR.demo(event)">${ic("sparkle")} Demo state</button>`;
+  // <!-- ids: DLOP-178 -->
+  if(!S.enabled){App.$("#d14-pr-body").innerHTML=`<div class="empty">${ic("pin")}<div class="h3">Presence is off</div><div class="sm">delivery.presence.enabled is false – shifts and positions are not collected.</div></div>`;return}
+  const rows=S.empty?[]:[{c:"daniel",st:"On a run",seen:"just now",bat:72,open:5,alerts:[]},{c:"george",st:"Available",seen:"3 min ago",bat:18,open:3,alerts:["Low battery"]},{c:"omar",st:"On break",seen:"12 min ago",bat:54,open:0,alerts:["No pings"]}];
+  // <!-- ids: DLOP-180 DLOP-181 DLOP-182 DLOP-183 DLOP-184 -->
+  const att=rows.filter(r=>r.alerts.length).length;
+  let h=`<div class="grid g3 mb16"><div class="kpi-card" style="cursor:default"><span class="caps">On shift</span><span class="kpi-s">${rows.length}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">On a run</span><span class="kpi-s">${rows.filter(r=>r.st==="On a run").length}</span></div><div class="kpi-card ${att?"d14-kpi --hot":""}" style="cursor:default"><span class="caps">Needs attention</span><span class="kpi-s ${att?"accent":""}">${att}</span></div></div>`;
+  if(S.geo)h+=`<div class="sec-head"><div class="h3">Live positions</div><span class="muted xs">last consented point per courier</span></div><div class="d14b-pres">${rows.length?`<svg viewBox="0 0 100 40" preserveAspectRatio="none">${rows.map((r,i)=>`<circle cx="${20+i*28}" cy="${14+(i%2)*12}" r="1.6"/><text x="${22+i*28}" y="${15+(i%2)*12}">${App.user(r.c).n}</text>`).join("")}<circle cx="${D14.SHOP.x}" cy="30" r="2" style="fill:var(--grey)"/><text x="52" y="31">Shop</text></svg>`:`<div class="ovl">No positions yet – waiting for the first ping.</div>`}</div>`;
+  h+=rows.length?`<div class="tbl-wrap"><table class="tbl"><tr><th>Courier</th><th>Status</th><th>Last seen</th><th>Battery</th><th class="num">Open deliveries</th><th>Alerts</th><th></th></tr>${rows.map(r=>`<tr><td>${App.avatar(r.c,"--s")} ${App.user(r.c).n}</td><td>${App.pill(r.st==="On a run"?"out":r.st==="Available"?"ready":r.st==="On break"?"review":"queue",r.st)}</td><td>${r.seen}</td><td class="tnum ${r.bat<20?"accent":""}">${r.bat}%</td><td class="num">${r.open}</td><td>${r.alerts.map(a=>`<span class="tag --accent">${a}</span>`).join(" ")}</td><td><button class="btn --ghost --sm" onclick="PR.force('${r.c}')">Force check-out</button></td></tr>`).join("")}</table></div><div class="xs muted mt8">The button is visible to everyone – the server's forceCheckout policy decides.</div>`:`<div class="empty">${ic("user")}<div class="h3">No couriers on shift right now.</div></div>`;
+  App.$("#d14-pr-body").innerHTML=h};
+window.PR={demo(ev){const S=D14B.pr;const t=(k,l)=>({t:l,ic:S[k]?"check":undefined,fn:()=>{S[k]=!S[k];App.remount()}});App.pop(ev,["Demo state",t("enabled","Presence flag"),t("geo","Geo flag (live positions)"),t("empty","Nobody on shift")])},
+  force(c){const u=App.user(c);App.modal({title:"Force check-out "+u.n,body:`<div class="sm soft mb8">Closes the shift, stops geo-tracking and clocks out the open timesheet entry.</div><div class="field"><label>Reason *</label><input class="input" id="pr-why" placeholder="Required"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm --accent" onclick="if(!App.$('#pr-why').value){App.toast('Reason is required');return}App.closeModal();App.toast('${u.n} checked out · audit')">Force check-out</button>`})}};
+</script>
