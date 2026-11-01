@@ -1,4 +1,46 @@
-<section class="scr me5" id="s-settings" data-nav="Settings" data-group="Me">
+<style>
+#s-settings .demo{display:flex;align-items:center;gap:8px;margin:8px var(--gutter) 0;padding:8px 10px;background:var(--silver);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+#s-settings .demo .seg{height:30px;flex:1;border-color:var(--light)}
+#s-settings .demo .seg button{font-size:10px;letter-spacing:.06em}
+#s-settings .na{margin:12px var(--gutter) 0;padding:14px;background:var(--silver);font-size:14px;line-height:1.5;color:var(--graphite)}
+#s-settings .saveerr{color:var(--accent);font-size:13px;padding:8px var(--gutter) 0}
+#s-settings .switch.busy{opacity:.4;pointer-events:none}
+#s-settings .proposal{margin:28px var(--gutter) 0;border:1px dashed var(--light);padding:12px 14px;font-size:12px;color:var(--grey);line-height:1.5}
+</style>
+<!-- ids: TM-INBOX-020 TM-INBOX-021 TM-INBOX-022 TM-INBOX-023 TM-INBOX-024 TM-INBOX-025 TM-INBOX-026 TM-INBOX-027 TM-INBOX-028 TM-INBOX-029 TM-ME-032 TM-ME-038 TM-ME-043 -->
+<section class="scr me5" id="s-settings" data-nav="Settings · notifications" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Settings</div></div>
   <div class="scr-body" id="st-body" style="padding-bottom:32px"></div>
 </section>
+<script>
+(function(){
+const A=window.App;const ST={crm:'ok',device:true,busy:false,err:false};window.STX=ST;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const orig=window.mount_settings;
+window.mount_settings=function(){
+  orig();
+  const el=document.getElementById('st-body'),u=A.me(),ok=ST.crm==='ok';
+  /* demo: CRM states (TM-INBOX-021, 025) */
+  el.insertAdjacentHTML('afterbegin',`<div class="demo"><span>Demo · CRM</span><div class="seg"><button class="${ST.crm==='ok'?'on':''}" onclick="STX.setCrm('ok')">Answers</button><button class="${ST.crm==='na'?'on':''}" onclick="STX.setCrm('na')">No centre</button><button class="${ST.crm==='fail'?'on':''}" onclick="STX.setCrm('fail')">Save fails</button></div></div>`);
+  const grps=$$('.grp',el);const g=t=>grps.find(x=>x.textContent.trim()===t);
+  if(ST.crm==='na'){
+    /* server settings hidden – grey panel, only the phone switch stays */
+    ['Notifications','Quiet hours','Digest'].forEach(t=>{const h=g(t);if(!h)return;let n=h.nextElementSibling;h.remove();while(n&&!n.classList.contains('grp')){const nx=n.nextElementSibling;n.remove();n=nx}});
+    g('Sound').insertAdjacentHTML('beforebegin',`<div class="grp first">Notifications</div><div class="na">Notification settings are not available on this CRM yet. You can still turn pushes off for this phone below.</div>`);
+  } else {
+    const dg=g('Digest');const dr=dg&&dg.nextElementSibling;
+    if(dr){const after=dr.nextElementSibling;const h=`<div class="saveerr" id="st-err" style="display:${ST.err?'block':'none'}">Could not save – the value went back. Check the connection and try again.</div><div class="note" style="padding-top:8px">Every change is saved to the CRM at once; the digest is one push “While you were away” when your shift starts.</div>`;(after&&after.classList.contains('blk')?after:dr).insertAdjacentHTML('afterend',h)}
+    /* hook the switches and radios to the save-fail demo */
+    $$('.switch[id^="sw-"]',el).forEach(b=>{if(!['sw-quiet','sw-urgent','sw-digest'].includes(b.id))return;const o=b.onclick;b.onclick=e=>{if(ST.crm==='fail'){const k=b.id.slice(3);setTimeout(()=>{ME5.prefs[k]=!ME5.prefs[k];b.classList.toggle('on',ME5.prefs[k]);b.setAttribute('aria-checked',ME5.prefs[k]);ST.err=true;const er=$('#st-err');if(er)er.style.display='block';A.toast('Not saved')},500)}else{ST.err=false;const er=$('#st-err');if(er)er.style.display='none'}o&&o.call(b,e)}});
+  }
+  /* This phone (TM-INBOX-026..029) */
+  const sound=g('Sound');
+  if(sound)sound.insertAdjacentHTML('beforebegin',`<div class="grp">This phone</div><div class="rows"><div class="row"><span class="rt"><div class="l">Notifications on this phone</div><div class="d">${ST.device?'Registered · iPhone · token saved on the server':'Muted · the token was removed, nothing arrives'}</div></span><button class="switch ${ST.device?'on':''} ${ST.busy?'busy':''}" id="st-dev" role="switch" aria-checked="${ST.device}" onclick="STX.device(this)"></button></div></div>
+    <div class="note" style="padding-top:8px">Saved on device. Turning off removes this phone from the server at once; turning on asks the system for permission again. Registration happens after sign-in (not on a simulator or without permission). In the open app a push shows as a banner with sound – the app icon gets no badge.</div>`);
+  /* not in the app today – proposal (TM-ME-038, TM-ME-043) */
+  el.insertAdjacentHTML('beforeend',`<div class="proposal">Not in the app today: appearance, Face ID / PIN, location, app version, support, policies, profile photo or phone, account deletion. Sound, haptics, Liquid Glass, Face ID and PIN above are proposals for the redesign – Tatiana decides.</div>`);
+};
+ST.setCrm=m=>{ST.crm=m;ST.err=false;window.mount_settings()};
+ST.device=b=>{if(ST.busy)return;ST.busy=true;b.classList.add('busy');setTimeout(()=>{ST.busy=false;ST.device=!ST.device;A.haptic();A.toast(ST.device?'Pushes on · permission granted':'Pushes off on this phone');window.mount_settings()},700)};
+})();
+</script>

@@ -1,3 +1,24 @@
+<style>
+#s-inbox .demo{display:flex;align-items:center;gap:8px;padding:8px var(--gutter);background:var(--silver);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+#s-inbox .demo .seg{height:30px;flex:1;border-color:var(--light)}
+#s-inbox .demo .seg button{font-size:10px;letter-spacing:.06em}
+#s-inbox .in-n{display:flex;gap:12px;padding:14px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left;position:relative;align-items:flex-start}
+#s-inbox .in-n .u{position:absolute;left:8px;top:22px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+#s-inbox .in-n .nic{width:36px;height:36px;border:1px solid var(--hair);display:grid;place-items:center;flex:none;color:var(--ink)}
+#s-inbox .in-n .nt{font-size:15px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#s-inbox .in-n.unread .nt{font-weight:500}
+#s-inbox .in-n .nb{font-size:13px;color:var(--graphite);margin-top:2px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#s-inbox .in-n .nm{font-size:12px;color:var(--grey);flex:none;font-variant-numeric:tabular-nums;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+#s-inbox .in-n .urg{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:1px 6px}
+#s-inbox .in-note{display:flex;gap:12px;margin:18px var(--gutter) 0;padding:14px;background:var(--silver);font-size:13px;line-height:1.5;color:var(--graphite)}
+#s-inbox .in-note b{color:var(--ink);font-weight:500}
+#s-inbox .in-empty{padding:48px var(--gutter);text-align:center;color:var(--grey);font-size:14px;line-height:1.5}
+#s-inbox .in-panel{margin:16px var(--gutter) 0;padding:16px;background:var(--silver);font-size:14px;line-height:1.5}
+#s-inbox .in-foot{font-size:12px;color:var(--grey);padding:14px var(--gutter) 32px;line-height:1.5}
+#s-inbox .ib.dim{opacity:.35}
+#s-inbox .td-grp{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px var(--gutter) 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+</style>
+<!-- ids: TM-INBOX-002 TM-INBOX-005 TM-INBOX-007 TM-INBOX-018 TM-INBOX-019 -->
 <section class="scr" id="s-inbox" data-nav="Inbox" data-group="Today">
   <div class="appbar">
     <button class="ib" aria-label="Back" id="in-back"></button>
@@ -6,3 +27,91 @@
   </div>
   <div class="scr-body" id="in-body"></div>
 </section>
+<!-- rendered by script below: TM-INBOX-003 TM-INBOX-004 TM-INBOX-006 TM-INBOX-008 TM-INBOX-009 TM-INBOX-010 TM-INBOX-011 TM-INBOX-012 TM-INBOX-013 TM-INBOX-014 TM-INBOX-015 TM-INBOX-016 TM-INBOX-017 -->
+<script>
+(function(){
+const A=window.App;const IN={};window.IN=IN;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ic=(n,s=18,x='')=>A.icon(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;${x}"`);
+const NOW=A.NOW;const T=(h,m=0,d=0)=>{const x=new Date(2026,9,20,h,m);x.setDate(x.getDate()+d);return x.toISOString()};
+const isMgr=()=>A.role()==='manager'||A.role()==='owner';
+IN.filter='all';IN.mode='live';
+const orig=window.mount_inbox;
+/* icon per type (TM-INBOX-010) */
+const ICON={task:'board',ann:'megaphone',announcement:'megaphone',order:'flower',queue:'flower',delivery:'truck',trip:'truck',trip_confirm:'truck',shift:'clock',idle:'clock',shift_offer:'clock',learn:'book',learning:'book',lesson:'book',comms:'chat',inventory:'box',stocktake:'box',purchase_order:'box',claim:'box',contractor_job:'tag',digest:'sun',notifications:'sun'};
+const FILTERS=[['all','All',null],['tasks','Tasks',['task']],['ann','Announcements',['ann','announcement']],['orders','Orders & routes',['order','queue','delivery','trip','trip_confirm']],['learning','Learning',['learn','learning','lesson']]];
+/* extra demo rows per persona – types the shell does not seed (orders, routes, chats, stock, digest, offers) */
+const EXTRA={
+  valeria:[{id:901,type:'comms',title:'Eleanor Harper is waiting · WhatsApp',body:'“Could it arrive before 2 pm?” · 7 min without a reply · Flora draft ready',at:T(11,4),read:false,priority:'high',go:['cm-chat',{id:1}]},
+    {id:902,type:'order',title:'New website order 715620',body:'Pink Manifesto Deluxe · SW11 · today 12:00–14:00',at:T(10,51),read:false,go:['order',{id:'715620'}]},
+    {id:903,type:'inventory',title:'Stocktake submitted · cold room',body:'Vita counted 48 lines, 3 differences to check',at:T(9,55),read:true,go:['work',{view:'stock'}]},
+    {id:904,type:'digest',title:'While you were away',body:'5 notifications since Monday 22:00',at:T(7,30),read:true,go:['inbox',{}]}],
+  kamila:[{id:901,type:'queue',title:'New order in your queue',body:'715620 · Pink Manifesto Deluxe · ready by 11:45',at:T(10,52),read:false,priority:'high',go:['work',{view:'orders',tab:'mine'}]},
+    {id:902,type:'shift_offer',title:'Extra shift on Saturday',body:'10:00–16:00 at SW6 · 1 spot · reply in the app',at:T(9,30),read:false,go:null},
+    {id:903,type:'digest',title:'While you were away',body:'3 notifications since yesterday 22:00',at:T(7,58),read:true,go:['inbox',{}]}],
+  andrii:[{id:901,type:'delivery',title:'Delivery 715619 · leave with neighbour',body:'Client says flat 4 is away – neighbour at flat 5 accepts',at:T(11,8),read:false,priority:'high',go:['stop',{id:2}]},
+    {id:902,type:'trip_confirm',title:'Confirm your route · 3 stops',body:'Battersea → Clapham → Chelsea · first slot 12:00',at:T(10,30),read:false,go:['route',{}]},
+    {id:903,type:'digest',title:'While you were away',body:'4 notifications since Sunday',at:T(7,50),read:true,go:['inbox',{}]}],
+  ayana:[{id:901,type:'lesson',title:'Lesson reminder',body:'Photo before packing – 60 % done, 2 minutes left',at:T(10,15),read:false,go:null}],
+  zhadra:[{id:901,type:'shift_offer',title:'New shift offer · Thu 12:00–20:00',body:'SE1 studio · pre-Halloween · 1 spot',at:T(9,20),read:false,priority:'high',go:null},
+    {id:902,type:'contractor_job',title:'Pay statement ready',body:'Week 42 · £362.80 · PAYE',at:T(8,0),read:true,go:['pay',{}]}],
+  tatiana:[{id:901,type:'comms',title:'Eleanor Harper is waiting · WhatsApp',body:'7 min without a reply · Flora draft ready',at:T(11,4),read:false,priority:'high',go:['cm-chat',{id:1}]},
+    {id:902,type:'order',title:'Large order · 715618 · £340',body:'Corporate · Priya Nair · Thursday 9:00',at:T(10,20),read:false,go:['order',{id:'715618'}]},
+    {id:903,type:'digest',title:'While you were away',body:'6 notifications since Sunday',at:T(7,30),read:true,go:['inbox',{}]}]
+};
+function ensureExtra(){const list=A.state.notifs;const ex=EXTRA[A.state.me]||[];ex.forEach(e=>{if(!list.some(n=>n.id===e.id))list.push(Object.assign({},e))});}
+const match=n=>{const f=FILTERS.find(x=>x[0]===IN.filter);return !f[2]||f[2].includes(n.type)};
+const isToday=n=>new Date(n.at).toDateString()===NOW.toDateString();
+const when=n=>isToday(n)?A.fmtTime(n.at):(A.fmtDay(n.at)==='Yesterday'?'Yesterday':A.fmtDay(n.at));
+const PREFS=()=>window.ME5&&ME5.prefs||{level:'all',quiet:false,digest:true};
+function prefsNote(){const p=PREFS();
+  const t=p.level==='priority'?`<b>Priority only.</b> Tasks for you, overdue, announcements to acknowledge, shift changes and urgent orders come as pushes${p.digest?'; the rest arrives as one digest when your shift starts':''}.`:p.quiet?`<b>Quiet outside your shift.</b> Between shifts only urgent tasks come through – everything else waits here.`:`<b>Everything comes through.</b> Every notification is also a push.`;
+  return `<div class="in-note">${ic('moon',20,'color:var(--graphite);margin-top:1px')}<div>${t} <button class="textbtn" style="margin-left:2px" onclick="App.go('settings')">Settings</button></div></div>`}
+function render(){
+  const el=$('#in-body'),u=A.me(),reserve=u.engagement==='reserve';
+  const all=A.state.notifs.slice().sort((a,b)=>new Date(b.at)-new Date(a.at));
+  const unreadN=all.filter(n=>!n.read).length;
+  $('#in-back').innerHTML=A.icon('back');$('#in-back').onclick=()=>A.back('home');
+  const ab=$('#in-all');ab.innerHTML=A.icon('checksq');ab.classList.toggle('dim',!unreadN);ab.onclick=()=>{if(!unreadN){A.toast('Nothing unread');return}IN.readAll()};
+  const present=FILTERS.filter(f=>!f[2]||all.some(n=>f[2].includes(n.type))||IN.filter===f[0]);
+  const cnt=f=>all.filter(n=>!n.read&&(!f[2]||f[2].includes(n.type))).length;
+  const chips=present.length>1?`<div class="chips" style="margin-top:6px">${present.map(f=>`<button class="chip ${IN.filter===f[0]?'on':''}" onclick="IN.setFilter('${f[0]}')">${f[1]}${cnt(f)?` <span style="opacity:.7">${cnt(f)}</span>`:''}</button>`).join('')}</div>`:'';
+  const list=all.filter(match),today=list.filter(isToday),earlier=list.filter(n=>!isToday(n));
+  const row=n=>`<button class="in-n ${n.read?'':'unread'}" onclick="IN.open(${n.id})">${n.read?'':'<i class="u"></i>'}<span class="nic">${ic(ICON[n.type]||'bell',18)}</span><span class="f1" style="min-width:0"><span class="nt">${esc(n.title)}</span><span class="nb">${n.body}</span></span><span class="nm"><span>${when(n)}</span>${!n.read&&n.priority==='high'?'<span class="urg">Urgent</span>':''}</span></button>`;
+  let body='';
+  if(IN.mode==='na')body=`<div class="in-panel">${ic('info',18,'vertical-align:-3px')} The notification centre isn't available on this CRM yet. Pushes still arrive on the phone.</div>`;
+  else if(IN.mode==='error')body=`<div class="in-panel">Couldn't load notifications. <button class="textbtn" onclick="IN.refresh()">Pull to refresh</button></div>`;
+  else if(IN.mode==='broken')body=`<div class="in-panel"><b>This section couldn't be shown.</b><br>A broken response from the CRM is caught here – the rest of the app keeps working. <button class="textbtn" onclick="IN.setMode('live')">Reload</button></div>`;
+  else if(IN.mode==='empty'||!list.length)body=`<div class="in-empty">${IN.mode==='empty'||(IN.filter==='all'&&!all.length)?'Nothing here. Enjoy the quiet.':'Nothing like that in the last 30 days.'}</div>`;
+  else{if(today.length)body+=`<div class="td-grp"><span>Today</span><span>${today.filter(n=>!n.read).length?today.filter(n=>!n.read).length+' new':''}</span></div>`+today.map(row).join('');
+    if(earlier.length)body+=`<div class="td-grp"><span>Earlier</span></div>`+earlier.map(row).join('')}
+  el.innerHTML=`<div class="demo"><span>Demo</span><div class="seg"><button class="${IN.mode==='live'?'on':''}" onclick="IN.setMode('live')">Live</button><button class="${IN.mode==='empty'?'on':''}" onclick="IN.setMode('empty')">Empty</button><button class="${IN.mode==='error'?'on':''}" onclick="IN.setMode('error')">Error</button><button class="${IN.mode==='na'?'on':''}" onclick="IN.setMode('na')">No centre</button><button class="${IN.mode==='broken'?'on':''}" onclick="IN.setMode('broken')">Broken</button></div></div>
+    ${reserve?`<div class="in-panel">${ic('info',18,'vertical-align:-3px')} You opened this from a push. The reserve has no bell on Today and no Inbox row in Me – notification settings are not available yet.</div>`:''}
+    <div class="td-grp" style="margin-top:4px"><span>${unreadN?unreadN+' unread':'All read'}</span><span style="display:flex;gap:12px"><button class="textbtn" onclick="IN.simPush()">Simulate push</button><button class="textbtn" onclick="IN.simDigest()">Digest</button><button class="textbtn" onclick="IN.refresh()">Refresh</button></span></div>
+    ${IN.mode==='live'?chips:''}
+    ${body}
+    ${prefsNote()}
+    <div class="in-foot">One list feeds the bell on Today, the row in Me and this screen · last 100 notifications, 30 days · a new push refreshes it at once · pull down to refresh.</div>`;
+  A.renderBadges();
+}
+window.mount_inbox=function(){orig&&orig();ensureExtra();render()};
+IN.setFilter=k=>{IN.filter=k;A.haptic();render()};
+IN.setMode=m=>{IN.mode=m;render()};
+IN.refresh=()=>{IN.mode='live';A.toast('Refreshed · '+A.fmtTime(NOW));render()};
+IN.readAll=()=>{A.state.notifs.forEach(n=>n.read=true);A.renderBadges();render();A.toast('All caught up')};
+IN.open=id=>{const n=A.state.notifs.find(x=>x.id==id);if(!n)return;A.readNotif(id);
+  if(!n.go||!document.getElementById('s-'+n.go[0])){render();A.toast(n.go?'Opens '+n.go[0]+' (shared screen)':'Marked as read – this type has nowhere to open');return}
+  if(n.go[0]==='cm-chat'&&!isMgr()){render();A.toast('Chats are for managers');return}
+  A.go(n.go[0],n.go[1]||{})};
+IN.simPush=()=>{const u=A.me();const id=Date.now();const n=u.role==='courier'?{id,type:'delivery',title:'Delivery 715621 · address changed',body:'Now 22 Lavender Hill, SW11 (fictional) · same slot',at:NOW.toISOString(),read:false,priority:'high',go:['route',{}]}:isMgr()?{id,type:'comms',title:'New message · Instagram',body:'@rosie.blooms: “Any chance of Sunday delivery?”',at:NOW.toISOString(),read:false,go:['cm-chat',{id:2}]}:{id,type:'task',title:'New task from Valeria',body:'Wrap the 12:00 marketplace orders · due 11:45',at:NOW.toISOString(),read:false,priority:'high',go:['tasks',{}]};
+  A.state.notifs.push(n);A.push(n.title,n.body,{icon:ICON[n.type],go:n.go});render()};
+IN.simDigest=()=>{const c=A.state.notifs.filter(n=>!n.read).length;A.push('While you were away',`${c||3} notifications since your last shift`,{icon:'sun',go:['inbox',{}]})};
+/* keep in sync with the shell's own re-renders */
+['ann','tasks','learn','shift','user'].forEach(ev=>document.addEventListener(ev,()=>{if(A.state.current==='inbox'){ensureExtra();render()}}));
+/* the shell's TD.filter / TD.readAll / TD.open re-render the old list – route them here */
+if(window.TD){TD.filter=k=>IN.setFilter(k);TD.readAll=()=>IN.readAll();TD.open=id=>IN.open(id)}
+/* owner persona for the stand – admin-only blocks in Me live on her */
+if(window.PERSONAS&&!PERSONAS.find(p=>p.id==='tatiana'))PERSONAS.push({id:'tatiana',label:'Owner · admin'});
+})();
+</script>

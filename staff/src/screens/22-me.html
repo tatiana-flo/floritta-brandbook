@@ -1,4 +1,109 @@
+<style>
+#s-me .adm{margin:20px var(--gutter) 0;border:1px solid var(--hair);padding:14px}
+#s-me .adm .caps{color:var(--grey)}
+#s-me .adm .chips{padding:0;margin-top:10px;flex-wrap:wrap}
+#s-me .adm .chip{height:30px;font-size:12px}
+#s-me .adm .sw{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid var(--hair);font-size:14px}
+#s-me .adm .sw .switch.busy{opacity:.4;pointer-events:none}
+#s-me .ja{margin:0 var(--gutter);border:1px solid var(--hair);padding:14px}
+#s-me .ja .chips{padding:0;margin-top:8px}
+#s-me .ja .sw{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;font-size:14px}
+#s-me .ja .sw.dis{opacity:.4;pointer-events:none}
+#s-me .lang{display:flex;gap:8px;padding:12px var(--gutter) 4px}
+#s-me .lang .chip{height:32px}
+#s-me .demo{display:flex;align-items:center;gap:8px;margin:20px var(--gutter) 0;padding:8px 10px;background:var(--silver);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+#s-me .demo .seg{height:30px;flex:1;border-color:var(--light)}
+#s-me .demo .seg button{font-size:10px;letter-spacing:.06em}
+#s-me .row .d .accent{color:var(--accent)}
+</style>
+<!-- ids: TM-ME-001 TM-ME-002 TM-ME-037 TM-INBOX-001 -->
 <section class="scr me5" id="s-me" data-tab="me" data-nav="Me" data-group="Me">
   <div class="appbar"><div class="ttl">Me</div><button class="ib" aria-label="Inbox" onclick="App.go('inbox')"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><span class="dot" data-unread data-n="0"></span></button></div>
   <div class="scr-body has-tab" id="me-body"></div>
 </section>
+<!-- rendered by script below: TM-ME-003 TM-ME-004 TM-ME-005 TM-ME-006 TM-ME-007 TM-ME-008 TM-ME-009 TM-ME-010 TM-ME-011 TM-ME-012 TM-ME-013 TM-ME-014 TM-ME-015 TM-ME-016 TM-ME-017 TM-ME-018 TM-ME-019 TM-ME-020 TM-ME-021 TM-ME-022 TM-ME-023 TM-ME-024 TM-ME-025 TM-ME-026 TM-ME-027 TM-ME-028 TM-ME-029 TM-ME-030 TM-ME-031 TM-ME-032 TM-ME-033 TM-ME-034 TM-ME-035 TM-ME-036 TM-ME-039 TM-ME-040 TM-ME-041 TM-ME-042 TM-ME-043 TM-INBOX-030 TM-ANN-001 TM-CHAT-001 -->
+<script>
+(function(){
+const A=window.App;const ME={contours:true,crm:'ok',lang:'en',ja:{mode:'all',quiet:true},lens:{role:null,contour:null}};window.MEX=ME;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const ri=n=>A.icon(n).replace('<svg','<svg class="ic"'),chev=()=>A.icon('chev').replace('<svg','<svg class="chev"');
+const R=(i,l,d,v,fn,key)=>`<button class="row" data-key="${key||''}" onclick="${fn}">${ri(i)}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${v?`<span class="val">${v}</span>`:''}${chev()}</button>`;
+const isMgr=()=>A.role()==='manager'||A.role()==='owner';
+const CONTOUR={employee:'Employee',worker:'Casual worker',contractor:'Self-employed',reserve:'Reserve',freelance:'Self-employed'};
+const contourOf=u=>u.engagement||'employee';
+const limited=u=>u.staff_type==='seasonal'||u.staff_type==='trainee';
+const goOr=(id,params,label)=>document.getElementById('s-'+id)?`App.go('${id}',${JSON.stringify(params||{})})`:`App.toast('${label||id} opens (shared screen of another section)')`;
+const LANGS={en:'English',ru:'Русский',system:'System'};
+const orig=window.mount_me;
+function pendingAnns(){if(window.CM&&CM.pending)return CM.pending().length;return ANNOUNCEMENTS.filter(a=>!a.ack&&a.by!==A.state.me).length}
+function unreadN(){return A.state.notifs.filter(n=>!n.read).length}
+window.mount_me=function(){
+  orig();
+  const u=A.me(),r=A.role(),el=document.getElementById('me-body'),c=contourOf(u);
+  if(c==='reserve'||c==='freelance')return; /* reserve gets the short Me (file 06, agent tm-reserve); freelancer has fl-me */
+  const owner=r==='owner',mgr=isMgr(),lim=limited(u),ctr=c==='contractor',wk=c==='worker',ok=ME.crm==='ok';
+  /* header: role + contour pills (TM-ME-003, TM-ME-042) */
+  const pills=el.querySelector('.pillrow');
+  if(pills){const roleP=`<span class="pill --plain">${r==='owner'?'Admin':r.charAt(0).toUpperCase()+r.slice(1)}</span>`;pills.innerHTML=roleP+(ME.contours?`<span class="pill --plain">${CONTOUR[c]}</span>`:'')+(u.staff_type==='trainee'?'<span class="pill --plain">Buddy · Svetlana</span>':'');
+    const tt=el.querySelector('.prof .tt');if(tt)tt.textContent=`${u.title} · ${ME.contours?CONTOUR[c]:'role only'}`}
+  /* admin block – only the real admin (TM-ME-004..007) */
+  if(owner&&!(window.ME5&&ME5.realAdmin)){
+    const chip=(on,l,fn)=>`<button class="chip ${on?'on':''}" onclick="${fn}">${l}</button>`;
+    const blk=document.createElement('div');blk.className='adm';blk.innerHTML=`<div class="caps">View as · only how it looks, your account stays admin</div>
+      <div class="chips">${chip(!ME.lens.role,'Mine',"MEX.lensRole(null)")}${chip(ME.lens.role==='florist','Florist',"MEX.lensRole('florist')")}${chip(ME.lens.role==='courier','Courier',"MEX.lensRole('courier')")}</div>
+      ${ME.contours?`<div class="caps" style="margin-top:14px">Contour lens · screens follow in place</div><div class="chips">${chip(!ME.lens.contour,'Mine',"MEX.lensContour(null)")}${chip(ME.lens.contour==='employee','Employee',"MEX.lensContour('employee')")}${chip(ME.lens.contour==='worker','Worker',"MEX.lensContour('worker')")}${chip(ME.lens.contour==='contractor','Self-employed',"MEX.lensContour('contractor')")}${chip(ME.lens.contour==='reserve','Reserve',"MEX.lensContour('reserve')")}</div>`:''}
+      <div class="sw"><span>Contours (version B) for my account<br><span class="xs muted">Switches the whole navigation at once, no restart</span></span><button class="switch ${ME.contours?'on':''}" id="me-ctr" role="switch" aria-checked="${ME.contours}" onclick="MEX.toggleContours(this)"></button></div>`;
+    const prof=el.querySelector('.pillrow');prof.insertAdjacentElement('afterend',blk);
+  }
+  /* My work – add rows by contour and rights (TM-ME-009..022, 039..041) */
+  const grps=$$('.grp,.rs-grp',el);const g=t=>grps.find(x=>x.textContent.trim()===t);
+  const work=g('My work')&&g('My work').nextElementSibling;
+  if(work){
+    const add=h=>work.insertAdjacentHTML('beforeend',h);
+    if(c==='employee'&&!lim)add(R('calendar','My week','Hours, lessons and bonus for this week','',goOr('timeclock',{},'My week'),'week'));
+    if(owner&&ok)add(R('award',"Florists' bonus overview",'Bouquets and bonus across the team','£412',goOr('bonus',{},'Florists bonus'),'fb'));
+    if(ctr){const jr=[...work.querySelectorAll('.row')].find(x=>/Jobs board/.test(x.textContent));if(jr&&!ok)jr.remove()}
+    if(!ok){[...work.querySelectorAll('.row')].forEach(x=>{if(/Shift offers|Pay statements|Statements|Business profile|My agreement|Jobs board/.test(x.textContent))x.remove()})}
+  }
+  /* Shop – tools (TM-ME-024..030); none for self-employed non-managers */
+  const pref=g('Preferences');
+  if(pref&&!(ctr&&!mgr)){
+    let rows='';
+    if(!ctr)rows+=R('megaphone','Announcements',ok?(pendingAnns()?`<span class="accent">waiting for your “Got it”: ${pendingAnns()}</span>`:'All read'):'','',"App.go('cm-anns')",'ann');
+    if(mgr)rows+=R('chat','Client chats',ok?'WhatsApp, Instagram, Telegram, SMS, email · 2 waiting':'','',"App.go('cm-inbox')",'chats');
+    if(mgr)rows+=R('calendar','Shifts & jobs','Publish shifts for workers and jobs for the self-employed','',goOr('schedule',{},'Shifts & jobs'),'sj');
+    if(mgr&&ok)rows+=R('users','Reserve','4 people in the funnel','',goOr('reserve',{},'Reserve'),'res');
+    if(!lim&&!ctr)rows+=R('flower','Active orders','','',goOr('work',{view:'orders'},'Active'),'act')+R('route','Zones','','',"App.toast('Zones opens (shared screen)')",'zones')+R('box','Out of stock','','',goOr('work',{view:'stock'},'Out of stock'),'oos')+R('list','To order','','',"App.toast('Inventory requests open (shared screen)')",'req');
+    if(mgr&&!ctr)rows+=R('globe','Website requests','','',"App.toast('Site leads open (shared screen)')",'leads')+R('phone','Calls','','',"App.toast('Call alerts open (shared screen)')",'calls')+R('tag','Unpaid orders','','',"App.toast('Unpaid opens (shared screen)')",'unpaid')+R('users','Customers to call','','',"App.toast('Customers due open (shared screen)')",'cdue');
+    if(rows)pref.insertAdjacentHTML('beforebegin',`<div class="grp">Shop</div><div class="rows">${rows}</div>`);
+  }
+  /* Job alerts panel for the self-employed (TM-ME-023) */
+  if(ctr&&pref){const ja=ME.ja;pref.insertAdjacentHTML('beforebegin',`<div class="grp">Job alerts</div><div class="ja">${ok?`<div class="sm">Pushes about new jobs</div><div class="chips"><button class="chip ${ja.mode==='all'?'on':''}" onclick="MEX.jaMode('all')">All</button><button class="chip ${ja.mode==='off'?'on':''}" onclick="MEX.jaMode('off')">Off</button></div><div class="sw ${ja.mode==='off'?'dis':''}"><span>Quiet hours 21:00–08:00</span><button class="switch ${ja.quiet?'on':''}" role="switch" aria-checked="${ja.quiet}" onclick="MEX.jaQuiet(this)"></button></div><div class="xs muted" style="margin-top:8px">Saved to the CRM at once</div>`:'<div class="sm muted">Alert settings appear once the CRM answers.</div>'}</div>`)}
+  /* Preferences: notifications rows + language chips (TM-ME-031..033) */
+  const prefRows=pref&&pref.nextElementSibling;
+  if(prefRows){prefRows.insertAdjacentHTML('afterbegin',R('inbox','Notifications',ok?(unreadN()?`${unreadN()} unread`:'All read'):'','',"App.go('inbox')",'inbox'));
+    const nq=[...prefRows.querySelectorAll('.row')].find(x=>/quiet hours/.test(x.textContent));if(nq){const d=nq.querySelector('.d');if(d)d.textContent=ok?`${ME5.prefs.level==='priority'?'Priority only':'Everything'} · ${ME5.prefs.quiet?'quiet outside shift':'at any time'}`:'On this phone only'}
+    const lr=[...prefRows.querySelectorAll('.row')].find(x=>/^Language/.test(x.textContent.trim()));const langH=`<div class="row" style="flex-wrap:wrap">${ri('globe')}<span class="rt"><div class="l">Language</div><div class="d">Applies at once · saved on device</div></span><span class="val">${LANGS[ME.lang]}</span><div class="lang" style="width:100%;padding:12px 0 0">${Object.keys(LANGS).map(k=>`<button class="chip ${ME.lang===k?'on':''}" onclick="MEX.setLang('${k}')">${LANGS[k]}</button>`).join('')}</div></div>`;if(lr)lr.outerHTML=langH;else prefRows.insertAdjacentHTML('beforeend',langH);
+  }
+  /* Account: password, classic view (TM-ME-034, 035) */
+  const sup=g('Support');
+  if(sup)sup.insertAdjacentHTML('beforebegin',`<div class="grp">Account</div><div class="rows">${R('lock','Change password','','',"MEX.password()",'pwd')}${mgr?R('layers','Classic view (temporary)','Old tabs on this phone only · the CRM does not know','',"MEX.classic()",'classic'):''}</div>`);
+  /* footer demo + refresh note (TM-ME-037, 041) */
+  const note=[...el.querySelectorAll('.note.tc')].pop();
+  if(note)note.insertAdjacentHTML('beforebegin',`<div class="demo"><span>Demo · CRM</span><div class="seg"><button class="${ok?'on':''}" onclick="MEX.setCrm('ok')">Answered</button><button class="${!ok?'on':''}" onclick="MEX.setCrm('silent')">Silent</button></div></div><div class="note" style="padding-top:10px">No pull-to-refresh here – rows refresh when you come back to the app. Rows with numbers appear only after the CRM answers; a CRM without that module shows no row at all.</div>`);
+  A.renderBadges();
+};
+ME.lensRole=k=>{ME.lens.role=k;if(!k){ME5.backToAdmin&&ME5.backToAdmin();window.mount_me();return}A.toast('Lens: '+k+' · tabs rebuilt, account stays admin');ME5.viewAs(k==='florist'?'kamila':'andrii')};
+ME.lensContour=k=>{ME.lens.contour=k;if(!k){ME5.backToAdmin&&ME5.backToAdmin();window.mount_me();return}A.toast('Contour lens: '+k+' · saved on this phone');ME5.viewAs({employee:'kamila',worker:'zhadra',contractor:'mira',reserve:'lina'}[k])};
+ME.toggleContours=b=>{b.classList.add('busy');setTimeout(()=>{if(Math.random()<0.12){b.classList.remove('busy');A.toast('Could not switch – try again');return}ME.contours=!ME.contours;A.haptic();A.toast(ME.contours?'Contours on – version B':'Contours off – version A, employee only');window.mount_me()},700)};
+ME.jaMode=m=>{ME.ja.mode=m;A.haptic();A.toast(m==='off'?'Job alerts off':'Job alerts on');window.mount_me()};
+ME.jaQuiet=b=>{if(b.dataset.busy)return;b.dataset.busy='1';ME.ja.quiet=!ME.ja.quiet;b.classList.toggle('on',ME.ja.quiet);setTimeout(()=>{delete b.dataset.busy;A.toast(ME.ja.quiet?'Quiet 21:00–08:00':'Alerts at any hour')},400)};
+ME.setLang=k=>{ME.lang=k;if(k!=='system'&&window.ME5)ME5.setLang(k);else A.toast('Language follows the phone');window.mount_me()};
+ME.setCrm=m=>{ME.crm=m;window.mount_me()};
+ME.password=()=>A.sheet(`<div class="sh-head"><div class="h3">Change password</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Current password</label><input class="input" type="password" placeholder="••••••••"></div><div class="field"><label>New password</label><input class="input" type="password" placeholder="At least 8 characters"></div><div class="field"><label>Repeat new password</label><input class="input" type="password"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Password changed – other phones are signed out')">Save</button></div>`);
+ME.classic=()=>A.confirm('Switch to the classic view?','Old tabs come back on this phone only – the CRM does not know. Come back with “Return to the new design” on the More tab.','Switch',()=>{A.toast('Classic view on this phone · saved on device');setTimeout(()=>A.toast('Prototype: the classic tabs are not drawn – you stay here'),1800)});
+/* sign out: confirm text says the push token goes (TM-ME-036, TM-INBOX-030) */
+if(window.ME5){ME5.signOut=function(){A.confirm('Sign out?','This phone stops receiving pushes (its token is removed), the cache and background location are cleared. You will sign in with your password next time.','Sign out',()=>{if(document.getElementById('s-splash')){A.state.history=[];A.go('splash')}else A.toast('Signed out')})}}
+document.addEventListener('ann',()=>{if(A.state.current==='me')window.mount_me()});
+})();
+</script>
