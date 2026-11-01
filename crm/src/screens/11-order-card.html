@@ -38,10 +38,12 @@
 #s-order-card .money .tot{font-family:var(--f-display);font-size:28px;font-weight:300;text-align:right}
 #s-order-card .money .lbl2{display:flex;align-items:center;gap:8px}
 #s-order-card .sticky-foot{z-index:5;margin-top:0}
-#s-order-card .oc-tabs{position:sticky;top:0;z-index:4;background:var(--paper);margin:calc(var(--pad)*-1) calc(var(--pad)*-1) 16px;padding:0 var(--pad)}
+#s-order-card .oc-tabs{position:sticky;top:calc(var(--pad)*-1);z-index:4;background:var(--paper);margin:0 calc(var(--pad)*-1) 16px;padding:0 var(--pad)}
 #s-order-card .oc-tabs .views{margin-bottom:0}
 #s-order-card .items td{white-space:normal}
-#s-order-card .items .input{height:30px}
+#s-order-card .items .input{height:30px;padding:0 6px}
+#s-order-card .items input[type=number]{-moz-appearance:textfield}
+#s-order-card .items input::-webkit-inner-spin-button{display:none}
 #s-order-card .steps .tl{padding:8px 0 12px}
 #s-order-card .kv{grid-template-columns:120px minmax(0,1fr)}
 #s-order-card .kv dd.trunc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -58,11 +60,12 @@
 #s-order-card .banner svg{flex:none;margin-top:1px}
 #s-order-card .banner b{font-weight:500}
 #s-order-card .h-sub{font-size:12px;color:var(--grey)}
+#s-order-card .field label.check{font-size:14px;letter-spacing:0;text-transform:none;color:var(--ink)}
 [data-size="ipad"] #s-order-card .oc-wrap{grid-template-columns:minmax(0,1fr) 300px}
 [data-size="ipad"] #s-order-card .fg.--3{grid-template-columns:repeat(2,minmax(0,1fr))}
 [data-size="phone"] #s-order-card .oc-wrap{grid-template-columns:minmax(0,1fr)}
 [data-size="phone"] #s-order-card .fg.--2,[data-size="phone"] #s-order-card .fg.--3{grid-template-columns:minmax(0,1fr)}
-[data-size="phone"] #s-order-card .oc-tabs{margin:-14px -14px 12px;padding:0 14px;overflow-x:auto}
+[data-size="phone"] #s-order-card .oc-tabs{top:-14px;margin:0 -14px 12px;padding:0 14px;overflow-x:auto}
 [data-size="phone"] #s-order-card .scr-head .h-sub{display:none}
 </style>
 
@@ -215,7 +218,7 @@ Object.assign(O11,{
   const rows=s.items.map((it,i)=>{const built=d.built&&i===0;
    return `<tr><td style="width:52px"><div class="thumb --s" style="cursor:zoom-in" onclick="O11.lightbox('${it.img}','${E(s.note)}')">${it.img?`<img src="${it.img}" alt="">`:""}</div></td>
    <td>${built?`<b>Built bouquet</b><span class="sub">Built in the constructor: 12 × Rose Red Naomi · 5 × Eucalyptus · 3 × Ruscus · wrap ivory – composition is read-only, Qty and price hidden</span>`:`<input class="input" list="oc-prod" value="${E(it.name)}" placeholder="Type a product name…" oninput="O11.itemName(${i},this.value)"><span class="sub">${it.variant?"✓ From catalog":"No catalog match – saved as a custom item"}</span>`}</td>
-   ${built?`<td colspan="3" class="muted">priced by live stock</td>`:`<td style="width:70px"><input class="input num" type="number" min="1" value="${it.qty}" oninput="O11.item(${i},'qty',+this.value)"></td><td style="width:100px"><input class="input num" value="${it.price}" oninput="O11.item(${i},'price',+this.value||0)"></td><td class="num tnum" style="width:80px">${A.fmt(it.qty*it.price)}</td>`}
+   ${built?`<td colspan="3" class="muted">priced by live stock</td>`:`<td style="width:64px"><input class="input num" type="number" min="1" value="${it.qty}" oninput="O11.item(${i},'qty',+this.value)"></td><td style="width:100px"><input class="input num" value="${it.price}" oninput="O11.item(${i},'price',+this.value||0)"></td><td class="num tnum" style="width:80px">${A.fmt(it.qty*it.price)}</td>`}
    <td style="width:80px">${s.items.length>1&&mgr?`<button class="textbtn --accent" onclick="O11.removeItem(${i})">Remove</button>`:""}</td></tr>`}).join("");
   const pref=!d.built?`<div class="hint mb8">Customer's choice if a flower is unavailable on the day: closest match / <b>contact me</b></div>`:"";
   const log=d.subs||d.built?`<div class="mt16"><div class="caps mb8">Substitution log</div><div class="list" style="border:1px solid var(--hair)">${s.subs.map(x=>`<div class="li" style="cursor:default"><div class="t"><b>${E(x.stem)} → ${x.to?E(x.to):"left out"} ×${x.n}</b><small>${E(A.user(x.who).n)} · ${x.at} · ${E(x.why)}</small></div></div>`).join("")||`<div class="li" style="cursor:default"><div class="t"><small>No swaps yet</small></div></div>`}</div></div>`:"";
@@ -415,7 +418,7 @@ Object.assign(O11,{
   return O11.sec("DPD shipping",d.shipment?`<dl class="kv"><dt>Consignment</dt><dd class="tnum">${E(d.shipment.cons)}</dd><dt>Service</dt><dd>${E(d.shipment.service)}</dd><dt>Parcels</dt><dd>${d.shipment.parcels} · ${d.shipment.kg} kg</dd><dt>Ship date</dt><dd>${E(d.shipment.ship)}</dd><dt>Status</dt><dd>${App.pill("ready",d.shipment.status)}</dd><dt>Last event</dt><dd>${E(d.shipment.last)}</dd></dl>
    <div class="row mt16" style="gap:8px;flex-wrap:wrap"><button class="btn --ghost --sm" onclick="App.toast('Label PDF opened in a new tab')">${ic("printer")} Label</button>${s.anonAddr?`<span class="hint">${ic("lock")} Tracking hidden – anonymous recipient</span>`:`<button class="btn --ghost --sm" onclick="App.toast('DPD tracking page opened')">${ic("map")} Track</button>`}<button class="btn --ghost --sm" onclick="App.confirm('Void this DPD shipment?','The parcel will not travel; the label becomes invalid.','Void',()=>{O11_st().dpd.shipment=null;O11_st().dpd.voided=true;O11.renderMain();App.toast('Shipment voided in DPD')},{danger:true})">Void</button></div>`
    :`${d.voided?`<div class="note-box mb8">Previous shipment was voided – you can book a new one.</div>`:""}<div class="fg --2"><div class="field"><label>Service</label><select class="select" id="dp-s"><option>DPD Next Day</option><option>DPD Classic</option><option>Default service</option></select><div class="hint">Live list by postcode</div></div><div class="field"><label>Parcels</label><input class="input num" id="dp-p" type="number" value="1" min="1"></div><div class="field"><label>Weight (kg)</label><input class="input num" id="dp-k" value="2"></div><div class="field"><label>Ship date</label><input class="input" id="dp-d" type="date" value="${s.date}"><div class="hint">Defaults to London date (prod took the device UTC date)</div></div></div><button class="btn --sm mt16" onclick="O11.bookDpd(this)">${ic("truck")} Book DPD</button>`,{mode:"auto",sub:"feature flag"})},
- bookDpd(btn){btn.textContent="Booking...";btn.disabled=true;setTimeout(()=>{const s=O11_st();s.dpd.shipment={cons:"155001234"+String(O11.id).slice(-5),service:document.getElementById("dp-s").value,parcels:+document.getElementById("dp-p").value,kg:document.getElementById("dp-k").value,ship:document.getElementById("dp-d").value,status:"booked",last:"Label created · now"};s.ship=document.getElementById("dp-d").value;O11.renderMain();App.toast("DPD booked · label ready · pickup from the shop requested")},900)},
+ bookDpd(btn){const v=id=>(document.getElementById(id)||{}).value||"";const svc=v("dp-s"),par=+v("dp-p")||1,kg=v("dp-k"),ship=v("dp-d");btn.textContent="Booking...";btn.disabled=true;setTimeout(()=>{const s=O11_st();s.dpd.shipment={cons:"155001234"+String(O11.id).slice(-5),service:svc,parcels:par,kg,ship,status:"booked",last:"Label created · now"};s.ship=ship;if(App.state.current==="order-card")O11.renderMain();App.toast("DPD booked · label ready · pickup from the shop requested")},900)},
 
  /* ---- Address notes: ORDC-145..147 ORDC-161 ---- */
  secAddrNotes(){const s=O11_st(),A=App,E=O11.E,ic=A.icon;if(!O11.d.addrNotes||s.method!=="delivery")return "";
