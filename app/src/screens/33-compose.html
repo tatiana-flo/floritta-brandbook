@@ -1,27 +1,38 @@
+<!-- Публикация /community/compose. Логика – Comm.mountCompose и Comm.post (40-community-extra.html). -->
 <section class="scr cmz" id="s-compose" data-nav="Post a bouquet" data-group="Social">
   <div class="appbar">
     <button class="ib" onclick="App.back('community')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="ttl caps">Share your bouquet at home</div>
     <span class="ib"></span>
   </div>
-  <div class="scr-body has-cta">
+  <div class="scr-body has-cta" id="cp-body">
+    <!-- ids: APP-COMM-090 -->
     <div class="pad" style="padding-top:4px;padding-bottom:16px"><div class="h2">On my table</div><p class="soft sm" style="margin:6px 0 0">One photo, a few honest words. Your area only, never your address.</p></div>
+    <!-- ids: APP-COMM-091 – квадрат «Tap to add a photo» / «Square works best» → галерея (кадр 4:5), после выбора фото и «Change»; APP-COMM-092 – галерея не открылась → тост «Couldn't open your photos» (демо-переключатель «Gallery fails» на экране safety & demo) -->
     <div class="drop" id="cp-drop">
-      <div id="cp-ph"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Tap to add a photo<br><span class="xs">JPG or HEIC · square works best</span></div>
-      <input type="file" accept="image/*" id="cp-file" onchange="Comm.file(this)">
+      <div id="cp-ph"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Tap to add a photo<br><span class="xs">Square works best</span></div>
+      <input type="file" accept="image/*" id="cp-file" onclick="return Comm.gallery(event)" onchange="Comm.file(this)">
     </div>
+    <!-- ids: APP-COMM-093 – «Use a sample photo», 4 миниатюры каталога -->
     <div class="samples" id="cp-samples"><span class="lb">Use a sample photo</span></div>
+    <!-- ids: APP-COMM-094 – Caption со счётчиком N / 220, пустая → «On my table today.» -->
     <div class="lab">Caption <span id="cp-cnt">0 / 220</span></div>
     <div class="pad"><textarea class="input" id="cp-cap" maxlength="220" placeholder="Day 3 and still going. Moved them off the windowsill…" oninput="Comm.count(this)"></textarea></div>
+    <!-- ids: APP-COMM-095 – «Which bouquet is it?» поиск по каталогу: без запроса 6, с запросом до 8; APP-COMM-096 – «No match – that's fine, post it anyway.»; APP-COMM-097 – чипы товара с миниатюрой, выбор снимает «Not a Floritta bouquet» -->
     <div class="lab">Which bouquet is it? <span class="muted">optional</span></div>
     <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="cp-q" placeholder="Search Floritta bouquets" oninput="Comm.prodChips(this.value)"></div>
     <div class="chips" id="cp-prods"></div>
+    <!-- ids: APP-COMM-098 – «Which day?» Day 1…7 + «Not a Floritta bouquet» (снимает товар) -->
     <div class="lab">Which day?</div>
     <div class="chips" id="cp-days"></div>
+    <!-- ids: APP-COMM-099 – 9 чипов хэштегов, #onmytable по умолчанию, своих ввести нельзя -->
     <div class="lab">Hashtags</div>
     <div class="chips" id="cp-tags"></div>
-    <div class="sw"><div><div>Share location (area only)</div><div class="d" id="cp-area">Bermondsey · SE1</div></div><button class="switch on" id="cp-loc" onclick="this.classList.toggle('on');App.haptic()" aria-label="Share area"></button></div>
-    <p class="muted xs pad" style="margin:14px 0 0">Posts are public to Floritta members. We may feature yours in the shop – we'll always ask first.</p>
+    <!-- ids: APP-COMM-100 – «Share location (area only)»: «London · SE1» (outward-код первого адреса) / выключен – «London» -->
+    <div class="sw"><div><div>Share location (area only)</div><div class="d" id="cp-area">London · SE1</div></div><button class="switch on" id="cp-loc" onclick="Comm.loc(this)" aria-label="Share area"></button></div>
+    <!-- ids: APP-COMM-101 -->
+    <p class="muted xs pad" style="margin:14px 0 0">In this preview your post stays on this device only.</p>
   </div>
-  <div class="cta-bar"><button class="btn" onclick="Comm.post()">Post · +20 Petals</button></div>
+  <!-- ids: APP-COMM-102 – «Post» без фото: тост «Add a photo first – tap the square or pick a sample» + прокрутка вверх; APP-COMM-103 – «Post»: пост в начало For you, тост «Posted», +20 Petals, возврат -->
+  <div class="cta-bar"><button class="btn" onclick="Comm.post()">Post</button></div>
 </section>

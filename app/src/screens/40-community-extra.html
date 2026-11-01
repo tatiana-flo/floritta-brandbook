@@ -1,0 +1,407 @@
+<!-- Community – лист безопасности, свой профиль, демо-состояния и «чего нет». Здесь же полная версия модуля window.Comm (переопределяет шелльную): лента, пост, профиль, публикация, хэштег + SafetySheet/BlockedSheet. -->
+<style>
+html.cm-off #tabbar .tab[data-tab="community"]{display:none}
+#s-comm-safety .intro{padding:4px var(--gutter) 0;font-size:14px;line-height:1.5;color:var(--graphite)}
+#s-comm-safety .st{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);margin:18px var(--gutter) 0}
+#s-comm-safety .st>div{padding:12px 8px;text-align:center;border-right:1px solid var(--hair);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
+#s-comm-safety .st>div:last-child{border-right:0}
+#s-comm-safety .st b{display:block;font-family:var(--f-display);font-size:22px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink);line-height:1.1;margin-bottom:3px}
+#s-comm-safety .row .d{line-height:1.35}
+#s-comm-safety .none{padding:0 var(--gutter);font-size:14px;line-height:1.5;color:var(--graphite)}
+#s-comm-safety .none li{margin:0 0 8px;padding-left:14px;position:relative;list-style:none}
+#s-comm-safety .none li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:1px;background:var(--grey)}
+#s-comm-safety .none ul{margin:0;padding:0}
+#s-comm-safety .hint{padding:8px var(--gutter) 0;font-size:12px;color:var(--grey)}
+.cm-sheet .opt{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.cm-sheet .opt svg{width:22px;height:22px;flex:none;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-top:1px}
+.cm-sheet .opt .l{font-size:15px;color:var(--ink)}
+.cm-sheet .opt .d{font-size:13px;color:var(--grey);margin-top:2px;line-height:1.4}
+.cm-sheet .opt.--danger .l{color:var(--accent)}
+.cm-sheet .opt.--danger svg{stroke:var(--accent)}
+.cm-sheet .reason{display:block;width:100%;text-align:left;padding:14px 0;border-bottom:1px solid var(--hair);font-size:15px}
+.cm-sheet .blk{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair)}
+.cm-sheet .blk .av{width:36px;height:36px;font-size:14px}
+.cm-sheet .blk .n{flex:1;font-size:15px}
+.cm-sheet .field .cnt{float:right;font-size:12px;color:var(--grey);font-variant-numeric:tabular-nums}
+.cm-sheet .sharemsg{padding:12px 14px;background:var(--silver);font-size:13px;line-height:1.45;color:var(--graphite);margin-bottom:8px;word-break:break-word}
+.cm-sheet .sharemsg b{font-weight:500;color:var(--ink)}
+#s-post-view .cmt{cursor:default;user-select:none;-webkit-user-select:none}
+#s-post-view .cmt.hold{background:var(--silver);margin:0 calc(-1*var(--gutter));padding:12px var(--gutter)}
+#s-post-view .cmt .av{cursor:pointer}
+#s-post-view .cbar .send.off{background:var(--light);color:var(--paper)}
+#s-post-view .scr-body.nobar{padding-bottom:0}
+#s-member .acts .btn.--secondary.on{background:transparent}
+#s-member .hero .f1{min-width:0}
+#s-member .hero .av{font-size:32px}
+#s-member .hero .av.--fl{font-size:32px}
+#s-member .srow{margin-top:20px}
+#s-member .srow .ic{stroke:var(--ink)}
+#s-member .seg{margin:28px var(--gutter) 14px}
+</style>
+
+<!-- Свой профиль «Your profile» – только алиас для списка стенда: открывает s-member с me=true (в приложении вход в свой профиль – только тапом по своему аватару на своём посте или комментарии). -->
+<section class="scr cmz" id="s-comm-me" data-nav="Your profile (Community)" data-group="Social"><div class="scr-body"></div></section>
+
+<!-- Экран демо: лист безопасности, состояния, чего нет в сборке. В приложении такого экрана нет – всё, что здесь, открывается с ленты/поста/профиля; экран нужен стенду, чтобы показать каждый лист и каждое состояние отдельно. -->
+<section class="scr cmz" id="s-comm-safety" data-nav="Community – safety & demo" data-group="Social">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('community')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl caps">Safety &amp; moderation</div>
+    <span class="ib"></span>
+  </div>
+  <div class="scr-body" id="cs-body">
+    <div class="intro">Everything in Community lives on this phone. Reports, hidden posts and blocks are kept on the device and never sent to Floritta – there is no server moderation in this build.</div>
+    <div class="st" id="cs-stats"><div><b>0</b>Hidden</div><div><b>0</b>Reported</div><div><b>0</b>Blocked</div></div>
+    <div class="pad" style="margin-top:12px"><button class="btn --ghost --sm" onclick="Comm.resetSafety()">Reset safety on this device</button></div>
+
+    <!-- ids: APP-COMM-060 – лист «Post options» / «Comment options» / «Member options»; APP-COMM-061 – «Delete my post» красным, без подтверждения, тост «Post deleted» -->
+    <!-- ids: APP-COMM-062 – «Report post / comment / member» → шаг «Why are you reporting this?»; APP-COMM-063 – 5 причин; APP-COMM-064 – выбор причины → тост «Thanks for telling us. We've hidden it from you.», пост навсегда скрыт / комментарий скрыт / участник заблокирован -->
+    <!-- ids: APP-COMM-065 – «Hide post» + «You won't see this post again on this device.» → «Post hidden»; APP-COMM-066 – «Hide comment» → «Comment hidden»; APP-COMM-067 – «Block <Имя>» → алерт «Block <Имя>?» Cancel / Block (красная) → «<Имя> blocked», заодно отписка; APP-COMM-068 – «Unblock <Имя>» → «<Имя> unblocked» -->
+    <div class="sec-head"><div class="h2" style="font-size:24px">The safety sheet</div></div>
+    <button class="row" onclick="Comm.opts('post',2)"><svg class="ic" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><div class="rt"><div class="l">Post options – someone else's post</div><div class="d">Report · Hide · Block James</div></div></button>
+    <button class="row" onclick="Comm.opts('post',Comm.myFirst())"><svg class="ic" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><div class="rt"><div class="l">Post options – my own post</div><div class="d">Only «Delete my post», no confirmation</div></div></button>
+    <button class="row" onclick="Comm.demoCommentSheet()"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><div class="rt"><div class="l">Comment options</div><div class="d">In the app: hold a comment for 350 ms</div></div></button>
+    <button class="row" onclick="Comm.opts('member','anna')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><div class="rt"><div class="l">Member options – Anna</div><div class="d">Report member · Block Anna</div></div></button>
+    <button class="row" onclick="Comm.demoBlocked()"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M17 3l4 4M21 3l-4 4"/></svg><div class="rt"><div class="l">Member options – blocked member</div><div class="d">Blocks Tom, then shows «Unblock Tom»</div></div></button>
+    <button class="row" onclick="Comm.sheetReport('post',2)"><svg class="ic" viewBox="0 0 24 24"><path d="M5 21V4h12l-2 4 2 4H5"/></svg><div class="rt"><div class="l">Report step on its own</div><div class="d">«Why are you reporting this?» – five reasons, all do the same</div></div></button>
+
+    <!-- ids: APP-COMM-040 – пост скрыт / не найден → «This post isn't available»; APP-COMM-070 – «Member not found»; APP-COMM-005 – скелетон ленты; APP-COMM-010 – pull-to-refresh; APP-COMM-092 – галерея не открылась; APP-COMM-002 – флаг community выключен: таб скрыт, все экраны сообщества уводят на главную -->
+    <div class="sec-head"><div class="h2" style="font-size:24px">States</div></div>
+    <button class="row" onclick="App.go('post-view',{id:'gone'})"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.5 10.5a2 2 0 0 0 3 3"/><path d="M6.6 6.6C4 8.2 2.5 12 2.5 12s3.5 7 9.5 7c1.8 0 3.3-.5 4.6-1.2M9.9 5.2A9 9 0 0 1 12 5c6 0 9.5 7 9.5 7a15 15 0 0 1-2.1 2.9"/></svg><div class="rt"><div class="l">A post that isn't available</div><div class="d">Hidden, reported, deleted or unknown id</div></div></button>
+    <button class="row" onclick="App.go('member',{id:'nobody'})"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><div class="rt"><div class="l">Member not found</div><div class="d">Unknown member id from a deep link</div></div></button>
+    <button class="row" onclick="Comm.demoSkeleton()"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6"/><rect x="4" y="14" width="16" height="6"/></svg><div class="rt"><div class="l">Feed skeleton</div><div class="d">Two placeholder posts until the device store is read</div></div></button>
+    <button class="row" onclick="Comm.demoRefresh()"><svg class="ic" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg><div class="rt"><div class="l">Pull to refresh</div><div class="d">Spinner for 0.7 s, nothing is reloaded</div></div></button>
+    <div class="row"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><div class="rt"><div class="l">Gallery fails on «Post a bouquet»</div><div class="d">Tapping the photo square shows «Couldn't open your photos»</div></div><button class="switch" id="cs-gal" onclick="Comm.demoGallery(this)" aria-label="Gallery fails"></button></div>
+    <div class="row"><svg class="ic" viewBox="0 0 24 24"><path d="M5 21V4h12l-2 4 2 4H5"/></svg><div class="rt"><div class="l">Flag «community» off</div><div class="d">Tab disappears, every Community link goes Home</div></div><button class="switch" id="cs-flag" onclick="Comm.demoFlag(this)" aria-label="Community flag"></button></div>
+
+    <div class="sec-head"><div class="h2" style="font-size:24px">Not in this build</div></div>
+    <div class="none"><ul>
+      <li>No server moderation: reports stay on the phone and reach nobody at Floritta – a reported post is simply hidden for this user.</li>
+      <li>Reported posts cannot be brought back; «Show hidden posts again» restores hidden ones only.</li>
+      <li>No camera in «Post a bouquet» – gallery only; the photo is kept as a local file path.</li>
+      <li>No custom hashtags – nine fixed chips. «Follow tag» changes nothing in the feed.</li>
+      <li>Own comments cannot be deleted or edited; deleting a post removes its comments, like and bookmark with it.</li>
+      <li>Other people never see your posts, likes, follows or comments – the whole community is local to the device.</li>
+      <li>«Forget my details on this phone» on the You tab does not clear the community store.</li>
+      <li>Pull-to-refresh only animates; «Load more» appends six fixed posts once.</li>
+    </ul></div>
+    <div class="hint">All members, posts and comments by others are examples – the app says so in the header, on the banner and above every post.</div>
+    <div style="height:32px"></div>
+  </div>
+</section>
+
+<script>
+/* Community – полный модуль (заменяет window.Comm из shell.html). Что переносить в шелл: весь этот блок вместо шелльного Comm + стили .cm-sheet/.ptr/.exbanner из 30-community.html и 40-community-extra.html. */
+window.Comm=(()=>{
+  const $=App.$,$$=App.$$,P=id=>App.product(id);
+  const SE1=["Bermondsey","Borough","London Bridge","Southwark"];
+  const M=[
+    ["anna","Anna K.","AK","Bermondsey","Two cats, one windowsill, too many vases.",1],
+    ["marta","Marta S.","MS","Clapham","Sunday flowers, Monday coffee."],
+    ["priya","Priya R.","PR","Islington","Making a small flat feel like a garden."],
+    ["james","James O.","JO","Shoreditch","Flowers for the kitchen table every Friday."],
+    ["olga","Olga V.","OV","Notting Hill","Peonies in May, dahlias in September.",1],
+    ["hannah","Hannah L.","HL","Hampstead","Trying to keep things alive. Mostly succeeding."],
+    ["tom","Tom B.","TB","Greenwich","New to flowers. Taking notes."],
+    ["sofia","Sofia M.","SM","Chelsea","Vase collector, allegedly."],
+    ["leila","Leila A.","LA","Borough","Pastel everything.",1],
+    ["rachel","Rachel W.","RW","Battersea","Desk, bedside, then the compost. In that order."],
+    ["daniel","Daniel F.","DF","London Bridge","Gift-giver in chief for a family of six."],
+    ["chloe","Chloe P.","CP","Dulwich","Dried, fresh, pressed – all of it."],
+    ["yusuf","Yusuf K.","YK","Canary Wharf","Orders for the office. Keeps the spare stems."],
+    ["emma","Emma T.","ET","Brixton","Kitchen table, north light, 6 am."],
+    ["nina","Nina D.","ND","Southwark","Hydrangeas are my nemesis.",1],
+    ["grace","Grace H.","GH","Richmond","Roses on the piano since 2019."],
+    ["max","Max R.","MR","Hackney","Flowers for my mum, photos for me."],
+    ["isabel","Isabel C.","IC","Kensington","Hosts dinner twice a month. Flowers first."],
+    ["svetlana","Svetlana","SV","Bermondsey","Head florist at Floritta. Hand-ties in SE1 since 2021.",1,1],
+    ["kamila","Kamila","KA","Bermondsey","Florist at Floritta. Pastels, wraps, ribbons.",0,1],
+    ["vita","Vita","VI","Bermondsey","Florist at Floritta. Baskets and big garden roses.",0,1]
+  ].map((a,i)=>({id:a[0],n:a[1],ini:a[2],area:a[3],bio:a[4],nw:!!a[5],fl:!!a[6],t:"--t"+(i%3+1),fw:a[6]?2400+i*137:120+(i*53)%640,fg:a[6]?48:60+(i*31)%300}));
+  const ME={id:"me",n:"Tatiana S.",ini:"TS",bio:"Pink manifesto loyalist. Kitchen table, two vases, one very patient husband.",t:"--t2",fw:0,fg:0,get area(){return myArea()}};
+  const outward=()=>(App.state.user.postcode||"").split(" ")[0];
+  const myArea=()=>outward()?"London · "+outward():"London";
+  const initials=n=>n.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase()||"TS";
+  const IMG={1:"img/peach-posy.webp",2:"img/poem-petals.webp",3:"img/pink-manifesto.webp",4:"img/white-spray.webp",5:"img/powdered-rose.webp",6:"img/red-roses.webp",7:"img/belgravia.webp",8:"img/daydream-basket.webp",9:"img/peony-basket.webp",10:"img/veronica.webp",11:"img/charmingly.webp",12:"img/pink-garden.webp",13:"img/lilac-dream.webp",hb:"img/hero-basket.webp",hw:"img/hero-white.webp",p32:"img/pink-manifesto-2.webp",p52:"img/powdered-rose-2.webp"};
+  // [member, img, pid, day, kind, time, likes, caption, tags, pos, scale]
+  const RAW=[
+    ["anna",9,9,"Day 4","d","2 h",48,"Day 4 and the peonies are still going. Changed the water twice and moved them off the windowsill – the afternoon sun was too much for them.","day4 peonies kitchentable","50% 30%",1.15],
+    ["james",6,6,"","","3 h",61,"Friday rule: flowers on the table before the weekend starts. Twenty reds, trimmed short for the low bowl.","onmytable fridayflowers roses","50% 60%",1],
+    ["nina","hw",0,"","q","4 h",23,"How do I keep hydrangeas from drooping? Mine look sad by day two, even with fresh water.","help hydrangeas","50% 40%",1.1],
+    ["svetlana",3,3,"","","5 h",132,"Hand-tied this one at 7 am, before the shop opened. Garden roses, ranunculus, a little jasmine for the scent.","handtied bermondsey floritta","50% 20%",1.05],
+    ["marta",5,5,"Day 1","d","6 h",37,"Day 1. Stems cut, water lukewarm, vase on the sideboard away from the radiator. Sunday flowers, Monday coffee.","day1 onmytable sundayflowers","40% 50%",1.2],
+    ["leila",13,13,"","ba","8 h",54,"Before and after. Took it out of the wrap and split it between two small jars for the bathroom and the hall. Same bouquet, twice the rooms.","beforeafter rearranged lilac","50% 50%",1],
+    ["tom",1,1,"","","9 h",71,"First bouquet I've ever bought for myself. The card said change the water every two days, so I've set an alarm.","firstbouquet onmytable peach","60% 30%",1.1],
+    ["olga","p32",3,"Day 5","d","12 h",89,"Day 5. The ranunculus have opened fully and the roses are just starting to blow. This is my favourite stage.","day5 ranunculus onmytable","50% 70%",1.25],
+    ["priya",10,10,"","","Yesterday",29,"Window ledge, north-facing, which turns out to be exactly what spray roses want. Veronica still upright.","windowsill sprayroses northlight","30% 40%",1.15],
+    ["kamila",4,4,"","","Yesterday",97,"Ivory wrap, white spray roses, eucalyptus. Went out to Chelsea at eleven. The customer sent this photo back an hour later.","floritta delivered whiteroses","50% 35%",1],
+    ["hannah",12,12,"Day 7","d","Yesterday",44,"Day 7. Lost two roses, kept the rest. Trimmed everything down to a tumbler and it looks like a new bouquet.","day7 stillgoing tumbler","50% 80%",1.3],
+    ["daniel",8,8,"","","Yesterday",66,"Mum's birthday basket. She refused to let anyone touch it for a week, then finally moved it to the piano.","gift birthday basket","50% 45%",1.05],
+    ["sofia",11,11,"","","2 d",38,"The vase won this time. Pink and red on the mantelpiece, candles out.","mantelpiece onmytable vases","50% 25%",1.1],
+    ["emma","hb",0,"","","2 d",52,"6 am light, kitchen table, nothing fancy. The best twenty minutes of the day.","kitchentable morninglight onmytable","50% 60%",1.2],
+    ["rachel",7,7,"","","2 d",27,"Desk flowers. Small enough not to block the monitor, big enough to be noticed on a call.","desk wfh petite","50% 50%",1.3],
+    ["vita",2,2,"","ba","2 d",83,"Before and after on the bench. Loose stems at nine, finished bouquet at twenty past. The wrap is the last thing.","beforeafter atthebench floritta","50% 50%",1],
+    ["chloe","p52",5,"Day 1","d","3 d",31,"Day 1. Hung three stems upside down to dry already – I know, I know. The rest are in water on the shelf.","day1 dried powderedrose","70% 40%",1.2],
+    ["yusuf",6,6,"","","3 d",19,"Office reception. Two people asked where they're from before lunch.","office reception roses","50% 20%",1.15],
+    ["max",12,12,"","","3 d",58,"For my mum. She said 'oh, you shouldn't have' and then moved the TV to make room.","mum gift onmytable","30% 50%",1.2],
+    ["grace",4,4,"","","4 d",36,"Roses on the piano since 2019. This week's are white, because the room was getting loud.","piano whiteroses living","50% 70%",1.25],
+    ["anna",9,9,"Day 1","d","4 d",42,"Day 1. Arrived at 2 pm, photo from the florist came at half one. Straight onto the table; cats inspected and approved.","day1 peonies cats","50% 55%",1.3],
+    ["isabel",8,8,"","","5 d",47,"Dinner for eight. Flowers go in the middle, then I cook around them.","dinnerparty centrepiece onmytable","60% 30%",1.1],
+    ["priya",13,13,"","ba","5 d",33,"Before and after: split the lilac between the hall and the bedroom. The hallway smells like May.","beforeafter lilac hallway","50% 50%",1],
+    ["james",10,10,"Day 5","d","6 d",25,"Day 5. The veronica has gone over, the roses haven't. Pulled the veronica, topped up the water, carried on.","day5 sprayroses kitchentable","50% 30%",1.2]
+  ];
+  const EXTRA=[
+    ["marta",3,3,"Day 7","d","1 w",30,"Day 7. Down to six roses in a jam jar by the kettle. Still the first thing I look at in the morning.","day7 jamjar onmytable","50% 75%",1.35],
+    ["tom",1,1,"Day 5","d","1 w",22,"Day 5. The alarm works. Water changed, stems trimmed, one casualty. Learning.","day5 firstbouquet peach","40% 60%",1.2],
+    ["hannah","hw",0,"","","1 w",41,"Moved everything to the bathroom for the steam. Works for roses too, apparently.","bathroom tip onmytable","50% 50%",1.15],
+    ["olga",2,2,"","","1 w",57,"Birthday flowers from my sister. Opened the box on the bus and nearly missed my stop.","birthday gift peonies","50% 40%",1.05],
+    ["leila",11,11,"Day 1","d","1 w",28,"Day 1. Pink and red isn't my thing, apparently it is now.","day1 onmytable pink","50% 65%",1.2],
+    ["emma",7,7,"","","2 w",19,"Bedside. Small, quiet, done.","bedside petite onmytable","50% 50%",1.3]
+  ];
+  const MINE=[
+    ["me","p32",3,"Day 2","d","1 w",14,"Pink manifesto on the kitchen table, day 2. The jasmine is doing all the work.","day2 onmytable kitchentable","50% 50%",1.1],
+    ["me",4,4,"","","2 w",9,"White spray roses for the hallway. Guests have started commenting.","hallway whiteroses onmytable","50% 40%",1.15]
+  ];
+  let nid=1;
+  const mk=a=>({id:nid++,m:a[0],img:IMG[a[1]]||a[1],pid:a[2],day:a[3],kind:a[4],time:a[5],likes:a[6],cap:a[7],tags:a[8]?a[8].split(" "):[],pos:a[9],sc:a[10],cm:[],loc:true});
+  const POSTS=RAW.map(mk);const MORE=EXTRA.map(mk);let MYP=MINE.map(mk);
+  const QREP=[["svetlana","Cut the stems at an angle, dip the ends in just-boiled water for 20 seconds, then straight into cool water. Mist the heads – hydrangeas drink through the petals too."],["hannah","The boiling-water trick saved mine last week. Also keep them out of the sun."],["olga","I submerge the whole head in a sink of cold water for an hour. Sounds mad, works."]];
+  const CPOOL=[["marta","So lovely."],["james","Which vase is that? I need it."],["emma","The light in this photo."],["hannah","Mine lasted nine days with the boiling-water trick."],["sofia","Same table, same chaos, fewer flowers."],["daniel","Saving this for my next order."],["priya","Day 4 is the hardest. Keep going."],["grace","Bermondsey represent."],["tom","Taking notes, as usual."],["chloe","Dry a few stems before they go – you'll thank me."],["max","My mum would approve."],["leila","Pastel perfection."]];
+  const FPOOL=[["svetlana","Trim 1 cm off the stems every other day and they'll go another week."],["kamila","Keep them away from the fruit bowl – ripening fruit shortens the vase life."],["vita","Lovely placement. North light is perfect for these."]];
+  const TIMES=["12 min","40 min","1 h","3 h","Yesterday"];
+  /* состояние пользователя – в приложении стор community.v1 (AsyncStorage), только на устройстве */
+  const S={filter:"for",liked:new Set(),likedOnce:new Set(),saved:new Set(),follow:new Set(["anna","svetlana","olga","james"]),ftags:new Set(),more:false,cur:null,curM:null,hydrated:false,
+    cp:{img:null,pid:null,day:null,tags:new Set(["onmytable"]),loc:true}};
+  const SAFE={hidden:new Set(),reported:new Set(),blocked:new Set(),hiddenC:new Set()};
+  const DEMO={off:false,skel:false,gallery:false};
+  const mem=id=>id==="me"?ME:M.find(m=>m.id===id);
+  const rawAll=()=>[...MYP.filter(p=>p.time==="Just now"),...POSTS,...(S.more?MORE:[]),...MYP.filter(p=>p.time!=="Just now")];
+  const visible=p=>!SAFE.hidden.has(p.id)&&!SAFE.reported.has(p.id)&&!SAFE.blocked.has(p.m);
+  const all=()=>rawAll().filter(visible);
+  const byId=id=>[...MYP,...POSTS,...MORE].find(p=>p.id==id);
+  const esc=s=>String(s).replace(/</g,"&lt;");
+  const av=(m,cls="")=>`<span class="av ${m.fl?"--fl":m.t} ${cls}">${m.ini}</span>`;
+  const flb=m=>m.fl?`<span class="flb"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg>Florist</span>`:"";
+  const H=n=>App.icon(n);
+  const DOTS='<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>';
+  const first=m=>m.n.split(" ")[0];
+  const cmtsRaw=p=>{if(p.m==="me")return p.cm;if(p.cm.length)return p.cm;const n=3+(p.id%4);const out=[];for(let i=0;i<n;i++){const c=CPOOL[(p.id*3+i)%CPOOL.length];if(c[0]!==p.m)out.push({m:c[0],t:c[1],w:TIMES[(p.id+i)%TIMES.length]})}const f=FPOOL[p.id%FPOOL.length];if(f[0]!==p.m)out.splice(1,0,{m:f[0],t:f[1],w:TIMES[(p.id+2)%TIMES.length]});p.cm=out.slice(0,6);p.cm.forEach((c,i)=>c.k=p.id+"-"+i);return p.cm};
+  const cmtsOf=p=>cmtsRaw(p).filter(c=>!SAFE.blocked.has(c.m)&&!SAFE.hiddenC.has(c.k));
+  const tagChips=p=>p.tags.length?`<div class="htags">${p.tags.map(t=>`<button class="chip" onclick="App.go('hashtag',{tag:'${t}'})">#${t}</button>`).join("")}</div>`:"";
+  const strip=p=>{if(!p.pid)return"";const pr=P(p.pid);if(!pr)return"";return`<button class="shopstrip" onclick="App.go('pdp',{id:${pr.id}})"><img src="${pr.img}" alt=""><span class="t"><span class="e">Shop this bouquet</span><br><span class="n"><b>${pr.n}</b> · ${App.fmt(pr.p)}</span></span>${H("chev")}</button>`};
+  const photo=p=>{const im=`<img src="${p.img}" alt="" style="object-position:${p.pos};transform:scale(${p.sc})">`;
+    if(p.kind==="ba")return`<div class="ba"><div><img src="${p.img}" alt="" style="object-position:30% 60%;transform:scale(1.5)"><span>Before</span></div><div>${im}<span>After</span></div></div>`;
+    if(p.kind==="q")return im+`<div class="q">${esc(p.cap)}</div>`;return im};
+  const areaOf=p=>{const m=mem(p.m);return p.m==="me"?(p.loc?myArea():"London"):m.area};
+  const postHtml=(p,full)=>{const m=mem(p.m);const liked=S.liked.has(p.id),saved=S.saved.has(p.id);const lk=p.likes+(liked?1:0);const nc=cmtsOf(p).length;
+    return`<article class="post" data-pid="${p.id}">
+      <div class="hd"><button onclick="Comm.openMember('${m.id}')" style="display:contents">${av(m)}</button><div class="who"><div class="n"><b onclick="Comm.openMember('${m.id}')">${esc(m.n)}</b> ${flb(m)}</div><div class="w">${esc(areaOf(p))} · ${p.time}</div></div>${p.day?`<span class="dl">${p.day}</span>`:p.kind==="ba"?`<span class="dl">Before / after</span>`:p.kind==="q"?`<span class="dl">Question</span>`:""}<button class="ib dots" onclick="Comm.opts('post',${p.id})" aria-label="Post options">${DOTS}</button></div>
+      <div class="ph-wrap"><div class="ph" onclick="Comm.tapPhoto(${p.id},this)">${photo(p)}</div><div class="bigheart">${H("heart")}</div></div>
+      <div class="acts">
+        <button class="ib cnt like ${liked?"on":""}" onclick="Comm.like(${p.id},this)" aria-label="${liked?"Unlike":"Like"}">${H("heart")}<span>${lk}</span></button>
+        <button class="ib cnt" onclick="${full?"Comm.focusInput()":`Comm.openPost(${p.id},true)`}" aria-label="Comment">${H("chat")}<span>${nc}</span></button>
+        <span class="sp"></span>
+        <button class="ib" onclick="Comm.share(${p.id})" aria-label="Share">${H("share")}</button>
+        <button class="ib save ${saved?"on":""}" onclick="Comm.save(${p.id},this)" aria-label="${saved?"Remove from saved":"Save post"}"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-5-6 5z"/></svg></button>
+      </div>
+      ${p.kind==="q"?"":`<div class="cap"><b>${esc(first(m))}</b> ${esc(p.cap)}</div>`}
+      ${tagChips(p)}
+      ${p.kind==="q"&&!full?`<div class="rep">${QREP.filter(r=>!SAFE.blocked.has(r[0])).map(r=>{const rm=mem(r[0]);return`<div class="r">${av(rm)}<div><b>${rm.n}</b> ${rm.fl?'<span class="muted">· Florist</span>':""}<br>${r[1]}</div></div>`}).join("")}</div>`:""}
+      ${strip(p)}
+      ${!full&&p.kind!=="q"&&nc>0?`<button class="vc" onclick="Comm.openPost(${p.id})">View all ${nc} comments</button>`:""}
+    </article>`};
+
+  /* ---- флаг community ---- */
+  function gate(){if(!DEMO.off)return true;App.toast("Community is off in this build – taken you Home");setTimeout(()=>{App.state.history=[];App.go("home",{},{replace:true})},0);return false}
+
+  /* ---- лента ---- */
+  function feedList(){const a=all().filter(p=>p.m!=="me"||S.filter==="for");
+    if(S.filter==="fol")return a.filter(p=>S.follow.has(p.m));
+    if(S.filter==="near")return a.filter(p=>SE1.includes(mem(p.m).area));return a}
+  const skel=()=>`<div class="skel"><div class="skeleton ln" style="width:40%"></div><div class="skeleton ph"></div><div class="skeleton ln"></div></div><div class="skel"><div class="skeleton ln" style="width:35%"></div><div class="skeleton ph"></div><div class="skeleton ln"></div></div>`;
+  function mount(){if(!gate())return;
+    $("#cm-members").innerHTML=M.map(m=>`<button class="mb ${m.nw?"--new":""}" onclick="Comm.openMember('${m.id}')">${av(m)}<span class="l">${first(m)}</span></button>`).join("");
+    if(!S.hydrated||DEMO.skel){$("#cm-feed").innerHTML=skel();$("#cm-more").style.display="none";$("#cm-fend").textContent="";setTimeout(()=>{S.hydrated=true;renderFeed()},700)}else renderFeed();
+    ptrInit()}
+  function renderFeed(){const l=feedList();const f=$("#cm-feed");if(!f)return;
+    f.innerHTML=l.length?l.map(p=>postHtml(p)).join(""):`<div class="empty"><div class="h3">Nothing here yet</div>${S.filter==="fol"?"Follow a few members and their bouquets will show up here.":S.filter==="near"?"No posts from SE1 this week. Be the first.":"Post the first bouquet."}</div>`;
+    $("#cm-more").style.display=S.more||S.filter!=="for"?"none":"";
+    $("#cm-fend").textContent=l.length?(S.more?"You're all caught up.":"Bouquets at home, across London."):""}
+  function filter(f,btn){S.filter=f;$$("#cm-seg button").forEach(b=>b.classList.toggle("on",b===btn));renderFeed();App.haptic()}
+  function more(){const b=$("#cm-more");b.innerHTML='<span class="skeleton" style="width:80px;height:12px;display:block"></span>';setTimeout(()=>{S.more=true;b.innerHTML="Load more";renderFeed();App.toast("6 more bouquets")},600)}
+  /* pull-to-refresh: палец или мышь от верха ленты вниз > 70 px */
+  let ptrOn=false;
+  function ptrInit(){const b=$("#cm-body");if(!b||b.dataset.ptr)return;b.dataset.ptr="1";let y0=null;
+    const st=e=>{if(b.scrollTop>0)return;y0=(e.touches?e.touches[0]:e).clientY};
+    const mv=e=>{if(y0===null)return;const y=(e.touches?e.touches[0]:e).clientY;if(y-y0>70){y0=null;refresh()}};
+    const en=()=>{y0=null};
+    b.addEventListener("touchstart",st,{passive:true});b.addEventListener("touchmove",mv,{passive:true});b.addEventListener("touchend",en);
+    b.addEventListener("mousedown",st);b.addEventListener("mousemove",mv);b.addEventListener("mouseup",en);b.addEventListener("mouseleave",en)}
+  function refresh(){if(ptrOn)return;ptrOn=true;const p=$("#cm-ptr");p.classList.add("on");setTimeout(()=>{p.classList.remove("on");ptrOn=false},700)}
+
+  /* ---- действия на карточке ---- */
+  function syncLike(p){const liked=S.liked.has(p.id);$$(`.post[data-pid="${p.id}"] .like`).forEach(b=>{b.classList.toggle("on",liked);b.querySelector("span").textContent=p.likes+(liked?1:0);b.setAttribute("aria-label",liked?"Unlike":"Like")})}
+  function like(id,btn){const p=byId(id);if(!p)return;App.haptic();
+    if(S.liked.has(id)){S.liked.delete(id);syncLike(p);return}
+    S.liked.add(id);syncLike(p);if(btn){btn.classList.remove("pop");void btn.offsetWidth;btn.classList.add("pop")}
+    if(!S.likedOnce.has(id)){S.likedOnce.add(id);App.addPetals(1,"Liked a bouquet")}}
+  let lastTap=0,tapT;
+  function tapPhoto(id,el){const now=Date.now();const dbl=now-lastTap<300;lastTap=now;
+    if(dbl){clearTimeout(tapT);const bh=el.parentNode.querySelector(".bigheart");bh.classList.remove("go");void bh.offsetWidth;bh.classList.add("go");if(!S.liked.has(id))like(id,el.closest(".post").querySelector(".like"));return}
+    if(el.closest("#s-post-view"))return;tapT=setTimeout(()=>openPost(id),300)}
+  function save(id,btn){App.haptic();if(S.saved.has(id)){S.saved.delete(id);App.toast("Removed from saved")}else{S.saved.add(id);App.toast("Saved to your profile",{action:{label:"View",onclick:"App.go('member',{me:true,tab:'saved'})"}})}
+    $$(`.post[data-pid="${id}"] .save`).forEach(b=>{b.classList.toggle("on",S.saved.has(id));b.setAttribute("aria-label",S.saved.has(id)?"Remove from saved":"Save post")});btn&&btn.classList.add("pop")}
+  /* системное меню «Поделиться»: «<Имя>: <подпись>» + ссылка на товар или floritta.uk */
+  function share(id){const p=byId(id)||S.cur;if(!p)return;const m=mem(p.m);const pr=p.pid&&P(p.pid);const url=pr?`https://floritta.uk/product/${pr.n.toLowerCase().replace(/[^a-z0-9]+/g,"-")}`:"https://floritta.uk";
+    App.sheet(`<div class="cm-sheet"><div class="sh-head"><div class="h3">Share</div><button class="ib" onclick="App.closeSheet()">${H("close")}</button></div><div class="sh-body"><div class="sharemsg"><b>${esc(m.n)}:</b> ${esc(p.cap)}<br>${url}</div><p class="muted xs" style="margin:0 0 6px">System share sheet – the app hands this text to iOS / Android.</p>
+      <button class="row" onclick="App.closeSheet();App.toast('Copied')">${H("share").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Copy</div></div></button>
+      <button class="row" onclick="App.closeSheet();App.toast('Opening Messages…')">${H("chat").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Messages</div></div></button>
+      <button class="row" onclick="App.closeSheet();App.toast('Opening WhatsApp…')">${H("phone").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">WhatsApp</div></div></button>
+      <button class="row" onclick="App.closeSheet()">${H("close").replace("<svg",'<svg class="ic"')}<div class="rt"><div class="l">Cancel</div><div class="d">Cancelling closes quietly – no toast</div></div></button></div></div>`)}
+
+  /* ---- экран поста ---- */
+  function openPost(id,focus){App.go("post-view",{id,focus:!!focus})}
+  function mountPost(params){if(!gate())return;const p=byId(params.id);const body=$("#pv-body"),bar=$("#pv-cbar");
+    $("#pv-me").textContent=ME.ini;
+    if(!p||!visible(p)){S.cur=null;$("#pv-ttl").textContent="Post";$("#pv-share").style.visibility="hidden";bar.style.display="none";body.classList.add("nobar");
+      body.innerHTML=`<div class="empty" style="padding-top:96px">${H("eyeoff")}<div class="h3">This post isn't available</div>It may have been hidden or removed.<br><button class="btn --ghost --sm" onclick="App.back('community')">Back to Community</button></div>`;return}
+    S.cur=p;$("#pv-share").style.visibility="";bar.style.display="";body.classList.remove("nobar");const m=mem(p.m);$("#pv-ttl").textContent=p.day?p.day+" · "+first(m):m.n;
+    const cm=cmtsOf(p);let more=all().filter(x=>x.m===p.m&&x.id!==p.id);if(more.length<3)more=more.concat(all().filter(x=>x.m!==p.m&&x.id!==p.id&&x.tags.some(t=>p.tags.includes(t))&&!more.includes(x)));more=more.slice(0,3);
+    body.innerHTML=(p.m!=="me"?`<div class="extag"><span class="tag --soft">Example</span></div>`:"")+postHtml(p,true)+`<div class="sec-head"><div class="h2" style="font-size:24px">Comments</div><span class="muted sm">${cm.length}</span></div><div class="cmts" id="pv-cmts">${cm.length?cm.map(cmtHtml).join(""):`<div class="empty" style="padding:28px var(--gutter)"><div class="h3">No comments yet</div>Say something kind.</div>`}</div>
+      ${more.length?`<div class="sec-head"><div class="h2" style="font-size:24px">More from ${esc(first(m))}</div><button class="link" onclick="Comm.openMember('${m.id}')">Profile</button></div><div class="g3">${more.map(gridCell).join("")}</div>`:""}<div style="height:24px"></div>`;
+    $("#pv-in").value="";typing($("#pv-in"));if(params.focus)setTimeout(focusInput,400)}
+  function focusInput(){const i=$("#pv-in");i&&i.focus()}
+  function typing(inp){const b=$("#pv-send");const empty=!inp.value.trim();b.classList.toggle("off",empty);b.disabled=empty}
+  const cmtHtml=c=>{const m=mem(c.m);const mine=c.m==="me";return`<div class="cmt ${mine?"--me":""}" data-ck="${c.k||""}" ${mine?"":`onpointerdown="Comm.holdStart(event,'${c.k}')" onpointerup="Comm.holdEnd(event)" onpointercancel="Comm.holdEnd(event)" onpointerleave="Comm.holdEnd(event)" oncontextmenu="return false"`}><button onclick="Comm.openMember('${m.id}')" style="display:contents">${av(m)}</button><div class="b"><div class="n"><b>${esc(m.n)}</b> ${flb(m)}<span class="t">${c.w}</span></div>${esc(c.t)}</div></div>`};
+  let holdT=null;
+  function holdStart(e,k){const el=e.currentTarget;clearTimeout(holdT);holdT=setTimeout(()=>{el.classList.remove("hold");App.haptic();opts("comment",k)},350);el.classList.add("hold")}
+  function holdEnd(e){clearTimeout(holdT);e.currentTarget.classList.remove("hold")}
+  function send(){const inp=$("#pv-in");const t=inp.value.trim();if(!t||!S.cur)return;const c={m:"me",t,w:"Just now",k:S.cur.id+"-me-"+Date.now()};cmtsRaw(S.cur).push(c);const box=$("#pv-cmts");const emp=box.querySelector(".empty");if(emp)emp.remove();box.insertAdjacentHTML("beforeend",cmtHtml(c));box.lastElementChild.classList.add("fade-up");inp.value="";typing(inp);inp.blur();App.haptic();
+    const n=cmtsOf(S.cur).length;$$(`.post[data-pid="${S.cur.id}"] .cnt:not(.like) span`).forEach(s=>s.textContent=n);const cnt=$("#pv-body .sec-head .muted");if(cnt)cnt.textContent=n;box.lastElementChild.scrollIntoView({block:"nearest",behavior:"smooth"});App.toast("Comment posted")}
+  const gridCell=p=>`<button onclick="Comm.openPost(${p.id})"><img src="${p.img}" alt="" style="object-position:${p.pos};transform:scale(${p.sc})">${p.day?`<span class="dl">${p.day}</span>`:""}<span class="lk">${H("heart")}${p.likes+(S.liked.has(p.id)?1:0)}</span></button>`;
+
+  /* ---- профиль участника ---- */
+  function openMember(id){App.go("member",{id})}
+  function mountMember(params){if(!gate())return;const me=params.me||params.id==="me";const m=me?ME:mem(params.id);const body=$("#mb-body"),moreB=$("#mb-more");
+    if(!m){S.curM=null;$("#mb-ttl").textContent="Member";moreB.style.visibility="hidden";body.innerHTML=`<div class="empty" style="padding-top:96px">${H("user")}<div class="h3">Member not found</div>This profile doesn't exist or the link is out of date.<br><button class="btn --ghost --sm" onclick="App.back('community')">Back to Community</button></div>`;return}
+    S.curM=m.id;const mine=all().filter(p=>p.m===m.id);const tab=params.tab||"posts";
+    $("#mb-ttl").textContent=me?"Your profile":m.fl?"Floritta florist":"Member";moreB.style.visibility=me?"hidden":"";const fol=S.follow.has(m.id);const blocked=SAFE.blocked.has(m.id);
+    const grid=tab==="saved"?all().filter(p=>S.saved.has(p.id)):mine;
+    const place=m.fl?"Bermondsey · Floritta, 80 Willow Walk":me?myArea():m.area+", London";
+    body.innerHTML=`${me?"":`<div class="extag"><span class="tag --soft">Example</span></div>`}<div class="hero">${av(m)}<div class="f1"><div class="nm">${esc(m.n)} ${flb(m)}</div><div class="ar">${esc(place)}</div></div></div>
+      ${m.bio?`<div class="bio">${esc(m.bio)}</div>`:""}
+      ${blocked?`<div class="empty"><div class="h3">You blocked ${esc(first(m))}</div>Their posts and comments are hidden.<br><button class="btn --secondary --sm" onclick="Comm.unblock('${m.id}')">Unblock ${esc(first(m))}</button></div>`:`
+      <div class="stats"><div><b>${mine.length}</b>Posts</div><div><b>${(m.fw+(fol?1:0)).toLocaleString("en-GB")}</b>Followers</div><div><b>${me?S.follow.size:m.fg}</b>Following</div></div>
+      <div class="acts">${me?`<button class="btn --secondary" onclick="Comm.editProfile()">Edit profile</button><button class="btn --ghost" onclick="App.go('compose')">New post</button>`:`<button class="btn ${fol?"on --secondary":""}" id="mb-follow" onclick="Comm.follow('${m.id}')">${fol?"Following":"Follow"}</button>`}</div>
+      ${me?`<div class="seg"><button class="${tab==="posts"?"on":""}" onclick="App.go('member',{me:true,tab:'posts'},{replace:true})">Bouquets at home</button><button class="${tab==="saved"?"on":""}" onclick="App.go('member',{me:true,tab:'saved'},{replace:true})">Saved</button></div>`:`<div class="sec-head"><div class="h2" style="font-size:24px">Bouquets at home</div><span class="muted sm">${mine.length}</span></div>`}
+      ${grid.length?`<div class="g3">${grid.map(gridCell).join("")}</div>`:`<div class="empty"><div class="h3">${tab==="saved"?"Nothing saved yet":"No posts yet"}</div>${tab==="saved"?"Tap the bookmark on any post to keep it here.":"Share the first one."}</div>`}
+      ${me?`<button class="row srow" onclick="Comm.blockedSheet()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><div class="rt"><div class="l">Hidden and blocked</div><div class="d">${SAFE.hidden.size} hidden · ${SAFE.blocked.size} blocked</div></div>${H("chev").replace("<svg",'<svg class="chev" style="width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5"')}</button><p class="muted xs pad" style="margin:12px 0 0">Your profile, likes and posts are saved on this device only.</p>`:""}`}<div style="height:32px"></div>`}
+  function follow(id){const m=mem(id);App.haptic();const b=$("#mb-follow");
+    if(S.follow.has(id)){S.follow.delete(id);if(b){b.textContent="Follow";b.classList.remove("on","--secondary")}App.toast(`Unfollowed ${m.n}`)}
+    else{S.follow.add(id);if(b){b.textContent="Following";b.classList.add("on","--secondary")}App.toast(`Following ${m.n}`)}
+    const st=$("#mb-body .stats div:nth-child(2) b");if(st)st.textContent=(m.fw+(S.follow.has(id)?1:0)).toLocaleString("en-GB")}
+  function editProfile(){App.sheet(`<div class="cm-sheet"><div class="sh-head"><div class="h3">Edit profile</div><button class="ib" onclick="App.closeSheet()">${H("close")}</button></div><div class="sh-body">
+    <div class="field"><label>Display name <span class="cnt" id="ep-nc">${ME.n.length} / 40</span></label><input class="input" id="ep-n" maxlength="40" value="${esc(ME.n)}" oninput="document.getElementById('ep-nc').textContent=this.value.length+' / 40'"></div>
+    <div class="field"><label>Bio <span class="cnt" id="ep-bc">${ME.bio.length} / 160</span></label><textarea class="input" id="ep-b" maxlength="160" placeholder="A line about your flowers at home" oninput="document.getElementById('ep-bc').textContent=this.value.length+' / 160'">${esc(ME.bio)}</textarea></div>
+    <p class="muted xs" style="margin:0">Area comes from your first saved address (${esc(myArea())}) and can't be edited here. Saved on this device only.</p></div>
+    <div class="sh-foot"><button class="btn --block" onclick="Comm.saveProfile()">Save</button></div></div>`)}
+  function saveProfile(){ME.n=$("#ep-n").value.trim()||ME.n;ME.ini=initials(ME.n);ME.bio=$("#ep-b").value.trim();App.closeSheet();App.toast("Profile updated");mountMember({me:true})}
+  /* лист «Hidden and blocked» */
+  function blockedSheet(){const bl=[...SAFE.blocked].map(mem);
+    App.sheet(`<div class="cm-sheet"><div class="sh-head"><div class="h3">Hidden and blocked</div><button class="ib" onclick="App.closeSheet()">${H("close")}</button></div><div class="sh-body">
+      ${bl.length?bl.map(m=>`<div class="blk">${av(m)}<span class="n">${esc(m.n)}</span><button class="btn --ghost --xs" onclick="Comm.unblock('${m.id}',true)">Unblock</button></div>`).join(""):`<p class="soft sm" style="margin:8px 0 14px">You have not blocked anyone.</p>`}
+      ${SAFE.hidden.size?`<button class="btn --secondary --block" style="margin-top:18px" onclick="Comm.restoreHidden()">Show hidden posts again</button><p class="muted xs" style="margin:8px 0 0">${SAFE.hidden.size} hidden post${SAFE.hidden.size>1?"s":""} come back. Reported posts stay hidden.</p>`:`<p class="muted xs" style="margin:8px 0 0">No hidden posts.</p>`}
+      <div style="height:8px"></div></div></div>`)}
+  function restoreHidden(){SAFE.hidden.clear();SAFE.hiddenC.clear();App.closeSheet();App.toast("Hidden posts restored");rerender()}
+  function unblock(id,inSheet){const m=mem(id);SAFE.blocked.delete(id);App.toast(`${first(m)} unblocked`);App.haptic();if(inSheet)blockedSheet();else App.closeSheet();rerender()}
+
+  /* ---- лист безопасности (пост / комментарий / участник) ---- */
+  const optBtn=(ic,l,d,fn,danger)=>`<button class="opt ${danger?"--danger":""}" onclick="${fn}">${ic}<div><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:""}</div></button>`;
+  const I={flag:'<svg viewBox="0 0 24 24"><path d="M5 21V4h12l-2 4 2 4H5"/></svg>',eye:H("eyeoff"),block:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M6.5 6.5l11 11"/></svg>',trash:H("trash"),undo:'<svg viewBox="0 0 24 24"><path d="M4 10h10a5 5 0 0 1 0 10H8"/><path d="m8 6-4 4 4 4"/></svg>'};
+  function findCmt(k){for(const p of [...MYP,...POSTS,...MORE]){const c=cmtsRaw(p).find(c=>c.k===k);if(c)return{p,c}}return null}
+  function opts(kind,ref){let title,body="";
+    if(kind==="post"){const p=byId(ref);if(!p)return;const m=mem(p.m);title="Post options";
+      body=p.m==="me"?optBtn(I.trash,"Delete my post","Removes it from the feed, your profile and Saved. Can't be undone.",`Comm.deletePost(${p.id})`,true)
+        :optBtn(I.flag,"Report post","",`Comm.sheetReport('post',${p.id})`)+optBtn(I.eye,"Hide post","You won't see this post again on this device.",`Comm.hidePost(${p.id})`)+optBtn(I.block,`Block ${esc(first(m))}`,"You won't see their posts or comments.",`Comm.askBlock('${m.id}')`)}
+    else if(kind==="comment"){const f=findCmt(ref);if(!f)return;const m=mem(f.c.m);title="Comment options";
+      body=optBtn(I.flag,"Report comment","",`Comm.sheetReport('comment','${ref}')`)+optBtn(I.eye,"Hide comment","",`Comm.hideComment('${ref}')`)+optBtn(I.block,`Block ${esc(first(m))}`,"You won't see their posts or comments.",`Comm.askBlock('${m.id}')`)}
+    else{const m=mem(ref);if(!m||m.id==="me")return;title="Member options";
+      body=SAFE.blocked.has(m.id)?optBtn(I.undo,`Unblock ${esc(first(m))}`,"Their posts and comments come back.",`Comm.unblock('${m.id}')`)
+        :optBtn(I.flag,"Report member","",`Comm.sheetReport('member','${m.id}')`)+optBtn(I.block,`Block ${esc(first(m))}`,"You won't see their posts or comments.",`Comm.askBlock('${m.id}')`)}
+    App.sheet(`<div class="cm-sheet"><div class="sh-head"><div class="h3">${title}</div><button class="ib" onclick="App.closeSheet()">${H("close")}</button></div><div class="sh-body">${body}<p class="muted xs" style="margin:12px 0 0">Kept on this device only. Nothing is sent to Floritta or to the member.</p></div></div>`)}
+  const REASONS=["Spam or advertising","Nudity or sexual content","Hate, bullying or harassment","Violence or dangerous acts","Something else"];
+  function sheetReport(kind,ref){App.sheet(`<div class="cm-sheet"><div class="sh-head"><div class="h3">Why are you reporting this?</div><button class="ib" onclick="App.closeSheet()">${H("close")}</button></div><div class="sh-body">${REASONS.map(r=>`<button class="reason" onclick="Comm.report('${kind}','${ref}')">${r}</button>`).join("")}<p class="muted xs" style="margin:12px 0 0">Any reason does the same: it's hidden from you on this phone. The reason isn't stored and nothing is sent.</p></div></div>`)}
+  function report(kind,ref){App.haptic();
+    if(kind==="post"){SAFE.reported.add(+ref);S.liked.delete(+ref);S.saved.delete(+ref)}
+    else if(kind==="comment")SAFE.hiddenC.add(ref);
+    else{SAFE.blocked.add(ref);S.follow.delete(ref)}
+    App.closeSheet();App.toast("Thanks for telling us. We've hidden it from you.");afterAction(kind,ref)}
+  function hidePost(id){SAFE.hidden.add(+id);App.closeSheet();App.toast("Post hidden",{action:{label:"Undo",onclick:`Comm.unhide(${id})`}});afterAction("post",id)}
+  function unhide(id){SAFE.hidden.delete(+id);App.toast("Post shown again");rerender()}
+  function hideComment(k){SAFE.hiddenC.add(k);App.closeSheet();App.toast("Comment hidden");rerender()}
+  function askBlock(id){const m=mem(id);App.sheet(`<div class="cm-sheet"><div class="sh-head"><div class="h3">Block ${esc(first(m))}?</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">Their posts and comments will be hidden from you. They won't be told.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn --accent" onclick="Comm.block('${id}')">Block</button></div></div>`)}
+  function block(id){const m=mem(id);SAFE.blocked.add(id);S.follow.delete(id);App.closeSheet();App.haptic();App.toast(`${first(m)} blocked`);afterAction("member",id)}
+  function deletePost(id){MYP=MYP.filter(p=>p.id!=id);S.liked.delete(+id);S.saved.delete(+id);App.closeSheet();App.toast("Post deleted");afterAction("post",id)}
+  /* после действия: экран поста исчез → назад; иначе перерисовать текущий экран */
+  function afterAction(kind,ref){const cur=App.state.current;
+    if(cur==="post-view"&&S.cur&&(!byId(S.cur.id)||!visible(S.cur))){App.back("community");return}
+    rerender()}
+  function rerender(){const cur=App.state.current;const prm=App.state.params||{};
+    if(cur==="community")renderFeed();else if(cur==="post-view")mountPost(prm);else if(cur==="member")mountMember(prm);else if(cur==="hashtag")mountHashtag(prm);else if(cur==="comm-safety")mountSafety()}
+
+  /* ---- публикация ---- */
+  const SAMPLES=[IMG.p32,IMG.hb,IMG[9],IMG.hw];
+  function mountCompose(){if(!gate())return;const c=S.cp;locText();
+    $("#cp-loc").classList.toggle("on",c.loc);
+    $("#cp-samples").innerHTML='<span class="lb">Use a sample photo</span>'+SAMPLES.map(s=>`<button class="${c.img===s?"on":""}" onclick="Comm.sample('${s}',this)"><img src="${s}" alt=""></button>`).join("");
+    prodChips($("#cp-q").value);days();
+    $("#cp-tags").innerHTML=["onmytable","kitchentable","day1","peonies","roses","windowsill","gift","beforeafter","bermondsey"].map(t=>`<button class="chip ${c.tags.has(t)?"on":""}" onclick="Comm.tag('${t}',this)">#${t}</button>`).join("");
+    showPhoto()}
+  function days(){$("#cp-days").innerHTML=["Day 1","Day 2","Day 3","Day 4","Day 5","Day 6","Day 7","Not a Floritta bouquet"].map(d=>`<button class="chip ${S.cp.day===d?"on":""}" onclick="Comm.pick('day','${d}',this)">${d}</button>`).join("")}
+  function locText(){$("#cp-area").textContent=S.cp.loc?myArea():"London"}
+  function loc(btn){S.cp.loc=!S.cp.loc;btn.classList.toggle("on",S.cp.loc);locText();App.haptic()}
+  function showPhoto(){const d=$("#cp-drop");d.classList.toggle("has",!!S.cp.img);$$("#cp-drop img,#cp-drop .ch").forEach(e=>e.remove());if(S.cp.img){d.insertAdjacentHTML("beforeend",`<img src="${S.cp.img}" alt=""><span class="ch">Change</span>`)}}
+  function gallery(e){if(DEMO.gallery){e.preventDefault();App.haptic();App.toast("Couldn't open your photos");return false}return true}
+  function file(inp){const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{S.cp.img=e.target.result;$$("#cp-samples button").forEach(b=>b.classList.remove("on"));showPhoto();App.toast("Photo added")};r.onerror=()=>App.toast("Couldn't open your photos");r.readAsDataURL(f)}
+  function sample(src,btn){S.cp.img=src;$$("#cp-samples button").forEach(b=>b.classList.toggle("on",b===btn));showPhoto();App.haptic()}
+  function count(t){$("#cp-cnt").textContent=t.value.length+" / 220"}
+  function prodChips(q){q=(q||"").toLowerCase();const l=PRODUCTS.filter(p=>p.n.toLowerCase().includes(q)||p.id===S.cp.pid).slice(0,q?8:6);
+    $("#cp-prods").innerHTML=(l.length?l.map(p=>`<button class="chip ${S.cp.pid===p.id?"on":""}" onclick="Comm.pick('pid',${p.id},this)"><img src="${p.img}" alt="">${p.n}</button>`).join(""):`<span class="muted sm">No match – that's fine, post it anyway.</span>`)}
+  function pick(k,v,btn){S.cp[k]=S.cp[k]===v?null:v;[...btn.parentNode.children].forEach(b=>b.classList.toggle("on",b===btn&&S.cp[k]!==null));App.haptic();
+    if(k==="day"&&v==="Not a Floritta bouquet"&&S.cp.day){S.cp.pid=null;prodChips($("#cp-q").value)}
+    if(k==="pid"&&S.cp.pid&&S.cp.day==="Not a Floritta bouquet"){S.cp.day=null;days()}}
+  function tag(t,btn){S.cp.tags.has(t)?S.cp.tags.delete(t):S.cp.tags.add(t);btn.classList.toggle("on",S.cp.tags.has(t));App.haptic()}
+  function post(){const c=S.cp;if(!c.img){App.haptic();App.toast("Add a photo first – tap the square or pick a sample");$("#cp-body").scrollTo({top:0,behavior:"smooth"});return}
+    const cap=$("#cp-cap").value.trim()||"On my table today.";const day=c.day&&c.day.startsWith("Day")?c.day:"";
+    const p=mk(["me",c.img,c.pid||0,day,day?"d":"","Just now",0,cap,[...c.tags].join(" "),"50% 50%",1]);p.loc=c.loc;MYP.unshift(p);
+    S.cp={img:null,pid:null,day:null,tags:new Set(["onmytable"]),loc:true};$("#cp-cap").value="";$("#cp-q").value="";count($("#cp-cap"));
+    S.filter="for";$$("#cm-seg button").forEach((b,i)=>b.classList.toggle("on",i===0));
+    if(App.state.history.length)App.back("community");else{App.state.history=[];App.go("community")}
+    renderFeed();App.addPetals(20,"Posted");setTimeout(()=>$$("#cm-feed .post")[0]?.classList.add("fade-up"),50)}
+
+  /* ---- хэштег ---- */
+  function mountHashtag(params){if(!gate())return;const t=String(params.tag||"onmytable").replace(/^#/,"").toLowerCase();const l=all().filter(p=>p.tags.includes(t));const on=S.ftags.has(t);
+    const rel=[];all().forEach(p=>{if(p.tags.includes(t))p.tags.forEach(x=>{if(x!==t&&!rel.includes(x))rel.push(x)})});
+    $("#ht-body").innerHTML=`<div class="hh"><div class="f1"><div class="h2">#${esc(t)}</div><div class="m">${l.length===1?"1 post":l.length+" posts"}</div></div><button class="btn ${on?"on --secondary":""}" id="ht-f" onclick="Comm.ftag('${t}')">${on?"Following":"Follow tag"}</button></div>
+      <div class="exbanner" style="margin-top:18px"><b>Examples</b>Example posts that show how Community will work. These members are samples, not real customers.</div>
+      ${l.length?`<div class="g3">${l.map(gridCell).join("")}</div>`:`<div class="empty"><div class="h3">Quiet tag</div>Be the first to post with #${esc(t)}.</div>`}
+      ${rel.length?`<div class="sec-head"><div class="h2" style="font-size:24px">Related</div></div><div class="chips">${rel.slice(0,6).map(x=>`<button class="chip" onclick="App.go('hashtag',{tag:'${x}'},{replace:true})">#${x}</button>`).join("")}</div>`:""}<div style="height:32px"></div>`}
+  function ftag(t){const b=$("#ht-f");if(S.ftags.has(t)){S.ftags.delete(t);b.textContent="Follow tag";b.classList.remove("on","--secondary")}else{S.ftags.add(t);b.textContent="Following";b.classList.add("on","--secondary");App.toast(`Following #${t}`)}App.haptic()}
+
+  /* ---- экран демо «Safety & moderation» ---- */
+  function mountSafety(){const s=$("#cs-stats");if(s)s.innerHTML=`<div><b>${SAFE.hidden.size}</b>Hidden</div><div><b>${SAFE.reported.size}</b>Reported</div><div><b>${SAFE.blocked.size}</b>Blocked</div>`;
+    $("#cs-gal").classList.toggle("on",DEMO.gallery);$("#cs-flag").classList.toggle("on",DEMO.off)}
+  function resetSafety(){SAFE.hidden.clear();SAFE.reported.clear();SAFE.blocked.clear();SAFE.hiddenC.clear();MYP=MINE.map(mk);App.toast("Safety state reset");mountSafety()}
+  const myFirst=()=>MYP[0]?MYP[0].id:0;
+  function demoCommentSheet(){const p=POSTS[0];const c=cmtsOf(p)[0];if(c)opts("comment",c.k)}
+  function demoBlocked(){SAFE.blocked.add("tom");S.follow.delete("tom");opts("member","tom")}
+  function demoSkeleton(){DEMO.skel=true;App.state.history=[];App.go("community");setTimeout(()=>DEMO.skel=false,800)}
+  function demoRefresh(){App.state.history=[];App.go("community");setTimeout(()=>{if(S.hydrated)refresh();else setTimeout(refresh,800)},100)}
+  function demoGallery(btn){DEMO.gallery=!DEMO.gallery;btn.classList.toggle("on",DEMO.gallery);App.haptic();App.toast(DEMO.gallery?"Gallery will fail on the next tap":"Gallery works again")}
+  function demoFlag(btn){DEMO.off=!DEMO.off;btn.classList.toggle("on",DEMO.off);document.documentElement.classList.toggle("cm-off",DEMO.off);App.haptic();App.toast(DEMO.off?"Flag community = off: tab hidden, links go Home":"Flag community = on")}
+
+  window.mount_community=mount;window.mount_post_view=mountPost;window.mount_member=mountMember;window.mount_compose=mountCompose;window.mount_hashtag=mountHashtag;window.mount_comm_safety=mountSafety;
+  window.mount_comm_me=()=>App.go("member",{me:true},{replace:true});
+  return {filter,more,like,tapPhoto,save,share,openPost,focusInput,typing,send,holdStart,holdEnd,openMember,follow,editProfile,saveProfile,blockedSheet,restoreHidden,unblock,opts,sheetReport,report,hidePost,unhide,hideComment,askBlock,block,deletePost,file,gallery,sample,count,prodChips,pick,tag,loc,post,ftag,resetSafety,myFirst,demoCommentSheet,demoBlocked,demoSkeleton,demoRefresh,demoGallery,demoFlag,S,SAFE,DEMO};
+})();
+</script>

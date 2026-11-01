@@ -1,9 +1,15 @@
-<section class="scr cmz" id="s-post-view">
+<!-- Экран поста /community/post/[id]. Рендер – Comm.mountPost (40-community-extra.html). -->
+<section class="scr cmz" id="s-post-view" data-nav="Community – post" data-group="Social">
+  <!-- ids: APP-COMM-041 – шапка капсом «Day N · Имя» / имя автора, кнопка назад; APP-COMM-042 – Share в шапке = системное меню «Поделиться» (Comm.share) -->
   <div class="appbar">
     <button class="ib" onclick="App.back('community')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl caps" id="pv-ttl">Post</div>
-    <button class="ib" onclick="App.toast('Link copied')" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button>
+    <button class="ib" id="pv-share" onclick="Comm.share(Comm.S.cur&&Comm.S.cur.id)" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button>
   </div>
+  <!-- ids: APP-COMM-040 – «This post isn't available» (неверный id / скрыт / пожалован / удалён / автор заблокирован); APP-COMM-043 – метка «Example» над чужим постом; APP-COMM-044 – карточка поста в полном варианте -->
+  <!-- ids: APP-COMM-045 – «Comments» со счётчиком, аватар → профиль, «Florist», время, свои подсвечены; APP-COMM-046 – «No comments yet. Say something kind.»; APP-COMM-047 – долгое нажатие (350 мс) на чужой комментарий → «Comment options», на свой – ничего -->
+  <!-- ids: APP-COMM-050 – «More from <Имя>» 3 поста + «Profile»; APP-COMM-051 – после скрытия/жалобы/удаления/блокировки из листа – возврат назад -->
   <div class="scr-body has-cta" id="pv-body"></div>
-  <div class="cbar"><span class="av --t2">TS</span><input class="input" id="pv-in" placeholder="Add a comment…" onkeydown="if(event.key==='Enter')Comm.send()"><button class="send" onclick="Comm.send()" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M4 12 20 4l-4 16-4-7z"/><path d="m12 13 8-9"/></svg></button></div>
+  <!-- ids: APP-COMM-048 – панель: свой аватар, поле «Add a comment…» до 500 знаков, отправка неактивна при пустом поле; APP-COMM-049 – отправка кнопкой или Return → «Comment posted», «Just now», прокрутка вниз -->
+  <div class="cbar" id="pv-cbar"><span class="av --t2" id="pv-me">TS</span><input class="input" id="pv-in" maxlength="500" placeholder="Add a comment…" oninput="Comm.typing(this)" onkeydown="if(event.key==='Enter')Comm.send()"><button class="send off" id="pv-send" onclick="Comm.send()" aria-label="Send" disabled><svg viewBox="0 0 24 24"><path d="M4 12 20 4l-4 16-4-7z"/><path d="m12 13 8-9"/></svg></button></div>
 </section>
