@@ -1,0 +1,202 @@
+<style>
+#s-acc-details [hidden],#s-acc-order [hidden],#s-acc-sources [hidden],#s-account [hidden],#s-orders [hidden],#s-addresses [hidden]{display:none!important}
+/* ---- My details ---- */
+#s-acc-details .intro{padding:4px var(--gutter) 20px;font-size:14px;color:var(--graphite);line-height:1.5}
+#s-acc-details .field{padding:0 var(--gutter)}
+#s-acc-details .hint{font-size:12px;color:var(--grey)}
+#s-acc-details .err{font-size:12px;color:var(--accent)}
+#s-acc-details .input.bad{border-color:var(--accent)}
+#s-acc-details .sw{display:flex;align-items:center;gap:14px;padding:14px var(--gutter);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-top:8px}
+#s-acc-details .sw .l{font-size:15px}
+#s-acc-details .sw .d{font-size:13px;color:var(--grey);margin-top:1px}
+/* ---- Order card ---- */
+#s-acc-order .st{padding:8px var(--gutter) 0}
+#s-acc-order .st .h2{margin-top:10px}
+#s-acc-order .st p{font-size:14px;color:var(--graphite);line-height:1.5;margin:8px 0 0}
+#s-acc-order .ocard{margin:20px var(--gutter) 0;border:1px solid var(--hair);padding:16px}
+#s-acc-order .ocard .t{font-size:15px}
+#s-acc-order .ocard p{font-size:13px;color:var(--graphite);line-height:1.5;margin:6px 0 0}
+#s-acc-order .ocard .btn{margin-top:12px}
+#s-acc-order .line{display:flex;gap:12px;align-items:center;padding:12px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+#s-acc-order .line img,#s-acc-order .line .noimg{width:48px;height:60px;object-fit:cover;background:var(--silver);flex:none}
+#s-acc-order .line .n{font-size:15px}
+#s-acc-order .line .d{font-size:13px;color:var(--grey);margin-top:2px}
+#s-acc-order .line .chev{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+#s-acc-order .dl{display:flex;justify-content:space-between;gap:16px;padding:10px var(--gutter);border-bottom:1px solid var(--hair);font-size:14px}
+#s-acc-order .dl span:first-child{color:var(--grey)}
+#s-acc-order .dl span:last-child{text-align:right}
+#s-acc-order .rate{display:flex;gap:6px;margin-top:10px}
+#s-acc-order .rate button svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.2}
+#s-acc-order .rate button.on svg{fill:var(--ink)}
+#s-acc-order .remove{display:block;margin:28px auto 0}
+/* ---- Order sources ---- */
+#s-acc-sources .blk{padding:16px var(--gutter);border-bottom:1px solid var(--hair)}
+#s-acc-sources .blk .t{font-size:15px}
+#s-acc-sources .blk p{font-size:13px;color:var(--graphite);line-height:1.5;margin:4px 0 0}
+#s-acc-sources .mock{margin:12px 0 0;border:1px dashed var(--light);padding:12px}
+#s-acc-sources .mock .caps{color:var(--grey);margin-bottom:8px;display:block}
+#s-acc-sources .kv{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+#s-acc-sources .kv span{font-size:11px;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--hair);padding:3px 8px;color:var(--graphite)}
+</style>
+
+<!-- ======================= My details ======================= -->
+<!-- ids: APP-ACCOUNT-050 -->
+<section class="scr" id="s-acc-details" data-nav="My details" data-group="Account">
+  <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My details</div></div>
+  <div class="scr-body has-cta">
+    <div class="intro">Used to fill in checkout faster. Kept only on this phone.</div>
+    <!-- ids: APP-ACCOUNT-051 APP-ACCOUNT-057 APP-ACCOUNT-059 -->
+    <div class="field"><label>Your name</label><input class="input" id="dt-name" autocomplete="name" placeholder="Optional"></div>
+    <!-- ids: APP-ACCOUNT-052 APP-ACCOUNT-055 -->
+    <div class="field"><label>Email</label><input class="input" id="dt-email" type="email" inputmode="email" placeholder="Optional"><div class="hint">Your receipt and the tracking link go here</div><div class="err" id="dt-email-err" hidden>Check the email address</div></div>
+    <!-- ids: APP-ACCOUNT-053 APP-ACCOUNT-056 -->
+    <div class="field"><label>Phone</label><input class="input" id="dt-phone" type="tel" inputmode="tel" placeholder="Optional"><div class="hint">We call only if something about the order needs you</div><div class="err" id="dt-phone-err" hidden>Check the phone number</div></div>
+    <!-- ids: APP-ACCOUNT-054 -->
+    <div class="sw"><div class="f1"><div class="l">Use these at checkout</div><div class="d">Turn off and checkout starts empty</div></div><button class="switch" id="dt-save" onclick="this.classList.toggle('on');App.haptic()" aria-label="Use these at checkout"></button></div>
+    <p class="pad xs muted" style="margin-top:16px">Saved on device · nothing is sent to floritta.uk until you place an order.</p>
+  </div>
+  <!-- ids: APP-ACCOUNT-058 -->
+  <div class="cta-bar"><button class="btn" onclick="window.dtSave()">Save</button></div>
+</section>
+
+<!-- ======================= Order card (all states) ======================= -->
+<!-- ids: APP-ORDERS-031 -->
+<section class="scr" id="s-acc-order" data-nav="Order card (all states)" data-group="Account">
+  <div class="appbar"><button class="ib" onclick="App.back('orders')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="oc-ttl">Order</div></div>
+  <div class="scr-body">
+    <!-- ids: APP-ORDERS-030 -->
+    <div id="oc-404" class="ab-empty" hidden><div class="h3">Order not found</div><p>It may have been removed from this device.</p><button class="btn" onclick="App.go('orders',{},{replace:true})">All orders</button></div>
+    <div id="oc-has">
+      <!-- ids: APP-ORDERS-032 -->
+      <div class="st" id="oc-st"></div>
+      <!-- ids: APP-TRACK-001 APP-TRACK-002 APP-TRACK-003 -->
+      <div class="ocard" id="oc-track"></div>
+      <!-- ids: APP-TRACK-005 -->
+      <div class="ocard" id="oc-photo"><div class="t">Photo before delivery</div><p>Your florist photographs the bouquet before it leaves the shop. We'll send the photo here.</p><div class="xs muted mt8">In the shipped app this card is a promise only – the photo is not delivered yet. The proposed live screen is “Tracking (live, proposed)”.</div></div>
+      <!-- ids: APP-ORDERS-033 -->
+      <div class="ocard" id="oc-care"><div class="t">Keep it alive</div><p id="oc-care-p">7-day care programme · day 1 of 7. Earn Petals for every check-in.</p><button class="btn --ghost --block" onclick="App.go('care',{order:window.ACCO.code})">Open the programme</button></div>
+      <!-- ids: APP-ORDERS-034 -->
+      <button class="row" id="oc-living" onclick="App.go('living',{order:window.ACCO.code})"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg><div class="rt"><div class="l">Show the Living Flower</div><div class="d">The screen your recipient sees</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      <!-- ids: APP-ORDERS-035 APP-ORDERS-036 -->
+      <div class="sec-head"><div class="h2">In this order</div></div>
+      <div id="oc-items"></div>
+      <!-- ids: APP-ORDERS-037 -->
+      <div class="sec-head"><div class="h2">Delivery</div></div>
+      <div id="oc-delivery"></div>
+      <!-- prototype extra: rating after delivery (the shipped app has none – only the website review request) -->
+      <div class="ocard" id="oc-rate" hidden><div class="t">How were the flowers?</div><div class="rate" id="oc-stars"></div><p id="oc-rate-p">Tap a star to rate</p></div>
+      <!-- ids: APP-ORDERS-038 APP-ORDERS-039 APP-ORDERS-040 APP-ORDERS-043 -->
+      <div class="pad flex mt24" style="gap:10px">
+        <button class="btn --ghost f1" onclick="window.ACC.reorder(window.ACCO.code)">Reorder</button>
+        <button class="btn --ghost f1" onclick="window.accWhatsApp(window.ACCO.code)">Get help</button>
+      </div>
+      <p class="pad xs muted mt8" style="margin-bottom:0">Need to change or cancel? Get help opens WhatsApp with a person – the app itself cannot edit an order.</p>
+      <!-- ids: APP-ORDERS-041 APP-ORDERS-042 -->
+      <button class="textbtn remove" onclick="window.ocRemove()">Remove from this device</button>
+    </div>
+    <div class="ab-demo"><div class="t">Demo states</div><div class="chips" id="oc-demo">
+      <button class="chip" onclick="App.go('acc-order',{code:'716204'},{replace:true})">Scheduled</button>
+      <button class="chip" onclick="App.go('acc-order',{code:'715529'},{replace:true})">Today</button>
+      <button class="chip" onclick="App.go('acc-order',{code:'714882'},{replace:true})">Past</button>
+      <button class="chip" onclick="App.go('acc-order',{code:'web-3f9a1c2d'},{replace:true})">Web order (builder)</button>
+      <button class="chip" onclick="App.go('acc-order',{code:'712310'},{replace:true})">No tracking link</button>
+      <button class="chip" onclick="App.go('acc-order',{code:'703118'},{replace:true})">Retired product</button>
+      <button class="chip" onclick="App.go('acc-order',{code:'000000'},{replace:true})">Not found</button>
+    </div></div>
+  </div>
+</section>
+
+<!-- ======================= How orders get into the app ======================= -->
+<!-- ids: APP-ORDERS-008 -->
+<section class="scr" id="s-acc-sources" data-nav="How orders get here" data-group="Account">
+  <div class="appbar"><button class="ib" onclick="App.back('orders')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Your orders on this phone</div></div>
+  <div class="scr-body">
+    <div class="pad" style="padding-top:4px"><div class="h2">Where orders come from</div><p class="soft sm" style="margin:8px 0 0;line-height:1.5">Orders are kept on this phone only – there is no account behind them. Here is what lands in Orders and what does not.</p></div>
+    <!-- ids: APP-ORDERS-001 APP-ORDERS-004 APP-ORDERS-007 -->
+    <div class="blk mt16"><div class="t">Paid in the app</div><p>The moment payment is confirmed, the order is saved here with its items, size, add-ons, recipient, postcode, date and window, your card message and whether you sent it anonymously. +50 Petals are added at the same time.</p>
+      <div class="kv"><span>Items</span><span>Total</span><span>Recipient</span><span>Postcode</span><span>Date · window</span><span>Sender</span><span>Card message</span><span>Anonymous</span></div>
+      <div class="mock"><span class="caps">Order placed screen</span><button class="btn --block" onclick="App.go('acc-order',{code:'715529'})">Track order</button><div class="xs muted mt8">Opens the order card straight after payment.</div></div></div>
+    <!-- ids: APP-ORDERS-005 APP-ORDERS-006 -->
+    <div class="blk"><div class="t">Where you find them</div><p>Tile “Orders” on You (with the count or “None yet”), “Track order” after payment, and the empty Keep it alive screen.</p>
+      <div class="flex mt12" style="gap:8px"><button class="btn --ghost f1" onclick="App.go('account')">You tab · Orders tile</button><button class="btn --ghost f1" onclick="App.go('care')">Keep it alive</button></div></div>
+    <!-- ids: APP-ORDERS-002 APP-ORDERS-003 -->
+    <div class="blk"><div class="t">Bouquet builder on floritta.uk</div><p>A bouquet built and paid on the website inside the app is saved too – as “Your own bouquet (N stems)” or “Floritta order”. It has no product card, recipient or date, so Reorder is not available. If the order number cannot be read from the website, it is kept under a short code like <b>web-3f9a1c2d</b> – Track still works.</p>
+      <button class="btn --ghost --block mt12" onclick="App.go('acc-order',{code:'web-3f9a1c2d'})">See a builder order</button></div>
+    <!-- ids: APP-ORDERS-008 -->
+    <div class="blk"><div class="t">Not here</div><p>Orders placed on floritta.uk in Safari, by phone or WhatsApp, and orders from another phone or before a reinstall – they are not synced to the app.</p>
+      <div class="panel --warn mt12"><div class="sm">Proposed: link your phone number</div><div class="xs mt4" style="color:var(--graphite);line-height:1.5">One SMS code and every order placed with +44 7700 900 123 – website, WhatsApp, shop – shows here. Not in the shipped app; needs a CRM endpoint. For Tatiana to decide.</div><button class="btn --block mt12" onclick="window.ocLink()">Link by phone number</button></div></div>
+    <p class="pad xs muted" style="margin-top:16px">Nothing from this screen is sent anywhere. Saved on device.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+const $=App.$, P=id=>App.product(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dl=d=>d?d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}):"";
+const money=n=>"£"+(Math.round(n*100)/100).toFixed(2);
+window.ACC=window.ACC||{};const ACC=window.ACC;
+
+/* ---------- My details ---------- */
+window.mount_acc_details=function(){
+  const d=ACC.details||{name:"",email:"",phone:"",save:true};
+  $("#dt-name").value=d.name||"";$("#dt-email").value=d.email||"";$("#dt-phone").value=d.phone||"";
+  $("#dt-save").classList.toggle("on",d.save===undefined?!d.name:!!d.save);
+  ["email","phone"].forEach(k=>{$("#dt-"+k+"-err").hidden=true;$("#dt-"+k).classList.remove("bad")});
+  App.$$("#s-acc-details .input").forEach(i=>i.oninput=()=>{i.classList.remove("bad");const e=$("#"+i.id+"-err");if(e)e.hidden=true});
+};
+window.dtSave=function(){
+  const v=k=>($("#dt-"+k).value||"").trim();let bad=false;
+  if(v("email")&&!ACC.isEmail(v("email"))){$("#dt-email").classList.add("bad");$("#dt-email-err").hidden=false;bad=true}
+  if(v("phone")&&!ACC.isUkPhone(v("phone"))){$("#dt-phone").classList.add("bad");$("#dt-phone-err").hidden=false;bad=true}
+  if(bad){App.haptic();return}
+  ACC.details={name:v("name"),email:v("email"),phone:v("phone"),save:$("#dt-save").classList.contains("on")};
+  if(ACC.mode==="guest"&&(v("name")||v("email")||v("phone")))ACC.mode="details";
+  App.haptic();App.toast("Details saved");App.back("account");
+};
+
+/* ---------- Order card ---------- */
+window.ACCO=null;
+const PH={
+ scheduled:["We have your order","Our florists hand-tie it on the delivery day."],
+ today:["Delivery is today","Hand-tied at 80 Willow Walk, with a photo before it leaves."],
+ past:["Hope they loved them","Something not right? Tell us within 24 hours with a photo."]
+};
+const noimg='<div class="noimg"></div>';
+const RATE={};
+window.mount_acc_order=function(params){
+  params=params||{};const code=params.code||(ACC.orders[0]&&ACC.orders[0].code);
+  const o=ACC.ordersEmpty?null:ACC.find(code);
+  window.ACCO=o;
+  $("#oc-ttl").textContent="Order #"+(code||"");
+  $("#oc-404").hidden=!!o;$("#oc-has").hidden=!o;
+  App.$$("#oc-demo .chip").forEach(c=>c.classList.toggle("on",c.textContent===({scheduled:"Scheduled",today:"Today",past:"Past"})[o?ACC.phase(o):""]&&!(o&&o.web)));
+  if(!o)return;
+  const ph=ACC.phase(o);
+  $("#oc-st").innerHTML=`${ACC.tag(ph)}<div class="h2">${PH[ph][0]}</div><p>${PH[ph][1]}</p>`;
+  $("#oc-track").innerHTML=o.tracking?`<div class="t">Live status</div><p>See the latest status of this order on floritta.uk.</p><button class="btn --block" onclick="window.accOpenWeb('Order status','https://floritta.uk/basket/order/${o.web?o.code.replace('web-',''):'a1b2c3…'}')">Track order</button><button class="textbtn mt12" onclick="App.go('tracking',{id:${o.web?715529:parseInt(o.code,10)||715529},${ph==='past'?'done:true,':''}pid:${(o.items[0]&&o.items[0].id)||1}})">Proposed in-app live tracking</button>`
+    :`<div class="t">Live status</div><p>The tracking link arrives by email and SMS when the courier leaves.</p>`;
+  $("#oc-photo").hidden=ph==="past";
+  const careDay=o.date?Math.round((ACC.today-o.date)/864e5)+1:0;
+  const careOk=!!o.date&&ph!=="scheduled"&&careDay>=1&&careDay<=7;
+  $("#oc-care").hidden=!careOk;$("#oc-care-p").textContent=`7-day care programme · day ${Math.max(1,careDay)} of 7. Earn Petals for every check-in.`;
+  $("#oc-living").hidden=!(o.date&&ph!=="scheduled");
+  $("#oc-items").innerHTML=o.web?`<div class="line"><div class="noimg"></div><div class="f1"><div class="n">${esc(ACC.orderTitle(o))}</div><div class="d">Built on floritta.uk · no product card</div></div></div>`
+    :o.items.map(l=>{const p=P(l.id);const n=p?p.n:(l.name||"Item");const d=[l.size,...(l.addons||[])].filter(Boolean).join(" · ");
+      return p?`<button class="line" onclick="App.go('pdp',{id:${p.id}})"><img src="${p.img}" alt=""><div class="f1"><div class="n">${esc(n)}${l.qty>1?" × "+l.qty:""}</div><div class="d">${esc(d)}</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>`
+        :`<div class="line">${noimg}<div class="f1"><div class="n">${esc(n)}${l.qty>1?" × "+l.qty:""}</div><div class="d">${esc(d)} · no longer in the catalogue</div></div></div>`}).join("");
+  const rows=[["Recipient",o.to],["Postcode",o.pc],["Date",dl(o.date)],["Window",o.win],["Placed",dl(o.placed)],["Total",money(o.total)]].filter(r=>r[1]);
+  $("#oc-delivery").innerHTML=rows.map(r=>`<div class="dl"><span>${r[0]}</span><span>${esc(r[1])}</span></div>`).join("");
+  $("#oc-rate").hidden=ph!=="past";
+  const r=RATE[o.code]||0;
+  $("#oc-stars").innerHTML=[1,2,3,4,5].map(i=>`<button class="${i<=r?'on':''}" onclick="window.ocRate(${i})" aria-label="${i} stars">${App.icon("star")}</button>`).join("");
+  $("#oc-rate-p").textContent=r?["","We're sorry – tell us what went wrong","Thank you – we'll do better","Thank you","Lovely, thank you","Thank you – that made our day"][r]:"Tap a star to rate · prototype, not in the shipped app";
+};
+window.ocRate=function(n){if(!window.ACCO)return;RATE[window.ACCO.code]=n;window.mount_acc_order({code:window.ACCO.code});if(n>=4)App.toast("Thank you – shared with the florist");else window.accWhatsApp(window.ACCO.code)};
+window.ocRemove=function(){const o=window.ACCO;if(!o)return;
+  App.confirm("Remove this order?","It disappears from the app only. The order itself is not cancelled.","Remove",()=>{ACC.orders.splice(ACC.orders.indexOf(o),1);App.toast("Removed from this device");App.back("orders")})};
+window.ocLink=function(){
+  App.sheet(`<div class="sh-head"><div class="h3">Link your phone number</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body"><div class="field"><label>Mobile</label><div class="flex g8"><input class="input" value="+44" style="width:84px;flex:none" readonly><input class="input" id="lk-tel" type="tel" placeholder="7700 900 123" inputmode="tel"></div></div><div class="xs muted">We text a 6-digit code. Orders placed with this number on floritta.uk, WhatsApp and in the shop will appear in Orders. Proposed – not in the shipped app.</div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();window.ACC.mode='signed';App.toast('Code sent · linked · 2 website orders added');window.mount_account&&document.getElementById('s-account').classList.contains('on')&&window.mount_account()">Send code</button></div>`);
+};
+})();
+</script>

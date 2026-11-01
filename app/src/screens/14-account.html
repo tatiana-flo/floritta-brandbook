@@ -1,34 +1,176 @@
-<section class="scr" id="s-account" data-tab="account" data-nav="Account" data-group="Account">
+<style>
+#s-account .guest{margin:8px var(--gutter) 0;padding:18px;border:1px solid var(--hair)}
+#s-account .guest .h3{margin-bottom:6px}
+#s-account .guest p{font-size:14px;color:var(--graphite);line-height:1.5;margin:0 0 14px}
+#s-account .head{cursor:pointer}
+#s-account .grp{padding:28px var(--gutter) 6px;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+#s-account .sw{display:flex;align-items:center;gap:14px;padding:14px var(--gutter);border-bottom:1px solid var(--hair);min-height:60px}
+#s-account .sw .rt{flex:1}
+#s-account .sw .l{font-size:15px}
+#s-account .sw .d{font-size:13px;color:var(--grey);margin-top:1px}
+#s-account .forget{display:block;margin:24px auto 0}
+#s-account .row .l.accent{color:var(--accent)}
+#sheet-inner .about li{display:flex;gap:10px;font-size:14px;line-height:1.45;padding:8px 0;border-bottom:1px solid var(--hair)}
+#sheet-inner .about li svg{width:16px;height:16px;stroke:var(--ok);fill:none;stroke-width:2;flex:none;margin-top:3px}
+#sheet-inner .about{list-style:none;margin:16px 0 0;padding:0}
+</style>
+<!-- ids: APP-ACCOUNT-001 -->
+<section class="scr" id="s-account" data-tab="account" data-nav="You (account tab)" data-group="Account">
   <div class="appbar"><div class="ttl">You</div><button class="ib" onclick="App.go('notifications')" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><span class="dot" data-n="2">2</span></button></div>
   <div class="scr-body has-tab">
-    <div class="head">
-      <div class="av">TS</div>
-      <div class="f1"><div class="nm">Tatiana Sergeenko</div><div class="em">tatiana@floritta.uk</div></div>
-      <button class="textbtn" onclick="window.acctEdit()">Edit</button>
+    <!-- ids: APP-ACCOUNT-002 APP-ACCOUNT-003 -->
+    <div class="guest" id="a-guest" hidden>
+      <div class="h3">Shopping as a guest</div>
+      <p>No account needed. Save your details on this phone and checkout is quicker next time.</p>
+      <button class="btn --block" onclick="App.go('acc-details')">Add my details</button>
     </div>
-    <div class="panel --ink loy">
-      <div class="flex jc-sb ai-c"><span class="caps" style="opacity:.7">Petals</span><button class="lk" onclick="App.go('petals')">How it works</button></div>
+    <!-- ids: APP-ACCOUNT-004 -->
+    <div class="head" id="a-head" onclick="App.go('acc-details')" role="button">
+      <div class="av" id="a-av" style="border-radius:0">TS</div>
+      <div class="f1"><div class="nm" id="a-nm">Tatiana Sergeenko</div><div class="em" id="a-em">tatiana@example.com</div></div>
+      <span class="textbtn">Edit</span>
+    </div>
+    <!-- ids: APP-ACCOUNT-005 -->
+    <button class="panel --ink loy" id="a-petals" style="width:100%;text-align:left;display:block" onclick="App.go('petals')">
+      <div class="flex jc-sb ai-c"><span class="caps" style="opacity:.7">Petals</span><span class="lk">How it works</span></div>
       <div class="pts mt8" data-petals>1,240</div>
       <div class="sm mt8" style="opacity:.8">260 petals to <b>£10 off</b> at 1,500</div>
       <div class="progress"><i style="width:82.6%"></i></div>
-    </div>
+    </button>
+    <!-- ids: APP-ACCOUNT-006 APP-ACCOUNT-007 APP-ACCOUNT-008 APP-ACCOUNT-009 APP-ORDERS-006 -->
     <div class="qt">
-      <button onclick="App.go('reminders')"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><div><div class="l">Reminders</div><div class="b">2 upcoming</div></div></button>
-      <button onclick="App.go('subscriptions')"><svg viewBox="0 0 24 24"><path d="M4 10a8 8 0 0 1 14-4l2 2M20 14a8 8 0 0 1-14 4l-2-2"/><path d="M20 4v4h-4M4 20v-4h4"/></svg><div><div class="l">Subscriptions</div><div class="b">Every 2 weeks</div></div></button>
+      <button onclick="App.go('orders')"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><div><div class="l">Orders</div><div class="b" id="a-ord-n">3 orders</div></div></button>
+      <button onclick="App.go('reminders')"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><div><div class="l">Reminders</div><div class="b">2 dates</div></div></button>
       <button onclick="App.go('saved')"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></svg><div><div class="l">Saved</div><div class="b" id="a-fav-n">2 bouquets</div></div></button>
-      <button onclick="App.go('addresses')"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><div><div class="l">Addresses</div><div class="b">3 saved</div></div></button>
+      <button onclick="App.go('addresses')"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><div><div class="l">Addresses</div><div class="b" id="a-addr-n">3 saved</div></div></button>
     </div>
-    <div style="margin-top:32px">
-      <button class="row" onclick="App.tab('orders')"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><div class="rt"><div class="l">Orders</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="App.go('payments')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="M3 10h18"/></svg><div class="rt"><div class="l">Payment methods</div></div><span class="val">Visa ··4421</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="App.go('notifications')"><svg class="ic" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><div class="rt"><div class="l">Notifications</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="window.acctRefer()"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13"/><path d="M12 8c-2-4-6-4-6-1s4 1 6 1zm0 0c2-4 6-4 6-1s-4 1-6 1z"/></svg><div class="rt"><div class="l">Refer a friend</div><div class="d">Give £10, get 200 petals</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="window.acctGift()"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12"/><path d="M3 11h18M7 15h3"/></svg><div class="rt"><div class="l">Gift cards</div></div><span class="val">£25 balance</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="App.go('help')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><div class="rt"><div class="l">Help &amp; chat with Flora</div><div class="d">Our AI florist · 8:00–22:00</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="window.acctSettings()"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><div class="rt"><div class="l">Settings</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="window.acctLegal()"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg><div class="rt"><div class="l">Legal</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-      <button class="row" onclick="App.confirm('Log out?','You can sign back in any time with your email or Apple ID.','Log out',()=>App.toast('Signed out'))"><svg class="ic" viewBox="0 0 24 24"><path d="M10 4H4v16h6M15 8l5 4-5 4M9 12h11"/></svg><div class="rt"><div class="l">Log out</div></div></button>
-    </div>
-    <div class="ver">Floritta 1.0 (12)</div>
+
+    <!-- ids: APP-ACCOUNT-010 -->
+    <div class="grp">Settings</div>
+    <!-- ids: APP-ACCOUNT-011 -->
+    <button class="row" onclick="App.go('acc-details')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><div class="rt"><div class="l">My details</div><div class="d">Name, email and phone for checkout</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-012 -->
+    <button class="row" onclick="App.go('addresses')"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="rt"><div class="l">Addresses</div><div class="d">People you send flowers to</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-013 APP-ACCOUNT-014 APP-ACCOUNT-015 APP-ACCOUNT-016 APP-ACCOUNT-017 -->
+    <div class="sw"><svg class="ic" viewBox="0 0 24 24" style="width:24px;height:24px;stroke:var(--ink);fill:none;stroke-width:1.5"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><div class="rt"><div class="l">Notifications</div><div class="d" id="a-notif-d">Reminder nudges before your dates</div></div><button class="switch" id="a-notif" onclick="window.acctNotif()" aria-label="Notifications"></button></div>
+    <!-- ids: APP-ACCOUNT-018 -->
+    <button class="row" onclick="App.go('reminders')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><div class="rt"><div class="l">Reminders</div><div class="d">Birthdays and anniversaries</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-019 -->
+    <button class="row" onclick="App.go('occasions')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13"/></svg><div class="rt"><div class="l">Shop by occasion</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-020 -->
+    <button class="row" onclick="App.go('care')"><svg class="ic" viewBox="0 0 24 24"><path d="M5 19C5 9 11 5 20 4c-1 9-5 15-15 15z"/><path d="M5 19c4-5 7-8 10-10"/></svg><div class="rt"><div class="l">Keep it alive</div><div class="d">Daily care tasks · earn Petals</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-021 -->
+    <button class="row" onclick="App.go('living')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg><div class="rt"><div class="l">Living Flower</div><div class="d">What a recipient sees after delivery (example)</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- prototype extras (not in the shipped app): payment methods, subscriptions, marketing settings, referrals, gift cards -->
+    <button class="row" onclick="App.go('payments')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="M3 10h18"/></svg><div class="rt"><div class="l">Payment methods</div><div class="d">Prototype – cards are saved by Apple Pay / Stripe only</div></div><span class="val">Visa ··4421</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <button class="row" onclick="App.go('subscriptions')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 10a8 8 0 0 1 14-4l2 2M20 14a8 8 0 0 1-14 4l-2-2"/><path d="M20 4v4h-4M4 20v-4h4"/></svg><div class="rt"><div class="l">Subscriptions</div><div class="d">Prototype · every 2 weeks</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <button class="row" onclick="window.acctSettings()"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><div class="rt"><div class="l">Language &amp; marketing</div><div class="d">Prototype · language, seasonal opt-outs</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <button class="row" onclick="window.acctRefer()"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13"/><path d="M12 8c-2-4-6-4-6-1s4 1 6 1zm0 0c2-4 6-4 6-1s-4 1-6 1z"/></svg><div class="rt"><div class="l">Refer a friend</div><div class="d">Prototype · give £10, get 200 petals</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <button class="row" onclick="window.acctGift()"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12"/><path d="M3 11h18M7 15h3"/></svg><div class="rt"><div class="l">Gift cards</div><div class="d">Prototype</div></div><span class="val">£25 balance</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+
+    <!-- ids: APP-ACCOUNT-022 -->
+    <div class="grp">Help &amp; contact</div>
+    <!-- ids: APP-ACCOUNT-023 -->
+    <button class="row" onclick="App.go('help')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg><div class="rt"><div class="l">Help &amp; FAQ</div><div class="d">Delivery, cut-off, refunds</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-024 -->
+    <button class="row" onclick="App.go('flora')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><div class="rt"><div class="l">Chat with Flora</div><div class="d">Chat in the app – Flora and our florists</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-025 APP-ACCOUNT-028 -->
+    <button class="row" onclick="window.accExternal('Calling +44 7458 683130…','tel')"><svg class="ic" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><div class="rt"><div class="l">Call the shop</div><div class="d">+44 7458 683130 · 8:00–22:00</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-026 -->
+    <button class="row" onclick="window.accWhatsApp()"><svg class="ic" viewBox="0 0 24 24"><path d="M4 20l1.5-4A8 8 0 1 1 8 18.5z"/><path d="M9 9.5c.5 2.5 2.5 4.5 5 5l1.5-1.5 2 1-.5 2c-4.5.5-9-4-8.5-8.5l2-.5 1 2z"/></svg><div class="rt"><div class="l">WhatsApp us</div><div class="d">Photos, changes, special requests</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-027 -->
+    <button class="row" onclick="window.accExternal('Opening your email app · info@floritta.uk','mail')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="m3 7 9 6 9-6"/></svg><div class="rt"><div class="l">Email us</div><div class="d">info@floritta.uk</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+
+    <!-- ids: APP-ACCOUNT-029 -->
+    <div class="grp">About</div>
+    <!-- ids: APP-ACCOUNT-030 APP-ACCOUNT-031 -->
+    <button class="row" onclick="window.acctAbout()"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><div class="rt"><div class="l">About Floritta</div><div class="d">Our flower shop in Bermondsey, SE1</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-032 -->
+    <button class="row" onclick="window.accOpenWeb('Privacy policy','https://floritta.uk/privacy-policy')"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div class="rt"><div class="l">Privacy policy</div><div class="d">floritta.uk/privacy-policy · opens in the app</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-036 -->
+    <button class="row" onclick="window.acctLegal()"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg><div class="rt"><div class="l">Legal &amp; privacy</div><div class="d">Terms, cookies, licences, company details</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-037 -->
+    <button class="row" id="a-create" onclick="window.accOpenWeb('Floritta account','https://floritta.uk/login')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M19 3v4M17 5h4"/></svg><div class="rt"><div class="l">Create an account</div><div class="d">Optional – on floritta.uk. Never needed to order</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- ids: APP-ACCOUNT-033 APP-ACCOUNT-034 APP-ACCOUNT-035 -->
+    <button class="row" onclick="window.acctDelete()"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14"/></svg><div class="rt"><div class="l accent">Delete my account</div><div class="d">Ask us to delete your floritta.uk account and its data</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <!-- prototype extra: sign-in / log out exist only when the proposed phone sign-in is on (see Order sources screen) -->
+    <button class="row" id="a-logout" hidden onclick="App.confirm('Log out?','Orders from this phone stay here. Orders from your floritta.uk account disappear until you sign in again.','Log out',()=>{window.ACC.mode='details';window.mount_account();App.toast('Signed out')})"><svg class="ic" viewBox="0 0 24 24"><path d="M10 4H4v16h6M15 8l5 4-5 4M9 12h11"/></svg><div class="rt"><div class="l">Log out</div><div class="d">Prototype · signed in by phone number</div></div></button>
+    <!-- ids: APP-ACCOUNT-038 APP-ACCOUNT-039 -->
+    <button class="textbtn forget" id="a-forget" onclick="window.acctForget()">Forget my details on this phone</button>
+    <!-- ids: APP-ACCOUNT-040 -->
+    <div class="ver">Floritta 1.0.3</div>
+
+    <div class="ab-demo"><div class="t">Demo states</div><div class="chips">
+      <button class="chip" data-mode="guest" onclick="window.ACC.mode='guest';window.mount_account()">Guest, no details</button>
+      <button class="chip" data-mode="details" onclick="window.ACC.mode='details';window.mount_account()">Details saved</button>
+      <button class="chip" data-mode="signed" onclick="window.ACC.mode='signed';window.mount_account()">Signed in (proposed)</button>
+      <button class="chip" id="a-demo-blocked" onclick="window.ACC.osBlocked=!window.ACC.osBlocked;window.mount_account()">OS blocks notifications</button>
+      <button class="chip" id="a-demo-noapps" onclick="window.ACC.noApps=!window.ACC.noApps;window.mount_account();App.toast(window.ACC.noApps?'Demo · no phone, WhatsApp or email app on this device':'Demo · apps available again')">No apps on device</button>
+    </div></div>
   </div>
 </section>
+<script>
+(function(){
+const $=App.$;
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const close=`<button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button>`;
+window.ACC=window.ACC||{};const ACC=window.ACC;
+ACC.mode=ACC.mode||"details";              /* guest | details | signed (proposed) */
+ACC.details=ACC.details||{name:"Tatiana Sergeenko",email:"tatiana@example.com",phone:"+44 7700 900 123",save:true};
+ACC.notif=ACC.notif===undefined?true:ACC.notif;
+ACC.osBlocked=!!ACC.osBlocked;ACC.noApps=!!ACC.noApps;
+ACC.initials=function(){const d=ACC.details;const src=d.name||d.email||"";const parts=src.split(/\s+/).filter(Boolean);return parts.length?parts.slice(0,2).map(p=>p[0].toUpperCase()).join(""):"·"};
+ACC.hasDetails=()=>!!(ACC.details.name||ACC.details.email||ACC.details.phone);
+
+/* ids: APP-ACCOUNT-028 APP-ACCOUNT-040 – external links fail with a toast when the device has no app for them */
+window.accExternal=function(msg,kind){if(ACC.noApps){App.toast("Couldn't open that on this device");return false}App.toast(msg);return true};
+/* ids: APP-ACCOUNT-026 APP-ORDERS-039 APP-ORDERS-040 */
+window.accWhatsApp=function(orderCode){
+  const text=orderCode?`Hello Floritta, I have a question about order #${orderCode}.`:"";
+  App.sheet(`<div class="sh-head"><div class="h3">WhatsApp</div>${close}</div><div class="sh-body"><p class="soft sm" style="margin:0 0 12px">Opens WhatsApp with our shop number +44 7387 939120${text?" and this message ready to send:":"."}</p>${text?`<div class="panel sm">${esc(text)}</div>`:""}<p class="xs muted" style="margin:12px 0 0">Changes, cancellations and special requests are handled here by a person, 8:00–22:00.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();window.accExternal('Opening WhatsApp…','wa')">Open WhatsApp</button></div>`);
+};
+/* ids: APP-ACCOUNT-032 APP-ACCOUNT-037 APP-TRACK-002 – pages of floritta.uk open inside the app (WebView) with a title */
+window.accOpenWeb=function(title,url){
+  App.sheet(`<div class="sh-head"><div class="h3">${esc(title)}</div>${close}</div><div class="sh-body"><div class="panel" style="min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"><div class="caps muted">In-app browser</div><div class="sm mt8">${esc(url)}</div><div class="xs muted mt8">The website page loads here. Nothing from it is linked to this phone's data.</div></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Close</button><button class="btn" onclick="App.toast('Opened in Safari')">Open in browser</button></div>`,{full:true});
+};
+
+window.mount_account=function(){
+  const guest=ACC.mode==="guest"||(ACC.mode==="details"&&!ACC.hasDetails());
+  $("#a-guest").hidden=!guest;$("#a-head").hidden=guest;
+  $("#a-av").textContent=ACC.initials();
+  $("#a-nm").textContent=ACC.details.name||ACC.details.email||"";
+  $("#a-em").textContent=ACC.mode==="signed"?(ACC.details.email||"")+" · signed in by phone":(ACC.details.email||ACC.details.phone||"");
+  const n=App.state.fav.size;$("#a-fav-n").textContent=n?n+(n===1?" bouquet":" bouquets"):"None yet";
+  const on=ACC.orders?ACC.orders.length:0;$("#a-ord-n").textContent=ACC.ordersEmpty||!on?"None yet":on+(on===1?" order":" orders");
+  const an=ACC.addresses?ACC.addresses.length:0;$("#a-addr-n").textContent=an?an+" saved":"None yet";
+  const sw=$("#a-notif");sw.classList.toggle("on",ACC.notif&&!ACC.osBlocked);
+  $("#a-notif-d").textContent=ACC.osBlocked?"Off in your phone’s Settings – allow Floritta notifications there":"Reminder nudges before your dates";
+  $("#a-forget").hidden=!(ACC.hasDetails()||(ACC.addresses&&ACC.addresses.length));
+  $("#a-logout").hidden=ACC.mode!=="signed";$("#a-create").hidden=ACC.mode==="signed";
+  App.$$("#s-account .chip[data-mode]").forEach(c=>c.classList.toggle("on",c.dataset.mode===ACC.mode));
+  $("#a-demo-blocked").classList.toggle("on",ACC.osBlocked);$("#a-demo-noapps").classList.toggle("on",ACC.noApps);
+};
+/* ids: APP-ACCOUNT-013 APP-ACCOUNT-014 APP-ACCOUNT-015 APP-ACCOUNT-016 */
+window.acctNotif=function(){
+  const sw=$("#a-notif");
+  if(sw.classList.contains("on")){ACC.notif=false;window.mount_account();App.toast("Reminder notifications off · scheduled nudges removed");return}
+  if(ACC.osBlocked){App.sheet(`<div class="sh-head"><div class="h3">Notifications</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">Notifications are blocked for Floritta. Turn them on in Settings.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Opening iOS Settings → Floritta')">Open settings</button></div>`);return}
+  App.sheet(`<div class="sh-head"><div class="h3">“Floritta” would like to send you notifications</div></div><div class="sh-body"><p class="soft sm" style="margin:0 0 8px">System permission prompt. Notifications may include alerts, sounds and icon badges.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();App.toast('Permission declined · switch stays off')">Don’t allow</button><button class="btn" onclick="App.closeSheet();window.ACC.notif=true;window.mount_account();App.toast('Reminder notifications on · nudges rescheduled')">Allow</button></div>`);
+};
+/* ids: APP-ACCOUNT-030 APP-ACCOUNT-031 */
+window.acctAbout=function(){
+  const tick='<svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg>';
+  const facts=["Open every day 8:00–22:00","Same-day delivery across London – order by 22:00","A photo of your bouquet before it leaves the shop","Free delivery on orders over £120","Google 4.6 · 590 reviews","British Florist Association finalist 2026","80 Willow Walk, Bermondsey, London SE1 5SY"];
+  App.sheet(`<div class="sh-head"><div class="h3">About Floritta</div>${close}</div><div class="sh-body"><p class="soft" style="margin:0">A family flower shop in Bermondsey. Every bouquet is hand-tied by our florists on the day it is delivered, and photographed before it leaves.</p><ul class="about">${facts.map(f=>`<li>${tick}<span>${f}</span></li>`).join("")}</ul></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">Close</button></div>`);
+};
+/* ids: APP-ACCOUNT-033 APP-ACCOUNT-034 APP-ACCOUNT-035 */
+window.acctDelete=function(){
+  App.sheet(`<div class="sh-head"><div class="h3">Delete your account?</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">This asks our team to delete your floritta.uk account and its data. We send an email from your email app – nothing is deleted from this phone, and the request is handled by a person within 30 days.</p><div class="panel sm mt8"><div class="caps muted">Email draft</div><div class="mt8">To: info@floritta.uk<br>Subject: Please delete my Floritta account<br><br>Name:<br>Email used for the account:</div></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn --accent" onclick="App.closeSheet();if(window.ACC.noApps){App.toast('<span class=accent>No email app found – please write to info@floritta.uk</span>')}else{App.toast('Opening your email app with the request')}">Write the email</button></div>`);
+};
+/* ids: APP-ACCOUNT-038 APP-ACCOUNT-039 */
+window.acctForget=function(){
+  App.confirm("Forget your details?","Your name, contacts and saved addresses are removed from this phone. Orders and reminders stay.","Forget",()=>{ACC.details={name:"",email:"",phone:"",save:false};ACC.addresses=[];ACC.mode="guest";window.mount_account();App.toast("Details removed from this phone")});
+};
+document.addEventListener("fav",()=>{if(document.getElementById("s-account").classList.contains("on"))window.mount_account()});
+})();
+</script>

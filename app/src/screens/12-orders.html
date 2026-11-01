@@ -212,13 +212,146 @@
 #s-addresses .item .acts .ib,#s-payments .item .acts .ib{color:var(--grey)}
 #s-payments .brand{display:inline-grid;place-items:center;width:40px;height:26px;border:1px solid var(--hair);font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;flex:none;margin-top:1px}
 </style>
+<style>
+/* ---- shared demo bar for Orders / You screens (prototype only) ---- */
+.ab-demo{margin:28px var(--gutter) 8px;padding:12px 0 0;border-top:1px dashed var(--light)}
+.ab-demo .t{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+.ab-demo .chips{padding:0;flex-wrap:wrap}
+.ab-demo .chip{height:30px;font-size:12px}
+.ab-empty{padding:56px var(--gutter) 32px;text-align:center}
+.ab-empty .h3{margin-bottom:8px}
+.ab-empty p{color:var(--graphite);font-size:14px;line-height:1.5;margin:0 0 20px}
+.ab-refresh{height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);transition:height .3s}
+.ab-refresh.on{height:40px}
+.ab-refresh i{width:14px;height:14px;border:1.5px solid var(--light);border-top-color:var(--ink);border-radius:50%;margin-right:8px;animation:ckspin .8s linear infinite}
+#s-orders .oc{display:flex;gap:14px;padding:14px var(--gutter);border-bottom:1px solid var(--hair);align-items:flex-start;width:100%;text-align:left}
+#s-orders .oc img,#s-orders .oc .noimg{width:72px;height:90px;object-fit:cover;background:var(--silver);flex:none}
+#s-orders .oc .noimg{display:grid;place-items:center}
+#s-orders .oc .noimg svg{width:22px;height:22px;stroke:var(--grey);fill:none;stroke-width:1.5}
+#s-orders .oc .hd{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--grey)}
+#s-orders .oc .nm{font-size:16px;line-height:1.3;margin-top:4px}
+#s-orders .oc .d{font-size:13px;color:var(--grey);margin-top:2px}
+#s-orders .oc .pr{font-size:14px;margin-top:4px;font-variant-numeric:tabular-nums}
+#s-orders .oc .acts{display:flex;gap:8px;margin-top:10px}
+#s-orders .oc .acts .btn{height:36px;padding:0 14px;font-size:12px}
+#s-orders .oc.past img{width:56px;height:70px}
+#s-orders .oc.past .nm{font-size:14px}
+#s-orders .foot{padding:16px var(--gutter) 0;font-size:12px;color:var(--grey)}
+</style>
+<!-- ids: APP-ORDERS-010 APP-ORDERS-011 -->
 <section class="scr" id="s-orders" data-tab="account" data-nav="Orders" data-group="Account">
-  <div class="appbar"><div class="ttl">Orders</div><button class="ib" onclick="App.go('help')" aria-label="Help"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button></div>
-  <div class="scr-body has-tab">
-    <div class="pad caps muted" style="margin-top:4px">Active</div>
-    <div id="o-active"></div>
-    <div class="sec-head"><div class="h2">Past orders</div><button class="link" onclick="App.toast('Filter · coming soon')">All</button></div>
-    <div id="o-past"></div>
-    <button class="row" onclick="App.go('help')" style="margin-top:8px"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><div class="rt"><div class="l">Need help with an order?</div><div class="d">Flora replies in under a minute · 8:00–22:00</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+  <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Orders</div><button class="ib" onclick="App.go('help')" aria-label="Need help with an order?"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg></button></div>
+  <div class="scr-body has-tab" id="o-body">
+    <!-- ids: APP-ORDERS-013 -->
+    <div class="ab-refresh" id="o-refresh"><i></i>Refreshing</div>
+    <!-- ids: APP-ORDERS-012 -->
+    <div id="o-empty" class="ab-empty" hidden>
+      <div class="h3">No orders yet</div>
+      <p>Orders you place in the app appear here – with tracking and a photo of your bouquet before delivery.</p>
+      <button class="btn" onclick="App.tab('shop')">Shop flowers</button>
+    </div>
+    <div id="o-has">
+      <!-- ids: APP-ORDERS-014 APP-ORDERS-016 APP-ORDERS-017 APP-ORDERS-019 APP-ORDERS-020 -->
+      <div class="pad caps muted" id="o-active-h" style="margin-top:4px">Active</div>
+      <div id="o-active"></div>
+      <!-- ids: APP-ORDERS-015 APP-ORDERS-018 APP-ORDERS-021 APP-ORDERS-022 APP-ORDERS-023 – Reorder on every card: silent add to bag, toasts for missing items, no navigation when nothing is left -->
+      <div class="sec-head" id="o-past-h"><div class="h2">Past orders</div></div>
+      <div id="o-past"></div>
+      <!-- ids: APP-ORDERS-024 -->
+      <button class="row" onclick="App.go('help')" style="margin-top:8px"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><div class="rt"><div class="l">Need help with an order?</div><div class="d">Call or WhatsApp us · 8:00–22:00</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      <!-- ids: APP-ORDERS-025 APP-ORDERS-008 -->
+      <div class="foot">Orders placed on this phone are kept here. <button class="textbtn" onclick="App.go('acc-sources')">How orders get here</button></div>
+    </div>
+    <!-- ids: APP-ORDERS-013 APP-ORDERS-016 -->
+    <div class="ab-demo"><div class="t">Demo states</div><div class="chips">
+      <button class="chip" onclick="window.ordRefresh()">Pull to refresh</button>
+      <button class="chip" onclick="window.ordNextDay()">Next day</button>
+      <button class="chip" onclick="window.ordReset()">Reset</button>
+      <button class="chip" id="o-demo-empty" onclick="window.ordToggleEmpty()">No orders</button>
+    </div></div>
   </div>
 </section>
+<script>
+(function(){
+const $=App.$, P=id=>App.product(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const day=n=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return d};
+const dl=d=>d?d.toLocaleDateString("en-GB",{day:"numeric",month:"short"}):"";
+/* ---------- shared store for Orders / You screens (prototype: lives only in this page, as AsyncStorage on the real phone) ---------- */
+/* ids: APP-ORDERS-001 APP-ORDERS-002 APP-ORDERS-003 APP-ORDERS-004 */
+const SEED=()=>[
+ {code:"715529",items:[{id:1,size:"Standard",qty:1,addons:["Handwritten card"]}],total:66.95,to:"Anna Whitfield",pc:"SE1 3PH",date:day(0),win:"15:00–18:00",placed:day(0),tracking:true,sender:"Tatiana",msg:"Happy birthday, Anna. With love, T.",anon:false,src:"app"},
+ {code:"716204",items:[{id:6,size:"Deluxe",qty:1,addons:["Clear glass vase 25 cm"]},{id:7,size:"Standard",qty:2,addons:[]}],total:189.95,to:"Mum",pc:"SW4 9BN",date:day(3),win:"09:00–12:00",placed:day(-1),tracking:true,sender:"Tatiana",msg:"",anon:true,src:"app"},
+ {code:"web-3f9a1c2d",web:true,title:"Your own bouquet",stems:14,items:[],total:58,to:"",pc:"",date:null,win:"",placed:day(0),tracking:true,src:"web"},
+ {code:"714882",items:[{id:6,size:"Standard",qty:1,addons:[]}],total:96.95,to:"Mum",pc:"SW4 9BN",date:day(-9),win:"12:00–15:00",placed:day(-10),tracking:true,src:"app"},
+ {code:"712310",items:[{id:12,size:"Standard",qty:1,addons:[]}],total:85,to:"Elena & Mark",pc:"N1 7AB",date:day(-23),win:"15:00–18:00",placed:day(-24),tracking:false,src:"app"},
+ {code:"709455",items:[{id:4,size:"Standard",qty:2,addons:[]}],total:130,to:"Office",pc:"EC2A 4BX",date:day(-41),win:"09:00–12:00",placed:day(-43),tracking:true,src:"app"},
+ {code:"703118",items:[{id:99,name:"Peony roses elegance basket (retired)",size:"Standard",qty:1,addons:[]}],total:149,to:"Olga",pc:"W8 5PL",date:day(-68),win:"15:00–18:00",placed:day(-70),tracking:true,src:"app"}
+];
+window.ACC=window.ACC||{};
+const ACC=window.ACC;
+ACC.orders=ACC.orders||SEED();
+ACC.today=ACC.today||day(0);
+ACC.ordersEmpty=false;
+/* ids: APP-ORDERS-016 */
+ACC.phase=function(o){
+  const t=ACC.today.getTime();
+  if(o.date){const d=o.date.getTime();return d>t?"scheduled":d===t?"today":"past"}
+  const diff=Math.round((t-o.placed.getTime())/864e5);
+  return diff<=0?"today":diff<=1?"scheduled":"past";
+};
+ACC.orderTitle=function(o){
+  if(o.web)return o.title?`${o.title} (${o.stems} stems)`:"Floritta order";
+  const first=o.items[0];if(!first)return "Floritta order";
+  const p=P(first.id);const n=p?p.n:(first.name||"Floritta order");
+  return o.items.length>1?`${n} + ${o.items.length-1} more`:n;
+};
+ACC.orderImg=function(o){const f=o.items[0];const p=f&&P(f.id);return p?p.img:(f&&f.img)||""};
+ACC.orderMeta=function(o){const parts=[];if(o.to)parts.push("To "+o.to);if(o.date)parts.push(dl(o.date));if(o.win)parts.push(o.win);return parts.join(" · ")};
+ACC.find=code=>ACC.orders.find(o=>o.code===code);
+ACC.list=function(){return ACC.ordersEmpty?[]:ACC.orders};
+const TAG={scheduled:'<span class="tag --soft">Scheduled</span>',today:'<span class="tag --ok">Today</span>',past:'<span class="tag --soft" style="background:var(--paper);border:1px solid var(--hair)">Past</span>'};
+ACC.tag=ph=>TAG[ph];
+
+/* ids: APP-ORDERS-021 APP-ORDERS-022 APP-ORDERS-023 APP-ORDERS-038 */
+ACC.reorder=function(code){
+  const o=ACC.find(code);if(!o)return;
+  const lines=o.items.filter(l=>P(l.id));
+  if(!lines.length){App.toast('<span class="accent">These items are no longer available</span>');return}
+  lines.forEach(l=>App.addToBag(l.id,{size:l.size,qty:l.qty||1,silent:true}));
+  App.haptic();
+  if(lines.length<o.items.length)App.toast("Some items are no longer available");
+  else App.toast(lines.length===1?"Added to bag":lines.length+" items added to bag");
+  setTimeout(()=>App.tab("bag"),lines.length<o.items.length?900:300);
+};
+
+/* ---------- list ---------- */
+const noimg='<div class="noimg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg></div>';
+function card(o,active){
+  const ph=ACC.phase(o),img=ACC.orderImg(o);
+  return `<div class="oc ${active?"":"past"}" role="button" onclick="App.go('acc-order',{code:'${o.code}'})">${img?`<img src="${img}" alt="">`:noimg}<div class="f1">
+    <div class="hd"><span>#${esc(o.code)}</span>${ACC.tag(ph)}</div>
+    <div class="nm">${esc(ACC.orderTitle(o))}</div>
+    <div class="d">${esc(ACC.orderMeta(o))||"Placed "+dl(o.placed)}</div>
+    <div class="pr">${App.fmt(o.total)}</div>
+    <div class="acts">${active?`<button class="btn" onclick="event.stopPropagation();App.go('acc-order',{code:'${o.code}'})">${o.tracking?"Track":"View"}</button>`:""}<button class="btn --ghost" onclick="event.stopPropagation();ACC.reorder('${o.code}')">Reorder</button></div>
+  </div></div>`;
+}
+function renderOrders(){
+  const list=ACC.list();
+  $("#o-empty").hidden=list.length>0;$("#o-has").hidden=list.length===0;
+  $("#o-demo-empty").classList.toggle("on",ACC.ordersEmpty);
+  if(!list.length)return;
+  const act=list.filter(o=>ACC.phase(o)!=="past").sort((a,b)=>(a.date?a.date.getTime():9e15)-(b.date?b.date.getTime():9e15));
+  const past=list.filter(o=>ACC.phase(o)==="past").sort((a,b)=>b.placed-a.placed);
+  $("#o-active-h").hidden=!act.length;$("#o-active").innerHTML=act.map(o=>card(o,true)).join("");
+  $("#o-past-h").hidden=!past.length;$("#o-past").innerHTML=past.map(o=>card(o,false)).join("");
+}
+window.mount_orders=renderOrders;
+window.ordRefresh=function(){const r=$("#o-refresh");r.classList.add("on");setTimeout(()=>{r.classList.remove("on");ACC.today=day(0);renderOrders()},400)};
+window.ordNextDay=function(){ACC.today=new Date(ACC.today.getTime()+864e5);renderOrders();App.toast("Demo · today is now "+dl(ACC.today))};
+window.ordReset=function(){ACC.orders=SEED();ACC.today=day(0);ACC.ordersEmpty=false;renderOrders();App.toast("Demo · orders reset")};
+window.ordToggleEmpty=function(){ACC.ordersEmpty=!ACC.ordersEmpty;renderOrders()};
+document.addEventListener("bag",()=>{});
+})();
+</script>

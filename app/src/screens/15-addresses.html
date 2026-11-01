@@ -1,8 +1,73 @@
-<section class="scr" id="s-addresses">
-  <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Addresses</div><button class="ib" onclick="window.addrSheet()" aria-label="Add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+<style>
+#s-addresses .err{font-size:12px;color:var(--accent);margin-top:-8px;margin-bottom:12px}
+#sheet-inner .ab-err{font-size:12px;color:var(--accent);margin:-8px 0 12px}
+#sheet-inner .input.bad{border-color:var(--accent)}
+</style>
+<!-- ids: APP-ACCOUNT-070 -->
+<section class="scr" id="s-addresses" data-nav="Addresses" data-group="Account">
+  <div class="appbar"><button class="ib" onclick="App.back('account')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Addresses</div><button class="ib" onclick="window.addrSheet()" aria-label="Add address"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
   <div class="scr-body has-cta">
+    <!-- ids: APP-ACCOUNT-071 -->
+    <div id="ad-empty" class="ab-empty" hidden><div class="h3">No addresses yet</div><p>Save the people you send flowers to – checkout fills them in for you.</p></div>
+    <!-- ids: APP-ACCOUNT-072 APP-ACCOUNT-073 APP-ACCOUNT-074 APP-ACCOUNT-075 -->
     <div id="ad-list"></div>
-    <p class="pad muted xs" style="margin-top:16px">Recipient addresses are saved after each delivery. We never share them.</p>
+    <!-- ids: APP-ACCOUNT-076 -->
+    <p class="pad muted xs" id="ad-foot" style="margin-top:16px">Saved on this phone only. We never share them.</p>
   </div>
+  <!-- ids: APP-ACCOUNT-077 APP-ACCOUNT-078 APP-ACCOUNT-079 APP-ACCOUNT-080 APP-ACCOUNT-081 APP-ACCOUNT-082 – sheet New/Edit address: 8 fields, Required / Check the postcode / Check the phone number, postcode normalised, close without saving -->
   <div class="cta-bar"><button class="btn" onclick="window.addrSheet()">Add address</button></div>
 </section>
+<script>
+(function(){
+const $=App.$;
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ICON={edit:App.icon("edit"),trash:App.icon("trash"),close:App.icon("close")};
+window.ACC=window.ACC||{};const ACC=window.ACC;
+ACC.addresses=ACC.addresses||[
+ {id:1,l:"Anna",n:"Anna Whitfield",ph:"+44 7700 900 456",a1:"14 Tanner Street",a2:"Flat 3",city:"London",pc:"SE1 3PH",note:"Concierge if out"},
+ {id:2,l:"Mum",n:"Irina Sergeenko",ph:"",a1:"22 Clapham Common South Side",a2:"",city:"London",pc:"SW4 9BN",note:"Ring twice"},
+ {id:3,l:"Office",n:"Reception · Floritta client",ph:"+44 7700 900 789",a1:"1 Finsbury Avenue",a2:"",city:"London",pc:"EC2M 2PF",note:""}
+];
+/* ids: APP-ACCOUNT-081 */
+const UKPC=/^(GIR ?0AA|[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2})$/i;
+ACC.formatPostcode=function(v){const s=(v||"").toUpperCase().replace(/\s+/g,"");return s.length>3?s.slice(0,-3)+" "+s.slice(-3):s};
+ACC.isPostcode=v=>UKPC.test(ACC.formatPostcode(v));
+ACC.isUkPhone=v=>/^(0\d{9,10}|(\+44|0044)\s?\d{9,10})$/.test((v||"").replace(/[\s()-]/g,""));
+ACC.isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||"");
+
+function renderAddr(){
+  const L=ACC.addresses;
+  $("#ad-empty").hidden=L.length>0;$("#ad-foot").hidden=!L.length;
+  $("#ad-list").innerHTML=L.map(a=>`<div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><div class="f1"><div class="l">${esc(a.l)}</div><div class="d">${esc(a.n)}<br>${esc(a.a1)}${a.a2?", "+esc(a.a2):""}<br>${esc(a.city)} ${esc(a.pc)}${a.note?'<br><span class="muted">'+esc(a.note)+'</span>':''}</div></div><div class="acts"><button class="ib" onclick="window.addrSheet(${a.id})" aria-label="Edit">${ICON.edit}</button><button class="ib" onclick="window.addrDel(${a.id})" aria-label="Remove">${ICON.trash}</button></div></div>`).join("");
+  document.dispatchEvent(new CustomEvent("acc"));
+}
+window.mount_addresses=renderAddr;
+/* ids: APP-ACCOUNT-075 */
+window.addrDel=function(id){const a=ACC.addresses.find(x=>x.id===id);App.confirm("Remove address?",`${esc(a.l)} · ${esc(a.a1)}`,"Remove",()=>{ACC.addresses.splice(ACC.addresses.indexOf(a),1);renderAddr();App.toast("Address removed")})};
+/* ids: APP-ACCOUNT-078 APP-ACCOUNT-082 */
+window.addrSheet=function(id){const a=ACC.addresses.find(x=>x.id===id)||{l:"",n:"",ph:"",a1:"",a2:"",city:"London",pc:"",note:""};
+ const f=(k,label,ph,hint,attrs="")=>`<div class="field"><label>${label}</label><input class="input" id="ad-${k}" value="${esc(a[k])}" placeholder="${ph}" ${attrs}>${hint?`<div class="xs muted">${hint}</div>`:""}<div class="ab-err" id="ad-${k}-err" hidden></div></div>`;
+ App.sheet(`<div class="sh-head"><div class="h3">${id?"Edit address":"New address"}</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${ICON.close}</button></div><div class="sh-body">
+  ${f("l","Label","e.g. Mum, Office")}
+  ${f("n","Recipient name","")}
+  ${f("ph","Recipient phone","+44 7…","Optional – the courier calls if needed",'inputmode="tel"')}
+  ${f("a1","Address line 1","")}
+  ${f("a2","Address line 2","")}
+  ${f("city","City","London")}
+  ${f("pc","Postcode","SE1 5SY",'','autocapitalize="characters"')}
+  ${f("note","Delivery note","Buzzer, concierge, safe place")}
+  <p class="xs muted" style="margin:0 0 8px">Close with the cross or tap outside – nothing is saved until you press Save address.</p>
+ </div><div class="sh-foot"><button class="btn" onclick="window.addrSave(${id||0})">Save address</button></div>`,{full:true,onOpen:r=>App.$$(".input",r).forEach(i=>i.oninput=()=>{i.classList.remove("bad");const e=r.querySelector("#"+i.id+"-err");if(e)e.hidden=true})})};
+/* ids: APP-ACCOUNT-079 APP-ACCOUNT-080 APP-ACCOUNT-081 */
+window.addrSave=function(id){
+ const v=k=>($("#ad-"+k).value||"").trim();const errs={};
+ if(!v("n"))errs.n="Required";if(!v("a1"))errs.a1="Required";
+ if(!v("pc"))errs.pc="Required";else if(!ACC.isPostcode(v("pc")))errs.pc="Check the postcode";
+ if(v("ph")&&!ACC.isUkPhone(v("ph")))errs.ph="Check the phone number";
+ Object.keys(errs).forEach(k=>{$("#ad-"+k).classList.add("bad");const e=$("#ad-"+k+"-err");e.textContent=errs[k];e.hidden=false});
+ if(Object.keys(errs).length){App.haptic();return}
+ let a=ACC.addresses.find(x=>x.id===id);if(!a){a={id:Date.now()};ACC.addresses.push(a)}
+ Object.assign(a,{l:v("l")||v("n")||"Address",n:v("n"),ph:v("ph"),a1:v("a1"),a2:v("a2"),city:v("city")||"London",pc:ACC.formatPostcode(v("pc")),note:v("note")});
+ App.haptic();App.closeSheet();renderAddr();App.toast(id?"Address updated":"Address saved")};
+})();
+</script>
