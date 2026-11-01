@@ -1,16 +1,26 @@
-<section class="scr fl fl" id="s-fl-notif" data-tab="fl-me" data-nav="Notifications" data-group="Freelance · Profile">
-  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Notifications</div><span class="ib"></span></div>
+<section class="scr fl" id="s-fl-notif" data-nav="Notifications" data-group="Freelance · Profile">
+  <!-- ids: TM-FL-092 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-me')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Notifications</div><span class="ib"></span></div>
   <div class="scr-body pad">
+    <!-- ids: TM-FL-099 -->
     <h1 class="h1" style="margin:8px 0 6px">New deliveries</h1>
-    <p class="soft sm" style="margin:0 0 8px">Which ones should we tell you about?</p>
+    <p class="soft sm" style="margin:0 0 8px">Which ones should we tell you about? Your choice applies straight away.</p>
     <div id="fl-pm">
-      <button class="radio on"><span class="rd"></span><span><span class="rl" style="display:block">My areas and routes</span><span class="rdd" style="display:block">Recommended</span></span></button>
-      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">Only my areas</span></span></button>
-      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">Only my routes</span></span></button>
-      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">None</span><span class="rdd" style="display:block">You can still open the app and look</span></span></button>
+      <button class="radio" data-m="both" onclick="FLX.pushMode(this)"><span class="rd"></span><span><span class="rl" style="display:block">My areas and routes</span><span class="rdd" style="display:block">Recommended</span></span></button>
+      <button class="radio" data-m="areas" onclick="FLX.pushMode(this)"><span class="rd"></span><span><span class="rl" style="display:block">Only my areas</span></span></button>
+      <button class="radio" data-m="routes" onclick="FLX.pushMode(this)"><span class="rd"></span><span><span class="rl" style="display:block">Only my routes</span></span></button>
+      <button class="radio" data-m="none" onclick="FLX.pushMode(this)"><span class="rd"></span><span><span class="rl" style="display:block">None</span><span class="rdd" style="display:block">You can still open the app and look</span></span></button>
     </div>
-    <p class="hint" style="margin:10px 0 0">Quiet from 21:00 to 08:00, and never more than 6 a day.</p>
-    <div class="row" style="padding-left:0;padding-right:0;margin-top:18px;border-top:1px solid var(--hair)"><div class="rt"><div class="l">Near the studio</div><div class="d">When you pass within 2 miles of the studio and there's something ready to pick up. Uses your location only for this; we don't store it.</div></div><button class="switch on" onclick="this.classList.toggle('on')" aria-label="Near the studio"></button></div>
-    <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Messages from the studio</div><div class="d">Replies and changes to your deliveries</div></div><button class="switch on" onclick="this.classList.toggle('on')" aria-label="Messages"></button></div>
+    <!-- ids: TM-FL-100 -->
+    <div class="sec-head" style="padding:0;margin:22px 0 8px"><div class="h3">Quiet hours</div><span class="xs muted">never more than 6 a day</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label for="fl-q-from">From</label><input class="input num" id="fl-q-from" value="21:00" placeholder="HH:MM" oninput="FLX.quietValidate()"></div>
+      <div class="field"><label for="fl-q-to">To</label><input class="input num" id="fl-q-to" value="08:00" placeholder="HH:MM" oninput="FLX.quietValidate()"></div>
+    </div>
+    <button class="btn --ghost --block" id="fl-q-save" disabled onclick="FLX.quietSave()">Save quiet hours</button>
+    <!-- ids: TM-FL-101 -->
+    <div class="row" style="padding-left:0;padding-right:0;margin-top:18px;border-top:1px solid var(--hair)"><div class="rt"><div class="l">Near the studio</div><div class="d">A push when you pass within 2 miles of the studio and something is ready to pick up. Your location is used only for this and isn't stored.</div></div><button class="switch" id="fl-near" onclick="FLX.near(this)" aria-label="Near the studio"></button></div>
+    <!-- ids: TM-FL-102 -->
+    <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Messages from the studio</div><div class="d">Replies and changes to your deliveries always come through – they can't be switched off.</div></div></div>
   </div>
 </section>

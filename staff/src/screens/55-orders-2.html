@@ -1,0 +1,147 @@
+<style>
+/* ===== 55-orders-2 · prefix oc- (customer, customers due, site leads, missed calls) ===== */
+.oc-head{padding:8px var(--gutter) 0}
+.oc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);margin:16px var(--gutter) 0}
+.oc-stats>div{background:var(--paper);padding:12px 10px}
+.oc-stats b{display:block;font-family:var(--f-display);font-size:26px;font-weight:300;line-height:1;margin-bottom:4px}
+.oc-stats span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.oc-due{margin:12px var(--gutter) 0;padding:10px 12px;font-size:13px;background:var(--silver)}
+.oc-due.--over{background:var(--accent-bg);color:var(--accent)}
+.oc-row{display:block;width:100%;text-align:left;padding:14px var(--gutter);border-bottom:1px solid var(--hair)}
+.oc-row .l1{display:flex;justify-content:space-between;gap:10px;font-size:15px;align-items:baseline}
+.oc-row .l1 .r{font-size:12px;color:var(--grey);flex:none}
+.oc-row .l1 .r.accent{color:var(--accent)}
+.oc-row .l2{font-size:13px;color:var(--graphite);margin-top:3px}
+.oc-row .l3{font-size:12px;color:var(--grey);margin-top:4px}
+.oc-row .msg{font-size:14px;margin-top:6px;line-height:1.4}
+.oc-row .b{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.oc-row .st{font-size:12px;margin-top:6px}
+.oc-row .st.--wait{color:var(--accent)}
+.oc-row .st.--ok{color:var(--ok)}
+.oc-note{display:flex;gap:8px;font-size:13px;padding:6px 0;border-top:1px solid var(--hair)}
+.oc-note b{font-weight:500}
+.oc-note .at{margin-left:auto;color:var(--grey);font-size:12px;flex:none}
+.oc-compose{display:flex;gap:8px;margin-top:10px}
+.oc-compose .input{height:44px;flex:1}
+.oc-foot{padding:16px var(--gutter);display:flex;justify-content:center}
+</style>
+
+<!-- ======================= CUSTOMER ======================= -->
+<!-- ids: TM-CLASSIC-070 TM-CLASSIC-071 TM-CLASSIC-072 TM-CLASSIC-073 TM-CLASSIC-074 TM-CLASSIC-075 TM-CLASSIC-076 -->
+<section class="scr" id="s-ord-customer" data-nav="Customer" data-group="Work · Orders">
+  <div class="appbar" id="oc-bar"></div>
+  <div class="scr-body" id="oc-body"></div>
+</section>
+
+<!-- ======================= CUSTOMERS DUE ======================= -->
+<!-- ids: TM-CLASSIC-080 TM-CLASSIC-081 TM-CLASSIC-082 TM-CLASSIC-083 -->
+<section class="scr" id="s-ord-due" data-nav="Customers to repeat" data-group="Work · Orders">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('ord-board')"></button><div class="ttl">Time to repeat</div></div>
+  <div class="scr-body" id="od2-body"></div>
+</section>
+
+<!-- ======================= SITE LEADS ======================= -->
+<!-- ids: TM-CLASSIC-090 TM-CLASSIC-091 TM-CLASSIC-092 TM-CLASSIC-093 TM-CLASSIC-094 TM-CLASSIC-095 TM-CLASSIC-096 -->
+<section class="scr" id="s-ord-leads" data-nav="Site leads" data-group="Work · Orders">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('ord-board')"></button><div class="ttl">Site leads</div></div>
+  <div class="scr-body" id="ol-body"></div>
+</section>
+
+<!-- ======================= MISSED CALLS ======================= -->
+<!-- ids: TM-CLASSIC-100 TM-CLASSIC-101 TM-CLASSIC-102 TM-CLASSIC-103 TM-CLASSIC-104 -->
+<section class="scr" id="s-ord-calls" data-nav="Missed calls" data-group="Work · Orders">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('ord-board')"></button><div class="ttl">Missed calls</div></div>
+  <div class="scr-body" id="ok-body"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App, I=A.icon, T=A.T;
+const $=id=>document.getElementById(id);
+const O5=()=>window.O5;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.querySelectorAll('#s-ord-due .appbar .ib,#s-ord-leads .appbar .ib,#s-ord-calls .appbar .ib').forEach(b=>b.innerHTML=I('back'));
+const OC=window.OC={edit:false};
+/* ---------- demo data ---------- */
+const CUST={
+ c1:{id:'c1',name:'Mrs Harper',phone:'+44 7700 900356',email:'j.harper@example.com',orders:6,ltv:612,last:'2026-10-20',consent:true,due:{cadenceDays:30,overdueDays:0,inDays:12},notes:'Prefers pastels. Allergic to lilies. Husband orders for anniversaries in October.',addresses:[{line:'6 Markham Sq',city:'London',postcode:'SW3 4UY'},{line:'The Pelham, 15 Cromwell Pl',city:'London',postcode:'SW7 2LA'}],recent:[['715602','2026-10-20',129,'in_production'],['715540','2026-09-18',89,'fulfilled'],['715488','2026-08-21',110,'fulfilled']]},
+ c2:{id:'c2',name:'Daniel R.',phone:'+44 7700 900602',email:'',orders:4,ltv:356,last:'2026-10-19',consent:false,due:{cadenceDays:21,overdueDays:9,inDays:0},notes:'',addresses:[{line:'12 Sloane Ave',city:'London',postcode:'SW3 2QE'}],recent:[['715588','2026-10-19',89,'fulfilled'],['715411','2026-09-01',89,'fulfilled']]},
+ c3:{id:'c3',name:'Anna K.',phone:'+44 7700 900418',email:'anna.k@example.com',orders:3,ltv:330,last:'2026-10-20',consent:true,due:{cadenceDays:28,overdueDays:0,inDays:2},notes:'Dog at home – pet-safe stems only.',addresses:[{line:'88 Prince of Wales Dr, flat 4B',city:'London',postcode:'SW11 4AB'}],recent:[['715619','2026-10-20',110,'in_production'],['715470','2026-09-22',110,'fulfilled']]},
+ c4:{id:'c4',name:'Mark T.',phone:'+44 7700 900845',email:'',orders:2,ltv:298,last:'2026-10-21',consent:true,due:{cadenceDays:30,overdueDays:0,inDays:5},notes:'',addresses:[{line:'Lower Rd',city:'London',postcode:'SE16 2XB'}],recent:[['715631','2026-10-21',149,'in_production']]},
+ c13:{id:'c13',name:'Priya S.',phone:'+44 7700 900377',email:'priya@example.com',orders:5,ltv:445,last:'2026-10-20',consent:true,due:{cadenceDays:14,overdueDays:3,inDays:0},notes:'Birthday 2 Nov.',addresses:[{line:'5 Lavender Hill',city:'London',postcode:'SW11 1AA'}],recent:[['715655','2026-10-20',89,'fulfilled'],['715502','2026-10-03',89,'fulfilled']]},
+ c10:{id:'c10',name:'Chloe W.',phone:'+44 7700 900512',email:'',orders:1,ltv:0,last:'2026-10-20',consent:false,due:null,notes:'',addresses:[{line:'9 Parsons Green Ln',city:'London',postcode:'SW6 1RU'}],recent:[['715650','2026-10-20',83,'in_production']]}
+};
+const DUE=['c2','c13','c3','c4'];
+const LEADS=[
+ {id:1,name:'Emma Louise',phone:'+44 7700 900771',social:'',form:'Call me back',product:'Pink manifesto · Deluxe',message:'Could it be delivered Saturday morning before 10? It is for my mum’s 70th.',status:'new',attempts:0,lastAt:null,at:T(10,51),by:null,order:null,notes:[]},
+ {id:2,name:'',phone:'',social:'@floral_jess',form:'Bespoke bouquet',product:'',message:'Budget around £150, autumn colours, for a 60th on Friday.',status:'no_answer',attempts:2,lastAt:T(10,20),at:T(9,5),by:null,order:null,notes:[{by:'sasha',t:'DM sent on Instagram, waiting',at:T(10,22)}]},
+ {id:3,name:'Tom B.',phone:'+44 7700 900644',social:'',form:'Call',product:'Lilac daydream',message:'',status:'contacted',attempts:1,lastAt:T(9,15),at:T(8,40),by:'valeria',order:'715644',notes:[{by:'valeria',t:'Wants collection at 1 pm – order made',at:T(9,16)}]}
+];
+const CALLS=[
+ {id:1,name:'',phone:'+44 7700 900901',at:T(10,58),type:'missed',times:3},
+ {id:2,name:'Mrs Harper',phone:'+44 7700 900356',at:T(10,31),type:'voicemail · 0:42',times:1},
+ {id:3,name:'',phone:'+44 7700 900633',at:T(9,12),type:'missed',times:1}
+];
+let callsCanDismiss=true;
+const calling=(label)=>{A.toast(label||'Calling via Ringover…');setTimeout(()=>A.toast(O5().demo.offline?'Could not place the call':'Ringing · pick up the shop phone'),900)};
+const pull=(fn)=>`<button class="o5-pull" style="width:100%;text-align:center;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding:10px 0 0" onclick="${fn}">↓ Pull to refresh</button>`;
+const guard=(elId,back)=>{const R=O5().roles();if(!R.mgr){$(elId).innerHTML=`<div class="o5-empty mt24"><b>Managers only</b>Needs the “customers.manage” / “orders.manage” right – the app sends you back.</div><div class="pad mt16"><button class="btn --secondary --block" onclick="App.back('${back}')">Back</button></div>`;return false}return true};
+/* ======================= CUSTOMER ======================= */
+window.mount_ord_customer=function(p){const O=O5(),R=O.roles();const id=(p&&p.id)||'c1';const c=CUST[id];
+  $('oc-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('ord-due')">${I('back')}</button><div class="ttl">${c?esc(c.name):'Customer'}</div>${c&&R.mgr&&!OC.edit?`<button class="ib" aria-label="Edit" onclick="OC.edit=true;O5.remount()">${I('edit')}</button>`:''}`;
+  if(!guard('oc-body','ord-board'))return; /* ids: TM-CLASSIC-076 */
+  let h=O.demoBar(['loadError','offline']);
+  if(!c||O.demo.loadError){$('oc-body').innerHTML=h+`<div class="o5-spinner"></div><div class="o5-empty"><b>Could not load</b>${c?'Pull down to try again.':'No such customer.'}</div>`;return}
+  if(OC.edit){h+=`<div class="pad mt12"><!-- ids: TM-CLASSIC-073 --><div class="field"><label>Name · required</label><input class="input" id="oc-n" value="${esc(c.name)}"></div><div class="field"><label>Phone</label><input class="input" id="oc-p" value="${esc(c.phone)}"></div><div class="field"><label>Email</label><input class="input" id="oc-e" value="${esc(c.email)}"></div><div class="xs muted" style="margin:-6px 0 12px">Phone or email – at least one.</div><div class="field"><label>Notes</label><textarea class="input" id="oc-notes">${esc(c.notes)}</textarea></div><div class="o5-vs"><span class="sm">Marketing consent</span><button class="switch ${c.consent?'on':''}" id="oc-c" onclick="this.classList.toggle('on')"></button></div><div class="xs muted mt8">Saved straight to the CRM – not queued offline.</div><div class="o5-red mt8" id="oc-err"></div><div class="flex g8 mt16"><button class="btn --secondary f1" onclick="OC.edit=false;O5.remount()">Cancel</button><button class="btn f1" onclick="OC.save('${id}')">Save</button></div></div>`;$('oc-body').innerHTML=h;return}
+  h+=`<div class="oc-head"><!-- ids: TM-CLASSIC-070 --><h1 class="h1">${esc(c.name)}</h1><div class="sm soft mt8">${esc(c.phone)}${c.email?' · '+esc(c.email):''}</div><div class="xs muted mt4">Last order ${O.dayLabel(c.last)} · marketing: ${c.consent?'consented':'no consent'}</div></div>
+  <div class="oc-stats"><div><b>${c.orders}</b><span>orders</span></div><div><b>${A.fmt(c.ltv)}</b><span>LTV</span></div><div><b>${c.due?c.due.cadenceDays+'d':'—'}</b><span>cycle</span></div></div>`;
+  if(c.due)h+=`<div class="oc-due ${c.due.overdueDays?'--over':''}"><!-- ids: TM-CLASSIC-071 -->${c.due.overdueDays?`Time to repeat: overdue by ${c.due.overdueDays} day${c.due.overdueDays===1?'':'s'} (cycle ${c.due.cadenceDays})`:`Next order expected in ${c.due.inDays} day${c.due.inDays===1?'':'s'} (cycle ${c.due.cadenceDays})`}</div>`;
+  if(c.phone)h+=`<div class="pad mt12"><button class="btn --block" onclick="OC.call('${id}')"><!-- ids: TM-CLASSIC-072 -->${I('phone')} Call via Ringover</button><div class="xs muted mt4" style="text-align:center">The shop phone rings first, then the customer.</div></div>`;
+  h+=`${O.sec('Notes')}<div class="pad"><!-- ids: TM-CLASSIC-074 --><div class="sm ${c.notes?'':'muted'}">${esc(c.notes)||'No notes.'}</div></div>`;
+  h+=`${O.sec('Addresses',c.addresses.length)}<div class="pad"><!-- ids: TM-CLASSIC-074 -->${c.addresses.map(a=>`<div class="o5-kv"><span>${esc(a.postcode)}</span><span>${esc(a.line)}, ${esc(a.city)}</span></div>`).join('')||'<div class="sm muted">No addresses.</div>'}</div>`;
+  h+=`${O.sec('Recent orders',c.recent.length)}<div class="pad"><!-- ids: TM-CLASSIC-075 -->${c.recent.map(r=>{const o=O.order(r[0]);return `<button class="o5-link" onclick="App.go('order',{code:'${r[0]}'})"><span class="f1"><div>${r[0]} · ${O.dayLabel(r[1])}</div><div class="d">${A.fmt(r[2])} · ${O.STATUS[o?o.status:r[3]]||r[3]}</div></span>${I('chev').replace('<svg','<svg class="chv"')}</button>`}).join('')}</div><div style="height:24px"></div>`;
+  $('oc-body').innerHTML=h};
+OC.call=id=>{const c=CUST[id];A.toast('Calling…');setTimeout(()=>A.toast(O5().demo.offline?'Could not place the call':'Ringing '+c.phone),900)};
+OC.save=id=>{const c=CUST[id];const n=$('oc-n').value.trim(),p=$('oc-p').value.trim(),e=$('oc-e').value.trim();if(!n){$('oc-err').textContent='The name is required.';return}if(!p&&!e){$('oc-err').textContent='Add a phone or an email.';return}if(O5().demo.offline){$('oc-err').textContent='No connection – the customer card is saved online only.';return}
+  c.name=n;c.phone=p;c.email=e;c.notes=$('oc-notes').value;c.consent=$('oc-c').classList.contains('on');OC.edit=false;A.sheet(`<div class="sh-head"><div class="h3">Saved</div></div><div class="sh-body"><p class="soft" style="margin:0">The customer card is updated in the CRM.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>`);O5().remount()};
+/* ======================= CUSTOMERS DUE ======================= */
+window.mount_ord_due=function(){const O=O5();if(!guard('od2-body','ord-board'))return;
+  let h=O.demoBar(['loadError'])+pull("App.toast('Refreshed');O5.remount()");
+  if(O.demo.loadError){$('od2-body').innerHTML=h+`<!-- ids: TM-CLASSIC-083 --><div class="o5-spinner"></div><div class="o5-empty"><b>Could not load</b>Pull down to try again.</div>`;return}
+  h+=`<div class="xs muted pad mt8"><!-- ids: TM-CLASSIC-080 -->Customers whose next order is due · cached 10 min (the CRM recalculates hourly). In the new interface this list lives under “Me” for staff and workers; self-employed do not see it.</div>`;
+  const list=DUE.map(id=>CUST[id]).filter(c=>c.due);
+  if(!list.length)h+=`<div class="o5-empty mt16"><!-- ids: TM-CLASSIC-083 --><b>Nobody is due</b>Come back tomorrow.</div>`;
+  h+=list.map(c=>`<button class="oc-row" onclick="App.go('ord-customer',{id:'${c.id}'})"><!-- ids: TM-CLASSIC-081 TM-CLASSIC-082 --><div class="l1"><span>${esc(c.name)}</span><span class="r ${c.due.overdueDays?'accent':''}">${c.due.overdueDays?`overdue ${c.due.overdueDays} d`:`in ${c.due.inDays} d`}</span></div><div class="l2">${esc(c.phone)}${c.email?' · '+esc(c.email):''}</div><div class="l3">${c.orders} orders · LTV ${A.fmt(c.ltv)} · last ${O.dayLabel(c.last)}</div></button>`).join('');
+  $('od2-body').innerHTML=h};
+/* ======================= SITE LEADS ======================= */
+const OL=window.OL={};
+window.mount_ord_leads=function(){const O=O5();if(!guard('ol-body','ord-board'))return; /* ids: TM-CLASSIC-096 */
+  let h=O.demoBar(['loadError','offline'])+pull("App.toast('Refreshed');O5.remount()");
+  if(O.demo.loadError){$('ol-body').innerHTML=h+`<div class="o5-spinner"></div><div class="o5-empty"><b>Could not load</b>Pull down to try again.</div>`;return}
+  const waiting=LEADS.filter(l=>l.status==='new'||l.status==='no_answer').length;
+  h+=`<div class="xs muted pad mt8"><!-- ids: TM-CLASSIC-090 -->Forms from the website: call, call-back, bespoke bouquet · waiting: ${waiting} · refreshes every 60 s</div>`;
+  if(!LEADS.length)h+=`<div class="o5-empty mt16"><b>No leads</b>Nothing from the website yet.</div>`;
+  h+=LEADS.map(l=>{const wait=l.status==='new'||l.status==='no_answer';const st=l.status==='new'?'new':l.status==='no_answer'?`no answer: ${l.attempts} attempt${l.attempts===1?'':'s'}, last at ${A.fmtTime(l.lastAt)}`:`reached by ${O.nm(l.by)} at ${A.fmtTime(l.lastAt)}`;
+    return `<div class="oc-row"><!-- ids: TM-CLASSIC-091 --><div class="l1"><span>${esc(l.name||l.social||l.phone)}</span><span class="r ${wait?'accent':''}">${A.fmtTime(l.at)}</span></div><div class="l2">${esc(l.form)}${l.product?' · '+esc(l.product):''}${l.phone?' · '+esc(l.phone):''}${l.social?' · '+esc(l.social):''}</div>${l.message?`<div class="msg">“${esc(l.message)}”</div>`:''}<div class="st ${wait?'--wait':'--ok'}">${st}</div>${l.order?`<button class="textbtn mt8" onclick="App.go('order',{code:'${l.order}'})"><!-- ids: TM-CLASSIC-095 -->Order №${l.order}</button>`:''}
+    <div class="b">${l.phone?`<button class="btn --sm" onclick="OL.call(${l.id})"><!-- ids: TM-CLASSIC-092 -->${I('phone')} Call</button>`:''}${wait?`<button class="btn --sm --ghost" onclick="OL.status(${l.id},'contacted')"><!-- ids: TM-CLASSIC-093 -->Reached</button><button class="btn --sm --ghost" onclick="OL.status(${l.id},'no_answer')">No answer</button>`:`<button class="btn --sm --ghost" onclick="OL.status(${l.id},'new')">Back to work</button>`}</div>
+    <div class="mt12"><!-- ids: TM-CLASSIC-094 -->${l.notes.map(n=>`<div class="oc-note"><b>${O.nm(n.by)}</b><span>${esc(n.t)}</span><span class="at">${A.fmtTime(n.at)}</span></div>`).join('')}<div class="oc-compose"><input class="input" id="ol-n-${l.id}" placeholder="Note on this lead"><button class="btn --sm" onclick="OL.note(${l.id})">Send</button></div></div></div>`}).join('');
+  $('ol-body').innerHTML=h+'<div style="height:24px"></div>'};
+OL.call=id=>calling();
+OL.status=(id,s)=>{const l=LEADS.find(x=>x.id===id);if(O5().demo.offline){A.toast('No connection');return}l.status=s;l.lastAt=O5().now().toISOString();if(s==='no_answer')l.attempts++;if(s==='contacted')l.by=A.state.me;A.toast(s==='contacted'?'Marked as reached':s==='no_answer'?'No answer recorded':'Back in the queue');O5().remount()};
+OL.note=id=>{const v=(($('ol-n-'+id)||{}).value||'').trim();if(!v)return;const l=LEADS.find(x=>x.id===id);l.notes.push({by:A.state.me,t:v,at:O5().now().toISOString()});A.toast('Note sent');O5().remount()};
+/* ======================= MISSED CALLS ======================= */
+const OK=window.OK={};
+window.mount_ord_calls=function(){const O=O5();if(!guard('ok-body','ord-board'))return;
+  let h=O.demoBar(['loadError','offline'])+pull("App.toast('Refreshed');O5.remount()");
+  if(O.demo.loadError){$('ok-body').innerHTML=h+`<!-- ids: TM-CLASSIC-104 --><div class="o5-spinner"></div><div class="o5-empty"><b>Could not load</b>Pull down to try again.</div>`;return}
+  h+=`<div class="xs muted pad mt8"><!-- ids: TM-CLASSIC-100 -->People who called the shop and did not get through · refreshes every 60 s · dismissing: ${callsCanDismiss?'allowed':'off for your role'} <button class="link-u" onclick="OK.toggleDismiss()">toggle</button></div>`;
+  if(!CALLS.length)h+=`<div class="o5-empty mt16"><!-- ids: TM-CLASSIC-104 --><b>No missed calls</b>Everyone got through.</div>`;
+  h+=CALLS.map(c=>`<div class="oc-row"><!-- ids: TM-CLASSIC-100 --><div class="l1"><span>${esc(c.name||c.phone)}</span><span class="r accent">${A.fmtTime(c.at)}</span></div><div class="l2">${esc(c.phone)} · ${esc(c.type)}${c.times>1?` · called ${c.times} times`:''}</div><div class="b"><button class="btn --sm" onclick="OK.call(${c.id})"><!-- ids: TM-CLASSIC-101 -->${I('phone')} Call back</button>${callsCanDismiss?`<button class="btn --sm --ghost" onclick="OK.dismiss(${c.id})"><!-- ids: TM-CLASSIC-102 -->Dismiss</button>`:''}</div></div>`).join('');
+  if(CALLS.length&&callsCanDismiss)h+=`<div class="oc-foot"><button class="textbtn" onclick="OK.dismissAll()"><!-- ids: TM-CLASSIC-103 -->Dismiss all</button></div>`;
+  $('ok-body').innerHTML=h};
+OK.call=id=>calling();
+OK.dismiss=id=>{const i=CALLS.findIndex(c=>c.id===id);if(i<0)return;CALLS.splice(i,1);A.toast('Dismissed');O5().remount()};
+OK.dismissAll=()=>{CALLS.length=0;A.toast('All dismissed – no confirmation, as in the app');O5().remount()};
+OK.toggleDismiss=()=>{callsCanDismiss=!callsCanDismiss;O5().remount()};
+})();
+</script>

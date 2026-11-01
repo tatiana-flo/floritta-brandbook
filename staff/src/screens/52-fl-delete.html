@@ -1,13 +1,21 @@
-<section class="scr fl fl" id="s-fl-delete" data-nav="Delete account" data-group="Freelance · Profile">
-  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delete account</div><span class="ib"></span></div>
+<section class="scr fl" id="s-fl-delete" data-nav="Delete account" data-group="Freelance · Profile">
+  <!-- ids: TM-FL-097 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-me')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delete account</div><span class="ib"></span></div>
   <div class="scr-body has-cta pad">
     <h1 class="h1" style="margin:8px 0 14px">Delete your courier account?</h1>
+    <!-- ids: TM-FL-111 -->
+    <div class="panel --warn sm" id="flx-del-live" hidden style="margin-bottom:14px"><b>Finish your current delivery first.</b> Battersea SW11 is in progress – deliver it or report a problem, then come back here.</div>
+    <div class="flx-demo" style="margin-bottom:10px"><span>Demo</span><span id="flx-d-del"></span></div>
+    <!-- ids: TM-FL-109 -->
     <div class="sec-head" style="padding:0;margin:8px 0 6px"><div class="caps muted">We delete now</div></div>
     <div class="sm soft">Sign-in, phone number, home postcode, routes and areas, bank details, notification settings and messages.</div>
     <div class="sec-head" style="padding:0;margin:20px 0 6px"><div class="caps muted">The law asks us to keep</div></div>
     <div class="sm soft">The right-to-work check record – 2 years after your last delivery (Home Office). Statements and payments – 6 years (HMRC). Nobody uses them for anything else, and they are then deleted.</div>
-    <div class="panel --warn sm mt16" style="margin-top:18px">Unpaid earnings (£63.00) are still paid on Friday.</div>
-    <button class="check" onclick="this.classList.toggle('on')" style="margin-top:10px"><span class="cb"><svg class="i"><use href="#fl-i-check"/></svg></span><span class="ct">I understand this can't be undone.</span></button>
+    <!-- ids: TM-FL-110 -->
+    <div class="panel --ok sm mt16" style="margin-top:18px">Unpaid earnings (£57.00) are still paid on Friday.</div>
+    <!-- ids: TM-FL-112 -->
+    <button class="check" id="flx-del-ok" onclick="this.classList.toggle('on');FLX.delRender()" style="margin-top:10px"><span class="cb"><svg class="i"><use href="#fl-i-check"/></svg></span><span class="ct">I understand this can't be undone.</span></button>
   </div>
-  <div class="cta-bar"><button class="btn --accent --block" onclick="App.toast('Account deleted.');App.go('fl-welcome')">Delete my account</button></div>
+  <!-- ids: TM-FL-112 -->
+  <div class="cta-bar"><button class="btn --accent --block" id="flx-del-btn" disabled onclick="App.toast('Account deleted. Signed out.');App.go('fl-welcome')">Delete my account</button></div>
 </section>

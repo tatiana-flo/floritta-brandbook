@@ -1,5 +1,369 @@
-<section class="scr" id="s-route" data-nav="Route" data-group="Work">
+<style>
+/* ---------- courier & delivery manager (cr-) – shared by 12-route, 13-stop, 61-courier* ---------- */
+#s-route .scr-body.has-tab.cr-hascta{padding-bottom:calc(var(--tab-h) + var(--btn-h) + 56px + var(--safe-b))}
+#s-route .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b))}
+html[data-style="glass"] #s-route .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b) + 22px)}
+.app:has(#s-route .scr-body.cr-hascta) .toast{bottom:calc(var(--tab-h) + var(--btn-h) + 44px + var(--safe-b))}
+.cr-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--ink);height:32px;flex:none}
+.cr-seg button{font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;padding:0 12px;transition:all var(--m-fast)}
+.cr-seg button.on{background:var(--ink);color:var(--paper)}
+.cr-strip{display:flex;align-items:center;gap:10px;padding:10px var(--gutter);border-bottom:1px solid var(--hair);font-size:12px;color:var(--graphite)}
+.cr-strip svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.cr-strip b{font-weight:400;color:var(--ink)}
+.cr-offline{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px var(--gutter);background:var(--ink);color:var(--paper);font-size:13px}
+.cr-offline.--warn{background:var(--warn-bg);color:var(--warn)}
+.cr-offline.--parked{background:var(--accent-bg);color:var(--accent)}
+.cr-offline svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.cr-offline small{margin-left:auto;font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;opacity:.8;white-space:nowrap}
+.cr-banner{margin:12px var(--gutter) 0;padding:14px 16px;background:var(--warn-bg)}
+.cr-banner .t{font-size:15px;line-height:1.35}
+.cr-banner .d{font-size:12px;color:var(--graphite);margin-top:4px}
+.cr-banner .cd{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.cr-banner .bt{display:flex;gap:8px;margin-top:12px}
+.cr-banner .bt .btn{flex:1}
+.cr-banner.--learn{background:var(--silver)}
+.cr-banner.--reject{background:var(--accent-bg)}
+.cr-banner.--reject .t{color:var(--accent)}
+.cr-err{font-size:12px;color:var(--accent);margin-top:8px}
+.cr-trip{margin:12px var(--gutter) 0;border:1px solid var(--light);padding:14px 16px}
+.cr-trip .st{display:flex;align-items:center;gap:10px;font-size:15px}
+.cr-trip .st svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.cr-trip .st.ok svg{stroke:var(--ok)}
+.cr-trip .hint{font-size:12px;color:var(--grey);margin-top:6px}
+.cr-trip .btn{margin-top:12px;width:100%}
+.cr-spin{width:16px;height:16px;border:1.5px solid var(--light);border-top-color:var(--ink);border-radius:50%;animation:cr-spin 1s linear infinite;flex:none;display:inline-block}
+@keyframes cr-spin{to{transform:rotate(360deg)}}
+.cr-plan{padding:14px var(--gutter) 0}
+.cr-plan .n{font-family:var(--f-display);font-size:30px;line-height:1;font-weight:300}
+.cr-plan .n.ok{color:var(--ok)}
+.cr-plan .n.acc{color:var(--accent)}
+.cr-plan .l{font-size:13px;color:var(--graphite);margin-top:6px;line-height:1.4}
+.cr-plan .gate{font-size:13px;color:var(--grey);margin-top:10px;display:flex;gap:8px;align-items:center}
+.cr-plan .gate svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.cr-poll{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 var(--gutter);font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);margin-top:14px}
+.cr-ptr{display:flex;align-items:center;justify-content:center;gap:8px;height:0;overflow:hidden;font-size:12px;color:var(--grey);transition:height var(--m-base) var(--m-ease)}
+.cr-ptr.on{height:40px}
+.cr-stop{display:block;width:100%;text-align:left;cursor:pointer;padding:14px var(--gutter);border-bottom:1px solid var(--hair);background:var(--paper)}
+.cr-stop:active{background:var(--silver)}
+.cr-stop.--pod{opacity:.72}
+.cr-stop .hd{display:flex;align-items:flex-start;gap:10px}
+.cr-stop .ix{width:28px;height:28px;border:1px solid var(--light);display:grid;place-items:center;font-size:12px;flex:none}
+.cr-stop .ix svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+.cr-stop .ix.--pod{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.cr-stop .ix.--blank{border-style:dashed;color:var(--grey)}
+.cr-stop .code{font-size:15px;line-height:1.3}
+.cr-stop .code small{font-size:12px;color:var(--grey);margin-left:6px}
+.cr-stop .rt{margin-left:auto;text-align:right;flex:none}
+.cr-stop .rt .big{font-family:var(--f-display);font-size:22px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.cr-stop .rt .sub{font-size:11px;color:var(--grey);margin-top:3px;letter-spacing:var(--ls-caps);text-transform:uppercase}
+.cr-stop .bd{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cr-stop .addr{font-size:13px;color:var(--graphite);margin-top:8px}
+.cr-stop .zone{font-size:12px;color:var(--warn);margin-top:6px}
+.cr-stop .items{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin-top:10px;padding-bottom:2px}
+.cr-stop .items::-webkit-scrollbar{display:none}
+.cr-stop .it{flex:none;width:64px;font-size:11px;color:var(--graphite);line-height:1.25}
+.cr-stop .it .ph{width:64px;height:64px;background:var(--silver);position:relative;margin-bottom:4px}
+.cr-stop .it .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.cr-stop .it .ph .q{position:absolute;right:0;bottom:0;background:var(--ink);color:var(--paper);font-size:10px;padding:1px 5px}
+.cr-stop .act{display:flex;gap:8px;margin-top:12px;align-items:center}
+.cr-stop .act .btn{flex:1}
+.cr-stop .taken{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ok)}
+.cr-stop .taken svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
+.cr-stop .taken .u{color:var(--grey);border-bottom:1px solid var(--light);font-size:12px;text-transform:uppercase;letter-spacing:var(--ls-caps);margin-left:4px}
+.cr-group{padding:0 var(--gutter);margin:24px 0 8px;display:flex;align-items:baseline;gap:10px}
+.cr-group .h3{flex:1}
+.cr-group small{font-size:12px;color:var(--grey)}
+.cr-empty{margin:24px var(--gutter);padding:28px 16px;text-align:center;background:var(--silver);color:var(--graphite);font-size:14px}
+.cr-empty b{display:block;font-family:var(--f-display);font-weight:400;font-size:20px;color:var(--ink);margin-bottom:4px}
+.cr-empty.--err b{color:var(--accent)}
+.cr-skel{margin:14px var(--gutter) 0;display:flex;flex-direction:column;gap:12px}
+.cr-skel i{display:block;height:68px}
+.cr-map{position:relative;height:420px;background:var(--silver);margin-top:12px;overflow:hidden}
+.cr-map svg{position:absolute;inset:0;width:100%;height:100%}
+.cr-map .rv{fill:none;stroke:var(--light);stroke-width:22;opacity:.55}
+.cr-map .rd{fill:none;stroke:var(--hair);stroke-width:1.5}
+.cr-map .pin{cursor:pointer}
+.cr-map .pin circle{fill:var(--ink);stroke:var(--paper);stroke-width:2}
+.cr-map .pin.--pod circle{fill:var(--ok)}
+.cr-map .pin.--next circle{fill:var(--grey)}
+.cr-map .pin text{font-family:var(--f-body);font-size:10px;fill:var(--ink);text-anchor:middle}
+.cr-map .pin .lb{font-size:9px;letter-spacing:.04em;fill:var(--graphite)}
+.cr-map .you{fill:var(--ink);stroke:var(--paper);stroke-width:3}
+.cr-map .you-lb{font-family:var(--f-body);font-size:9px;letter-spacing:.1em;text-transform:uppercase;fill:var(--ink);text-anchor:middle}
+.cr-map .shop{fill:var(--ink)}
+.cr-map .lbl{font-family:var(--f-body);font-size:8px;letter-spacing:.2em;fill:var(--grey);text-transform:uppercase}
+.cr-callout{position:absolute;left:12px;right:12px;bottom:12px;background:var(--paper);padding:12px 14px;display:flex;align-items:center;gap:12px;border:1px solid var(--hair);text-align:left}
+.cr-callout .t{font-size:14px}
+.cr-callout .d{font-size:12px;color:var(--grey);margin-top:2px}
+.cr-callout svg{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;margin-left:auto}
+.cr-legend{position:absolute;left:12px;top:12px;display:flex;gap:10px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);background:var(--paper);padding:4px 8px}
+.cr-legend i{display:inline-block;width:8px;height:8px;margin-right:4px;background:var(--ink);vertical-align:0}
+.cr-legend i.ok{background:var(--ok)}.cr-legend i.nx{background:var(--grey)}
+.cr-lock{padding:40px var(--gutter)}
+.cr-demo{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.cr-demo .d{font-size:12px;color:var(--grey);margin-top:2px}
+.cr-demo .seg{height:34px;flex:none}
+.cr-demo .seg button{padding:0 10px;font-size:10px}
+.cr-alert{text-align:center;padding:8px 0 4px}
+.cr-alert .h3{margin-bottom:8px}
+.cr-alert p{margin:0;color:var(--graphite);font-size:14px;line-height:1.45}
+.cr-chipw{display:flex;flex-wrap:wrap;gap:8px}
+.cr-note{font-size:12px;color:var(--grey);letter-spacing:var(--ls-caps);text-transform:uppercase}
+.cr-kv{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.cr-kv span:first-child{color:var(--grey);font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;padding-top:2px}
+.cr-kv span:last-child{text-align:right}
+.cr-pill-acc{background:var(--accent-bg);color:var(--accent)}
+.cr-pill-ok{background:var(--ok-bg);color:var(--ok)}
+.cr-pill-warn{background:var(--warn-bg);color:var(--warn)}
+</style>
+
+<!-- Courier · My deliveries (new interface B: Work → Deliveries). Replaces the classic "Route" screen; for Valeria (manager) it opens the dispatch view (61-courier-2), for a florist without delivery.driver it shows the lock. -->
+<!-- ids: TM-COURIER-001 TM-COURIER-002 TM-COURIER-004 TM-COURIER-018 TM-BSHELL-024 -->
+<section class="scr" id="s-route" data-tab="work" data-nav="My deliveries · courier" data-group="Deliveries">
+  <!-- ids: TM-COURIER-003 -->
   <div class="appbar" id="rt-bar"></div>
-  <div class="scr-body" id="rt-body"></div>
+  <div class="scr-body has-tab" id="rt-body">
+    <!-- rendered by mount_route:
+         ids: TM-COURIER-098 TM-COURIER-099 TM-COURIER-100 TM-COURIER-101 – connectivity strip (offline / N actions not sent → Not sent screen)
+         ids: TM-COURIER-005 – On shift strip
+         ids: TM-COURIER-006 TM-COURIER-092 TM-COURIER-093 TM-COURIER-094 TM-COURIER-095 TM-COURIER-096 TM-COURIER-097 – idle banner (prompt / auto break / error line)
+         ids: TM-COURIER-007 – learning / alcohol-authorisation debt banner
+         ids: TM-COURIER-036 TM-COURIER-037 TM-COURIER-038 TM-COURIER-039 TM-COURIER-040 TM-COURIER-041 TM-COURIER-042 – TripCard
+         ids: TM-COURIER-008 TM-COURIER-009 TM-COURIER-010 TM-COURIER-011 TM-COURIER-012 TM-COURIER-013 – counter, plan line, next run, gate, whole-run navigation (+ 9-waypoint warning)
+         ids: TM-COURIER-014 TM-COURIER-015 TM-COURIER-016 TM-COURIER-017 – pull-to-refresh, poll caption, loading / error / empty, "route reordered" toast
+         ids: TM-COURIER-019 TM-COURIER-020 TM-COURIER-021 TM-COURIER-022 TM-COURIER-023 TM-COURIER-024 TM-COURIER-025 – stop card
+         ids: TM-COURIER-026 TM-COURIER-027 TM-COURIER-028 TM-COURIER-029 TM-COURIER-030 TM-COURIER-031 TM-COURIER-032 TM-COURIER-033 TM-COURIER-106 – take / items confirm / undo / confirm delivery / QR / toast / next-run group / tap → stop / waiting-to-send badge
+         ids: TM-COURIER-035 – map view -->
+  </div>
+  <!-- ids: TM-COURIER-034 -->
   <div class="cta-bar" id="rt-cta" style="display:none"></div>
 </section>
+
+<script>
+(function(){
+'use strict';
+const A=window.App, I=n=>A.icon(n), $=id=>document.getElementById(id);
+const ic=(n,s=16)=>I(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-3px"`);
+const p2=n=>String(n).padStart(2,'0'), hm=m=>p2(Math.floor(m/60)%24)+':'+p2(m%60);
+const NOWM=11*60+12; let tick=0; const stamp=()=>hm(NOWM+(++tick));
+const rk=()=>A.isTrainee()?'trainee':(A.role()==='owner'?'manager':A.role());
+const sh=(t,b,f)=>`<div class="sh-head"><div class="h3">${t}</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body">${b}</div>${f?`<div class="sh-foot">${f}</div>`:''}`;
+const alert=(t,p,ok,fn)=>A.sheet(`<div class="sh-body cr-alert"><div class="h3">${t}</div><p>${p}</p></div><div class="sh-foot"><button class="btn --block" onclick="App.closeSheet();${fn||''}">${ok||'OK'}</button></div>`);
+
+/* ================= shared state (window.CR) ================= */
+const C=window.CR={
+  demo:{tripMode:true,offline:false,idle:'none',learning:false,load:'ok',poll:45,viewAs:false,writeQueue:0,bigRun:false,geoConsent:false,featureOff:false,pollLast:'11:11'},
+  mode:'list',
+  // Trip 2 of the day: Andrii is back at the shop after run 1 (715598 delivered 10:31).
+  trip:{status:'at_shop',headingAt:'10:40',arrivedAt:'10:52',requestedAt:null,confirmedAt:null,confirmedBy:null,rejectNote:null,nextRunAt:'11:30',congestion:15},
+  stops:[
+    {code:'715598',crm:'61-98',name:'Belgravia petite rosettes',img:'img/belgravia.webp',area:'Pimlico SW1',line1:'14 Moreton Place',line2:'Flat 2',city:'London',pc:'SW1V 2NP',slot:'11:00–14:00',who:'Ms Patel',tel:'+44 7700 900214',items:[{n:'Belgravia petite rosettes',q:1,img:'img/belgravia.webp'}],hasPod:true,deliveredAt:'10:31',handover:{kind:'concierge',name:'Front desk, Mr Osei'},photoAt:'10:31',podLocal:true,instructions:'Leave with the concierge if she is out.',x:120,y:150},
+    {code:'715619',crm:'61-19',name:'White spray roses in ivory wrap',img:'img/white-spray.webp',area:'Battersea SW11',line1:'88 Prince of Wales Drive',line2:'Flat 4B',city:'London',pc:'SW11 4BG',slot:'12:00–15:00',who:'Marta K.',tel:'+44 7700 900418',items:[{n:'White spray roses · Grand',q:1,img:'img/white-spray.webp'}],readyState:'ready',taken:'11:03',priorityFirst:true,position:1,eta:'11:52',instructions:'Ring twice. A dog at home – the bouquet is pet-safe.',x:110,y:300},
+    {code:'715602',crm:'61-02',name:'Pink manifesto',img:'img/pink-manifesto.webp',area:'Chelsea SW3',line1:'6 Markham Square',line2:'',city:'London',pc:'SW3 4UY',slot:'14:00–17:00',who:'Olivia Bennett',tel:'+44 7700 900356',items:[{n:'Pink manifesto · Deluxe',q:1,img:'img/pink-manifesto.webp'},{n:'Glass vase',q:1,img:'img/addon-vase.webp'}],readyState:'ready',position:2,eta:'12:20',instructions:'Gate code is on the card inside the wrap.',x:180,y:230},
+    {code:'715611',crm:'61-11',name:'Happy Birthday balloons + Peach posy',img:'img/peach-posy.webp',area:'Bermondsey SE1',line1:'31 Tanner Street',line2:'Unit 7',city:'London',pc:'SE1 3LE',slot:'15:00–18:00',who:'Peter O.',tel:'+44 7700 900127',items:[{n:'Peach posy',q:1,img:'img/peach-posy.webp'},{n:'Balloons',q:5,img:'img/addon-balloon.webp'},{n:'Lindt truffles',q:1,img:'img/addon-choc.webp'}],readyState:'in_production',position:3,eta:'12:48',instructions:'Office reception – ask for Peter.',x:300,y:120},
+    {code:'715640',crm:'61-40',name:'Prosecco & white peonies',img:'img/peony-basket.webp',area:'Kensington W8',line1:'22 Phillimore Gardens',line2:'',city:'London',pc:'W8 7QG',slot:'16:00–19:00',who:'Daniel Rowe',tel:'+44 7700 900772',telRaw:'+44 (0)7700 900772 #2',items:[{n:'White peonies · Grand',q:1,img:'img/peony-basket.webp'},{n:'Prosecco 75 cl',q:1,img:'img/addon-ferrero.webp'}],readyState:'ready',isAlcohol:true,ageRestricted:true,position:4,eta:'18:05',waitsForFreeZone:'18:00',instructions:'Birthday – hand to Daniel himself if possible.',x:70,y:90},
+    {code:'715623',crm:'61-23',name:'Lilac daydream',img:'img/lilac-dream.webp',area:'Clapham SW4',line1:'5 Clapham Common North Side',line2:'',city:'London',pc:'SW4 0QW',slot:'17:00–20:00',who:'Sophie L.',tel:'+44 7700 900633',items:[{n:'Lilac daydream · Standard',q:1,img:'img/lilac-dream.webp'},{n:'Ferrero Rocher',q:1,img:'img/addon-ferrero.webp'}],readyState:'not_started',nextRun:true,nextRunEta:'14:30',instructions:'',x:200,y:370}
+  ],
+  outbox:[],   // {code,kind:'deliver'|'note',status:'queued'|'rejected',reason,text,at,ownerId}
+  receipts:{}, // code → {kind,name,at}
+  addrNotes:{'715619':[{id:1,by:'Oleh',at:'Last week',text:'Entrance is round the back, through the car park.',thisHouse:true,canDelete:false},{id:2,by:'Andrii',at:'3 Oct',text:'No. 90 next door: concierge takes parcels until 20:00.',house:'90',canDelete:true,original:'Сусідній 90-й: консьєрж бере посилки до 20:00.'}]},
+  stamp,hm,NOWM,ic,sh,alert,rk,
+  stop(code){return C.stops.find(s=>s.code===code)},
+  gateOpen(){return !C.demo.tripMode||(C.trip&&C.trip.status==='confirmed')},
+  takenList(){return C.stops.filter(s=>s.taken&&!s.hasPod&&!s.failure)},
+  remaining(){return C.stops.filter(s=>!s.hasPod&&!s.failure).length},
+  waiting(code){return C.outbox.find(o=>o.code===code&&o.kind==='deliver')},
+  remount(){const id=A.state.current;const f=window['mount_'+String(id||'').replace(/-/g,'_')];if(f&&(id==='route'||id==='stop'||String(id).startsWith('cr-')))f(A.state.params)}
+};
+document.addEventListener('user',()=>setTimeout(C.remount,0));
+
+/* ================= trip actions ================= */
+const TRIP=C.tripActions={
+  heading(){C.trip={status:'heading_to_shop',headingAt:stamp(),nextRunAt:'11:30',congestion:15};A.haptic();A.toast('Heading to the shop · the managers can see you');C.remount()},
+  arrived(){C.trip.status='at_shop';C.trip.arrivedAt=stamp();A.haptic();A.toast('At the shop · tick the orders you are taking');C.remount()},
+  take(code,opts={}){const s=C.stop(code);
+    if(C.demo.offline&&opts.via==='qr'){alert('No connection','You need a connection to scan.');return}
+    if(C.demo.viewAs&&!opts.guarded){A.confirm('You are viewing as Andrii','Taking the order sends the customer a message. Continue?','Continue',()=>TRIP.take(code,Object.assign({},opts,{guarded:true})));return}
+    if(s.readyState!=='ready'){alert('Not ready',"This order is not ready yet – ask the florist.");return}
+    if(s.items.length>1&&!opts.itemsConfirmed){
+      A.sheet(sh(`${s.items.length} items in this order – did you take them all?`,`<div class="cr-chipw">${s.items.map(i=>`<span class="chip">${i.n}${i.q>1?' ×'+i.q:''}</span>`).join('')}</div>`,`<button class="btn --secondary" onclick="App.closeSheet()">No</button><button class="btn" onclick="App.closeSheet();CR.tripActions.take('${code}',{itemsConfirmed:true,guarded:true,via:'${opts.via||'button'}'})">Yes, took them all</button>`));return}
+    if(!C.trip||C.trip.status==='heading_to_shop'){C.trip={status:'at_shop',arrivedAt:stamp(),nextRunAt:'11:30',congestion:15}}
+    s.taken=stamp();A.haptic();A.toast(`#${code} picked up`);C.remount();
+  },
+  untake(code){const s=C.stop(code);if(C.trip&&C.trip.status==='confirmed'){alert('Cannot put back','The route is already confirmed – the order cannot be put back.');return}
+    s.taken=null;A.toast('Put back on the shelf');C.remount()},
+  ready(){const n=C.takenList().length;if(!n){alert('Nothing taken','Take at least one order first.');return}
+    C.trip.status='awaiting_confirmation';C.trip.requestedAt=stamp();C.trip.rejectNote=null;A.haptic();
+    A.toast('Sent to the managers · wait for the route');
+    setTimeout(()=>A.push('Andrii is ready to leave',`${n} order${n>1?'s':''} · confirm the route`,{icon:'truck',to:'Valeria',go:['cr-dispatch',{}]}),800);C.remount()},
+  confirm(by){C.trip.status='confirmed';C.trip.confirmedAt=stamp();C.trip.confirmedBy=by||'Valeria';C.trip.rejectNote=null;C.remount()},
+  reject(note){C.trip.status='at_shop';C.trip.rejectNote=note||'';C.remount()},
+  reorder(){A.toast('The manager changed the route order.');C.remount()},
+  scan(code){const s=C.stop(code);
+    A.sheet(sh('Scan the label QR',`<div class="wk-cam" style="aspect-ratio:1/1;max-height:260px"><img src="${s.img}" alt=""><span class="gr"></span><i class="cn a"></i><i class="cn b"></i><i class="cn c"></i><i class="cn d"></i><div class="hint">Hold the label inside the frame</div></div><p class="xs muted" style="margin:10px 0 0">The code is read on the phone. Your order – it is picked up; another courier's order – the CRM tells you whose.</p>
+      <div class="cr-chipw mt12"><button class="chip" onclick="App.closeSheet();CR.tripActions.take('${code}',{via:'qr'})">Demo: my label</button><button class="chip" onclick="CR.alert('Not yours','#715588 is on Oleh’s run.')">Demo: Oleh’s label</button><button class="chip" onclick="CR.alert('Not found','#715999 is not among today’s delivery orders.')">Demo: unknown</button><button class="chip" onclick="CR.alert('Not ready','#715611 is not ready yet – ask the florist.')">Demo: not ready</button><button class="chip" onclick="CR.alert('Unreadable','QR not recognised – try closer and straighter.')">Demo: blurry</button></div>`,
+      `<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button>`),{full:true})},
+  navigateRun(){const pts=C.stops.filter(s=>!s.hasPod&&!s.failure&&!s.nextRun);const n=C.demo.bigRun?11:pts.length;
+    const open=()=>A.toast(`Google Maps · ${Math.min(n,9)} stops, then back to the shop`);
+    if(n>9){A.confirm('Google Maps takes 9 stops',`Google Maps takes 9 stops in one route — the first 9 of your ${n} are on it. Open it again after those to route the rest.`,'Open the first 9',open)}else open()},
+  idleRespond(action){if(C.demo.idle==='fail'){C.demo.idleErr=true;C.remount();return}
+    C.demo.idle=action==='break'?'auto':'none';A.haptic();A.toast(action==='break'?'Break started · location paused':'Thanks – the shift carries on');C.remount()},
+  breakStop(){C.demo.idle='none';A.toast('Shift continues');C.remount()},
+  refresh(){const e=$('rt-ptr');if(e){e.classList.add('on');setTimeout(()=>{e.classList.remove('on');C.demo.pollLast=stamp();A.toast('Updated · '+C.demo.pollLast);C.remount()},700)}},
+  probe(){A.toast('Checking the connection…');setTimeout(()=>{if(C.demo.writeQueue>0||C.outbox.length){A.go('cr-unsent')}else A.toast(C.demo.offline?'Still no connection':'Connected')},500)},
+  demoPush(k){A.closeSheet();
+    if(k==='reorder'){A.push('Route changed','The manager changed the route order',{icon:'route'});setTimeout(()=>TRIP.reorder(),600)}
+    if(k==='confirm'){A.push('Route confirmed','Valeria confirmed your route · 3 stops',{icon:'route',go:['route',{}]});C.demoSet('tripState','confirmed')}
+    if(k==='idle'){A.push('Standing still 10+ min','Start a break? Tap to answer',{icon:'clock',go:['route',{}]});C.demo.idle='prompt';C.remount()}}
+};
+
+/* ================= pieces ================= */
+function connStrip(){
+  const q=C.demo.writeQueue+C.outbox.length;
+  if(C.demo.offline)return `<button class="cr-offline" onclick="CR.tripActions.probe()">${ic('globe')}<span class="f1">No connection · screens will load again by themselves</span><small>Tap to check now</small></button>`;
+  if(q>0)return `<button class="cr-offline ${C.outbox.some(o=>o.status==='rejected')?'--parked':'--warn'}" onclick="App.go('cr-unsent')">${ic('send')}<span class="f1">${q} action${q>1?'s':''} not sent${C.outbox.some(o=>o.status==='rejected')?'':' yet'}</span><small>Tap to review</small></button>`;
+  return '';
+}
+function onShift(){const on=STAFF.filter(u=>u.onShift&&u.id!==A.state.me).map(u=>u.n+(u.role==='manager'?' (manager)':'')).join(', ');return `<div class="cr-strip">${ic('users')}<span>On shift: <b>${on}</b></span></div>`}
+function idleBanner(){
+  const d=C.demo.idle;if(d==='none')return '';
+  if(d==='auto')return `<div class="cr-banner"><div class="t">Break switched on automatically. Once you drive off on work, the shift carries on by itself.</div><div class="bt"><button class="btn --sm" onclick="CR.tripActions.breakStop()">Continue shift</button></div></div>`;
+  return `<div class="cr-banner"><div class="flex ai-c g12"><div class="f1"><div class="t">You have been standing 12 min off the route. Start a break?</div><div class="d">The break starts by itself in <span id="rt-cd">2:58</span></div></div><div class="cd" id="rt-cd2">2:58</div></div><div class="bt"><button class="btn --sm --secondary" onclick="CR.tripActions.idleRespond('break')">Start break</button><button class="btn --sm" onclick="CR.tripActions.idleRespond('working')">I’m working</button></div>${C.demo.idleErr?'<div class="cr-err">Could not send. Try again.</div>':''}</div>`;
+}
+function learnBanner(){return C.demo.learning?`<div class="cr-banner --learn"><div class="t">Challenge 25 refresher is overdue – 4 min</div><div class="d">Alcohol orders stay on your run, but the lesson must be done this shift.</div><div class="bt"><button class="btn --sm --ghost" onclick="App.go('lesson',{id:4})">Open the lesson</button></div></div>`:''}
+function tripCard(){
+  if(!C.demo.tripMode)return '';
+  const t=C.trip;let st='',hint='',btn='';
+  const rej=t&&t.rejectNote!==null&&t.rejectNote!==undefined?`<div class="cr-banner --reject" style="margin:12px 0 0"><div class="t">The manager is changing the route${t.rejectNote?': '+t.rejectNote:''}</div><div class="d">Wait for the new plan, then tap “Ready to leave” again.</div></div>`:'';
+  if(!t){st=`${ic('truck',18)} No run yet`;hint='Tap when you set off, so the managers see you are on your way.';btn=`<button class="btn --secondary" onclick="CR.tripActions.heading()">${I('truck')} Heading to the shop</button>`}
+  else if(t.status==='heading_to_shop'){st=`${ic('truck',18)} On the way to the shop since ${t.headingAt}`;hint='Arrival is also picked up from your location – tap if it has not.';btn=`<button class="btn" onclick="CR.tripActions.arrived()">${I('pin')} I'm at the shop</button>`}
+  else if(t.status==='at_shop'){st=`${ic('box',18)} At the shop since ${t.arrivedAt}`;hint='Tick the orders you are taking.'}
+  else if(t.status==='awaiting_confirmation'){const plan=C.takenList().map(s=>'#'+s.code).join(' → ');st=`<span class="cr-spin"></span> Waiting for a manager to confirm the route… asked at ${t.requestedAt}`;hint=`Planned order: ${plan}`}
+  else if(t.status==='confirmed'){st=`<span class="ok">${ic('check',18)}</span> Route confirmed ${t.confirmedAt} · ${t.confirmedBy}`;hint='Back at the shop ≈ 13:40.'}
+  return `<div class="cr-trip"><div class="st ${t&&t.status==='confirmed'?'ok':''}">${st}</div>${hint?`<div class="hint">${hint}</div>`:''}${btn}${rej}</div>`;
+}
+function planBlock(){
+  const rem=C.remaining(), gate=C.gateOpen(), t=C.trip;
+  const cnt=rem?`<div class="n acc">${rem} to deliver</div>`:`<div class="n ok">All delivered — nice work.</div>`;
+  let plan='';
+  if(C.demo.tripMode&&gate&&rem)plan=`<div class="l">${t&&t.status==='confirmed'?'Route confirmed · back at 13:40':'Planned on live traffic · back at 13:40'} · Congestion Charge £${t?t.congestion:0}</div>`;
+  else if(!C.demo.tripMode&&rem)plan=`<div class="l">Planned on live traffic · back at 13:40</div>`;
+  const next=C.demo.tripMode&&t&&t.nextRunAt&&C.stops.some(s=>s.nextRun)?`<div class="l">Next run ≈ ${t.nextRunAt}</div>`:'';
+  const gateTxt=C.demo.tripMode&&!gate&&rem?`<div class="gate">${ic('lock')} The route opens once a manager has confirmed it.</div>`:'';
+  const pts=C.stops.filter(s=>!s.hasPod&&!s.failure&&!s.nextRun).length;
+  const nav=gate&&pts>0?`<button class="btn --ghost --sm --block mt12" onclick="CR.tripActions.navigateRun()">${I('route')} Navigate the whole run · ${C.demo.bigRun?11:pts} stops → shop</button>`:'';
+  return `<div class="cr-plan">${cnt}${plan}${next}${gateTxt}${nav}</div>`;
+}
+function badgeRight(s){
+  if(s.hasPod)return `<span class="pill --done">Photo ✓</span>`;
+  if(s.failure)return `<span class="pill cr-pill-acc">Not delivered</span>`;
+  if(C.waiting(s.code))return `<span class="pill cr-pill-warn">Waiting to send</span>`;
+  if(s.nextRun)return `<div class="big">${s.nextRunEta}</div><div class="sub">next run ≈</div>`;
+  if(C.gateOpen()&&s.eta)return `<div class="big">${s.eta}</div><div class="sub">by ${s.slot.split('–')[1]}</div>`;
+  return `<div class="big" style="font-size:16px">${s.slot}</div><div class="sub">window</div>`;
+}
+const RS={ready:['Ready ✓','--done'],in_production:['In progress','--doing'],not_started:['Not started','--todo']};
+function stopCard(s,idx){
+  const gate=C.gateOpen(), done=s.hasPod||s.failure, wait=C.waiting(s.code), trip=C.demo.tripMode;
+  const num=done?`<span class="ix --pod">${I('check')}</span>`:(s.nextRun||!gate)?`<span class="ix --blank">·</span>`:`<span class="ix">${s.position||idx+1}</span>`;
+  const bd=[];
+  if(s.nextRun)bd.push('<span class="pill --todo">Next run</span>');
+  if(!s.taken&&!done&&s.readyState)bd.push(`<span class="pill ${RS[s.readyState][1]}">${RS[s.readyState][0]}</span>`);
+  if(s.priorityFirst&&!done)bd.push('<span class="pill --doing">First</span>');
+  if(s.isAlcohol)bd.push('<span class="pill cr-pill-acc">Alcohol · Challenge 25</span>');else if(s.ageRestricted)bd.push('<span class="pill cr-pill-acc">18+</span>');
+  const zone=s.waitsForFreeZone&&!done?`<div class="zone">Zone entry is free from ${s.waitsForFreeZone} — this drop waits so the shop doesn't pay the Congestion Charge.</div>`:'';
+  const items=done?'':`<div class="items">${s.items.map(i=>`<div class="it"><div class="ph"><img src="${i.img}" alt="">${i.q>1?`<span class="q">×${i.q}</span>`:''}</div>${i.n}</div>`).join('')}</div>`;
+  let act='';
+  if(trip&&!done&&!wait){
+    const canTake=!s.taken&&!s.nextRun, confirmed=C.trip&&C.trip.status==='confirmed';
+    if(s.taken&&!confirmed)act=`<div class="act"><span class="taken">${I('check')} Taken ${s.taken}<button class="u" onclick="event.stopPropagation();CR.tripActions.untake('${s.code}')">undo</button></span></div>`;
+    else if(s.taken&&confirmed)act=`<div class="act"><button class="btn --sm" onclick="event.stopPropagation();CR.flow.start('${s.code}')">${I('check')} Confirm delivery</button></div>`;
+    else if(canTake)act=`<div class="act"><button class="btn --sm --ghost" style="flex:0 0 auto;padding:0 12px" aria-label="Scan the label QR" onclick="event.stopPropagation();CR.tripActions.scan('${s.code}')">${I('scan')}</button><button class="btn --sm ${s.readyState==='ready'?'':'--ghost'}" onclick="event.stopPropagation();CR.tripActions.take('${s.code}',{via:'button'})">${I('box')} Picked up order</button></div>`;
+    else if(s.nextRun)act=`<div class="act"><span class="xs muted">Still in the shop – goes on your next run.</span></div>`;
+  }
+  return `<div class="cr-stop ${done?'--pod':''}" role="button" tabindex="0" onclick="App.go('stop',{code:'${s.code}'})"><div class="hd">${num}<div class="f1" style="min-width:0"><div class="code">#${s.code}<small>CRM ${s.crm}</small></div>${bd.length?`<div class="bd">${bd.join('')}</div>`:''}</div><div class="rt">${badgeRight(s)}</div></div>${zone}<div class="addr">${s.line1?`${s.line1}, ${s.pc}`:'No address on this order.'}${s.failure?` · <span class="accent">${s.failure.label} · ${s.failure.at}</span>`:''}</div>${items}${act}</div>`;
+}
+function listView(){
+  const main=C.stops.filter(s=>!s.nextRun), nxt=C.stops.filter(s=>s.nextRun);
+  const ord=main.slice().sort((a,b)=>(a.hasPod?-1:0)-(b.hasPod?-1:0)||((a.position||99)-(b.position||99)));
+  return `<div style="margin-top:8px;border-top:1px solid var(--hair)">${ord.map((s,i)=>stopCard(s,i)).join('')}</div>${nxt.length?`<div class="cr-group"><h2 class="h3">Next run</h2><small>${nxt.length} · still in the shop</small></div><div style="border-top:1px solid var(--hair)">${nxt.map((s,i)=>stopCard(s,i)).join('')}</div>`:''}`;
+}
+function mapView(){
+  const pins=C.stops.filter(s=>s.x);
+  if(!pins.length)return `<div class="cr-empty"><b>No mapped stops yet.</b>Addresses without coordinates stay in the list.</div>`;
+  const sel=C.mapSel?C.stop(C.mapSel):null;
+  const svg=`<svg viewBox="0 0 390 420" preserveAspectRatio="xMidYMid slice"><path class="rv" d="M-20 200 C 80 260, 180 190, 260 250 S 400 230, 420 260"/><path class="rd" d="M0 80 L390 110 M0 330 L390 300 M140 0 L170 420 M280 0 L250 420 M40 0 L60 420"/><text class="lbl" x="300" y="275">Thames</text><rect class="shop" x="318" y="60" width="12" height="12"/><text class="lbl" x="334" y="70">Shop</text>
+    ${pins.map(s=>`<g class="pin ${s.hasPod?'--pod':s.nextRun?'--next':''}" onclick="CR.mapPick('${s.code}')"><circle cx="${s.x}" cy="${s.y}" r="11"/><text x="${s.x}" y="${s.y+3.5}" style="fill:var(--paper)">${s.hasPod?'✓':(C.gateOpen()&&s.position)||'·'}</text><text class="lb" x="${s.x}" y="${s.y+24}">#${s.code}</text></g>`).join('')}
+    <circle class="you" cx="312" cy="78" r="6"/><text class="you-lb" x="312" y="98">You</text></svg>`;
+  return `<div class="cr-map">${svg}<div class="cr-legend"><span><i></i>Open</span><span><i class="ok"></i>Delivered</span><span><i class="nx"></i>Next run</span></div>${sel?`<button class="cr-callout" onclick="App.go('stop',{code:'${sel.code}'})"><div><div class="t">#${sel.code} · ${sel.area}</div><div class="d">${sel.line1} · ${sel.hasPod?'delivered '+sel.deliveredAt:'by '+sel.slot.split('–')[1]}</div></div>${I('chev')}</button>`:'<div class="cr-callout" style="pointer-events:none"><div class="d">Tap a pin to open the stop · map crash on Android shows “The map is not available on this device”, the list keeps working</div></div>'}</div>`;
+}
+C.mapPick=code=>{C.mapSel=code;C.remount()};
+C.setMode=m=>{C.mode=m;C.remount()};
+
+/* ================= demo sheet ================= */
+function demoRow(t,d,ctrl){return `<div class="cr-demo"><div class="f1"><div>${t}</div>${d?`<div class="d">${d}</div>`:''}</div>${ctrl}</div>`}
+const sw=(k,on,fn)=>`<button class="switch ${on?'on':''}" onclick="${fn||`CR.demoSet('${k}',${!on})`}"></button>`;
+const segc=(k,opts,cur)=>`<div class="seg cr-seg" style="height:34px">${opts.map(o=>`<button class="${String(cur)===String(o[0])?'on':''}" onclick="CR.demoSet('${k}','${o[0]}')">${o[1]}</button>`).join('')}</div>`;
+C.demoSet=(k,v)=>{
+  if(k==='poll'||k==='writeQueue')v=+v;
+  if(k==='tripState'){if(v==='none')C.trip=null;else{C.trip=C.trip||{nextRunAt:'11:30',congestion:15};C.trip.status=v;if(v==='confirmed'){C.trip.confirmedAt=C.trip.confirmedAt||'11:14';C.trip.confirmedBy='Valeria';C.trip.rejectNote=null}if(v==='awaiting_confirmation'){C.trip.requestedAt=C.trip.requestedAt||'11:10'}if(v==='heading_to_shop'){C.trip.headingAt='10:40'}if(v==='at_shop'){C.trip.arrivedAt=C.trip.arrivedAt||'10:52'}}}
+  else if(k==='rejectNote'){C.trip=C.trip||{status:'at_shop',arrivedAt:'10:52',nextRunAt:'11:30',congestion:15};C.trip.rejectNote=v?'take #715602 first – the recipient leaves at 13:00':null;if(v)C.trip.status='at_shop'}
+  else C.demo[k]=v;
+  if(k==='idle')C.demo.idleErr=false;
+  C.remount();if(document.getElementById('sheet').classList.contains('on'))C.demoSheet(true)};
+C.demoSheet=function(refresh){
+  const d=C.demo,ts=C.trip?C.trip.status:'none';
+  const html=sh('Demo states · courier',`
+    ${demoRow('Trip mode (CRM with runs)','Off = old CRM: “Picked up — leaving the shop” instead of “Picked up order”',sw('tripMode',d.tripMode))}
+    ${demoRow('Trip status','',segc('tripState',[['none','None'],['heading_to_shop','Heading'],['at_shop','At shop'],['awaiting_confirmation','Waiting'],['confirmed','Confirmed']],ts))}
+    ${demoRow('Manager sent the route back','Red note on the trip card',sw('rejectNote',!!(C.trip&&C.trip.rejectNote!==null&&C.trip.rejectNote!==undefined)))}
+    ${demoRow('No connection','Black strip over the tab bar; actions queue on the phone',sw('offline',d.offline))}
+    ${demoRow('Order actions not sent (write queue)','',segc('writeQueue',[[0,'0'],[2,'2']],d.writeQueue))}
+    ${demoRow('Idle banner','',segc('idle',[['none','Off'],['prompt','Prompt'],['auto','Auto break'],['fail','Error']],d.idle))}
+    ${demoRow('Learning / Challenge 25 debt','',sw('learning',d.learning))}
+    ${demoRow('List data','',segc('load',[['ok','OK'],['loading','Loading'],['error','Error'],['empty','Empty']],d.load))}
+    ${demoRow('Poll interval from CRM','0 = no polling (old CRM without poll: 30 s)',segc('poll',[[0,'0'],[30,'30 s'],[45,'45 s']],d.poll))}
+    ${demoRow('11-stop run','Shows the 9-waypoint warning on “Navigate the whole run”',sw('bigRun',d.bigRun))}
+    ${demoRow('Admin “view as” courier','Asks before messages reach the customer',sw('viewAs',d.viewAs))}
+    ${demoRow('delivery.driver_app flag off in CRM','Courier endpoints answer 404',sw('featureOff',d.featureOff))}
+    ${demoRow('Geo consent not signed','Forced screen before anything else',sw('geoConsent',d.geoConsent,"CR.demo.geoConsent=true;App.closeSheet();App.go('cr-geo-consent')"))}
+    <div class="cr-note mt16" style="margin-bottom:8px">Pushes</div>
+    <div class="cr-chipw"><button class="chip" onclick="CR.tripActions.demoPush('reorder')">Route reordered</button><button class="chip" onclick="CR.tripActions.demoPush('confirm')">Trip confirmed</button><button class="chip" onclick="CR.tripActions.demoPush('idle')">Idle 10+ min</button></div>`,
+    `<button class="btn --block" onclick="App.closeSheet()">Done</button>`);
+  if(refresh&&document.getElementById('sheet').classList.contains('on')){document.getElementById('sheet-inner').innerHTML=html}else A.sheet(html,{full:true});
+};
+
+/* ================= mount ================= */
+window.mount_route=function(p){
+  const r=rk();
+  if(C.demo.geoConsent&&r==='courier'){A.go('cr-geo-consent',{},{replace:true});return}
+  if(r==='manager'){A.go('cr-dispatch',{},{replace:true});return}
+  const bar=$('rt-bar'), body=$('rt-body'), cta=$('rt-cta');
+  if(r!=='courier'){
+    bar.innerHTML=`<div class="ttl">Deliveries</div>`;
+    body.innerHTML=`<div class="cr-lock"><div class="panel"><div class="h3">Deliveries is for couriers</div><p class="sm soft" style="margin:8px 0 16px">${A.isTrainee()?'Limited access: the Deliveries view is hidden until your trial period ends.':'You see it once a manager gives you the “delivery driver” permission. Managers see the dispatch view.'}</p><div class="flex g8" style="flex-wrap:wrap"><button class="btn --sm" onclick="App.setUser('andrii')">View as Andrii · courier</button><button class="btn --sm --ghost" onclick="App.setUser('valeria')">View as Valeria · manager</button></div></div></div>`;
+    cta.style.display='none';body.classList.remove('cr-hascta');return;
+  }
+  const d=C.demo, hasStops=C.stops.length>0&&d.load==='ok'&&!d.featureOff;
+  const canToggle=hasStops;
+  bar.innerHTML=`<div class="ttl">My deliveries</div>${canToggle?`<div class="cr-seg"><button class="${C.mode==='list'?'on':''}" onclick="CR.setMode('list')">List</button><button class="${C.mode==='map'?'on':''}" onclick="CR.setMode('map')">Map</button></div>`:''}<button class="ib" aria-label="Demo states" onclick="CR.demoSheet()">${I('dots')}</button>`;
+  let content='';
+  if(d.featureOff)content=`<div class="cr-empty --err"><b>Deliveries are switched off</b>The CRM has not enabled the driver app yet (delivery.driver_app). Ask a manager.</div>`;
+  else if(d.load==='loading')content=`<div class="cr-skel"><i class="skeleton"></i><i class="skeleton"></i><i class="skeleton"></i></div>`;
+  else if(d.load==='error')content=`<div class="cr-empty --err"><b>Could not load your deliveries.</b>Pull down to try again.<div class="mt12"><button class="btn --sm --ghost" onclick="CR.demoSet('load','ok')">Retry</button></div></div>`;
+  else if(d.load==='empty')content=`<div class="cr-empty"><b>No deliveries assigned for today.</b>New drops appear here as soon as a manager assigns them.</div>`;
+  else content=(C.mode==='map'?mapView():listView());
+  const pollTxt=d.poll===0?'No auto-refresh (CRM says 0)':`Refreshes every ${d.poll} s while you are at the shop and this screen is open`;
+  body.innerHTML=`${connStrip()}<div class="cr-ptr" id="rt-ptr"><span class="cr-spin"></span> Refreshing…</div>${onShift()}${idleBanner()}${learnBanner()}${d.featureOff?'':tripCard()}${hasStops?planBlock():''}
+    ${content}
+    <div class="cr-poll"><span>${pollTxt} · last ${d.pollLast}</span><button class="textbtn" onclick="CR.tripActions.refresh()">Refresh</button></div><div style="height:24px"></div>`;
+  const t=C.trip, taken=C.takenList().length;
+  const showReady=d.tripMode&&!d.featureOff&&taken>0&&!(t&&t.status==='confirmed')&&d.load==='ok';
+  let c='';
+  if(showReady){const busy=t&&t.status==='awaiting_confirmation';c=busy?`<button class="btn" disabled><span class="cr-spin" style="border-top-color:var(--paper);border-color:rgba(253,253,253,.3)"></span> Waiting for a manager…</button>`:`<button class="btn" onclick="CR.tripActions.ready()">${I('send')} Ready to leave (${taken})</button>`}
+  cta.innerHTML=c;cta.style.display=c?'':'none';body.classList.toggle('cr-hascta',!!c);
+  if(d.idle==='prompt'){let s=178;clearInterval(C._cd);C._cd=setInterval(()=>{s--;const e=$('rt-cd'),e2=$('rt-cd2');if(!e||s<0){clearInterval(C._cd);if(s<0&&e){C.demo.idle='auto';A.toast('Checked with the CRM once more · break switched on');C.remount()}return}e.textContent=e2.textContent=Math.floor(s/60)+':'+p2(s%60)},1000)}
+  else clearInterval(C._cd);
+};
+})();
+</script>

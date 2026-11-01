@@ -1,4 +1,46 @@
+<style>
+.lr .pt-next{display:flex;gap:14px;align-items:center;width:100%;text-align:left;padding:14px var(--gutter);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.lr .pt-next.off{opacity:.55;pointer-events:none}
+.lr .pt-sec{padding:12px var(--gutter);border-bottom:1px solid var(--hair)}
+.lr .tl-step.na .lcard{opacity:.5;pointer-events:none}
+</style>
+<!-- Learning path screen (/b/learn-path). Entered from a path card on Learn with {id}. ids: TM-LEARN-023 -->
 <section class="scr lr" id="s-path" data-tab="learn" data-nav="Learning path" data-group="Learning">
+  <!-- back button + path title. ids: TM-LEARN-033 -->
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="pt-ttl">Path</div></div>
+  <!-- rendered by shell mount_path + extended below:
+       demo chips (live / loading / not found / empty) + pull-to-refresh row. ids: TM-LEARN-034 TM-LEARN-035 TM-LEARN-041
+       hero: 88px ring, description, N of M lessons, minutes left (paid) or "Path complete". ids: TM-LEARN-036
+       Next: next lesson of the path with due date or "not assigned yet"; inactive without an assignment. ids: TM-LEARN-037
+       Sections: name, N of M, bar (green when done). ids: TM-LEARN-038
+       Lessons timeline: numbered, done = ink tick, current = ringed, unassigned catalogue lesson greyed and not tappable. ids: TM-LEARN-039 TM-LEARN-040 -->
   <div class="scr-body has-tab" id="lr-path"></div>
 </section>
+<script>
+(function(){
+'use strict';
+const A=window.App, ic=A.icon, L=window.LR;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const {R,chev,mine}=L;
+const orig=window.mount_path;
+L.pdemo='live';
+const SEC={base:[['Law & licence','2 of 2'],['Safety','1 of 1']],handover:[['Scripts','1 of 3'],['Photo standard','2 of 2']],floristry:[['Conditioning','1 of 1'],['Techniques','0 of 1']],delivery:[['Van','1 of 1'],['Proof','0 of 1']]};
+const top=()=>`<div class="lr-demo" style="padding-top:4px">${[['live','Live'],['loading','Loading'],['nf','Not found'],['empty','Empty path']].map(d=>`<button class="chip ${L.pdemo===d[0]?'on':''}" onclick="LR.pdemo='${d[0]}';window.mount_path(App.state.params)">${d[1]}</button>`).join('')}</div><button class="lr-ptr" onclick="App.haptic();App.toast('Paths refreshed')">${ic('repeat')} Pull to refresh</button>`;
+window.mount_path=function(p){
+const body=$('#lr-path');
+if(L.pdemo==='loading'){$('#pt-ttl').textContent='Path';body.innerHTML=top()+`<div class="lr-sk skeleton"></div><div class="lr-sk skeleton" style="height:180px"></div>`;return}
+if(L.pdemo==='nf'){$('#pt-ttl').textContent='Path';body.innerHTML=top()+`<div class="pad"><div class="panel"><div class="h3">Path not found</div><div class="sm soft mt4">The catalogue changed or this link is old. Go back to Learn and open the path from the list.</div><button class="btn --xs --secondary mt12" onclick="App.back('learn')">Back to Learn</button></div></div>`;return}
+if(L.pdemo==='empty'){$('#pt-ttl').textContent='Events & weddings';body.innerHTML=top()+`<div class="lr-hero" style="padding-top:8px">${A.ring(0,88,'lr-mid')}<div class="f1"><div class="caps muted">Large formats</div><div class="h2 mt4">0 of 0 lessons</div></div></div><div class="pad mt24"><div class="panel"><div class="h4">No lessons in this path yet</div><div class="sm soft mt4">Valeria is still writing it. You will get a push when the first lesson lands.</div></div></div>`;return}
+orig(p);
+body.insertAdjacentHTML('afterbegin',top());
+const id=L.lastPath, all=mine().filter(l=>l.path===id), nxt=all.find(l=>l.status!=='done');
+const hero=$('.lr-hero',body);
+const nextRow=nxt?`<div class="sec-head"><div class="h2">Next</div></div><button class="pt-next" onclick="App.go('lesson',{id:${nxt.id}})"><img src="${nxt.cover}" alt="" style="width:48px;height:48px;object-fit:cover;background:var(--silver)"><div class="f1"><div class="sm">${nxt.title}</div><div class="xs muted mt4">${nxt.due?`Due ${A.fmtDay(nxt.due).toLowerCase()} ${A.fmtTime(nxt.due)}`:'Not scheduled yet'} · ${nxt.mins} min</div></div>${chev}</button>`:`<div class="sec-head"><div class="h2">Next</div></div><div class="pt-next off"><div class="f1"><div class="sm">Not assigned yet</div><div class="xs muted mt4">Your manager assigns the next lesson; it opens here when it arrives.</div></div></div>`;
+const secs=(SEC[id]||[]).map(s=>{const [d,n]=s[1].split(' of ').map(Number);return `<div class="pt-sec"><div class="flex jc-sb ai-c"><span class="sm">${s[0]}</span><span class="xs muted num">${s[1]}</span></div><div class="progress ${d===n?'--ok':''} mt8"><i style="width:${n?Math.round(d/n*100):0}%"></i></div></div>`}).join('');
+if(hero)hero.insertAdjacentHTML('afterend',nextRow+(secs?`<div class="sec-head"><div class="h2">Sections</div></div>${secs}`:''));
+/* a catalogue lesson without an assignment: shown, not tappable */
+const tl=$('.timeline',body);
+if(tl&&id==='floristry')tl.insertAdjacentHTML('beforeend',`<div class="tl-step todo na"><div class="ind"><i><span style="font-size:12px">${tl.children.length+1}</span></i></div><div><div class="lcard"><div class="cv">${ic('lock')}</div><div class="f1 flex col"><div class="lt">Wiring and taping for buttonholes</div><div class="lm"><span>5 min</span><span>·</span><span>Not assigned</span></div></div></div></div></div>`);
+};
+})();
+</script>

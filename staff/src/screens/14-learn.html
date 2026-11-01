@@ -6,7 +6,7 @@
 .lr .lr-cnt{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);min-width:40px;text-align:right}
 .lr .ring.lr-big .rv{font-size:30px}
 .lr .ring.lr-mid .rv{font-size:22px}
-.lr .row .chev{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+.lr .row .chev,.lr svg.chev{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
 .lr-ico{width:24px;height:24px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .lr-link{font-size:13px;letter-spacing:var(--ls-caps);text-transform:uppercase;border-bottom:1px solid var(--light);padding-bottom:2px;white-space:nowrap}
 
@@ -42,6 +42,40 @@
 .lr .lr-bud{display:flex;align-items:center;gap:14px;width:calc(100% - 32px);margin:0 var(--gutter);padding:16px;background:var(--silver);text-align:left}
 .lr .lr-bud svg.chev{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5}
 
+/* learn home – added blocks (stories, goals, glossary card, done list, demo states) */
+.lr .lr-demo{display:flex;gap:6px;overflow-x:auto;padding:0 var(--gutter) 12px;scrollbar-width:none}
+.lr .lr-demo::-webkit-scrollbar{display:none}
+.lr .lr-demo .chip{height:28px;padding:0 10px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;flex:none}
+.lr .lr-ptr{display:flex;align-items:center;justify-content:center;gap:8px;height:34px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);width:100%}
+.lr .lr-ptr svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+.lr .lr-owed{margin:0 var(--gutter) 20px;padding:14px 16px;border:1px solid var(--light);display:block;width:calc(100% - 32px);text-align:left}
+.lr .lr-owed .acc-l{color:var(--accent);font-size:13px;margin-top:4px}
+.lr .lr-stories{display:flex;gap:14px;overflow-x:auto;padding:0 var(--gutter) 4px;scrollbar-width:none}
+.lr .lr-stories::-webkit-scrollbar{display:none}
+.lr .lr-story{flex:none;width:74px;text-align:center}
+.lr .lr-story .ring-o{width:64px;height:64px;margin:0 auto;border:2px solid var(--ink);display:grid;place-items:center;background:var(--paper)}
+.lr .lr-story .ring-o svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5}
+.lr .lr-story.seen .ring-o{border-color:var(--light)}
+.lr .lr-story.seen .ring-o svg{stroke:var(--grey)}
+.lr .lr-story .t{font-size:11px;line-height:1.25;margin-top:6px;color:var(--graphite);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.lr .lr-story.seen .t{color:var(--grey)}
+.lr-st-seg{display:flex;gap:4px;margin-bottom:14px}
+.lr-st-seg i{flex:1;height:3px;background:var(--light)}
+.lr-st-seg i.on{background:var(--ink)}
+.lr .lr-goal{display:flex;gap:16px;align-items:center;width:calc(100% - 32px);margin:0 var(--gutter);padding:16px;border:1px solid var(--hair);text-align:left}
+.lr .lr-tg{margin:10px var(--gutter) 0;padding:14px 16px;background:var(--silver)}
+.lr .lr-az{margin:0 var(--gutter)}
+.lr .lr-az-main{display:flex;gap:14px;align-items:center;width:100%;padding:14px;border:1px solid var(--hair);text-align:left}
+.lr .lr-az-ph{display:flex;flex:none}
+.lr .lr-az-ph img{width:34px;height:34px;object-fit:cover;background:var(--silver);border:2px solid var(--paper);margin-left:-10px}
+.lr .lr-az-ph img:first-child{margin-left:0}
+.lr .lr-az-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.lr .lr-az-tiles .tile{padding:12px 14px}
+.lr .lr-done{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px var(--gutter);border-bottom:1px solid var(--hair)}
+.lr .lr-done .ok svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.lr .lr-sk{margin:0 var(--gutter) 12px;height:90px}
+.lr .lr-month{display:flex;gap:20px;align-items:center;padding:4px var(--gutter) 24px}
+
 /* lesson player */
 .lr .lr-slide{animation:lrIn .42s var(--m-ease) both}
 .lr .lr-slide.back{animation-name:lrInB}
@@ -54,7 +88,7 @@
 .lr .lr-q,.lr .lr-txt,.lr .h1,.lr .h2{text-wrap:balance}
 .lr .lr-fig{display:flex;align-items:baseline;gap:14px;margin-top:32px;padding:16px 18px;background:var(--silver)}
 .lr .lr-fig b{font-family:var(--f-display);font-weight:300;font-size:46px;line-height:1}
-.lr .lr-q{font-family:var(--f-display);font-style:italic;font-weight:300;font-size:24px;line-height:1.25;margin-top:6px}
+.lr .lr-q{font-family:var(--f-display);font-weight:300;font-size:24px;line-height:1.25;margin-top:6px}
 .lr .lr-vid{margin:4px var(--gutter) 0}
 .lr .lr-play{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px 0 0 -30px;background:rgba(253,253,253,.92);color:var(--ink);display:grid;place-items:center;z-index:2}
 .lr .lr-play svg{width:24px;height:24px;stroke:var(--ink);fill:var(--ink);stroke-width:1.5}
@@ -134,9 +168,160 @@ html[data-style="glass"] .lr .lr-gl,html[data-style="glass"] .lr .lr-mx{backgrou
 html[data-style="glass"] .lr .lr-bud,html[data-style="glass"] .lr .lr-cp{background:rgba(255,255,255,.5);border:1px solid var(--glass-bd);box-shadow:var(--glass-hi)}
 html[data-style="glass"] .lr .lr-seg i{border-radius:999px}
 </style>
+<!-- Learn tab (B). Tab in the bar is visible for employee / worker contours only (couriers included – they get the tab instead of Tasks);
+     for self_employed and reserve the body shows the hidden-tab state (see script). Copy = bCopy().learn, dates via shortDay.
+     ids: TM-LEARN-001 TM-CLEARN-001 TM-CLEARN-002 TM-LEARN-078 TM-LEARN-032
+     hidden-tab state: reserve sees its two onboarding lessons (opened from Today / Me in the app), self_employed sees nothing to learn;
+     review and certificates still reachable by push or link for both. ids: TM-LEARN-076 TM-LEARN-077 -->
 <section class="scr lr" id="s-learn" data-tab="learn" data-nav="Learn" data-group="Learning">
+  <!-- appbar: title + certificates ribbon button. ids: TM-LEARN-002 -->
   <div class="appbar"><div class="ttl">Learn</div>
     <button class="ib" aria-label="Certificates" onclick="App.go('certificates')"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="m8.5 13.5-1.5 7 5-2.5 5 2.5-1.5-7"/></svg></button>
   </div>
+  <!-- body is rendered by the shell's mount_learn and then extended by the script below:
+       demo chips (live / loading / error / no week API / empty / no plan) + pull-to-refresh row. ids: TM-LEARN-003 TM-LEARN-004 TM-CLEARN-004 TM-CLEARN-005 TM-CLEARN-006 TM-CLEARN-007
+       week hero ring + streak squares, month hero fallback with overdue pill + paid time line + glossary streak pill. ids: TM-LEARN-005 TM-LEARN-006 TM-LEARN-007 TM-CLEARN-008 TM-CLEARN-009
+       stats strip (paid minutes, lessons done, quiz average). ids: TM-LEARN-008
+       courier "learning owed" banner with the red "Declaration not signed" line. ids: TM-CLEARN-003
+       Now important card (most overdue → signature lesson → nearest due), Start · N min, paid-time note, all-caught-up panel. ids: TM-LEARN-009 TM-LEARN-010 TM-LEARN-011 TM-LEARN-012 TM-CLEARN-010 TM-CLEARN-011
+       review panel (N cards / reviewed today). ids: TM-LEARN-013 TM-LEARN-014
+       Continue: up to 3 open lessons with due date, overdue in accent. ids: TM-LEARN-015 TM-CLEARN-019 TM-CLEARN-020
+       My goals card + team goal card → My plan screen. ids: TM-LEARN-016 TM-LEARN-017 TM-CLEARN-012
+       What changed: story circles, unread first, "All N", change sheet with question A/B/C, "Got it", "Open lesson". ids: TM-LEARN-018 TM-LEARN-019 TM-LEARN-020 TM-LEARN-021 TM-CLEARN-013 TM-CLEARN-014 TM-CLEARN-015 TM-CLEARN-016 TM-CLEARN-017
+       My paths cards → path screen. ids: TM-LEARN-022 TM-LEARN-023
+       Certificates & clearances row (N valid · next expiring) → certificates; the station strip of the classic list lives there. ids: TM-LEARN-024 TM-LEARN-025 TM-CLEARN-021
+       Azbuka card (ring, new/review/minutes, 3 photos) + tiles Quiz / Seasons-or-Reference → glossary screens (root screens, opened over B). ids: TM-LEARN-026 TM-LEARN-027 TM-LEARN-028 TM-LEARN-029 TM-CLEARN-018 TM-LEARN-075
+       Done: 3 newest, "All N" / "Collapse". ids: TM-LEARN-030 TM-LEARN-031 TM-CLEARN-022 -->
   <div class="scr-body has-tab" id="lr-home"></div>
 </section>
+<script>
+(function(){
+'use strict';
+const A=window.App, ic=A.icon, L=window.LR;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const {R,sic,rico,chev,lc,pName,mine}=L;
+const orig=window.mount_learn;
+L.demo=L.demo||'live';
+L.doneAll=false;L.alcoholSigned=false;L.noSeasons=false;
+const contour=()=>{const e=A.me().engagement;return e==='contractor'?'self_employed':e==='reserve'?'reserve':e==='worker'?'worker':'employee'};
+L.contour=contour;
+/* ---- stories: what changed ---- */
+L.changes=L.changes||[
+ {id:1,l:1,cat:'Handover',date:'Today',t:'Same-day cut-off is now 10 pm',idea:'We take same-day until 22:00; the last production slot is 21:15.',q:{t:'Last same-day production slot?',a:['20:00','21:15','22:00'],ok:1},seen:false},
+ {id:2,l:7,cat:'Marketplaces',date:'Mon',t:'Tablets: accept in 2 minutes',idea:'A ringing tablet is a client waiting. Accept within 2 minutes or the slot is lost.',q:{t:'Accept within…',a:['2 minutes','10 minutes','When convenient'],ok:0},seen:false},
+ {id:3,l:2,cat:'Standard',date:'13 Oct',t:'Photo standard: two shots',idea:'Full bouquet plus the focal flower. Daylight, white backdrop.',q:null,seen:true},
+ {id:4,l:8,cat:'Delivery',date:'Mon',t:'Proof photo plus a note',idea:'Photo at the door. Left with a neighbour – name and flat number in the note.',q:{t:'Left with a neighbour – what goes in the note?',a:['Nothing','Name and flat number','Only the time'],ok:1},seen:false},
+ {id:5,l:11,cat:'Van',date:'13 Oct',t:'Fuel above a quarter',idea:'End every shift with fuel above a quarter of the tank.',q:null,seen:true}];
+const ICO={Handover:'chat',Marketplaces:'tag',Standard:'camera',Delivery:'truck',Van:'truck'};
+const myChanges=()=>{const ids=mine().map(l=>l.id);return L.changes.filter(c=>ids.includes(c.l))};
+const storyOrder=cs=>cs.filter(c=>!c.seen).concat(cs.filter(c=>c.seen));
+L.storiesBlock=storiesBlock;
+function storiesBlock(){
+const cs=storyOrder(myChanges());if(!cs.length)return'';
+return `<div class="sec-head"><div class="h2">What changed</div><button class="link" onclick="LR.openStory()">All ${cs.length}</button></div><div class="lr-stories">${cs.map(c=>`<button class="lr-story ${c.seen?'seen':''}" aria-label="${c.t}, ${c.seen?'read':'new'}" onclick="LR.openStory(${c.id})"><span class="ring-o">${ic(ICO[c.cat]||'book')}</span><span class="t">${c.t}</span></button>`).join('')}</div>`;
+}
+let ST=null;
+L.openStory=function(id){
+const order=storyOrder(myChanges());if(!order.length)return;
+let i=id?order.findIndex(c=>c.id===id):order.findIndex(c=>!c.seen);if(i<0)i=0;
+ST={order,i,pick:null,msg:''};storyPaint();
+};
+function storyPaint(){
+const c=ST.order[ST.i], n=ST.order.length, q=c.q&&!c.seen?c.q:null;
+const seg=`<div class="lr-st-seg">${ST.order.map((x,k)=>`<i class="${k<=ST.i?'on':''}"></i>`).join('')}</div>`;
+let qh='';
+if(q)qh=`<div class="caps muted mt24">Check you got it</div><div class="h4 mt8">${q.t}</div><div class="mt12">${q.a.map((t,k)=>`<button class="lr-opt" style="min-height:48px" onclick="LR.storyPick(${k})"><span class="k">${'ABC'[k]}</span><span class="f1">${t}</span></button>`).join('')}</div>`;
+else if(c.seen)qh=`<div class="panel --ok mt24 sm">${sic('check',16,2)} Already acknowledged</div>`;
+const foot=c.seen?`<button class="btn --secondary" onclick="App.closeSheet()">Close</button><button class="btn" onclick="LR.storyNext()">${ST.i<n-1?'Next':'Close'}</button>`:`<button class="btn" id="st-ok" ${q&&ST.pick===null?'disabled':''} onclick="LR.storyAck()">Got it</button>`;
+A.sheet(`<div class="sh-head"><div class="h3">What changed</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body">${seg}<div class="caps muted">${c.cat} · ${c.date}</div><h1 class="h2 mt8">${c.t}</h1><div class="caps muted mt16">Main idea</div><p class="soft" style="margin:6px 0 0;font-size:16px;line-height:1.5">${c.idea}</p>${qh}<div id="st-msg" class="sm mt12" style="min-height:20px">${ST.msg}</div><button class="textbtn mt12" onclick="App.closeSheet();App.go('lesson',{id:${c.l}})">Open lesson</button></div><div class="sh-foot">${foot}</div>`,{onOpen:r=>{if(q&&ST.pick!==null){$$('.lr-opt',r)[ST.pick].classList.add('yes')}}});
+}
+L.storyPick=function(k){ST.pick=k;ST.msg='';A.haptic();storyPaint()};
+L.storyAck=function(){
+const c=ST.order[ST.i];
+if(c.q&&!c.seen&&ST.pick!==c.q.ok){ST.msg=`<span class="accent">Not quite – open the lesson to see why.</span>`;ST.pick=null;storyPaint();return}
+c.seen=true;const nxt=ST.order.findIndex((x,k)=>k>ST.i&&!x.seen);
+ST.msg=`<span class="ok">${sic('check',14,2)} Acknowledged${nxt>=0?' – next story':''}</span>`;ST.pick=null;
+$('#st-msg').innerHTML=ST.msg;const b=$('#st-ok');if(b)b.disabled=true;
+setTimeout(()=>{if(nxt>=0){ST.i=nxt;storyPaint()}else A.closeSheet();if(A.state.current==='learn')window.mount_learn();if(A.state.current==='lx-changes'&&window.mount_lx_changes)window.mount_lx_changes()},700);
+};
+L.storyNext=function(){if(ST.i<ST.order.length-1){ST.i++;ST.pick=null;ST.msg='';storyPaint()}else A.closeSheet()};
+/* ---- goals ---- */
+L.plan=L.plan||{goals:[{t:'Build a Deluxe spiral in 12 minutes',d:true},{t:'Photo standard on every order for 2 weeks',d:true},{t:'Lead ready-now on a Saturday',d:false},{t:'Conditioning: roses and peonies solo',d:false}],meet:'Thu 23 Oct · 15:00 with Valeria'};
+L.teamGoal=L.teamGoal||{t:'October: photo before packing on 95% of orders',cur:88,goal:95};
+function goalsBlock(){
+if(L.demo==='noplan')return'';
+const g=L.plan,d=g.goals.filter(x=>x.d).length,n=g.goals.length,tg=L.teamGoal;
+return `<div class="sec-head"><div class="h2">My goals</div><button class="link" onclick="App.go('lx-goals')">All</button></div>
+<button class="lr-goal" onclick="App.go('lx-goals')">${A.ring(d/n,56)}<div class="f1"><div class="h4">${d} of ${n} goals</div><div class="sm muted mt4">Next meeting · ${g.meet}</div></div>${chev}</button>
+<div class="lr-tg"><div class="caps muted">Team goal</div><div class="sm mt4">${tg.t}</div><div class="progress mt12"><i style="width:${Math.round(tg.cur/tg.goal*100)}%"></i></div><div class="xs muted mt8">${tg.cur}% now · goal ${tg.goal}%</div></div>`;
+}
+/* ---- glossary card ---- */
+function azbukaBlock(){
+const pct=L.glossKnown/180, seasons=!L.noSeasons;
+return `<div class="sec-head"><div class="h2">Азбука флориста</div><span class="xs muted">Optional · not in your week goal</span></div><div class="lr-az">
+<button class="lr-az-main" onclick="App.go('gl-home')">${A.ring(pct,60)}<div class="f1"><div class="h4">Flower glossary</div><div class="sm soft mt4">${L.glossDone?'Deck done today · back tomorrow':'New 3 · review 2 · ~2 min'}</div></div><span class="lr-az-ph"><img src="img/white-spray.webp" alt=""><img src="img/belgravia.webp" alt=""><img src="img/peony-basket.webp" alt=""></span></button>
+<div class="lr-az-tiles"><button class="tile" onclick="App.go('glossary',{fresh:true,tab:'photo'})"><span class="tl">Quiz</span><span class="tp">4 photos waiting</span></button>${seasons?`<button class="tile" onclick="App.go('glossary',{fresh:true,tab:'seasons'})"><span class="tl">Seasons</span><span class="tp">October: 4 at peak</span></button>`:`<button class="tile" onclick="App.go('gl-list')"><span class="tl">Reference</span><span class="tp">Search EN / RU / Latin</span></button>`}</div></div>`;
+}
+/* ---- done list ---- */
+function doneBlock(){
+const done=mine().filter(l=>l.status==='done').sort((a,b)=>+new Date(b.doneAt||0)-+new Date(a.doneAt||0));
+if(!done.length)return'';
+const show=L.doneAll?done:done.slice(0,3);
+return `<div class="sec-head"><div class="h2">Done</div>${done.length>3?`<button class="link" onclick="LR.doneAll=!LR.doneAll;window.mount_learn()">${L.doneAll?'Collapse':`All ${done.length}`}</button>`:''}</div>${show.map(l=>`<button class="lr-done" onclick="App.go('lesson',{id:${l.id}})"><span class="ok">${ic('check')}</span><div class="f1"><div class="sm">${l.title}</div><div class="xs muted mt4">${L.fmtD(l.doneAt)} · ${l.type==='video'?'Video':'Steps + quiz'} · ${l.mins} min</div></div></button>`).join('')}`;
+}
+/* ---- top: demo chips + pull-to-refresh ---- */
+function topBlock(){
+const D=[['live','Live'],['loading','Loading'],['error','List error'],['month','No week API'],['empty','Empty'],['noplan','No plan']];
+return `<div class="lr-demo">${D.map(d=>`<button class="chip ${L.demo===d[0]?'on':''}" onclick="LR.setDemo('${d[0]}')">${d[1]}</button>`).join('')}</div><button class="lr-ptr" onclick="LR.refreshAll()">${ic('repeat')} Pull to refresh</button>`;
+}
+L.setDemo=v=>{L.demo=v;window.mount_learn()};
+L.refreshAll=()=>{A.haptic();A.toast('Refreshed · lessons, week, review, paths, certificates')};
+function monthHero(){
+const all=mine(), d=all.filter(l=>l.status==='done'&&l.doneAt&&new Date(l.doneAt).getMonth()===9).length, n=d+all.filter(l=>l.status!=='done').length, late=all.filter(l=>l.due&&A.isLate(l.due)).length;
+return `<div class="lr-month">${A.ring(n?d/n:1,104,'lr-big')}<div class="f1"><div class="caps muted">This month · October</div><div class="h2 mt4">${n?`${d} of ${n}`:'Nothing due'}</div><div class="sm soft mt4">Learning is paid time · ${Math.floor(L.paid/60)} h ${String(L.paid%60).padStart(2,'0')} min counted</div><div class="flex g8 mt8">${late?A.pill('late',`${late} overdue`):''}${A.pill('done','Азбука · 12 days')}</div></div></div>`;
+}
+function owedBlock(){
+if(R()!=='courier')return'';
+const open=mine().filter(l=>l.status!=='done'), late=open.filter(l=>l.due&&A.isLate(l.due)).length;
+return `<button class="lr-owed" onclick="LR.alcoholSigned?App.go('lesson',{id:${(open[0]||{id:8}).id}}):App.go('lx-lesson',{kind:'declaration'})"><div class="flex ai-c jc-sb"><div class="h4">${open.length} lesson${open.length===1?'':'s'} open · ${late} overdue</div><span class="lr-link">Open</span></div>${L.alcoholSigned?'':`<div class="acc-l">Alcohol declaration not signed – no alcohol hand-overs until it is</div>`}</button>`;
+}
+function hiddenTab(){
+const c=contour(), res=c==='reserve';
+return `<div class="pad" style="padding-top:8px"><div class="panel"><div class="caps muted">${res?'Reserve':'Self-employed'} contour</div><div class="h3 mt8">The Learn tab is hidden for you</div><p class="sm soft" style="margin:8px 0 0;line-height:1.5">${res?'Your two onboarding lessons open from the checklist on Today and from Me. Nothing else is expected of you.':'Lessons are not part of your contract. Anything you must read for a job comes with the job itself.'}</p></div>
+${res?`<div class="sec-head" style="padding:0;margin:28px 0 12px"><div class="h2">Onboarding lessons</div></div><div>${[4,9].map(id=>lc(A.lesson(id))).join('')}</div>`:''}
+<div class="panel --warn mt24"><div class="h4">By push or link only</div><div class="sm soft mt4">Review and certificate screens still open from a push, but their panels are not on your Today.</div><div class="flex g8 mt12"><button class="btn --xs --secondary" onclick="App.go('review')">Open review</button><button class="btn --xs --secondary" onclick="App.go('certificates')">Certificates</button></div></div></div>`;
+}
+window.mount_learn=function(){
+const body=$('#lr-home');
+const c=contour();
+if(c==='self_employed'||c==='reserve'){body.innerHTML=hiddenTab();return}
+if(L.demo==='loading'){body.innerHTML=topBlock()+`<div class="lr-sk skeleton"></div><div class="lr-sk skeleton" style="height:60px"></div><div class="lr-sk skeleton" style="height:200px"></div>`;return}
+if(L.demo==='error'){body.innerHTML=topBlock()+`<div class="pad"><div class="panel --accent"><div class="h4 accent">Couldn't load your lessons</div><div class="sm soft mt4">Pull down to try again. The glossary is saved on this phone and still works.</div></div></div>`+azbukaBlock();return}
+if(L.demo==='empty'){body.innerHTML=topBlock()+`<div class="pad"><div class="panel"><div class="h3">Nothing to learn right now</div><div class="sm soft mt4">No lessons due, queued or changed. New lessons arrive here first.</div></div></div>`+azbukaBlock();return}
+orig();
+/* top chips + refresh */
+body.insertAdjacentHTML('afterbegin',topBlock());
+/* month hero instead of week hero when the week endpoint is missing */
+if(L.demo==='month'){const h=$('.lr-hero',body),w=$('.lr-wk',body);if(h&&w){w.remove();h.outerHTML=monthHero()}}
+/* courier owed banner before the stats */
+const st=$('.stats',body);if(st)st.insertAdjacentHTML('beforebegin',owedBlock());
+/* signature lesson comes first for a courier without the declaration */
+const nowHead=$$('.sec-head',body).find(e=>e.textContent.trim().startsWith('Now important'));
+if(nowHead&&R()==='courier'&&!L.alcoholSigned){const el=nowHead.nextElementSibling;if(el)el.outerHTML=`<div class="lr-now"><div class="im"><img src="img/addon-choc.webp" alt="" style="object-fit:contain;padding:20px"><span class="tag --ink">With signature</span></div><div class="caps muted mt16">Compliance · 4 min · signature</div><div class="h2 mt8">Alcohol with gifts – declaration</div><div class="sm soft mt8">Without a signed declaration you cannot hand over alcohol. One read, three yes/no choices, your signature.</div><button class="btn --block mt16" onclick="App.go('lx-lesson',{kind:'declaration'})">Start · 4 min</button><div class="xs muted mt8">Paid time · counts on your timesheet</div></div>`}
+/* goals after the now card */
+if(nowHead){const el=nowHead.nextElementSibling;if(el)el.insertAdjacentHTML('afterend',goalsBlock())}
+/* stories replace the card strip */
+const chg=$$('.sec-head',body).find(e=>e.textContent.trim().startsWith('What changed'));
+if(chg){const hs=chg.nextElementSibling;if(hs&&hs.classList.contains('hscroll'))hs.remove();chg.outerHTML=storiesBlock()}
+else{const paths=$$('.sec-head',body).find(e=>e.textContent.trim().startsWith('My paths'));if(paths)paths.insertAdjacentHTML('beforebegin',storiesBlock())}
+/* glossary card */
+const gl=$('.lr-gl',body);if(gl){const h=gl.previousElementSibling;if(h&&h.classList.contains('sec-head'))h.remove();gl.outerHTML=azbukaBlock()}
+/* done list */
+const acc=$('.acc',body);if(acc){const wrap=acc.parentElement;wrap.outerHTML=doneBlock()}
+else body.insertAdjacentHTML('beforeend',doneBlock());
+body.insertAdjacentHTML('beforeend','<div style="height:8px"></div>');
+};
+document.addEventListener('user',()=>{if(A.state.current==='learn')window.mount_learn()});
+if(A.state.current==='learn')window.mount_learn();
+})();
+</script>

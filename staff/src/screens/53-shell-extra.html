@@ -1,0 +1,455 @@
+<style>
+/* Shell screens (tm-shell): sign in, passwords, workspace, launch & gates, system, push, admin lenses, tab rules, classic view */
+.shx .pad{padding:0 var(--gutter)}
+.shx .lead{padding:18px var(--gutter) 6px}
+.shx .lead .h1{margin:0}
+.shx .lead p{margin:8px 0 0;font-size:14px;color:var(--graphite);line-height:1.5}
+.shx .logo{display:block;height:16px;width:auto;margin:28px auto 10px}
+.shx .slogan{font-family:var(--f-display);font-weight:300;font-size:26px;text-align:center;line-height:1.1;margin:0 var(--gutter) 22px}
+.shx .err{margin:0 var(--gutter) 14px;padding:12px 14px;border:1px solid var(--accent);color:var(--accent);font-size:13px;line-height:1.45}
+.shx .ok{margin:0 var(--gutter) 14px;padding:14px;background:var(--silver);font-size:14px;line-height:1.5}
+.shx .links{display:flex;flex-direction:column;gap:14px;align-items:center;padding:18px var(--gutter) 0}
+.shx .links .textbtn{font-size:14px}
+.shx .ws{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 var(--gutter) 16px;padding:12px 14px;background:var(--silver);font-size:13px}
+.shx .ws .textbtn{font-size:13px}
+.shx .rule{display:flex;gap:10px;align-items:center;font-size:13px;padding:6px 0;color:var(--grey)}
+.shx .rule i{width:16px;height:16px;display:grid;place-items:center;border:1px solid var(--light);flex:none;font-size:10px}
+.shx .rule.ok{color:var(--ink)}
+.shx .rule.ok i{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.shx .forced{margin:0 var(--gutter) 16px;padding:14px;border-left:2px solid var(--ink);background:var(--silver);font-size:14px;line-height:1.5}
+.shx .step{display:flex;gap:14px;padding:14px var(--gutter);border-bottom:1px solid var(--hair)}
+.shx .step .n{width:26px;height:26px;border:1px solid var(--ink);display:grid;place-items:center;font-size:12px;flex:none}
+.shx .step .n.on{background:var(--ink);color:var(--paper)}
+.shx .step .l{font-size:15px;line-height:1.3}
+.shx .step .d{font-size:13px;color:var(--grey);margin-top:3px;line-height:1.45}
+.shx .step .btn{margin-top:10px}
+.shx .step .f1{min-width:0}
+.shx .grp{padding:26px var(--gutter) 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.shx .sw{display:flex;align-items:center;gap:12px;padding:14px var(--gutter);border-bottom:1px solid var(--hair)}
+.shx .sw .f1 .l{font-size:15px}
+.shx .sw .f1 .d{font-size:13px;color:var(--grey);margin-top:2px;line-height:1.45}
+.shx .kv{display:flex;justify-content:space-between;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair);font-size:14px}
+.shx .kv span:last-child{color:var(--graphite);text-align:right}
+.shx .kv.mono span:last-child{font-variant-numeric:tabular-nums}
+.shx .segw{padding:6px var(--gutter) 10px}
+.shx .chips{display:flex;flex-wrap:wrap;gap:6px;padding:4px var(--gutter) 10px}
+.shx .card{margin:14px var(--gutter) 0;padding:16px;background:var(--silver)}
+.shx .card .h3{margin:0}
+.shx .card .d{font-size:13px;color:var(--grey);margin-top:4px;line-height:1.45}
+.shx .card .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.shx .lock{padding:40px var(--gutter)}
+.shx .row .rt .d{line-height:1.45}
+.shx .row.--moved .rt .d b{font-weight:400;color:var(--ink)}
+.shx .mx{margin:8px var(--gutter) 0;border:1px solid var(--hair);font-size:12px}
+.shx .mx .r{display:grid;grid-template-columns:1.6fr repeat(5,1fr);border-bottom:1px solid var(--hair)}
+.shx .mx .r:last-child{border-bottom:0}
+.shx .mx .r > span{padding:8px 6px;border-right:1px solid var(--hair);min-width:0;line-height:1.3}
+.shx .mx .r > span:last-child{border-right:0}
+.shx .mx .r.h span{color:var(--grey);text-transform:uppercase;letter-spacing:.06em;font-size:10px}
+.shx .mx .r.me{background:var(--silver)}
+.shx .mx .y{color:var(--ink)}
+.shx .mx .n{color:var(--light)}
+.shx .crash{position:absolute;inset:0;background:var(--paper);z-index:60;display:flex;flex-direction:column;justify-content:center;padding:0 var(--gutter)}
+.shx .crash .h2{margin:0 0 8px}
+.shx .crash p{font-size:14px;color:var(--graphite);line-height:1.5;margin:0 0 18px}
+.shx .ptype{display:flex;align-items:center;gap:10px;padding:12px var(--gutter);border-bottom:1px solid var(--hair)}
+.shx .ptype .f1 .l{font-size:14px}
+.shx .ptype .f1 .d{font-size:12px;color:var(--grey);margin-top:2px;line-height:1.4}
+.shx .perm{display:flex;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair)}
+.shx .perm .f1 .l{font-size:14px}
+.shx .perm .f1 .d{font-size:12px;color:var(--grey);margin-top:2px;line-height:1.4}
+.shx .bigfont .l,.shx .bigfont .d{font-size:1.3em}
+.shx .fallback{font-family:Georgia,serif !important}
+.shx .fallback *{font-family:Georgia,serif !important}
+.shx .note{font-size:12px;color:var(--grey);padding:8px var(--gutter) 0;line-height:1.45}
+.shx .cb{display:flex;gap:10px;align-items:center;padding:10px var(--gutter);font-size:13px;border-bottom:1px solid var(--hair)}
+</style>
+
+<!-- ============ SIGN IN ============ -->
+<!-- ids: TM-AUTH-001 TM-AUTH-002 TM-AUTH-003 TM-AUTH-004 TM-AUTH-005 TM-AUTH-006 TM-AUTH-007 TM-AUTH-008 TM-AUTH-009 TM-AUTH-011 TM-SHELL-009 -->
+<section class="scr shx" id="s-sh-login" data-nav="Sign in" data-group="Start">
+  <div class="appbar"><button class="ib" onclick="App.back('splash')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Sign in</div></div>
+  <div class="scr-body" id="shl-body"></div>
+</section>
+
+<!-- ============ FORGOT PASSWORD ============ -->
+<!-- ids: TM-AUTH-020 TM-AUTH-021 TM-AUTH-022 -->
+<section class="scr shx" id="s-sh-forgot" data-nav="Forgot password" data-group="Start">
+  <div class="appbar"><button class="ib" onclick="App.go('sh-login',{},{replace:true})" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Reset password</div></div>
+  <div class="scr-body" id="shf-body"></div>
+</section>
+
+<!-- ============ CHANGE PASSWORD ============ -->
+<!-- ids: TM-AUTH-030 TM-AUTH-031 TM-AUTH-032 TM-AUTH-033 TM-BSHELL-004 TM-MORE-018 -->
+<section class="scr shx" id="s-sh-password" data-nav="Change password" data-group="Start">
+  <div class="appbar"><button class="ib" id="shp-back" onclick="App.back('me')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Change password</div></div>
+  <div class="scr-body" id="shp-body"></div>
+</section>
+
+<!-- ============ WORKSPACE ============ -->
+<!-- ids: TM-AUTH-040 TM-AUTH-041 TM-AUTH-042 TM-AUTH-007 TM-AUTH-008 -->
+<section class="scr shx" id="s-sh-workspace" data-nav="Workspace" data-group="Start">
+  <div class="appbar"><div class="ttl">Workspace</div></div>
+  <div class="scr-body" id="shw-body"></div>
+</section>
+
+<!-- ============ LAUNCH & GATES ============ -->
+<!-- ids: TM-SHELL-001 TM-BSHELL-001 TM-BSHELL-002 TM-BSHELL-003 TM-BSHELL-004 TM-BSHELL-005 TM-BSHELL-006 TM-BSHELL-007 TM-AUTH-009 TM-AUTH-010 TM-AUTH-011 TM-SHELL-009 TM-SHELL-014 TM-BSHELL-020 TM-BSHELL-021 TM-BSHELL-033 -->
+<section class="scr shx" id="s-sh-start" data-nav="Launch · gates" data-group="Shell">
+  <div class="appbar"><button class="ib" onclick="App.back('me')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Launch</div></div>
+  <div class="scr-body" id="shs-body"></div>
+</section>
+
+<!-- ============ SYSTEM: offline, errors, theme, OTA ============ -->
+<!-- ids: TM-SHELL-002 TM-SHELL-003 TM-SHELL-004 TM-SHELL-005 TM-SHELL-006 TM-SHELL-007 TM-SHELL-008 TM-SHELL-015 TM-SHELL-016 TM-SHELL-017 TM-SHELL-018
+     TM-OTA-001 TM-OTA-002 TM-OTA-003 TM-OTA-004 TM-OTA-005 TM-BSHELL-030 TM-BSHELL-031 TM-BSHELL-032 TM-BSHELL-050 TM-BSHELL-051 TM-BSHELL-052 TM-BSHELL-053 TM-BSHELL-054 TM-MORE-005 TM-MORE-006 -->
+<section class="scr shx" id="s-sh-system" data-nav="System · offline, errors, OTA" data-group="Shell">
+  <div class="appbar"><button class="ib" onclick="App.back('me')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">System</div></div>
+  <div class="scr-body" id="shy-body"></div>
+</section>
+
+<!-- ============ PUSH NOTIFICATIONS ============ -->
+<!-- ids: TM-PUSH-001 TM-PUSH-002 TM-PUSH-003 TM-PUSH-004 TM-PUSH-005 TM-PUSH-006 TM-PUSH-007 TM-MORE-004 TM-BSHELL-007 TM-BSHELL-021 TM-BSHELL-022 TM-BSHELL-023 TM-BSHELL-024 TM-BSHELL-025 TM-BSHELL-026 TM-BSHELL-027 TM-BSHELL-028 TM-BSHELL-029 TM-SHELL-018 -->
+<section class="scr shx" id="s-sh-push" data-nav="Push notifications" data-group="Shell">
+  <div class="appbar"><button class="ib" onclick="App.back('me')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Notifications</div></div>
+  <div class="scr-body" id="shn-body"></div>
+</section>
+
+<!-- ============ ADMIN LENSES ============ -->
+<!-- ids: TM-SHELL-010 TM-SHELL-011 TM-SHELL-012 TM-SHELL-013 TM-BSHELL-010 TM-BSHELL-011 TM-BSHELL-012 TM-BSHELL-014 TM-BSHELL-015 TM-BSHELL-016 TM-BSHELL-017 TM-BSHELL-018 TM-BSHELL-019 TM-BSHELL-045 TM-MORE-002 TM-MORE-003 TM-MORE-001 -->
+<section class="scr shx" id="s-sh-lenses" data-nav="Admin lenses · variant, contour, View as" data-group="Shell">
+  <div class="appbar"><button class="ib" onclick="App.back('me')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Lenses</div></div>
+  <div class="scr-body" id="shz-body"></div>
+</section>
+
+<!-- ============ TAB BAR RULES ============ -->
+<!-- ids: TM-BSHELL-040 TM-BSHELL-041 TM-BSHELL-042 TM-BSHELL-043 TM-BSHELL-044 TM-BSHELL-045 TM-BSHELL-046 TM-BSHELL-047 TM-BSHELL-012 TM-BSHELL-013 -->
+<section class="scr shx" id="s-sh-tabs" data-nav="Tab bar rules" data-group="Shell">
+  <div class="appbar"><button class="ib" onclick="App.back('sh-lenses')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Tabs</div></div>
+  <div class="scr-body" id="sht-body"></div>
+</section>
+
+<!-- ============ CLASSIC VIEW (temporary) – where everything moved ============ -->
+<!-- ids: TM-SHELL-030 TM-SHELL-031 TM-SHELL-032 TM-SHELL-033 TM-SHELL-034 TM-SHELL-035 TM-SHELL-036 TM-SHELL-037 TM-SHELL-038 TM-SHELL-039
+     TM-MORE-001 TM-MORE-002 TM-MORE-003 TM-MORE-004 TM-MORE-005 TM-MORE-006 TM-MORE-007 TM-MORE-008 TM-MORE-009 TM-MORE-010 TM-MORE-011 TM-MORE-012 TM-MORE-013 TM-MORE-014 TM-MORE-015 TM-MORE-016 TM-MORE-017 TM-MORE-018 TM-MORE-019
+     TM-BSHELL-002 TM-BSHELL-018 TM-BSHELL-019 TM-BSHELL-020 TM-PUSH-004 -->
+<section class="scr shx" id="s-sh-classic" data-nav="Classic view · where it moved" data-group="Shell">
+  <div class="appbar"><div class="ttl">Classic view</div><button class="ib" aria-label="Back to the new design" onclick="SHX.classic(false)"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <div class="scr-body" id="shc-body"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App;const $=s=>document.querySelector(s);
+const S=()=>window.SH.state;
+const ic=(n,s=18,x='')=>A.icon(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;${x}"`);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const back=(fb)=>`<button class="ib" onclick="App.back('${fb}')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>`;
+const sw=(t,d,on,fn)=>`<div class="sw"><span class="f1"><span class="l" style="display:block">${t}</span>${d?`<span class="d" style="display:block">${d}</span>`:""}</span><button class="switch ${on?"on":""}" aria-label="${esc(t)}" onclick="${fn}"></button></div>`;
+const kv=(k,v,mono)=>`<div class="kv ${mono?"mono":""}"><span>${k}</span><span>${v}</span></div>`;
+const row=(i,l,d,fn,right)=>`<button class="row" onclick="${fn}">${ic(i,20,"stroke:var(--grey)")}<span class="rt"><span class="l" style="display:block">${l}</span>${d?`<span class="d" style="display:block">${d}</span>`:""}</span>${right||A.icon("chev").replace("<svg",'<svg class="chev"')}</button>`;
+const grp=t=>`<div class="grp">${t}</div>`;
+const SHX=window.SHX={};
+
+/* ================= SIGN IN ================= */
+let L={email:"",pw:"",err:null,busy:false};
+SHX.loginState=L;
+function rLogin(){const s=S();
+  const ws=s.multiTenant&&s.workspace?`<div class="ws"><span>Workspace: <b>${s.workspace}</b></span><button class="textbtn" onclick="App.go('sh-workspace')">Change</button></div>`:"";
+  const E={429:"Too many attempts. Try again in a minute.",server:"The email or password is wrong.",ws:"Your account is on another workspace – signing you in there…",other:"Something went wrong. Check the connection and try again."}[L.err];
+  const can=L.email.trim()&&L.pw;
+  $("#shl-body").innerHTML=`<img class="logo" src="logo.svg" alt="Floritta"><div class="slogan">Flowers, delivered with care.</div>
+  ${A.state.params&&A.state.params.reason==="401"?`<div class="ok">Your session ended – the server no longer accepts this phone’s token. Sign in again; the screens were cleared and background location stopped.</div>`:""}
+  ${ws}${E?`<div class="err">${E}</div>`:""}
+  <div class="pad"><div class="field"><label>Email</label><input class="input" id="shl-email" type="email" autocomplete="email" placeholder="you@floritta.uk" value="${esc(L.email)}" oninput="SHX.lin('email',this.value)"></div>
+  <div class="field"><label>Password</label><input class="input" id="shl-pw" type="password" autocomplete="current-password" placeholder="••••••••" value="${esc(L.pw)}" oninput="SHX.lin('pw',this.value)" onkeydown="if(event.key==='Enter')SHX.signIn()"></div>
+  <button class="btn --block ${can&&!L.busy?"":"is-disabled"}" id="shl-go" onclick="SHX.signIn()">${L.busy?"Signing in…":"Sign in"}</button></div>
+  <div class="links"><button class="textbtn" onclick="App.go('sh-forgot')">Forgot password?</button><button class="textbtn" onclick="SHX.code()">I have a code</button>${!s.multiTenant||!s.workspace?`<button class="textbtn" onclick="App.go('fl-welcome')">Become a courier</button>`:""}</div>
+  <div class="note" style="text-align:center;margin-top:22px">The phone name is sent with the sign-in so you can see this device in the CRM. The token stays in the device keychain until the server ends it.</div>
+  <div class="chips" style="justify-content:center;margin-top:18px"><span class="xs muted" style="width:100%;text-align:center;margin-bottom:4px">Demo · errors</span><button class="chip" onclick="SHX.lerr(429)">429</button><button class="chip" onclick="SHX.lerr('server')">Wrong password</button><button class="chip" onclick="SHX.lerr('ws')">Other workspace</button><button class="chip" onclick="SHX.lerr('other')">Network</button><button class="chip ${s.multiTenant?"on":""}" onclick="SHX.multi()">Multi-tenant build</button></div>`;
+  if(!can)$("#shl-go").style.opacity=.45}
+SHX.lin=(k,v)=>{L[k]=v;L.err=null;const go=$("#shl-go");const can=L.email.trim()&&L.pw;go.classList.toggle("is-disabled",!can);go.style.opacity=can?1:.45};
+SHX.lerr=e=>{L.err=e;rLogin();if(e==="ws")setTimeout(()=>{A.toast("Workspace remembered: bloom.floritta.ai · signing in there");L.err=null;rLogin()},1800)};
+SHX.multi=()=>{const s=S();s.multiTenant=!s.multiTenant;if(s.multiTenant&&!s.workspace){A.toast("Multi-tenant build without a workspace – choose one first");A.go("sh-workspace",{},{replace:true});return}rLogin()};
+SHX.signIn=()=>{if(!(L.email.trim()&&L.pw)||L.busy)return;A.haptic();L.busy=true;rLogin();
+  setTimeout(()=>{L.busy=false;if(S().offline){L.err="other";rLogin();return}
+    const u=STAFF.find(x=>x.id===A.state.me);S().signedIn=true;L.pw="";rLogin();
+    A.toast(`Signed in as ${u.n} · asking for notification permission`);
+    setTimeout(()=>A.push("Notifications","Allow Floritta Team to send you notifications? · Allow",{icon:"bell",ms:2600}),600);
+    setTimeout(()=>{A.state.history=[];
+      if(S().mustChangePassword){A.go("sh-password",{forced:true});return}
+      if(A.role()==="courier"&&S().needsGeoConsent){SH.goOr("cr-consent",{},"Courier without signed location consent → Consent screen (Courier section)");A.go("home",{});return}
+      if(S().classic){A.go("sh-classic",{});return}
+      A.go("home",{})},1500)},700)};
+SHX.code=()=>{if(document.getElementById("s-rs-code")){A.go("rs-code",{});return}
+  A.sheet(`<div class="sh-head"><div class="h3">Enter your code</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 10px">Invited through “Work with us”? The code from the email signs you in as reserve; then you set your own password.</p><div class="field"><label>Code</label><input class="input" id="shl-code" placeholder="FLO-2748" autocapitalize="characters"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.setUser('lina',{silent:true});SH.state.mustChangePassword=true;App.go('sh-password',{forced:true,reserve:true})">Continue</button></div>`)};
+window.mount_sh_login=function(){rLogin()};
+
+/* ================= FORGOT ================= */
+let F={email:"",sent:false,err:null};
+function rForgot(){const E={429:"Too many requests – wait a minute and try again.",422:"That doesn’t look like an email address.",other:"Could not reach the server. Try again."}[F.err];
+  $("#shf-body").innerHTML=`<div class="lead"><div class="h1">Reset your password</div><p>We will email you a link. It works for 60 minutes.</p></div>${E?`<div class="err">${E}</div>`:""}
+  ${F.sent?`<div class="ok">If an account exists for <b>${esc(F.email)}</b>, we’ve sent a link. Check your inbox and spam. The message is the same whether or not the email is known – it never reveals accounts.</div><div class="pad"><button class="btn --block --secondary" onclick="App.go('sh-login',{},{replace:true})">Back to sign in</button></div>`:
+  `<div class="pad"><div class="field"><label>Email</label><input class="input" id="shf-email" type="email" placeholder="you@floritta.uk" value="${esc(F.email)}" oninput="SHX.fin(this.value)" onkeydown="if(event.key==='Enter')SHX.sendLink()"></div><button class="btn --block" onclick="SHX.sendLink()">Send link</button></div>
+  <div class="links"><button class="textbtn" onclick="App.go('sh-login',{},{replace:true})">Back to sign in</button></div>
+  <div class="chips" style="justify-content:center;margin-top:22px"><span class="xs muted" style="width:100%;text-align:center;margin-bottom:4px">Demo · errors</span><button class="chip" onclick="F.err=429;SHX.rf()">429</button><button class="chip" onclick="F.err=422;SHX.rf()">422</button><button class="chip" onclick="F.err='other';SHX.rf()">Network</button></div>`}`};
+SHX.rf=rForgot;SHX.fin=v=>{F.email=v;F.err=null};
+SHX.sendLink=()=>{const v=F.email.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){F.err=422;rForgot();return}A.haptic();F.sent=true;F.err=null;rForgot();A.toast("Sent – if the account exists")};
+window.mount_sh_forgot=function(){F={email:"",sent:false,err:null};rForgot()};
+
+/* ================= CHANGE PASSWORD ================= */
+let Pw={cur:"",nw:"",rep:"",forced:false,reserve:false};
+function rPw(){const strong=Pw.nw.length>=8&&/[A-Za-z]/.test(Pw.nw)&&/\d/.test(Pw.nw);const match=Pw.nw&&Pw.nw===Pw.rep;
+  const r=(ok,t)=>`<div class="rule ${ok?"ok":""}"><i>${ok?"✓":""}</i>${t}</div>`;
+  $("#shp-back").style.visibility=Pw.forced?"hidden":"";
+  $("#shp-body").innerHTML=`${Pw.forced?`<div class="forced" style="margin-top:16px"><b>Set your own password to continue.</b><br>${Pw.reserve?"You signed in with the code from your email – it is already in the first field.":"You signed in with a temporary password."} Other screens open after this.</div>`:`<div class="lead"><div class="h1">Change password</div><p>You stay signed in on this phone – no need to sign in again.</p></div>`}
+  <div class="pad"><div class="field"><label>Current password${Pw.reserve?" · code from the email":""}</label><input class="input" type="password" value="${esc(Pw.cur)}" oninput="SHX.pin('cur',this.value)" ${Pw.reserve?'style="background:var(--silver)"':""}></div>
+  <div class="field"><label>New password</label><input class="input" type="password" value="${esc(Pw.nw)}" oninput="SHX.pin('nw',this.value)"></div>
+  <div class="field"><label>Repeat new password</label><input class="input" type="password" value="${esc(Pw.rep)}" oninput="SHX.pin('rep',this.value)"></div>
+  <div style="padding:0 0 14px">${r(Pw.nw.length>=8,"At least 8 characters")}${r(/[A-Za-z]/.test(Pw.nw)&&/\d/.test(Pw.nw),"A letter and a digit")}${r(match,"Both new passwords match")}</div>
+  <button class="btn --block ${strong&&match&&Pw.cur?"":"is-disabled"}" style="opacity:${strong&&match&&Pw.cur?1:.45}" onclick="SHX.savePw()">Save password</button></div>
+  ${Pw.forced?"":`<div class="note">Also from Me → Settings. In the old “More” tab this was “Change password”.</div>`}`};
+SHX.pin=(k,v)=>{Pw[k]=v;const vals=[...document.querySelectorAll("#shp-body input")].map(i=>i.value);Pw.cur=vals[0];Pw.nw=vals[1];Pw.rep=vals[2];
+  const strong=Pw.nw.length>=8&&/[A-Za-z]/.test(Pw.nw)&&/\d/.test(Pw.nw);const match=Pw.nw&&Pw.nw===Pw.rep;
+  document.querySelectorAll("#shp-body .rule").forEach((el,i)=>{const ok=[Pw.nw.length>=8,/[A-Za-z]/.test(Pw.nw)&&/\d/.test(Pw.nw),match][i];el.classList.toggle("ok",ok);el.querySelector("i").textContent=ok?"✓":""});
+  const b=$("#shp-body .btn");const can=strong&&match&&Pw.cur;b.classList.toggle("is-disabled",!can);b.style.opacity=can?1:.45};
+SHX.savePw=()=>{const strong=Pw.nw.length>=8&&/[A-Za-z]/.test(Pw.nw)&&/\d/.test(Pw.nw);if(!(strong&&Pw.nw===Pw.rep&&Pw.cur))return;
+  if(S().offline){A.toast("No connection – the password was not changed");return}
+  A.haptic();const forced=Pw.forced;S().mustChangePassword=false;
+  A.confirm("Password changed","Your new password works from now on. You stay signed in on this phone.","OK",()=>{Pw={cur:"",nw:"",rep:"",forced:false,reserve:false};if(forced){A.state.history=[];A.go("home",{})}else A.back("me")})};
+window.mount_sh_password=function(p){p=p||{};Pw={cur:p.reserve?"FLO-2748":"",nw:"",rep:"",forced:!!p.forced||S().mustChangePassword,reserve:!!p.reserve};rPw()};
+
+/* ================= WORKSPACE ================= */
+let W={slug:""};
+const BRANDS={floritta:"Floritta Ltd · London",bloom:"Bloom & Co · Manchester"};
+function wsValid(v){return /^[a-z0-9-]{3,30}$/.test(v)}
+function rWs(){const s=S();const v=W.slug;const hint=!v?"Only the name, not the address – we build https://&lt;name&gt;.floritta.ai ourselves.":wsValid(v)?(BRANDS[v]?`Found: <b>${BRANDS[v]}</b>`:"Checking… no company with this name yet"):"That doesn’t look like a workspace name: 3–30 letters, digits or hyphens.";
+  $("#shw-body").innerHTML=`<img class="logo" src="logo.svg" alt="Floritta"><div class="slogan">Which workspace?</div>
+  ${!s.multiTenant?`<div class="ok">Hidden in the shop’s own build: without the multi-tenant flag this screen sends you straight to Sign in – even from a deep link.</div>`:""}
+  <div class="pad"><div class="field"><label>Workspace name</label><input class="input" id="shw-in" autocapitalize="none" autocorrect="off" placeholder="floritta" value="${esc(v)}" oninput="SHX.win(this.value)"></div>
+  <div class="note" id="shw-hint" style="padding:0 0 14px">${hint}</div>
+  <button class="btn --block ${wsValid(v)?"":"is-disabled"}" style="opacity:${wsValid(v)?1:.45}" onclick="SHX.wsGo()">Continue</button></div>
+  <div class="links"><button class="textbtn" onclick="SHX.wsFull()">Use a full address</button>${s.workspace?`<button class="textbtn" onclick="App.go('sh-login')">Keep ${esc(s.workspace)}</button>`:""}</div>
+  <div class="note" style="text-align:center;margin-top:22px">Your choice is saved on this phone. Signing out clears it. Try “floritta” or “bloom”.</div>`};
+SHX.win=v=>{W.slug=v.trim().toLowerCase().replace(/^https?:\/\//,"").replace(/\.floritta\.ai.*$/,"");const h=$("#shw-hint");const ok=wsValid(W.slug);
+  h.innerHTML=!W.slug?"Only the name, not the address – we build https://&lt;name&gt;.floritta.ai ourselves.":ok?(BRANDS[W.slug]?`Found: <b>${BRANDS[W.slug]}</b>`:"Checking… no company with this name yet"):"That doesn’t look like a workspace name: 3–30 letters, digits or hyphens.";
+  const b=$("#shw-body .btn");b.classList.toggle("is-disabled",!ok);b.style.opacity=ok?1:.45};
+SHX.wsGo=()=>{if(!wsValid(W.slug))return;S().workspace=W.slug;S().multiTenant=true;A.haptic();A.toast(`Workspace saved · ${W.slug}.floritta.ai`);A.go("sh-login",{},{replace:true})};
+SHX.wsFull=()=>{A.sheet(`<div class="sh-head"><div class="h3">Full address</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 10px">For the shop’s own server only. Anything that is not https://…floritta.ai is refused – protection against phishing.</p><div class="field"><label>Address</label><input class="input" id="shw-full" value="https://app.floritta.ai"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="SHX.wsFullGo()">Use</button></div>`)};
+SHX.wsFullGo=()=>{const v=($("#shw-full").value||"").trim();if(!/^https:\/\/[a-z0-9-]+\.floritta\.ai\/?$/.test(v)){A.toast("Only https://<name>.floritta.ai is accepted");return}W.slug=v.replace(/^https:\/\//,"").replace(/\.floritta\.ai\/?$/,"");A.closeSheet();SHX.wsGo()};
+window.mount_sh_workspace=function(){W={slug:S().workspace||""};rWs()};
+
+/* ================= LAUNCH & GATES ================= */
+function rStart(){const s=S();const me=A.me();const courier=me.role==="courier";
+  const step=(n,l,d,btn,on)=>`<div class="step"><span class="n ${on?"on":""}">${n}</span><div class="f1"><div class="l">${l}</div><div class="d">${d}</div>${btn||""}</div></div>`;
+  $("#shs-body").innerHTML=`<div class="lead"><div class="h1">What happens on launch</div><p>Every start, in this order. Nothing is drawn until step 2 is known.</p></div>
+  ${step(1,"Splash stays up","Until the session is restored and the classic-view flag is read from the device. An unreadable flag means the new design.",`<button class="btn --xs --secondary" onclick="App.go('splash');setTimeout(()=>SP.cold('online'),300)">Replay cold start</button>`,true)}
+  ${step(2,"Session from the device","Token and profile come from the keychain first, then a fresh profile from the server. Offline – you work from the saved copy. 401 – you are signed out.",`<span class="flex g6" style="flex-wrap:wrap"><button class="btn --xs --secondary" onclick="App.go('splash');setTimeout(()=>SP.cold('offline'),300)">Offline start</button><button class="btn --xs --secondary" onclick="SHX.drop('401 from the server')">Token revoked</button></span>`)}
+  ${step(3,"Phone registered for pushes","After sign-in the app asks for notification permission and sends this phone’s token to the CRM.",`<button class="btn --xs --secondary" onclick="App.go('sh-push')">Notifications</button>`)}
+  ${step(4,"Gate · temporary password","With a temporary password or a reserve code only Change password opens.",`<button class="btn --xs --secondary" onclick="SH.state.mustChangePassword=true;App.go('sh-password',{forced:true})">Try the gate</button>`)}
+  ${step(5,"Gate · courier location consent","A courier without a signed consent is moved to the consent screen; the new design is removed from the stack until it is signed.",`<button class="btn --xs --secondary" onclick="${courier?"SH.goOr('cr-consent',{},'Opens Courier location consent (Courier section)')":"App.toast('Only for couriers – switch to Andrii to see it')"}">${courier?"Open consent":"Couriers only"}</button>`)}
+  ${step(6,"Freelance → own app","The freelance role never sees the staff screens; it gets the courier marketplace app.",`<button class="btn --xs --secondary" onclick="App.go('fl-welcome')">Freelance app</button>`)}
+  ${step(7,"New design or classic","The new design mounts unless this phone is on the temporary classic view. Shared screens (order, task, delivery, chat, stock, announcements, timesheet, bonus) work in both and return “home” to the right one.",`<span class="flex g6" style="flex-wrap:wrap"><button class="btn --xs ${s.classic?"--secondary":""}" onclick="SHX.classic(false)">New design</button><button class="btn --xs ${s.classic?"":"--secondary"}" onclick="SHX.classic(true)">Classic view</button></span>`)}
+  ${step(8,"Tapped push waits for the stack","A push tapped while the app was closed opens its screen as soon as the protected stack is mounted; a push received while open only refreshes data.",`<button class="btn --xs --secondary" onclick="App.toast('Cold start from a push…');setTimeout(()=>App.go('task',{id:106}),1200)">Launch from a push</button>`)}
+  ${step(9,"Courier tracking check","On every launch the app checks whether background location should be on: on shift and on a trip → on, otherwise off. Follows the real role, not a lens.",`<div class="note" style="padding:8px 0 0">${courier?(A.state.clockedIn?"Andrii: on shift, trip open → tracking on":"Not on shift → tracking off"):"Not a courier → nothing to reconcile"}</div>`)}
+  ${grp("Session drops are reported with a reason")}<div class="chips"><button class="chip" onclick="SHX.drop('401 from the server')">401</button><button class="chip" onclick="SHX.drop('keychain unreadable')">Keychain unreadable</button><button class="chip" onclick="SHX.drop('no token')">No token</button><button class="chip" onclick="SHX.drop('offline start without a cached profile')">Offline, no cache</button></div>
+  <div class="note">Each reason is one event in the crash reporter, so sign-outs that nobody asked for can be counted.</div>
+  ${grp("Which navigator is on screen")}${kv("Mounted now",s.classic?"classic (a)":"new design (b)")}${kv("Home for shared screens",s.classic?"/ · More for Me, /shift, /deliveries":"/b · /b/me, /b/shift, /b/work?view=deliveries")}${kv("Pushes route by","the mounted navigator; default is the new design")}`};
+SHX.drop=r=>{A.toast(`Signed out · reason logged: ${r}`);S().signedIn=false;setTimeout(()=>{A.state.history=[];A.go("sh-login",{reason:r==="401 from the server"?"401":""})},700)};
+SHX.classic=on=>{S().classic=on;A.haptic();if(on){A.toast("Classic view on this phone · the root stack swapped at once");A.state.history=[];A.go("sh-classic",{})}else{A.toast("Back to the new design · flag removed from this phone");A.state.history=[];A.go("home",{})}};
+window.mount_sh_start=function(){rStart()};
+
+/* ================= SYSTEM ================= */
+let Y={bigfont:false,fallback:false};
+function rSystem(){const s=S();
+  const seg=(items,cur,fn)=>`<div class="segw"><div class="seg">${items.map(i=>`<button class="${cur===i[0]?"on":""}" onclick="${fn}('${i[0]}')">${i[1]}</button>`).join("")}</div></div>`;
+  $("#shy-body").innerHTML=`<div class="lead"><div class="h1">System</div><p>Behaviour that is not a screen but every screen relies on.</p></div>
+  ${grp("Privacy and connection")}
+  ${row("lock","Privacy shade","In the app switcher the whole screen is covered with “Floritta” – no addresses or chats in the snapshot.","SH.shade()",`<button class="btn --xs --secondary" onclick="event.stopPropagation();SH.shade()">Preview</button>`)}
+  ${sw("Offline (demo)","Online is judged by real requests, not the phone’s radio. Back in the app → an instant check.",s.offline,"SHX.offline()")}
+  ${row("repeat","Reading without a signal","A screen tries once and says “didn’t load”; retries wait for the network and everything refreshes on reconnect.","SHX.readOffline()")}
+  ${row("send","Writing without a signal","Fails in front of you straight away – it never waits and never sends later by itself. Exceptions: the order and delivery queues.","SHX.writeOffline()")}
+  ${row("sun","Back in the app","Open screens refresh when you return; polling pauses while the app is in the background.","App.toast('Returned · open screens refreshed, polling resumed')")}
+  ${grp("Errors")}
+  ${row("zap","A screen crashes","You see one calm error screen instead of a dead app; the error goes to the crash reporter.","SHX.crash()")}
+  ${row("layers","One block fails","Only that block turns into a grey line – the rest of the screen stays alive. On Tasks the whole tab shows “Try again”.","SHX.sectionFail()")}
+  ${kv("Crash reports","release builds only · tags: channel, update id, runtime · taps as breadcrumbs")}
+  ${kv("Dates","a bad value is shown as it came; empty stays empty – never a crash")}
+  ${kv("Clock","Europe/London, the shop’s time – not the phone’s")}
+  ${grp("Look and language")}
+  ${seg([["light","Light"],["dark","Dark"],["system","System"]],s.theme,"SHX.theme")}
+  <div class="note" style="padding-top:0">The new design is always light; the choice only affects the classic screens.</div>
+  ${seg([["en","English"],["ru","Русский"],["profile","As in CRM"]],s.lang,"SHX.lang")}
+  <div class="note" style="padding-top:0">Both dictionaries have the same keys. Changing the language re-renders the whole app.</div>
+  ${sw("Large system text (demo)","Texts grow up to a limit; tab labels never grow.",Y.bigfont,"SHX.bigfont()")}
+  ${sw("Fonts not loaded yet (demo)","Cormorant and Jost load at run time; until then system serif / sans – never a blank screen.",Y.fallback,"SHX.fallback()")}
+  ${grp("Deep links")}
+  <div class="pad"><div class="field"><label>florittamobile://…</label><input class="input" id="shy-link" value="task/106"></div><button class="btn --sm --secondary" onclick="SHX.deepLink()">Open link</button></div>
+  <div class="note">Any registered screen opens; the gates still apply (sign in, temporary password, consent).</div>
+  ${grp("Updates and builds")}
+  ${row("sparkle","Update ready","Downloaded in the background, applied at the next launch. Launch never waits for a download.","SHX.ota()",`<button class="btn --xs --secondary" onclick="event.stopPropagation();SHX.ota()">Restart now</button>`)}
+  ${kv("Runtime","fingerprint of the native part · iOS 1.0.8 (103), Android 1.0.10")}
+  ${kv("New native dependency","= new store build, not an update over the air")}
+  ${kv("Keys","maps and push keys come from the build environment, not the repository")}
+  ${kv("Orientation","portrait only · no iPad · no Android predictive back")}
+  ${grp("Permissions the app asks for")}
+  ${perm("camera","Camera and photos","Bouquet photo, task photo")}${perm("mic","Microphone","Dictating a note")}${perm("pin","Location while using","Clock-in check at the shop")}${perm("route","Location always","Courier on shift and on a trip")}${perm("bell","Notifications","Shift, tasks, orders, lessons")}
+  ${grp("Stack of the new design")}
+  <div class="note" style="padding-top:0">Five tabs plus pages: schedule, shift, agreement, shift offers, tax status, timesheet, my week, not paid, florists’ bonus, my bonus, shifts & jobs (manager), pay, pay week, statements, business profile. Inbox, learn, notification settings and reserve pages register themselves.</div>`};
+const perm=(i,l,d)=>`<div class="perm">${ic(i,20,"stroke:var(--grey)")}<div class="f1"><div class="l">${l}</div><div class="d">${d}</div></div></div>`;
+SHX.offline=()=>{S().offline=!S().offline;A.toast(S().offline?"Offline – judged from a failed request":"Back online – instant probe passed, screens refresh");rSystem()};
+SHX.readOffline=()=>{if(!S().offline){A.toast("Turn Offline on first");return}A.toast("Didn’t load. Will retry when the signal is back.",{action:{label:"Retry",onclick:"App.toast('Still offline – waiting for the network')"}})};
+SHX.writeOffline=()=>{if(!S().offline){A.toast("Turn Offline on first");return}A.toast("Could not save – no connection. Nothing was queued.")};
+SHX.crash=()=>{const sc=$("#s-sh-system");const d=document.createElement("div");d.className="crash";d.innerHTML=`<div class="h2">Something went wrong</div><p>This screen hit an error. It has been reported. You can try again or go back to Today.</p><div class="flex g8"><button class="btn --sm" onclick="this.closest('.crash').remove();App.toast('Recovered')">Try again</button><button class="btn --sm --secondary" onclick="this.closest('.crash').remove();App.go('home')">Today</button></div>`;sc.appendChild(d)};
+SHX.sectionFail=()=>{S().brokenSection=true;A.toast("Today: the announcement block is now a grey line");A.go("home",{})};
+SHX.theme=v=>{S().theme=v;A.toast(v==="light"?"Light":v==="dark"?"Dark – classic screens only, the new design stays light":"Follows the phone – classic screens only");rSystem()};
+SHX.lang=v=>{S().lang=v;A.toast(v==="ru"?"Русский · приложение перерисовано":v==="profile"?"As in your CRM profile, else the phone’s language":"English");rSystem()};
+SHX.bigfont=()=>{Y.bigfont=!Y.bigfont;$("#s-sh-system").classList.toggle("bigfont",Y.bigfont);A.toast(Y.bigfont?"Texts grew · tab labels did not":"Normal size")};
+SHX.fallback=()=>{Y.fallback=!Y.fallback;$("#s-sh-system").classList.toggle("fallback",Y.fallback);rSystem()};
+SHX.deepLink=()=>{const v=($("#shy-link").value||"").trim();const m=v.match(/^(task|order|announcements?|delivery|lesson|learning)\/(\d+)/);
+  if(!S().signedIn){A.toast("Not signed in – the link waits behind Sign in");A.go("sh-login");return}
+  if(!m){A.toast("Unknown link – stays on this screen");return}
+  const map={task:["task",{id:+m[2]}],order:["order",{code:m[2]}],announcement:["announcement",{id:+m[2]}],announcements:["announcement",{id:+m[2]}],delivery:["stop",{code:m[2]}],lesson:["lesson",{id:+m[2]}],learning:["lesson",{id:+m[2]}]}[m[1]];A.toast(`florittamobile://${v}`);A.go(map[0],map[1])};
+SHX.ota=()=>{A.confirm("Restart to update?","The new version is already downloaded. Normally it applies at the next launch; restarting now takes two seconds.","Restart",()=>{A.toast("Updated · 8f3c21 on channel production");A.go("splash");setTimeout(()=>SP.cold("online"),300)})};
+window.mount_sh_system=function(){rSystem()};
+
+/* ================= PUSH ================= */
+const PUSH=[
+ {t:"shift",title:"Shift",body:"Your shift starts in 30 minutes · 12:00",go:["home",{}],where:"Today – the clock strip",fresh:"shift, timeclock, inbox"},
+ {t:"idle",title:"Are you still working?",body:"No movement for 12 minutes",go:["home",{}],where:"Today – idle banner (courier)",fresh:"courier idle, timeclock, inbox",courier:true},
+ {t:"inventory",title:"Stock count due",body:"Roses · fridge 2 · by 15:00",go:["work",{view:"stock"}],where:"Work → Stock",fresh:"inbox"},
+ {t:"trip",title:"Route changed",body:"Stops reordered · 4 left",go:["route",{}],where:"Work → Deliveries (Route)",fresh:"deliveries, inbox · reordered shows a toast"},
+ {t:"trip_confirm",title:"Confirm your trip",body:"Valeria built a route for you · 4 stops",go:["route",{}],where:"Work → Deliveries",fresh:"pending trips, deliveries, inbox"},
+ {t:"queue",title:"Queue changed",body:"715623 Lilac daydream is yours · 17:00–20:00",go:["work",{view:"orders",tab:"mine"}],where:"Work → Orders → Mine",fresh:"inbox"},
+ {t:"contractor_job",title:"New job",body:"Wedding arch · Sat 24 Oct · £180",go:["work",{view:"jobs"}],where:"Work → Jobs",fresh:"inbox"},
+ {t:"learning",title:"3-minute lesson",body:"Same-day until 10 pm – what to tell clients",go:["lesson",{id:1}],where:"Learn (lesson_due / review_due open the lesson)",fresh:"learning, inbox"},
+ {t:"notifications",title:"Kamila mentioned you",body:"In the team chat · “ribbon drawer”",go:["inbox",{}],where:"Inbox",fresh:"inbox"},
+ {t:"order",title:"Order 715602",body:"Vase colour confirmed: smoked",go:["order",{code:"715602"}],where:"Order card (shared screen)",fresh:"inbox"},
+ {t:"delivery",title:"Delivery 715619",body:"Recipient asks to leave with the concierge",go:["stop",{code:"715619"}],where:"Delivery (shared screen)",fresh:"inbox"},
+ {t:"comms",title:"New message · Mrs Harper",body:"“Is the vase clear or smoked?”",go:["inbox",{}],where:"Chat (shared screen)",fresh:"inbox"},
+ {t:"task",title:"New task · Valeria",body:"Halloween window display · due Fri 18:00",go:["task",{id:106}],where:"Task (shared screen)",fresh:"inbox"},
+ {t:"announcement",title:"Announcement · Tatiana",body:"Same-day cut-off is now 10 pm",go:["announcement",{id:1}],where:"Announcement (shared screen)",fresh:"announcements, inbox"},
+ {t:"stocktake",title:"Stocktake started",body:"Fridge 1 · 24 lines",go:null,where:"Stocktake (shared screen, Stock section)",fresh:"inbox"},
+ {t:"purchase_order",title:"Delivery arrived",body:"RFH · 6 boxes to check",go:null,where:"Stock delivery (shared screen, Stock section)",fresh:"inbox"},
+ {t:"claim",title:"Claim opened",body:"Quicksand roses · 2 boxes bruised",go:null,where:"Claim (shared screen, Stock section)",fresh:"inbox"}
+];
+let N={nav:"b",perm:null};
+function rPush(){const s=S();
+  const seg=`<div class="segw"><div class="seg">${[["b","New design"],["a","Classic"],["fl","Freelance"]].map(i=>`<button class="${N.nav===i[0]?"on":""}" onclick="SHX.nav('${i[0]}')">${i[1]}</button>`).join("")}</div></div>`;
+  $("#shn-body").innerHTML=`<div class="lead"><div class="h1">Notifications</div><p>Real phones only – not the simulator or Expo Go.</p></div>
+  ${N.perm===null?`<div class="card"><div class="h3">Allow notifications?</div><div class="d">Shift reminders, tasks, orders and lessons. Asked once, right after sign-in; then this phone is registered in the CRM.</div><div class="btns"><button class="btn --sm" onclick="SHX.perm(true)">Allow</button><button class="btn --sm --secondary" onclick="SHX.perm(false)">Not now</button></div></div>`:
+  N.perm?kv("This phone","registered · iPhone 15 · token sent to the CRM"):kv("This phone","not allowed on the device · turn it on in Settings")}
+  ${sw("Notifications on this phone",s.pushMuted?"Off – the token was removed from the server. Signing in again will not switch it back on.":"On – the server knows this phone.",!s.pushMuted,"SHX.mute()")}
+  ${kv("While the app is open","banner with sound · no badge on the icon")}
+  ${row("bell","Preview a banner","How a push looks while the app is open","App.push('Floritta Team','This is how a push looks while the app is open',{icon:'bell'})")}
+  ${grp("Where each push lands · navigator")}${seg}
+  <div class="note" style="padding-top:0">The code outside React knows which navigator is on screen (default: the new design); classic sends tab pushes to classic tabs, freelance to its own screens.</div>
+  ${PUSH.filter(p=>!p.courier||A.role()==="courier"||A.role()==="owner").map((p,i)=>`<div class="ptype"><div class="f1"><div class="l">${p.t} · <span class="muted">${p.title}</span></div><div class="d">${N.nav==="b"?p.where:N.nav==="a"?classicWhere(p.t):flWhere(p.t)} · refreshes: ${p.fresh}</div></div><button class="btn --xs --secondary" onclick="SHX.send(${i})">Send</button></div>`).join("")}
+  ${grp("Signing out")}
+  ${row("logout","Sign out","Removes this phone’s token from the server, then ends the session, clears caches and stops tracking.","SHX.signOut()")}`};
+const classicWhere=t=>({shift:"Shift tab",idle:"Shift tab",inventory:"Stock tab",trip:"Deliveries tab",trip_confirm:"Deliveries tab",queue:"Home tab",contractor_job:"Home tab",learning:"Training tab / Tasks → Learning",notifications:"More → Announcements"}[t]||"the same shared screen");
+const flWhere=t=>({delivery:"My deliveries",trip:"My deliveries",notifications:"Studio messages"}[t]||"ignored – not a freelance push");
+SHX.nav=v=>{N.nav=v;rPush()};
+SHX.perm=ok=>{N.perm=ok;A.toast(ok?"Allowed · token registered in the CRM":"Not now · you can allow it later in Settings");rPush()};
+SHX.mute=()=>{S().pushMuted=!S().pushMuted;A.toast(S().pushMuted?"Token removed from the server":"Token registered again");rPush()};
+SHX.send=i=>{const p=PUSH.filter(x=>!x.courier||A.role()==="courier"||A.role()==="owner")[i];if(S().pushMuted){A.toast("Notifications are off on this phone – nothing arrives");return}
+  const go=p.go&&document.getElementById("s-"+p.go[0])?p.go:null;
+  A.push(p.title,p.body,{icon:"bell",go:go||["inbox",{}]});A.toast(`Push “${p.t}” · tap it to open · refreshed: ${p.fresh}`,{ms:3200})};
+SHX.signOut=()=>A.confirm("Sign out?","This phone stops receiving notifications, caches are cleared and background location stops.","Sign out",()=>{S().signedIn=false;S().workspace=null;A.toast("Push unregistered · signed out");A.state.history=[];A.go("sh-login",{})});
+window.mount_sh_push=function(){rPush()};
+
+/* ================= ADMIN LENSES ================= */
+function rLenses(){const s=S();
+  if(!window.SH.isAdmin()){$("#shz-body").innerHTML=`<div class="lock"><div class="panel"><div class="h3">Lenses are for admins</div><p class="sm soft" style="margin:8px 0 16px">An admin can switch the app version, look through a role or a contour and fall back to the classic view. A stale lens value on a shared phone does nothing for anyone else.</p><button class="btn --sm" onclick="App.setUser('tatiana');App.go('sh-lenses')">View as Tatiana · admin</button></div></div>`;return}
+  const chips=(items,cur,fn)=>`<div class="chips">${items.map(i=>`<button class="chip ${cur===i[0]?"on":""}" onclick="${fn}('${i[0]}')">${i[1]}</button>`).join("")}</div>`;
+  const u=window.SH.realUser();
+  $("#shz-body").innerHTML=`<div class="card" style="margin-top:16px"><div class="h3">${u.n}</div><div class="d">tatiana@floritta.uk · admin${s.viewAs?` · viewing as ${s.viewAs}`:""} · workspace ${s.workspace||"floritta"}</div></div>
+  ${grp("App version · on the server")}
+  ${chips([["a","A · one contour"],["b","B · contours on"]],s.variant,"SHX.variant")}
+  <div class="note" style="padding-top:0">Everything except an explicit B counts as A: all staff in the employee contour. B turns on worker / self-employed contours and the contour lens. Saved to the CRM for you; the navigator rebuilds without a restart. In a dev build an environment variable can force it; releases ignore it.</div>
+  <div class="chips"><button class="chip" onclick="SHX.variantFail()">Demo · server refuses</button></div>
+  ${grp("Contour lens · this phone only")}
+  ${s.variant==="b"?chips([["","Off"],["employee","Employee"],["worker","Worker"],["self_employed","Self-employed"]],s.contourLens||"","SHX.contour")+`<div class="note" style="padding-top:0">Applies at once, screens re-render in place – the tabs are not remounted, Me stays open. Reserve ignores it. Non-admins ignore it. In this prototype the lens moves the tab bar and the clock strip; the contour panels follow the persona (Zhadra · worker, Mira · self-employed, Lina · reserve).</div>`:`<div class="note">Switch to version B to use the contour lens.</div>`}
+  ${grp("View as · role")}
+  ${chips([["admin","Admin"],["manager","Manager"],["florist","Florist"],["courier","Courier"]],s.viewAs||"admin","SHX.viewRole")}
+  <div class="note" style="padding-top:0">Changes what tabs, cards and buttons you see – not your rights on the server and not background location. Tabs remount for the role. A banner stays on top until “Back”.</div>
+  ${s.viewAs==="florist"?row("users","Whose data",`${s.whoseData==="mine"?"Yours":A.user(s.whoseData).n} – bonuses, orders and shelf of that florist`,"SHX.whose()"):""}
+  ${s.viewAs?row("lock","Open Timesheet approval as this role","A 403 under the lens shows a notice instead of an error","SHX.forbidDemo()"):""}
+  ${s.viewAs?row("send","Mark 715619 ready and send the photo","Messages to the customer ask first under the lens","SH.sendGuard('Photo of 715619 to Anna K.',()=>App.toast('Sent to the customer'))"):""}
+  ${grp("Emergency")}
+  ${row("swap","Classic view (temporary)","Puts this phone on the old tabs. Managers and admins only. “Back to the new design” is in the old More tab.","SHX.classic(true)")}
+  ${row("layers","Tab bar rules","Which tabs each role and contour gets","App.go('sh-tabs')")}`};
+SHX.variant=v=>{if(v===S().variant)return;S().variant=v;if(v==="a")S().contourLens=null;A.toast(`Saved · version ${v.toUpperCase()} – navigator and gates rebuilt`);rLenses();window.SH.applyTabs()};
+SHX.variantFail=()=>A.confirm("Could not switch","The server did not accept the change. Nothing was changed on this phone.","OK",()=>{});
+SHX.contour=v=>{S().contourLens=v||null;A.toast(v?`Contour lens · ${v.replace("_"," ")} – Today re-rendered in place`:"Contour lens off");rLenses();window.SH.applyTabs()};
+SHX.viewRole=v=>{if(v==="admin"){if(S().viewAs)window.SH.viewAs(null);else A.toast("You are already the admin");rLenses();return}window.SH.viewAs(v)};
+SHX.whose=()=>{const fl=STAFF.filter(x=>x.role==="florist"&&!x.staff_type);A.sheet(`<div class="sh-head"><div class="h3">Whose data</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body">${[{id:"mine",n:"Mine"}].concat(fl).map(x=>`<button class="radio ${S().whoseData===x.id?"on":""}" onclick="SH.state.whoseData='${x.id}';App.closeSheet();SH.banner();App.toast('Showing ${x.n==="Mine"?"your own":x.n+"’s"} data');SHX.rl()"><span class="rd"></span><span>${x.n}</span></button>`).join("")}</div>`)};
+SHX.rl=()=>rLenses();
+SHX.forbidDemo=()=>window.SH.forbid("Timesheet approval");
+window.mount_sh_lenses=function(){rLenses()};
+
+/* ================= TAB BAR RULES ================= */
+function rTabs(){const SH_=window.SH;const me=A.me();const c=SH_.contour();const r=SH_.role();
+  const rows=[["Employee / worker · florist, manager, admin",1,1,1,1,1,"employee|worker:florist|manager"],["Employee / worker · seasonal, trainee",1,0,1,1,1,"limited"],["Employee / worker · courier",1,0,"Route",1,1,"employee|worker:courier"],["Self-employed · any role",1,0,1,0,1,"self_employed"],["Reserve",1,0,"Offers",0,1,"reserve"]];
+  const key=c==="reserve"?"reserve":c==="self_employed"?"self_employed":SH_.limited()?"limited":`${c}:${r==="courier"?"courier":"florist"}`;
+  const isMe=k=>k==="limited"?key==="limited":k.includes(":")?k.split(":")[0].split("|").includes(c)&&(k.split(":")[1].split("|").includes(r)||(k.split(":")[1]==="florist|manager"&&["florist","manager"].includes(r))):k===key;
+  const cell=v=>v===1?`<span class="y">yes</span>`:v===0?`<span class="n">—</span>`:`<span class="y">${v}</span>`;
+  $("#sht-body").innerHTML=`<div class="lead"><div class="h1">Tab bar</div><p>Today · Tasks · Work · Learn · Me. The set depends on the effective role, limited access and the contour.</p></div>
+  <div class="mx"><div class="r h"><span>Contour / role</span><span>Today</span><span>Tasks</span><span>Work</span><span>Learn</span><span>Me</span></div>${rows.map(x=>`<div class="r ${isMe(x[6])?"me":""}"><span>${x[0]}</span>${cell(x[1])}${cell(x[2])}${cell(x[3])}${cell(x[4])}${cell(x[5])}</div>`).join("")}</div>
+  <div class="note">Highlighted: ${me.n} · ${c.replace("_"," ")} · ${r}${SH_.limited()?" · limited":""}. Version ${S().variant.toUpperCase()}${S().variant==="a"?" – everyone is employee":""}.</div>
+  ${grp("Rules")}
+  ${kv("Today","always · reserve gets its own checklist Today")}
+  ${kv("Tasks","hidden for couriers, seasonal and trainees, self-employed, reserve")}
+  ${kv("Work","always · named “Route” for couriers · offers for reserve")}
+  ${kv("Learn","hidden on three-tab contours (self-employed, reserve)")}
+  ${kv("Me","always")}
+  ${kv("Role lens","remounts all tabs for that role")}
+  ${kv("Contour lens","re-renders in place, Me stays open")}
+  ${kv("Look","caps labels 10.5 px Jost · active ink, inactive grey · hairline on top · no system font scaling · Android height 64")}
+  ${grp("Hidden tab by link")}
+  ${row("route","Open Tasks as a courier","A hidden tab is still reachable by link or push: Tasks sends a courier back to Today; self-employed and limited can open it.","App.setUser('andrii',{silent:true});App.go('tasks')")}
+  ${row("route","Open Tasks as self-employed","Opens – only the tab is hidden","App.setUser('mira',{silent:true});App.go('tasks')")}`};
+window.mount_sh_tabs=function(){rTabs()};
+
+/* ================= CLASSIC VIEW ================= */
+function rClassic(){const s=S();const r=A.role()==="owner"?"admin":A.role();const lim=window.SH.limited();const mgr=r==="manager"||r==="admin";const me=A.me();
+  const tab=(name,who,where,fn)=>`<button class="row --moved" onclick="${fn}">${ic("layers",20,"stroke:var(--grey)")}<span class="rt"><span class="l" style="display:block">${name} <span class="xs muted">· ${who}</span></span><span class="d" style="display:block">Now: <b>${where}</b></span></span>${A.icon("chev").replace("<svg",'<svg class="chev"')}</button>`;
+  const tabs=[
+   r!=="courier"?tab("Home","all but couriers","Today + Work → Orders","App.go('home')"):"",
+   (r==="courier"||mgr)&&!lim?tab("Deliveries","couriers, managers","Work → Deliveries / Route","SH.goOr('route')"):"",
+   tab("Schedule","everyone","Me → Schedule","SH.goOr('schedule')"),
+   r!=="courier"&&!lim?tab("Tasks","florists, managers","Tasks tab","App.go('tasks')"):"",
+   r==="courier"||lim?tab("Training","couriers, seasonal, trainees","Learn tab","App.go('learn')"):"",
+   tab("Shift","everyone","Today → clock strip · Me → Time sheet","SH.goOr('timeclock')"),
+   mgr?tab("Inbox (chats)","managers with comms.view","Work → Chats · Inbox for notifications","App.go('inbox')"):"",
+   r!=="courier"&&!lim?tab("Stock","florists, managers","Work → Stock","SH.goOr('work',{view:'stock'})"):"",
+   tab("More","everyone","Me","App.tab('me')")].join("");
+  const more=(name,where,fn,show=true)=>show?`<button class="row --moved" onclick="${fn}">${ic("chev",20,"stroke:var(--grey)")}<span class="rt"><span class="l" style="display:block">${name}</span><span class="d" style="display:block">Now: <b>${where}</b></span></span></button>`:"";
+  $("#shc-body").innerHTML=`<div class="card" style="margin-top:16px"><div class="h3">Classic view (temporary)</div><div class="d">The old tabs on this phone only. The role lens rebuilds them, each opens as that role sees it. Nothing new is designed here – every function has a home in the new design.</div><div class="btns"><button class="btn --sm" onclick="SHX.classic(false)">Back to the new design</button></div></div>
+  ${grp("Old tabs → where they live now")}${tabs}
+  ${grp("Old “More” → where it lives now")}
+  <div class="card"><div class="h3">${me.n}</div><div class="d">${me.n.toLowerCase()}@floritta.uk · ${r}${s.viewAs?` · viewing as ${s.viewAs}`:""} · workspace ${s.workspace||"floritta"}</div><div class="d">Now: Me → profile card</div></div>
+  ${more("View as · Admin / Florist / Courier","Me → Admin lenses","App.go('sh-lenses')",r==="admin")}
+  ${sw("Notifications on this phone","Now: Me → Notifications",!s.pushMuted,"SHX.mute();SHX.rc()")}
+  ${more("Appearance · Light / Dark / System","Me → Settings → System","App.go('sh-system')")}
+  ${more("Language · English / Русский / System","Me → Settings → System","App.go('sh-system')")}
+  ${more("My week","Me → My week","SH.goOr('schedule')",!lim)}
+  ${more("Announcements","Today card + Inbox","App.go('announcement',{id:1})")}
+  ${more("My learning (incl. alcohol training)","Learn tab","App.go('learn')")}
+  ${more("Floritta Active","Me → Floritta Active","SH.goOr('active',{},'Opens Floritta Active (Me section)')",!lim)}
+  ${more("Zones of responsibility","Me → Zones","SH.goOr('zones',{},'Opens Zones (Me section)')",!lim)}
+  ${more("Out of stock – order / Needs ordering","Work → Stock → Restock","SH.goOr('work',{view:'stock'})",!lim)}
+  ${more("Site leads / Missed calls","Work → Orders → Leads","SH.goOr('work',{view:'orders',tab:'leads'})",mgr)}
+  ${more("Not paid","Today → manager row · Me → Not paid","SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')",mgr)}
+  ${more("Customers due a repeat","Work → Orders → Customers","SH.goOr('work',{view:'orders',tab:'customers'})",mgr)}
+  ${more("Florists’ bonus","Me → Bonus (admin, only when the CRM answers)","SH.goOr('bonus')",r==="admin")}
+  ${more("Timesheet","Me → Time sheet","SH.goOr('timeclock')",mgr)}
+  ${more("Change password","Me → Settings → Change password","App.go('sh-password')")}
+  ${row("logout","Sign out","No confirmation in classic – push token removed, caches cleared, tracking stopped","S_signOutClassic()")}`;
+  window.S_signOutClassic=()=>{S().signedIn=false;A.toast("Signed out · push unregistered");A.state.history=[];A.go("sh-login",{})}}
+SHX.rc=()=>rClassic();
+window.mount_sh_classic=function(){S().classic=true;rClassic()};
+
+/* On Me: the shell Me screen is another agent's; links to these screens are offered through the stand list and via goOr. */
+})();
+</script>

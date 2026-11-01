@@ -1,9 +1,16 @@
+<!-- Lesson player (short B-style lesson: video / key points / own words → quiz). This is the single hand-in point for lessons:
+     Start, Continue, Done rows, "From lesson", path, push and the change sheet all open it. The full classic step flow
+     (markdown body, language switch, photo / link / declaration proof, submit, result) is the "Lesson · full flow" screen in 57-learn-extra.
+     ids: TM-LEARN-074 TM-LEARN-011 TM-LEARN-067 TM-CLEARN-011 TM-CLEARN-020 -->
 <section class="scr lr" id="s-lesson" data-nav="Lesson player" data-group="Learning">
+  <!-- round close (router.back), segmented step scale ("Step N of M" for VoiceOver), more menu. ids: TM-CLEARN-024 -->
   <div class="appbar">
     <button class="ib" aria-label="Close" onclick="LR.leave()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <div class="lr-seg" id="ls-seg"></div>
+    <div class="lr-seg" id="ls-seg" role="progressbar" aria-label="Step"></div>
     <button class="ib" aria-label="More" onclick="LR.lessonMenu()"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></button>
   </div>
+  <!-- body: video slide (plays in place here; in the app video opens in the in-app browser), key points, "own words" with 5-word counter. ids: TM-CLEARN-027 TM-CLEARN-031 -->
   <div class="scr-body has-cta" id="ls-body"></div>
+  <!-- bottom bar: back chevron + main button by step (Key points → Next → Your own words → Take the quiz). ids: TM-CLEARN-041 -->
   <div class="cta-bar" id="ls-cta"></div>
 </section>

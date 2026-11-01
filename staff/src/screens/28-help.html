@@ -1,4 +1,15 @@
+<!-- ids: TM-ME-038 TM-ME-043 -->
 <section class="scr me5" id="s-help" data-nav="Help" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Help</div></div>
   <div class="scr-body" id="hp-body" style="padding-bottom:32px"></div>
 </section>
+<script>
+(function(){
+const A=window.App;const orig=window.mount_help;
+window.mount_help=function(){orig();const el=document.getElementById('hp-body');
+  const f=el.querySelector('#hp-acc');
+  if(f)f.insertAdjacentHTML('beforeend',`<details><summary>Client chats and announcements</summary><div class="acc-b"><p>Managers answer clients from <b>Me → Client chats</b> (WhatsApp, Instagram, Telegram, Messenger, SMS, email – all through the CRM). Florists and couriers do not see chats.</p><p>Announcements are in <b>Me → Announcements</b>. Tap <b>Got it</b> when you have read one – your manager sees who has.</p></div></details><details><summary>Notifications on this phone</summary><div class="acc-b"><p><b>Me → Settings</b>: “Priority only” or “Everything”, quiet outside your shift, a digest when your shift starts. The switch “Notifications on this phone” turns pushes off for this device only.</p></div></details>`);
+  el.insertAdjacentHTML('beforeend',`<div class="note" style="padding-top:8px">This Help screen is a proposal – the app has no support, version or policy screens today.</div>`);
+};
+})();
+</script>

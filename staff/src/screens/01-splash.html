@@ -1,3 +1,15 @@
+<style>
+#s-splash .sp-hold{display:none;align-items:center;gap:10px;justify-content:center;font-size:13px;color:var(--grey);margin-top:14px}
+#s-splash .sp-hold i{width:8px;height:8px;background:var(--ink);animation:sp-blink 1s infinite alternate;flex:none}
+@keyframes sp-blink{from{opacity:.2}to{opacity:1}}
+#s-splash.is-hold .sp-body > *:not(.sp-hold):not(#sp-eyebrow){visibility:hidden}
+#s-splash.is-hold .sp-hold{display:flex;visibility:visible}
+#s-splash .sp-demo{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+#s-splash .sp-demo .chip{height:26px;font-size:11px;padding:0 10px}
+</style>
+<!-- Splash · the app keeps the native splash until the session is restored and the classic flag is read.
+     Face ID / PIN below are a proposal of the prototype – the live app signs in with email + password only (see Sign in).
+     ids: TM-SHELL-001 TM-BSHELL-003 TM-AUTH-010 -->
 <section class="scr" id="s-splash" data-nav="Splash · Sign in" data-group="Start">
   <div class="sp-hero">
     <img class="ph" src="img/hero-white.webp" alt="">
@@ -6,10 +18,41 @@
   </div>
   <div class="sp-body">
     <div class="caps muted" id="sp-eyebrow">Floritta Team</div>
+    <!-- Session restored from the device cache → fresh /me; shown as "Welcome back, <name>". ids: TM-AUTH-010 -->
     <h1 class="h-display mt8" id="sp-title">Welcome back,<br>Kamila.</h1>
     <p class="soft sp-lead">Your shift, tasks and lessons in one calm place.</p>
     <button class="btn --block" id="sp-face"></button>
     <div class="tc mt12"><button class="textbtn" id="sp-pin">Use PIN instead</button></div>
+    <!-- Sign in with email and password – the real entry point; another account → Sign in screen. ids: TM-AUTH-001 -->
+    <div class="tc mt8"><button class="textbtn" onclick="App.go('sh-login')">Sign in with email and password</button></div>
+    <!-- Splash hold while the session and the classic flag are read (nothing is drawn under it). ids: TM-SHELL-001 TM-BSHELL-003 -->
+    <div class="sp-hold" id="sp-hold"><i></i><span id="sp-hold-t">Restoring your session…</span></div>
+    <div class="sp-demo">
+      <button class="chip" onclick="SP.cold('online')">Demo · cold start</button>
+      <button class="chip" onclick="SP.cold('offline')">Cold start offline</button>
+      <button class="chip" onclick="SP.cold('401')">Token revoked</button>
+    </div>
     <div class="tc xs muted mt16">80 Willow Walk, Bermondsey SE1 · Staff app 3.0</div>
   </div>
 </section>
+<script>
+(function(){
+const A=window.App;const $=s=>document.querySelector(s);
+const orig=window.mount_splash;
+window.mount_splash=function(){if(orig)orig();$("#s-splash").classList.remove("is-hold")};
+window.SP={
+  /* Launch: splash stays until SecureStore token/user are read and the classic flag is known; then fresh GET /me.
+     offline → work from the cached copy; 401 → sign in. */
+  cold(mode){const sc=$("#s-splash"),t=$("#sp-hold-t");sc.classList.add("is-hold");A.haptic();
+    t.textContent="Restoring your session…";
+    setTimeout(()=>{t.textContent="Reading the classic-view flag…";
+      setTimeout(()=>{
+        if(mode==="401"){sc.classList.remove("is-hold");A.toast("Session ended by the server (401) · caches cleared, tracking stopped");A.go("sh-login",{reason:"401"});return}
+        if(mode==="offline"){A.toast("No connection – working from the saved copy, screens refresh when back online",{ms:3200});SH.state.offline=true}
+        else{A.toast("Fresh profile loaded · push registered for this phone")}
+        if(window.SH&&SH.state.mustChangePassword){sc.classList.remove("is-hold");A.go("sh-password",{forced:true});return}
+        if(window.SH&&SH.state.classic){sc.classList.remove("is-hold");A.go("sh-classic",{});return}
+        sc.classList.remove("is-hold");A.state.history=[];A.go("home",{})},700)},800)}
+};
+})();
+</script>

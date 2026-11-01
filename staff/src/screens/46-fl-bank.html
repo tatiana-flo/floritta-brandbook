@@ -1,11 +1,18 @@
-<section class="scr fl fl" id="s-fl-bank" data-tab="fl-earn" data-nav="Bank details" data-group="Freelance · Earnings">
-  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Bank details</div><span class="ib"></span></div>
+<section class="scr fl" id="s-fl-bank" data-tab="fl-earn" data-nav="Bank details" data-group="Freelance · Earnings">
+  <!-- ids: TM-FL-078 TM-FL-092 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-earn')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Bank details</div><span class="ib"></span></div>
   <div class="scr-body has-cta pad">
     <h1 class="h1" style="margin:8px 0 8px">Where we pay you</h1>
-    <p class="soft sm" style="margin:0 0 20px">A UK account in your own name. Only the payout team sees it.</p>
-    <div class="field"><label for="fl-b-n">Name on the account</label><input class="input" id="fl-b-n" value="Sam Kowalski"></div>
-    <div class="field"><label for="fl-b-s">Sort code</label><input class="input num" id="fl-b-s" value="••-••-14"></div>
-    <div class="field"><label for="fl-b-a">Account number</label><input class="input num" id="fl-b-a" value="••••4821"><span class="hint">Hidden after saving. To change it, type the whole number again.</span></div>
+    <p class="soft sm" style="margin:0 0 14px">A UK account in your own name. Only the payout team sees it; it's never written to logs.</p>
+    <!-- ids: TM-FL-087 -->
+    <div class="panel sm soft" id="flx-bank-current" style="margin-bottom:18px;display:flex;gap:10px;align-items:center"><svg class="i"><use href="#fl-i-bank"/></svg><span>Current account ends in <b class="num">4821</b>. To change it, type the whole number again.</span></div>
+    <!-- ids: TM-FL-085 -->
+    <div class="field"><label for="fl-b-n">Name on the account</label><input class="input" id="fl-b-n" value="Sam Kowalski" oninput="FLX.bankValidate()"></div>
+    <div class="field"><label for="fl-b-s">Sort code</label><input class="input num" id="fl-b-s" placeholder="12-34-56" oninput="FLX.bankValidate()"><span class="hint">6 digits – we format it as 12-34-56.</span></div>
+    <div class="field"><label for="fl-b-a">Account number</label><input class="input num" id="fl-b-a" placeholder="8 digits" oninput="FLX.bankValidate()"><span class="hint" id="fl-b-hint">Hidden after saving.</span></div>
+    <div class="panel --accent sm" id="fl-b-err" hidden></div>
+    <div class="flx-demo" style="margin-top:12px"><span>Demo · server answer</span><span id="flx-d-bank"></span></div>
   </div>
-  <div class="cta-bar"><button class="btn --block" onclick="App.toast('Bank details saved.');App.back()">Save</button></div>
+  <!-- ids: TM-FL-086 -->
+  <div class="cta-bar"><button class="btn --block" id="fl-b-save" disabled onclick="FLX.bankSave()">Save</button></div>
 </section>

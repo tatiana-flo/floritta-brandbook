@@ -1,8 +1,287 @@
+<style>
+/* Today – additions of the shell/contour agent (tm-shell). Scoped to #s-home. */
+#s-home .sh-panel{margin:18px var(--gutter) 0;padding:16px;background:var(--silver)}
+#s-home .sh-panel.warn{border-left:2px solid var(--ink)}
+#s-home .sh-panel .h3{margin:0}
+#s-home .sh-panel .d{font-size:13px;color:var(--grey);margin-top:4px;line-height:1.45}
+#s-home .sh-panel .l{font-size:15px;line-height:1.35}
+#s-home .sh-panel .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+#s-home .sh-idle{margin:18px var(--gutter) 0;padding:14px 16px;border:1px solid var(--ink)}
+#s-home .sh-idle .t{font-size:15px}
+#s-home .sh-idle .cnt{font-family:var(--f-display);font-size:30px;line-height:1;margin-top:6px;font-variant-numeric:tabular-nums}
+#s-home .sh-idle .d{font-size:13px;color:var(--grey);margin-top:4px}
+#s-home .sh-idle .btns{display:flex;gap:8px;margin-top:12px}
+#s-home .sh-clock{position:relative;display:flex;align-items:center;gap:12px;margin:18px var(--gutter) 0;padding:14px 14px 16px;background:var(--silver)}
+#s-home .sh-clock .dot{position:static;width:10px;height:10px;background:var(--light);flex:none}
+#s-home .sh-clock .dot.on{background:var(--ok)}
+#s-home .sh-clock .dot.brk{background:var(--grey)}
+#s-home .sh-clock .st{font-size:15px;line-height:1.3}
+#s-home .sh-clock .sd{font-size:13px;color:var(--grey);margin-top:2px;line-height:1.4}
+#s-home .sh-clock .acts{display:flex;gap:6px;flex-direction:column;align-items:flex-end;flex:none}
+#s-home .sh-clock .btn.--busy{opacity:.55;pointer-events:none}
+#s-home .sh-closed{font-size:13px;color:var(--grey);line-height:1.4;max-width:150px;text-align:right}
+#s-home .sh-err{color:var(--accent);font-size:13px;margin:8px 0 0;line-height:1.4}
+#s-home .sh-geo{font-size:12px;color:var(--grey);margin:8px 0 0;line-height:1.4}
+#s-home .sh-sec{padding:12px var(--gutter);font-size:13px;color:var(--grey);background:var(--silver);margin:18px var(--gutter) 0}
+#s-home .sh-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);margin:18px var(--gutter) 0}
+#s-home .sh-stats button{background:var(--paper);padding:14px 10px;text-align:left}
+#s-home .sh-stats b{display:block;font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1}
+#s-home .sh-stats b.red{color:var(--accent)}
+#s-home .sh-stats span{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);margin-top:6px}
+#s-home .sh-att{display:flex;align-items:center;gap:12px;padding:14px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+#s-home .sh-att .ic{width:34px;height:34px;display:grid;place-items:center;background:var(--silver);flex:none}
+#s-home .sh-att .ic.acc{background:var(--ink);color:var(--paper)}
+#s-home .sh-att .rt{flex:1;min-width:0}
+#s-home .sh-att .l{font-size:15px;line-height:1.3}
+#s-home .sh-att .l.red{color:var(--accent)}
+#s-home .sh-att .d{font-size:13px;color:var(--grey);margin-top:2px;line-height:1.4}
+#s-home .sh-att .pill{flex:none}
+#s-home .sh-card{margin:18px var(--gutter) 0;border:1px solid var(--hair)}
+#s-home .sh-card .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid var(--hair)}
+#s-home .sh-card .hd .h4{margin:0}
+#s-home .sh-card .bd{padding:4px 16px 14px}
+#s-home .sh-card .it{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+#s-home .sh-card .it:last-child{border-bottom:0}
+#s-home .sh-card .it .f1 .l{font-size:14px}
+#s-home .sh-card .it .f1 .d{font-size:12px;color:var(--grey);margin-top:2px}
+#s-home .sh-card .sw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair)}
+#s-home .sh-card .sw .f1 .l{font-size:14px}
+#s-home .sh-card .sw .f1 .d{font-size:12px;color:var(--grey);margin-top:2px}
+#s-home .sh-card .soft-note{font-size:12px;color:var(--grey);padding:8px 0 0}
+#s-home .sh-empty{padding:14px var(--gutter);font-size:14px;color:var(--grey)}
+#s-home .sh-demo{margin:28px var(--gutter) 0;padding-top:14px;border-top:1px solid var(--hair)}
+#s-home .sh-demo .caps{margin-bottom:10px}
+#s-home .sh-demo .chips{display:flex;flex-wrap:wrap;gap:6px}
+#s-home .sh-demo .chip{height:28px;font-size:12px;padding:0 10px}
+#s-home .sh-later{margin:0 var(--gutter);display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--hair);width:calc(100% - 2*var(--gutter));text-align:left}
+#s-home .sh-later .l{font-size:15px}
+#s-home .sh-later .d{font-size:13px;color:var(--grey);margin-top:2px}
+/* View-as banner, forbidden notice and privacy shade live in the phone frame (added by script) */
+.sh-viewas{position:absolute;left:0;right:0;top:var(--safe-t);z-index:70;background:var(--ink);color:var(--paper);display:flex;align-items:center;gap:10px;padding:8px var(--gutter);font-size:13px}
+.sh-viewas b{font-weight:400;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.sh-viewas button{margin-left:auto;color:var(--paper);text-decoration:underline;font-size:13px}
+.sh-forbid{position:absolute;left:16px;right:16px;top:calc(var(--safe-t) + 44px);z-index:71;background:var(--paper);border:1px solid var(--ink);padding:12px 14px;font-size:13px;line-height:1.4}
+.sh-shade{position:absolute;inset:0;z-index:200;background:var(--paper);display:grid;place-items:center;font-family:var(--f-display);font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+</style>
+<!-- Today · the shell renders the per-role body into #td-body (mount_home in shell.html);
+     this file wraps that mount and adds the contour, courier, shelf and manager blocks of the B Today.
+     ids: TM-TODAY-001 TM-TODAY-002 TM-TODAY-003 TM-TODAY-004 TM-TODAY-048 -->
 <section class="scr" id="s-home" data-tab="home" data-nav="Today" data-group="Today">
   <div class="appbar">
     <div class="ttl"><img src="logo.svg" alt="Floritta" style="height:13px;width:auto"></div>
+    <!-- Pull-to-refresh of the real app = this button in the prototype. ids: TM-TODAY-004 -->
+    <button class="ib" aria-label="Refresh" onclick="SH.refresh()"><span class="sh-refresh"></span></button>
+    <!-- Inbox bell with unread count. ids: TM-TODAY-002 -->
     <button class="ib" aria-label="Inbox" onclick="App.go('inbox')"><span class="td-bell"></span><span class="dot" data-unread data-n="0"></span></button>
     <button class="ib" aria-label="Me" id="td-av" onclick="App.tab('me')"></button>
   </div>
   <div class="scr-body has-tab" id="td-body"></div>
+  <!--
+    Order of the Today blocks (as in the app): summary → announcement → contour panels → courier idle → clock strip →
+    showcase & close of day → manager attention → next drop → tasks → lesson → my orders → later.
+    Blocks rendered by the shell for every persona:
+      hello + summary line             ids: TM-TODAY-001 TM-TODAY-003
+      announcement card Got it / Read  ids: TM-TODAY-006 TM-TODAY-007 TM-TODAY-008
+      next drop (courier)              ids: TM-TODAY-038 TM-TODAY-039 TM-TODAY-040
+      tasks "Needs you now" + All tasks ids: TM-TODAY-041 TM-TODAY-042
+      today's lesson · Paid time       ids: TM-TODAY-043
+      my orders · My queue             ids: TM-TODAY-044 TM-TODAY-045
+      later · next shift (employee)    ids: TM-TODAY-046
+    Blocks added by this file (script below):
+      agreement panel                  ids: TM-TODAY-009 TM-BSHELL-055 TM-BSHELL-056
+      shifts panel (worker)            ids: TM-TODAY-010
+      jobs panel (self-employed)       ids: TM-TODAY-011
+      courier idle banner              ids: TM-TODAY-012 TM-TODAY-013 TM-TODAY-014
+      clock strip                      ids: TM-TODAY-015 TM-TODAY-016 TM-TODAY-017 TM-TODAY-018 TM-TODAY-019 TM-TODAY-020 TM-TODAY-021 TM-TODAY-022
+      showcase + close of day          ids: TM-TODAY-023 TM-TODAY-024 TM-TODAY-025 TM-TODAY-026 TM-TODAY-027 TM-TODAY-028 TM-TODAY-029 TM-TODAY-030 TM-TODAY-031
+      manager needs attention          ids: TM-TODAY-032 TM-TODAY-033 TM-TODAY-034 TM-TODAY-035 TM-TODAY-036 TM-TODAY-037
+      later · next booked shift (worker) ids: TM-TODAY-047
+      section boundary demo            ids: TM-TODAY-005 TM-BSHELL-050
+      reserve Today replaced           ids: TM-BSHELL-013
+      effective role vs real role      ids: TM-TODAY-049 TM-BSHELL-017
+      shift / idle push lands here     ids: TM-BSHELL-022
+    Tab bar (shell.html, not edited here): Today / Tasks / Work / Learn / Me with badges on Tasks, Work, Learn.
+      Today tab (index)                ids: TM-BSHELL-040
+      Tasks tab hidden for courier, limited, self_employed, reserve (done locally in SH.applyTabs) ids: TM-BSHELL-041
+      Work tab, "Route" for courier    ids: TM-BSHELL-042
+      Learn tab hidden on 3-tab contours ids: TM-BSHELL-043
+      Me tab                           ids: TM-BSHELL-044
+      remount on role lens / in-place on contour lens ids: TM-BSHELL-045
+      hidden tab reachable by link → Tasks redirects courier home ids: TM-BSHELL-046
+      caps labels 10.5 px, ink/grey, hairline, no font scaling ids: TM-BSHELL-047
+  -->
 </section>
+<script>
+(function(){
+const A=window.App;
+const $=(s,r=document)=>r.querySelector(s);
+const ic=(n,s=18,x='')=>A.icon(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;${x}"`);
+
+/* ---------- contours: the shell's contour layer already sets `engagement` on STAFF (employee / worker / contractor / reserve / freelance)
+   and adds Lina (reserve), Mira (self-employed), Dana (self-employed courier), Sam (freelance). Here only the admin persona is added. ---------- */
+const STAFF=window.STAFF;const P=window.PERSONAS;const addP=(id,label)=>{if(STAFF.some(s=>s.id===id)&&!P.some(p=>p.id===id))P.push({id,label})};
+addP("tatiana","Admin · owner"); /* dana добавляет шелл */
+const ENG2C={employee:"employee",worker:"worker",contractor:"self_employed",reserve:"reserve"};
+
+/* ---------- shared shell state for this prototype ---------- */
+const SH=window.SH=window.SH||{};
+SH.state=Object.assign({variant:"b",contourLens:null,viewAs:null,viewRep:null,real:null,classic:false,offline:false,pushMuted:false,
+  multiTenant:false,workspace:null,theme:"light",lang:"en",contourApi:true,agreementSigned:{},idle:null,onBreak:false,busy:false,clockErr:false,geoDenied:false,
+  brokenSection:false,noDrops:false,allClear:false,dayCloseOpen:false,dayClose:{flowers:false,shortage:false,packaging:false,photo:false,rubbish:null},shelfUnavailable:false,
+  whoseData:"mine",mustChangePassword:false,signedIn:true},SH.state||{});
+SH.realUser=()=>SH.state.viewAs?A.user(SH.state.real):A.me();
+SH.isAdmin=()=>SH.realUser().role==="owner";
+SH.role=()=>A.role()==="owner"?"manager":A.role();               /* effective role (owner = admin, sees the manager layout) */
+SH.realRole=()=>SH.realUser().role;
+SH.limited=()=>["seasonal","trainee"].includes(A.me().staff_type||"")&&SH.contour()!=="reserve";
+SH.contour=()=>{const u=A.me();const own=ENG2C[u.engagement]||"employee";if(own==="reserve")return "reserve";if(SH.state.variant!=="b")return "employee";
+  if(SH.isAdmin()&&SH.state.contourLens)return SH.state.contourLens;return own};
+SH.contoursOn=()=>SH.state.variant==="b";
+SH.threeTabs=()=>["self_employed","reserve"].includes(SH.contour());
+SH.goOr=(id,params,msg)=>{if(document.getElementById("s-"+id))A.go(id,params||{});else A.toast(msg||`Opens “${id}” – another section of the prototype`)};
+SH.refresh=()=>{A.haptic();A.toast("Refreshed · shift, tasks, lessons, announcements, my orders");if(A.state.current==="home")mount()};
+
+/* tab bar: hide Tasks / Learn by role, limited access and contour (TM-BSHELL-041/043) – done locally, shell untouched */
+SH.applyTabs=()=>{const tb=$("#tabbar");if(!tb)return;
+  const hideTasks=SH.role()==="courier"||SH.limited()||SH.threeTabs();const hideLearn=SH.threeTabs();
+  const t=$('.tab[data-tab="tasks"]',tb),l=$('.tab[data-tab="learn"]',tb),w=$('.tab[data-tab="work"]',tb);
+  if(t)t.style.display=hideTasks?"none":"";if(l)l.style.display=hideLearn?"none":"";
+  if(w){w.childNodes.forEach(n=>{if(n.nodeType===3)n.textContent=SH.role()==="courier"?"Route":"Work"})}
+  tb.style.gridTemplateColumns=`repeat(${5-(hideTasks?1:0)-(hideLearn?1:0)},1fr)`};
+document.addEventListener("screen",e=>{SH.applyTabs();
+  if(e.detail.id==="tasks"&&SH.role()==="courier"){setTimeout(()=>{A.go("home",{},{replace:true});A.toast("Tasks are not part of the courier app – back to Today")},60)}
+  if(e.detail.id==="learn"&&SH.threeTabs()){setTimeout(()=>{A.go("home",{},{replace:true});A.toast("Learn is not on this contour – back to Today")},60)}});
+document.addEventListener("user",()=>{if(SH.state.viewAs&&A.state.me!==SH.state.viewRep){SH.state.viewAs=null;SH.state.real=null}SH.applyTabs();SH.banner()});
+
+/* View-as banner (admin lens) over every screen */
+SH.banner=()=>{const host=$("#push")?$("#push").parentElement:null;if(!host)return;let b=$(".sh-viewas",host);
+  if(!SH.state.viewAs){if(b)b.remove();return}
+  if(!b){b=document.createElement("div");b.className="sh-viewas";host.appendChild(b)}
+  b.innerHTML=`${ic("eye",16)}<span><b>Viewing as ${SH.state.viewAs}</b> · ${A.user(SH.state.real).n}, data of ${SH.state.whoseData==="mine"?"you":A.user(SH.state.whoseData).n}</span><button onclick="SH.viewAs(null)">Back</button>`};
+SH.viewAs=role=>{const rep={manager:"valeria",florist:"kamila",courier:"andrii",admin:null}[role];
+  if(!role||!rep){const r=SH.state.real||"tatiana";SH.state.viewAs=null;SH.state.real=null;SH.state.viewRep=null;SH.state.whoseData="mine";A.setUser(r,{silent:true});A.go(A.state.current||"home",A.state.params,{replace:true});SH.banner();A.toast("Lens off · you are Tatiana again");return}
+  SH.state.real=SH.state.real||A.state.me;SH.state.viewAs=role;SH.state.viewRep=rep;A.setUser(rep,{silent:true});A.state.history=[];
+  A.go("home",{},{replace:true});SH.banner();A.toast(`Viewing as ${role} · tabs rebuilt for this role, your admin rights stay`)};
+SH.forbid=what=>{const host=$("#push").parentElement;let n=$(".sh-forbid",host);if(n)n.remove();n=document.createElement("div");n.className="sh-forbid";
+  n.innerHTML=`This role can’t open ${what}. You still can as admin – switch the lens off. <span class="muted">Tap to dismiss</span>`;n.onclick=()=>n.remove();host.appendChild(n);setTimeout(()=>n.remove(),6000)};
+SH.sendGuard=(what,fn)=>{if(SH.state.viewAs)A.confirm("Send to the customer?",`${what} – under the admin lens the customer still gets the real message.`,"Send",fn);else fn()};
+SH.shade=()=>{const host=$("#push").parentElement;const d=document.createElement("div");d.className="sh-shade";d.textContent="Floritta";host.appendChild(d);setTimeout(()=>d.remove(),1600)};
+
+/* ---------- Today blocks ---------- */
+const lbl=(t,r)=>`<div class="td-grp"><span>${t}</span>${r?`<span>${r}</span>`:""}</div>`;
+const dur=m=>m<60?`${m} min`:`${Math.floor(m/60)} h ${m%60} min`;
+const first=id=>A.user(id)?A.user(id).n:"";
+const isCourier=()=>SH.role()==="courier", isMgr=()=>SH.role()==="manager", realCourier=()=>SH.realRole()==="courier";
+
+/* Agreement reminder, worker "Shifts" strip, contractor jobs board and the reserve Today are rendered by the shell's contour layer
+   (panels .panel.blk in #td-body) – see ids in the comment above. Worker data: window.WK.offers. */
+const booked=()=>(window.WK&&WK.offers||[]).filter(o=>o.status==="accepted"&&o.off>=0).sort((x,y)=>x.off-y.off);
+const dayLab=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return off===0?"Today":off===1?"Tomorrow":d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})};
+SH.offers=()=>SH.goOr("schedule",{},"Opens Shift offers");
+
+function idleBanner(){if(!realCourier()||!SH.state.idle)return "";const s=SH.state.idle;
+  if(s.auto)return `<div class="sh-idle" data-sec="idle"><div class="t">On an automatic break</div><div class="d">You did not answer in 5 minutes, so the break started by itself. Tracking is paused.</div><div class="btns"><button class="btn --sm" onclick="SH.idleContinue()">Continue shift</button></div></div>`;
+  return `<div class="sh-idle" data-sec="idle"><div class="t">Start a break?</div><div class="cnt" id="sh-idle-cnt">${fmtCnt(s.left)}</div><div class="d">No movement for 12 minutes. The break starts by itself when the timer ends.</div><div class="btns"><button class="btn --sm --secondary" onclick="SH.idleRespond('break')">Start a break</button><button class="btn --sm" onclick="SH.idleRespond('working')">I’m working</button></div>${s.err?`<div class="sh-err">That did not go through. Check the connection and try again.</div>`:""}</div>`}
+const fmtCnt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+let idleT=null;
+SH.idleStart=()=>{SH.state.idle={left:299,auto:false};clearInterval(idleT);idleT=setInterval(()=>{const s=SH.state.idle;if(!s||s.auto){clearInterval(idleT);return}s.left--;const el=$("#sh-idle-cnt");if(el)el.textContent=fmtCnt(s.left);if(s.left<=0){s.auto=true;SH.state.onBreak=true;clearInterval(idleT);A.toast("Automatic break started");mount()}},1000);mount()};
+SH.idleRespond=a=>{if(SH.state.offline){SH.state.idle.err=true;mount();return}clearInterval(idleT);SH.state.idle=null;if(a==="break"){SH.state.onBreak=true;A.toast("Break started · tracking paused")}else A.toast("Thanks – we keep tracking");mount()};
+SH.idleContinue=()=>{SH.state.idle=null;SH.state.onBreak=false;A.toast("Break ended · back on shift");mount()};
+
+function clockStrip(){const c=SH.contour();if(c==="self_employed"&&!isCourier())return "";
+  const st=A.state;const on=st.clockedIn,brk=SH.state.onBreak;
+  const worked=on?dur(Math.max(0,Math.round((A.NOW-new Date(st.clockInAt))/6e4))):"";
+  let title=brk?"On a break":on?`On shift since ${A.fmtTime(st.clockInAt).replace(/^0/,"")}`:"Not clocked in";
+  const bk=booked()[0];
+  let sub=on?`${worked} worked today`:(c==="worker"?(bk&&bk.off===0?`Today booked: ${bk.hrs}`:"Nothing booked today"):"Today on the rota: 8:00–16:00");
+  let acts="";const busy=SH.state.busy?" --busy":"";
+  if(!on){const closed=c==="worker"&&SH.state.contourApi;acts=closed?`<div class="sh-closed">Clock in opens 30 min before your booked shift${bk?` · ${dayLab(bk.off)} ${bk.hrs.split("–")[0]}`:""}.</div>`:`<button class="btn --xs${busy}" onclick="SH.clock('in')">${SH.state.busy?"Saving…":"Clock in"}</button>`}
+  else if(brk)acts=`<button class="btn --xs${busy}" onclick="SH.clock('break')">End break</button>`;
+  else acts=`<button class="btn --xs --secondary${busy}" onclick="SH.clock('out')">Clock out</button><button class="btn --xs --ghost${busy}" onclick="SH.clock('break')">Break</button>`;
+  const notes=(SH.state.clockErr?`<div class="sh-err">That did not go through. Check the connection and try again.</div>`:"")+(SH.state.geoDenied&&on?`<div class="sh-geo">No location – the shift is saved without the shop check.</div>`:"");
+  return `<div class="sh-clock" data-sec="clock"><span class="dot ${brk?"brk":on?"on":""}"></span><div class="f1"><div class="st">${title}</div><div class="sd">${sub}</div>${notes}</div><div class="acts">${acts}</div></div>`}
+SH.clock=what=>{if(SH.state.busy)return;A.haptic();SH.state.busy=true;SH.state.clockErr=false;mount();
+  setTimeout(()=>{SH.state.busy=false;
+    if(SH.state.offline){SH.state.clockErr=true;mount();return}
+    if(what==="in"){const geo=isMgr()?"no location needed for managers":SH.state.geoDenied?"no location":"location sent · 80 Willow Walk";A.clock();A.toast(`Clocked in · ${geo}`);
+      if(realCourier()){A.toast("Clocked in · background tracking starts",{ms:2200});if(SH.state.geoDenied)setTimeout(()=>SH.goOr("cr-consent",{},"Opens Courier location disclosure (Courier section)"),900)}
+      mount();return}
+    if(what==="out"){A.confirm("Clock out?",`You have been on shift for ${dur(Math.round((A.NOW-new Date(A.state.clockInAt))/6e4))}. Learning minutes are already included in your hours.`,"Clock out",()=>{A.clock();SH.state.onBreak=false;if(realCourier())A.toast("Clocked out · tracking stopped");mount()});mount();return}
+    SH.state.onBreak=!SH.state.onBreak;A.toast(SH.state.onBreak?"Break started":"Break ended");mount()},600)};
+
+const SHELF=[{id:1,n:"Autumn posy · peach",by:"kamila",at:"9:40",price:38,ready:false},{id:2,n:"White spray roses",by:"vita",at:"10:05",price:45,ready:true},{id:3,n:"Dark dahlias",by:"svetlana",at:"10:30",price:52,ready:true}];
+function shelfCards(){if(isCourier()||SH.limited())return "";
+  const mine=SHELF.filter(b=>b.by===A.state.me);const list=isMgr()?SHELF:mine;
+  const rows=list.length?list.map(b=>`<button class="it" onclick="SH.shelfRow(${b.id})"><span class="f1"><span class="l" style="display:block">${b.n}</span><span class="d" style="display:block">${first(b.by)} · started ${b.at} · ${A.fmt(b.price)}</span></span>${b.ready?A.pill("done","Ready"):b.by===A.state.me?`<button class="btn --xs" onclick="event.stopPropagation();SH.shelfReady(${b.id})">Finished – send photo</button>`:A.pill("doing","Making")}</button>`).join(""):`<div class="soft-note">${isMgr()?"The shelf is empty.":"Nothing of yours on the shelf yet."}</div>`;
+  const dc=SH.state.dayClose,left=3-[dc.flowers,dc.shortage,dc.packaging].filter(Boolean).length,evening=SH.state.dayCloseOpen;
+  const sw=(k,t,d)=>`<div class="sw"><span class="f1"><span class="l" style="display:block">${t}</span><span class="d" style="display:block">${d}</span></span><button class="switch ${dc[k]?"on":""}" aria-label="${t}" onclick="SH.dayToggle('${k}')"></button></div>`;
+  const unav=SH.state.shelfUnavailable?`<div class="soft-note">Unavailable on this CRM – the shop will turn it on.</div>`:"";
+  return `<div class="sh-card" data-sec="shelf"><div class="hd"><div class="h4">Showcase</div><span class="xs muted">${SHELF.length} on the shelf</span></div><div class="bd">${rows}${unav}<div style="padding-top:12px"><button class="btn --sm --secondary" onclick="SH.shelfNew()">Bouquet for the showcase</button></div></div></div>
+  <div class="sh-card" data-sec="shelf"><div class="hd"><div class="h4">Close of day</div><div class="flex ai-c g8"><span class="xs muted">${left?`${left} left`:"Done"}</span><button class="btn --xs --ghost" onclick="SH.state.dayCloseOpen=!SH.state.dayCloseOpen;SH.mount()">${evening?"Hide":"Open"}</button></div></div>${evening?`<div class="bd">${sw("flowers","Flowers for tomorrow processed","Conditioned and in the fridge")}${sw("shortage","No shortage for tomorrow","Checked against tomorrow’s orders")}${sw("packaging","Packaging prepped","Boxes, ribbon, cards")}<div class="sw"><span class="f1"><span class="l" style="display:block">Photo of the day</span><span class="d" style="display:block">${dc.photo?"Added 17:52":"Shop floor before you leave"}</span></span><button class="btn --xs --secondary" onclick="SH.dayPhoto()">${dc.photo?"Replace photo":"Add photo"}</button></div><div class="sw" style="border-bottom:0"><span class="f1"><span class="l" style="display:block">Rubbish collected?</span><span class="d" style="display:block">${dc.rubbish===null?"The CRM opened the question at 17:00":dc.rubbish==="yes"?"Yes · 18:02":"No · the managing agents were told"+(dc.rubbishPhoto?" · photo attached":"")}</span></span>${dc.rubbish===null?`<span class="flex g6"><button class="btn --xs --secondary" onclick="SH.rubbish('no')">No</button><button class="btn --xs" onclick="SH.rubbish('yes')">Yes</button></span>`:dc.rubbish==="no"&&!dc.rubbishPhoto?`<button class="btn --xs --secondary" onclick="SH.rubbishPhoto()">Add photo</button>`:""}</div><div class="soft-note">Opens by itself from 18:00. Each switch saves at once.</div></div>`:""}</div>`}
+SH.shelfRow=id=>{const b=SHELF.find(x=>x.id===id);const row=(i,t,fn)=>`<button class="row" onclick="${fn}">${ic(i,20)}<span class="rt"><span class="l" style="display:block">${t}</span></span></button>`;
+  const mgr=isMgr()?row("tag",`Price · ${A.fmt(b.price)}`,`SH.shelfPrice(${id})`)+row("trash","Write off",`App.confirm('Write off this bouquet?','It leaves the shelf and the day’s count.','Write off',()=>{SH.shelfRemove(${id});App.toast('Written off')})`)+row("swap","Dismantled",`App.confirm('Dismantled?','Flowers go back to stock.','Dismantled',()=>{SH.shelfRemove(${id});App.toast('Dismantled – back to stock')})`):"";
+  A.sheet(`<div class="sh-head"><div class="h3">${b.n}</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><div class="sm soft">${first(b.by)} · started ${b.at} · ${b.ready?"ready, photo sent":"in the making"}</div>${b.by===A.state.me&&!b.ready?`<div style="padding:12px 0 0"><button class="btn --sm" onclick="App.closeSheet();SH.shelfReady(${id})">Finished – send photo</button></div>`:""}${mgr?`<div style="margin-top:8px">${mgr}</div>`:`<div class="xs muted" style="margin-top:12px">Price, write-off and dismantle are for managers.</div>`}</div>`)};
+SH.shelfRemove=id=>{const i=SHELF.findIndex(x=>x.id===id);if(i>=0)SHELF.splice(i,1);A.closeSheet();mount()};
+SH.shelfPrice=id=>{const b=SHELF.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Price</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><div class="field"><label>Price, £</label><input class="input" id="sh-price" inputmode="decimal" value="${b.price}" placeholder="35 or 35,50"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="SH.shelfPriceSave(${id})">Save</button></div>`)};
+SH.shelfPriceSave=id=>{const v=parseFloat(($("#sh-price").value||"").replace(",","."));if(!(v>0)){A.toast("Enter a price like 35 or 35,50");return}SHELF.find(x=>x.id===id).price=v;A.closeSheet();A.toast(`Price saved · ${A.fmt(v)}`);mount()};
+SH.shelfNew=()=>{if(SH.state.shelfUnavailable){A.toast("Unavailable on this CRM");return}A.sheet(`<div class="sh-head"><div class="h3">Bouquet for the showcase</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><div class="field"><label>What are you making</label><input class="input" id="sh-new" placeholder="e.g. Autumn posy · peach"></div><p class="xs muted" style="margin:0">Studio limit: 4 open bouquets per florist – the CRM refuses the fifth.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="SH.shelfCreate()">Start</button></div>`)};
+SH.shelfCreate=()=>{const n=($("#sh-new").value||"").trim();if(!n){A.toast("Give it a name first");return}SHELF.push({id:Date.now(),n,by:A.state.me,at:"11:12",price:0,ready:false});A.closeSheet();A.toast("On the shelf · send the photo when it’s done");mount()};
+SH.shelfReady=id=>{A.sheet(`<div class="sh-head"><div class="h3">Finished – send photo</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><div class="field"><label>Price, £ (optional)</label><input class="input" id="sh-rp" inputmode="decimal" placeholder="35"></div><button class="row" onclick="SH.shelfReadyDone(${id},'camera')">${ic("camera",20)}<span class="rt"><span class="l" style="display:block">Take a photo</span><span class="d" style="display:block">Daylight by the window</span></span></button><button class="row" onclick="SH.shelfReadyDone(${id},'library')">${ic("photo",20)}<span class="rt"><span class="l" style="display:block">Choose from library</span></span></button><p class="xs muted" style="margin:12px 0 0">The photo is required. It counts the bouquet into today’s bonus.</p></div>`)};
+SH.shelfReadyDone=(id,src)=>{if(SH.state.offline){A.toast("No connection – the photo is kept, tap Retry when back online",{action:{label:"Retry",onclick:`SH.shelfReadyDone(${id},'${src}')`}});return}
+  SH.sendGuard("Showcase photo to the shop feed",()=>{const b=SHELF.find(x=>x.id===id);if(b){b.ready=true;const p=parseFloat(($("#sh-rp")&&$("#sh-rp").value||"").replace(",","."));if(p>0)b.price=p}A.closeSheet();A.toast("Ready · photo sent, counted for today’s bonus");mount()})};
+SH.dayToggle=k=>{if(SH.state.offline){A.toast("No connection – not saved");return}SH.state.dayClose[k]=!SH.state.dayClose[k];A.toast("Saved");mount()};
+SH.dayPhoto=()=>{A.sheet(`<div class="sh-head"><div class="h3">Photo of the day</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><button class="row" onclick="SH.state.dayClose.photo=true;App.closeSheet();App.toast('Photo saved');SH.mount()">${ic("camera",20)}<span class="rt"><span class="l" style="display:block">Take a photo</span></span></button><button class="row" onclick="SH.state.dayClose.photo=true;App.closeSheet();App.toast('Photo saved');SH.mount()">${ic("photo",20)}<span class="rt"><span class="l" style="display:block">Choose from library</span></span></button></div>`)};
+SH.rubbish=v=>{if(v==="yes"){SH.state.dayClose.rubbish="yes";A.toast("Saved · rubbish collected");mount();return}SH.rubbishPhoto(true)};
+SH.rubbishPhoto=(first)=>{A.sheet(`<div class="sh-head"><div class="h3">Rubbish not collected</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 8px">The CRM tells the managing agents. A photo helps them act.</p><button class="row" onclick="SH.rubbishSave(true)">${ic("camera",20)}<span class="rt"><span class="l" style="display:block">Take a photo</span></span></button><button class="row" onclick="SH.rubbishSave(true)">${ic("photo",20)}<span class="rt"><span class="l" style="display:block">Choose from library</span></span></button>${first?`<button class="row" onclick="SH.rubbishSave(false)">${ic("send",20)}<span class="rt"><span class="l" style="display:block">Send without photo</span></span></button>`:""}</div>`)};
+SH.rubbishSave=ph=>{SH.state.dayClose.rubbish="no";if(ph)SH.state.dayClose.rubbishPhoto=true;A.closeSheet();A.toast("Sent to the managing agents");mount()};
+
+function managerRows(){if(!isMgr())return "";
+  if(SH.state.allClear)return `<div class="sh-stats" data-sec="manager"><button onclick="App.tab('work')"><b>7</b><span>Orders today</span></button><button onclick="TD.whoIsOn()"><b>6</b><span>On shift</span></button><button onclick="SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')"><b>0</b><span>Not paid</span></button></div><div class="sh-empty">All clear – nothing needs you right now.</div>`;
+  const row=(i,c,l,d,pill,go,red)=>`<button class="sh-att" onclick="${go}"><span class="ic ${c}">${ic(i,18)}</span><span class="rt"><span class="l ${red?"red":""}" style="display:block">${l}</span><span class="d" style="display:block">${d}</span></span>${pill}</button>`;
+  return `<div class="sh-stats" data-sec="manager"><button onclick="App.tab('work')"><b>7</b><span>Orders today</span></button><button onclick="TD.whoIsOn()"><b>6</b><span>On shift</span></button><button onclick="SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')"><b class="red">3</b><span>Not paid</span></button></div>
+  <div data-sec="manager">${row("truck","","2 couriers wait for a route","Andrii, Oleh · trips not confirmed",A.pill("review","To check"),"SH.goOr('work',{view:'deliveries'})")}${row("flag","","1 order not confirmed","715627 · placed 10:52",A.pill("plain","Orders"),"SH.goOr('work',{view:'orders'})")}${row("edit","","2 orders with details missing","715602, 715623 · vase colour, card text",A.pill("plain","Orders"),"SH.goOr('work',{view:'orders'})")}${row("sparkle","acc","1 order needs special attention","Wedding arch · Sat 24 Oct, early delivery",A.pill("urgent","Urgent"),"SH.goOr('work',{view:'orders',tab:'attention'})",true)}${row("tag","acc","3 orders not paid – Chase the payment","£319 · links sent, 24 h to pay",A.pill("urgent","Urgent"),"SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')",true)}</div>`}
+
+function laterWorker(){if(SH.contour()!=="worker"||!SH.state.contourApi)return "";const b=booked()[0];if(!b)return "";
+  return `<div class="td-later" data-sec="later">${lbl("Later")}<button class="sh-later" onclick="SH.offers()">${ic("calendar",22,"stroke:var(--grey)")}<span class="f1"><span class="l" style="display:block">Next shift · ${dayLab(b.off)}</span><span class="d" style="display:block">${b.hrs} · ${b.place}</span></span>${b.note?A.pill("urgent","Urgent"):""}${A.icon("chev").replace("<svg",'<svg class="chev"')}</button></div>`}
+
+function demoRow(){const c=(t,on,fn)=>`<button class="chip ${on?"on":""}" onclick="${fn}">${t}</button>`;const s=SH.state;
+  return `<div class="sh-demo"><div class="caps muted">Prototype · demo states</div><div class="chips">${c("Offline",s.offline,"SH.state.offline=!SH.state.offline;App.toast(SH.state.offline?'Offline – reads from cache, writes fail at once':'Back online – screens refresh');SH.mount()")}${c("Clock error",s.clockErr,"SH.state.clockErr=!SH.state.clockErr;SH.mount()")}${c("No location",s.geoDenied,"SH.state.geoDenied=!SH.state.geoDenied;SH.mount()")}${realCourier()?c("Idle banner",!!s.idle,"SH.state.idle?(SH.state.idle=null,SH.mount()):SH.idleStart()")+c("No drops",s.noDrops,"SH.state.noDrops=!SH.state.noDrops;SH.mount()"):""}${isMgr()?c("All clear",s.allClear,"SH.state.allClear=!SH.state.allClear;SH.mount()"):""}${!isCourier()&&!SH.limited()?c("Evening (18:00)",s.dayCloseOpen,"SH.state.dayCloseOpen=!SH.state.dayCloseOpen;SH.mount()")+c("Shelf 404",s.shelfUnavailable,"SH.state.shelfUnavailable=!SH.state.shelfUnavailable;SH.mount()"):""}${c("Break a section",s.brokenSection,"SH.state.brokenSection=!SH.state.brokenSection;SH.mount()")}${SH.contour()!=="employee"?c("Contour API 404",!s.contourApi,"SH.state.contourApi=!SH.state.contourApi;App.toast(SH.state.contourApi?'Contour endpoints answer':'404/403 from the CRM – contour blocks hidden, no retries');SH.mount()"):""}${c("Shift push","","App.push('Shift','Your shift starts in 30 minutes · 12:00',{icon:'clock',go:['home',{}]})")}</div><div class="xs muted mt12">Loading and errors of blocks are never shown on Today: no data – no block, no skeleton. Only the clock strip and the idle banner show their own errors.</div></div>`}
+
+/* insert helpers for the shell-rendered body */
+function after(body,sel,html){if(!html)return;const el=sel?body.querySelector(sel):null;const t=document.createElement("div");t.innerHTML=html;const nodes=[...t.childNodes];
+  if(el)nodes.reverse().forEach(n=>el.after(n));else nodes.forEach(n=>body.prepend(n))}
+function before(body,sel,html){if(!html)return;const el=body.querySelector(sel);if(!el){after(body,null,html);return}const t=document.createElement("div");t.innerHTML=html;[...t.childNodes].forEach(n=>el.before(n))}
+function removeBlock(body,textStart){const heads=[...body.querySelectorAll(".td-grp,.sec-head")];const h=heads.find(x=>x.textContent.trim().startsWith(textStart));if(!h)return;
+  let n=h.nextSibling;h.remove();while(n&&!(n.nodeType===1&&(n.matches(".td-grp,.sec-head,.td-later,.sh-demo")))){const nx=n.nextSibling;n.remove();n=nx}}
+function breakSection(body){const el=body.querySelector(".ann")||body.querySelector(".sh-panel")||body.querySelector(".td-grp");if(!el)return;const d=document.createElement("div");d.className="sh-sec";d.textContent="This part didn’t load. Pull down to refresh.";el.replaceWith(d)}
+
+const orig=window.mount_home;
+function mount(){
+  if(orig)orig();
+  SH.applyTabs();SH.banner();
+  const body=$("#td-body");if(!body)return;
+  const rf=$(".sh-refresh");if(rf)rf.innerHTML=A.icon("repeat");
+  const c=SH.contour();
+  if(!SH.state.contourApi)body.querySelectorAll(".panel.blk").forEach(n=>n.remove());
+  if(c==="reserve"||(c==="self_employed"&&!isCourier())){body.insertAdjacentHTML("beforeend",demoRow());return}   /* Today of the reserve / contractor is the shell's */
+  /* clock strip: replace the shell's with the full B strip */
+  const old=body.querySelector(".td-shift");const strip=clockStrip();
+  if(old){if(strip){const t=document.createElement("div");t.innerHTML=strip;old.replaceWith(t.firstChild)}else old.remove()}
+  else if(strip)after(body,".td-hello",strip);
+  const hasStrip=!!body.querySelector(".sh-clock");
+  /* the shell's contour panels (agreement, shifts) go between the summary and the clock strip, as in the app */
+  const anchor=body.querySelector(hasStrip?".sh-clock":".td-hello");
+  if(anchor)body.querySelectorAll(".panel.blk").forEach(n=>{if(hasStrip)anchor.before(n);else anchor.after(n)});
+  if(hasStrip)before(body,".sh-clock",idleBanner());else after(body,".td-hello",idleBanner());
+  after(body,hasStrip?".sh-clock":".td-hello",shelfCards()+managerRows());
+  if(SH.limited()||isCourier())removeBlock(body,"Tasks");
+  if(c==="worker"){const tl=body.querySelector(".td-later");if(tl)tl.remove();body.insertAdjacentHTML("beforeend",laterWorker())}
+  if(SH.state.noDrops){const l=body.querySelector(".live");if(l){const pad=l.closest(".pad");let n=pad&&pad.nextSibling;if(pad)pad.remove();while(n&&!(n.nodeType===1&&n.matches(".sec-head,.td-grp"))){const nx=n.nextSibling;n.remove();n=nx}}
+    const hello=body.querySelector(".td-hello p");if(hello)hello.textContent="No drops left today."}
+  if(SH.state.brokenSection)breakSection(body);
+  body.insertAdjacentHTML("beforeend",demoRow());
+}
+SH.mount=mount;
+window.mount_home=function(){mount()};
+})();
+</script>

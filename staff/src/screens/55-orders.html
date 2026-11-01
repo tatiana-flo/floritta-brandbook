@@ -1,0 +1,320 @@
+<style>
+/* ===== 55-orders · prefix ob- (board, new order, not sent, unpaid) – uses o5- helpers from 11-order ===== */
+#s-ord-board .scr-body{padding-bottom:calc(var(--tab-h) + var(--safe-b) + 24px)}
+.ob-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter) 0}
+.ob-tabs::-webkit-scrollbar{display:none}
+.ob-tab{flex:none;height:34px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border:1px solid var(--light);background:var(--paper);white-space:nowrap}
+.ob-tab b{font-weight:400;color:var(--grey);font-variant-numeric:tabular-nums}
+.ob-tab.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ob-tab.on b{color:rgba(253,253,253,.7)}
+.ob-tab.--alert{background:var(--accent);border-color:var(--accent);color:#fff}
+.ob-tab.--alert b{color:rgba(255,255,255,.8)}
+.ob-tab.--alert.on{box-shadow:inset 0 0 0 2px var(--ink)}
+.ob-search{display:flex;gap:8px;align-items:center;padding:12px var(--gutter) 0}
+.ob-search .input-wrap{flex:1}
+.ob-search .input{height:44px}
+.ob-shift{padding:10px var(--gutter) 0;font-size:12px;color:var(--grey)}
+.ob-shift b{font-weight:400;color:var(--graphite)}
+.ob-banner{margin:12px var(--gutter) 0;padding:12px 14px;background:var(--warn-bg);font-size:13px;display:flex;align-items:center;gap:10px}
+.ob-banner .btn{flex:none}
+.ob-banner.--ink{background:var(--silver)}
+.ob-row{display:flex;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair);position:relative;width:100%;text-align:left}
+.ob-row.--att{box-shadow:inset 3px 0 0 var(--accent)}
+.ob-row.--qchg{box-shadow:inset 3px 0 0 var(--ink)}
+.ob-row.--apv-ok{box-shadow:inset 3px 0 0 var(--ok)}
+.ob-row.--apv-fb{box-shadow:inset 3px 0 0 var(--warn)}
+.ob-th{width:64px;align-self:stretch;min-height:96px;flex:none;position:relative;background:var(--silver);overflow:hidden}
+.ob-th img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.ob-th .more{position:absolute;right:0;bottom:0;background:var(--ink);color:var(--paper);font-size:10px;padding:2px 5px}
+.ob-th .ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--grey)}
+.ob-th .ph svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5}
+.ob-num{position:absolute;left:0;top:0;width:22px;height:22px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:12px;font-weight:500;z-index:2}
+.ob-main{flex:1;min-width:0}
+.ob-l1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ob-code{font-family:var(--f-display);font-size:18px;font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
+.ob-crm{font-size:11px;color:var(--grey)}
+.ob-l2{font-size:13px;color:var(--graphite);margin-top:3px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ob-items{font-size:13px;color:var(--ink);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.35}
+.ob-l3{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--grey);flex-wrap:wrap}
+.ob-l3 .sp{flex:1}
+.ob-l3 .tot{color:var(--ink);font-size:14px;font-variant-numeric:tabular-nums}
+.ob-l3 svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5;vertical-align:-2px}
+.ob-chip{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 7px;font-size:10px;letter-spacing:.04em;text-transform:uppercase;background:var(--silver);color:var(--graphite)}
+.ob-chip.--ok{background:var(--ok-bg);color:var(--ok)}.ob-chip.--fb{background:var(--warn-bg);color:var(--warn)}.ob-chip.--new{background:var(--ink);color:var(--paper)}.ob-chip.--moved{background:var(--silver);color:var(--ink)}.ob-chip.--removed{background:var(--accent-bg);color:var(--accent)}.ob-chip.--day{border:1px solid var(--light);background:transparent}
+.ob-chip svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.8}
+.ob-act{margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ob-act button.o5-plate{cursor:pointer}
+.ob-act .sub{font-size:11px;color:var(--grey)}
+.ob-act .sub.err{color:var(--accent)}
+.ob-act .sm-ed{font-size:12px;color:var(--graphite);border-bottom:1px solid var(--light)}
+.ob-sec{display:flex;align-items:baseline;gap:10px;margin:22px var(--gutter) 6px}
+.ob-sec .h3{flex:1}
+.ob-sec .n{font-size:12px;color:var(--grey)}
+.ob-foot{padding:16px var(--gutter);font-size:12px;color:var(--grey);text-align:center}
+.ob-redirect{margin:24px var(--gutter) 0}
+.ob-day{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ob-day button{height:52px;border:1px solid var(--light);font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ob-day button small{font-size:10px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase}
+.ob-day button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ob-day button.on small{color:rgba(253,253,253,.7)}
+.ob-dc{margin:18px var(--gutter) 0;border:1px solid var(--light);padding:14px}
+.ob-dc .hd{display:flex;align-items:center;gap:10px}
+.ob-dc .hd .h4{flex:1}
+.ob-dc .sw{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.ob-dc .sw .switch{margin-left:auto}
+.ob-dc .ph{width:88px;height:88px;background:var(--silver);overflow:hidden;position:relative}
+.ob-dc .ph img{width:100%;height:100%;object-fit:cover}
+/* new order */
+#s-ord-new .scr-body{padding-bottom:calc(var(--btn-h) + 56px + var(--safe-b))}
+.on-lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin:26px var(--gutter) 10px}
+.on-sug{margin:0 var(--gutter)}
+.on-sug button{display:flex;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.on-sug button span:last-child{color:var(--grey);flex:none}
+.on-cust{display:flex;align-items:center;gap:10px;margin:0 var(--gutter);padding:10px 12px;border:1px solid var(--ink)}
+.on-cust .x{margin-left:auto;width:28px;height:28px;display:grid;place-items:center}
+.on-cust .x svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.on-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--hair);margin:0 var(--gutter);font-size:14px}
+.on-item .f1 small{display:block;color:var(--grey);font-size:12px}
+.on-err{margin:0 var(--gutter) 8px;font-size:13px;color:var(--accent)}
+/* unsent */
+.un-row{padding:14px var(--gutter);border-bottom:1px solid var(--hair)}
+.un-row .t{font-size:15px}
+.un-row .s{font-size:12px;color:var(--grey);margin-top:3px}
+.un-row .s.--red{color:var(--accent)}
+.un-row .s.--amber{color:var(--warn)}
+.un-row .b{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+/* unpaid */
+.up-row{display:block;width:100%;text-align:left;padding:14px var(--gutter);border-bottom:1px solid var(--hair)}
+.up-row .l1{display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.up-row .l1 b{font-weight:500;font-variant-numeric:tabular-nums}
+.up-row .l2{font-size:13px;color:var(--graphite);margin-top:3px}
+.up-row .l3{font-size:12px;color:var(--grey);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap}
+.up-row .l3 .ok{color:var(--ok)}
+</style>
+
+<!-- ======================= ORDERS BOARD (Work · internal) ======================= -->
+<!-- ids: TM-CLASSIC-001 TM-CLASSIC-002 TM-CLASSIC-003 TM-CLASSIC-004 TM-CLASSIC-005 TM-CLASSIC-006 TM-CLASSIC-007 TM-CLASSIC-008 TM-CLASSIC-009 TM-CLASSIC-010 TM-CLASSIC-011 TM-CLASSIC-012 TM-CLASSIC-013 TM-CLASSIC-014 TM-CLASSIC-015 TM-CLASSIC-016 TM-CLASSIC-017 TM-CLASSIC-018 TM-CLASSIC-019 TM-CLASSIC-020 TM-CLASSIC-021 TM-CLASSIC-022 TM-CLASSIC-023 TM-CLASSIC-024 TM-CLASSIC-025 TM-CLASSIC-026 TM-CLASSIC-034 TM-CLASSIC-036 TM-CLASSIC-037 TM-CLASSIC-038 TM-CLASSIC-039 TM-CLASSIC-040 TM-CLASSIC-041 – доска заказов: вкладки по роли, счётчики, красная «Special attention», ?tab= из пуша, поиск, «+», «Другой день», pull-to-refresh, бесконечный скролл, опрос «моей» вкладки, «на смене», баннер пароля, карточка (фото, канал, код, слот, состав, флорист/сумма, SLA, кромки, чипы), плашка-кнопка статуса, личная очередь, «Закрытые», пустые состояния -->
+<!-- ids: TM-CLASSIC-110 TM-CLASSIC-111 TM-CLASSIC-112 TM-CLASSIC-113 – карточка «Закрытие дня» внизу доски (OB.dayClose, демо «Evening») -->
+<!-- ids: TM-ORDER-067 – «+» скрыт у стажёра -->
+<section class="scr" id="s-ord-board" data-tab="work" data-nav="Orders board" data-group="Work · Orders">
+  <div class="appbar" id="ob-bar"></div>
+  <div class="scr-body has-tab" id="ob-body"></div>
+</section>
+
+<!-- ======================= NEW ORDER ======================= -->
+<!-- ids: TM-ORDER-060 TM-ORDER-061 TM-ORDER-062 TM-ORDER-063 TM-ORDER-064 TM-ORDER-065 TM-ORDER-066 TM-ORDER-067 TM-ORDER-068 -->
+<section class="scr" id="s-ord-new" data-nav="New order" data-group="Work · Orders">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('ord-board')"></button><div class="ttl">New order</div></div>
+  <div class="scr-body" id="on-body"></div>
+  <div class="cta-bar" id="on-cta"></div>
+</section>
+
+<!-- ======================= NOT SENT (offline queue) ======================= -->
+<!-- ids: TM-CLASSIC-050 TM-CLASSIC-051 TM-CLASSIC-052 TM-CLASSIC-053 TM-CLASSIC-054 TM-CLASSIC-055 TM-CLASSIC-056 TM-CLASSIC-057 TM-CLASSIC-058 TM-ORDER-023 -->
+<section class="scr" id="s-ord-unsent" data-nav="Not sent (offline queue)" data-group="Work · Orders">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('ord-board')"></button><div class="ttl">Not sent</div></div>
+  <div class="scr-body" id="un-body"></div>
+</section>
+
+<!-- ======================= UNPAID ======================= -->
+<!-- ids: TM-CLASSIC-060 TM-CLASSIC-061 TM-CLASSIC-062 TM-CLASSIC-063 TM-CLASSIC-064 TM-CLASSIC-065 -->
+<section class="scr" id="s-ord-unpaid" data-nav="Unpaid orders" data-group="Work · Orders">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('ord-board')"></button><div class="ttl">Unpaid</div></div>
+  <div class="scr-body" id="up-body"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App, I=A.icon, T=A.T;
+const $=id=>document.getElementById(id);
+const O5=()=>window.O5;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.querySelectorAll('#s-ord-new .appbar .ib,#s-ord-unsent .appbar .ib,#s-ord-unpaid .appbar .ib').forEach(b=>b.innerHTML=I('back'));
+/* ======================= BOARD ======================= */
+const OB=window.OB={tab:null,q:'',day:null,ackQueue:false,search:false,dc:{flowers:false,shortage:false,packaging:false,photo:null,rubbish:null,rubbishPhoto:null,open:false}};
+let qTimer=null;
+const TABS=(first,florist)=>florist?[['todo','Not ready'],['today','Today'],['mine',first],['handover','To hand over'],['tomorrow','Tomorrow'],['attention','Special attention'],['other','Other day'],['closed','Closed']]
+  :[['today','Today'],['todo','Not ready'],['mine',first],['handover','To hand over'],['delivering','Delivering'],['tomorrow','Tomorrow'],['attention','Special attention'],['other','Other day'],['closed','Closed']];
+const open=o=>o.status!=='fulfilled'&&o.status!=='cancelled';
+const closed24=o=>(o.status==='fulfilled'||o.status==='cancelled')&&(O5().now()-new Date(o.fulfilledAt||o.cancelledAt||0))<864e5;
+OB.filter=(tab)=>{const O=O5(),me=A.state.me;const all=O.orders;
+  if(OB.q){const q=OB.q.toLowerCase();return all.filter(o=>o.code.includes(q)||(o.crmCode||'').toLowerCase().includes(q)||o.customer.name.toLowerCase().includes(q)||(o.recipient||'').toLowerCase().includes(q)||(o.postcode||'').toLowerCase().includes(q)||o.items.some(i=>i.title.toLowerCase().includes(q)))}
+  switch(tab){
+    case 'today':return all.filter(o=>o.date===O.TODAY&&open(o));
+    case 'todo':return all.filter(o=>o.date===O.TODAY&&(o.status==='unconfirmed'||o.status==='in_production'));
+    case 'mine':return all.filter(o=>open(o)&&(o.assignedTo===me||(o.queue&&o.queue.florist===me)));
+    case 'handover':return all.filter(o=>o.status==='ready');
+    case 'delivering':return all.filter(o=>o.status==='out_for_delivery');
+    case 'tomorrow':return all.filter(o=>o.date===O.TOMORROW&&open(o));
+    case 'attention':return all.filter(o=>o.attention&&o.attention.on&&open(o));
+    case 'other':return OB.day?all.filter(o=>o.date===OB.day):[];
+    case 'closed':return all.filter(closed24);
+  }return []};
+OB.counts=tabs=>Object.fromEntries(tabs.map(t=>[t[0],t[0]==='other'?null:OB.filter(t[0]).length]));
+const chan=o=>`<span class="o5-channel --${o.channel}">${O5().CH[o.channel]||o.channel}</span>`;
+const itemsLine=o=>o.items.map(i=>`${i.qty}× ${esc(i.title)}`).join(', ');
+const approvalChip=o=>{const ap=o.approval;if(!ap||ap.acked||!ap.replies.length)return '';return ap.verdict==='approved'?`<span class="ob-chip --ok">${I('check')} Customer approved</span>`:`<span class="ob-chip --fb">${I('chat')} Changes / feedback</span>`};
+const queueChip=o=>o.queue&&o.queue.changed&&!OB.ackQueue?`<span class="ob-chip --${o.queue.changed}">${{moved:'Moved',new:'New',removed:'Removed'}[o.queue.changed]}</span>`:'';
+/* board status button – one next step, coloured by the current status, labelled by the next */
+OB.plateBtn=o=>{const O=O5(),R=O.roles(),s=o.status,c=o.code;const multi=o.unitCount>1,us=O.unitSummary(o);const taken=!!o.assignedTo;
+  const btn=(label,fn,opts={})=>`<button class="o5-plate --${opts.neutral?'unconfirmed':s}" onclick="event.stopPropagation();${fn}">${label} ›</button>`;
+  if(R.trainee||R.courier)return O.plate(o,null,{static:true});
+  if(s==='unconfirmed')return btn('Confirm',`O5.confirm('${c}')`,{neutral:true});
+  if(s==='in_production'&&multi&&!us.done)return btn(`Take order · ${us.done}/${us.total}`,`O5.itemFlorists('${c}')`);
+  if(s==='in_production'&&!taken)return btn('Take order',`O5.pickFlorist('${c}')`);
+  if(s==='in_production')return btn('Ready',`O5.pressReady('${c}')`)+(multi?`<button class="sm-ed" onclick="event.stopPropagation();O5.itemFlorists('${c}')">Take order · ${us.done}/${us.total} ✎</button>`:`<button class="sm-ed" onclick="event.stopPropagation();O5.pickFlorist('${c}')">With ${O.nm(o.assignedTo)} ✎</button>`);
+  if((s==='ready'||s==='out_for_delivery')&&O.isCollection(o))return btn('Collected',`O5.complete('${c}')`);
+  if(s==='ready'&&!O.noMethod(o))return btn('Hand to courier',`O5.dispatch('${c}')`);
+  if(s==='out_for_delivery'&&R.canManage&&!O.noMethod(o))return btn('Confirm delivery',`App.go('order',{code:'${c}'})`);
+  return O.plate(o,null,{static:true})};
+OB.row=(o,opts={})=>{const O=O5();const first=o.items[0]||{};const cls=o.attention&&o.attention.on?'--att':o.approval&&!o.approval.acked&&o.approval.replies.length?(o.approval.verdict==='approved'?'--apv-ok':'--apv-fb'):o.queue&&o.queue.changed&&!OB.ackQueue?'--qchg':'';
+  const closed=opts.closed;const n=opts.num;
+  const l2=closed?`<span>${O.dayLabel(o.date)}${o.slot?' · '+esc(o.slot):''}</span>`:`<span>${o.method==='collection'?'Collection':o.slot?esc(o.slot):'no slot'}${o.method==='delivery'&&o.postcode?' · '+esc(o.postcode):''}${O.noMethod(o)?' · <span class="accent">no method</span>':''}</span>`;
+  const who=closed?`${I('flower')} ${O.units(o).map(u=>o.itemFlorists[u.key]?O.nm(o.itemFlorists[u.key])+': '+esc(u.title.split(' · ')[0]):null).filter(Boolean).join(' · ')||(o.assignedTo?O.nm(o.assignedTo):'nobody named')}`:(o.assignedTo?`${I('flower')} ${O.nm(o.assignedTo)}`:esc(o.customer.name));
+  const tot=closed?'':`<span class="tot">${A.fmt(o.money?o.money.total:o.total)}</span>`;
+  const qline=!closed&&o.queue&&OB.tab!=='mine'&&!OB.q?`<span class="xs muted">Queue: ${O.nm(o.queue.florist)} №${o.queue.position}</span>`:'';
+  const dayBadge=opts.num&&o.date!==O.TODAY?`<span class="ob-chip --day">For ${O.dayLabel(o.date).toLowerCase()}</span>`:'';
+  const notice=o.offlineNotice?`<span class="sub ${o.offlineNotice.err?'err':''}">${o.offlineNotice.err||'Saved on this phone'}</span>`:'';
+  return `<div class="ob-row ${cls}" onclick="${closed?`O5.itemFlorists('${o.code}',{closed:true})`:`App.go('order',{code:'${o.code}'})`}"><div class="ob-th">${n?`<span class="ob-num">${n}</span>`:''}${first.img?`<img src="${first.img}" alt="">`:`<span class="ph">${I('flower')}</span>`}${o.items.length>1?`<span class="more">+${o.items.length-1}</span>`:''}</div><div class="ob-main"><div class="ob-l1">${chan(o)}<span class="ob-code">№${o.code}</span>${o.crmCode?`<span class="ob-crm">CRM ${o.crmCode}</span>`:''}${o.attention&&o.attention.on?`<span class="accent">${I('flag').replace('<svg','<svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;vertical-align:-2px"')}</span>`:''}<span style="margin-left:auto">${closed?'':O.sla(o)}</span></div><div class="ob-l2">${l2}${approvalChip(o)}${queueChip(o)}${dayBadge}</div><div class="ob-items">${itemsLine(o)}</div><div class="ob-l3"><span>${who}</span>${qline}<span class="sp"></span>${tot}</div><div class="ob-act">${closed?`<button class="o5-plate --in_production" onclick="event.stopPropagation();O5.itemFlorists('${o.code}',{closed:true})">Who made it ›</button>${O.plate(o,null,{sm:true,static:true})}`:OB.plateBtn(o)}${notice}</div></div></div>`};
+OB.setTab=t=>{OB.tab=t;if(t==='other'&&!OB.day){OB.dayPicker();return}OB.render()};
+OB.dayPicker=()=>{const O=O5();const days=[];for(let i=-3;i<=16;i++){if(i===0||i===1)continue;days.push(O.addDays(O.TODAY,i))}
+  A.sheet(`<!-- ids: TM-CLASSIC-009 --><div class="sh-head"><div class="h3">Which day?</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="xs muted mb12">Three days back and two weeks ahead – today and tomorrow have their own tabs.</div><div class="ob-day">${days.map(d=>{const x=new Date(d+'T12:00:00');return `<button class="${OB.day===d?'on':''}" onclick="OB.pickDay('${d}')"><small>${x.toLocaleDateString('en-GB',{weekday:'short'})}</small>${x.getDate()} ${x.toLocaleDateString('en-GB',{month:'short'})}</button>`}).join('')}</div></div>`,{full:true})};
+OB.pickDay=d=>{OB.day=d;OB.tab='other';App.closeSheet();OB.render()};
+OB.input=v=>{clearTimeout(qTimer);qTimer=setTimeout(()=>{OB.q=v.trim();OB.render(true)},300)};
+OB.toggleSearch=()=>{OB.search=!OB.search;if(!OB.search){OB.q=''}OB.render();if(OB.search){const i=$('ob-q');if(i)i.focus()}};
+OB.refresh=()=>{A.toast('Board and dashboard refreshed');OB.render()};
+OB.ack=()=>{OB.ackQueue=true;O5().orders.forEach(o=>{if(o.queue&&o.queue.changed==='removed')o.queue=null;else if(o.queue)o.queue.changed=null});A.toast('Queue changes acknowledged');OB.render()};
+OB.pushQueue=()=>A.push('Queue changed','Valeria moved #715611 to №2 in your queue',{icon:'list',go:['ord-board',{tab:'mine'}]});
+OB.brokenLink=()=>App.go('order',{code:'NaN'});
+window.mount_ord_board=function(p){
+  const O=O5(),R=O.roles(),me=A.me();
+  if(p&&p.tab&&p.tab!==OB.seenTab){OB.seenTab=p.tab;OB.tab=p.tab}
+  if(!OB.tab)OB.tab=R.florist?'todo':'today';
+  OB.render(false,p)};
+OB.render=(keepFocus,p)=>{const O=O5(),R=O.roles(),me=A.me();
+  $('ob-bar').innerHTML=`<div class="ttl">Orders</div>${R.courier?'':`<button class="ib" aria-label="Search" onclick="OB.toggleSearch()">${I('search')}</button>`}${!R.trainee&&!R.courier?`<button class="ib" aria-label="New order" onclick="App.go('ord-new')">${I('plus')}</button>`:''}`;
+  let h=O.demoBar(R.mgr?['offline','viewAs','tempPass','evening','loadError']:['offline','tempPass','evening','loadError']);
+  h+=`<div class="o5-demo" style="padding-top:4px"><span class="lbl">Demo</span><button class="chip" onclick="OB.pushQueue()">Push: queue changed</button><button class="chip" onclick="OB.brokenLink()">Broken link</button><button class="chip" onclick="App.go('ord-unsent')">Not sent</button>${R.mgr?`<button class="chip" onclick="App.go('ord-unpaid')">Unpaid</button><button class="chip" onclick="App.go('ord-due')">Due customers</button><button class="chip" onclick="App.go('ord-leads')">Site leads</button><button class="chip" onclick="App.go('ord-calls')">Missed calls</button>`:''}</div>`;
+  if(R.courier){h+=`<div class="ob-redirect panel"><div class="h4">Couriers do not see the board</div><div class="sm soft mt4">The app redirects you to Deliveries (or to Shift if you have no driver rights).</div><button class="btn --sm mt12" onclick="App.go('route')">${I('route')} Open deliveries</button></div>`;$('ob-body').innerHTML=h;return}
+  h+=O.offlineBanner();
+  if(O.demo.tempPass)h+=`<button class="ob-banner" style="width:calc(100% - 2*var(--gutter))" onclick="App.go('settings')">${I('lock')}<span class="f1">Change your temporary password</span>${I('chev')}</button>`;
+  if(R.florist&&!R.trainee)h+=`<div class="ob-shift">On shift now: <b>${window.STAFF.filter(s=>s.onShift&&s.role!=='courier'&&s.id!==me.id).map(s=>s.n).join(', ')}</b></div>`;
+  if(OB.search||OB.q)h+=`<div class="ob-search"><div class="input-wrap">${I('search')}<input class="input" id="ob-q" placeholder="Code, customer, postcode, item…" value="${esc(OB.q)}" oninput="OB.input(this.value)"></div><button class="textbtn" onclick="OB.toggleSearch()">Cancel</button></div>`;
+  const tabs=TABS(me.n,R.florist),counts=OB.counts(tabs);
+  if(!OB.q)h+=`<div class="ob-tabs">${tabs.map(t=>{const alert=t[0]==='attention';const n=counts[t[0]];const lab=t[0]==='other'&&OB.day?O.dayLabel(OB.day):t[1];return `<button class="ob-tab ${OB.tab===t[0]?'on':''} ${alert?'--alert':''}" onclick="${t[0]==='other'?'OB.dayPicker()':`OB.setTab('${t[0]}')`}">${lab}${n!=null&&!(alert&&!n)?`<b>${n}</b>`:''}</button>`}).join('')}</div>`;
+  h+=`<button class="o5-pull" style="width:100%;text-align:center;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding:10px 0 0" onclick="OB.refresh()">↓ Pull to refresh</button>`;
+  if(O.demo.loadError){h+=`<div class="o5-spinner"></div><div class="o5-empty"><b>Could not load</b>Pull down to try again.</div>`;$('ob-body').innerHTML=h;return}
+  const tab=OB.q?'search':OB.tab;const rows=OB.filter(OB.tab);
+  if(OB.q)h+=`<div class="ob-foot" style="padding-bottom:4px">Searching the whole base for “${esc(OB.q)}” · ${rows.length} found</div>`;
+  if(tab==='mine'){
+    const changes=O.orders.filter(o=>o.queue&&o.queue.changed&&o.queue.florist===me.id);
+    if(changes.length&&!OB.ackQueue)h+=`<div class="ob-banner --ink"><span class="f1">${changes.length} change${changes.length===1?'':'s'} in your queue${changes.some(o=>o.queue.changed==='removed')?` · #${changes.find(o=>o.queue.changed==='removed').code} removed from your queue`:''}</span><button class="btn --xs" onclick="OB.ack()">Got it</button></div>`;
+    const queued=rows.filter(o=>o.queue&&o.queue.florist===me.id).sort((a,b)=>a.date.localeCompare(b.date)||a.queue.position-b.queue.position);
+    const working=rows.filter(o=>!(o.queue&&o.queue.florist===me.id));
+    const days=[...new Set(queued.map(o=>o.queue.date||o.date))];
+    if(!queued.length&&!working.length)h+=`<div class="o5-empty mt16"><b>Queue is empty</b>Take an order from “Not ready” or wait for the manager’s plan.</div>`;
+    days.forEach(d=>{const list=queued.filter(o=>(o.queue.date||o.date)===d);h+=`<div class="ob-sec"><div class="h3">My queue${days.length>1?' · '+O.dayLabel(d):''}</div><span class="n">manager’s plan</span></div>`+list.map((o,i)=>OB.row(o,{num:i+1})).join('')});
+    if(working.length)h+=`<div class="ob-sec"><div class="h3">In progress</div><span class="n">taken by you</span></div>`+working.map(o=>OB.row(o)).join('');
+    h+=`<div class="ob-foot">Refreshes every 30 s while you look – the manager’s edits arrive by themselves.</div>`;
+  } else {
+    if(!rows.length)h+=`<div class="o5-empty mt16"><b>${tab==='other'&&!OB.day?'Pick a day':'No orders'}</b>${tab==='other'&&!OB.day?'Tap “Other day” to choose.':tab==='closed'?'Nothing closed in the last 24 hours.':'Nothing here right now.'}</div>`;
+    else h+=rows.map(o=>OB.row(o,{closed:tab==='closed'})).join('');
+    if(rows.length)h+=`<div class="ob-foot">${rows.length} of ${rows.length} · next page loads as you scroll</div>`;
+  }
+  if(!OB.q&&(R.mgr||(R.florist&&!R.trainee&&!R.seasonal)))h+=OB.dayClose();
+  const scroll=$('ob-body').scrollTop;$('ob-body').innerHTML=h;if(keepFocus){$('ob-body').scrollTop=scroll;const i=$('ob-q');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}};
+/* ---- day close card (DayCloseCard) ---- */
+OB.dayClose=()=>{const O=O5(),d=OB.dc;const evening=O.demo.evening;const openCard=evening||d.open;const left=['flowers','shortage','packaging'].filter(k=>!d[k]).length+(d.rubbish===null?1:0);
+  return `<div class="ob-dc"><div class="hd">${I('moon')}<div class="h4">Day close</div><span class="xs ${left?'muted':'ok'}">${left?left+' left':'all done'}</span>${openCard?'':`<button class="btn --xs --ghost" onclick="OB.dc.open=true;OB.render()">Open</button>`}</div>
+  ${openCard?`<div class="mt8">${[['flowers','Flowers processed'],['shortage','No shortage for tomorrow'],['packaging','Packaging prepared']].map(k=>`<div class="sw"><span>${k[1]}</span><button class="switch ${d[k[0]]?'on':''}" onclick="OB.dcMark('${k[0]}')"></button></div>`).join('')}
+    <div class="flex g12 ai-c mt12"><div class="ph">${d.photo?`<img src="${d.photo}" alt="">`:''}</div><div class="f1"><div class="sm">Photo of the day’s result</div><div class="xs muted mt4">${d.photo?'Saved · replace if needed':'Retries by itself if the network drops'}</div><button class="btn --xs mt8" onclick="OB.dcPhotoSheet()">${I('camera')} ${d.photo?'Replace':'Add photo'}</button></div></div>
+    <div class="mt12"><div class="caps muted mb8">Rubbish taken out?</div>${d.rubbish===null?`<div class="flex g8"><button class="btn --sm" onclick="OB.dcRubbish(true)">Yes</button><button class="btn --sm --ghost" onclick="OB.dcRubbishNo()">No</button></div>`:`<div class="sm">${d.rubbish?'Yes':'No'}${d.rubbishPhoto?' · photo attached':''} <button class="textbtn" style="margin-left:8px" onclick="OB.dcRubbishPhoto()">${d.rubbishPhoto?'Replace photo':'Add photo'}</button></div>`}</div>
+    ${evening?'<div class="xs muted mt12">Opened by itself – it is the closing hour.</div>':`<button class="textbtn mt12" onclick="OB.dc.open=false;OB.render()">Collapse</button>`}</div>`:''}</div>`};
+OB.dcMark=k=>{OB.dc[k]=!OB.dc[k];A.haptic();A.toast(OB.dc[k]?'Marked':'Unmarked');OB.render()};
+OB.dcPhotoSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Photo of the day</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="o5-row2"><button class="o5-big" onclick="App.closeSheet();OB.dcPhoto()">${I('camera')}Take a photo</button><button class="o5-big --ghost" onclick="App.closeSheet();OB.dcPhoto()">${I('photo')}Gallery</button></div></div>`);
+OB.dcPhoto=()=>{if(O5().demo.offline){A.toast('Upload failed – will retry',{action:{label:'Retry',onclick:'OB.dcPhoto()'}});return}OB.dc.photo=O5().IMG.ws;A.toast('Photo saved');OB.render()};
+OB.dcRubbish=v=>{OB.dc.rubbish=v;A.toast('Saved');OB.render()};
+OB.dcRubbishNo=()=>A.sheet(`<div class="sh-head"><div class="h3">Rubbish not taken out</div></div><div class="sh-body"><p class="soft" style="margin:0 0 12px">Add a photo so the manager sees what is left, or save without one.</p><div class="o5-row2"><button class="o5-big" onclick="App.closeSheet();OB.dc.rubbish=false;OB.dc.rubbishPhoto=O5.IMG.db;App.toast('Saved with photo');OB.render()">${I('camera')}Photo</button><button class="o5-big --ghost" onclick="App.closeSheet();OB.dc.rubbish=false;App.toast('Saved without photo');OB.render()">Without photo</button></div></div>`);
+OB.dcRubbishPhoto=()=>{OB.dc.rubbishPhoto=O5().IMG.db;A.toast('Photo attached');OB.render()};
+/* ======================= NEW ORDER ======================= */
+const ON=window.ON={};
+const VARIANTS=[['Pink manifesto · Standard',75],['Pink manifesto · Deluxe',99],['Pink manifesto · Grand',135],['Peach posy',49],['White spray roses · Standard',65],['White spray roses · Grand',110],['Lilac daydream',75],['20 velvety red roses',89],['Glass vase',18],['Handwritten card',12],['Ferrero Rocher',15],['Balloons ×5',25]];
+const CUSTOMERS=[['c1','Mrs Harper','+44 7700 900356'],['c2','Daniel R.','+44 7700 900602'],['c3','Anna K.','+44 7700 900418'],['c4','Mark T.','+44 7700 900845'],['c13','Priya S.','+44 7700 900377'],['c10','Chloe W.','+44 7700 900512']];
+const PAYM=['Card · terminal','Cash','Bank transfer','Payment link'];
+const freshDraft=()=>({mode:'existing',customer:null,cq:'',name:'',phone:'',email:'',gift:false,recName:'',method:'collection',recPhone:'',a1:'',a2:'',city:'London',pc:'',dateMode:'today',dateIn:'',iq:'',items:[],pay:'unpaid',payM:PAYM[0],channel:'phone',card:'',note:'',ins:'',err:'',custName:'',custPrice:''});
+let D=freshDraft();
+const total=()=>D.items.reduce((s,i)=>s+i.qty*i.price,0);
+window.mount_ord_new=function(p){const O=O5(),R=O.roles();if(p&&p.fresh)D=freshDraft();
+  if(R.courier){$('on-body').innerHTML=`<div class="o5-empty mt24"><b>Couriers do not create orders</b>There is no way in from your screens.</div>`;$('on-cta').innerHTML=`<button class="btn --secondary" onclick="App.back('route')">Back</button>`;return}
+  if(R.trainee){$('on-body').innerHTML=`<!-- ids: TM-ORDER-067 --><div class="o5-empty mt24"><b>Trainees cannot create orders</b>The “+” is hidden for you on the board – ask Svetlana or a manager.</div>`;$('on-cta').innerHTML=`<button class="btn --secondary" onclick="App.back('ord-board')">Back</button>`;return}
+  ON.render()};
+ON.set=(k,v)=>{D[k]=v;D.err=''};
+ON.setR=(k,v)=>{ON.set(k,v);ON.render()};
+ON.render=()=>{const O=O5(),R=O.roles();
+  let h=O.demoBar(['lookupsFail','offline']);
+  if(O.demo.lookupsFail){h+=`<!-- ids: TM-ORDER-060 --><div class="o5-empty mt16"><b>Could not load the lists</b>Product variants, payment methods and makers come from the CRM. <button class="link-u" onclick="O5.demo.lookupsFail=false;ON.render()">Try again</button></div>`;$('on-body').innerHTML=h;$('on-cta').innerHTML=`<button class="btn" disabled>Create order</button>`;return}
+  h+=`<div class="xs muted pad" style="margin-top:8px"><!-- ids: TM-ORDER-060 -->Lists loaded: ${VARIANTS.length} variants · ${PAYM.length} payment methods · ${O.florists().length} makers</div>`;
+  /* customer */
+  h+=`<div class="on-lbl">Customer</div><div class="pad"><!-- ids: TM-ORDER-061 --><div class="seg"><button class="${D.mode==='existing'?'on':''}" onclick="ON.setR('mode','existing')">Existing</button><button class="${D.mode==='new'?'on':''}" onclick="ON.setR('mode','new')">New</button></div></div>`;
+  if(D.mode==='existing'){h+=D.customer?`<div class="on-cust mt12">${I('user').replace('<svg','<svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5"')}<span class="f1"><div class="sm">${esc(D.customer[1])}</div><div class="xs muted">${esc(D.customer[2])}</div></span><button class="x" onclick="ON.setR('customer',null)">${I('close')}</button></div>`
+      :`<div class="pad mt12"><div class="input-wrap">${I('search')}<input class="input" id="on-cq" placeholder="Name or phone · from 2 characters" value="${esc(D.cq)}" oninput="ON.custSearch(this.value)"></div></div><div class="on-sug mt8" id="on-sug">${ON.sug()}</div>`}
+  else h+=`<div class="pad mt12"><div class="field"><label>Name · required</label><input class="input" value="${esc(D.name)}" oninput="ON.set('name',this.value)"></div><div class="field"><label>Phone · required</label><input class="input" value="${esc(D.phone)}" placeholder="+44 7700 900000" oninput="ON.set('phone',this.value)"></div><div class="field"><label>Email</label><input class="input" value="${esc(D.email)}" oninput="ON.set('email',this.value)"></div></div>`;
+  /* details */
+  h+=`<div class="on-lbl">Details</div><div class="pad"><!-- ids: TM-ORDER-062 --><div class="seg"><button class="${!D.gift?'on':''}" onclick="ON.setR('gift',false)">For themselves</button><button class="${D.gift?'on':''}" onclick="ON.setR('gift',true)">A gift</button></div>${D.gift?`<div class="field mt12"><label>Recipient name · required</label><input class="input" value="${esc(D.recName)}" oninput="ON.set('recName',this.value)"></div>`:''}
+    <div class="seg mt12"><button class="${D.method==='collection'?'on':''}" onclick="ON.setR('method','collection')">Collection</button><button class="${D.method==='delivery'?'on':''}" onclick="ON.setR('method','delivery')">Delivery</button></div>
+    ${D.method==='delivery'?`<div class="field mt12"><label>Recipient phone</label><input class="input" value="${esc(D.recPhone)}" placeholder="Or the customer’s phone is used" oninput="ON.set('recPhone',this.value)"></div><div class="field"><label>Address line 1 · required</label><input class="input" value="${esc(D.a1)}" oninput="ON.set('a1',this.value)"></div><div class="field"><label>Address line 2</label><input class="input" value="${esc(D.a2)}" oninput="ON.set('a2',this.value)"></div><div class="o5-row2"><div class="field"><label>City</label><input class="input" value="${esc(D.city)}" oninput="ON.set('city',this.value)"></div><div class="field"><label>Postcode · required</label><input class="input" value="${esc(D.pc)}" oninput="ON.set('pc',this.value)"></div></div>`:''}
+    <div class="caps muted mt12 mb8">Date</div><div class="flex g8"><button class="chip ${D.dateMode==='today'?'on':''}" onclick="ON.setR('dateMode','today')">Today</button><button class="chip ${D.dateMode==='tomorrow'?'on':''}" onclick="ON.setR('dateMode','tomorrow')">Tomorrow</button><button class="chip ${D.dateMode==='input'?'on':''}" onclick="ON.setR('dateMode','input')">Other</button></div>${D.dateMode==='input'?`<div class="field mt8"><label>Date · YYYY-MM-DD</label><input class="input" value="${esc(D.dateIn)}" placeholder="2026-10-24" oninput="ON.set('dateIn',this.value)"></div>`:''}<div class="xs muted mt8">No slot is set here – the manager adds it in the CRM.</div></div>`;
+  /* items */
+  h+=`<div class="on-lbl">Items</div><div class="pad"><!-- ids: TM-ORDER-063 --><div class="input-wrap">${I('search')}<input class="input" id="on-iq" placeholder="Search the catalogue" value="${esc(D.iq)}" oninput="ON.itemSearch(this.value)"></div></div><div class="on-sug mt8" id="on-isug">${ON.isug()}</div>
+    ${D.items.map((it,i)=>`<div class="on-item"><span class="f1">${esc(it.title)}<small>${A.fmt(it.price)} each${it.custom?' · own item':''}</small></span><span class="o5-stepper"><button onclick="ON.bump(${i},-1)">${I('minus')}</button><span>${it.qty}</span><button onclick="ON.bump(${i},1)">${I('plus')}</button></span><span style="min-width:48px;text-align:right">${A.fmt(it.qty*it.price)}</span></div>`).join('')}
+    <div class="pad mt12"><div class="caps muted mb8">Own item</div><div class="flex g8"><input class="input f1" id="on-cn" placeholder="Name" value="${esc(D.custName)}" oninput="ON.set('custName',this.value)" style="height:44px"><input class="input" id="on-cp" placeholder="£" value="${esc(D.custPrice)}" oninput="ON.set('custPrice',this.value)" style="width:80px;height:44px"><button class="btn --sm" onclick="ON.addCustom()">Add</button></div><div class="xs muted mt4">Pounds here, pence in the payload.</div></div>
+    <div class="pad mt12"><div class="o5-kv --tot"><span>Total</span><span>${A.fmt(total())}</span></div></div>`;
+  /* payment */
+  h+=`<div class="on-lbl">Payment</div><div class="pad"><!-- ids: TM-ORDER-064 --><div class="seg"><button class="${D.pay==='unpaid'?'on':''}" onclick="ON.setR('pay','unpaid')">Not paid</button>${R.mgr?`<button class="${D.pay==='paid'?'on':''}" onclick="ON.setR('pay','paid')">Paid</button>`:''}</div>${R.mgr?'':'<div class="xs muted mt8">“Paid” is for managers – the order is created unpaid.</div>'}${D.pay==='paid'?`<div class="flex g8 mt12" style="flex-wrap:wrap">${PAYM.map(m=>`<button class="chip ${D.payM===m?'on':''}" onclick="ON.setR('payM','${m}')">${m}</button>`).join('')}</div>`:''}</div>`;
+  /* channel etc */
+  h+=`<div class="on-lbl">Channel</div><div class="pad"><!-- ids: TM-ORDER-065 --><div class="flex g8" style="flex-wrap:wrap">${[['phone','Phone'],['instagram','Instagram'],['whatsapp','WhatsApp'],['in_store','In store']].map(c=>`<button class="chip ${D.channel===c[0]?'on':''}" onclick="ON.setR('channel','${c[0]}')">${c[1]}</button>`).join('')}</div>
+    ${D.gift?`<div class="field mt16"><label>Card message</label><textarea class="input" oninput="ON.set('card',this.value)">${esc(D.card)}</textarea></div>`:''}<div class="field mt16"><label>Order note</label><textarea class="input" oninput="ON.set('note',this.value)">${esc(D.note)}</textarea></div>${D.method==='delivery'?`<div class="field"><label>Delivery instructions</label><textarea class="input" oninput="ON.set('ins',this.value)">${esc(D.ins)}</textarea></div>`:''}
+    <div class="xs muted mt8"><!-- ids: TM-ORDER-068 -->On iOS the keyboard pushes the form up; the error line sits above the button.</div></div><div style="height:16px"></div>`;
+  $('on-body').innerHTML=h;
+  $('on-cta').innerHTML=`${D.err?`<div class="on-err" style="flex:0 0 100%"><!-- ids: TM-ORDER-068 -->${esc(D.err)}</div>`:''}<button class="btn" onclick="ON.create()"><!-- ids: TM-ORDER-066 -->Create order · ${A.fmt(total())}</button>`;$('on-cta').style.flexWrap='wrap'};
+let cT=null,iT=null;
+ON.custSearch=v=>{D.cq=v;clearTimeout(cT);cT=setTimeout(()=>{const el=$('on-sug');if(el)el.innerHTML=ON.sug()},250)};
+ON.sug=()=>{const q=D.cq.trim().toLowerCase();if(q.length<2)return `<div class="xs muted">Type at least 2 characters.</div>`;const r=CUSTOMERS.filter(c=>c[1].toLowerCase().includes(q)||c[2].replace(/\s/g,'').includes(q.replace(/\s/g,'')));return r.length?r.map(c=>`<button onclick="ON.pickCust('${c[0]}')"><span>${esc(c[1])}</span><span>${esc(c[2])}</span></button>`).join(''):'<div class="xs muted">No customer found – switch to “New”.</div>'};
+ON.pickCust=id=>{D.customer=CUSTOMERS.find(c=>c[0]===id);D.cq='';D.err='';ON.render()};
+ON.itemSearch=v=>{D.iq=v;clearTimeout(iT);iT=setTimeout(()=>{const el=$('on-isug');if(el)el.innerHTML=ON.isug()},150)};
+ON.isug=()=>{const q=D.iq.trim().toLowerCase();if(!q)return '';const r=VARIANTS.filter(v=>v[0].toLowerCase().includes(q)).slice(0,6);return r.length?r.map(v=>`<button onclick="ON.addVariant('${esc(v[0]).replace(/'/g,'’')}',${v[1]})"><span>${esc(v[0])}</span><span>${A.fmt(v[1])}</span></button>`).join(''):'<div class="xs muted">Nothing matches.</div>'};
+ON.addVariant=(title,price)=>{const ex=D.items.find(i=>i.title===title);if(ex)ex.qty++;else D.items.push({title,price,qty:1});D.iq='';D.err='';ON.render()};
+ON.addCustom=()=>{const n=D.custName.trim(),p=Number(D.custPrice);if(!n||!(p>=0)){D.err='Own item needs a name and a price in pounds.';ON.render();return}D.items.push({title:n,price:p,qty:1,custom:true});D.custName='';D.custPrice='';D.err='';ON.render()};
+ON.bump=(i,d)=>{D.items[i].qty+=d;if(D.items[i].qty<=0)D.items.splice(i,1);ON.render()};
+ON.validate=()=>{if(D.mode==='existing'&&!D.customer)return 'Pick a customer or switch to “New”.';if(D.mode==='new'&&(!D.name.trim()||!D.phone.trim()))return 'A new customer needs a name and a phone.';if(D.gift&&!D.recName.trim())return 'A gift needs the recipient’s name.';
+  if(D.method==='delivery'){if(!D.a1.trim()||!D.pc.trim())return 'Delivery needs address line 1 and a postcode.';if(!(D.recPhone.trim()||D.phone.trim()||D.customer))return 'Delivery needs a phone – recipient’s or customer’s.'}
+  if(D.dateMode==='input'&&!/^\d{4}-\d{2}-\d{2}$/.test(D.dateIn))return 'Date must be YYYY-MM-DD.';if(!D.items.length)return 'Add at least one item.';return ''};
+ON.create=()=>{const O=O5();const e=ON.validate();if(e){D.err=e;ON.render();return}if(O.demo.offline){D.err='No connection – creating an order is online only, it is not queued.';ON.render();return}
+  const code=String(715700+O.orders.length);const date=D.dateMode==='today'?O.TODAY:D.dateMode==='tomorrow'?O.TOMORROW:D.dateIn;const cust=D.mode==='existing'?{id:D.customer[0],name:D.customer[1],phone:D.customer[2]}:{id:null,name:D.name.trim(),phone:D.phone.trim()};
+  const items=D.items.map((it,i)=>({id:9000+i,title:it.title,qty:it.qty,price:it.price,img:/manifesto/i.test(it.title)?O.IMG.pm:/peach/i.test(it.title)?O.IMG.pp:/spray/i.test(it.title)?O.IMG.ws:/lilac/i.test(it.title)?O.IMG.ld:/roses/i.test(it.title)?O.IMG.rr:null,type:/manifesto|posy|spray|lilac|roses/i.test(it.title)?'built':undefined}));
+  const o={id:O.orders.length+1,code,status:'in_production',channel:D.channel,method:D.method,date,slot:'',postcode:D.method==='delivery'?D.pc.trim():'',customer:cust,recipient:D.gift?D.recName.trim():cust.name,recipientPhone:D.recPhone.trim(),address:D.method==='delivery'?D.a1.trim()+(D.a2.trim()?', '+D.a2.trim():''):'',items,total:total(),money:{subtotal:total(),delivery:0,tip:0,discount:0,total:total()},paymentStatus:D.pay,paymentMethod:D.pay==='paid'?D.payM:null,giftMessage:D.card,note:D.note,deliveryInstructions:D.ins,pod:D.method==='delivery'?{required:true,photo:null,missing:null}:null,timeline:[[O.now().toISOString(),'—','created in the app by '+A.me().n,A.me().n]],sla:A.T(13,0)};
+  O.orders.push(Object.assign({crmCode:null,assignedTo:null,itemFlorists:{},unitCount:1,queue:null,attention:null,approval:null,bouquetPhotos:[],bouquetPhotosPending:0,referencePhotos:[],bouquetPhotoSkip:null,photoOptOut:false,marketplace:null,courier:null,courierCall:null,noteRu:'',substitutionPreference:'similar',composition:null,extras:[],substitutions:[],boost:{},checks:[],unpaid:null,paymentLink:null,alcohol:false,offlineNotice:null,priority:null},o));
+  A.toast('Order #'+code+' created');D=freshDraft();App.go('order',{code},{replace:true})};
+/* ======================= NOT SENT ======================= */
+window.mount_ord_unsent=function(){const O=O5();const q=O.myQueue();
+  let h=O.demoBar(['offline'])+O.offlineBanner();
+  h+=`<div class="pad mt12"><p class="sm soft" style="margin:0"><!-- ids: TM-CLASSIC-058 -->What the phone did not manage to send to the CRM: statuses, bouquet photos and proof-of-delivery photos. Only records that the CRM accepts twice without harm wait here – money, cancellations and edits never do.</p></div>`;
+  if(!q.length)h+=`<div class="o5-empty mt16"><!-- ids: TM-CLASSIC-058 --><b>Everything is sent</b>Nothing is waiting on this phone.</div>`;
+  else{h+=`<div class="pad mt12"><button class="btn --block" onclick="O5.syncNow()"><!-- ids: TM-CLASSIC-053 -->${I('send')} Send now</button><div class="xs muted mt8" style="text-align:center">Forces a pass through the queue, ignoring the back-off pauses.</div></div>`;
+    h+=q.map(w=>{const red=w.state==='parked'&&w.parkReason!=='blocked';const amber=w.state==='queued'&&w.attempts>0;const o=O.order(w.code);
+      return `<div class="un-row"><!-- ids: TM-CLASSIC-052 --><div class="t">${O.describe(w)}</div><div class="s ${red?'--red':amber?'--amber':''}">${O.statusLine(w)} · ${A.fmtDue(w.at)}</div><div class="b">${w.state==='parked'?(w.refusal==='bouquet_photo'?`<button class="btn --sm" onclick="App.go('order',{code:'${w.code}',photo:1})"><!-- ids: TM-CLASSIC-055 -->${I('camera')} Take a photo</button>`:`<button class="btn --sm" onclick="O5.retry(${w.id})"><!-- ids: TM-CLASSIC-054 -->Retry</button>`):''}<button class="btn --sm --ghost" onclick="O5.discard(${w.id})"><!-- ids: TM-CLASSIC-056 -->Discard</button>${o?`<button class="btn --sm --ghost" onclick="App.go('order',{code:'${w.code}'})">Open order</button>`:''}</div></div>`}).join('')}
+  h+=`<div class="pad mt16"><div class="xs muted" style="line-height:1.6"><!-- ids: TM-CLASSIC-057 -->Sends by itself: when the queue loads, when the connection returns, when the app comes to the foreground, and every 60 s. Order of sending: strictly per order. 5xx / 408 / 429 retry with growing pauses (5 s → 10 min, parked after 12 failures); any other 4xx parks the record and everything behind it on the same order. Up to 40 records; the queue belongs to your login and lives in a file on this phone.</div></div><div style="height:24px"></div>`;
+  $('un-body').innerHTML=h};
+/* ======================= UNPAID ======================= */
+window.mount_ord_unpaid=function(){const O=O5(),R=O.roles();
+  if(!R.mgr){$('up-body').innerHTML=`<!-- ids: TM-CLASSIC-065 --><div class="o5-empty mt24"><b>Managers only</b>The app sends you back to the board.</div><div class="pad mt16"><button class="btn --secondary --block" onclick="App.back('ord-board')">Back to the board</button></div>`;return}
+  let h=O.demoBar(['loadError'])+`<button class="o5-pull" style="width:100%;text-align:center;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding:10px 0 0" onclick="App.toast('Refreshed');O5.remount()"><!-- ids: TM-CLASSIC-063 -->↓ Pull to refresh</button>`;
+  if(O.demo.loadError){h+=`<!-- ids: TM-CLASSIC-064 --><div class="o5-spinner"></div><div class="o5-empty"><b>Could not load</b>Pull down to try again.</div>`;$('up-body').innerHTML=h;return}
+  const rows=O.orders.filter(o=>o.paymentStatus==='unpaid'&&o.status!=='cancelled'&&o.status!=='fulfilled').sort((a,b)=>new Date(a.unpaid?a.unpaid.since:0)-new Date(b.unpaid?b.unpaid.since:0));
+  h+=`<div class="xs muted pad mt8">Oldest first · refreshes every 60 s</div>`;
+  if(!rows.length)h+=`<!-- ids: TM-CLASSIC-064 --><div class="o5-empty mt16"><b>No unpaid orders</b>Everything in progress is paid.</div>`;
+  else h+=rows.map(o=>{const u=o.unpaid||{since:O.now().toISOString(),waMessages:0,contacted:false,noAnswer:0,notes:[]};const wait=Math.round((O.now()-new Date(u.since))/6e4);const wh=Math.floor(wait/60),wm=wait%60;
+    return `<button class="up-row" onclick="App.go('order',{code:'${o.code}'})"><!-- ids: TM-CLASSIC-061 TM-CLASSIC-062 --><div class="l1"><span>${o.code} · ${esc(o.customer.name)}</span><b>${A.fmt(o.money?o.money.total:o.total)}</b></div><div class="l2">${O.dayLabel(o.date)}${o.slot?' · '+esc(o.slot):''} · waiting ${wh?wh+' h ':''}${wm} min${u.waMessages?` · WhatsApp: ${u.waMessages} messages`:''}</div><div class="l3"><span class="${u.contacted?'ok':''}">${u.contacted?'✓ reached':'not reached'}</span><span>· ${u.noAnswer} unanswered attempt${u.noAnswer===1?'':'s'}</span>${u.outcome?`<span>· ${esc(u.outcome)}</span>`:''}${u.linkSent||o.paymentLink?'<span>· payment link sent</span>':''}</div></button>`}).join('');
+  $('up-body').innerHTML=h};
+})();
+</script>
