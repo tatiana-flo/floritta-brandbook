@@ -1,0 +1,534 @@
+<style>
+/* ===== 14 · Delivery – operations (Dispatch · Couriers today · route editor) ===== */
+.d14-nav{display:flex;align-items:center;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--hair);padding:0 var(--pad);background:var(--paper);flex:none}
+.d14-nav button{height:38px;padding:0 10px;font-size:12.5px;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.d14-nav button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.d14-nav button:hover:not(.on){color:var(--ink)}
+.d14-nav button .tag{margin-left:2px}
+.d14-nav .more{color:var(--grey)}
+.d14-nav .sep{width:1px;height:18px;background:var(--hair);margin:0 6px}
+.d14-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--grey);white-space:nowrap}
+.d14-live .dot{width:7px;height:7px}
+.d14-kpi .kpi-s{margin-top:2px}
+.d14-kpi.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+.d14-kpi.--hot{box-shadow:inset 0 3px 0 var(--accent)}
+.d14-cap{display:flex;align-items:center;gap:14px;border:1px solid var(--hair);padding:10px 14px;font-size:13px;flex-wrap:wrap}
+.d14-cap.--peak{border-color:var(--accent);background:var(--accent-bg);color:var(--accent)}
+.d14-cap .progress{width:160px;flex:none}
+.d14-cap .w{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.d14-banner{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--warn);background:var(--warn-bg);color:var(--warn);padding:10px 14px;font-size:13px;margin-bottom:16px}
+.d14-banner .t{flex:1;min-width:0}.d14-banner .t small{display:block;margin-top:3px;font-size:12px}
+.d14-banner.--accent{border-color:var(--accent);background:var(--accent-bg);color:var(--accent)}
+.d14-banner.--ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.d14-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;margin-top:16px}
+.d14-cr{border-bottom:1px solid var(--hair)}
+.d14-cr:last-child{border-bottom:0}
+.d14-cr .hd{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13.5px}
+.d14-cr .hd .sp{flex:1}
+.d14-cr .hd small{color:var(--grey);font-size:12px}
+.d14-cr .body{padding:0 14px 14px;font-size:13px}
+.d14-cr .body .pf{display:flex;flex-direction:column;gap:3px;margin:6px 0 10px;color:var(--graphite)}
+.d14-pf b{font-weight:400}
+.d14-pf .late{color:var(--accent)}
+.d14-pf .warnt{color:var(--warn)}
+.d14-ib{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--light);font-size:11px;color:var(--grey);vertical-align:middle;margin-left:4px;cursor:pointer;font-style:normal}
+.d14-ib:hover{border-color:var(--ink);color:var(--ink)}
+.d14-stops{font-size:13px}
+.d14-stops th{font-size:10.5px}
+.d14-stops td{height:40px}
+.d14-stops tr.--now td{background:var(--sel-bg)}
+.d14-stops tr.--dim td{opacity:.55}
+.d14-stops tr.--risk td{box-shadow:inset 0 -1px 0 var(--hair);background:var(--accent-bg)}
+.d14-stops tr.--uber td{background:var(--warn-bg)}
+.d14-stops tr.--dpd td{background:var(--silver)}
+.d14-stops .pos{display:inline-grid;place-items:center;width:22px;height:22px;border:1px solid var(--light);font-size:11px;font-variant-numeric:tabular-nums}
+.d14-stops .pos.--on{background:var(--sel);color:var(--on-sel);border-color:var(--sel)}
+.d14-stops .pc{font-weight:500}
+.d14-stops .badges{display:inline-flex;gap:4px;flex-wrap:wrap;margin-left:6px;vertical-align:middle}
+.d14-stops .dev{font-variant-numeric:tabular-nums}
+.d14-stops .dev.--late{color:var(--accent)}.d14-stops .dev.--ok{color:var(--ok)}
+.d14-stops .fc{font-style:italic;color:var(--graphite)}
+.d14-stops .adv{font-size:12.5px;line-height:1.3;white-space:normal}
+.d14-stops .adv b{font-weight:400}
+.d14-stops .adv .why{display:block;font-size:11.5px;color:var(--grey)}
+.d14-stops .adv.--risk b{color:var(--accent)}
+.d14-stops .act{white-space:nowrap}
+.d14-stops .act .btn{margin-right:4px}
+.d14-stops .inl{display:inline-flex;align-items:center;gap:6px;font-size:12px;white-space:nowrap}
+.d14-runs{margin-top:10px;border:1px solid var(--hair)}
+.d14-runs summary{cursor:pointer;padding:8px 12px;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--graphite);list-style:none;display:flex;gap:8px;align-items:center}
+.d14-runs summary::-webkit-details-marker{display:none}
+.d14-runs summary::before{content:"";width:6px;height:6px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(-45deg);transition:transform var(--m-fast)}
+.d14-runs[open] summary::before{transform:rotate(45deg)}
+.d14-runs .run{padding:8px 12px;border-top:1px solid var(--hair);font-size:12.5px}
+.d14-runs .run .l1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.d14-runs .run .l2{color:var(--grey);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.d14-runs .day{padding:8px 12px;border-top:1px solid var(--hair);font-size:12.5px;color:var(--graphite)}
+.d14-map{height:300px;margin-bottom:16px;border:1px solid var(--hair)}
+.d14-map .npin{position:absolute;transform:translate(-50%,-50%);width:18px;height:18px;border:1.5px solid var(--sel);background:var(--paper);color:var(--ink);font-size:10px;display:grid;place-items:center;font-variant-numeric:tabular-nums;cursor:pointer;z-index:2}
+.d14-map .npin.--cur{width:24px;height:24px;background:var(--sel);color:var(--on-sel);font-size:11px;z-index:3}
+.d14-map .npin.--done{opacity:.45}
+.d14-map .npin.--focus{box-shadow:0 0 0 4px var(--accent-bg),0 0 0 5px var(--accent);z-index:4}
+.d14-map .npin.--g{border-color:var(--grey);color:var(--graphite)}
+.d14-map .cpin{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px;z-index:5;cursor:pointer}
+.d14-map .cpin small{font-size:11px;background:var(--sel);color:var(--on-sel);padding:1px 6px;white-space:nowrap}
+.d14-map .cpin .avatar{box-shadow:0 0 0 2px var(--paper)}
+.d14-map .dpin{position:absolute;transform:translate(-50%,-50%);width:10px;height:10px;background:var(--warn);border:1px solid var(--paper);cursor:help;z-index:3}
+.d14-map .dpin.--off{background:var(--accent)}
+.d14-map svg.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.d14-map svg.lines path{fill:none;stroke:var(--grey);stroke-width:1;stroke-dasharray:4 4}
+.d14-map .empty{position:absolute;inset:0;justify-content:center;z-index:2}
+.d14-mapbar{display:flex;align-items:center;gap:14px;padding:6px 12px;font-size:11.5px;color:var(--grey);border-top:1px solid var(--hair);flex-wrap:wrap;position:absolute;left:0;right:0;bottom:0;background:var(--paper);z-index:6}
+.d14-mapbar .lg{display:inline-flex;align-items:center;gap:5px}
+.d14-mapbar .lg .npin,.d14-mapbar .lg .dpin{position:static;transform:none;cursor:default;width:12px;height:12px;font-size:0}
+.d14-card{border:1px solid var(--hair);margin-bottom:12px}
+.d14-card .ch{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+.d14-card .ch .nm{font-size:14.5px}
+.d14-card .ch .st{font-size:12.5px;color:var(--graphite)}
+.d14-card .ch .st.--accent{color:var(--accent)}
+.d14-card .ch .cnt{font-size:12px;color:var(--grey);font-variant-numeric:tabular-nums;display:inline-flex;gap:10px}
+.d14-card .ch .cnt .f{color:var(--accent)}
+.d14-card .cb{padding:10px 14px}
+.d14-card .via{font-size:12px;color:var(--grey);margin:6px 0}
+.d14-card.--runsonly{border-style:dashed}
+.d14-unas{border:1px solid var(--hair);margin-top:16px}
+.d14-unas.--hot{border-color:var(--accent)}
+.d14-unas .uh{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+.d14-unas .uh .h4{flex:1}
+.d14-unas .uh .h4 .n{color:var(--accent)}
+.d14-unas .us{padding:6px 14px 10px;font-size:12.5px;color:var(--grey)}
+.d14-ic{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--grey)}
+.d14-kb{margin-top:16px;height:560px}
+.d14-kb .kanban{grid-auto-columns:minmax(212px,1fr)}
+.d14-kb .kcard.--before{box-shadow:inset 3px 0 0 var(--accent)}
+.d14-kb .kcard .k-top b{font-weight:400;color:var(--ink);cursor:pointer}
+.d14-kb .kcard .k-top b:hover{text-decoration:underline}
+.d14-kb .kcard .k-line{font-size:12px;color:var(--graphite);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.d14-kb .kcard .k-line.--accent{color:var(--accent)}
+.d14-kb .kcard .k-line.--warn{color:var(--warn)}
+.d14-kb .kcard .select{height:28px;font-size:12px;padding:0 24px 0 6px;background-position:right 4px center}
+.d14-kb .kcard .input{height:28px;font-size:12px}
+.d14-kb .kcard .btn.--sm{height:26px;padding:0 8px;font-size:10.5px}
+.d14-kb .kcard .chip{height:24px;padding:0 8px;font-size:11.5px}
+.d14-kb .kcard .ho{border-top:1px solid var(--hair);padding-top:6px;display:flex;flex-direction:column;gap:6px}
+.d14-kb .kcard .k-foot{justify-content:space-between}
+.d14-kb .kcard .adv{font-size:11.5px;color:var(--grey);border-top:1px solid var(--hair);padding-top:5px}
+.d14-kb .kcard .adv b{font-weight:400;color:var(--graphite)}
+.d14-kb .kcol .k-head .n{font-variant-numeric:tabular-nums}
+.d14-kb .kcol.--empty .k-body::after{content:"–";color:var(--grey);text-align:center;padding:14px;font-size:13px}
+/* route editor (sheet) */
+.d14-re{display:flex;flex-direction:column}
+.d14-re .st{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px;cursor:grab}
+.d14-re .st.--drag{opacity:.4}
+.d14-re .st.--over{box-shadow:inset 0 2px 0 var(--sel)}
+.d14-re .st .pos{width:22px;height:22px;border:1px solid var(--light);display:grid;place-items:center;font-size:11px;flex:none;font-variant-numeric:tabular-nums}
+.d14-re .st .t{flex:1;min-width:0}
+.d14-re .st .t b{font-weight:400}
+.d14-re .st .t small{display:block;color:var(--grey);font-size:12px}
+.d14-re .st .eta{font-size:12px;color:var(--graphite);white-space:nowrap;font-variant-numeric:tabular-nums}
+.d14-re .st .eta .late{color:var(--accent)}
+.d14-re .st .ib{width:26px;height:26px}
+.d14-re .hint{font-size:12px;color:var(--grey);margin:8px 0}
+.d14-re .eval{font-size:12.5px;color:var(--graphite);padding:10px 12px;border:1px solid var(--hair);background:var(--silver);margin:10px 0}
+.d14-re .eval.--dim{opacity:.55}
+.d14-re .eval .late{color:var(--accent)}
+.d14-re .cand{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.d14-re .cand .t{flex:1;min-width:0}
+.d14-re .cand .t small{display:block;color:var(--grey);font-size:12px}
+.d14-impact{font-size:13px}
+.d14-impact li{margin-bottom:4px}
+[data-size="ipad"] .d14-cols{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] .d14-nav button{padding:0 8px;font-size:12px}
+[data-size="ipad"] .d14-kb{height:520px}
+[data-size="phone"] .d14-cols{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .d14-nav{padding:0 10px;overflow-x:auto;flex-wrap:nowrap}
+[data-size="phone"] .d14-map{height:220px}
+[data-size="phone"] .d14-kb{height:auto}
+[data-size="phone"] .d14-kb .kanban{grid-auto-flow:row;grid-auto-columns:auto;height:auto}
+[data-size="phone"] .d14-hide-ph{display:none}
+</style>
+
+<!-- ids: DLOP-001 DLOP-002 DLOP-003 DLOP-004 DLOP-005 – Delivery sub-navigation (D14.nav) is rendered into every screen head of this section: 14 primary tabs in CRM order, «No POD» goes to the orders list filter, admin-only «Courier pay»/«Courier idle», feature-flagged «Freelance», «More ▾/▴» with the 8 dormant screens (auto-expanded when one of them is open), exactly one tab highlighted -->
+
+<section class="scr" id="s-delivery" data-nav="Dispatch" data-group="Delivery" data-title="Delivery" data-sub="Dispatch · today" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-dispatch"></div>
+  <!-- ids: DLOP-058 DLOP-059 DLOP-060 DLOP-187 – head: Print labels · Build run (wave + zone) · Pause marketplaces (admin, throttling flag) · board is today only, no date picker · demo-state menu -->
+  <div class="scr-head" id="d14-dp-head"></div>
+  <div class="scr-body" id="d14-dp-body"></div>
+</section>
+
+<section class="scr" id="s-couriers-today" data-nav="Couriers today" data-group="Delivery" data-title="Delivery" data-sub="Couriers today" data-roles="owner manager" data-parent="delivery">
+  <div id="d14-nav-ct"></div>
+  <!-- ids: DLOP-006 DLOP-007 DLOP-008 DLOP-010 DLOP-017 – head: Date (courier day), live «Updated HH:MM · every 30 s, also in a background tab», Show / Hide map (remembered), Build advice -->
+  <div class="scr-head" id="d14-ct-head"></div>
+  <div class="scr-body" id="d14-ct-body"></div>
+</section>
+
+<script>
+/* ===== 14 · Delivery ops – shared module (used by 14-delivery.html and 14-delivery-2.html) ===== */
+window.D14=(()=>{
+  const S={date:"today",mapOpen:true,viewOnly:false,freelance:false,throttle:true,paused:null,peak:false,noRoster:false,uberOut:false,noPositions:false,allAssigned:false,noLogins:false,showAssigned:false,planFact:true,open:{},focus:null,lastAt:"10:42",stale:false,inited:false,ctAdvice:true,ctOpen:{},confirmUber:null,busy:null,uberRow:{},ho:{},tips:{},xl:{},est:{},routeErr:null,moreOpen:false,adviceBuilt:"10:41",advTick:0,more:false};
+  const SHOP={x:50,y:58};
+  const D={},T={};
+  const esc=App.esc,ic=App.icon;
+  const mins=s=>{const [h,m]=s.split(":").map(Number);return h*60+m};
+  const hm=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")};
+  const NOWM=10*60+42;
+  const L="ABDEFGHJLNPQRSTUWXYZ";
+  const pcOf=o=>{if(D[o.id]&&D[o.id].pc)return D[o.id].pc;const m=(o.addr||"").match(/SE\d+/);const n=o.id%9+1;return (m?m[0]:"SE1")+" "+n+L[o.id%20]+L[(o.id*7)%20]};
+  const pos=o=>{let h=(o.id*2654435761)%4294967296;const a=(h%997)/997;h=Math.floor(h/997);const b=(h%991)/991;return{x:8+a*84,y:8+b*72}};
+  const cust=o=>App.customer(o.customer);
+  const manage=()=>!S.viewOnly;
+  const admin=()=>App.role()==="owner";
+  const pl=(n,w)=>n+" "+w+(n===1?"":"s");
+  const winOf=o=>{const d=D[o.id]||{};if(d.slotType==="before")return "by "+o.slot.split("–")[1];if(d.narrow)return o.slot.split("–")[0]+"–"+hm(mins(o.slot.split("–")[0])+30);return o.slot};
+  const uberAcc=o=>(D[o.id]&&D[o.id].relay)?D[o.id].relay.account:null;
+
+  function ensure(){
+    if(S.inited)return;S.inited=true;
+    const today=App.data.orders.filter(o=>o.n===0&&o.type==="delivery"&&o.status!=="cancelled");
+    today.forEach(o=>{o.courier=null;D[o.id]={}});
+    const out=today.filter(o=>o.status==="out"),ready=today.filter(o=>o.status==="ready"),del=today.filter(o=>o.status==="delivered"),rest=today.filter(o=>["queue","making","photo"].includes(o.status));
+    // Daniel – confirmed run, on the road
+    const dStops=[...del.slice(0,2),...out.slice(0,3),...ready.slice(0,2)];
+    dStops.forEach(o=>o.courier="daniel");
+    const dev=[4,-3,0,8,12,15,9];const base=10*60+20;
+    T.daniel={status:"confirmed",state:"on_road",left:"10:05",back:"12:10",backPlan:"11:55",finishPlan:"11:45",finishFc:"12:00",cur:3,via:"traffic",ccz:15,costPer:6.4,costPlan:5.8,delivered:2,failed:1,
+      delays:[{t:"standing still",min:12,at:"10:21–10:33",between:"#2 and #3",dx:-4,dy:-6},{t:"long at the door",min:6,at:"10:34–10:40",between:"#2",dx:3,dy:4}],
+      causes:[["Left late",4],["Traffic",6],["Standing still",12],["Long at the door",6]],
+      stops:dStops.map((o,i)=>{const plan=base+i*18;const d=dev[i];const st=i<2?"delivered":i===2?"failed":i<5?"picked":"waiting";
+        return{id:o.id,plan:hm(plan),fc:hm(plan+d),act:i<2?hm(plan+d):null,actVia:i===0?"GPS":"photo",dev:d,status:st,fail:i===2?"Recipient not answering · 10:36":null,
+          badges:i===3?["delivering now"]:i===0?["First"]:i===5?["next run"]:i===6?["next run","18+"]:[],causes:d>10?[["Traffic",6],["Standing still",d-6]]:null}}),
+      runs:[{n:1,at:"08:15→09:40",plan:70,act:85,grade:"B · 78",cost:38,per:7.6,followed:false,flags:["deviated","out of order"],overrun:15,overrunCost:4,chips:["traffic 8","at the door 5","standing still 2"],stops:dStops.slice(0,5)},
+            {n:2,at:"10:05→≈12:10",plan:95,act:null,grade:null,cost:41,per:6.4,followed:true,flags:[],overrun:0,overrunCost:0,chips:["standing still 12","at the door 6"],stops:dStops.slice(2)}],
+      day:{runs:2,drops:9,cost:79,per:8.8,over:4}};
+    // George – awaiting route confirmation, at the shop
+    const gStops=ready.slice(2,5);
+    gStops.forEach(o=>o.courier="george");
+    T.george={status:"awaiting_confirmation",state:"at_shop",since:"09:50",via:"windows",ccz:0,costPer:null,costPlan:7.1,delivered:0,failed:0,delays:[],causes:[],
+      stops:gStops.map((o,i)=>({id:o.id,plan:hm(11*60+i*22),fc:hm(11*60+i*22),act:null,dev:0,status:"waiting",badges:i===0?["First","waits for the window"]:i===2?["waits for free zone"]:[],causes:null})),
+      runs:[],day:null};
+    // Omar – drove this morning, shift closed (runs-only card)
+    del.slice(2).forEach(o=>o.courier="omar");
+    T.omar={status:"done",state:"off",runsOnly:true,stops:[],delivered:del.slice(2).length,failed:0,delays:[],causes:[],via:"distance",
+      runs:[{n:1,at:"08:10→09:40",plan:80,act:88,grade:"A · 91",cost:36,per:9,followed:true,flags:["no photo"],overrun:8,overrunCost:2,chips:["at the door 8"],stops:del.slice(2)}],day:{runs:1,drops:del.slice(2).length,cost:36,per:9,over:2}};
+    // extras on deliveries
+    const un=[...ready.slice(5),...rest];
+    if(un[0]){D[un[0].id].relay={carrier:"Uber Direct",status:"courier en route",eta:"14 min",vehicle:"Toyota Prius",xl:false,account:"uber_direct",hidden:false};un[0].courier="Uber Direct"}
+    if(un[1]){D[un[1].id].relay={carrier:"Uber Direct",status:"failed – nobody accepted",dead:true,account:"uber_direct_2",hidden:true};}
+    if(un[2]){D[un[2].id].atRisk=true;D[un[2].id].slotType="before"}
+    if(un[3]){D[un[3].id].pc="M3 4LY";un[3].addr="14 Deansgate, Manchester M3 4LY";D[un[3].id].dpd=true}
+    if(un[4]){D[un[4].id].narrow=true;un[4].chan="Deliveroo";D[un[4].id].alcohol=true;D[un[4].id].ageVerified=false}
+    if(un[5]){D[un[5].id].overflow={zone:"Zone 3"}}
+    if(un[6]){D[un[6].id].overflow={basket:"£45"};D[un[6].id].noUber=true}
+    if(out[1]){D[out[1].id].notHome=true;D[out[1].id].notHomeAt="10:28"}
+    if(out[2]){D[out[2].id].failed=true}
+    if(del[0]){D[del[0].id].alcohol=true;D[del[0].id].ageVerified=true;D[del[0].id].handover={method:"Own courier",cost:6.4}}
+    if(del[1]){D[del[1].id].handover={method:"Freelancer",ref:"",cost:9}}
+    if(out[0]){D[out[0].id].relayVehicle=null}
+    if(gStops[2]){D[gStops[2].id].alcohol=true;D[gStops[2].id].ageVerified=false}
+  }
+  const todays=()=>App.data.orders.filter(o=>o.n===0&&o.type==="delivery"&&o.status!=="cancelled");
+  const unassigned=()=>S.allAssigned?[]:todays().filter(o=>!o.courier&&o.status!=="delivered"&&!(D[o.id]&&D[o.id].dpdPlanned));
+  const stage=o=>{const d=D[o.id]||{};if(d.failed)return"failed";if(o.status==="delivered")return"delivered";if(o.status==="out")return"in_transit";if(o.status==="ready")return o.courier||d.dpdPlanned?"assigned":"ready";return null};
+  const STAGE_LBL={ready:"Ready to dispatch",assigned:"Assigned",in_transit:"In transit",delivered:"Delivered",failed:"Failed"};
+  /* advisor recommendation per order (shared by Couriers today, Dispatch list and the board hint) */
+  function rec(o){const d=D[o.id]||{};
+    if(o.courier&&typeof o.courier==="string"&&o.courier!=="Uber Direct")return{kind:"assigned",text:"Assigned: "+App.user(o.courier).n};
+    if(d.dpd)return{kind:"dpd",text:"DPD – outside London",why:"Manchester postcode · no Uber account covers it"};
+    if(d.atRisk)return{kind:"uber",tone:"risk",text:"Uber now",why:"slot "+winOf(o)+" cannot be reached by any run",uberAvailable:!(S.uberOut)};
+    if(d.noUber)return{kind:"run",tone:"",text:"Daniel · run 2 · №6",why:"after the current run",courier:"daniel",uberAvailable:false,badge:"Uber unavailable"};
+    if(o.id%3===0)return{kind:"uber",tone:"uber",text:"Uber · ≈ £9",why:"both runs are full for "+winOf(o),uberAvailable:!S.uberOut};
+    if(o.id%2===0)return{kind:"run",text:"Daniel · run 2 · №"+(5+(o.id%3)),why:"fits after stop #5",courier:"daniel"};
+    return{kind:"run",text:"George · from 11:00 · №"+(1+(o.id%3)),why:"courier by rota, not checked in yet",courier:"george"}};
+  const rowTone=r=>r.tone==="risk"?"--risk":r.kind==="uber"?"--uber":r.kind==="dpd"?"--dpd":"";
+
+  /* ---- sub-navigation ---- */
+  const NAVI=[["couriers-today","Couriers today",1],["delivery","Dispatch",0],["freelance","Freelance",1,"flag"],["nopod","No POD",1],["heatmap","Heatmap",1],["co2","CO₂",1],["delivery-dpd","DPD",1],["partners","Courier partners",1],["statuses","Courier statuses",1],["reliability","Reliability",1],["delivery-tracking","Tracking",0],["delivery-couriers","Couriers",1],["pay","Courier pay",1,"admin"],["delivery-idle","Courier idle",1,"admin"]];
+  const MORE=[["eta","ETA accuracy",1],["delivery-pod","Proof of delivery",0],["delivery-routes","Routes",1],["zones","Zones & rules",1],["delivery-presence","Presence",1],["consents","Geo-consents",1],["exports","Exports",1],["shipping","Shipping",1]];
+  function navGo(id){
+    if(id==="nopod"){App.toast("Orders · filter «delivered without a photo» (orders?pod=missing)");App.go("orders",{view:"nopod"});return}
+    if(document.getElementById("s-"+id)){App.go(id);return}
+    App.toast("«"+(NAVI.concat(MORE).find(x=>x[0]===id)||[,id])[1]+"» lives in Delivery · other (file 07)")}
+  function nav(active){
+    const vis=x=>!(x[2]&&!manage())&&!(x[3]==="admin"&&!admin())&&!(x[3]==="flag"&&!S.freelance);
+    const inMore=MORE.some(x=>x[0]===active);const open=S.moreOpen||inMore;
+    const b=x=>`<button class="${x[0]===active?"on":""}" onclick="D14.navGo('${x[0]}')">${esc(x[1])}${x[3]==="admin"?`<span class="tag --line">admin</span>`:""}</button>`;
+    return `<div class="d14-nav">${NAVI.filter(vis).map(b).join("")}<span class="sep"></span><button class="more" onclick="D14.S.moreOpen=!D14.S.moreOpen;App.remount()">More ${open?"▴":"▾"}</button>${open?MORE.filter(vis).map(b).join(""):""}${S.viewOnly?`<span class="sp"></span><span class="tag --accent" title="Demo: manager without delivery.manage – manage-only tabs and actions are hidden">view only</span>`:""}</div>`}
+  const live=(every,extra)=>`<span class="d14-live"><span class="dot --ok"></span>Updated ${S.lastAt} · every ${every}${extra?" · "+extra:""}</span>`;
+  function tick(){S.lastAt=hm(NOWM+(++S.advTick));}
+  const demoBtn=(items)=>`<button class="btn --ghost --sm" onclick="D14.demoMenu(event)">${ic("sparkle")} Demo state</button>`;
+  function demoMenu(ev){const t=(k,label)=>({t:label,ic:S[k]?"check":undefined,fn:()=>{S[k]=!S[k];App.remount();App.toast(label+(S[k]?" · on":" · off"))}});
+    App.pop(ev,["Demo state",t("viewOnly","Manager without delivery.manage"),t("freelance","Freelance board flag"),t("throttle","Marketplace throttling flag"),t("peak","Peak day"),t("noRoster","No courier roster"),t("uberOut","Uber out of range"),t("stale","Stale advice (409)"),t("allAssigned","Everything assigned"),t("noLogins","No courier logins"),t("noPositions","No live positions"),t("planFact","Plan / fact columns")])}
+
+  /* ---- map ---- */
+  function mapHtml(opts={}){
+    const cs=["daniel","george"].filter(c=>T[c]&&T[c].stops.length);
+    let h="",lines="";
+    const shop=`<span class="pin --shop" style="left:${SHOP.x}%;top:${SHOP.y}%" title="Floritta · 80 Willow Walk SE1 5SY"></span><span class="lbl-pin" style="left:${SHOP.x}%;top:${SHOP.y}%">Shop</span>`;
+    if(S.noPositions)return `<div class="map d14-map" id="${opts.id||"d14-map"}">${shop}<div class="empty">${ic("map")}<div class="sm">No live courier positions and no stops with a map pin yet</div></div><div class="d14-mapbar">Map framed once per set of couriers – polling does not move it</div></div>`;
+    cs.forEach(c=>{const t=T[c];const open=t.stops.filter(s=>s.status!=="delivered"&&s.status!=="failed");
+      const cp=t.state==="on_road"?pos(App.order(t.stops[t.cur].id)):SHOP;const cx=t.state==="on_road"?cp.x-5:SHOP.x+(c==="george"?6:-6),cy=t.state==="on_road"?cp.y+6:SHOP.y-5;
+      h+=`<span class="cpin" style="left:${cx}%;top:${cy}%" onclick="D14.courierPop(event,'${c}')" title="${esc(App.user(c).n)} · ${t.state==="on_road"?"on the road":"at the shop"} · geo consent · ping 20 s ago">${App.avatar(c,"--s --ink")}<small>${esc(App.user(c).n)}</small></span>`;
+      let prev={x:cx,y:cy};
+      t.stops.forEach((s,i)=>{const o=App.order(s.id);const p=pos(o);const done=s.status==="delivered"||s.status==="failed";const cur=t.state==="on_road"&&i===t.cur;
+        if(!done){lines+=`<path d="M${prev.x} ${prev.y} L${p.x} ${p.y}"/>`;prev=p}
+        h+=`<span class="npin ${cur?"--cur":""} ${done?"--done":""} ${c==="george"?"--g":""} ${S.focus===s.id?"--focus":""}" style="left:${p.x}%;top:${p.y}%" title="#${o.id} · ${esc(o.recipient)} · ${pcOf(o)} · ≈${s.fc}${cur?" · delivering now":""}" onclick="App.openOrder(${o.id})">${i+1}</span>`});
+      (t.delays||[]).forEach(d=>{const o=App.order(t.stops[t.cur-1]?t.stops[t.cur-1].id:t.stops[0].id);const p=pos(o);h+=`<span class="dpin ${d.t==="off route"?"--off":""}" style="left:${p.x+d.dx}%;top:${p.y+d.dy}%" title="${esc(d.t)} ${d.min} min · ${d.at} · between ${d.between}"></span>`})});
+    return `<div class="map d14-map" id="${opts.id||"d14-map"}"><svg class="lines" viewBox="0 0 100 100" preserveAspectRatio="none">${lines}</svg>${shop}${h}
+      <div class="d14-mapbar"><span class="lg"><span class="pin --shop" style="position:static;transform:none"></span>Shop</span><span class="lg"><span class="npin"></span>Open stop · numbered in run order</span><span class="lg"><span class="npin --cur"></span>Current stop</span><span class="lg"><span class="dpin"></span>Lost time (hover: standing still / at the door / slow leg)</span><span class="lg"><span class="dpin --off"></span>Off route</span><span class="sp"></span><span title="DLOP-013">Framed once per courier set · polling never moves the map</span></div></div>`}
+  function courierPop(ev,c){const u=App.user(c);App.pop(ev,[u.n+" · "+u.title,{t:"Open courier card",ic:"user",fn:()=>App.go("couriers-today",{courier:c})},{t:"Call "+u.n,ic:"phone",fn:()=>App.toast("Calling "+u.n+" · Ringover")},{t:"Change route",ic:"route",fn:()=>routeEditor(c)}])}
+  function focusMap(id){S.mapOpen=true;S.focus=id;App.closePop();App.closeModal();if(App.state.current!=="couriers-today"){App.go("couriers-today",{focus:id})}else App.remount();App.toast("Map focused on the delay · the request lives 15 s until the map is on screen")}
+
+  /* ---- delay causes card (i) ---- */
+  function delayPop(ev,causes,total,label){const items=[label||("Late +"+total+" min, of which:")];causes.forEach(c=>items.push({t:c[0]+" · "+c[1]+" min",cls:""}));items.push("-",{t:"Show on map",ic:"map",fn:()=>focusMap(S.lastStop)});App.pop(ev,items)}
+
+  /* ---- stops table (Couriers today & Dispatch routes & Not assigned) ---- */
+  function stopsTable(stops,opts={}){
+    const pf=S.planFact&&!opts.noPlanFact&&stops.some(s=>s.act||s.fc||s.causes);
+    const SL=opts.dispatch?{waiting:"Planned",picked:"Out for delivery",delivered:"Delivered",failed:"Failed",none:"No courier"}:{waiting:"Waiting",picked:"Picked up",delivered:"Delivered",failed:"Failed",none:"No courier"};
+    const head=`<tr><th>#</th><th>Order</th><th>Recipient</th><th>Address</th><th>Window</th>${pf?`<th>Plan</th><th>Actual / forecast</th><th>Deviation</th>`:`<th>ETA</th>`}<th>Status</th>${opts.advisor?`<th>Advisor</th><th>Action</th>`:""}</tr>`;
+    const rows=stops.map((s,i)=>{const o=App.order(s.id);if(!o)return"";const r=opts.advisor?rec(o):null;const done=s.status==="delivered"||s.status==="failed";const now=s.badges&&s.badges.includes("delivering now");
+      const etaTxt=s.status==="delivered"?"—":s.dev>10?`<span class="dev --late">late ${s.dev} min</span>`:`in ${Math.max(1,mins(s.fc)-NOWM)} min`;
+      const devTxt=s.status==="delivered"||s.act?`<span class="dev ${s.dev>10?"--late":s.dev<=0?"--ok":""}" title="${s.dev>0?"+":""}${s.dev} min vs the promised plan">${s.dev>0?"+":""}${s.dev}</span>`:s.status==="failed"?"—":`<span class="dev ${s.dev>10?"--late":s.dev<=0?"--ok":""}">${s.dev>0?"+":""}${s.dev}</span>`;
+      const badges=(s.badges||[]).map(b=>`<span class="tag ${b==="delivering now"?"--ink":b==="18+"?"--accent":""}">${esc(b)}</span>`).join("");
+      return `<tr class="${now?"--now":""} ${done?"--dim":""} ${r?rowTone(r):""}">
+        <td><span class="pos ${now?"--on":""}">${s.pos||i+1}</span></td>
+        <td><button class="link" onclick="App.openOrder(${o.id})">#${o.id}</button><span class="badges">${badges}</span></td>
+        <td>${esc(o.recipient)}</td>
+        <td class="wrap"><span class="pc">${pcOf(o)}</span> <span class="muted xs">${esc(o.addr.replace(/, London.*$/,""))}</span></td>
+        <td class="tnum">${winOf(o)}</td>
+        ${pf?`<td class="tnum">${s.plan}</td><td class="tnum">${s.act?`${s.act} <span class="tag --line" title="How the actual time was recorded">${s.actVia||"mark"}</span>`:`<span class="fc">≈ ${s.fc}</span>`}</td><td>${devTxt}${s.causes?`<i class="d14-ib" title="Why late – hover shows, click pins, Esc closes" onclick="D14.S.lastStop=${o.id};D14.delayPop(event,${JSON.stringify(s.causes).replace(/"/g,"&quot;")},${s.dev})">i</i>`:""}</td>`:`<td class="tnum">${etaTxt}</td>`}
+        <td>${s.status==="failed"?`${App.pill("late","Failed")}<span class="sub">${esc(s.fail||"")}</span>`:s.status==="delivered"?App.pill("delivered"):s.status==="picked"?App.pill("out","Picked up")+(opts.dispatch?"":""):s.status==="none"?App.pill("queue","No courier"):App.pill("queue",SL[s.status])}${opts.dispatch&&s.status==="picked"?`<span class="sub">Out for delivery</span>`:""}</td>
+        ${opts.advisor?`<td class="adv ${r.tone==="risk"?"--risk":""}"><b>${esc(r.text)}</b>${r.badge?` <span class="tag --accent">${r.badge}</span>`:""}${r.why?`<span class="why">${esc(r.why)}</span>`:""}</td><td class="act">${advAction(o,r)}</td>`:""}
+      </tr>`}).join("");
+    return `<div class="tbl-wrap --flush"><table class="tbl d14-stops">${head}${rows}</table></div>`}
+  /* advisor actions – DLOP-022..025, 074..076, 186 */
+  function advAction(o,r){
+    const busy=S.busy===o.id;const dis=busy?"disabled":"";
+    if(S.confirmUber===o.id)return `<span class="inl">Call Uber for #${o.id} (${pcOf(o)})? <button class="btn --ghost --sm" onclick="D14.S.confirmUber=null;App.remount()">Cancel</button><button class="btn --sm" onclick="D14.bookUber(${o.id})">Call Uber</button></span>`;
+    if(r.kind==="assigned")return `<span class="muted xs">${esc(r.text)}</span>`;
+    if(r.kind==="dpd")return `<button class="btn --sm --ghost" ${dis} onclick="D14.assignDpd(${o.id})">Assign DPD</button>`;
+    if(r.kind==="uber"||r.tone==="risk"){const blocked=r.tone==="risk"&&r.uberAvailable===false;return `<button class="btn --sm ${r.tone==="risk"?"--accent":""}" ${blocked?"disabled title='Uber does not serve this address'":dis} onclick="D14.S.confirmUber=${o.id};App.remount()">Call Uber</button>${blocked?`<span class="xs muted">Uber does not serve this address</span>`:""}`}
+    return `<button class="btn --sm" ${dis} onclick="D14.assignRun(${o.id},'${r.courier}')">Assign ${esc(App.user(r.courier).n)}</button>`+(r.uberAvailable===false?"":"")}
+  function assignRun(id,c){const o=App.order(id);
+    if(S.stale){S.stale=false;App.toast("Advice is out of date – re-read (409 stale_advice)");App.remount();return}
+    if(!App.user(c).on&&c==="george"){App.toast("George is not on shift yet – assigned by rota (422 courier_not_on_shift would refuse an off-rota courier)")}
+    App.assignCourier(id,c);if(o.status==="ready"){}T[c].stops.push({id,plan:hm(NOWM+60),fc:hm(NOWM+64),dev:4,status:"waiting",badges:["next run"]});
+    App.push("New order",`#${id} · ${pcOf(o)} · added to your run`,{icon:"truck"});S.lastAt=hm(NOWM+(++S.advTick));App.remount()}
+  function bookUber(id,reassign){const o=App.order(id);S.confirmUber=null;
+    if(o.courier&&o.courier!=="Uber Direct"&&!reassign){App.confirm("Our courier has this order on a run","Take #"+id+" off "+App.user(o.courier).n+"'s run and call Uber? The courier gets a push to bring the bouquet back.","Take it off and call Uber",()=>bookUber(id,true));return}
+    if(S.uberOut&&D[id].atRisk){App.toast("Both Uber accounts are out of range for this address (4 and 10 miles)");App.remount();return}
+    S.busy=id;App.remount();setTimeout(()=>{S.busy=null;if(o.courier&&o.courier!=="Uber Direct"){T[o.courier].stops=T[o.courier].stops.filter(s=>s.id!==id)}
+      App.assignCourier(id,"Uber Direct");D[id].relay={carrier:"Uber Direct",status:"finding a courier",eta:"≈ 12 min",account:"uber_direct",hidden:false};App.toast("#"+id+" · Uber Direct booked · ≈ £9, no tip, not XL");App.remount()},500)}
+  function assignDpd(id){const o=App.order(id);D[id].dpdPlanned=true;if(o.courier&&o.courier!=="Uber Direct")T[o.courier].stops=T[o.courier].stops.filter(s=>s.id!==id);o.courier=null;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Courier · DPD (planned)"});App.emit("orders");App.toast("#"+id+" goes by DPD")}
+  function buildAdvice(){S.adviceBuilt=hm(NOWM+(++S.advTick));App.toast("Advice rebuilt · one run at a time, 60 s cooldown · advisor alerts sent");App.remount()}
+
+  /* ---- route editor (DLOP-043..057, 190) ---- */
+  const RE={c:null,order:[],orig:[],optimal:[],saving:false,evalTxt:null,evaluating:false,addOpen:false,q:"",err:null,drag:null};
+  function routeEditor(c){ensure();const t=T[c];if(!t||!["confirmed","awaiting_confirmation"].includes(t.status)){App.toast("No open run to edit");return}
+    RE.c=c;RE.order=t.stops.filter(s=>s.status!=="delivered"&&s.status!=="failed").map(s=>s.id);RE.orig=RE.order.slice();RE.optimal=RE.order.slice();RE.evalTxt=null;RE.evaluating=false;RE.addOpen=false;RE.q="";RE.err=null;RE.saving=false;
+    if(!RE.order.length){App.toast("No open stops to reorder")}
+    App.sheet({eyebrow:"Change route",title:"Route – "+App.user(c).n,wide:true,body:"<div id='d14-re'>Loading the route…</div>",foot:"<div id='d14-re-foot' style='display:flex;gap:8px;align-items:center;width:100%'></div>",onMount:()=>setTimeout(reRender,150)});
+    App.registerCommands([{g:"Actions",t:"Change route · "+App.user(c).n,ic:"route",fn:()=>routeEditor(c)}])}
+  function reRender(){const t=T[RE.c];if(!t)return;const el=document.getElementById("d14-re"),ft=document.getElementById("d14-re-foot");if(!el)return;
+    if(RE.err==="gone"){el.innerHTML=`<div class="note-box --accent">This route can no longer be edited</div>`;ft.innerHTML="";setTimeout(()=>App.closeSheet(),1500);return}
+    const changed=RE.order.join()!==RE.orig.join();const sameSet=RE.order.slice().sort().join()===RE.optimal.slice().sort().join();const notOptimal=RE.order.join()!==RE.optimal.join();
+    const rows=RE.order.map((id,i)=>{const o=App.order(id);const s=t.stops.find(x=>x.id===id)||{fc:hm(NOWM+30+i*20),dev:0};const river=i===1;const late=s.dev>10;
+      return `<div class="st" draggable="true" data-id="${id}" ondragstart="D14.reDrag(event,${id})" ondragover="D14.reOver(event,${id})" ondragleave="this.classList.remove('--over')" ondrop="D14.reDrop(event,${id})" ondragend="D14.reEnd()"><span class="pos">${i+1}</span><div class="t"><b><button class="link" onclick="App.openOrder(${id})">#${id}</button> · ${esc(o.recipient)} · <span class="tnum">${pcOf(o)}</span></b><small>${i===0?`<span class="tag --ink">first</span> `:""}${river?`<span class="tag --line" title="This leg crosses the Thames">river</span> `:""}${i===RE.order.length-1&&RE.order.length>3?`<span class="tag --line">no map pin</span> `:""}window: ${(D[id]||{}).slotType==="before"?"≤ "+o.slot.split("–")[1]:o.id%4===0?"any time":"≥ "+o.slot.split("–")[0]}</small></div><span class="eta">≈ ${s.fc}${late?` <span class="late">+${s.dev} min</span>`:""}</span><button class="ib" title="Move up" ${i===0||RE.saving?"disabled":""} onclick="D14.reMove(${id},-1)">${ic("down").replace('viewBox','style="transform:rotate(180deg)" viewBox')}</button><button class="ib" title="Move down" ${i===RE.order.length-1||RE.saving?"disabled":""} onclick="D14.reMove(${id},1)">${ic("down")}</button><button class="ib" title="Remove from the route" onclick="D14.reRemove(${id})">${ic("close")}</button></div>`}).join("");
+    const evalBox=RE.order.length?`<div class="eval ${RE.evaluating&&RE.evalTxt?"--dim":""}">${RE.evaluating&&!RE.evalTxt?"Recalculating…":RE.err==="eval"?"Could not calculate this order":RE.evalTxt||"Drag a row or use the arrows to change the order – the planner re-checks it 400 ms after each change."}</div>`:`<div class="empty">${ic("route")}<div class="h3">No open stops to reorder</div></div>`;
+    const cands=RE.addOpen?candidates():[];
+    el.innerHTML=`<div class="d14-re">${rows}</div>${RE.order.length?`<div class="hint">Drag a row or use the arrows to change the order. ${t.status==="awaiting_confirmation"?"This run is waiting for confirmation – «Confirm this order» sends the courier off in exactly this order.":"The run is confirmed – saving a new order re-promises the ETAs the customers see."}</div>`:""}${evalBox}
+      ${RE.err==="changed"?`<div class="note-box --accent mb8">The stop list has changed – reopen the route</div>`:RE.err==="save"?`<div class="note-box --accent mb8">Could not save – try again</div>`:RE.err==="rm"?`<div class="note-box --accent mb8">Could not remove / add the order – try again</div>`:""}
+      <div class="hr"></div>
+      ${RE.addOpen?`<div class="row"><input class="input" id="d14-re-q" placeholder="Order, postcode or recipient" value="${esc(RE.q)}" oninput="D14.RE.q=this.value;D14.reRender();document.getElementById('d14-re-q').focus()"><button class="btn --ghost --sm" onclick="D14.RE.addOpen=false;D14.RE.q='';D14.reRender()">Cancel</button></div><div class="hint">Unassigned orders first, then open stops of other couriers. Adding a stop that is already in another van tells that courier to bring it back.</div>${cands.length?cands.map(x=>`<div class="cand"><div class="t"><b>#${x.o.id}</b> · ${esc(x.o.recipient)} · <span class="tnum">${pcOf(x.o)}</span><small>${esc(x.o.addr.replace(/, London.*$/,""))} · ${winOf(x.o)}</small></div><span class="tag ${x.tag==="unassigned"?"":"--line"}">${esc(x.tag)}</span><button class="btn --sm" onclick="D14.reAdd(${x.o.id})">Add</button></div>`).join(""):`<div class="muted sm" style="padding:8px 0">Nothing to add – every order has a courier or is already here.</div>`}`:`<button class="textbtn" onclick="D14.RE.addOpen=true;D14.reRender()">+ Add an order</button>`}
+      <div class="hint mt16">Demo: <button class="textbtn" onclick="D14.RE.err='gone';D14.reRender()">409 route gone</button> · <button class="textbtn" onclick="D14.RE.err='changed';D14.reRender()">422 stop list changed</button> · <button class="textbtn" onclick="D14.RE.err='save';D14.reRender()">save failed</button> · <button class="textbtn" onclick="D14.RE.err='eval';D14.reRender()">calc failed</button> · <button class="textbtn" onclick="D14.reIncoming()">new stop arrives</button></div>`;
+    ft.innerHTML=RE.order.length?`<button class="btn --ghost --sm" ${sameSet&&notOptimal?"":"disabled"} onclick="D14.reOptimize()">Optimize</button><span class="sp"></span><button class="btn --secondary --sm" ${changed&&!RE.saving?"":"disabled"} onclick="D14.reSave()">Save order</button>${t.status==="awaiting_confirmation"?`<button class="btn --sm" onclick="D14.reConfirm()">${ic("check")} Confirm this order</button>`:""}`:`<span class="muted sm">All stops were taken off this run.</span>`;
+  }
+  function candidates(){const q=RE.q.trim().toLowerCase();const mine=new Set(RE.order);const list=[];
+    unassigned().forEach(o=>{if(!mine.has(o.id)&&(D[o.id]||{}).relay==null)list.push({o,tag:"unassigned"})});
+    Object.keys(T).forEach(c=>{if(c===RE.c)return;T[c].stops.forEach(s=>{if(s.status==="delivered"||s.status==="failed")return;const o=App.order(s.id);if(o&&!mine.has(o.id))list.push({o,tag:s.status==="picked"?"already in "+App.user(c).n+"'s van":"with "+App.user(c).n})})});
+    return list.filter(x=>!q||String(x.o.id).includes(q)||pcOf(x.o).toLowerCase().includes(q)||x.o.recipient.toLowerCase().includes(q)).slice(0,8)}
+  let evalT=null;
+  function reEval(){clearTimeout(evalT);RE.evaluating=true;reRender();evalT=setTimeout(()=>{RE.evaluating=false;const over=Math.max(0,(RE.order.join()===RE.optimal.join()?0:RE.order.length*4));const n=RE.order.length;
+    RE.evalTxt=`This order: ${Math.floor((35+n*18)/60)} h ${(35+n*18)%60} min${over?` · <span class="late">+${over} min vs the optimal</span> · late: #${RE.order[RE.order.length-1]}`:" · matches the planner's order"} · last stop ≈ ${hm(NOWM+35+n*18)} · back at the shop ≈ ${hm(NOWM+55+n*18)} · river ×1 · ETAs estimated${over?"<br>The planner recommends its own order – press Optimize to restore it.":""}`;RE.over=over;reRender()},400)}
+  function reMove(id,d){const i=RE.order.indexOf(id);const j=i+d;if(j<0||j>=RE.order.length)return;RE.order.splice(i,1);RE.order.splice(j,0,id);reEval()}
+  function reDrag(ev,id){RE.drag=id;ev.dataTransfer.effectAllowed="move";ev.currentTarget.classList.add("--drag")}
+  function reOver(ev,id){if(RE.saving)return;ev.preventDefault();ev.currentTarget.classList.add("--over")}
+  function reDrop(ev,id){ev.preventDefault();if(RE.drag==null||RE.drag===id)return;const i=RE.order.indexOf(RE.drag),j=RE.order.indexOf(id);RE.order.splice(i,1);RE.order.splice(j,0,RE.drag);RE.drag=null;reEval()}
+  function reEnd(){RE.drag=null;document.querySelectorAll(".d14-re .st").forEach(e=>e.classList.remove("--drag","--over"))}
+  function reOptimize(){RE.order=RE.optimal.filter(id=>RE.order.includes(id));reEval()}
+  function reApply(confirm){const t=T[RE.c];const byId={};t.stops.forEach(s=>byId[s.id]=s);t.stops=t.stops.filter(s=>s.status==="delivered"||s.status==="failed").concat(RE.order.map(id=>byId[id]||{id,plan:hm(NOWM+40),fc:hm(NOWM+44),dev:4,status:"waiting",badges:[]}));t.via="manual";
+    if(confirm){t.status="confirmed";t.state="on_road";t.left=hm(NOWM);t.cur=0;t.stops.forEach(s=>{if(s.status==="waiting"){s.status="picked";const o=App.order(s.id);if(o&&o.status==="ready")App.setOrderStatus(s.id,"out",{courier:RE.c,silent:true})}});App.push("Route confirmed – you can go",App.user(RE.c).n+" · "+RE.order.length+" stops in the confirmed order",{icon:"route"});App.toast("Run confirmed · orders out for delivery · «on its way» sent · ETAs promised")}
+    else{t.status==="confirmed"&&App.push("Route order changed",App.user(RE.c).n+" · new stop order from "+App.me().n,{icon:"route"});App.toast("Order saved"+(t.status==="confirmed"?" · ETAs re-promised, customers see the new times":""))}
+    App.closeSheet();App.remount()}
+  function reSave(){if(RE.err==="save"){App.toast("Could not save – try again");return}if(RE.over>0){App.confirm("Change the route?",`This order is ${RE.over} min longer than the optimal one. late: #${RE.order[RE.order.length-1]}. Are you sure this order is better?`,"Yes, change it",()=>reApply(false));return}reApply(false)}
+  function reConfirm(){if(RE.over>0){App.confirm("Change the route?",`This order is ${RE.over} min longer than the optimal one. late: #${RE.order[RE.order.length-1]}. Are you sure this order is better?`,"Yes, change it",()=>reApply(true));return}reApply(true)}
+  function reRemove(id){if(RE.err==="rm"){App.toast("Could not remove / add the order – try again");return}App.confirm("Remove #"+id+" from the route?",App.user(RE.c).n+" is taken off the order and it goes back to unassigned. If the bouquet is already in the van the courier is asked to bring it back.","Remove",()=>{const t=T[RE.c];t.stops=t.stops.filter(s=>s.id!==id);RE.order=RE.order.filter(x=>x!==id);RE.orig=RE.orig.filter(x=>x!==id);RE.optimal=RE.optimal.filter(x=>x!==id);const o=App.order(id);o.courier=null;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Removed from "+App.user(RE.c).n+"'s route"});App.emit("orders");App.toast("#"+id+" removed from the route");reRender()},{danger:true})}
+  function reAdd(id){if(RE.err==="rm"){App.toast("Could not remove / add the order – try again");return}const o=App.order(id);const prev=o.courier;if(prev&&prev!=="Uber Direct"&&T[prev]){T[prev].stops=T[prev].stops.filter(s=>s.id!==id);App.push("Order moved",`#${id} goes with ${App.user(RE.c).n} now – bring it back if it is in your van`,{icon:"truck"})}
+    o.courier=RE.c;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Assigned to "+App.user(RE.c).n+" (route editor)"});T[RE.c].stops.push({id,plan:hm(NOWM+70),fc:hm(NOWM+74),dev:4,status:"waiting",badges:["next run"]});RE.order.push(id);RE.orig.push(id);RE.optimal.push(id);App.emit("orders");App.toast("#"+id+" assigned to "+App.user(RE.c).n);reRender()}
+  function reIncoming(){const o=unassigned().find(x=>!RE.order.includes(x.id)&&!(D[x.id]||{}).relay);if(!o){App.toast("Nothing left to arrive");return}o.courier=RE.c;T[RE.c].stops.push({id:o.id,plan:hm(NOWM+90),fc:hm(NOWM+95),dev:5,status:"waiting",badges:["next run"]});RE.order.push(o.id);RE.orig.push(o.id);RE.optimal.push(o.id);App.emit("orders");App.toast("#"+o.id+" was assigned elsewhere – appended to the end, your manual order kept");reRender()}
+
+  /* ---- Uber modal (board: Tip / XL / Call Uber · Call again) ---- */
+  function uberModal(id,rebook){const o=App.order(id);const tip=S.tips[id]??(rebook?2:0);const xl=!!S.xl[id];
+    const body=`<dl class="kv"><dt>Order</dt><dd>#${id} · ${esc(o.recipient)} · ${pcOf(o)}</dd><dt>Price</dt><dd>≈ £9${tip?" + £"+tip+" tip":""}${xl?" · XL vehicle":""}</dd><dt>ETA</dt><dd>pickup in ≈ 12 min</dd><dt>Account</dt><dd>UK account (uber_direct)</dd></dl>
+      <div class="field mt16"><label>Tip</label><div class="chips">${[0,1,2,3].map(v=>`<button class="chip ${tip===v?"on":""}" onclick="D14.S.tips[${id}]=${v};D14.uberModal(${id},${!!rebook})">${v?"+£"+v:"No tip"}</button>`).join("")}</div></div>
+      <label class="check mt16"><input type="checkbox" ${xl?"checked":""} onchange="D14.S.xl[${id}]=this.checked"> XL (large arrangement – needs a car)</label>
+      ${rebook?`<div class="note-box --warn mt16">Call a new courier? This is a separate delivery and a separate charge. The old booking is cancelled first.</div>`:""}
+      ${(D[id]||{}).alcohol&&!(D[id]||{}).ageVerified?`<div class="note-box --accent mt16">Alcohol in the order – outside licensed hours Uber would refuse the booking.</div>`:""}`;
+    App.modal({title:(rebook?"Call again":"Call Uber")+" · #"+id,body,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="D14.uberBook(${id},${!!rebook})">${ic("truck")} ${rebook?"Call a new courier":"Call Uber"}</button>`})}
+  function uberBook(id,rebook){App.closeModal();const o=App.order(id);S.busy=id;App.remount();setTimeout(()=>{S.busy=null;
+    if(S.uberOut){App.toast("Uber refused · no_coverage – both accounts out of range (4 and 10 miles)");App.remount();return}
+    D[id].relay={carrier:"Uber Direct",status:rebook?"finding a courier (new booking)":"finding a courier",eta:"≈ 12 min",account:"uber_direct",hidden:false,tip:S.tips[id]||0,xl:!!S.xl[id]};o.courier="Uber Direct";o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:(rebook?"Uber re-booked":"Uber Direct booked")+" · tip £"+(S.tips[id]||0)+(S.xl[id]?" · XL":"")});App.emit("orders");App.toast(rebook?"New Uber booking · separate charge":"Uber Direct booked · £9"+(S.tips[id]?" + £"+S.tips[id]+" tip":""));App.remount()},500)}
+  function uberCancel(id){App.confirm("Cancel this courier?","The order returns to unassigned. Uber is told to cancel; if the courier already picked up, Uber may refuse (carrier_refused).","Cancel courier",()=>{const o=App.order(id);delete D[id].relay;o.courier=null;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Uber booking cancelled"});App.emit("orders");App.toast("#"+id+" · Uber cancelled · back to Ready")},{danger:true})}
+
+  return {S,D,T,RE,SHOP,ensure,todays,unassigned,stage,STAGE_LBL,rec,rowTone,pcOf,pos,winOf,hm,mins,NOWM,manage,admin,pl,nav,navGo,live,tick,demoBtn,demoMenu,mapHtml,courierPop,focusMap,delayPop,stopsTable,advAction,assignRun,bookUber,assignDpd,buildAdvice,routeEditor,reRender,reMove,reDrag,reOver,reDrop,reEnd,reOptimize,reSave,reConfirm,reRemove,reAdd,reIncoming,uberModal,uberBook,uberCancel,uberAcc,cust};
+})();
+
+/* ===== Dispatch (s-delivery) ===== */
+window.mount_delivery=function(params){
+  const D14=window.D14,S=D14.S,D=D14.D,T=D14.T,esc=App.esc,ic=App.icon;D14.ensure();
+  if(params&&params.uber){const o=D14.unassigned().find(x=>!D[x.id].relay);if(o)setTimeout(()=>D14.uberModal(o.id),200);params.uber=false}
+  if(params&&params.open){setTimeout(()=>App.openOrder(params.open),200);params.open=null}
+  App.registerCommands([{g:"Actions",t:"Build run from ready deliveries",ic:"route",fn:()=>DP.buildRun()},{g:"Actions",t:"Print delivery labels",ic:"printer",fn:()=>DP.labels()},{g:"Go to",t:"Delivery · Couriers today",ic:"truck",fn:()=>App.go("couriers-today")},{g:"Go to",t:"Delivery · Exceptions",ic:"alert",fn:()=>App.go("delivery-exceptions")}]);
+  document.getElementById("d14-nav-dispatch").innerHTML=D14.nav("delivery");
+  const can=D14.manage(),adm=D14.admin();
+  const board=D14.todays().filter(o=>D14.stage(o));
+  const cols={ready:[],assigned:[],in_transit:[],delivered:[],failed:[]};board.forEach(o=>cols[D14.stage(o)].push(o));
+  const unas=D14.unassigned();
+  /* head */
+  App.$("#d14-dp-head").innerHTML=`<span class="caps">Today · Tue 20 Oct · business day, not courier day</span><span class="sp"></span>
+    <button class="btn --ghost --sm" onclick="DP.labels()">${ic("printer")} Print labels</button>
+    ${can?`<span class="row" style="gap:6px"><select class="select" id="dp-wave" style="width:150px;height:32px"><option>All waves</option><option>Morning · 08–12</option><option>Midday · 12–16</option><option>Evening · 16–22</option></select><select class="select" id="dp-zone" style="width:130px;height:32px"><option>All zones</option><option>Zone 1 · SE1</option><option>Zone 2 · SE16/17</option><option>Zone 3 · outer</option></select><button class="btn --sm" onclick="DP.buildRun()">${ic("route")} Build run</button></span>`:""}
+    ${adm&&S.throttle&&!S.paused?`<button class="btn --ghost --sm" onclick="DP.pause()">${ic("pause")} Pause marketplaces 30 min</button>`:""}
+    ${D14.demoBtn()}`;
+  /* body */
+  const kpi=(k,v,cls)=>`<div class="kpi-card d14-kpi ${cls||""}" onclick="DP.scrollTo('${k}')"><span class="caps">${k}</span><span class="kpi-s">${v}</span></div>`;
+  const lateRisk=board.filter(o=>D14.stage(o)!=="delivered"&&App.isLate(o)).length,narrow=board.filter(o=>D[o.id].narrow).length;
+  const exc=4;
+  let h="";
+  // ids: DLOP-061 DLOP-062
+  if(S.paused)h+=`<div class="d14-banner"><span>${ic("pause")}</span><div class="t"><b>Marketplaces paused until ${S.paused.until}</b> · by ${esc(S.paused.by)} · ${esc(S.paused.reason)}<small>Close by hand in the partner hub: Deliveroo, Just Eat · API refused – check in Uber Eats Manager: Floritta SE1 (2nd listing)</small></div>${can?`<button class="btn --sm" onclick="DP.resume()">Resume now</button>`:""}</div>`;
+  // ids: DLOP-100 – entry point to Exceptions (the CRM has none; proposed for the redesign)
+  h+=`<div class="d14-banner --accent"><span>${ic("alert")}</span><div class="t"><b>${exc} delivery exceptions need attention</b><small>Courier booking stuck · failed · nobody home · redelivery requested. In today's CRM this screen has no menu entry – here it gets one.</small></div><button class="btn --ghost --sm" onclick="App.go('delivery-exceptions')">Open Exceptions</button></div>`;
+  // ids: DLOP-069
+  h+=`<div class="grid g6" style="grid-template-columns:repeat(5,minmax(0,1fr))">${kpi("To dispatch",cols.ready.length+cols.assigned.length)}${kpi("In transit",cols.in_transit.length)}${kpi("Delivered today",cols.delivered.length)}${kpi("Late risk",lateRisk,lateRisk?"--warn":"")}${kpi("Narrow window",narrow,narrow?"--warn":"")}</div>`;
+  // ids: DLOP-070
+  const booked=board.length-cols.delivered.length;const cap=S.noRoster?0:18;
+  h+=`<div class="d14-cap mt16 ${S.peak?"--peak":""}">${S.peak?`<b>Peak day</b> – every wave over capacity`:S.noRoster?`<span class="accent">No courier roster for today – add shifts in Team → Schedule</span>`:`<span class="w">Capacity today:</span><span class="w">Morning <span class="tnum">7/6</span> <span class="progress --accent" title="6 courier-h"><i style="width:100%"></i></span></span><span class="w">Midday <span class="tnum">${Math.min(booked,9)}/9</span> <span class="progress" title="9 courier-h"><i style="width:${Math.min(100,booked/9*100)}%"></i></span></span><span class="w">Evening <span class="tnum">4/6</span> <span class="progress" title="6 courier-h"><i style="width:66%"></i></span></span>`}<span class="sp"></span><span class="muted">no courier: <b class="tnum">${unas.length}</b></span><span class="muted">wave caps <button class="textbtn" onclick="App.toast('Wave caps are set in Delivery · Zones & rules')">${S.peak?"off":"on"}</button></span></div>`;
+  h+=`<div class="d14-cols">`;
+  // ids: DLOP-063 DLOP-064 DLOP-065 DLOP-066 DLOP-067 DLOP-068 DLOP-188
+  const cs=["daniel","george","omar"].filter(c=>!S.noLogins||c!=="omar");
+  if(cs.length){h+=`<div class="panel" id="dp-routes"><div class="p-head"><div class="h4">Couriers and routes</div>${Object.values(S.open).some(Boolean)?D14.live("30 s"):`<span class="muted xs">no polling while every route is folded</span>`}</div><div class="p-body">`;
+    cs.forEach(c=>{const u=App.user(c),t=T[c]||{stops:[]};const load=t.stops.filter(s=>s.status!=="delivered"&&s.status!=="failed").length+(c==="daniel"?2:0);const open=S.open[c];const hasLogin=!(S.noLogins&&c==="george");
+      h+=`<div class="d14-cr"><div class="hd">${App.avatar(c,"--s")}<span class="dot ${u.on?"--ok":""}" title="${u.on?"on shift":"off shift"}"></span><b style="font-weight:400">${esc(u.n)}</b>${c==="daniel"?`<span title="Suggested courier (least loaded on shift)">${ic("sparkle")}</span>`:""}<small>load ${load}</small><span class="sp"></span>${hasLogin?`<button class="textbtn" onclick="DP.toggle('${c}')" aria-expanded="${!!open}">${open?"Hide route":"Route"}</button>`:`<span class="muted xs" title="This courier has no app login – no live route">no app login</span>`}</div>`;
+      if(open){if(t.stops.length){const op=t.stops.filter(s=>s.status==="waiting"||s.status==="picked").length;
+        h+=`<div class="body"><div class="row" style="gap:10px;flex-wrap:wrap"><span class="${t.status==="awaiting_confirmation"?"accent":"soft"}">${DP.tripState(c)}</span><span class="muted xs">delivered ${t.delivered} · open ${op} · failed ${t.failed}${t.back?" · back at "+t.back:""}</span></div>${DP.planFact(c,false)}<div class="muted xs" style="margin:4px 0 8px">${DP.via(t.via)}</div>${D14.stopsTable(t.stops,{dispatch:true})}${can&&["confirmed","awaiting_confirmation"].includes(t.status)&&op?`<div class="mt8"><button class="btn --ghost --sm" onclick="D14.routeEditor('${c}')">${ic("route")} Change route</button></div>`:""}</div>`}
+        else h+=`<div class="body"><div class="muted sm" style="padding:6px 0">${c==="omar"?"No orders today":"No route data for this courier"}</div></div>`}
+      h+=`</div>`});
+    h+=`</div></div>`}
+  // ids: DLOP-071 DLOP-072 DLOP-073 DLOP-074 DLOP-075 DLOP-076 DLOP-018 DLOP-021
+  if(can){const list=S.showAssigned?unas.concat(D14.todays().filter(o=>o.courier&&o.courier!=="Uber Direct"&&D14.stage(o)==="assigned")):unas;const hasAssigned=D14.todays().some(o=>o.courier&&D14.stage(o)==="assigned");
+    h+=`<div class="panel" id="dp-adv"><div class="p-head"><div class="h4">Unassigned – advisor</div>${hasAssigned?`<label class="check xs"><input type="checkbox" ${S.showAssigned?"checked":""} onchange="D14.S.showAssigned=this.checked;App.remount()"> show assigned</label>`:""}${D14.live("60 s")}<button class="btn --ghost --sm" onclick="D14.buildAdvice()">${ic("refresh")} Build advice</button></div><div class="p-body">${list.length?`<div class="tbl-wrap --flush"><table class="tbl d14-stops"><tr><th>Order</th><th>Window</th><th>Advisor</th><th>Action</th></tr>${list.map(o=>{const r=D14.rec(o);return `<tr class="${D14.rowTone(r)}"><td><button class="link" onclick="App.openOrder(${o.id})">#${o.id}</button> <span class="muted xs tnum">${D14.pcOf(o)}</span></td><td class="tnum">${D14.winOf(o)}</td><td class="adv ${r.tone==="risk"?"--risk":""}"><b>${esc(r.text)}</b>${r.badge?` <span class="tag --accent">${r.badge}</span>`:""}${r.why?`<span class="why">${esc(r.why)}</span>`:""}</td><td class="act">${D14.advAction(o,r)}</td></tr>`}).join("")}</table></div>`:`<div class="empty">${ic("check")}<div class="h3">Every order is planned</div><div class="sm">no advice yet? press Build advice</div></div>`}</div></div>`}
+  else h+=`<div class="note-box">The advisor block is hidden without <b>delivery.manage</b> (view-only manager).</div>`;
+  h+=`</div>`;
+  // ids: DLOP-077 DLOP-078 DLOP-079 DLOP-080 DLOP-081 DLOP-082 DLOP-083 DLOP-084 DLOP-085 DLOP-086 DLOP-087 DLOP-088 DLOP-089 DLOP-090 DLOP-091 DLOP-092 DLOP-093 DLOP-094 DLOP-095 DLOP-096 DLOP-097 DLOP-098 DLOP-099 DLOP-189 – kanban, 5 stages in one row (in the CRM 3 + 2 rows)
+  h+=`<div class="sec-head mt24"><div class="h2">Board</div><span class="muted xs">5 stages in one row · drag replaced by «Move to…» and «Advance →» · re-read after every action (no polling)</span></div><div class="d14-kb"><div class="kanban">`;
+  Object.keys(cols).forEach(k=>{h+=`<div class="kcol ${cols[k].length?"":"--empty"}"><div class="k-head">${D14.STAGE_LBL[k]}<span class="n">${cols[k].length}</span></div><div class="k-body">${cols[k].map(o=>DP.card(o,k)).join("")}</div></div>`});
+  h+=`</div></div>`;
+  App.$("#d14-dp-body").innerHTML=h;
+};
+window.DP={
+  tripState(c){const t=window.D14.T[c];if(!t||!t.stops.length)return"no run";if(t.state==="on_road")return"on the road · back ≈ "+t.back+" (in "+(window.D14.mins(t.back)-window.D14.NOWM)+" min)";if(t.status==="awaiting_confirmation")return"awaiting route confirmation";if(t.state==="at_shop")return"at the shop since "+t.since;if(t.state==="off")return"back at the shop · 09:40";return"heading to shop · ~12 min"},
+  via(v){return{traffic:"ordered by live traffic",distance:"ordered by distance – no live traffic data",windows:"ordered by delivery windows",manual:"order set by a manager",fixed:"route confirmed by a manager – the order is fixed"}[v]||""},
+  planFact(c,withMap){const D14=window.D14,t=D14.T[c],ic=App.icon;if(!t.stops.length||t.state==="off")return"";const late=t.finishFc&&D14.mins(t.finishFc)>D14.mins(t.finishPlan);const op=t.stops.filter(s=>s.status!=="delivered"&&s.status!=="failed").length;
+    const causes=JSON.stringify(t.causes).replace(/"/g,"&quot;");const i=t.causes&&t.causes.length?`<i class="d14-ib" title="Why the run is late" onclick="D14.S.lastStop=${t.stops[t.cur]?t.stops[t.cur].id:0};D14.delayPop(event,${causes},${t.causes.reduce((s,x)=>s+x[1],0)},'Why late – ${t.causes.reduce((s,x)=>s+x[1],0)} min:')">i</i>`:"";
+    if(t.status==="awaiting_confirmation")return`<div class="pf d14-pf"><span>finish planned <b>${t.stops[t.stops.length-1].plan}</b> · back at the shop planned <b>${D14.hm(D14.mins(t.stops[t.stops.length-1].plan)+20)}</b></span><span>Now: <b>at the shop</b> · waiting for route confirmation</span><span>plan ≈ £${t.costPlan} per delivery · delivered 0 of ${t.stops.length}</span></div>`;
+    const now=t.stops[t.cur]?`driving to #${t.cur+1}`:"at the shop";
+    return`<div class="pf d14-pf"><span>finish planned <b>${t.finishPlan}</b> / forecast <b class="${late?"late":""}">${t.finishFc}</b>${i} · back at the shop planned <b>${t.backPlan}</b> / forecast <b class="${late?"late":""}">${t.back}</b>${i}</span><span>Now: <b class="warnt">${now}</b> · standing still 0 min</span><span>≈ £${t.costPer} per delivery (plan £${t.costPlan}) · delivered ${t.delivered} of ${t.stops.length}</span></div>`},
+  toggle(c){const S=window.D14.S;S.open[c]=!S.open[c];if(S.open[c])window.D14.tick();App.remount()},
+  scrollTo(k){App.toast(k+" – the board below is filtered by stage");},
+  labels(){App.toast("Labels for "+window.D14.todays().filter(o=>o.status!=="delivered").length+" undelivered orders · opens in a new tab (orders/labels/batch?src=dispatch)")},
+  buildRun(){const w=App.$("#dp-wave")?.value||"All waves",z=App.$("#dp-zone")?.value||"All zones";const n=window.D14.todays().filter(o=>o.status==="ready"&&!(window.D14.D[o.id]||{}).relay).length;if(!n){App.toast("No deliveries to dispatch match "+w+" · "+z);return}App.toast("Run created with "+n+" stops · "+w+" · "+z+" · ETAs by Google Routes, 20-min steps","Open Routes",()=>App.go("delivery-routes"))},
+  pause(){App.confirm("Pause marketplaces for 30 minutes?","Take every marketplace listing (Uber Eats, Deliveroo, Just Eat) off for 30 minutes. Uber Eats stores pause via the API; the others must be closed by hand in the partner hub.","Pause",()=>{App.modal({title:"Reason",body:`<div class="field"><label>Why</label><input class="input" id="dp-why" value="Couriers at capacity"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="window.D14.S.paused={until:window.D14.hm(window.D14.NOWM+30),by:App.me().n,reason:App.$('#dp-why').value};App.closeModal();App.remount();App.toast('Marketplaces paused · 30 min')">Pause marketplaces</button>`})})},
+  resume(){window.D14.S.paused=null;App.remount();App.toast("Marketplaces back online · Uber Eats via API")},
+  card(o,k){const D14=window.D14,D=D14.D,S=D14.S,d=D[o.id]||{},esc=App.esc,ic=App.icon,can=D14.manage();const c=App.customer(o.customer);const relay=d.relay;const uber=o.courier==="Uber Direct";
+    const next={assigned:"in_transit",in_transit:"delivered",failed:"ready"}[k];
+    const couriers=["daniel","george","omar"].map(id=>App.user(id)).sort((a,b)=>(b.on-a.on));
+    const r=D14.rec(o);
+    let h=`<div class="kcard ${d.slotType==="before"?"--before":""}">`;
+    h+=`<div class="k-top"><b onclick="App.openOrder(${o.id})">#${o.id}</b>${uber&&relay?`<span class="muted">(${relay.account})</span>`:""}<span class="sp"></span><span class="tnum">${App.fmt(o.total)}</span></div>`;
+    h+=`<div class="k-title"><b>${esc(o.recipient)}</b></div><div class="k-line"><span class="tnum">${D14.pcOf(o)}</span> · <span class="tnum">${esc(o.slot)}</span>${d.narrow?`<span class="warn" title="Marketplace window is narrower than our promise">⚠ narrow window</span>`:""}</div>`;
+    if(d.alcohol)h+=`<div class="k-line ${d.ageVerified?"":"--accent"}" title="Licensed premises – alcohol must be handed to an adult (Challenge 25)">${ic("alert")} ${d.ageVerified?"18+ · ID checked ✓":"18+ · Challenge 25"}</div>`;
+    if(d.overflow)h+=`<div class="k-line" title="Cheaper with an external carrier">→ external courier · ${d.overflow.zone?"zone "+d.overflow.zone:"basket under "+d.overflow.basket}</div>`;
+    if(relay){h+=`<div class="k-line ${relay.dead?"--accent":""}">${esc(relay.carrier)} · ${esc(relay.status)}${relay.dead?` · ⚠ stuck – call again`:""}${relay.hidden?` <span title="Tracking hidden – address came from the recipient">${ic("lock")}</span>`:` <button class="textbtn" onclick="App.toast('Uber tracking opens in a new tab')">Track</button>`}${can&&k!=="delivered"&&k!=="failed"&&!relay.dead?` <button class="textbtn --accent" onclick="D14.uberCancel(${o.id})">Cancel</button>`:""}</div>`;
+      if(relay.vehicle)h+=`<div class="k-line">${ic("truck")} ${esc(relay.vehicle)}${relay.xl===false&&o.size==="Grand"?` <span class="accent">⚠ Needs a car!</span>`:""}</div>`}
+    h+=`<div class="k-line muted">${uber?"Uber Direct":o.courier?App.avatar(o.courier,"--s")+" "+esc(App.user(o.courier).n):d.dpdPlanned?"DPD":"Unassigned"}</div>`;
+    if(can&&(k==="ready"||(k==="assigned"&&!uber))){h+=`<select class="select" onchange="DP.assign(${o.id},this.value);this.value=''"><option value="">${o.courier?"Reassign courier":"Assign courier"}</option>${couriers.map(u=>`<option value="${u.id}">${u.id==="daniel"?"✨ ":""}${u.n} · load ${u.id==="daniel"?7:u.id==="george"?3:0}${r.courier===u.id?" (advisor)":""}</option>`).join("")}${d.dpdPlanned?"":`<option value="dpd">DPD${r.kind==="dpd"?" (advisor)":""}</option>`}${o.courier||d.dpdPlanned?`<option value="off">– Take courier off</option>`:""}</select>`;
+      h+=`<div class="adv">Advisor: <b>${esc(r.kind==="uber"?"Uber – "+r.why:r.kind==="dpd"?"DPD – outside London":r.text.replace(" · №"," · leaves "+(11+(o.id%3))+":00 · №"))}</b></div>`}
+    if(can&&k==="ready"&&!relay){const tip=S.tips[o.id]||0;h+=`<div class="ho"><div class="row" style="gap:4px;flex-wrap:wrap"><span class="xs muted">Tip</span>${[0,1,2,3].map(v=>`<button class="chip ${tip===v?"on":""}" onclick="D14.S.tips[${o.id}]=${v};App.remount()">${v?"+£"+v:"No tip"}</button>`).join("")}<label class="check xs"><input type="checkbox" ${S.xl[o.id]?"checked":""} onchange="D14.S.xl[${o.id}]=this.checked"> XL</label></div><div class="row" style="gap:6px"><button class="btn --sm" ${S.busy===o.id?"disabled":""} onclick="D14.uberBook(${o.id},false)">${ic("truck")} Call Uber</button><button class="btn --ghost --sm" onclick="DP.estimate(${o.id})">Own courier ≈ ${S.est[o.id]!=null?S.est[o.id]:""}</button></div></div>`}
+    if(can&&relay&&relay.dead)h+=`<div class="ho"><button class="btn --sm --accent" onclick="D14.uberModal(${o.id},true)">${ic("refresh")} Call again</button></div>`;
+    if(can&&k!=="ready"&&!(relay&&!relay.dead)){const ho=S.ho[o.id];const hv=d.handover;
+      if(ho)h+=`<div class="ho"><select class="select" onchange="D14.S.ho[${o.id}].m=this.value;App.remount()">${["Not recorded","Own courier","Freelancer","DPD","Royal Mail","Evri","Taxi","Rail","Other"].map(m=>`<option ${ho.m===m?"selected":""}>${m}</option>`).join("")}</select>${ho.m&&ho.m!=="Not recorded"?`<input class="input" placeholder="Tracking no." value="${esc(ho.ref||"")}" onchange="D14.S.ho[${o.id}].ref=this.value"><input class="input" placeholder="Cost £" value="${esc(ho.cost||"")}" onchange="D14.S.ho[${o.id}].cost=this.value">`:""}<button class="btn --sm" onclick="DP.saveHo(${o.id})">Save</button><span class="xs muted">No cancel – the form closes on save only</span></div>`;
+      else h+=`<div class="k-line"><button class="textbtn" onclick="D14.S.ho[${o.id}]={m:'${hv?hv.method:"Not recorded"}',ref:'${hv?hv.ref||"":""}',cost:'${hv?hv.cost||"":""}'};App.remount()">${hv?esc(hv.method)+(hv.cost?" · £"+hv.cost:""):"How it left"}</button>${d.notHome?`<span class="tag --accent" title="Not home since ${d.notHomeAt} · redelivery link sent">Not home</span>`:""}</div>`}
+    if(can&&(k==="assigned"||k==="in_transit")&&!d.notHome)h+=`<div class="k-line"><button class="textbtn" onclick="DP.notHome(${o.id})">Not home</button></div>`;
+    h+=`<div class="k-foot">${can?`<button class="textbtn" onclick="DP.moveMenu(event,${o.id},'${k}')">Move to…</button>`:`<span></span>`}${can&&next?`<button class="btn --ghost --sm" onclick="DP.advance(${o.id},'${k}')">Advance →</button>`:""}</div></div>`;
+    return h},
+  assign(id,v){const D14=window.D14,D=D14.D,T=D14.T,o=App.order(id);if(!v)return;
+    if(v==="off"){if(o.courier&&o.courier!=="Uber Direct"&&T[o.courier])T[o.courier].stops=T[o.courier].stops.filter(s=>s.id!==id);o.courier=null;D[id].dpdPlanned=false;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Courier taken off"});App.emit("orders");App.toast("#"+id+" · courier taken off · back to Ready");DP.refreshed();return}
+    if(v==="dpd"){D14.assignDpd(id);DP.refreshed();return}
+    const r=D14.rec(o);const t=T[v];const against=r.courier&&r.courier!==v||r.kind!=="run";const confirmed=t&&t.status==="confirmed";
+    if(against||confirmed){const impact=`<ul class="d14-impact"><li>Place in the run: <b>№${t&&t.stops.length?t.stops.length+1:1}</b>${confirmed?" · on the next run (the current one is on the road)":""}</li><li>ETA for #${id}: <b>≈ ${D14.hm(D14.NOWM+75)}</b> (window ${D14.winOf(o)})</li><li>The run gets <b>+14 min</b> longer</li><li>Delays: #${t&&t.stops[t.stops.length-1]?t.stops[t.stops.length-1].id:"—"} by ≈ 9 min</li></ul>`;
+      App.modal({title:against?"The advisor suggested "+(r.kind==="uber"?"Uber":r.kind==="dpd"?"DPD":App.user(r.courier).n)+". Assign "+App.user(v).n+"?":t.state==="on_road"?App.user(v).n+" is on the road – the order can only go on the next run":"Add to "+App.user(v).n+"'s run? The route is already confirmed",body:impact+`<div class="xs muted">Impact is read-only (courier-trips/impact) – nothing is written until you choose.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button>${r.kind==="uber"?`<button class="btn --ghost --sm" onclick="App.closeModal();D14.uberBook(${id},false)">Call Uber for #${id}</button>`:""}<button class="btn --sm" onclick="App.closeModal();DP.doAssign(${id},'${v}')">${against?"Assign anyway":"Assign"}</button>`});return}
+    DP.doAssign(id,v)},
+  doAssign(id,v){const D14=window.D14,T=D14.T,o=App.order(id);const prev=o.courier;if(prev&&prev!=="Uber Direct"&&T[prev]){T[prev].stops=T[prev].stops.filter(s=>s.id!==id);App.push("Order taken off","#"+id+" is no longer yours – "+App.user(v).n+" takes it",{icon:"truck"})}
+    if(D14.D[id].relay&&D14.D[id].relay.dead)delete D14.D[id].relay;D14.D[id].dpdPlanned=false;App.assignCourier(id,v);T[v].stops.push({id,plan:D14.hm(D14.NOWM+75),fc:D14.hm(D14.NOWM+79),dev:4,status:"waiting",badges:T[v].state==="on_road"?["next run"]:[]});App.push("New order","#"+id+" · "+D14.pcOf(o)+" · "+D14.winOf(o),{icon:"truck"});DP.refreshed()},
+  refreshed(){window.D14.tick();App.remount();App.toast("Board re-read · columns, KPIs, couriers and advisor caches")},
+  moveMenu(ev,id,k){const allowed={ready:["assigned","failed"],assigned:["in_transit","ready","failed"],in_transit:["delivered","failed"],failed:["ready"],delivered:[]}[k];App.pop(ev,["Move to (allowed transitions)",...allowed.map(s=>({t:window.D14.STAGE_LBL[s],ic:s==="failed"?"alert":"chev",cls:s==="failed"?"--accent":"",fn:()=>DP.setStage(id,s)}))])},
+  advance(id,k){DP.setStage(id,{assigned:"in_transit",in_transit:"delivered",failed:"ready"}[k])},
+  setStage(id,s){const D14=window.D14,D=D14.D,o=App.order(id);
+    if(s==="delivered"){App.modal({title:"Proof of delivery · #"+id,body:`<div class="sm soft mb8">Delivered needs a POD: photo, «no photo», PIN or signature. The order becomes Fulfilled – customer email, marketplace mirror, courier's shift may auto-close, Active points.</div><div class="chips"><button class="chip on" onclick="App.closeModal();DP.deliver(${id},'photo')">Photo taken</button><button class="chip" onclick="App.closeModal();DP.deliver(${id},'no photo')">No photo</button><button class="chip" onclick="App.closeModal();DP.deliver(${id},'PIN')">PIN</button><button class="chip" onclick="App.closeModal();DP.deliver(${id},'signature')">Signature</button></div>${D[id].alcohol&&!D[id].ageVerified?`<div class="note-box --accent mt16">Alcohol order – outside licensed hours the server refuses «delivered».</div>`:""}`,foot:null});return}
+    if(s==="failed"){D[id].failed=true;D[id].failReason="Recipient not answering";if(o.status==="ready")o.status="out";o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Delivery failed"});App.emit("orders");App.toast("#"+id+" · Failed");return}
+    D[id].failed=false;
+    if(s==="ready"){o.status="ready";o.courier=null;o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Back to Ready to dispatch"});App.emit("orders");App.toast("#"+id+" · Ready to dispatch");return}
+    if(s==="assigned"){if(!o.courier){App.toast("Pick a courier first – Assigned needs one");return}App.toast("#"+id+" · Assigned");App.remount();return}
+    if(s==="in_transit"){App.setOrderStatus(id,"out",{courier:o.courier||"daniel",silent:true});App.toast("#"+id+" · out for delivery · «on its way» email + tracking SMS sent");return}},
+  deliver(id,pod){const D=window.D14.D;D[id].failed=false;D[id].pod=pod;App.setOrderStatus(id,"delivered",{silent:true});App.toast("#"+id+" · Delivered ("+pod+") · order Fulfilled, email sent, courier +points")},
+  estimate(id){const S=window.D14.S;S.est[id]="£"+(5.2+(id%5)*0.7).toFixed(2);App.remount();App.toast("Own courier estimate · Google Routes × hourly rate")},
+  saveHo(id){const S=window.D14.S,D=window.D14.D;const f=S.ho[id];if(!f.m||f.m==="Not recorded")delete D[id].handover;else D[id].handover={method:f.m,ref:f.ref,cost:f.cost};delete S.ho[id];App.remount();App.toast("Handover recorded · nothing is sent to the carrier")},
+  notHome(id){App.confirm("Mark the recipient as not home?","The redelivery link will need to be sent to the recipient (WhatsApp – email is rarely filled). A «nobody home» case opens in Exceptions with an AI draft.","Mark not home",()=>{const D=window.D14.D;D[id].notHome=true;D[id].notHomeAt=window.D14.hm(window.D14.NOWM);App.remount();App.toast("#"+id+" · Not home · case opened","Open Exceptions",()=>App.go("delivery-exceptions"))})}
+};
+document.addEventListener('orders',()=>{if(App.state.current==='delivery')window.mount_delivery(App.state.params)});
+
+/* ===== Couriers today (s-couriers-today) ===== */
+window.mount_couriers_today=function(params){
+  const D14=window.D14,S=D14.S,D=D14.D,T=D14.T,esc=App.esc,ic=App.icon;D14.ensure();
+  if(params&&params.focus){S.focus=params.focus;S.mapOpen=true;params.focus=null}
+  document.getElementById("d14-nav-ct").innerHTML=D14.nav("couriers-today");
+  const can=D14.manage();const isToday=S.date==="today";
+  App.$("#d14-ct-head").innerHTML=`<div class="field" style="flex-direction:row;align-items:center;gap:8px"><label>Date</label><select class="select" style="width:190px;height:32px" onchange="D14.S.date=this.value;App.remount();App.toast('Courier day · '+this.options[this.selectedIndex].text+' · full reload')"><option value="today" ${isToday?"selected":""}>Tue 20 Oct · courier day</option><option value="yesterday" ${S.date==="yesterday"?"selected":""}>Mon 19 Oct</option><option value="tomorrow" ${S.date==="tomorrow"?"selected":""}>Wed 21 Oct</option></select><span class="xs muted" title="Before 08:00 London the courier day is still yesterday">courier day rolls at 08:00</span></div><span class="sp"></span>${D14.live("30 s","also in a background tab")}<button class="btn --ghost --sm" onclick="D14.S.mapOpen=!D14.S.mapOpen;App.remount();App.toast('Map choice remembered in this browser')">${ic("map")} ${S.mapOpen?"Hide map":"Show map"}</button>${can?`<button class="btn --ghost --sm" onclick="D14.buildAdvice()">${ic("refresh")} Build advice</button>`:""}${D14.demoBtn()}`;
+  let h="";
+  if(!isToday){h+=`<div class="note-box mb16">Showing ${S.date==="yesterday"?"Mon 19 Oct":"Wed 21 Oct"} – the advice banner is only built for the current courier day.</div>`}
+  // ids: DLOP-009
+  if(isToday&&S.ctAdvice)h+=`<div class="d14-banner"><span>${ic("sparkle")}</span><div class="t"><b>Advice: send George home after his run</b> – 3 remaining evening drops are cheaper with Uber (≈ £27 vs 2 h 10 min of shift).<small>Built 60 s ago · only «recommend = home» is shown here</small></div><button class="btn --sm --ghost" onclick="App.toast('George gets a push: finish the run and clock out · 3 drops queued for Uber')">Send home</button><button class="ib" onclick="D14.S.ctAdvice=false;App.remount()">${ic("close")}</button></div>`;
+  // ids: DLOP-011 DLOP-012 DLOP-013 DLOP-014 DLOP-015
+  if(S.mapOpen)h+=D14.mapHtml({id:"d14-map-ct"});
+  // ids: DLOP-016 DLOP-019 DLOP-020 DLOP-021 DLOP-022 DLOP-023 DLOP-024 DLOP-025 DLOP-026 DLOP-186
+  const un=D14.unassigned();const stops=un.map(o=>({id:o.id,plan:"",fc:D14.hm(D14.NOWM+40),dev:0,status:"none",badges:D[o.id].alcohol?["18+"]:[]}));
+  h+=`<div class="d14-unas ${un.length?"--hot":""}"><div class="uh"><div class="h4">Not assigned · <span class="n">${un.length}</span></div>${D14.live("60 s","advisor")}${can||true?`<button class="btn --ghost --sm" onclick="D14.buildAdvice()">${ic("refresh")} Build advice</button>`:""}</div><div class="us">Delivery orders for this day with no in-house courier and no other arrangement (Uber, DPD, freelancer). Advisor actions here are not hidden by delivery.manage – the server refuses instead.</div>${un.length?D14.stopsTable(stops,{advisor:true,noPlanFact:true}):`<div class="empty">${ic("check")}<div class="h3">Every delivery for this day has a courier</div></div>`}</div>`;
+  // ids: DLOP-027 DLOP-028 DLOP-029 DLOP-030 DLOP-031 DLOP-032 DLOP-033 DLOP-034 DLOP-035 DLOP-036 DLOP-037 DLOP-038 DLOP-039 DLOP-040 DLOP-041 DLOP-042 DLOP-185
+  h+=`<div class="sec-head mt24"><div class="h2">Couriers</div><span class="muted xs">all active courier logins (test / review accounts hidden) · with orders first</span></div>`;
+  if(S.noLogins)h+=`<div class="empty">${ic("user")}<div class="h3">No active courier logins</div><div class="sm">add them in Settings → Team</div></div>`;
+  else ["daniel","george","omar"].forEach(c=>{const u=App.user(c),t=T[c];const runsOnly=t.runsOnly;
+    const presence=c==="daniel"?"last seen just now":c==="george"?"on shift, no ping":"no presence data";
+    const stopsN=t.stops.length,delivN=t.stops.filter(s=>s.status==="delivered").length,failN=t.stops.filter(s=>s.status==="failed").length;const op=t.stops.filter(s=>s.status==="waiting"||s.status==="picked").length;
+    h+=`<div class="d14-card ${runsOnly?"--runsonly":""}" id="ct-${c}"><div class="ch">${App.avatar(c)}<span class="dot ${u.on?"--ok":""}" title="${u.on?"online":"offline"}"></span><span class="nm">${esc(u.n)}</span><span class="muted xs">${presence}</span>${runsOnly?`<span class="tag --line">shift closed · runs only</span>`:`<span class="st ${t.status==="awaiting_confirmation"?"--accent":""}">${DP.tripState(c)}</span>`}<span class="sp"></span>${stopsN?`<span class="cnt"><span>stops: ${stopsN} · delivered ${delivN} · <span class="${failN?"f":""}">failed ${failN}</span></span>${t.status==="awaiting_confirmation"?`<span>back at ${D14.hm(D14.mins(t.stops[t.stops.length-1].plan)+20)}</span>`:""}${t.ccz?`<span title="Congestion charge for this run">CCZ £${t.ccz}</span>`:""}</span>`:`<span class="cnt">no orders</span>`}${can&&["confirmed","awaiting_confirmation"].includes(t.status)&&op?`<button class="btn --sm" onclick="D14.routeEditor('${c}')">${ic("route")} Change route</button>`:""}<button class="ib" title="More" onclick="D14.courierPop(event,'${c}')">${ic("dots")}</button></div>`;
+    if(!runsOnly&&stopsN){h+=`<div class="cb">${DP.planFact(c,true)}<div class="via">${DP.via(t.via)}${S.planFact?` · <button class="textbtn" onclick="D14.S.planFact=false;App.remount()">ETA only</button>`:` · <button class="textbtn" onclick="D14.S.planFact=true;App.remount()">Plan / fact</button>`}</div>${D14.stopsTable(t.stops)}</div>`}
+    if(t.runs&&t.runs.length){h+=`<details class="d14-runs" ${runsOnly?"open":""}><summary>Runs today (${t.runs.length}) <span class="muted" style="letter-spacing:0;text-transform:none">· analytics every 60 s</span></summary>${t.runs.map(r=>`<div class="run"><div class="l1"><b>Run ${r.n}</b> · ${r.at} · plan ${r.plan} min${r.act?` / actual ${r.act} min (${r.act-r.plan>0?"+":""}${r.act-r.plan})`:""}${r.act?"":` <span class="tag --ink">in progress</span>`}${r.grade?` <span class="tag">Grade ${r.grade}</span>`:""}<span class="tnum">£${r.cost} · £${r.per}/drop</span></div><div class="l2"><span>${r.followed?"followed the route":"deviated"}${r.flags.length?" · "+r.flags.join(" · "):""}</span>${r.overrun?`<span class="accent">overrun ${r.overrun} min · £${r.overrunCost}</span>`:""}<span>${r.chips.map(x=>`<span class="tag --line">${x}</span>`).join(" ")}</span></div>
+      <div class="tbl-wrap --flush mt8"><table class="tbl d14-stops"><tr><th>Order</th><th>Window</th><th>Plan</th><th>Actual</th><th>Δ</th><th>Leg plan/actual</th><th>At the door</th></tr>${r.stops.map((o,i)=>{const s=t.stops.find(x=>x.id===o.id)||{plan:D14.hm(8*60+15+i*17),act:D14.hm(8*60+20+i*17),dev:5};return`<tr><td><span class="pos">${i+1}</span> <button class="link" onclick="App.openOrder(${o.id})">#${o.id}</button> <span class="muted xs tnum">${D14.pcOf(o)}</span>${i===1&&r.n===1?` <span class="muted xs">(delivered 3)</span>`:""}${r.flags.includes("no photo")&&i===0?` <span class="tag --accent">no photo</span>`:""}</td><td class="tnum">${D14.winOf(o)}</td><td class="tnum">${s.plan}</td><td class="tnum">${s.act||"—"}</td><td class="dev ${s.dev>10?"--late":"--ok"}">${s.dev>0?"+":""}${s.dev}</td><td class="tnum">${9+i*2} / ${11+i*2} min</td><td class="tnum">${3+(o.id%4)} min</td></tr>`}).join("")}</table></div></div>`).join("")}${t.day?`<div class="day">Day: ${t.day.runs} runs, ${t.day.drops} drops, £${t.day.cost} · £${t.day.per}/drop, overpaid £${t.day.over}</div>`:""}</details>`}
+    h+=`</div>`});
+  App.$("#d14-ct-body").innerHTML=h;
+  if(params&&params.courier){const el=document.getElementById("ct-"+params.courier);if(el)el.scrollIntoView({block:"start"});params.courier=null}
+};
+document.addEventListener('orders',()=>{if(App.state.current==='couriers-today')window.mount_couriers_today(App.state.params)});
+</script>
