@@ -344,6 +344,8 @@
     <div id="o2-segs"></div>
     <!-- ids: ORDB-096 ORDB-097 ORDB-098 ORDB-099 ORDB-100 ORDB-101 ORDB-102 ORDB-103 ORDB-033 — triage banners above the day list (manager / owner) -->
     <div id="o2-bans-top"></div>
+    <!-- Needs you now – site leads, NOT PAID chase, Call back required, payment at the counter, no delivery date: moved ABOVE the day list (Tatiana 01.11.2026: managers did not notice them under the table and did not call back) -->
+    <div id="o2-needs"></div>
     <!-- ids: ORDB-010 ORDB-011 ORDB-012 ORDB-013 ORDB-014 ORDB-015 ORDB-016 ORDB-017 ORDB-018 ORDB-019 ORDB-020 ORDB-021 ORDB-247 — day tabs, +N not paid chips, Special, All orders, Archive, Refunds / Problem orders chips -->
     <div id="o2-tabs"></div>
     <!-- ids: ORDB-022 — month calendar with counts, All of {month} -->
@@ -890,7 +892,9 @@ function undatedBan(){const L=undatedL();if(!L.length||!mgr())return"";return ba
 function notPaidSection(){if(!mgr()||!isDayView()||O2.notpaid)return"";const L=notPaidDayL();if(!L.length)return"";return`<div class="o2-sec"><div class="h3">Not paid – ${L.length}</div><span class="xs muted">orders of the day not paid in full (refunded); unpaid and partial live in their banners</span></div>${table(L)}`}
 function renderBelow(){
   const fl=!mgr();
-  $("#o2-below").innerHTML=(mgr()?siteLeads():"")+unpaidBlock()+callsBlock()+counterBlock()+(fl?`<div class="o2-roleline">${I("info")} Triage banners (Unconfirmed, Overdue, Partially paid) sit below the list for florists – and the server sends a florist none of them, so they are empty here.</div>`:"")+undatedBan()+notPaidSection()+tasksBlock()+closedBlock()}
+  const needs=(mgr()?siteLeads():"")+unpaidBlock()+callsBlock()+counterBlock()+undatedBan();
+  $("#o2-needs").innerHTML=needs?`<div class="o2-sec" style="margin-top:4px"><div class="h3">Needs you now</div><span class="xs muted">call back, take payment, fix the date – before the day list, so nothing waits under the table</span></div>${needs}`:"";
+  $("#o2-below").innerHTML=(fl?`<div class="o2-roleline">${I("info")} Triage banners (Unconfirmed, Overdue, Partially paid) sit below the list for florists – and the server sends a florist none of them, so they are empty here.</div>`:"")+notPaidSection()+tasksBlock()+closedBlock()}
 O2.renderBelow=renderBelow;
 /* ---- sticky Assign several bar (ORDB-041) ---- */
 function renderBulk(){const el=$("#o2-bulk");if(!O2.select){el.innerHTML="";return}
