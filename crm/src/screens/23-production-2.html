@@ -1,0 +1,287 @@
+<style>
+/* ===== 23-2 · Driver web (My deliveries, My runs, Run, Order, Scan, Consent) · scoped ===== */
+.d23-sub{display:flex;align-items:center;gap:2px;border-bottom:1px solid var(--hair);padding:0 var(--pad);flex:none;overflow-x:auto;scrollbar-width:none}
+.d23-sub::-webkit-scrollbar{display:none}
+.d23-sub button{height:40px;padding:0 12px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.d23-sub button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.d23-sub button:hover:not(.on){color:var(--ink)}
+.d23-sub button .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+.d23-sub .sp{flex:1}
+.d23-sub .as{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 6px}
+.d23-sub .as:hover{color:var(--ink)}
+.d23-wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.d23-banner{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--sel);background:var(--sel-bg);font-size:14px}
+.d23-banner .ic{width:32px;height:32px;display:grid;place-items:center;background:var(--sel);color:var(--on-sel);flex:none}
+.d23-tabttl{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--grey);border:1px solid var(--hair);padding:3px 8px}
+.d23-tabttl.--blink{color:var(--accent);border-color:var(--accent);animation:d23blink 1.5s steps(1) infinite}
+@keyframes d23blink{50%{opacity:.35}}
+.d23-stop{border:1px solid var(--hair);background:var(--paper);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.d23-stop.--late{box-shadow:inset 3px 0 0 var(--accent)}
+.d23-stop .top{display:flex;align-items:center;gap:10px}
+.d23-stop .top b{font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}
+.d23-stop .rcp{font-size:16px;font-weight:500}
+.d23-stop .addr{font-size:14px;color:var(--graphite);line-height:1.4}
+.d23-stop .slot{display:inline-flex;align-items:center;gap:6px;font-size:13px}
+.d23-stop .slot svg{width:14px;height:14px}
+.d23-stop .instr{font-size:13px;color:var(--graphite)}
+.d23-stop .instr small{display:block;font-size:12px;color:var(--grey)}
+.d23-stop .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.d23-stop .acts .btn{height:48px;flex:1;min-width:120px}
+.d23-18{display:inline-flex;align-items:center;height:22px;padding:0 8px;font-size:11px;letter-spacing:.06em;background:var(--accent);color:#fff;font-weight:500}
+.d23-run{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--hair);cursor:pointer}
+.d23-run:hover{border-color:var(--grey)}
+.d23-run .t{flex:1;min-width:0}.d23-run .t b{display:block;font-weight:400;font-size:14.5px}.d23-run .t small{display:block;font-size:12px;color:var(--grey)}
+.d23-stopl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--hair);cursor:pointer}
+.d23-stopl:hover{background:var(--silver)}
+.d23-stopl .no{width:28px;height:28px;display:grid;place-items:center;background:var(--silver);font-variant-numeric:tabular-nums;font-size:12px;flex:none}
+.d23-stopl .no.--done{background:var(--ok-bg);color:var(--ok)}
+.d23-stopl .t{flex:1;min-width:0}.d23-stopl .t b{display:block;font-weight:400;font-size:14px}.d23-stopl .t small{display:block;font-size:12px;color:var(--grey)}
+.d23-qr{display:grid;grid-template-columns:repeat(21,1fr);width:160px;height:160px;gap:0;background:var(--paper);padding:6px;border:1px solid var(--hair)}
+.d23-qr i{display:block;background:transparent}.d23-qr i.on{background:var(--ink)}
+.d23-cam{position:relative;background:var(--ink);color:var(--paper);aspect-ratio:4/3;max-width:420px;display:grid;place-items:center;overflow:hidden}
+.d23-cam .frame{position:absolute;inset:18%;border:2px solid var(--paper);opacity:.8}
+.d23-cam .line{position:absolute;left:18%;right:18%;height:1px;background:var(--accent);animation:d23scan 1.6s linear infinite}
+@keyframes d23scan{0%{top:20%}100%{top:80%}}
+.d23-sect{border:1px solid var(--hair);padding:14px 16px}
+.d23-sect .h4{margin-bottom:8px}
+.d23-notes .nt{padding:10px 0;border-bottom:1px solid var(--hair);font-size:13.5px}
+.d23-notes .nt:last-child{border-bottom:0}
+.d23-notes .nt .by{font-size:12px;color:var(--grey);margin-top:3px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.d23-notes .nt .orig{font-size:12.5px;color:var(--graphite);margin-top:4px;padding:6px 10px;background:var(--silver)}
+.d23-consent{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.d23-consent .body p{margin:0 0 10px;font-size:14px;line-height:1.55;color:var(--graphite)}
+.d23-consent .body ol{margin:0 0 10px;padding-left:20px;font-size:14px;line-height:1.55;color:var(--graphite)}
+.d23-err{font-size:12px;color:var(--accent)}
+.d23-hint{font-size:12px;color:var(--grey)}
+.d23-gate{border:1px solid var(--accent);padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+[data-size="phone"] .d23-stop .acts .btn{min-width:0}
+</style>
+
+<!-- ids: PWDR-004 PWDR-006 PWDR-007 PWDR-126 — My deliveries: courier's web workplace (sidebar item only for couriers and only with delivery.driver_app – fix for the 404) -->
+<section class="scr" id="s-driver-deliveries" data-nav="Driver · My deliveries" data-group="Orders" data-title="Delivery" data-sub="My deliveries" data-parent="delivery" data-roles="courier owner">
+  <div class="d23-sub" id="d23-nav-driver-deliveries"></div>
+  <div class="scr-head" id="d23-dl-head"></div>
+  <!-- ids: PWDR-127 PWDR-128 PWDR-129 PWDR-130 PWDR-131 PWDR-132 — polling only «at the shop» (state menu), «The list does not update by itself…» hint, Refresh / Refreshing…, new-delivery banner + beep, tab-title blink until a touch, toast «A delivery was taken off your list.» -->
+  <!-- ids: PWDR-133 PWDR-134 PWDR-135 PWDR-136 PWDR-137 PWDR-138 PWDR-139 PWDR-140 PWDR-141 — stop card: number + status, recipient / address / slot, 18+ badge, Instructions + address notes, Route, Call, «Delivered – add photo» (camera → upload → order fulfilled), toasts / errors, empty state -->
+  <div class="scr-body" id="d23-dl-body"></div>
+</section>
+<!-- ids: PWDR-142 PWDR-143 PWDR-144 — My runs -->
+<section class="scr" id="s-driver-runs" data-nav="Driver · My runs" data-group="Orders" data-title="Delivery" data-sub="My runs" data-parent="delivery" data-roles="courier owner">
+  <div class="d23-sub" id="d23-nav-driver-runs"></div>
+  <div class="scr-body" id="d23-runs-body"></div>
+</section>
+<!-- ids: PWDR-145 PWDR-146 PWDR-147 PWDR-148 PWDR-149 PWDR-150 PWDR-192 — Run: stops in order, start / restart, working time ticking -->
+<section class="scr" id="s-driver-run" data-nav="Driver · Run" data-group="Orders" data-title="Delivery" data-sub="Run" data-parent="delivery" data-roles="courier owner">
+  <div class="scr-head" id="d23-run-head"></div>
+  <div class="scr-body" id="d23-run-body"></div>
+</section>
+<!-- ids: PWDR-151 PWDR-152 — Driver order card -->
+<section class="scr" id="s-driver-order" data-nav="Driver · Order" data-group="Orders" data-title="Delivery" data-sub="Order" data-parent="delivery" data-roles="courier owner">
+  <div class="scr-head" id="d23-ord-head"></div>
+  <!-- ids: PWDR-153 PWDR-154 PWDR-155 PWDR-156 PWDR-157 PWDR-158 PWDR-159 PWDR-160 PWDR-161 PWDR-162 — 18+ banner / alcohol / ID checked, Recipient (PII hidden after closing for the courier), Route + Call, QR with CRM code, address notes (+ delete confirm, new note with photo), Items, Mark ready (qr_flow), Deliver -->
+  <!-- ids: PWDR-163 PWDR-164 PWDR-165 PWDR-166 PWDR-167 PWDR-168 PWDR-169 PWDR-193 PWDR-194 PWDR-195 — Deliver modal: 18+ gate (type of ID + checkbox, Refuse handover), signature / no-photo reason, Confirm delivered (one of the two required), refuse modal (reason → failed, back to shop), Problem with address (≤500 with error, attach location with visible error), Cancel in every modal, verified orders skip the gate, plain-English toasts -->
+  <div class="scr-body" id="d23-ord-body"></div>
+</section>
+<!-- ids: PWDR-170 PWDR-171 PWDR-172 PWDR-173 — Scan: camera (BarcodeDetector) or manual code -->
+<section class="scr" id="s-driver-scan" data-nav="Driver · Scan" data-group="Orders" data-title="Delivery" data-sub="Scan" data-parent="delivery" data-roles="courier owner">
+  <div class="d23-sub" id="d23-nav-driver-scan"></div>
+  <div class="scr-body" id="d23-scan-body"></div>
+</section>
+<!-- ids: PWDR-174 PWDR-175 PWDR-176 PWDR-177 PWDR-178 PWDR-179 PWDR-180 PWDR-181 PWDR-196 — Consent to location tracking on shift -->
+<section class="scr" id="s-driver-consent" data-nav="Driver · Consent" data-group="Orders" data-title="Delivery" data-sub="Consent" data-parent="delivery" data-roles="courier owner">
+  <div class="d23-sub" id="d23-nav-driver-consent"></div>
+  <div class="scr-body" id="d23-con-body"></div>
+</section>
+
+<script>
+/* ===================== 23-2 · DRIVER · shared ===================== */
+const D23={as:"courier",me:"daniel",extra:[],seen:null,newIds:[],blink:false,removedToast:true,justDelivered:null,poll:"shop",cam:"idle",camSupported:true,consent:{state:"active",name:"Daniel Reed",signedAt:App.T(9,12,-40),version:2,current:2,withdrawnAt:null,objection:""},pii:null,ageChecked:{},tick:null};
+const d23esc=App.esc,d23ic=App.icon;
+const d23isCourier=()=>D23.as==="courier";
+const d23me=()=>App.user(D23.me);
+const d23mp=o=>o.chan==="Deliveroo"||o.chan==="Uber Eats";
+const d23code=o=>"FL-"+String(o.id).slice(-5);
+/* ids: PWDR-135 PWDR-136 — per-order courier facts (18+, instructions, address notes) · demo rule: every 4th order is age-restricted (alcohol) */
+const d23fact=o=>({ageRestricted:o.id%4===0,isAlcohol:o.id%4===0,instructions:o.notes||(o.id%3===0?"Leave with concierge if nobody answers":""),addrNotes:o.id%2===0?"Side entrance, buzzer 4":""});
+const d23slot=o=>{const t=o.id%6===0?"before":o.id%9===0?"after":"between";const [a,b]=o.slot.split("–");return t==="before"?"before "+b:t==="after"?"after "+a:a+"–"+b};
+/* ids: PWDR-007 — ForceCourierConsent: a courier without a valid consent is redirected to Consent on every request (flag delivery.consent.enabled) */
+function d23gate(cur){if(d23isCourier()&&P23_FLAGS.consent&&D23.consent.state!=="active"&&cur!=="driver-consent"){App.go("driver-consent",{forced:1},{replace:true});return true}return false}
+/* ids: PWDR-004 PWDR-006 — DriverNav: My deliveries / My runs / Scan / Consent; tabs hidden without their flags instead of leading to 404; viewer switch Courier ↔ Manager (stand) */
+function D23_nav(cur){
+  const el=document.getElementById("d23-nav-"+cur);if(!el)return;
+  const items=[];
+  if(P23_FLAGS.driver_app){items.push(["driver-deliveries","My deliveries","truck",()=>d23stops().length]);items.push(["driver-runs","My runs","route",()=>d23runs().length]);items.push(["driver-scan","Scan","scan",null])}
+  if(P23_FLAGS.consent)items.push(["driver-consent","Consent","lock",null]);
+  el.innerHTML=items.map(([id,lbl,ic,cnt])=>{const c=cnt?cnt():0;return `<button class="${id===cur?"on":""}" onclick="App.go('${id}')">${d23ic(ic)}${lbl}${c?`<span class="n">${c}</span>`:""}</button>`}).join("")+`<span class="sp"></span><button class="as" title="Stand: who is looking at the driver web" onclick="D23_asPop(event)">${d23ic("user")} Viewing as ${d23isCourier()?"courier · "+d23me().n:"manager"}</button><button class="as" onclick="P23_flagsPop(event,['driver_app','qr_flow','age_verification','address_issues','postcode_notes','consent','photo_storage'])">${d23ic("settings")} Flags</button>`;
+}
+function D23_asPop(ev){App.pop(ev,["Viewing as",{t:"Courier · Daniel (delivery.driver)",ic:"truck",fn:()=>{D23.as="courier";D23.me="daniel";App.remount()}},{t:"Courier · George (bike)",ic:"truck",fn:()=>{D23.as="courier";D23.me="george";App.remount()}},{t:"Manager (delivery.manage)",ic:"user",fn:()=>{D23.as="manager";App.remount()}}])}
+/* stops: today's delivery orders assigned to the courier (local assignment over shell data) */
+const D23_ASSIGN={daniel:[],george:[]};
+(()=>{const out=App.data.orders.filter(o=>o.n===0&&o.type==="delivery"&&["ready","out"].includes(o.status));D23_ASSIGN.daniel=out.slice(0,4).map(o=>o.id);D23_ASSIGN.george=out.slice(4,6).map(o=>o.id)})();
+function d23stops(){return (D23_ASSIGN[D23.me]||[]).map(App.order).filter(o=>o&&o.status!=="delivered"&&o.status!=="cancelled")}
+const T23_RUNS=[
+ {id:501,name:"Morning run · SE1 / SE16",date:App.T(9,0),courier:"daniel",status:"active",startedAt:App.T(9,40),stops:()=>D23_ASSIGN.daniel.slice(0,3)},
+ {id:502,name:"Afternoon run · Borough",date:App.T(13,0),courier:"daniel",status:"planned",startedAt:null,stops:()=>D23_ASSIGN.daniel.slice(3)},
+ {id:503,name:"Bike run · Bermondsey",date:App.T(12,30),courier:"george",status:"planned",startedAt:null,stops:()=>D23_ASSIGN.george},
+ {id:498,name:"Evening run · SE1",date:App.T(17,0,-1),courier:"daniel",status:"done",startedAt:App.T(17,5,-1),endedAt:App.T(19,42,-1),stops:()=>App.data.orders.filter(o=>o.n===-1).slice(0,3).map(o=>o.id)}
+];
+function d23runs(){return T23_RUNS.filter(r=>!d23isCourier()||r.courier===D23.me).sort((a,b)=>new Date(b.date)-new Date(a.date))}
+const d23run=id=>T23_RUNS.find(r=>r.id===Number(id));
+const d23hms=ms=>{const s=Math.max(0,Math.floor(ms/1000));return String(Math.floor(s/3600)).padStart(2,"0")+":"+String(Math.floor(s%3600/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")};
+
+/* ===================== 23-2 · MY DELIVERIES ===================== */
+window.mount_driver_deliveries=function(params){params=params||{};if(d23gate("driver-deliveries"))return;D23_nav("driver-deliveries");d23dlRender()};
+function d23dlRender(){
+  const el=App.$("#d23-dl-body");
+  if(!P23_FLAGS.driver_app){App.$("#d23-dl-head").innerHTML="";el.innerHTML=`<div class="empty">${d23ic("lock")}<div class="h3">Driver web is switched off</div><div class="sm">delivery.driver_app is off – the courier app is the only workplace. Turn the flag on (Flags) to see this screen.</div></div>`;return}
+  if(!d23isCourier()){App.$("#d23-dl-head").innerHTML="";el.innerHTML=`<div class="empty">${d23ic("lock")}<div class="h3">403 · delivery.driver only</div><div class="sm">A manager has no delivery.driver right – this list is per courier. Use <button class="link" onclick="App.go('delivery')">Delivery dispatch</button> instead.</div></div>`;return}
+  const stops=d23stops();const ids=stops.map(o=>o.id);
+  if(D23.seen){const added=ids.filter(i=>!D23.seen.includes(i));const gone=D23.seen.filter(i=>!ids.includes(i)&&i!==D23.justDelivered);if(added.length){D23.newIds=added;D23.blink=true;App.toast("Double beep · 880 Hz (WebAudio, no file)")}if(gone.length)App.toast("A delivery was taken off your list.")}
+  D23.seen=ids;D23.justDelivered=null;
+  const pollS=D23.poll==="shop"?60:0;
+  /* ids: PWDR-127 PWDR-128 PWDR-129 PWDR-130 PWDR-131 PWDR-132 — head: date · N to deliver, polling state (only «at the shop»), Refresh, new-delivery banner + tab-title blink + beep, removed-from-list toast */
+  App.$("#d23-dl-head").innerHTML=`<div><div class="h3">My deliveries</div><div class="d23-hint">${p23day(App.NOW.toISOString())} · ${stops.length} to deliver · day runs 08:00 → 08:00 London</div></div><span class="sp"></span>
+    <span class="d23-tabttl ${D23.blink?"--blink":""}" title="Browser tab title">${d23ic("bell")} ${D23.blink?"New delivery assigned!":"My deliveries · Floritta"}</span>
+    <button class="chip" onclick="D23_pollPop(event)">${d23ic("refresh")} ${pollS?"At the shop · every "+pollS+" s":D23.poll==="road"?"On the road · no polling":"Free · no polling"} ${d23ic("down")}</button>
+    <button class="btn --ghost --sm" onclick="D23_refresh(this)">${d23ic("refresh")} Refresh</button>`;
+  el.innerHTML=`<div class="d23-wrap" onpointerdown="D23_touch()">
+    ${D23.blink?`<div class="d23-banner" onclick="D23_touch()"><span class="ic">${d23ic("bell")}</span><div style="flex:1"><b>New delivery assigned!</b><div class="xs muted">#${D23.newIds.join(", #")} · tap anywhere to dismiss</div></div></div>`:""}
+    ${pollS?"":`<div class="note-box">${d23ic("info")} The list does not update by itself – tap Refresh to check for new orders. At the shop it updates every minute.</div>`}
+    ${!P23_FLAGS.photo_storage?`<div class="note-box --accent">${d23ic("alert")} Photo storage is not configured – tell a manager.</div>`:""}
+    ${stops.length?stops.map(d23stopCard).join(""):`<div class="empty">${d23ic("truck")}<div class="h3">No deliveries assigned for today.</div><div class="sm">New stops appear here as the shop assigns them.</div><button class="btn --ghost --sm" onclick="D23_simulateNew()">Demo: assign one</button></div>`}
+    ${stops.length?`<div class="row" style="justify-content:center"><button class="textbtn" onclick="D23_simulateNew()">Demo: shop assigns a new delivery</button><span class="muted">·</span><button class="textbtn" onclick="D23_simulateRemove()">Demo: a stop is taken off</button></div>`:""}
+  </div>`;
+}
+/* ids: PWDR-133 PWDR-134 PWDR-135 PWDR-136 PWDR-137 PWDR-138 PWDR-139 PWDR-140 PWDR-141 — stop card */
+function d23stopCard(o){
+  const f=d23fact(o),c=App.customer(o.customer),late=App.isLate(o);const pc=o.addr.match(/SE\d+/)?.[0]||"SE1";
+  return `<div class="d23-stop ${late?"--late":""}">
+    <div class="top"><b>#${o.id}</b>${App.orderPill(o)}${f.ageRestricted?`<span class="d23-18">18+</span>`:""}<span class="sp"></span><button class="textbtn" onclick="App.go('driver-order',{id:${o.id}})">Open</button></div>
+    <div class="rcp">${d23esc(o.recipient)}</div>
+    <div class="addr">${pc} · ${d23esc(o.addr)}, London</div>
+    <div class="slot">${d23ic("clock")} ${d23slot(o)}</div>
+    ${f.instructions||f.addrNotes?`<div class="instr">${f.instructions?"Instructions: "+d23esc(f.instructions):""}${f.addrNotes?`<small>${d23esc(f.addrNotes)}</small>`:""}</div>`:""}
+    <div class="acts"><button class="btn --ghost" onclick="App.toast('Google Maps · ${pc} (new tab)')">${d23ic("map")} Route</button><button class="btn --ghost" onclick="App.toast('Calling ${d23esc(c.phone)}')">${d23ic("phone")} Call</button><button class="btn" onclick="D23_deliverPhoto(${o.id})">${d23ic("photo")} Delivered – add photo</button></div>
+    <div class="d23-hint">A proof-of-delivery photo is required.</div>
+  </div>`;
+}
+function D23_touch(){if(D23.blink){D23.blink=false;D23.newIds=[];d23dlRender()}}
+function D23_pollPop(ev){App.pop(ev,["Courier state (server decides polling)",{t:"At the shop · poll every 60 s",ic:"warehouse",fn:()=>{D23.poll="shop";d23dlRender()}},{t:"On the road · no polling",ic:"truck",fn:()=>{D23.poll="road";d23dlRender()}},{t:"Free · no polling",ic:"user",fn:()=>{D23.poll="free";d23dlRender()}}])}
+function D23_refresh(btn){btn.textContent="Refreshing…";setTimeout(()=>{d23dlRender();App.toast("List refreshed")},500)}
+function D23_simulateNew(){const cand=App.data.orders.find(o=>o.n===0&&o.type==="delivery"&&o.status==="ready"&&!D23_ASSIGN.daniel.includes(o.id)&&!D23_ASSIGN.george.includes(o.id));if(!cand){App.toast("Nothing ready to assign");return}D23_ASSIGN[D23.me].push(cand.id);App.push("New delivery assigned!","#"+cand.id+" · "+cand.recipient,{icon:"truck",type:"order"});d23dlRender()}
+function D23_simulateRemove(){const l=D23_ASSIGN[D23.me];if(l.length){l.pop();d23dlRender()}}
+/* ids: PWDR-139 PWDR-140 — camera opens, the photo is sent at once and closes the delivery → order fulfilled, e-mail, marketplace mirror, POD event, courier points */
+function D23_deliverPhoto(id){const o=App.order(id);if(o.status==="delivered"){App.toast("Already delivered");return}if(!P23_FLAGS.photo_storage){App.toast("Photo storage is not configured – tell a manager.");return}
+  App.modal({title:"Delivered – add photo",body:`<div class="photo --4x5" style="width:160px;margin:0 auto 12px"><img src="${App.product(o.product).img}" alt=""></div><div class="sm soft" style="text-align:center">Camera (rear) · the chosen photo is uploaded straight away and closes #${id}.</div><div class="d23-hint mt8" style="text-align:center">Up to 16 MB · jpeg / png / webp</div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="d23-up" onclick="this.textContent='Uploading…';setTimeout(()=>D23_deliverGo(${id}),700)">${d23ic("upload")} Use this photo</button>`})}
+function D23_deliverGo(id){App.closeModal();D23.justDelivered=id;App.setOrderStatus(id,"delivered",{silent:true});App.toast("Delivered · proof photo saved");if(App.state.current==="driver-deliveries")d23dlRender()}
+
+/* ===================== 23-2 · MY RUNS ===================== */
+window.mount_driver_runs=function(){if(d23gate("driver-runs"))return;D23_nav("driver-runs");const el=App.$("#d23-runs-body");
+  if(!P23_FLAGS.driver_app){el.innerHTML=`<div class="empty">${d23ic("lock")}<div class="h3">Driver web is switched off</div><div class="sm">delivery.driver_app is off.</div></div>`;return}
+  const runs=d23runs();const st={planned:"--queue",active:"--making",done:"--done"};
+  el.innerHTML=`<div class="d23-wrap"><div class="d23-hint">${d23isCourier()?"Your runs, newest first":"All couriers' runs (delivery.manage)"}</div>${runs.length?runs.map(r=>`<div class="d23-run" onclick="App.go('driver-run',{id:${r.id}})">${d23ic("route")}<div class="t"><b>${d23esc(r.name)}</b><small>${p23day(r.date)} · stops: ${r.stops().length} · ${App.avatar(r.courier,"--s")} ${d23esc(App.user(r.courier).n)}</small></div>${App.pill(st[r.status],r.status==="planned"?"Planned":r.status==="active"?"Active":"Done")}${d23ic("chev")}</div>`).join(""):`<div class="empty">${d23ic("route")}<div class="h3">No runs assigned to you</div></div>`}</div>`};
+
+/* ===================== 23-2 · RUN ===================== */
+window.mount_driver_run=function(params){params=params||{};if(d23gate("driver-run"))return;const r=d23run(params.id)||d23runs()[0];if(!r){App.go("driver-runs");return}if(d23isCourier()&&r.courier!==D23.me){App.toast("403 · not your run");App.go("driver-runs");return}D23.runId=r.id;clearInterval(D23.tick);d23runRender();if(r.status==="active")D23.tick=setInterval(()=>{if(App.state.current==="driver-run")App.$("#d23-work")&&(App.$("#d23-work").textContent=d23hms(Date.now()-D23.tick0));else clearInterval(D23.tick)},1000)};
+function d23runRender(){
+  const r=d23run(D23.runId);const stops=r.stops().map(App.order).filter(Boolean);D23.tick0=Date.now()-(r.startedAt?(App.NOW-new Date(r.startedAt)):0);
+  App.$("#d23-run-head").innerHTML=`<button class="btn --ghost --sm" onclick="App.go('driver-runs')">${d23ic("back")} My runs</button><div style="min-width:0"><div class="h3">${d23esc(r.name)}</div><div class="d23-hint">${p23day(r.date)} · ${App.avatar(r.courier,"--s")} ${d23esc(App.user(r.courier).n)} · ${r.status}</div></div><span class="sp"></span>${r.status==="done"?`<span class="pill --done">Closed</span>`:`<button class="btn --sm" onclick="D23_startRun()">${d23ic("play")} ${r.startedAt?"Restart from now":"Delivery Start"}</button>`}`;
+  App.$("#d23-run-body").innerHTML=`<div class="d23-wrap">
+    ${r.startedAt?`<div class="note-box">${d23ic("clock")} ${r.status==="done"?`Working time – ${d23hms(new Date(r.endedAt)-new Date(r.startedAt))}`:`Started ${App.fmtTime(r.startedAt)} · on the road – <span class="tnum" id="d23-work">${d23hms(App.NOW-new Date(r.startedAt))}</span>`}</div>`:`<div class="note-box">${d23ic("info")} Not started · «Delivery Start» re-orders the stops and sets ETAs via Google Routes.</div>`}
+    <div class="card --pad0">${stops.length?stops.map((o,i)=>{const f=d23fact(o);const pc=o.addr.match(/SE\d+/)?.[0]||"SE1";const eta=new Date(r.startedAt||r.date);eta.setMinutes(eta.getMinutes()+25*(i+1));return `<div class="d23-stopl" onclick="App.go('driver-order',{id:${o.id}})"><span class="no ${o.status==="delivered"?"--done":""}">${o.status==="delivered"?d23ic("check"):i+1}</span><div class="t"><b class="tnum">${d23code(o)} · ${pc} ${f.ageRestricted?`<span class="d23-18">18+</span>`:""}</b><small>${d23esc(o.recipient)} · ETA ${App.fmtTime(eta.toISOString())}${o.status==="delivered"?" · delivered":""}</small></div>${d23ic("chev")}</div>`}).join(""):`<div class="empty">${d23ic("pin")}<div class="h3">This run has no stops</div></div>`}</div>
+  </div>`;
+}
+/* ids: PWDR-146 — Delivery Start / Restart from now; a closed run shows an error instead of failing silently */
+function D23_startRun(){const r=d23run(D23.runId);if(r.status==="done"){App.toast("This run is closed.");return}r.startedAt=App.NOW.toISOString();r.status="active";App.toast("Delivery started · stops re-ordered, ETAs updated");window.mount_driver_run({id:r.id})}
+
+/* ===================== 23-2 · DRIVER ORDER ===================== */
+window.mount_driver_order=function(params){params=params||{};if(d23gate("driver-order"))return;const o=App.order(params.id)||d23stops()[0]||App.data.orders[6];if(d23isCourier()&&!D23_ASSIGN[D23.me].includes(o.id)&&!T23_RUNS.some(r=>r.courier===D23.me&&r.stops().includes(o.id))){App.toast("403 · this order is not assigned to you");App.go("driver-runs");return}D23.ordId=o.id;d23ordRender()};
+function d23ordRender(){
+  const o=App.order(D23.ordId),f=d23fact(o),c=App.customer(o.customer);const closed=o.status==="delivered";const piiHidden=d23isCourier()&&closed&&D23.pii!=="show";const pc=o.addr.match(/SE\d+/)?.[0]||"SE1";
+  const stLbl=o.status==="delivered"?"Delivered":o.status==="out"?"In transit":o.status==="ready"?"Ready":o.status==="making"||o.status==="photo"?"In production":App.STATUS_LBL[o.status];
+  const verified=D23.ageChecked[o.id];
+  App.$("#d23-ord-head").innerHTML=`<button class="btn --ghost --sm" onclick="App.go('driver-runs')">${d23ic("back")} My runs</button><div><div class="h3 tnum">#${d23mp(o)?o.chan.replace(/\s/g,"").slice(0,3).toUpperCase()+"-"+String(o.id).slice(-4):o.id}</div><div class="row" style="gap:6px"><span class="tag">${o.type==="collection"?"Collection":"Delivery"}</span>${App.pill(o.status==="delivered"?"delivered":o.status==="out"?"out":o.status==="ready"?"ready":"making",stLbl)}</div></div><span class="sp"></span>${closed&&d23isCourier()?`<button class="chip" onclick="D23.pii=D23.pii==='show'?null:'show';d23ordRender()">${d23ic("eye")} Demo: PII ${piiHidden?"hidden":"shown"}</button>`:""}`;
+  App.$("#d23-ord-body").innerHTML=`<div class="d23-wrap">
+    <!-- ids: PWDR-153 — 18+ banner, alcohol line, «ID checked» -->
+    ${f.ageRestricted?`<div class="note-box --accent"><b>18+</b> – Age-restricted – check the recipient's ID before handing over.${f.isAlcohol?`<div class="mt8">ALCOHOL – Challenge 25, sealed container</div>`:""}${verified?`<div class="mt8 ok">${d23ic("check")} ID checked ${App.fmtTime(verified)}</div>`:""}</div>`:""}
+    <!-- ids: PWDR-154 PWDR-155 — Recipient block; PII hidden for the courier after closing -->
+    <div class="d23-sect"><div class="h4">Recipient</div>${piiHidden?`<div class="muted">Delivery closed - contact details are hidden.</div>`:`<div class="rcp" style="font-size:16px;font-weight:500">${d23esc(o.recipient)}</div><div class="sm soft">${d23esc(o.addr)}, London</div>${f.instructions?`<div class="sm mt8">Instructions: ${d23esc(f.instructions)}</div>`:""}<div class="btn-row mt8"><button class="btn --ghost --sm" onclick="App.toast('Google Maps · ${pc} (new tab)')">${d23ic("map")} Route</button><button class="btn --ghost --sm" onclick="App.toast('Calling ${d23esc(c.phone)}')">${d23ic("phone")} Call</button></div>`}</div>
+    <div class="grid g2">
+      <!-- ids: PWDR-156 — QR with the CRM code (not the platform number) -->
+      <div class="d23-sect"><div class="h4">QR</div><div class="row" style="align-items:flex-start;gap:14px">${d23qr(d23code(o))}<div><div class="p23-mono">${d23code(o)}</div><div class="d23-hint mt8">CRM code – type this one in Scan, not the platform number.</div></div></div></div>
+      <!-- ids: PWDR-160 — items -->
+      <div class="d23-sect"><div class="h4">Items</div><div class="sm">1× ${d23esc(App.product(o.product).name)} · ${d23esc(o.size)}</div>${o.addons.map(a=>`<div class="sm">1× ${d23esc(App.product(a).name)}</div>`).join("")}${o.card&&o.card.trim()?`<div class="d23-hint mt8">Card: “${d23esc(o.card)}”</div>`:""}</div>
+    </div>
+    <!-- ids: PWDR-157 PWDR-158 PWDR-159 — address notes (flag postcode_notes; hidden with PII) -->
+    ${P23_FLAGS.postcode_notes&&!piiHidden?d23notesPanel(o,pc,closed):""}
+    <!-- ids: PWDR-161 PWDR-162 PWDR-168 PWDR-194 — actions: Mark ready (qr_flow), Deliver, Problem with address (hidden once PII are hidden) -->
+    <div class="btn-row">
+      ${P23_FLAGS.qr_flow&&(o.status==="making"||o.status==="photo")?`<button class="btn --secondary" onclick="D23_markReady()">${d23ic("check")} Mark ready</button>`:""}
+      ${closed?`<span class="pill --delivered">Delivered</span>`:`<button class="btn" onclick="D23_deliverModal()">${d23ic("check")} Deliver</button>`}
+      ${P23_FLAGS.address_issues&&!piiHidden&&!closed?`<button class="btn --ghost" onclick="D23_addrIssue()">${d23ic("alert")} Problem with address</button>`:""}
+    </div>
+  </div>`;
+}
+function d23qr(code){let s=0;for(const ch of code)s=(s*31+ch.charCodeAt(0))>>>0;const cells=[];for(let y=0;y<21;y++)for(let x=0;x<21;x++){const fin=(x<7&&y<7)||(x>13&&y<7)||(x<7&&y>13);let on;if(fin){const fx=x%14<7?x%14:x-14,fy=y%14<7?y%14:y-14;const ex=fx===0||fx===6||fy===0||fy===6;on=ex||(fx>=2&&fx<=4&&fy>=2&&fy<=4)}else{s=(s*1103515245+12345)>>>0;on=(s>>>16)%3===0}cells.push(`<i class="${on?"on":""}"></i>`)}return `<div class="d23-qr" title="${code}">${cells.join("")}</div>`}
+const T23_ADDRNOTES={};
+function d23notes(pc){if(!T23_ADDRNOTES[pc])T23_ADDRNOTES[pc]=[{id:1,scope:"this",text:"Buzzer is broken – knock on the window on the left.",orig:"Домофон сломан – стучать в окно слева.",by:"daniel",at:App.T(14,10,-6),photo:true},{id:2,scope:"neighbour",house:"42",text:"Concierge accepts flowers until 18:00.",orig:"",by:"george",at:App.T(11,0,-20),photo:false}];return T23_ADDRNOTES[pc]}
+function d23notesPanel(o,pc,closed){const notes=d23notes(pc);const canWrite=!closed;
+  return `<div class="d23-sect d23-notes"><div class="h4">Address notes · ${pc}</div>${notes.length?notes.map(n=>`<div class="nt"><div>${n.scope==="this"?"<b>This address</b>":`<b>Neighbour on this postcode: ${d23esc(n.house)}</b>`} · ${d23esc(n.text)}</div>${n.orig?`<details><summary class="d23-hint" style="cursor:pointer">As the author wrote it</summary><div class="orig">${d23esc(n.orig)}</div></details>`:""}<div class="by">${n.photo?`<button class="textbtn" onclick="App.toast('Entrance photo (new tab)')">${d23ic("photo")} entrance photo</button>`:""}${App.avatar(n.by,"--s")} ${d23esc(App.user(n.by).n)} · ${p23day(n.at)} ${App.fmtTime(n.at)}${n.by===D23.me||!d23isCourier()?` <button class="textbtn --accent" onclick="D23_noteDelete('${pc}',${n.id})">Delete</button>`:""}</div></div>`).join(""):`<div class="muted sm">No notes for this postcode yet.</div>`}
+  ${canWrite?`<div class="mt16 col"><textarea class="textarea" id="d23-nn" placeholder="New note for this address" oninput="document.getElementById('d23-ns').disabled=!this.value.trim()&&!document.getElementById('d23-nf').dataset.f"></textarea><div class="row">${P23_FLAGS.photo_storage?`<button class="btn --ghost --sm" id="d23-nf" onclick="this.dataset.f='entrance.jpg';this.textContent='entrance.jpg';document.getElementById('d23-ns').disabled=false">${d23ic("photo")} Attach a photo</button>`:""}<span class="sp"></span><button class="btn --sm" id="d23-ns" disabled onclick="D23_noteSave('${pc}')">Save note</button></div><div class="d23-hint">Saved to the address and the postcode · translated in the background for colleagues.</div></div>`:""}</div>`}
+function D23_noteSave(pc){const t=document.getElementById("d23-nn").value.trim();const f=document.getElementById("d23-nf")?.dataset.f;d23notes(pc).unshift({id:Date.now(),scope:"this",text:t||"(photo only)",orig:"",by:D23.me,at:App.NOW.toISOString(),photo:!!f});App.toast("Note saved");d23ordRender()}
+function D23_noteDelete(pc,id){App.confirm("Delete this note?","Nobody will see it again.","Delete",()=>{const l=d23notes(pc);l.splice(l.findIndex(n=>n.id===id),1);App.toast("Note deleted");d23ordRender()},{danger:true})}
+function D23_markReady(){const o=App.order(D23.ordId);if(!o.photo){App.toast("Photo of the bouquet first – ask the florist");return}App.setOrderStatus(o.id,"ready",{silent:true});App.toast("Marked ready"+(o.type==="collection"?" · «ready for collection» e-mail sent":""));d23ordRender()}
+/* ids: PWDR-162 PWDR-163 PWDR-164 PWDR-165 PWDR-166 PWDR-169 PWDR-193 PWDR-195 — Deliver modal: 18+ gate (type of ID + checkbox, Refuse handover), signature / no-photo reason, Confirm delivered; already-verified orders skip the gate on the server too (fix); toasts in plain English */
+function D23_deliverModal(){const o=App.order(D23.ordId),f=d23fact(o);const needsId=f.ageRestricted&&P23_FLAGS.age_verification&&!D23.ageChecked[o.id];
+  App.modal({title:"Deliver #"+o.id,body:`${needsId?`<div class="d23-gate mb16"><b>18+ · Challenge 25</b><div class="sm soft">If the recipient looks under 25, ask for photo ID. No ID – do not hand over.</div><div class="field"><label>Type of ID checked</label><select class="select" id="d23-idt" onchange="D23_gateCheck()"><option value="">Choose…</option><option>Passport</option><option>Photocard driving licence</option><option>UK armed services photo ID</option><option>PASS card</option></select></div><label class="check"><input type="checkbox" id="d23-idc" onchange="D23_gateCheck()"> I have checked the recipient's ID and they are 18 or over.</label><div><button class="textbtn --accent" onclick="App.closeModal();D23_refuseModal()">Refuse handover</button></div></div>`:f.ageRestricted?`<div class="note-box --ok mb16">${d23ic("check")} ID already checked ${D23.ageChecked[o.id]?App.fmtTime(D23.ageChecked[o.id]):"in the app"} – no second check needed.</div>`:""}
+    <div class="grid g2"><div class="field"><label>Signature / name</label><input class="input" id="d23-sig" placeholder="Who took the flowers"></div><div class="field"><label>No-photo reason</label><select class="select" id="d23-rsn" onchange="document.getElementById('d23-oth').style.display=this.value==='other'?'':'none'"><option value="">Photo taken</option><option value="left_safe">Left in a safe place</option><option value="recipient_declined">Recipient declined a photo</option><option value="camera_failed">Camera failed</option><option value="other">Other</option></select></div><div class="field full" id="d23-oth" style="display:none;grid-column:1/-1"><label>What happened</label><input class="input" id="d23-oth-in"></div></div>
+    <div class="d23-hint mt8">Add a signature, or a reason if no photo was taken. In the new design one of the two is required – an empty confirmation is refused.</div><div class="d23-err mt8" id="d23-derr"></div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="d23-cd" ${needsId?"disabled":""} onclick="D23_confirmDelivered(${needsId})">Confirm delivered</button>`})}
+function D23_gateCheck(){const ok=document.getElementById("d23-idt").value&&document.getElementById("d23-idc").checked;document.getElementById("d23-cd").disabled=!ok}
+function D23_confirmDelivered(needsId){const o=App.order(D23.ordId);const g=id=>document.getElementById(id);const sig=g("d23-sig").value.trim(),rsn=g("d23-rsn").value;if(!sig&&!rsn){g("d23-derr").textContent="Add a signature or pick a reason why there is no photo.";return}if(needsId){if(!g("d23-idt").value){g("d23-derr").textContent="Type of ID is required";return}D23.ageChecked[o.id]=App.NOW.toISOString()}App.closeModal();D23.justDelivered=o.id;App.setOrderStatus(o.id,"delivered",{silent:true,note:sig?"signed by "+sig:"no photo · "+rsn});App.go("driver-runs");App.toast("Delivered · #"+o.id+(rsn?" · no photo recorded":""))}
+/* ids: PWDR-167 — refuse handover (18+): reason, delivery → failed, back to shop */
+function D23_refuseModal(){const o=App.order(D23.ordId);App.modal({title:"Refuse handover · #"+o.id,body:`<div class="field"><label>Reason for refusal</label><select class="select" id="d23-rf"><option>No valid ID shown</option><option>Recipient appears under 18</option><option>Recipient intoxicated</option><option>Other</option></select></div><div class="note-box --warn mt16">The flowers go back to the shop; the delivery is marked failed and the shop is told.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --accent --sm" onclick="App.closeModal();App.order(${o.id}).problem='18+ refused: '+document.getElementById('d23-rf').value;App.emit('orders');App.go('driver-runs');App.toast('Handover refused – returning to shop')">Refuse and return</button>`})}
+/* ids: PWDR-168 PWDR-194 — problem with address: text (≤500, error shown), attach location (with a visible error when denied), send to shop */
+function D23_addrIssue(){const o=App.order(D23.ordId);App.modal({title:"Problem with address · #"+o.id,body:`<div class="field"><label>What is wrong with the address?</label><textarea class="textarea" id="d23-ai" maxlength="500" placeholder="e.g. no flat number, building has two entrances…" oninput="document.getElementById('d23-aic').textContent=this.value.length+' / 500'"></textarea><span class="d23-hint" id="d23-aic">0 / 500</span></div><div class="row mt8"><button class="btn --ghost --sm" onclick="this.textContent='51.4963, −0.0786 attached';App.toast('Location attached')">${d23ic("pin")} Attach my location</button><button class="textbtn" onclick="App.toast('Location access denied – send without it')">demo: denied</button></div><div class="d23-err mt8" id="d23-aierr"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="if(!document.getElementById('d23-ai').value.trim()){document.getElementById('d23-aierr').textContent='Tell the shop what is wrong';return}App.closeModal();App.order(${o.id}).problem='Address: '+document.getElementById('d23-ai').value.trim();App.emit('orders');App.push('Address problem','#${o.id} · '+document.getElementById('d23-ai').value.trim(),{icon:'alert',type:'problem',go:['delivery',{open:${o.id}}]});App.toast('Sent to shop')">${d23ic("send")} Send to shop</button>`})}
+
+/* ===================== 23-2 · SCAN ===================== */
+window.mount_driver_scan=function(){if(d23gate("driver-scan"))return;D23_nav("driver-scan");D23.cam="idle";d23scanRender()};
+function d23scanRender(){const el=App.$("#d23-scan-body");
+  if(!P23_FLAGS.driver_app){el.innerHTML=`<div class="empty">${d23ic("lock")}<div class="h3">Driver web is switched off</div></div>`;return}
+  el.innerHTML=`<div class="d23-wrap">
+    ${D23.camSupported?`<div class="d23-sect"><div class="h4">Camera</div>${D23.cam==="on"?`<div class="d23-cam"><div class="frame"></div><div class="line"></div><span class="xs">Looking for a QR code… (every 400 ms)</span></div><div class="btn-row mt8"><button class="btn --secondary" onclick="D23.cam='idle';d23scanRender()">${d23ic("pause")} Stop</button><button class="textbtn" onclick="D23_scanFound()">demo: code found</button></div>`:D23.cam==="err"?`<div class="note-box --accent">Could not start the camera – type the code instead.</div><div class="btn-row mt8"><button class="btn --ghost" onclick="D23.cam='on';d23scanRender()">Try again</button></div>`:`<div class="btn-row"><button class="btn" onclick="D23.cam='on';d23scanRender();setTimeout(()=>{if(D23.cam==='on'&&App.state.current==='driver-scan')D23_scanFound()},2500)">${d23ic("photo")} Start camera</button><button class="textbtn" onclick="D23.cam='err';d23scanRender()">demo: camera refused</button></div><div class="d23-hint mt8">Rear camera · native BarcodeDetector · the camera stops when you leave this page.</div>`}</div>`:`<div class="note-box">${d23ic("info")} This browser has no QR detector (iOS Safari) – type the code below.</div>`}
+    <div class="d23-sect"><div class="h4">Order code</div><div class="row"><input class="input" id="d23-code" placeholder="e.g. FL-18424 or a link" onkeydown="if(event.key==='Enter')D23_resolve()"><button class="btn" onclick="D23_resolve()">Open order</button></div><div class="d23-hint mt8">Accepts the code or a link – the tail after «/» is used, «#» is ignored. 60 tries a minute.</div></div>
+    <div class="row"><span class="d23-hint">Demo: </span><button class="textbtn" onclick="D23.camSupported=!D23.camSupported;d23scanRender()">${D23.camSupported?"browser without BarcodeDetector":"browser with BarcodeDetector"}</button></div>
+  </div>`}
+function D23_scanFound(){const o=d23stops()[0]||App.data.orders[6];D23.cam="idle";App.toast("QR found · "+d23code(o));App.go("driver-order",{id:o.id})}
+function D23_resolve(){let v=document.getElementById("d23-code").value.trim();if(!v)return;v=v.split("/").pop().replace("#","").toUpperCase();const digits=v.replace(/\D/g,"");const o=App.data.orders.find(x=>d23code(x)===v||String(x.id)===digits||(digits.length>=5&&String(x.id).endsWith(digits)));if(!o){App.toast("No order found for code "+v);return}if(d23isCourier()&&!D23_ASSIGN[D23.me].includes(o.id)&&!T23_RUNS.some(r=>r.courier===D23.me&&r.stops().includes(o.id))){App.toast("403 · #"+o.id+" is not assigned to you");return}App.go("driver-order",{id:o.id})}
+
+/* ===================== 23-2 · CONSENT ===================== */
+window.mount_driver_consent=function(params){params=params||{};D23_nav("driver-consent");d23conRender(!!params.forced)};
+function d23conRender(forced){const c=D23.consent;const active=c.state==="active";const mandatory=d23isCourier()&&!active;
+  if(!P23_FLAGS.consent){App.$("#d23-con-body").innerHTML=`<div class="empty">${d23ic("lock")}<div class="h3">Consent is switched off</div><div class="sm">delivery.consent.enabled is off – no signature is required and this page is not reachable.</div></div>`;return}
+  if(mandatory)App.$("#d23-nav-driver-consent").innerHTML=`<span class="as" style="color:var(--accent)">${d23ic("lock")} Signature required to continue</span><span class="sp"></span><button class="as" onclick="D23_asPop(event)">${d23ic("user")} Viewing as courier · ${d23me().n}</button>`;
+  const status=active?`<div class="note-box --ok"><b>You have consented to location tracking on shift.</b><div class="sm mt8">Signed as ${d23esc(c.name)} · ${p23day(c.signedAt)} ${App.fmtTime(c.signedAt)}<br>Version: v${c.version}</div><div class="btn-row mt8"><button class="btn --ghost --sm" onclick="App.toast('Signed PDF · download (signed URL)')">${d23ic("download")} Download signed PDF</button><button class="btn --ghost --sm" onclick="D23_withdraw()">Withdraw consent</button></div></div>`
+    :c.state==="outdated"?`<div class="note-box --warn"><b>The consent wording has been updated – please read and sign again.</b><div class="sm mt8">You signed v${c.version}; the current version is v${c.current}.</div></div>`
+    :c.state==="withdrawn"?`<div class="note-box --warn"><b>You have not consented to location tracking.</b><div class="sm mt8">Consent withdrawn on ${p23day(c.withdrawnAt)}${c.objection?" · «"+d23esc(c.objection)+"»":""}. You can sign again at any time.</div></div>`
+    :`<div class="note-box --warn"><b>You have not consented to location tracking.</b></div>`;
+  App.$("#d23-con-body").innerHTML=`<div class="d23-consent">
+    ${mandatory?`<div class="note-box --accent">${d23ic("lock")} To keep using Floritta you must sign the consent below – the rest of the app stays locked until then.${forced?" You were brought here automatically.":""}</div>`:""}
+    ${status}
+    <div class="d23-sect body"><div class="h3 mb8">Consent</div>
+      <p>Floritta Ltd tracks the location of your phone while you are on shift and have an active run, so that managers and customers can see where a delivery is.</p>
+      <p><b>What we collect:</b> GPS position every 30–60 seconds while a run is active; nothing between shifts.</p>
+      <p><b>Why:</b> live delivery tracking, proof of delivery and route planning.</p>
+      <ol><li>Tracking runs only during a started run and stops when it is closed.</li><li>Positions are kept for 90 days and then deleted.</li><li>You can withdraw this consent at any time on this page; tracking stops immediately.</li><li>Withdrawing does not block your work – a manager will answer your objection within a month.</li></ol>
+      <p>By signing you confirm you have read and understood this notice (version v${c.current}).</p>
+    </div>
+    ${active?"":`<div class="d23-sect"><label class="check"><input type="checkbox" id="d23-cc" onchange="D23_signCheck()"> I agree to location tracking on shift as described above.</label><div class="field mt16"><label>Full name</label><input class="input" id="d23-cn" placeholder="Type your full name to sign" oninput="D23_signCheck()"></div><div class="d23-err" id="d23-cerr"></div><div class="btn-row mt16"><button class="btn" id="d23-cs" disabled onclick="D23_sign()">${d23ic("edit")} Sign consent</button></div><div class="d23-hint">We record your name, time, IP address, browser and the consent version, and keep a signed PDF.</div></div>`}
+    <div class="row"><span class="d23-hint">Demo state:</span><div class="seg-ctl">${[["active","Active"],["outdated","Old version"],["withdrawn","Withdrawn"],["none","Not signed"]].map(([k,l])=>`<button class="${c.state===k?"on":""}" onclick="D23.consent.state='${k}';${k==="withdrawn"?"D23.consent.withdrawnAt=App.NOW.toISOString();":""}d23conRender()">${l}</button>`).join("")}</div></div>
+  </div>`}
+function D23_signCheck(){document.getElementById("d23-cs").disabled=!(document.getElementById("d23-cc").checked&&document.getElementById("d23-cn").value.trim())}
+function D23_sign(){const n=document.getElementById("d23-cn").value.trim();if(!n){document.getElementById("d23-cerr").textContent="Type your full name";return}Object.assign(D23.consent,{state:"active",name:n,signedAt:App.NOW.toISOString(),version:D23.consent.current,withdrawnAt:null,objection:""});App.toast("Consent signed · PDF saved");d23conRender();App.remount()}
+/* ids: PWDR-177 PWDR-196 — withdraw: confirm with an optional objection reason (UK GDPR art. 21), managers told in the ops chat */
+function D23_withdraw(){App.modal({title:"Withdraw consent?",body:`<div class="sm soft mb16">Location tracking will stop immediately. You can sign again at any time. A manager will answer within a month.</div><div class="field"><label>Reason (optional)</label><textarea class="textarea" id="d23-wr" maxlength="500" placeholder="Your objection, if you want to give one"></textarea></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Keep consent</button><button class="btn --accent --sm" onclick="Object.assign(D23.consent,{state:'withdrawn',withdrawnAt:App.NOW.toISOString(),objection:document.getElementById('d23-wr').value.trim()});App.closeModal();App.toast('Consent withdrawn · managers notified');d23conRender()">Withdraw consent</button>`})}
+document.addEventListener("orders",()=>{const c=App.state.current;if(c==="driver-deliveries")d23dlRender();else if(c==="driver-run")d23runRender();else if(c==="driver-order")d23ordRender()});
+</script>

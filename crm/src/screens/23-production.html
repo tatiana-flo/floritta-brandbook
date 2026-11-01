@@ -1,0 +1,654 @@
+<style>
+/* ===== 23 · Production (Make board, Pre-orders, Peak day, Shifts) + Workshops · all scoped ===== */
+.p23-sub{display:flex;align-items:center;gap:2px;border-bottom:1px solid var(--hair);padding:0 var(--pad);flex:none;overflow-x:auto;scrollbar-width:none}
+.p23-sub::-webkit-scrollbar{display:none}
+.p23-sub button{height:40px;padding:0 12px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.p23-sub button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.p23-sub button:hover:not(.on){color:var(--ink)}
+.p23-sub .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+.p23-sub .n.--warn{color:var(--warn)}.p23-sub .n.--accent{color:var(--accent)}
+.p23-sub .sp{flex:1}
+.p23-sub .flags{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 6px}
+.p23-sub .flags:hover{color:var(--ink)}
+.p23-kpis{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.p23-kpis .kpi-card{padding:12px 14px;gap:4px}
+.p23-kpis .kpi-card .kpi-s{font-size:26px}
+.p23-kpis .kpi-card .sub{font-size:11.5px;color:var(--grey);line-height:1.25}
+.p23-kpis .kpi-card.--warn{box-shadow:inset 0 0 0 1px var(--warn);border-color:var(--warn)}
+.p23-kpis .kpi-card.--accent{box-shadow:inset 0 0 0 1px var(--accent);border-color:var(--accent)}
+.p23-kpis .kpi-card.--on{background:var(--sel-bg)}
+[data-size="ipad"] .p23-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+[data-size="phone"] .p23-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+#s-production .scr-body{display:flex;flex-direction:column;gap:14px}
+#s-production .p3-who{display:flex;gap:8px;overflow-x:auto;flex:none;scrollbar-width:none;padding-bottom:2px}
+#s-production .p3-who::-webkit-scrollbar{display:none}
+#s-production .p3-f{display:flex;align-items:center;gap:10px;min-width:190px;padding:8px 12px;border:1px solid var(--hair);background:var(--paper);cursor:pointer;transition:border-color var(--m-fast);flex:none}
+#s-production .p3-f:hover{border-color:var(--grey)}
+#s-production .p3-f.on{border-color:var(--sel);box-shadow:inset 0 0 0 1px var(--ink)}
+#s-production .p3-f.off{opacity:.55}
+#s-production .p3-f .t{flex:1;min-width:0}
+#s-production .p3-f .t b{display:block;font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-production .p3-f .t small{display:block;font-size:11.5px;color:var(--grey);white-space:nowrap}
+#s-production .p3-f .progress{margin-top:5px}
+#s-production .p3-f .n{font-family:var(--f-display);font-size:24px;line-height:1;font-variant-numeric:tabular-nums;font-weight:300}
+#s-production .p3-board{flex:1;min-height:0}
+#s-production .kcol.--over{border-color:var(--sel);box-shadow:inset 0 0 0 1px var(--sel)}
+#s-production .kcol.--ready .k-head{color:var(--ok)}
+#s-production .kcard{gap:5px}
+#s-production .kcard.--before{box-shadow:inset 3px 0 0 var(--accent)}
+#s-production .kcard.--before .slotb{font-weight:500;color:var(--accent)}
+#s-production .kcard.--drag{opacity:.4}
+#s-production .kcard .k-top .tri{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;background:var(--silver);color:var(--graphite)}
+#s-production .kcard .k-top .tri.--now{background:var(--accent-bg);color:var(--accent)}
+#s-production .kcard .k-top .tri.--hold{background:var(--warn-bg);color:var(--warn)}
+#s-production .kcard .photos{display:flex;align-items:center;gap:4px}
+#s-production .kcard .photos .thumb{width:38px;height:38px}
+#s-production .kcard .photos .thumb.--ref img{opacity:.75}
+#s-production .kcard .photos .thumb.--made{box-shadow:inset 0 0 0 2px var(--ok)}
+#s-production .kcard .photos .thumb.--none{display:grid;place-items:center;color:var(--light);border:1px dashed var(--light);background:transparent}
+#s-production .kcard .photos .arr{color:var(--grey);display:inline-flex}
+#s-production .kcard .photos .arr svg{width:14px;height:14px}
+#s-production .kcard .line{font-size:12px;color:var(--graphite);display:flex;align-items:center;gap:6px;line-height:1.3}
+#s-production .kcard .line svg{width:13px;height:13px;flex:none}
+#s-production .kcard .line.--accent{color:var(--accent)}
+#s-production .kcard .line.--warn{color:var(--warn)}
+#s-production .kcard .line.--b{font-weight:500;color:var(--ink)}
+#s-production .kcard .summ{font-size:12px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-production .kcard .k-acts{display:flex;gap:6px;margin-top:2px;flex-wrap:wrap;align-items:center}
+#s-production .kcard .k-acts .btn{flex:1;min-width:0;padding:0 8px}
+#s-production .kcard .k-acts .select{height:30px;font-size:12px;flex:1;min-width:0}
+#s-production .kcard .wait{font-size:11px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase}
+#s-production .p3-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+#s-production .p3-ph{border:1px solid var(--hair);background:var(--paper);display:flex;flex-direction:column}
+#s-production .p3-ph.--late{box-shadow:inset 3px 0 0 var(--accent)}
+#s-production .p3-ph .photo{cursor:pointer}
+#s-production .p3-ph .photo .ovl{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:var(--sel);color:var(--paper);font-size:12px;display:flex;justify-content:space-between;opacity:.92}
+#s-production .p3-ph .pb{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+#s-production .p3-ph .pb .btn-row .btn{flex:1;padding:0 8px}
+#s-production .p3-meta{font-size:12px;color:var(--grey);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+[data-role="florist"] #s-production .kcard .k-acts .btn{height:44px;font-size:12px}
+[data-size="ipad"] #s-production .kcard .k-acts .btn{height:48px;font-size:12px}
+[data-size="ipad"] #s-production .kanban{grid-auto-columns:minmax(240px,1fr)}
+[data-size="phone"] #s-production .kanban{grid-auto-columns:86%;scroll-snap-type:x mandatory}
+[data-size="phone"] #s-production .kcol{scroll-snap-align:start}
+[data-size="phone"] #s-production .p3-print{display:none}
+/* preorders / peak / shifts */
+.p23-form{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:end;margin-bottom:16px}
+[data-size="phone"] .p23-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+.p23-hint{font-size:12px;color:var(--grey)}
+.p23-load{display:flex;flex-direction:column;gap:3px;min-width:140px}
+.p23-load i{display:block;height:5px;background:var(--light)}
+.p23-load i.due{background:var(--sel)}.p23-load i.due.--accent{background:var(--accent)}
+.p23-load i.cap{background:var(--hair)}
+.tbl tr.--bn td{color:var(--accent)}
+.tbl tr.--red td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.tbl tr.--amber td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+.p23-foot{font-size:12px;color:var(--grey);margin-top:10px;line-height:1.5}
+.p23-chips{display:inline-flex;gap:4px;flex-wrap:wrap}
+.p23-chips .pc{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;font-size:11px;border:1px dashed var(--light);color:var(--grey);white-space:nowrap}
+.p23-chips .pc.on{border:1px solid var(--ok);color:var(--ok)}
+.p23-chips .pc svg{width:11px;height:11px}
+.p23-lvl{display:inline-flex;align-items:center;height:20px;padding:0 7px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.p23-lvl.--amber{background:var(--warn-bg);color:var(--warn)}.p23-lvl.--red{background:var(--accent-bg);color:var(--accent)}
+.p23-two{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+[data-size="ipad"] .p23-two,[data-size="phone"] .p23-two{grid-template-columns:minmax(0,1fr)}
+.p23-prep{border:1px solid var(--hair);border-left:3px solid var(--hair)}
+.p23-prep.--amber{border-left-color:var(--warn)}.p23-prep.--red{border-left-color:var(--accent)}
+.p23-prep .pr{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--hair)}
+.p23-prep .pr:last-child{border-bottom:0}
+.p23-prep .pr .t{flex:1;min-width:0}.p23-prep .pr .t b{display:block;font-weight:400;font-size:13.5px}.p23-prep .pr .t small{display:block;font-size:11.5px;color:var(--grey)}
+.p23-bom .input{height:30px;width:90px;text-align:right}
+.p23-dd{position:relative}
+.p23-dd .dd{position:absolute;left:0;right:0;top:100%;z-index:5;background:var(--paper);border:1px solid var(--hair);box-shadow:var(--shadow-pop);max-height:260px;overflow:auto}
+.p23-dd .dd button{display:flex;justify-content:space-between;gap:10px;width:100%;padding:8px 12px;font-size:13px}
+.p23-dd .dd button:hover{background:var(--silver)}
+.p23-dd .dd button small{color:var(--grey)}
+.p23-wform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;max-width:720px}
+[data-size="phone"] .p23-wform{grid-template-columns:minmax(0,1fr)}
+.p23-wform .full{grid-column:1/-1}
+.p23-err{font-size:12px;color:var(--accent)}
+.p23-title{font-family:var(--f-display);font-weight:300;font-size:26px;line-height:1.08}
+.p23-mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+</style>
+
+<!-- ids: PWDR-001 PWDR-005 PWDR-008 — Make board: sidebar «Production» is gone (merged into Orders, Tatiana 01.11.2026); this is the Orders → Make view, sub-tabs Board · Make · Pre-orders · Peak day · Photo check · Workshops -->
+<section class="scr" id="s-production" data-nav="Make board" data-group="Orders" data-title="Orders" data-sub="Make" data-parent="orders">
+  <div class="p23-sub" id="p23-nav-production"></div>
+  <!-- ids: PWDR-011 PWDR-012 PWDR-038 — head: filters, Check stock (today view only), ← Today's board (carry-over only), no-polling indicator + Refresh -->
+  <div class="scr-head" id="p3-head"></div>
+  <!-- ids: PWDR-009 PWDR-010 PWDR-020 PWDR-024 — florist scope (own + unassigned), Carry-over view via the KPI tile / Demo menu, «waiting N d · for <date>» on carry-over cards -->
+  <!-- ids: PWDR-013 PWDR-014 PWDR-015 PWDR-016 PWDR-017 PWDR-018 PWDR-019 — KPI row: On shift now · Lead florist (Evening: …) · In queue · Ready today · Late risk · Urgent now (triage flag) · Ready, no photo · Carry-over -->
+  <!-- ids: PWDR-021 PWDR-022 PWDR-023 — three columns To make / In progress / Ready with counters («–» when empty), drag-and-drop with highlighted target (To make → Ready refused with a visible error), order number opens the order card -->
+  <!-- ids: PWDR-025 PWDR-026 PWDR-027 PWDR-028 PWDR-029 PWDR-030 PWDR-031 — card lines: summary, reference → bouquet as made, photo reminder («Stem swapped…» / «no photo…» / «Photo of the bouquet, please»), ALCOHOL / Assembly from 08:00, slot badge («before» = accent bar), triage Make now / Next / On hold · ready by, Started HH:MM / Built in N min -->
+  <!-- ids: PWDR-032 PWDR-033 PWDR-034 PWDR-035 PWDR-036 PWDR-037 — card actions: assignee select (manager), Take it (florist, unassigned only), assignee name, Start →, Ready → (photo gate + alcohol gate, moves the order), ← Back (from Ready reopens the order + manager task) -->
+  <div class="scr-body" id="p3-body"></div>
+</section>
+
+<!-- ids: PWDR-039 PWDR-182 — Pre-orders: horizon input is debounced and clamped 7–180 on blur (fix for the per-keystroke request) -->
+<section class="scr" id="s-production-preorders" data-nav="Pre-orders" data-group="Orders" data-title="Orders" data-sub="Pre-orders" data-parent="orders">
+  <div class="p23-sub" id="p23-nav-production-preorders"></div>
+  <div class="scr-body" id="p23-pre-body"></div>
+</section>
+
+<!-- ids: PWDR-051 PWDR-052 PWDR-183 — Peak day: Day + bench rate, requests on change (rate clamped 1–20) -->
+<section class="scr" id="s-production-peak-day" data-nav="Peak day" data-group="Orders" data-title="Orders" data-sub="Peak day" data-parent="orders">
+  <div class="p23-sub" id="p23-nav-production-peak-day"></div>
+  <div class="scr-body" id="p23-peak-body"></div>
+</section>
+
+<!-- ids: PWDR-064 PWDR-065 PWDR-068 PWDR-184 — Production shifts (moves to Team → Schedule; kept here so the KPI «On shift now» and Peak day capacity keep their source); week switcher added (server already supports ?week=) -->
+<section class="scr" id="s-production-shifts" data-nav="Production shifts" data-group="Orders" data-title="Team" data-sub="Production shifts" data-parent="team">
+  <div class="p23-sub" id="p23-nav-production-shifts"></div>
+  <!-- ids: PWDR-066 PWDR-067 PWDR-069 — add-shift form (production.manage), Remove with Undo, empty state and field errors -->
+  <div class="scr-body" id="p23-sh-body"></div>
+</section>
+
+<!-- ids: PWDR-002 PWDR-003 PWDR-071 PWDR-087 — Workshops list: Orders tab (sidebar item removed with the flag), attention badge on the tab, Upcoming / Past, season year picker added (server supports ?year=) -->
+<section class="scr" id="s-workshops" data-nav="Workshops" data-group="Orders" data-title="Orders" data-sub="Workshops" data-parent="orders">
+  <div class="p23-sub" id="p23-nav-workshops"></div>
+  <div class="scr-head" id="p23-ws-head"></div>
+  <div class="scr-body" id="p23-ws-body"></div>
+</section>
+
+<!-- ids: PWDR-088 PWDR-089 PWDR-090 PWDR-091 PWDR-092 PWDR-093 PWDR-096 PWDR-097 PWDR-185 — Workshop session form (create / edit) -->
+<section class="scr" id="s-workshops-form" data-nav="Workshop · form" data-group="Orders" data-title="Orders" data-sub="Workshop session" data-parent="orders" data-roles="owner manager">
+  <div class="scr-head" id="p23-wf-head"></div>
+  <!-- ids: PWDR-094 PWDR-095 — Save: create (→ session card, toast «Workshop session created») / update (time change re-writes the host schedule entry and resets T-7 / T-1 alerts and customer reminders) -->
+  <div class="scr-body" id="p23-wf-body"></div>
+</section>
+
+<!-- ids: PWDR-098 PWDR-099 PWDR-186 — Workshop session card -->
+<section class="scr" id="s-workshops-session" data-nav="Workshop · session" data-group="Orders" data-title="Orders" data-sub="Workshop session" data-parent="orders">
+  <div class="scr-head" id="p23-wss-head"></div>
+  <!-- ids: PWDR-100 PWDR-188 PWDR-190 — + Add booking (manual: confirmed + paid, no e-mail / Stripe; amount = price × seats, flat for private – fixed), toasts «Booking … added / cancelled / moved», «Workshop completed, stock written off», «Stock was already written off», «Host saved – schedule updated», «This booking is not active» -->
+  <div class="scr-body" id="p23-wss-body"></div>
+</section>
+
+<!-- ids: PWDR-119 PWDR-120 PWDR-121 PWDR-125 PWDR-191 — Workshop type: defaults + materials per seat -->
+<section class="scr" id="s-workshops-type" data-nav="Workshop · type" data-group="Orders" data-title="Orders" data-sub="Workshop type" data-parent="orders">
+  <div class="scr-head" id="p23-wt-head"></div>
+  <div class="scr-body" id="p23-wt-body"></div>
+</section>
+
+<script>
+/* ===================== 23 · shared: flags, sub-nav, demo data ===================== */
+const P23_FLAGS={triage:false,driver_app:true,qr_flow:true,age_verification:true,address_issues:true,postcode_notes:true,consent:true,workshops:true,night:false,photo_storage:true};
+const P23_FLAG_LBL={triage:"delivery.production_triage (J10 triage)",night:"Night · alcohol assembly blocked (demo)",workshops:"workshops.enabled",driver_app:"delivery.driver_app",qr_flow:"delivery.qr_flow",age_verification:"delivery.age_verification",address_issues:"delivery.address_issues",postcode_notes:"delivery.postcode_notes",consent:"delivery.consent.enabled",photo_storage:"Photo storage configured (demo)"};
+const p23esc=s=>App.esc(s), p23ic=n=>App.icon(n);
+const p23day=iso=>new Date(iso).toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+const p23key=d=>{const x=new Date(d);return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0")};
+const p23addDays=(iso,n)=>{const x=new Date(iso);x.setDate(x.getDate()+n);return x.toISOString()};
+const p23daysTo=iso=>Math.round((new Date(p23key(iso))-new Date(p23key(App.NOW)))/864e5);
+function p23remount(){App.remount()}
+/* ids: PWDR-018 PWDR-030 PWDR-028 — demo flags popover (what is behind a config flag can be switched on here) */
+function P23_flagsPop(ev,keys){App.pop(ev,["Demo · config flags",...keys.map(k=>({t:(P23_FLAGS[k]?"✓ ":"○ ")+P23_FLAG_LBL[k],ic:"settings",fn:()=>{P23_FLAGS[k]=!P23_FLAGS[k];App.toast(P23_FLAG_LBL[k].split(" ")[0]+(P23_FLAGS[k]?" · on":" · off"));p23remount()}}))])}
+/* ids: PWDR-001 PWDR-002 PWDR-003 PWDR-005 — Orders sub-tabs (Production merged into Orders); Workshops tab only with the flag, attention badge = sessions ≤7 d behind on prep (amber / red) */
+function P23_nav(cur){
+  const el=document.getElementById("p23-nav-"+cur);if(!el)return;
+  const att=P23_wsAttention();
+  const items=[["orders","Board","orders",null],["production","Make","production",()=>App.data.orders.filter(o=>o.n===0&&["queue","making","photo"].includes(o.status)).length],["production-preorders","Pre-orders","calendar",()=>T23_PRE.length],["production-peak-day","Peak day","growth",null],["production","Photo check","photo",()=>App.data.orders.filter(o=>o.n===0&&o.status==="photo").length,{tab:"photo"}]];
+  if(P23_FLAGS.workshops)items.push(["workshops","Workshops","award",()=>att.n,null,att.level]);
+  items.push(["production-shifts","Shifts","team",null,null,null,"Team → Schedule"]);
+  el.innerHTML=items.map(([id,lbl,ic,cnt,params,lvl,hint])=>{const photo=!!(params&&params.tab==="photo");const on=id===cur&&(cur!=="production"||(photo===(P3.tab==="photo")));const c=cnt?cnt():0;return `<button class="${on?"on":""}" title="${hint||""}" onclick="App.go('${id}',${JSON.stringify(params||{}).replace(/"/g,"&quot;")})">${p23ic(ic)}${lbl}${c?`<span class="n ${lvl==="red"?"--accent":lvl==="amber"?"--warn":""}">${c}</span>`:""}</button>`}).join("")+`<span class="sp"></span><button class="flags" onclick="P23_flagsPop(event,['triage','night','workshops'])">${p23ic("settings")} Flags</button>`;
+}
+
+/* ---- shifts (production table) · week Mon 19 – Sun 25 Oct 2026 ---- */
+const T23_SHIFTS=(()=>{const mon=new Date(App.NOW);mon.setDate(mon.getDate()-((mon.getDay()+6)%7));mon.setHours(0,0,0,0);const d=i=>{const x=new Date(mon);x.setDate(x.getDate()+i);return x.toISOString()};let id=701;const mk=(who,days,s,e,role)=>days.map(i=>({id:id++,who,date:d(i),start:s,end:e,role}));
+  return [...mk("svetlana",[0,1,2,3,5],"08:00","17:00","florist"),...mk("marina",[0,1,3,4,5],"08:00","17:00","florist"),...mk("olesya",[1,2,3,4,6],"13:00","22:00","florist"),...mk("anna",[1,2,4,5],"10:00","19:00","florist"),...mk("lina",[1,3,5],"10:00","19:00","florist"),...mk("valeria",[0,1,2,3,4],"08:00","17:00","manager"),...mk("kamila",[1,2,5,6],"13:00","22:00","manager"),{id:id++,who:"eliza",date:d(2),start:"09:00","end":"18:00",role:null}]})();
+const T23_LEADS={day:"svetlana",evening:"olesya"};
+const p23hm=s=>{const [h,m]=s.split(":").map(Number);return h*60+m};
+const p23onNow=s=>{const n=App.NOW;return p23key(s.date)===p23key(n)&&p23hm(s.start)<=n.getHours()*60+n.getMinutes()&&p23hm(s.end)>n.getHours()*60+n.getMinutes()};
+function p23floristsAt(dateKey,hour){return T23_SHIFTS.filter(s=>p23key(s.date)===dateKey&&s.role==="florist"&&p23hm(s.start)<=hour*60&&p23hm(s.end)>hour*60).length}
+
+/* ---- pre-orders: days ahead (fictional) ---- */
+const T23_PRE=[[1,6,7,1,420,1,0],[2,4,4,0,310,0,0],[3,9,11,3,780,2,1],[5,3,3,0,210,0,0],[11,14,18,9,1290,3,2],[18,5,6,2,440,1,0],[25,7,9,4,610,0,0],[39,3,3,1,250,1,0],[46,2,2,0,180,0,0],[54,4,5,2,330,1,1],[66,11,14,8,980,2,3],[117,38,52,31,3120,9,12],[139,24,33,19,2240,6,8],[144,61,88,57,5480,14,21]].map(([d,o,b,p,paid,un,miss])=>({date:p23addDays(App.NOW.toISOString(),d),days:d,orders:o,bouquets:b,preorders:p,paid,unpaid:un,jobsMissing:miss}));
+
+/* ---- workshops (fictional) ---- */
+const T23_WTYPES=[
+ {id:1,name:"Hand-tied bouquet",price:65,flat:450,places:10,len:120,active:true,bom:[[401,12],[406,2],[407,1],[411,1],[412,1]]},
+ {id:2,name:"Christmas wreath",price:85,flat:600,places:12,len:150,active:true,bom:[[406,3],[407,2],[414,1],[412,2]]},
+ {id:3,name:"Seasonal table centrepiece",price:75,flat:520,places:8,len:120,active:false,bom:[]}
+];
+const T23_WSESS=(()=>{const T=App.T;const bk=(ref,src,name,phone,email,seats,amount,st,extra={})=>Object.assign({ref,source:src,name,phone,email,seats,amount,status:st,promo:"",discount:0,refund:0,stripe:src==="website",movedFrom:"",note:"",paidAt:T(9,0,-3)},extra);
+ return [
+  {id:41,typeId:1,kind:"open",date:T(18,30,2),start:"18:30",len:120,price:65,places:10,status:"scheduled",note:"Autumn palette – peach, rust, cream. Prosecco on arrival.",host:"svetlana",prep:{ordered:{by:"valeria",at:T(11,20,-2)},received:null,benches:null},stockWrittenOffAt:null,
+   bookings:[bk("WS-2041","website","Charlotte Whitfield","+44 7700 900101","charlotte.whitfield@example.com",2,130,"paid",{promo:"NEW15",discount:19.5}),bk("WS-2043","website","Amelia Hale","+44 7700 900103",  "amelia.hale@example.com",1,65,"paid"),bk("WS-2046","manual","Grace Ashby","+44 7700 900109","",3,195,"paid",{note:"Booked on WhatsApp, paid by bank transfer"}),bk("WS-2047","website","Priya Mehta","+44 7700 900125","priya.mehta@example.com",1,65,"held",{holdUntil:T(11,10)}),bk("WS-2039","website","Jack Carter","+44 7700 900106","jack.carter@example.com",1,65,"cancelled",{refund:65,note:"Cancelled 12 Oct – full refund\nCustomer unwell"}),bk("WS-2044","website","Edward Sato","+44 7700 900116","edward.sato@example.com",1,65,"paid",{movedFrom:"Sat 10 Oct"}),bk("WS-2040","website","Noah Clarke","+44 7700 900120","noah.clarke@example.com",2,130,"expired")],
+   waitlist:[{name:"Lily Bennett",seats:2,email:"lily.bennett@example.com",phone:"+44 7700 900115",told:T(9,30,-1)},{name:"Rosie Doyle",seats:1,email:"rosie.doyle@example.com",phone:"",told:null}]},
+  {id:42,typeId:2,kind:"private",date:T(11,0,4),start:"11:00",len:150,price:600,places:12,status:"scheduled",note:"Corporate – Barrington & Co, 6 guests, invoice PO 4471.",host:"olesya",prep:{ordered:null,received:null,benches:null},stockWrittenOffAt:null,
+   bookings:[bk("WS-2050","manual","Oliver Barrington","+44 7700 900102","oliver.barrington@example.com",6,600,"paid",{note:"Invoice PO 4471"})],waitlist:[]},
+  {id:43,typeId:3,kind:"open",date:T(18,30,11),start:"18:30",len:120,price:75,places:8,status:"scheduled",note:"",host:"marina",prep:{ordered:null,received:null,benches:null},stockWrittenOffAt:null,
+   bookings:[bk("WS-2052","website","Isla Lindqvist","+44 7700 900105","isla.lindqvist@example.com",2,150,"paid")],waitlist:[]},
+  {id:44,typeId:2,kind:"open",date:T(11,0,39),start:"11:00",len:150,price:85,places:12,status:"scheduled",note:"Sold out – waitlist open on the site.",host:"svetlana",prep:{ordered:null,received:null,benches:null},stockWrittenOffAt:null,
+   bookings:[bk("WS-2055","website","Sophie Moreau","+44 7700 900107","sophie.moreau@example.com",4,340,"paid"),bk("WS-2056","website","Thomas Nakamura","+44 7700 900110","thomas.nakamura@example.com",2,170,"paid"),bk("WS-2057","website","Emily Reeves","+44 7700 900111","emily.reeves@example.com",2,170,"paid"),bk("WS-2058","website","Freya Hughes","+44 7700 900113","freya.hughes@example.com",2,170,"paid"),bk("WS-2059","manual","Hannah Rossi","+44 7700 900121","",2,170,"paid")],
+   waitlist:[{name:"Zara Marchetti",seats:2,email:"zara.marchetti@example.com",phone:"+44 7700 900117",told:null}]},
+  {id:45,typeId:2,kind:"open",date:T(18,30,46),start:"18:30",len:150,price:85,places:12,status:"scheduled",note:"",host:"olesya",prep:{ordered:null,received:null,benches:null},stockWrittenOffAt:null,
+   bookings:[bk("WS-2060","website","Max Doyle","+44 7700 900118","max.doyle@example.com",2,170,"paid"),bk("WS-2061","website","Alice Abernathy","+44 7700 900119","alice.abernathy@example.com",2,170,"held",{holdUntil:T(12,40)})],waitlist:[]},
+  {id:40,typeId:1,kind:"open",date:T(18,30,-10),start:"18:30",len:120,price:65,places:10,status:"completed",note:"",host:"svetlana",prep:{ordered:{by:"valeria",at:T(10,0,-17)},received:{by:"anna",at:T(12,0,-11)},benches:{by:"svetlana",at:T(16,0,-10)}},stockWrittenOffAt:T(21,5,-10),
+   bookings:[bk("WS-2030","website","Harry Okafor","+44 7700 900104","harry.okafor@example.com",2,130,"paid"),bk("WS-2031","website","Daniel Kowalski","+44 7700 900114","daniel.kowalski@example.com",1,65,"paid"),bk("WS-2032","manual","William Fontaine","+44 7700 900112","",4,260,"paid"),bk("WS-2033","website","Louis Grant","+44 7700 900124","louis.grant@example.com",2,130,"paid")],waitlist:[]},
+  {id:39,typeId:3,kind:"open",date:T(18,30,-19),start:"18:30",len:120,price:75,places:8,status:"cancelled",note:"Host unwell – all moved to 22 Oct.",host:"marina",prep:{ordered:null,received:null,benches:null},stockWrittenOffAt:null,bookings:[],waitlist:[]},
+  {id:38,typeId:2,kind:"private",date:T(14,0,-300),start:"14:00",len:150,price:520,places:12,status:"completed",note:"",host:"svetlana",prep:{ordered:{by:"valeria",at:T(10,0,-310)},received:{by:"valeria",at:T(10,0,-302)},benches:{by:"svetlana",at:T(13,0,-300)}},stockWrittenOffAt:T(17,0,-300),bookings:[bk("WS-1980","manual","Arthur Fairweather","+44 7700 900122","",8,520,"paid")],waitlist:[]}
+ ]})();
+const p23wtype=id=>T23_WTYPES.find(t=>t.id===id);
+const p23wsess=id=>T23_WSESS.find(s=>s.id===Number(id));
+const p23seatsSold=s=>s.bookings.filter(b=>b.status==="paid").reduce((a,b)=>a+b.seats,0);
+const p23seatsHeld=s=>s.bookings.filter(b=>b.status==="held").reduce((a,b)=>a+b.seats,0);
+const p23revenue=s=>s.bookings.filter(b=>b.status==="paid").reduce((a,b)=>a+b.amount-b.refund,0);
+/* ids: PWDR-078 PWDR-079 PWDR-103 — prep level: ≤7 d with sales → amber if gaps; red if ≤2 d with gaps or materials not ordered ≤5 d */
+function p23wlevel(s){if(s.status!=="scheduled")return"";const d=p23daysTo(s.date);if(d<0)return"";const gaps=!(s.prep.ordered&&s.prep.received&&s.prep.benches);const sold=p23seatsSold(s)>0;if(!sold||!gaps)return"";if(d<=2||(d<=5&&!s.prep.ordered))return"red";if(d<=7)return"amber";return""}
+function P23_wsAttention(){const l=T23_WSESS.filter(s=>p23daysTo(s.date)>=0&&p23daysTo(s.date)<=7).map(p23wlevel).filter(Boolean);return{n:l.length,level:l.includes("red")?"red":l.length?"amber":""}}
+const p23wsMgr=()=>App.isMgr();
+
+/* ===================== 23 · MAKE BOARD ===================== */
+const P3={view:"today",tab:"board",slot:"",florist:"",mine:false,lastParams:null,roleSeen:null,CAP:4,drag:null,demo:{alcohol:true,swapped:true,before:true}};
+/* ids: PWDR-010 PWDR-024 — carry-over jobs: unfinished from past days (local demo set over yesterday's orders) */
+const T23_CARRY=[{order:App.data.orders[36].id,stage:"making",daysLate:1,florist:"marina"},{order:App.data.orders[37].id,stage:"queue",daysLate:1,florist:null},{order:App.data.orders[38].id,stage:"making",daysLate:3,florist:"svetlana"},{order:App.data.orders[39].id,stage:"queue",daysLate:6,florist:null}];
+const p3Active=o=>o.n===0&&["queue","making","photo","ready"].includes(o.status);
+const p3Stage=o=>o.status==="queue"?"to_make":o.status==="ready"?"ready":"in_progress";
+const p3Mp=o=>o.chan==="Deliveroo"||o.chan==="Uber Eats";
+/* ids: PWDR-025 PWDR-026 PWDR-027 PWDR-028 PWDR-029 PWDR-030 PWDR-031 — computed card facts (summary, reference → as made, photo reminder, alcohol, slot «before», triage, started / built in) */
+function p3Job(o,carry){
+  const p=App.product(o.product);const j={o,p,carry:carry||null,stage:carry?(carry.stage==="queue"?"to_make":carry.stage==="ready"?"ready":"in_progress"):p3Stage(o),florist:carry?carry.florist:o.florist};
+  j.summary=`${p.name} · ${o.size}${o.addons.length?" + "+o.addons.map(a=>App.product(a).name).join(", "):""}`;
+  j.refs=[p.img,...o.addons.slice(0,1).map(a=>App.product(a).img)].slice(0,2);j.refNames=[p.name,...o.addons.slice(0,1).map(a=>App.product(a).name)];
+  j.photo=carry?false:o.photo;j.swapped=P3.demo.swapped&&o.id%5===0;j.isAlcohol=P3.demo.alcohol&&o.id%7===0;j.alcoholHold=j.isAlcohol&&P23_FLAGS.night;
+  j.slotType=P3.demo.before&&o.id%6===0?"before":"between";j.slotBadge=j.slotType==="before"?"before "+o.slot.split("–")[1]:o.slot;
+  const st=o.log.find(l=>/Started making/.test(l.t));j.startedHm=j.stage==="in_progress"&&st?App.fmtTime(st.at):"";
+  j.buildMinutes=j.stage==="ready"?28+(o.id%4)*7:0;
+  j.late=carry?true:App.isLate(o);
+  if(P23_FLAGS.triage&&j.stage!=="ready"){const [h,m]=o.slot.split("–")[0].split(":").map(Number);const rb=new Date(App.NOW);rb.setHours(h,m-30,0,0);const hm=App.fmtTime(rb.toISOString());
+    if(j.alcoholHold)j.triage={lvl:"hold",lbl:"On hold",by:"08:00",why:"Alcohol: outside licensed hours"};else if(p3Mp(o))j.triage={lvl:"now",lbl:"Make now",by:hm,why:"Marketplace clock is running"};else if(j.slotType==="before")j.triage={lvl:"now",lbl:"Make now",by:hm,why:"Express window"};else if(j.late)j.triage={lvl:"now",lbl:"Make now",by:hm,why:"Delivery slot"};else if(o.notes&&/Surprise|allergy/i.test(o.notes))j.triage={lvl:"next",lbl:"Next",by:hm,why:"Special attention order"};else if(h<=14)j.triage={lvl:"next",lbl:"Next",by:hm,why:"Delivery slot"};else j.triage=null}
+  return j;
+}
+/* ids: PWDR-009 — florist sees own + unassigned only (server scope); manager everyone */
+function p3Scoped(list){const me=App.me().id;return App.isMgr()?list:list.filter(j=>!j.florist||j.florist===me)}
+function p3Jobs(){
+  let jobs=P3.view==="carry"?T23_CARRY.map(c=>p3Job(App.order(c.order),c)):App.data.orders.filter(p3Active).map(o=>p3Job(o));
+  jobs=p3Scoped(jobs).filter(j=>(!P3.slot||j.o.slot===P3.slot)&&(!P3.florist||j.florist===P3.florist)&&(!P3.mine||j.florist===App.me().id||(j.stage==="to_make"&&!j.florist)));
+  const rank=j=>j.triage?{now:0,next:1,hold:3}[j.triage.lvl]:2;
+  return jobs.sort((a,b)=>P3.view==="carry"?b.carry.daysLate-a.carry.daysLate:(rank(a)-rank(b))||(b.late-a.late)||a.o.slot.localeCompare(b.o.slot)||a.o.id-b.o.id);
+}
+function p3CarryCount(){return p3Scoped(T23_CARRY.map(c=>p3Job(App.order(c.order),c))).length}
+/* ids: PWDR-013 PWDR-014 PWDR-015 PWDR-016 PWDR-017 PWDR-018 PWDR-019 PWDR-020 — KPI row */
+function p3Kpis(){
+  const all=p3Scoped(App.data.orders.filter(p3Active).map(o=>p3Job(o)));
+  const onNow=T23_SHIFTS.filter(p23onNow).length;const lead=App.user(T23_LEADS.day),eve=App.user(T23_LEADS.evening);
+  const inQ=all.filter(j=>j.stage==="to_make").length,ready=all.filter(j=>j.stage==="ready").length,late=all.filter(j=>j.late&&j.stage!=="ready").length,urgent=all.filter(j=>j.triage&&j.triage.lvl==="now").length,noPhoto=all.filter(j=>j.stage==="ready"&&!j.photo).length,carry=p3CarryCount();
+  const k=(lbl,v,sub,cls,go)=>`<div class="kpi-card ${cls||""}" ${go?`onclick="${go}"`:'style="cursor:default"'}><span class="caps">${lbl}</span><span class="kpi-s tnum">${v}</span><span class="sub">${sub||""}</span></div>`;
+  return `<div class="p23-kpis">
+    ${k("On shift now",onNow,"production shifts table","", "App.go('production-shifts')")}
+    ${k("Lead florist",lead?lead.n.split(" ")[0]:"–","Evening: "+(eve?eve.n:"–"),"","App.go('team',{tab:'schedule'})")}
+    ${k("In queue",inQ,"to make","","P3_setView('today');P3_slot('')")}
+    ${k("Ready today",ready,"cards in Ready")}
+    ${k("Late risk",late,"slot passed, not ready",late?"--warn":"")}
+    ${P23_FLAGS.triage?k("Urgent now",urgent,"«Make now» cards",urgent?"--warn":""):""}
+    ${k("Ready, no photo",noPhoto,"photograph before it leaves",noPhoto?"--warn":"","P3_tab('photo')")}
+    ${k("Carry-over",carry,P3.view==="carry"?"← Today's board":"unfinished from past days – open",(carry?"--warn ":"")+(P3.view==="carry"?"--on":""),"P3_setView(P3.view==='carry'?'today':'carry')")}
+  </div>`;
+}
+function p3Photos(j){
+  const made=j.photo?`<div class="thumb --made" title="Bouquet as made"><img src="${j.p.img}" alt=""></div>`:`<div class="thumb --none" title="No photo of the bouquet yet">${p23ic("photo")}</div>`;
+  return `<div class="photos">${j.refs.map((r,i)=>`<div class="thumb --ref" title="Reference: ${p23esc(j.refNames[i])}"><img src="${r}" alt=""></div>`).join("")}<span class="arr">${p23ic("chev")}</span>${made}</div>`;
+}
+function p3Lines(j){
+  let h="";const o=j.o;
+  if(j.carry)h+=`<div class="line --accent">${p23ic("clock")} waiting ${j.carry.daysLate} d · for ${p23day(o.date)}</div>`;
+  if(!j.photo)h+=j.swapped?`<div class="line --b">${p23ic("alert")} Stem swapped – photograph the bouquet</div>`:j.stage==="ready"?`<div class="line --accent">${p23ic("photo")} no photo of the bouquet yet</div>`:`<div class="line">${p23ic("photo")} Photo of the bouquet, please</div>`;
+  if(j.isAlcohol)h+=j.alcoholHold?`<div class="line --warn">${p23ic("lock")} Assembly from 08:00</div>`:`<div class="line --accent">${p23ic("alert")} ALCOHOL – Challenge 25, sealed container</div>`;
+  if(j.startedHm)h+=`<div class="line">${p23ic("play")} Started ${j.startedHm}</div>`;
+  if(j.buildMinutes)h+=`<div class="line ok">${p23ic("check")} Built in ${j.buildMinutes} min</div>`;
+  if(o.notes)h+=`<div class="line" title="${p23esc(o.notes)}">${p23ic("info")} ${p23esc(o.notes)}</div>`;
+  return h;
+}
+/* ids: PWDR-032 PWDR-033 PWDR-034 PWDR-035 PWDR-036 PWDR-037 — card actions: assignee select (manager), Take it (florist, unassigned), Start → / Ready → / ← Back */
+function p3Acts(j){
+  const o=j.o,me=App.me(),mgr=App.isMgr(),stop="event.stopPropagation();",id=o.id,c=j.carry?"1":"0";
+  let h="";
+  if(mgr)h+=`<select class="select" onclick="${stop}" onchange="${stop}P3_assign(${id},this.value,${c})"><option value="">Unassigned</option>${App.data.staff.filter(s=>s.role==="florist"||s.role==="manager").map(s=>`<option value="${s.id}" ${j.florist===s.id?"selected":""}>${p23esc(s.n)}${s.on?"":" · off"}</option>`).join("")}</select>`;
+  else if(!j.florist&&j.stage==="to_make")h+=`<button class="btn --ghost --sm" onclick="${stop}P3_claim(${id},${c})">${p23ic("user")} Take it</button>`;
+  else if(j.florist)h+=`<span class="wait">${App.avatar(j.florist,"--s")} ${p23esc(App.user(j.florist).n)}</span>`;
+  if(j.stage==="to_make")h+=`<button class="btn --sm" onclick="${stop}P3_stage(${id},'in_progress',${c})">${p23ic("play")} Start →</button>`;
+  else if(j.stage==="in_progress")h+=(!j.photo?`<button class="btn --ghost --sm" title="Photograph the bouquet" onclick="${stop}P3_addPhoto(${id},${c})">${p23ic("photo")}</button>`:"")+`<button class="btn --sm" onclick="${stop}P3_stage(${id},'ready',${c})">${p23ic("check")} Ready →</button><button class="btn --ghost --sm" onclick="${stop}P3_stage(${id},'to_make',${c})">← Back</button>`;
+  else h+=`<button class="btn --ghost --sm" onclick="${stop}P3_stage(${id},'in_progress',${c})">← Back</button>`+(o.type==="collection"?`<button class="btn --ok --sm" onclick="${stop}App.setOrderStatus(${id},'delivered',{note:'Collected in shop'})">${p23ic("check")} Collected</button>`:(mgr?`<button class="btn --sm" onclick="${stop}App.pickCourier(event,${id},()=>App.setOrderStatus(${id},'out',{silent:true}))">${p23ic("truck")} Hand over</button>`:""));
+  return h;
+}
+/* ids: PWDR-021 PWDR-022 PWDR-023 — three columns with counters («–» when empty), HTML5 drag-and-drop, order number opens the order */
+function p3Card(j){
+  const o=j.o,tri=j.triage;
+  return `<div class="kcard ${j.late?"--late":""} ${j.slotType==="before"?"--before":""}" draggable="true" data-id="${o.id}" data-c="${j.carry?1:0}" ondragstart="P3_dragStart(event)" ondragend="P3_dragEnd(event)" onclick="App.openOrder(${o.id})">
+    <div class="k-top"><button class="tnum" style="color:var(--ink);font-weight:500" onclick="event.stopPropagation();App.openOrder(${o.id})">#${p3Mp(o)?o.chan.replace(/\s/g,"").slice(0,3).toUpperCase()+"-"+String(o.id).slice(-4):o.id}</button><span class="slotb ${j.late?"accent":""}">${p23esc(j.slotBadge)}</span>${tri?`<span class="tri --${tri.lvl}" title="${p23esc(tri.why)}">${tri.lbl} · by ${tri.by}</span>`:""}<span class="sp"></span>${o.type==="collection"?`<span class="tag">Collect</span>`:""}${p3Mp(o)?App.chanTag(o.chan):""}</div>
+    <div class="k-title">${p23esc(j.p.name)} <span class="muted">· ${p23esc(o.size)}</span></div>
+    <div class="summ" title="${p23esc(j.summary)}">${p23esc(j.summary)}</div>
+    ${p3Photos(j)}
+    ${p3Lines(j)}
+    <div class="k-acts">${p3Acts(j)}</div>
+  </div>`;
+}
+function p3Board(){
+  const list=p3Jobs();const cols=[["to_make","To make",""],["in_progress","In progress",""],["ready","Ready","--ready"]];
+  return `<div class="kanban p3-board">${cols.map(([st,lbl,cls])=>{const js=list.filter(j=>j.stage===st);const late=js.filter(j=>j.late&&st!=="ready").length;
+    return `<div class="kcol ${cls}" data-stage="${st}" ondragover="P3_dragOver(event)" ondragleave="this.classList.remove('--over')" ondrop="P3_drop(event,'${st}')"><div class="k-head">${lbl}${late?` <span class="accent">· ${late} late</span>`:""}<span class="n">${js.length||"–"}</span></div><div class="k-body">${js.map(p3Card).join("")||`<div class="empty" style="padding:28px 8px">${p23ic(st==="to_make"?"check":st==="in_progress"?"production":"truck")}<span class="sm">${st==="to_make"?"Queue is clear":st==="in_progress"?"Nothing on the bench":"Nothing waiting"}</span></div>`}</div></div>`}).join("")}</div>`;
+}
+function p3Who(){
+  const fl=App.data.staff.filter(s=>s.role==="florist");
+  const inWork=f=>App.data.orders.filter(o=>o.n===0&&o.florist===f.id&&["making","photo"].includes(o.status)).length;
+  const done=f=>App.data.orders.filter(o=>o.n===0&&o.florist===f.id&&["ready","out","delivered"].includes(o.status)).length;
+  const q=App.data.orders.filter(o=>o.n===0&&o.status==="queue").length;
+  return `<div class="p3-who">${fl.map(f=>{const w=inWork(f),pc=Math.min(100,Math.round(w/P3.CAP*100));return `<div class="p3-f ${P3.florist===f.id?"on":""} ${f.on?"":"off"}" onclick="P3_florist('${f.id}')" title="${f.on?"On shift "+f.shift:"Off shift"}">${App.avatar(f.id)}<div class="t"><b>${p23esc(f.n)}${f.staff_type?` <span class="muted xs">· ${f.staff_type}</span>`:""}</b><small>${f.on?`${w} in work · ${done(f)} done`:"off shift · "+f.shift}</small><div class="progress ${pc>=100?"--accent":pc>=60?"--warn":""}"><i style="width:${f.on?pc:0}%"></i></div></div><span class="n ${w>=P3.CAP?"accent":""}">${f.on?w:"–"}</span></div>`}).join("")}
+    <div class="p3-f" style="cursor:default;min-width:150px"><div class="t"><b>Unassigned</b><small>in queue</small><div class="progress"><i style="width:${Math.min(100,q*10)}%"></i></div></div><span class="n ${q>8?"accent":""}">${q}</span></div></div>`;
+}
+function p3PhotoCheck(){
+  const list=p3Jobs().filter(j=>j.o.status==="photo");
+  if(!list.length)return `<div class="empty">${p23ic("photo")}<div class="h3">No photos to check</div><div class="sm">Florists photograph the bouquet on the bench before «Ready →».</div><button class="btn --ghost --sm mt8" onclick="P3_tab('board')">Back to board</button></div>`;
+  return `<div class="p3-grid">${list.map(j=>{const o=j.o,p=j.p,c=App.customer(o.customer);const shot=o.log.filter(l=>/Photo uploaded/.test(l.t)).pop();
+    return `<div class="p3-ph ${j.late?"--late":""}"><div class="photo --4x5" onclick="App.openOrder(${o.id})"><img src="${p.img}" alt=""><div class="ovl"><span class="tnum">#${o.id}</span><span>${p23esc(o.slot)}</span></div></div>
+      <div class="pb"><div class="row" style="gap:8px"><div style="flex:1;min-width:0"><div class="h4" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p23esc(p.name)} · ${p23esc(o.size)}</div><div class="xs muted">${j.summary.split(" · ").slice(1).join(" · ")} · for ${p23esc(c.first)}</div></div>${App.avatar(o.florist||"","--s")}</div>
+      ${j.swapped?`<div class="line --b xs">${p23ic("alert")} Stem swapped – check the substitute</div>`:""}
+      <div class="xs muted">${shot?"Photo "+App.timeAgo(shot.at)+" ago":"Photo just uploaded"}${j.late?` · <span class="accent">slot passed</span>`:""}</div>
+      <div class="btn-row"><button class="btn --sm" onclick="App.sendPhoto(${o.id})">${p23ic("send")} Approve &amp; send</button><button class="btn --ghost --sm" onclick="P3_retake(${o.id})" title="Back to making with a note">${p23ic("refresh")} Retake</button></div></div></div>`}).join("")}</div>`;
+}
+function p3Head(){
+  const today=p3Jobs();const slotN=s=>today.filter(j=>j.o.slot===s).length;const fl=P3.florist?App.user(P3.florist):null;const carry=P3.view==="carry";
+  App.$("#p3-head").innerHTML=`
+    <div style="min-width:0"><div class="h3">${carry?"Carry-over":"Make board"}</div><div class="p3-meta">${carry?"Unfinished jobs from past days · today's board does not show them":"Today's production queue · To make → In progress → Ready"}${App.isMgr()?"":" · <span>your jobs and unassigned only</span>"}</div></div>
+    ${carry?"":`<div class="seg-ctl"><button class="${P3.tab==="board"?"on":""}" onclick="P3_tab('board')">${p23ic("board")} Board</button><button class="${P3.tab==="photo"?"on":""}" onclick="P3_tab('photo')">${p23ic("photo")} Photo check</button></div>
+    <div class="chips"><button class="chip ${!P3.slot?"on":""}" onclick="P3_slot('')">All <span class="n">${today.length}</span></button>${App.SLOTS.map(s=>`<button class="chip ${P3.slot===s?"on":""}" onclick="P3_slot('${s}')">${s.split("–")[0]} <span class="n">${slotN(s)}</span></button>`).join("")}</div>
+    ${App.isMgr()?`<button class="chip ${P3.mine?"on":""}" onclick="P3_mine()">${p23ic("user")} Mine</button><button class="chip ${P3.florist?"on":""}" onclick="P3_floristPop(event)">${fl?App.avatar(fl.id,"--s")+" "+p23esc(fl.n):p23ic("filter")+" Florist"} ${p23ic("down")}</button>`:""}`}
+    <span class="sp"></span>
+    <span class="p3-meta" title="The board does not refresh itself – colleagues' moves appear after Refresh">${p23ic("clock")} Updated ${App.fmtTime(App.NOW.toISOString())} · no auto-refresh <button class="textbtn" onclick="App.toast('Board refreshed');p3Mount(P3.lastParams)">refresh</button></span>
+    <button class="chip" onclick="P3_demoPop(event)">${p23ic("sparkle")} Demo</button>
+    ${carry?`<button class="btn --ghost --sm" onclick="P3_setView('today')">${p23ic("back")} Today's board</button>`:`<button class="btn --ghost --sm p3-print" onclick="App.toast('Sent to printer · ${today.length} tickets')">${p23ic("printer")} Print tickets</button><button class="btn --ghost --sm" onclick="App.go('stock')">${p23ic("warehouse")} Check stock</button>`}`;
+}
+function p3Mount(params){
+  params=params||{};const role=App.role();
+  if(P3.roleSeen!==role){P3.roleSeen=role;P3.mine=false;P3.florist=""}
+  if(params!==P3.lastParams){P3.lastParams=params;if(params.slot!==undefined)P3.slot=params.slot||"";if(params.florist!==undefined){P3.florist=params.florist||"";P3.mine=false}P3.tab=params.tab||"board";if(params.carryover)P3.view="carry";if(params.mine!==undefined)P3.mine=!!params.mine}
+  P23_nav("production");p3Head();
+  App.$("#p3-body").innerHTML=p3Kpis()+(P3.view==="carry"?p3Board():(P3.tab==="photo"?p3PhotoCheck():p3Who()+p3Board()));
+  App.registerCommands([{g:"Actions",t:"Take next in queue",ic:"play",fn:P3_takeNext},{g:"Actions",t:"Photo check",ic:"photo",fn:()=>App.go("production",{tab:"photo"})},{g:"Actions",t:"Carry-over · unfinished from past days",ic:"clock",fn:()=>App.go("production",{carryover:1})},{g:"Go to",t:"Pre-orders",ic:"calendar",fn:()=>App.go("production-preorders")},{g:"Go to",t:"Peak day",ic:"growth",fn:()=>App.go("production-peak-day")},{g:"Go to",t:"Workshops",ic:"award",fn:()=>App.go("workshops")}]);
+}
+window.mount_production=p3Mount;
+function P3_tab(t){P3.tab=t;p3Mount(P3.lastParams)}
+function P3_setView(v){P3.view=v;p3Mount(P3.lastParams)}
+function P3_slot(s){P3.slot=s;p3Mount(P3.lastParams)}
+function P3_mine(){P3.mine=!P3.mine;if(P3.mine)P3.florist="";p3Mount(P3.lastParams)}
+function P3_florist(id){P3.florist=P3.florist===id?"":id;if(P3.florist)P3.mine=false;p3Mount(P3.lastParams)}
+function P3_floristPop(ev){App.pop(ev,["Filter by florist",{t:"Everyone",ic:"customers",fn:()=>P3_florist("")},...App.data.staff.filter(s=>s.role==="florist").map(s=>({t:s.n+(s.on?"":" · off shift"),ic:"user",fn:()=>{P3.florist=s.id;P3.mine=false;p3Mount(P3.lastParams)}}))])}
+function P3_demoPop(ev){const d=P3.demo;App.pop(ev,["Demo states on cards",{t:(d.alcohol?"✓ ":"○ ")+"Alcohol orders",ic:"alert",fn:()=>{d.alcohol=!d.alcohol;p3Mount(P3.lastParams)}},{t:(P23_FLAGS.night?"✓ ":"○ ")+"Night · assembly blocked",ic:"lock",fn:()=>{P23_FLAGS.night=!P23_FLAGS.night;p3Mount(P3.lastParams)}},{t:(d.swapped?"✓ ":"○ ")+"Stem swapped",ic:"refresh",fn:()=>{d.swapped=!d.swapped;p3Mount(P3.lastParams)}},{t:(d.before?"✓ ":"○ ")+"«Before» slots",ic:"clock",fn:()=>{d.before=!d.before;p3Mount(P3.lastParams)}},{t:(P23_FLAGS.triage?"✓ ":"○ ")+"Triage J10 (flag)",ic:"zap",fn:()=>{P23_FLAGS.triage=!P23_FLAGS.triage;p3Mount(P3.lastParams)}},"-",{t:"Carry-over view",ic:"clock",fn:()=>P3_setView("carry")}])}
+/* ids: PWDR-032 — assign / unassign (manager) · audit production.assign */
+function P3_assign(id,who,c){if(c){const j=T23_CARRY.find(x=>x.order===id);j.florist=who||null;App.toast("Job assigned");p3Mount(P3.lastParams);return}if(!who){const o=App.order(id);o.florist=null;App.emit("orders");App.toast("Job unassigned");return}App.assignFlorist(id,who);App.toast("Job assigned")}
+/* ids: PWDR-033 — Take it: florist claims an unassigned job · audit production.claim */
+function P3_claim(id,c){if(c){T23_CARRY.find(x=>x.order===id).florist=App.me().id;App.toast("Job claimed");p3Mount(P3.lastParams);return}const o=App.order(id);o.florist=App.me().id;o.log.push({at:App.NOW.toISOString(),who:o.florist,t:"Claimed"});App.emit("orders");App.toast("Job claimed")}
+function P3_addPhoto(id,c){if(c){App.toast("Photo uploaded (carry-over job)");return}App.setOrderStatus(id,"photo",{silent:true});App.toast("Photo uploaded · bouquet as made")}
+/* ids: PWDR-035 PWDR-036 PWDR-037 PWDR-038 — stage changes: alcohol gate (global AlcoholHoursModal), photo gate (toast), Ready moves the order, Back from Ready reopens the order and raises a manager task */
+function P3_stage(id,stage,c){
+  const o=App.order(id);const j=p3Job(o,c?T23_CARRY.find(x=>x.order===id):null);
+  if(stage!=="to_make"&&j.stage!=="ready"&&j.alcoholHold){P3_alcoholModal();return}
+  if(stage==="ready"&&!j.photo&&!c){App.toast("Photo of the bouquet first – «Ready» needs the photo","Add photo",()=>P3_addPhoto(id,0));return}
+  if(c){const cj=T23_CARRY.find(x=>x.order===id);cj.stage=stage==="to_make"?"queue":stage==="ready"?"ready":"making";if(stage==="in_progress"&&!cj.florist)cj.florist=App.me().id;App.toast("Job moved");p3Mount(P3.lastParams);return}
+  if(stage==="in_progress"){if(j.stage==="ready"){App.setOrderStatus(id,"making",{note:"Reopened on the Make board",silent:true});o.photo=true;App.toast("Job moved · order back in production");App.push("Was it a workshop error?","#"+id+" reopened on the Make board – check and answer",{icon:"alert",type:"task",go:["tasks",{}]})}else App.setOrderStatus(id,"making",{silent:true}),App.toast("Job moved · Started "+App.fmtTime(App.NOW.toISOString()))}
+  else if(stage==="ready"){App.setOrderStatus(id,"ready",{silent:true});App.toast("Job moved · order ready"+(o.type==="collection"?" · «ready for collection» e-mail sent":p3Mp(o)?" · status mirrored to "+o.chan:""))}
+  else {App.setOrderStatus(id,"queue",{silent:true});App.toast("Job moved")}
+}
+function P3_alcoholModal(){App.modal({title:"Outside licensed hours",body:`<div class="note-box --warn mb8">${p23ic("lock")} Alcohol orders can only be assembled between 08:00 and 21:30 (premises licence SE1).</div><div class="sm soft">The job stays on the board; start it from 08:00. Going back a stage is always allowed.</div>`})}
+/* ids: PWDR-022 — drag-and-drop: target column highlighted; To make → Ready is refused with a visible error (CRM today fails silently) */
+function P3_dragStart(e){P3.drag={id:+e.currentTarget.dataset.id,c:+e.currentTarget.dataset.c};e.currentTarget.classList.add("--drag");e.dataTransfer.effectAllowed="move"}
+function P3_dragEnd(e){e.currentTarget.classList.remove("--drag");App.$$("#s-production .kcol").forEach(k=>k.classList.remove("--over"))}
+function P3_dragOver(e){e.preventDefault();e.currentTarget.classList.add("--over")}
+function P3_drop(e,stage){e.preventDefault();e.currentTarget.classList.remove("--over");if(!P3.drag)return;const {id,c}=P3.drag;P3.drag=null;const o=App.order(id);const from=c?(T23_CARRY.find(x=>x.order===id).stage==="queue"?"to_make":"in_progress"):p3Stage(o);if(from===stage)return;if(from==="to_make"&&stage==="ready"){App.toast("To make → Ready is not allowed – start the job first");return}P3_stage(id,stage,c)}
+function P3_retake(id){const o=App.order(id);
+  App.modal({title:"Retake photo · #"+id,body:`<div class="sm soft mb8">Goes back to <b>In progress</b> for ${o.florist?p23esc(App.user(o.florist).n):"the florist"}. Tell them what to fix.</div><div class="chips mb8">${["Too dark","Wrap creased","Show the card","Different angle","Add the ribbon"].map(t=>`<button class="chip" onclick="document.getElementById('p3-rt-in').value=this.textContent.trim()">${t}</button>`).join("")}</div><input class="input" id="p3-rt-in" placeholder="Note for the florist…">`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.setOrderStatus(${id},'making',{note:'Retake · '+(document.getElementById('p3-rt-in').value||'see manager')});App.order(${id}).photo=false;App.push('Retake requested','#${id} · '+(document.getElementById('p3-rt-in').value||'see manager'),{icon:'photo',type:'order',go:['production',{tab:'board'}]})">${p23ic("refresh")} Send back</button>`,onMount:b=>setTimeout(()=>b.querySelector("#p3-rt-in")?.focus(),60)})}
+function P3_takeNext(){const me=App.me();const q=App.data.orders.filter(o=>o.n===0&&o.status==="queue"&&!o.florist).sort((a,b)=>(App.isLate(b)-App.isLate(a))||a.slot.localeCompare(b.slot));if(!q.length){App.toast("Queue is clear");return}if(App.state.current!=="production")App.go("production",{tab:"board"});App.assignFlorist(q[0].id,me.id)}
+document.addEventListener("orders",()=>{if(App.state.current==="production")p3Mount(P3.lastParams)});
+
+/* ===================== 23 · PRE-ORDERS ===================== */
+const P23P={days:90,t:null};
+window.mount_production_preorders=function(params){params=params||{};if(params.days)P23P.days=params.days;P23_nav("production-preorders");p23PreRender()};
+function P23_horizon(v,commit){clearTimeout(P23P.t);const n=Number(v);if(!commit){P23P.t=setTimeout(()=>P23_horizon(v,true),500);return}P23P.days=v===""?90:Math.max(7,Math.min(180,n||90));p23PreRender();App.toast("Horizon · "+P23P.days+" days")}
+function p23PreRender(){
+  const rows=T23_PRE.filter(d=>d.days<=P23P.days);
+  const tot={orders:rows.reduce((a,d)=>a+d.orders,0),pre:rows.reduce((a,d)=>a+d.preorders,0),paid:rows.reduce((a,d)=>a+d.paid,0),unpaid:rows.reduce((a,d)=>a+d.unpaid,0)};
+  App.$("#p23-pre-body").innerHTML=`
+  <div class="p23-form" style="grid-template-columns:200px 1fr">
+    <div class="field"><label>Horizon, days</label><input class="input tnum" type="number" min="7" max="180" value="${P23P.days}" oninput="P23_horizon(this.value,false)" onblur="P23_horizon(this.value,true)" onkeydown="if(event.key==='Enter')P23_horizon(this.value,true)"></div>
+    <div class="p23-hint">7–180 · sold for the days ahead, grouped by day · sends one request when you stop typing (the value is only clamped on blur).</div>
+  </div>
+  <!-- ids: PWDR-040 PWDR-041 PWDR-042 PWDR-043 — KPIs -->
+  <div class="grid g4 mb16">
+    <div class="kpi-card" style="cursor:default"><span class="caps">Orders ahead</span><span class="kpi-s tnum">${tot.orders}</span><span class="delta">next ${P23P.days} days</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">Pre-orders</span><span class="kpi-s tnum">${tot.pre}</span><span class="delta">bought ahead, for a peak date</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">Already paid</span><span class="kpi-s tnum">${App.fmt(tot.paid)}</span><span class="delta">incl. deposits</span></div>
+    <div class="kpi-card ${tot.unpaid?"--warn":""}" style="cursor:default;${tot.unpaid?"border-color:var(--warn)":""}"><span class="caps">Unpaid</span><span class="kpi-s tnum ${tot.unpaid?"warn":""}">${tot.unpaid}</span><span class="delta">money still collectable before the delivery day</span></div>
+  </div>
+  <!-- ids: PWDR-044 PWDR-045 PWDR-046 PWDR-047 PWDR-048 PWDR-049 PWDR-050 — table by day -->
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Day</th><th class="num">Orders</th><th class="num">Bouquets</th><th>of them pre-orders</th><th class="num">Paid</th><th>Jobs</th></tr></thead><tbody>
+  ${rows.length?rows.map(d=>`<tr class="r" onclick="App.go('production-peak-day',{date:'${p23key(d.date)}'})"><td><button class="link" onclick="event.stopPropagation();App.go('production-peak-day',{date:'${p23key(d.date)}'})">${p23day(d.date)}</button> <span class="muted xs">in ${d.days} d.</span></td><td class="num">${d.orders}</td><td class="num">${d.bouquets}</td><td>${d.preorders?`<span class="tag">${p23ic("gift")} ${d.preorders}</span>`:"–"}</td><td class="num">${App.fmt(d.paid)}${d.unpaid?`<span class="sub accent">${d.unpaid} unpaid</span>`:""}</td><td>${d.jobsMissing?`<span class="accent">${d.jobsMissing} missing</span> <button class="textbtn" onclick="event.stopPropagation();App.toast('${d.jobsMissing} production jobs created for ${p23day(d.date)}');T23_PRE.find(x=>x.days===${d.days}).jobsMissing=0;p23PreRender()">create</button>`:`<span class="ok">created</span>`}</td></tr>`).join(""):`<tr><td colspan="6"><div class="empty">${p23ic("calendar")}<div class="h3">Nothing sold for the days ahead</div></div></td></tr>`}
+  </tbody></table></div>`;
+}
+
+/* ===================== 23 · PEAK DAY ===================== */
+const P23K={date:p23key(App.NOW),rate:3};
+window.mount_production_peak_day=function(params){params=params||{};if(params.date)P23K.date=params.date;P23_nav("production-peak-day");p23PeakRender()};
+function P23_peakGo(date,rate){if(date)P23K.date=date;if(rate!==undefined)P23K.rate=Math.max(1,Math.min(20,Number(rate)||1));p23PeakRender()}
+function p23PeakModel(){
+  const key=P23K.date,today=p23key(App.NOW),tom=p23key(p23addDays(App.NOW.toISOString(),1));
+  const hours=Array.from({length:14},(_,i)=>8+i);const due=Object.fromEntries(hours.map(h=>[h,0])),made=Object.fromEntries(hours.map(h=>[h,0]));let orders=0,unslotted=0,madeN=0;
+  const sl=o=>{const [h]=o.slot.split("–")[0].split(":").map(Number);return (o.id%6===0)?Math.min(21,h+2):h};
+  if(key===today||key===tom){App.data.orders.filter(o=>o.n===(key===today?0:1)&&o.status!=="cancelled").forEach(o=>{orders++;const h=sl(o);due[h]++;if(["ready","out","delivered"].includes(o.status)){made[h]++;madeN++}})}
+  else{const d=T23_PRE.find(x=>p23key(x.date)===key);if(d){orders=d.orders;unslotted=Math.round(d.orders*0.12);let seed=d.days;const r=()=>{seed=(seed*9301+49297)%233280;return seed/233280};const w=hours.map(h=>h<9?0.3:h<13?1.4:h<17?1:h<20?.6:.2);const tw=w.reduce((a,b)=>a+b,0);let left=orders-unslotted;hours.forEach((h,i)=>{const n=i===hours.length-1?left:Math.min(left,Math.round(orders*w[i]/tw*(0.8+r()*0.4)));due[h]+=n;left-=n});due[12]+=unslotted}}
+  let carried=0,firstB=null,worst=0,cap=0;const rows=hours.map(h=>{const fl=(key===today||key===tom||T23_SHIFTS.some(s=>p23key(s.date)===key))?p23floristsAt(key,h):(h>=8&&h<17?3:h>=13&&h<22?2:0)+(h>=13&&h<17?2:0);const capacity=fl*P23K.rate;cap+=capacity;const load=due[h]+carried;const remaining=Math.max(0,load-made[h]);const overflow=Math.max(0,remaining-capacity);if(overflow&&firstB===null)firstB=h;worst=Math.max(worst,overflow);const row={h,due:due[h],made:made[h],remaining,carriedIn:carried,florists:fl,capacity,overflow,bottleneck:overflow>0};carried=overflow;return row});
+  return{rows,orders,unslotted,made:madeN,capacity:cap,remaining:orders-madeN,firstB,worst,max:Math.max(1,...rows.map(r=>Math.max(r.due+r.carriedIn,r.capacity)))};
+}
+function p23PeakRender(){
+  const m=p23PeakModel();const short=m.remaining-m.capacity;const hh=h=>String(h).padStart(2,"0")+":00";
+  App.$("#p23-peak-body").innerHTML=`
+  <div class="p23-form" style="grid-template-columns:200px 220px 1fr">
+    <div class="field"><label>Day</label><input class="input" type="date" value="${P23K.date}" onchange="P23_peakGo(this.value)"></div>
+    <div class="field"><label>Bouquets per florist per hour</label><input class="input tnum" type="number" min="1" max="20" value="${P23K.rate}" onchange="P23_peakGo(null,this.value)"></div>
+    <div class="p23-hint">The bench rate; change it to see what a faster hour would buy. Read-only · florists per hour come from <button class="textbtn" onclick="App.go('production-shifts')">Shifts</button>. Quick: <button class="textbtn" onclick="P23_peakGo('${p23key(App.NOW)}')">today</button> · <button class="textbtn" onclick="P23_peakGo('${p23key(p23addDays(App.NOW.toISOString(),1))}')">tomorrow</button> · <button class="textbtn" onclick="P23_peakGo('${p23key(T23_PRE[13].date)}')">Mother's Day</button></div>
+  </div>
+  <!-- ids: PWDR-053 PWDR-054 PWDR-055 PWDR-056 — KPIs -->
+  <div class="grid g4 mb16">
+    <div class="kpi-card" style="cursor:default"><span class="caps">Orders that day</span><span class="kpi-s tnum">${m.orders}</span><span class="delta">${m.unslotted?m.unslotted+" with no delivery window – counted in the default dispatch hour":"all with a delivery window"}</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">Made</span><span class="kpi-s tnum">${m.made} / ${m.orders}</span><span class="delta">so far</span></div>
+    <div class="kpi-card" style="cursor:default;${short>0?"border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)":""}"><span class="caps">Day capacity</span><span class="kpi-s tnum ${short>0?"accent":""}">${m.capacity}</span><span class="delta">${short>0?`short by ${short} bouquets`:"the rota covers the day"}</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">First bottleneck</span><span class="kpi-s tnum ${m.firstB!==null?"accent":""}">${m.firstB!==null?hh(m.firstB):"–"}</span><span class="delta">${m.firstB!==null?`worst overflow ${m.worst} bouquets`:"no bottlenecks"}</span></div>
+  </div>
+  <!-- ids: PWDR-057 PWDR-058 PWDR-059 PWDR-060 PWDR-061 PWDR-062 PWDR-063 — hourly table -->
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Hour</th><th>Load</th><th class="num">Due</th><th class="num">Made</th><th class="num">Left</th><th class="num">Florists</th><th class="num">Possible</th><th class="num">Behind</th></tr></thead><tbody>
+  ${m.orders?m.rows.map(r=>`<tr class="${r.bottleneck?"--bn":""}"><td class="tnum">${hh(r.h)}</td><td><div class="p23-load"><i class="due ${r.bottleneck?"--accent":""}" style="width:${Math.round((r.due+r.carriedIn)/m.max*100)}%" title="${r.due+r.carriedIn} due, ${r.capacity} possible"></i><i class="cap" style="width:${Math.round(r.capacity/m.max*100)}%" title="${r.capacity} possible"></i></div></td><td class="num">${r.due}</td><td class="num">${r.made}</td><td class="num">${r.remaining}${r.carriedIn?` <span class="accent">+${r.carriedIn}</span>`:""}</td><td class="num">${r.florists}</td><td class="num">${r.capacity}</td><td class="num">${r.overflow?`<span class="accent">+${r.overflow}</span>`:"–"}</td></tr>`).join(""):`<tr><td colspan="8"><div class="empty">${p23ic("calendar")}<div class="h3">No orders for this day</div></div></td></tr>`}
+  </tbody></table></div>
+  <div class="p23-foot">An order counts in the hour its window starts (between), in its deadline hour (before) or at the window start (after). Orders with no window sit in the default dispatch hour, 12:00.</div>`;
+}
+
+/* ===================== 23 · PRODUCTION SHIFTS ===================== */
+const P23S={week:0,form:{who:"",date:"",start:"07:00",end:"16:00",role:"florist"},err:{}};
+window.mount_production_shifts=function(params){P23_nav("production-shifts");p23ShRender()};
+function p23ShRender(){
+  const mon=new Date(App.NOW);mon.setDate(mon.getDate()-((mon.getDay()+6)%7)+P23S.week*7);mon.setHours(0,0,0,0);const sun=new Date(mon);sun.setDate(sun.getDate()+6);
+  const rows=T23_SHIFTS.filter(s=>new Date(s.date)>=mon&&new Date(s.date)<=sun).sort((a,b)=>new Date(a.date)-new Date(b.date)||a.start.localeCompare(b.start));
+  const mgr=App.isMgr(),f=P23S.form;
+  App.$("#p23-sh-body").innerHTML=`
+  <div class="note-box mb16">${p23ic("info")} Production shifts feed «On shift now» and the Peak-day capacity. In the new design this table moves to <button class="textbtn" onclick="App.go('team',{tab:'schedule'})">Team → Schedule</button> (one source of truth); until then both exist.</div>
+  <div class="row mb16" style="gap:8px"><button class="ib" onclick="P23S.week--;p23ShRender()" title="Previous week">${p23ic("back")}</button><div class="h3">${p23day(mon.toISOString())} – ${p23day(sun.toISOString())}</div><button class="ib" onclick="P23S.week++;p23ShRender()" title="Next week">${p23ic("chev")}</button>${P23S.week?`<button class="textbtn" onclick="P23S.week=0;p23ShRender()">this week</button>`:""}<span class="sp"></span><span class="p23-hint">${T23_SHIFTS.filter(p23onNow).length} on shift now</span></div>
+  ${mgr?`<!-- ids: PWDR-066 PWDR-069 PWDR-184 — add shift form (production.manage) -->
+  <div class="p23-form">
+    <div class="field"><label>Employee</label><select class="select" onchange="P23S.form.who=this.value;p23ShRender()"><option value="">Choose…</option>${App.data.staff.filter(s=>s.role!=="courier").map(s=>`<option value="${s.id}" ${f.who===s.id?"selected":""}>${p23esc(s.n)}</option>`).join("")}</select></div>
+    <div class="field"><label>Date</label><input class="input" type="date" value="${f.date}" onchange="P23S.form.date=this.value;P23S.err={};p23ShRender()">${P23S.err.date?`<span class="p23-err">${P23S.err.date}</span>`:""}</div>
+    <div class="field"><label>Start</label><input class="input" type="time" value="${f.start}" onchange="P23S.form.start=this.value"></div>
+    <div class="field"><label>End</label><input class="input" type="time" value="${f.end}" onchange="P23S.form.end=this.value;P23S.err={}">${P23S.err.end?`<span class="p23-err">${P23S.err.end}</span>`:""}</div>
+    <div class="field"><label>Role</label><select class="select" onchange="P23S.form.role=this.value"><option value="florist" ${f.role==="florist"?"selected":""}>Florist</option><option value="manager" ${f.role==="manager"?"selected":""}>Manager</option><option value="admin" ${f.role==="admin"?"selected":""}>Admin</option></select></div>
+    <div><button class="btn --block" ${f.who&&f.date?"":"disabled"} onclick="P23_shiftAdd()">${p23ic("plus")} Add shift</button></div>
+  </div>`:""}
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Employee</th><th>Date</th><th>Shift</th><th>Role</th>${mgr?`<th></th>`:""}</tr></thead><tbody>
+  ${rows.length?rows.map(s=>{const u=App.user(s.who);return `<tr class="r" ${s.who===App.me().id?'style="background:var(--silver)"':""}><td>${App.avatar(s.who,"--s")} ${p23esc(u?u.n:s.who)} ${p23onNow(s)?`<span class="pill --ready">On shift now</span>`:""}</td><td>${p23day(s.date)}</td><td class="tnum">${s.start}–${s.end}</td><td>${s.role?`<span class="tag">${s.role==="florist"?"Florist":s.role==="manager"?"Manager":"Admin"}</span>`:""}</td>${mgr?`<td style="text-align:right"><button class="textbtn --accent" onclick="P23_shiftRemove(${s.id})">Remove</button></td>`:""}</tr>`}).join(""):`<tr><td colspan="5"><div class="empty">${p23ic("team")}<div class="h3">No shifts scheduled</div><div class="sm">${mgr?"Add the first shift above.":"Ask a manager to add shifts for this week."}</div></div></td></tr>`}
+  </tbody></table></div>`;
+}
+function P23_shiftAdd(){const f=P23S.form;P23S.err={};if(!f.date){P23S.err.date="Pick a date";p23ShRender();return}if(p23hm(f.end)<=p23hm(f.start)){P23S.err.end="End must be after start";p23ShRender();return}T23_SHIFTS.push({id:Date.now(),who:f.who,date:new Date(f.date+"T00:00:00").toISOString(),start:f.start,end:f.end,role:f.role});f.who="";f.date="";App.toast("Shift added");p23ShRender()}
+/* ids: PWDR-067 — Remove: in the new design with an Undo toast instead of a silent delete */
+function P23_shiftRemove(id){const i=T23_SHIFTS.findIndex(s=>s.id===id);const [s]=T23_SHIFTS.splice(i,1);p23ShRender();App.toast("Shift removed","Undo",()=>{T23_SHIFTS.splice(i,0,s);p23ShRender()})}
+
+/* ===================== 23 · WORKSHOPS · INDEX ===================== */
+const P23W={filter:"upcoming",year:App.NOW.getFullYear()};
+window.mount_workshops=function(params){params=params||{};if(params.filter)P23W.filter=params.filter;P23_nav("workshops");p23WsRender()};
+function p23WsSeason(year){const ss=T23_WSESS.filter(s=>new Date(s.date).getFullYear()===year&&s.status!=="cancelled");const open=ss.filter(s=>s.kind==="open"),priv=ss.filter(s=>s.kind==="private");const seats=open.reduce((a,s)=>a+p23seatsSold(s),0),cap=open.reduce((a,s)=>a+s.places,0);const slots={};ss.forEach(s=>{const k=new Date(s.date).toLocaleDateString("en-GB",{weekday:"short"})+" "+s.start;slots[k]=slots[k]||{sessions:0,seats:0,cap:0,rev:0};slots[k].sessions++;slots[k].seats+=p23seatsSold(s);slots[k].cap+=s.places;slots[k].rev+=p23revenue(s)});return{open:{sessions:open.length,seats,cap,fill:cap?Math.round(seats/cap*100):0,revenue:open.reduce((a,s)=>a+p23revenue(s),0)},private:{n:priv.length,guests:priv.reduce((a,s)=>a+p23seatsSold(s),0),revenue:priv.reduce((a,s)=>a+p23revenue(s),0)},revenue:ss.reduce((a,s)=>a+p23revenue(s),0),bySlot:Object.entries(slots)}}
+function p23WsRender(){
+  const mgr=p23wsMgr();const up=P23W.filter==="upcoming";
+  const rows=T23_WSESS.filter(s=>up?p23daysTo(s.date)>=0:p23daysTo(s.date)<0).sort((a,b)=>up?new Date(a.date)-new Date(b.date):new Date(b.date)-new Date(a.date)).slice(0,200);
+  const rep=p23WsSeason(P23W.year);const chk=(on,lbl)=>`<span class="pc ${on?"on":""}">${on?p23ic("check"):""}${lbl}</span>`;
+  App.$("#p23-ws-head").innerHTML=`<div><div class="h3">Workshops</div><div class="p23-hint">Sessions, seats, revenue and prep · bookings come from floritta.uk</div></div>
+    <div class="seg-ctl"><button class="${up?"on":""}" onclick="P23W.filter='upcoming';p23WsRender()">Upcoming</button><button class="${up?"":"on"}" onclick="P23W.filter='past';p23WsRender()">Past</button></div>
+    <!-- ids: PWDR-072 — Materials: <type> links -->
+    <div class="chips">${T23_WTYPES.map(t=>`<button class="chip" onclick="App.go('workshops-type',{id:${t.id}})">${p23ic("box")} Materials: ${p23esc(t.name)}</button>`).join("")}</div>
+    <span class="sp"></span>
+    <!-- ids: PWDR-070 — + New session (workshops.manage) -->
+    ${mgr?`<button class="btn --sm" onclick="App.go('workshops-form',{})">${p23ic("plus")} New session</button>`:""}`;
+  App.$("#p23-ws-body").innerHTML=`
+  <!-- ids: PWDR-073 PWDR-074 PWDR-075 PWDR-076 PWDR-077 PWDR-078 PWDR-079 PWDR-080 PWDR-081 — sessions table -->
+  <div class="tbl-wrap mb16"><table class="tbl"><thead><tr><th>Date</th><th>Time</th><th>Kind</th><th>Seats</th><th class="num">Revenue</th><th>Prep</th><th>Host</th></tr></thead><tbody>
+  ${rows.length?rows.map(s=>{const t=p23wtype(s.typeId),lvl=p23wlevel(s),sold=p23seatsSold(s),held=p23seatsHeld(s);return `<tr class="r ${lvl?"--"+lvl:""}" onclick="App.go('workshops-session',{id:${s.id}})"><td><button class="link" onclick="event.stopPropagation();App.go('workshops-session',{id:${s.id}})">${p23day(s.date)}</button><span class="sub">${p23esc(t.name)}</span></td><td class="tnum">${s.start}–${p23endTime(s)}</td><td>${s.kind==="open"?"Open":"Private"}${s.status!=="scheduled"?` <span class="muted">(${s.status==="cancelled"?"Cancelled":"Completed"})</span>`:""}</td><td class="tnum">${sold} / ${s.places}${held?` <span class="muted xs">+${held} held</span>`:""}</td><td class="num">${App.fmt(p23revenue(s))}</td><td><div class="row" style="gap:6px"><span class="p23-chips">${chk(s.prep.ordered,"materials ordered")}${chk(s.prep.received,"materials received")}${chk(s.prep.benches,"benches ready")}</span>${lvl?`<span class="p23-lvl --${lvl}">${lvl==="red"?"urgent":"prep"}</span>`:""}</div></td><td>${s.host?App.avatar(s.host,"--s")+" "+p23esc(App.user(s.host).n):"–"}</td></tr>`}).join(""):`<tr><td colspan="7"><div class="empty">${p23ic("award")}<div class="h3">No sessions here yet</div>${mgr?`<button class="btn --ghost --sm" onclick="App.go('workshops-form',{})">New session</button>`:""}</div></td></tr>`}
+  </tbody></table></div>
+  <!-- ids: PWDR-082 PWDR-083 PWDR-084 PWDR-085 PWDR-086 PWDR-087 — season report with a year picker -->
+  <div class="sec-head"><div class="h2">Season ${P23W.year}</div><div class="seg-ctl">${[P23W.year-1,P23W.year,P23W.year+1].filter(y=>y<=App.NOW.getFullYear()).map(y=>`<button class="${y===P23W.year?"on":""}" onclick="P23W.year=${y};p23WsRender()">${y}</button>`).join("")}</div></div>
+  <div class="grid g4 mb16">
+    <div class="kpi-card" style="cursor:default"><span class="caps">Seats sold (open)</span><span class="kpi-s tnum">${rep.open.seats} / ${rep.open.cap}</span><span class="delta">${rep.open.sessions} session${rep.open.sessions===1?"":"s"}</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">Fill rate</span><span class="kpi-s tnum">${rep.open.fill}%</span><span class="delta">open sessions</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">Revenue</span><span class="kpi-s tnum">${App.fmt(rep.revenue)}</span><span class="delta">open sessions ${App.fmt(rep.open.revenue)}</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">Private sessions</span><span class="kpi-s tnum">${rep.private.n}</span><span class="delta">${rep.private.guests} guests · ${App.fmt(rep.private.revenue)}</span></div>
+  </div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>By weekday and time</th><th class="num">Sessions</th><th class="num">Seats</th><th>Fill rate</th><th class="num">Revenue</th></tr></thead><tbody>
+  ${rep.bySlot.length?rep.bySlot.map(([k,v])=>`<tr><td>${k}</td><td class="num">${v.sessions}</td><td class="num">${v.seats} / ${v.cap}</td><td><div class="row" style="gap:8px"><div class="progress" style="width:90px"><i style="width:${v.cap?Math.round(v.seats/v.cap*100):0}%"></i></div><span class="tnum xs">${v.cap?Math.round(v.seats/v.cap*100):0}%</span></div></td><td class="num">${App.fmt(v.rev)}</td></tr>`).join(""):`<tr><td colspan="5" class="muted">No sessions this season yet</td></tr>`}
+  </tbody></table></div>`;
+}
+function p23endTime(s){const m=p23hm(s.start)+s.len;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")}
+
+/* ===================== 23 · WORKSHOPS · FORM ===================== */
+const P23F={id:null,f:null,err:{}};
+window.mount_workshops_form=function(params){params=params||{};const s=params.id?p23wsess(params.id):null;P23F.id=s?s.id:null;P23F.err={};
+  P23F.f=s?{typeId:s.typeId,kind:s.kind,date:p23key(s.date),start:s.start,len:s.len,price:s.price,places:s.places,status:s.status,note:s.note}:{typeId:1,kind:"open",date:p23key(p23addDays(App.NOW.toISOString(),7)),start:"18:30",len:120,price:65,places:10,status:"scheduled",note:""};
+  if(params.reset===undefined&&!s)p23wfDefaults();p23WfRender()};
+/* ids: PWDR-088 — type / kind change applies the type defaults (length, places, price / flat) */
+function p23wfDefaults(){const f=P23F.f,t=p23wtype(f.typeId);f.len=t.len;f.places=t.places;f.price=f.kind==="private"?t.flat:t.price}
+function P23_wf(k,v,defaults){P23F.f[k]=v;if(defaults)p23wfDefaults();P23F.err={};p23WfRender()}
+function p23WfRender(){
+  const f=P23F.f,s=P23F.id?p23wsess(P23F.id):null,taken=s?p23seatsSold(s):0,edit=!!s,e=P23F.err;
+  App.$("#p23-wf-head").innerHTML=`<button class="ib" onclick="P23_wfCancel()">${p23ic("back")}</button><div><div class="h3">${edit?"Edit session":"New session"}</div><div class="p23-hint">${edit?p23esc(p23wtype(s.typeId).name)+" · "+p23day(s.date):"Dates and times are London time"}</div></div>`;
+  const err=k=>e[k]?`<span class="p23-err">${e[k]}</span>`:"";
+  App.$("#p23-wf-body").innerHTML=`<div class="p23-wform">
+    ${edit?`<div class="field"><label>Workshop type</label><div class="sm">${p23esc(p23wtype(f.typeId).name)} · ${f.kind==="open"?"Open":"Private"} <span class="muted xs">(cannot change after creation)</span></div></div><div></div>`:`
+    <div class="field"><label>Workshop type</label><select class="select" onchange="P23_wf('typeId',Number(this.value),true)">${T23_WTYPES.map(t=>`<option value="${t.id}" ${t.id===f.typeId?"selected":""}>${p23esc(t.name)}</option>`).join("")}</select></div>
+    <div class="field"><label>Kind</label><div class="seg-ctl"><button class="${f.kind==="open"?"on":""}" onclick="P23_wf('kind','open',true)">Open</button><button class="${f.kind==="private"?"on":""}" onclick="P23_wf('kind','private',true)">Private</button></div><span class="p23-hint">Changing type or kind re-applies the defaults: length, places, price.</span></div>`}
+    <div class="field"><label>Date</label><input class="input" type="date" value="${f.date}" onchange="P23_wf('date',this.value)">${err("date")}</div>
+    <div class="field"><label>Start time</label><input class="input" type="time" value="${f.start}" onchange="P23_wf('start',this.value)"><span class="p23-hint">London time</span></div>
+    <div class="field"><label>Length, minutes</label><input class="input tnum" type="number" min="15" max="720" value="${f.len}" onchange="P23_wf('len',Number(this.value))">${err("len")}</div>
+    <div class="field"><label>${f.kind==="private"?"Private session price (flat)":"Price per seat"}</label><input class="input tnum" type="number" min="0" step="1" value="${f.price}" onchange="P23_wf('price',Number(this.value))">${err("price")}</div>
+    <div class="field"><label>Places</label><input class="input tnum" type="number" min="${Math.max(1,taken)}" max="100" value="${f.places}" onchange="P23_wf('places',Number(this.value))">${taken?`<span class="p23-hint">${taken} seat${taken===1?"":"s"} already taken – cannot go lower</span>`:""}${err("places")}</div>
+    ${edit?`<div class="field"><label>Status</label><select class="select" onchange="P23_wf('status',this.value)"><option value="scheduled" ${f.status==="scheduled"?"selected":""}>Scheduled</option><option value="cancelled" ${f.status==="cancelled"?"selected":""}>Cancelled</option><option value="completed" ${f.status==="completed"?"selected":""}>Completed</option></select>${f.status==="cancelled"&&taken?`<span class="p23-err">${taken} seat${taken===1?" is":"s are"} booked – cancel or move those bookings too (cancelling the session does not cancel them or e-mail anyone)</span>`:""}${f.status==="cancelled"&&s.host?`<span class="p23-hint">The host's «Workshop ${s.start}–${p23endTime(s)}» stays in the Florists schedule – it is only removed when you move the time.</span>`:""}${f.status==="completed"?`<span class="p23-hint">«Completed» here does not write materials off – use «Complete &amp; write off stock» on the session card.</span>`:""}</div>`:"<div></div>"}
+    <div class="field full"><label>Note</label><textarea class="textarea" onchange="P23_wf('note',this.value)">${p23esc(f.note)}</textarea></div>
+    <div class="full btn-row"><button class="btn" onclick="P23_wfSave()">${p23ic("check")} Save</button><button class="btn --secondary" onclick="P23_wfCancel()">Cancel</button>${edit&&(p23key(s.date)!==f.date||s.start!==f.start)?`<span class="p23-hint">${p23ic("info")} Time changed: the host's schedule entry moves, T-7 / T-1 alerts and customer reminders will be sent again.</span>`:""}</div>
+  </div>`;
+}
+/* ids: PWDR-094 PWDR-095 PWDR-096 PWDR-097 — Save creates / updates (host schedule re-written on time change), Cancel goes back, errors under fields */
+function P23_wfSave(){const f=P23F.f,e={};if(!f.date)e.date="Pick a date";if(!(f.len>=15&&f.len<=720))e.len="15–720 minutes";if(!(f.price>=0))e.price="Enter a price";const s=P23F.id?p23wsess(P23F.id):null;const taken=s?p23seatsSold(s):0;if(!(f.places>=Math.max(1,taken)&&f.places<=100))e.places=taken?`At least ${taken} – seats already taken`:"1–100";if(Object.keys(e).length){P23F.err=e;p23WfRender();return}
+  const iso=new Date(f.date+"T"+f.start+":00").toISOString();
+  if(s){const moved=p23key(s.date)!==f.date||s.start!==f.start;Object.assign(s,{date:iso,start:f.start,len:f.len,price:f.price,places:f.places,status:f.status,note:f.note});App.toast("Session saved"+(moved?" · host schedule updated, reminders reset":""));App.go("workshops-session",{id:s.id})}
+  else{const id=Math.max(...T23_WSESS.map(x=>x.id))+1;T23_WSESS.push({id,typeId:f.typeId,kind:f.kind,date:iso,start:f.start,len:f.len,price:f.price,places:f.places,status:"scheduled",note:f.note,host:null,prep:{ordered:null,received:null,benches:null},stockWrittenOffAt:null,bookings:[],waitlist:[]});App.toast("Workshop session created");App.go("workshops-session",{id})}}
+function P23_wfCancel(){if(P23F.id)App.go("workshops-session",{id:P23F.id});else App.go("workshops")}
+
+/* ===================== 23 · WORKSHOPS · SESSION ===================== */
+const P23X={id:null,host:null};
+window.mount_workshops_session=function(params){params=params||{};P23X.id=params.id||P23X.id||T23_WSESS[0].id;P23X.host=null;p23WssRender()};
+function p23WssRender(){
+  const s=p23wsess(P23X.id);if(!s){App.go("workshops");return}const t=p23wtype(s.typeId),mgr=p23wsMgr(),lvl=p23wlevel(s),sold=p23seatsSold(s),left=s.places-sold-p23seatsHeld(s),days=p23daysTo(s.date);
+  App.$("#p23-wss-head").innerHTML=`<button class="btn --ghost --sm" onclick="App.go('workshops')">${p23ic("back")} Workshops</button><div style="min-width:0"><div class="h3">${p23esc(t.name)} · ${p23day(s.date)}</div><div class="p23-hint">${s.start}–${p23endTime(s)} · ${s.kind==="open"?"Open":"Private"}${s.status!=="scheduled"?` · <span class="${s.status==="cancelled"?"accent":"ok"}">${s.status==="cancelled"?"Cancelled":"Completed"}</span>`:""}</div></div><span class="sp"></span>${mgr?`<button class="btn --ghost --sm" onclick="App.go('workshops-form',{id:${s.id}})">${p23ic("edit")} Edit session</button>`:""}${mgr&&s.status==="scheduled"?`<button class="btn --sm" onclick="P23_addBooking()">${p23ic("plus")} Add booking</button>`:""}`;
+  const stRow=b=>{const m={paid:"--paid",held:"--partial",cancelled:"--cancelled",expired:"--queue"};return `<span class="pill ${m[b.status]}">${b.status==="paid"?"Paid":b.status==="held"?"Held":b.status==="cancelled"?"Cancelled":"Expired"}</span>${b.status==="held"&&b.holdUntil?` <span class="xs muted">held until ${App.fmtTime(b.holdUntil)}</span>`:""}${b.stripe&&b.status!=="expired"?` <button class="textbtn" onclick="event.stopPropagation();App.toast('Opens the payment in Stripe (new tab)')">Stripe ↗</button>`:""}`};
+  const order={paid:0,held:1,cancelled:2,expired:3};const bks=s.bookings.slice().sort((a,b)=>order[a.status]-order[b.status]);
+  const who=p=>p?`${p23esc(App.user(p.by)?.n||p.by)} · ${App.timeAgo(p.at)} ago`:"";
+  const prepRow=(k,lbl)=>`<div class="pr"><div class="t"><b>${lbl}</b><small>${s.prep[k]?who(s.prep[k]):"not yet"}</small></div>${mgr||App.role()==="florist"?`<span class="switch ${s.prep[k]?"on":""}" onclick="P23_prep('${k}')"></span>`:`<span class="${s.prep[k]?"ok":"muted"}">${s.prep[k]?"✓":"○"}</span>`}</div>`;
+  const pl=p23purchaseList(s);
+  App.$("#p23-wss-body").innerHTML=`
+  <!-- ids: PWDR-101 PWDR-102 PWDR-103 PWDR-104 PWDR-105 — KPIs + note -->
+  <div class="grid g4 mb16">
+    <div class="kpi-card" style="cursor:default"><span class="caps">Seats</span><span class="kpi-s tnum">${sold} / ${s.places}</span><span class="delta">Seats left: ${Math.max(0,left)}${p23seatsHeld(s)?` · ${p23seatsHeld(s)} held`:""}</span></div>
+    <div class="kpi-card" style="cursor:default"><span class="caps">Revenue</span><span class="kpi-s tnum">${App.fmt(p23revenue(s))}</span><span class="delta">${s.kind==="private"?App.fmt(s.price)+" flat":App.fmt(s.price)+" per seat"}</span></div>
+    <div class="kpi-card" style="cursor:default;${lvl?`border-color:var(--${lvl==="red"?"accent":"warn"});box-shadow:inset 0 0 0 1px var(--${lvl==="red"?"accent":"warn"})`:""}"><span class="caps">Days to go</span><span class="kpi-s tnum">${days<0?"–":days}</span><span class="delta">${lvl==="red"?"prep is urgent":lvl==="amber"?"prep behind":days<0?"in the past":"on track"}</span></div>
+    <div class="kpi-card" onclick="document.getElementById('p23-host')?.scrollIntoView({behavior:'smooth'})"><span class="caps">Host</span><span class="kpi-s">${s.host?p23esc(App.user(s.host).n):"–"}</span><span class="delta">${s.host?"in the Florists schedule":"not set"}</span></div>
+  </div>
+  ${s.note?`<div class="note-box mb16">${p23esc(s.note)}</div>`:""}
+  <div class="p23-two">
+   <div>
+    <!-- ids: PWDR-106 PWDR-107 PWDR-108 PWDR-109 PWDR-110 PWDR-111 PWDR-112 PWDR-118 PWDR-187 — bookings table (note and paid-at now shown) -->
+    <div class="sec-head"><div class="h3">Bookings</div><span class="p23-hint">Paid first, then held</span></div>
+    <div class="tbl-wrap mb16"><table class="tbl"><thead><tr><th>Booking</th><th>Customer</th><th class="num">Seats</th><th class="num">Paid</th><th>Status</th>${mgr?"<th></th>":""}</tr></thead><tbody>
+    ${bks.length?bks.map(b=>`<tr class="r" onclick="P23_bookingNote('${b.ref}')"><td><b class="tnum" style="font-weight:500">${b.ref}</b><span class="sub">${b.source==="website"?"website":"by hand"}${b.movedFrom?" · moved from "+p23esc(b.movedFrom):""}${b.note?" · "+p23ic("info")+" note":""}</span></td><td>${p23esc(b.name)}<span class="sub">${b.phone?`<a href="tel:${b.phone.replace(/\s/g,"")}" onclick="event.stopPropagation()" class="tnum">${b.phone}</a>`:""}${b.phone&&b.email?" · ":""}${b.email?`<a href="mailto:${b.email}" onclick="event.stopPropagation()">${b.email}</a>`:""}</span></td><td class="num">${b.seats}</td><td class="num">${App.fmt(b.amount)}${b.promo?`<span class="sub">${b.promo} −${App.fmt(b.discount)}</span>`:""}${b.refund?`<span class="sub accent">refunded ${App.fmt(b.refund)}</span>`:""}</td><td>${stRow(b)}</td>${mgr?`<td style="text-align:right;white-space:nowrap">${b.status==="paid"?`<button class="textbtn" onclick="event.stopPropagation();P23_moveBooking('${b.ref}')">Move</button> `:""}${b.status==="paid"||b.status==="held"?`<button class="textbtn --accent" onclick="event.stopPropagation();P23_cancelBooking('${b.ref}')">Cancel booking</button>`:""}</td>`:""}</tr>`).join(""):`<tr><td colspan="6"><div class="empty">${p23ic("customers")}<div class="h3">No bookings yet</div></div></td></tr>`}
+    </tbody></table></div>
+    <!-- ids: PWDR-113 — purchase list from BOM × seats sold vs stock -->
+    <div class="sec-head"><div class="h3">Purchase list</div><button class="textbtn" onclick="App.go('workshops-type',{id:${t.id}})">Materials per seat →</button></div>
+    <div class="tbl-wrap mb16"><table class="tbl"><thead><tr><th>Item</th><th class="num">Per seat</th><th class="num">Need</th><th class="num">On hand</th><th class="num">Available</th></tr></thead><tbody>
+    ${pl.length?pl.map(r=>`<tr class="${r.short?"--red":""}"><td><button class="link" onclick="App.go('stock',{open:${r.item.id}})">${p23esc(r.item.name)}</button>${r.short?`<span class="sub accent">short by ${r.short} ${r.item.unit}</span>`:""}</td><td class="num">${r.per}</td><td class="num">${r.need} ${r.item.unit}</td><td class="num">${r.item.qty}</td><td class="num ${r.short?"accent":""}">${r.available}</td></tr>`).join(""):`<tr><td colspan="5" class="muted">BOM not set – <button class="link" onclick="App.go('workshops-type',{id:${t.id}})">add the materials per seat</button></td></tr>`}
+    </tbody></table></div>
+    <!-- ids: PWDR-117 — waitlist -->
+    <div class="sec-head"><div class="h3">Waitlist</div><span class="p23-hint">from floritta.uk · e-mailed when seats free up</span></div>
+    ${s.waitlist.length?`<div class="list" style="border:1px solid var(--hair)">${s.waitlist.map(w=>`<div class="li" style="cursor:default"><div class="t"><b>${p23esc(w.name)} · seats: ${w.seats}</b><small>${p23esc(w.email)}${w.phone?" · "+w.phone:""}${w.told?" · told "+App.timeAgo(w.told)+" ago":""}</small></div>${w.told?`<span class="pill --ready">told</span>`:`<button class="btn --ghost --sm" onclick="App.toast('E-mail sent · seats available');T23_WSESS.find(x=>x.id===${s.id}).waitlist.find(x=>x.name==='${p23esc(w.name)}').told=App.NOW.toISOString();p23WssRender()">Tell them now</button>`}</div>`).join("")}</div>`:`<div class="muted sm">Nobody is waiting</div>`}
+   </div>
+   <div class="col" style="gap:16px">
+    <!-- ids: PWDR-114 — prep checklist (switches for everyone with workshops.view) -->
+    <div><div class="sec-head"><div class="h3">Prep checklist</div></div><div class="p23-prep ${lvl?"--"+lvl:""}">${prepRow("ordered","Materials ordered")}${prepRow("received","Materials received")}${prepRow("benches","Benches ready")}</div></div>
+    <!-- ids: PWDR-115 — host select writes «Workshop HH:MM–HH:MM» into the Florists schedule -->
+    <div id="p23-host"><div class="sec-head"><div class="h3">Host</div></div>${mgr?`<div class="field"><select class="select" onchange="P23X.host=this.value;p23WssRender();document.getElementById('p23-host').scrollIntoView()"><option value="">Not set</option>${App.data.staff.filter(x=>x.role==="florist").map(x=>`<option value="${x.id}" ${(P23X.host??s.host)===x.id?"selected":""}>${p23esc(x.n)}</option>`).join("")}</select><span class="p23-hint">Writes «Workshop ${s.start}–${p23endTime(s)}» into the florist's schedule for that day.</span><div><button class="btn --sm" ${P23X.host!==null&&P23X.host!==(s.host||"")?"":"disabled"} onclick="P23_hostSave()">Save</button></div></div>`:`<div class="sm">Host: ${s.host?p23esc(App.user(s.host).n):"not set"}</div>`}</div>
+    <!-- ids: PWDR-116 PWDR-189 — complete & write off (confirm); in the new design disabled before the session day -->
+    <div><div class="sec-head"><div class="h3">Stock</div></div>${s.stockWrittenOffAt?`<div class="note-box --ok">${p23ic("check")} Completed, stock written off ${p23day(s.stockWrittenOffAt)}</div>`:mgr?`<button class="btn --secondary --block" ${s.status==="cancelled"||days>0?"disabled":""} onclick="P23_complete()">${p23ic("box")} Complete &amp; write off stock</button><div class="p23-hint mt8">${s.status==="cancelled"?"Cancelled session – nothing to write off.":days>0?`Available from the session day (${p23day(s.date)}).`:`Writes BOM × ${sold} seats off the stock and marks the session completed.`}</div>`:`<div class="sm muted">Not written off yet</div>`}</div>
+   </div>
+  </div>`;
+}
+function p23purchaseList(s){const t=p23wtype(s.typeId),sold=p23seatsSold(s);return t.bom.map(([iid,per])=>{const item=App.data.inventory.find(i=>i.id===iid);const need=Math.ceil(per*sold);const others=T23_WSESS.filter(x=>x.id!==s.id&&x.status==="scheduled"&&p23daysTo(x.date)>=0&&p23wtype(x.typeId).bom.some(b=>b[0]===iid)).reduce((a,x)=>a+Math.ceil((p23wtype(x.typeId).bom.find(b=>b[0]===iid)[1])*p23seatsSold(x)),0);const available=item.qty-others;return{item,per,need,available,short:Math.max(0,need-available)}})}
+function P23_prep(k){const s=p23wsess(P23X.id);s.prep[k]=s.prep[k]?null:{by:App.me().id,at:App.NOW.toISOString()};p23WssRender()}
+function P23_hostSave(){const s=p23wsess(P23X.id);s.host=P23X.host||null;P23X.host=null;App.toast("Host saved – schedule updated");p23WssRender()}
+function P23_complete(){const s=p23wsess(P23X.id);const n=p23seatsSold(s);App.confirm("Complete the session?",`Write the materials for ${n} seat${n===1?"":"s"} off the stock and mark the session completed?`,"Complete & write off",()=>{if(s.stockWrittenOffAt){App.toast("Stock was already written off");return}s.stockWrittenOffAt=App.NOW.toISOString();s.status="completed";p23purchaseList(s).forEach(r=>{r.item.qty=Math.max(0,r.item.qty-r.need)});App.toast("Workshop completed, stock written off");p23WssRender()})}
+function P23_bookingNote(ref){const s=p23wsess(P23X.id),b=s.bookings.find(x=>x.ref===ref);App.sheet({eyebrow:"Booking "+b.ref,title:p23esc(b.name),narrow:true,body:`<dl class="kv"><dt>Source</dt><dd>${b.source==="website"?"Website":"By hand"}</dd><dt>Seats</dt><dd>${b.seats}</dd><dt>Paid</dt><dd>${App.fmt(b.amount)}${b.paidAt?" · "+p23day(b.paidAt):""}</dd><dt>Status</dt><dd>${b.status}</dd>${b.refund?`<dt>Refund</dt><dd class="accent">${App.fmt(b.refund)} · recorded, made by hand in Stripe</dd>`:""}<dt>Note</dt><dd>${b.note?p23esc(b.note).replace(/\n/g,"<br>"):"<span class='muted'>–</span>"}</dd></dl>`})}
+/* ids: PWDR-100 PWDR-188 — manual booking: confirmed + paid at once, no e-mail, no Stripe; amount = price × seats for open, flat for private (fix) */
+function P23_addBooking(){const s=p23wsess(P23X.id);const left=s.places-p23seatsSold(s)-p23seatsHeld(s);const amt=n=>s.kind==="private"?s.price:s.price*n;
+  App.modal({title:"Add booking",body:`<div class="grid g2"><div class="field"><label>Name *</label><input class="input" id="ab-name" placeholder="Full name"></div><div class="field"><label>Phone</label><input class="input" id="ab-phone" placeholder="+44 7700 900…"></div><div class="field"><label>E-mail</label><input class="input" id="ab-email"></div><div class="field"><label>Seats</label><input class="input tnum" id="ab-seats" type="number" min="1" max="50" value="1" oninput="document.getElementById('ab-amt').value=(${s.kind==="private"?s.price:s.price}*(${s.kind==="private"?1:"Number(this.value)||1"}))"></div><div class="field"><label>Amount paid</label><input class="input tnum" id="ab-amt" type="number" value="${amt(1)}"><span class="p23-hint">${s.kind==="private"?"Flat price for the whole session":"price × seats"}</span></div><div class="field"><label>Note</label><input class="input" id="ab-note" placeholder="e.g. booked on WhatsApp, paid by bank transfer"></div></div><div class="note-box mt16">Manual bookings are confirmed and marked paid right away – no e-mail, no Stripe. Seats left: ${left}.</div><div class="p23-err mt8" id="ab-err"></div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="P23_addBookingGo(${left})">Add booking</button>`,onMount:b=>setTimeout(()=>b.querySelector("#ab-name").focus(),60)})}
+function P23_addBookingGo(left){const g=id=>document.getElementById(id).value;const s=p23wsess(P23X.id);const seats=Number(g("ab-seats"))||1;if(!g("ab-name").trim()){document.getElementById("ab-err").textContent="Name is required";return}if(s.status!=="scheduled"){document.getElementById("ab-err").textContent="This session is not open for bookings";return}if(seats>left){document.getElementById("ab-err").textContent=`Only ${left} seat${left===1?"":"s"} left`;return}const ref="WS-"+(2060+s.bookings.length+Math.floor(Math.random()*9));s.bookings.push({ref,source:"manual",name:g("ab-name").trim(),phone:g("ab-phone"),email:g("ab-email"),seats,amount:Number(g("ab-amt"))||0,status:"paid",promo:"",discount:0,refund:0,stripe:false,movedFrom:"",note:g("ab-note"),paidAt:App.NOW.toISOString()});App.closeModal();App.toast("Booking "+ref+" added");p23WssRender()}
+/* ids: PWDR-111 — move a paid booking to another scheduled session with enough seats; waitlist e-mailed; empty private session auto-cancelled */
+function P23_moveBooking(ref){const s=p23wsess(P23X.id),b=s.bookings.find(x=>x.ref===ref);const targets=T23_WSESS.filter(x=>x.id!==s.id&&x.status==="scheduled"&&p23daysTo(x.date)>=0&&x.places-p23seatsSold(x)-p23seatsHeld(x)>=b.seats);
+  App.modal({title:"Move booking "+ref,body:targets.length?`<div class="field"><label>Move to</label><select class="select" id="mv-to">${targets.map(x=>`<option value="${x.id}">${p23esc(p23wtype(x.typeId).name)} · ${p23day(x.date)} ${x.start} – Seats left: ${x.places-p23seatsSold(x)-p23seatsHeld(x)}</option>`).join("")}</select></div><div class="note-box mt16">Freed seats are offered to the waitlist by e-mail. An empty private session is cancelled automatically.</div>`:`<div class="empty">${p23ic("calendar")}<div class="sm">No upcoming session has ${b.seats} free seat${b.seats===1?"":"s"}</div></div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button>${targets.length?`<button class="btn --sm" onclick="P23_moveGo('${ref}',Number(document.getElementById('mv-to').value))">Move</button>`:""}`})}
+function P23_moveGo(ref,to){const s=p23wsess(P23X.id),t=p23wsess(to);const i=s.bookings.findIndex(x=>x.ref===ref);const [b]=s.bookings.splice(i,1);b.movedFrom=p23day(s.date);t.bookings.push(b);App.closeModal();if(s.waitlist.length)App.toast("Waitlist e-mailed · seats available");if(s.kind==="private"&&!p23seatsSold(s))s.status="cancelled";App.go("workshops-session",{id:to});App.toast("Booking "+ref+" moved")}
+/* ids: PWDR-112 PWDR-190 — cancel booking: refund policy, refund recorded only (made by hand in Stripe), note, waitlist e-mails */
+function P23_cancelBooking(ref){const s=p23wsess(P23X.id),b=s.bookings.find(x=>x.ref===ref);const d=p23daysTo(s.date);const full=d>=7;const def=full?b.amount:0;
+  App.modal({title:"Cancel booking "+ref,body:`<div class="note-box ${full?"--ok":"--warn"} mb16">${full?"7+ days before the session – full refund.":"Less than 7 days before – offer to move to another session; refund at your discretion."}</div><div class="grid g2"><div class="field"><label>Refund</label><input class="input tnum" id="cb-ref" type="number" min="0" max="${b.amount}" value="${def}"><span class="p23-hint">Make the refund in Stripe by hand – this only records it (max ${App.fmt(b.amount)}).</span></div><div class="field"><label>Note</label><input class="input" id="cb-note" placeholder="Why"></div></div>${b.stripe?`<div class="mt8"><button class="textbtn" onclick="App.toast('Opens the payment in Stripe (new tab)')">Open the payment in Stripe ↗</button></div>`:""}`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Keep booking</button><button class="btn --accent --sm" onclick="P23_cancelGo('${ref}')">Cancel booking</button>`})}
+function P23_cancelGo(ref){const s=p23wsess(P23X.id),b=s.bookings.find(x=>x.ref===ref);if(b.status!=="paid"&&b.status!=="held"){App.closeModal();App.toast("This booking is not active");return}b.refund=Math.min(b.amount,Number(document.getElementById("cb-ref").value)||0);const n=document.getElementById("cb-note").value;b.note=(b.note?b.note+"\n":"")+"Cancelled "+p23day(App.NOW.toISOString())+(n?" – "+n:"");b.status="cancelled";if(b.promo)App.toast("Promo code use returned");App.closeModal();if(s.waitlist.length)App.push("Waitlist e-mailed",p23esc(p23wtype(s.typeId).name)+" · "+b.seats+" seat(s) free",{icon:"mail"});if(s.kind==="private"&&!p23seatsSold(s))s.status="cancelled";App.toast("Booking "+ref+" cancelled");p23WssRender()}
+
+/* ===================== 23 · WORKSHOPS · TYPE ===================== */
+const P23T={id:1,f:null,q:"",err:null};
+window.mount_workshops_type=function(params){params=params||{};const t=p23wtype(params.id||P23T.id);P23T.id=t.id;P23T.f={name:t.name,price:t.price,flat:t.flat,places:t.places,len:t.len,active:t.active,bom:t.bom.map(b=>b.slice())};P23T.q="";P23T.err=null;p23WtRender()};
+function p23WtRender(){
+  const t=p23wtype(P23T.id),f=P23T.f,mgr=p23wsMgr();const dis=mgr?"":"disabled";
+  App.$("#p23-wt-head").innerHTML=`<button class="btn --ghost --sm" onclick="App.go('workshops')">${p23ic("back")} Workshops</button><div><div class="h3">${p23esc(t.name)}</div><div class="p23-hint">Defaults for new sessions and the materials one seat uses${mgr?"":" · read-only for your role"}</div></div>`;
+  const q=P23T.q.trim().toLowerCase();const hits=q.length>=2?App.data.inventory.filter(i=>i.name.toLowerCase().includes(q)&&!f.bom.some(b=>b[0]===i.id)).slice(0,8):[];
+  const lineErr=f.bom.map(b=>b[1]>0?"":"Quantity per seat must be above 0");
+  App.$("#p23-wt-body").innerHTML=`<fieldset ${dis} style="border:0;padding:0;margin:0;min-width:0">
+  <div class="sec-head"><div class="h3">Defaults</div></div>
+  <div class="p23-wform mb16">
+    <div class="field"><label>Name</label><input class="input" value="${p23esc(f.name)}" onchange="P23T.f.name=this.value"></div>
+    <div class="field"><label>Places</label><input class="input tnum" type="number" min="1" max="100" value="${f.places}" onchange="P23T.f.places=Number(this.value)"></div>
+    <div class="field"><label>Price per seat</label><input class="input tnum" type="number" value="${f.price}" onchange="P23T.f.price=Number(this.value)"></div>
+    <div class="field"><label>Private session price (flat)</label><input class="input tnum" type="number" value="${f.flat}" onchange="P23T.f.flat=Number(this.value)"></div>
+    <div class="field"><label>Length, minutes</label><input class="input tnum" type="number" min="15" max="720" value="${f.len}" onchange="P23T.f.len=Number(this.value)"></div>
+    <div class="field"><label>Private sessions bookable online</label><div class="row"><span class="switch ${f.active?"on":""}" onclick="${mgr?"P23T.f.active=!P23T.f.active;p23WtRender()":""}"></span><span class="sm">${f.active?"Shown on floritta.uk":"Hidden from the site"}</span></div></div>
+  </div>
+  <!-- ids: PWDR-122 PWDR-123 PWDR-124 — BOM lines, Add material search, Save rewrites the BOM -->
+  <div class="sec-head"><div class="h3">Materials per seat</div><span class="p23-hint">What ONE seat uses – the purchase list and the write-off multiply it by seats sold</span></div>
+  <div class="tbl-wrap p23-bom mb16"><table class="tbl"><thead><tr><th>Material</th><th class="num">Per seat</th><th>Unit</th>${mgr?"<th></th>":""}</tr></thead><tbody>
+  ${f.bom.length?f.bom.map((b,i)=>{const it=App.data.inventory.find(x=>x.id===b[0]);return `<tr><td>${p23esc(it.name)}${lineErr[i]?`<span class="sub accent">${lineErr[i]}</span>`:""}</td><td class="num"><input class="input tnum" type="number" step="0.001" min="0" value="${b[1]}" ${dis} onchange="P23T.f.bom[${i}][1]=Number(this.value);p23WtRender()"></td><td class="muted">${it.unit} / seat</td>${mgr?`<td style="text-align:right"><button class="ib" title="Remove" onclick="P23T.f.bom.splice(${i},1);p23WtRender()">${p23ic("close")}</button></td>`:""}</tr>`}).join(""):`<tr><td colspan="4" class="muted">BOM not set – add the materials per seat</td></tr>`}
+  </tbody></table></div>
+  ${mgr?`<div class="p23-dd" style="max-width:420px"><div class="field"><label>Add material</label><input class="input" placeholder="Type 2+ letters of a stock item…" value="${p23esc(P23T.q)}" oninput="P23T.q=this.value;p23WtRender();this.focus();this.setSelectionRange(99,99)"></div>${hits.length?`<div class="dd">${hits.map(i=>`<button onclick="P23T.f.bom.push([${i.id},1]);P23T.q='';p23WtRender()"><span>${p23esc(i.name)}</span><small>${i.unit} · ${i.qty} on hand</small></button>`).join("")}</div>`:q.length>=2?`<div class="dd"><button disabled><span class="muted">Nothing matches</span></button></div>`:""}</div>`:""}
+  </fieldset>
+  ${P23T.err?`<div class="p23-err mt16">${P23T.err}</div>`:""}
+  ${mgr?`<div class="btn-row mt24"><button class="btn" onclick="P23_wtSave()">${p23ic("check")} Save</button><span class="p23-hint">Rewrites the materials list – changes the purchase list and future write-offs of every session of this type.</span></div>`:""}`;
+}
+function P23_wtSave(){const f=P23T.f;if(f.bom.some(b=>!(b[1]>0))){P23T.err="Fix the quantities per seat first (must be above 0).";p23WtRender();return}if(!f.name.trim()){P23T.err="Name is required";p23WtRender();return}const t=p23wtype(P23T.id);Object.assign(t,{name:f.name,price:f.price,flat:f.flat,places:f.places,len:f.len,active:f.active,bom:f.bom.map(b=>b.slice())});P23T.err=null;App.toast("Workshop type saved");p23WtRender()}
+</script>
