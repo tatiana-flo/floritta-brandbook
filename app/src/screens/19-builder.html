@@ -1,0 +1,26 @@
+<section class="scr" id="s-builder" data-nav="Build a bouquet" data-group="Extras">
+  <div class="appbar">
+    <button class="ib" onclick="App.back()" aria-label="Back">${back}</button>
+    <div class="ttl">Build your own</div>
+    <button class="ib" onclick="App.go('flora',{from:'builder'})" aria-label="Ask Flora">${sparkle}</button>
+  </div>
+  <div class="scr-body has-cta">
+    <div class="preview">
+      <img class="bg" src="img/hero-white.webp" alt="">
+      <div class="veil"></div>
+      <div class="collage" id="bd-collage"></div>
+      <div class="live"><div class="lp" id="bd-price">£64</div><div class="ls" id="bd-hint">Medium bouquet · 14 stems</div></div>
+    </div>
+    <div class="pad mt12 flex ai-c jc-sb g12"><span class="xs muted">Hand-tied by our florist · £10 included</span><button class="btn --ghost --xs" onclick="App.go('flora',{from:'builder'})">${sparkle} Let Flora suggest</button></div>
+    <div class="pad mt16"><div class="seg" id="bd-seg"></div></div>
+    <div id="bd-stems" class="mt8"></div>
+    <div id="bd-wrap-sec">
+      <div class="sec-head" style="margin-top:28px"><div class="h2">Wrap</div></div>
+      <div class="wraps" id="bd-wraps"></div>
+    </div>
+    <div class="sizehint mt24"><span id="bd-size">Medium bouquet · 14 stems</span><button class="textbtn" onclick="Extras.bdReset()">Start again</button></div>
+    <div class="pad mt16 flex g8"><button class="btn --ghost --block" onclick="App.toast('Design saved to <b>Your designs</b>',{action:{label:'View',onclick:&quot;App.go('saved')&quot;}})">Save design</button></div>
+    <p class="xs muted pad mt12" style="margin-bottom:0">Hand-tied in Bermondsey · Photo before delivery · Same-day until 10 pm</p>
+  </div>
+  <div class="cta-bar"><button class="btn" onclick="Extras.bdAdd()">Add to bag <span class="btn-price" id="bd-cta-price">£64</span></button></div>
+</section>

@@ -1,0 +1,27 @@
+<section class="scr cmz" id="s-compose" data-nav="Post a bouquet" data-group="Social">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('community')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="ttl caps">Share your bouquet at home</div>
+    <span class="ib"></span>
+  </div>
+  <div class="scr-body has-cta">
+    <div class="pad" style="padding-top:4px;padding-bottom:16px"><div class="h2">On my table</div><p class="soft sm" style="margin:6px 0 0">One photo, a few honest words. Your area only, never your address.</p></div>
+    <div class="drop" id="cp-drop">
+      <div id="cp-ph"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Tap to add a photo<br><span class="xs">JPG or HEIC · square works best</span></div>
+      <input type="file" accept="image/*" id="cp-file" onchange="Comm.file(this)">
+    </div>
+    <div class="samples" id="cp-samples"><span class="lb">Use a sample photo</span></div>
+    <div class="lab">Caption <span id="cp-cnt">0 / 220</span></div>
+    <div class="pad"><textarea class="input" id="cp-cap" maxlength="220" placeholder="Day 3 and still going. Moved them off the windowsill…" oninput="Comm.count(this)"></textarea></div>
+    <div class="lab">Which bouquet is it? <span class="muted">optional</span></div>
+    <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="cp-q" placeholder="Search Floritta bouquets" oninput="Comm.prodChips(this.value)"></div>
+    <div class="chips" id="cp-prods"></div>
+    <div class="lab">Which day?</div>
+    <div class="chips" id="cp-days"></div>
+    <div class="lab">Hashtags</div>
+    <div class="chips" id="cp-tags"></div>
+    <div class="sw"><div><div>Share location (area only)</div><div class="d" id="cp-area">Bermondsey · SE1</div></div><button class="switch on" id="cp-loc" onclick="this.classList.toggle('on');App.haptic()" aria-label="Share area"></button></div>
+    <p class="muted xs pad" style="margin:14px 0 0">Posts are public to Floritta members. We may feature yours in the shop – we'll always ask first.</p>
+  </div>
+  <div class="cta-bar"><button class="btn" onclick="Comm.post()">Post · +20 Petals</button></div>
+</section>

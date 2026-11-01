@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#fdfdfd">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Floritta Staff — mockup</title>
+<title>Floritta Team — prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
@@ -448,10 +448,7 @@ html[data-style="glass"] .push{border-radius:22px}html[data-style="glass"] .push
       <div class="statusbar"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" fill="#1e1a17"/><rect x="5" y="5" width="3" height="7" fill="#1e1a17"/><rect x="10" y="2" width="3" height="10" fill="#1e1a17"/><rect x="15" y="0" width="3" height="12" fill="#1e1a17"/></svg><svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#1e1a17"/><rect x="2" y="2" width="17" height="8" rx="1.5" fill="#1e1a17"/><rect x="23.5" y="3.5" width="2" height="5" rx="1" fill="#1e1a17"/></svg></span></div>
       <div class="app" id="app">
         <div class="screens" id="screens">
-<!-- 01-today.html -->
-<!-- 01-today.html : splash · home (Today) · inbox · announcement -->
-
-<!-- ============ SPLASH ============ -->
+<!-- 01-splash.html -->
 <section class="scr" id="s-splash" data-nav="Splash · Sign in" data-group="Start">
   <div class="sp-hero">
     <img class="ph" src="img/hero-white.webp" alt="">
@@ -467,8 +464,7 @@ html[data-style="glass"] .push{border-radius:22px}html[data-style="glass"] .push
     <div class="tc xs muted mt16">80 Willow Walk, Bermondsey SE1 · Staff app 3.0</div>
   </div>
 </section>
-
-<!-- ============ HOME / TODAY ============ -->
+<!-- 02-home.html -->
 <section class="scr" id="s-home" data-tab="home" data-nav="Today" data-group="Today">
   <div class="appbar">
     <div class="ttl"><img src="logo.svg" alt="Floritta" style="height:13px;width:auto"></div>
@@ -477,8 +473,7 @@ html[data-style="glass"] .push{border-radius:22px}html[data-style="glass"] .push
   </div>
   <div class="scr-body has-tab" id="td-body"></div>
 </section>
-
-<!-- ============ INBOX ============ -->
+<!-- 03-inbox.html -->
 <section class="scr" id="s-inbox" data-nav="Inbox" data-group="Today">
   <div class="appbar">
     <button class="ib" aria-label="Back" id="in-back"></button>
@@ -487,8 +482,7 @@ html[data-style="glass"] .push{border-radius:22px}html[data-style="glass"] .push
   </div>
   <div class="scr-body" id="in-body"></div>
 </section>
-
-<!-- ============ ANNOUNCEMENT ============ -->
+<!-- 04-announcement.html -->
 <section class="scr" id="s-announcement" data-nav="Announcement" data-group="Today">
   <div class="appbar">
     <button class="ib" aria-label="Back" id="an-back"></button>
@@ -498,7 +492,7 @@ html[data-style="glass"] .push{border-radius:22px}html[data-style="glass"] .push
   <div class="scr-body" id="an-body"></div>
   <div class="cta-bar" id="an-cta" style="display:none"></div>
 </section>
-
+<!-- 05-tasks.html -->
 <style>
 /* ---------- splash ---------- */
 #s-splash{background:var(--paper)}
@@ -622,17 +616,12 @@ html[data-style="glass"] #s-announcement .td-ackbox.ok{background:rgba(238,240,2
 #sheet .td-who{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair)}
 #sheet .td-who .st{margin-left:auto;font-size:12px;color:var(--grey)}
 </style>
-<!-- 02-tasks.html -->
-<!-- 02-tasks.html : tasks (Mine | Board | Pool), task (detail), task-new, team, templates -->
-
-<!-- ================= TASKS ================= -->
 <section class="scr" id="s-tasks" data-tab="tasks" data-nav="Tasks" data-group="Tasks">
   <div class="appbar"><div class="ttl">Tasks</div><div class="flex g8" id="tk-act"></div></div>
   <div class="scr-body has-tab" id="tk-tbody"><div id="tk-tin"></div></div>
   <button class="fab" onclick="App.go('task-new')" aria-label="New task"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
 </section>
-
-<!-- ================= TASK DETAIL ================= -->
+<!-- 06-task.html -->
 <section class="scr" id="s-task" data-nav="Task detail" data-group="Tasks">
   <div class="appbar">
     <button class="ib" onclick="App.back('tasks')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -642,8 +631,7 @@ html[data-style="glass"] #s-announcement .td-ackbox.ok{background:rgba(238,240,2
   <div class="scr-body has-cta" id="tk-body"><div id="tk-in"></div></div>
   <div class="cta-bar" id="tk-cta"></div>
 </section>
-
-<!-- ================= NEW TASK ================= -->
+<!-- 07-task-new.html -->
 <section class="scr" id="s-task-new" data-nav="New task" data-group="Tasks">
   <div class="appbar">
     <button class="ib" onclick="App.back('tasks')" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -652,8 +640,7 @@ html[data-style="glass"] #s-announcement .td-ackbox.ok{background:rgba(238,240,2
   <div class="scr-body has-cta" id="tkn-body"><div id="tkn-in"></div></div>
   <div class="cta-bar"><button class="btn" id="tkn-go" onclick="TSK.create()">Create task</button></div>
 </section>
-
-<!-- ================= TEAM ================= -->
+<!-- 08-team.html -->
 <section class="scr" id="s-team" data-tab="tasks" data-nav="Team load" data-group="Tasks">
   <div class="appbar">
     <button class="ib" onclick="TSK.teamBack()" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -661,8 +648,7 @@ html[data-style="glass"] #s-announcement .td-ackbox.ok{background:rgba(238,240,2
   </div>
   <div class="scr-body has-tab" id="tm-body"><div id="tm-in"></div></div>
 </section>
-
-<!-- ================= TEMPLATES ================= -->
+<!-- 09-templates.html -->
 <section class="scr" id="s-templates" data-tab="tasks" data-nav="Templates" data-group="Tasks">
   <div class="appbar">
     <button class="ib" onclick="App.back('tasks')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -671,7 +657,7 @@ html[data-style="glass"] #s-announcement .td-ackbox.ok{background:rgba(238,240,2
   </div>
   <div class="scr-body has-tab" id="tp-body"><div id="tp-in"></div></div>
 </section>
-
+<!-- 10-work.html -->
 <style>
 /* ---------- shared (unique tk- prefix, also used inside sheets) ---------- */
 .tk-sh{display:flex;align-items:baseline;gap:10px;margin:28px 16px 12px}
@@ -828,7 +814,6 @@ html[data-style="glass"] .app:has(#s-task.on) .toast,html[data-style="glass"] .a
 #s-templates .acc ol{margin:0;padding-left:20px}
 #s-templates .acc li{margin:0 0 6px}
 </style>
-<!-- 03-work.html -->
 <style>
 /* ===== 03-work · prefix wk- ; overrides of shell classes are always scoped by #s-<id> ===== */
 #s-work .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b))}
@@ -957,32 +942,30 @@ html[data-style="glass"] #s-work .scr-body.wk-hascta{padding-bottom:calc(var(--t
 .wk-shutter:active i{transform:scale(.82)}
 .wk-shutter[disabled]{opacity:.3;pointer-events:none}
 </style>
-
 <section class="scr" id="s-work" data-tab="work" data-nav="Work" data-group="Work">
   <div class="appbar" id="wk-bar"></div>
   <div class="scr-body has-tab" id="wk-body"></div>
   <div class="cta-bar" id="wk-cta" style="display:none"></div>
 </section>
-
+<!-- 11-order.html -->
 <section class="scr" id="s-order" data-nav="Order" data-group="Work">
   <div class="appbar" id="od-bar"></div>
   <div class="scr-body" id="od-body"></div>
   <div class="cta-bar" id="od-cta" style="display:none"></div>
 </section>
-
+<!-- 12-route.html -->
 <section class="scr" id="s-route" data-nav="Route" data-group="Work">
   <div class="appbar" id="rt-bar"></div>
   <div class="scr-body" id="rt-body"></div>
   <div class="cta-bar" id="rt-cta" style="display:none"></div>
 </section>
-
+<!-- 13-stop.html -->
 <section class="scr" id="s-stop" data-nav="Stop" data-group="Work">
   <div class="appbar" id="sp-bar"></div>
   <div class="scr-body" id="sp-body"></div>
   <div class="cta-bar" id="sp-cta" style="display:none"></div>
 </section>
-<!-- 04-learn.html -->
-<!-- ======== 04-learn.html · Learning module: learn, path, lesson, quiz, review, certificates, mentor, glossary ======== -->
+<!-- 14-learn.html -->
 <style>
 /* shared (scoped by .lr, own classes prefixed lr-) */
 .lr .lr-seg{flex:1;display:flex;gap:4px;align-items:center;height:40px}
@@ -1119,22 +1102,18 @@ html[data-style="glass"] .lr .lr-gl,html[data-style="glass"] .lr .lr-mx{backgrou
 html[data-style="glass"] .lr .lr-bud,html[data-style="glass"] .lr .lr-cp{background:rgba(255,255,255,.5);border:1px solid var(--glass-bd);box-shadow:var(--glass-hi)}
 html[data-style="glass"] .lr .lr-seg i{border-radius:999px}
 </style>
-
-<!-- ============ LEARN (home of the Learning tab) ============ -->
 <section class="scr lr" id="s-learn" data-tab="learn" data-nav="Learn" data-group="Learning">
   <div class="appbar"><div class="ttl">Learn</div>
     <button class="ib" aria-label="Certificates" onclick="App.go('certificates')"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="m8.5 13.5-1.5 7 5-2.5 5 2.5-1.5-7"/></svg></button>
   </div>
   <div class="scr-body has-tab" id="lr-home"></div>
 </section>
-
-<!-- ============ PATH ============ -->
+<!-- 15-path.html -->
 <section class="scr lr" id="s-path" data-tab="learn" data-nav="Learning path" data-group="Learning">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="pt-ttl">Path</div></div>
   <div class="scr-body has-tab" id="lr-path"></div>
 </section>
-
-<!-- ============ LESSON PLAYER ============ -->
+<!-- 16-lesson.html -->
 <section class="scr lr" id="s-lesson" data-nav="Lesson player" data-group="Learning">
   <div class="appbar">
     <button class="ib" aria-label="Close" onclick="LR.leave()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -1144,8 +1123,7 @@ html[data-style="glass"] .lr .lr-seg i{border-radius:999px}
   <div class="scr-body has-cta" id="ls-body"></div>
   <div class="cta-bar" id="ls-cta"></div>
 </section>
-
-<!-- ============ QUIZ ============ -->
+<!-- 17-quiz.html -->
 <section class="scr lr" id="s-quiz" data-nav="Quiz" data-group="Learning">
   <div class="appbar">
     <button class="ib" aria-label="Close" onclick="LR.qleave()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -1155,8 +1133,7 @@ html[data-style="glass"] .lr .lr-seg i{border-radius:999px}
   <div class="scr-body has-cta" id="qz-body"></div>
   <div class="cta-bar" id="qz-cta"></div>
 </section>
-
-<!-- ============ REVIEW (spaced repetition flashcards) ============ -->
+<!-- 18-review.html -->
 <section class="scr lr" id="s-review" data-nav="Review cards" data-group="Learning">
   <div class="appbar">
     <button class="ib" aria-label="Close" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -1166,65 +1143,451 @@ html[data-style="glass"] .lr .lr-seg i{border-radius:999px}
   <div class="scr-body has-cta" id="rv-body"></div>
   <div class="cta-bar" id="rv-cta"></div>
 </section>
-
-<!-- ============ CERTIFICATES & CLEARANCES ============ -->
+<!-- 19-certificates.html -->
 <section class="scr lr" id="s-certificates" data-tab="learn" data-nav="Certificates" data-group="Learning">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Certificates</div></div>
   <div class="scr-body has-tab" id="lr-certs"></div>
 </section>
-
-<!-- ============ BUDDY / MENTOR ============ -->
+<!-- 20-mentor.html -->
 <section class="scr lr" id="s-mentor" data-nav="Buddy" data-group="Learning">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Buddy</div></div>
   <div class="scr-body" id="mn-body"></div>
   <div class="cta-bar" id="mn-cta" style="display:none"></div>
 </section>
-
-<!-- ============ GLOSSARY (Азбука) ============ -->
+<!-- 21-glossary.html -->
 <section class="scr lr" id="s-glossary" data-nav="Азбука" data-group="Learning">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Азбука</div><div class="lr-cnt" id="gl-cnt"></div></div>
   <div class="scr-body" id="gl-body"></div>
   <div class="cta-bar" id="gl-cta" style="display:none"></div>
 </section>
-<!-- 05-me.html -->
-<!-- ===== 05-me.html : me · schedule · timeclock · bonus · leave · settings · help ===== -->
-
+<!-- 22-me.html -->
 <section class="scr me5" id="s-me" data-tab="me" data-nav="Me" data-group="Me">
   <div class="appbar"><div class="ttl">Me</div><button class="ib" aria-label="Inbox" onclick="App.go('inbox')"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><span class="dot" data-unread data-n="0"></span></button></div>
   <div class="scr-body has-tab" id="me-body"></div>
 </section>
-
+<!-- 23-schedule.html -->
 <section class="scr me5" id="s-schedule" data-nav="Schedule" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Schedule</div></div>
   <div class="scr-body" id="sch-body" style="padding-bottom:32px"></div>
 </section>
-
+<!-- 24-timeclock.html -->
 <section class="scr me5" id="s-timeclock" data-nav="Time sheet" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Time sheet</div></div>
   <div class="scr-body has-cta" id="tc-body"></div>
   <div class="cta-bar" id="tc-cta"></div>
 </section>
-
+<!-- 25-bonus.html -->
 <section class="scr me5" id="s-bonus" data-nav="Bonus &amp; progress" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="bn-ttl">Bonus &amp; progress</div></div>
   <div class="scr-body" id="bn-body" style="padding-bottom:32px"></div>
 </section>
-
+<!-- 26-leave.html -->
 <section class="scr me5" id="s-leave" data-nav="Leave request" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Leave request</div></div>
   <div class="scr-body has-cta" id="lv-body"></div>
   <div class="cta-bar"><button class="btn --block" id="lv-send" onclick="ME5.leaveSend()">Send request</button></div>
 </section>
-
+<!-- 27-settings.html -->
 <section class="scr me5" id="s-settings" data-nav="Settings" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Settings</div></div>
   <div class="scr-body" id="st-body" style="padding-bottom:32px"></div>
 </section>
-
+<!-- 28-help.html -->
 <section class="scr me5" id="s-help" data-nav="Help" data-group="Me">
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Help</div></div>
   <div class="scr-body" id="hp-body" style="padding-bottom:32px"></div>
 </section>
+<!-- 29-fl-welcome.html -->
+<section class="scr fl fl" id="s-fl-welcome" data-nav="Welcome" data-group="Freelance · Start">
+  <div class="wl-hero"><img class="ph" src="img/hero-white.webp" alt=""><div class="ov"></div><img class="logo" src="logo.svg" alt="Floritta"></div>
+  <div class="wl-body">
+    <div class="caps muted">Floritta couriers · London</div>
+    <h1 class="h-display">Deliver flowers on your way.</h1>
+    <p class="soft sm" style="margin:0">Pick the deliveries that suit you, from £7 each, paid every Friday. You decide when and how often.</p>
+    <button class="btn --block mt8" onclick="App.go('fl-su1')">Become a Floritta courier</button>
+    <button class="btn --ghost --block" onclick="App.go('fl-signin')">Sign in</button>
+    <div style="text-align:center"><button class="textbtn" onclick="App.go('fl-link')">I already use the Telegram bot</button></div>
+  </div>
+</section>
+<!-- 30-fl-signin.html -->
+<section class="scr fl fl" id="s-fl-signin" data-nav="Sign in" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Sign in</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <h1 class="h1 mt16" style="margin:16px 0 24px">Welcome back.</h1>
+    <div class="field"><label for="fl-si-e">Email</label><input class="input" id="fl-si-e" value="sam.k@example.com"></div>
+    <div class="field"><label for="fl-si-p">Password</label><input class="input" id="fl-si-p" type="password" value="password12"></div>
+    <button class="btn --block" onclick="App.tab('fl-board')">Sign in</button>
+    <div style="text-align:center;margin-top:18px"><button class="textbtn">Forgot password</button></div>
+    <p class="hint" style="text-align:center;margin-top:28px">Floritta studio staff sign in here too – the app shows each person their own screens.</p>
+  </div>
+</section>
+<!-- 31-fl-su1.html -->
+<section class="scr fl fl" id="s-fl-su1" data-nav="Sign up 1 · Account" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 1 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i></i><i></i><i></i></div>
+    <h1 class="h1" style="margin-bottom:8px">Create your account</h1>
+    <p class="soft sm" style="margin:0 0 22px">You'll use this email to sign in and get your weekly statements.</p>
+    <div class="field"><label for="fl-su-e">Email</label><input class="input" id="fl-su-e" placeholder="you@example.com" value="sam.k@example.com"></div>
+    <div class="field"><label for="fl-su-p">Password</label><input class="input" id="fl-su-p" type="password" value="password12"><span class="hint">At least 8 characters, letters and numbers.</span></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-su2')">Continue</button></div>
+</section>
+<!-- 32-fl-su2.html -->
+<section class="scr fl fl" id="s-fl-su2" data-nav="Sign up 2 · About you" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 2 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+    <h1 class="h1" style="margin-bottom:20px">About you</h1>
+    <div class="field"><label for="fl-su-n">Full name</label><input class="input" id="fl-su-n" value="Sam Kowalski"></div>
+    <div class="field"><label for="fl-su-ph">Mobile number</label><input class="input" id="fl-su-ph" value="07700 900481"></div>
+    <div class="field"><label>How do you get around?</label>
+      <div class="fl-tiles" id="fl-transport">
+        <button class="tile" data-t="walk"><svg class="i"><use href="#fl-i-walk"/></svg><span class="tl">On foot</span></button>
+        <button class="tile on" data-t="bike"><svg class="i"><use href="#fl-i-bike"/></svg><span class="tl">Bike</span></button>
+        <button class="tile" data-t="transit"><svg class="i"><use href="#fl-i-train"/></svg><span class="tl">Public transport</span></button>
+        <button class="tile" data-t="car"><svg class="i"><use href="#fl-i-car"/></svg><span class="tl">Car</span><span class="tp">Needs Hire &amp; Reward insurance</span></button>
+      </div>
+    </div>
+    <div class="field"><label for="fl-su-pc">Home postcode</label><input class="input" id="fl-su-pc" value="SE15 4QL"><span class="hint">We use it to show deliveries near you. Nobody else sees it.</span></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-su3')">Continue</button></div>
+</section>
+<!-- 33-fl-su3.html -->
+<section class="scr fl fl" id="s-fl-su3" data-nav="Sign up 3 · Right to work" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 3 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+    <h1 class="h1" style="margin-bottom:8px">Right to work</h1>
+    <p class="soft sm" style="margin:0 0 18px">UK law asks every delivery platform to check this before your first delivery. Get a share code at gov.uk/prove-right-to-work – it takes two minutes.</p>
+    <div class="field"><label for="fl-su-sc">Share code</label><input class="input num" id="fl-su-sc" value="W7K 4PX 9QM" style="letter-spacing:.12em"></div>
+    <div class="field"><label for="fl-su-dob">Date of birth</label><input class="input num" id="fl-su-dob" value="14 / 03 / 1996"><span class="hint">The Home Office check needs it. You must be 18 or over.</span></div>
+    <div class="panel sm soft mt8"><b>British or Irish passport?</b> You don't need a share code – pick "Show my passport instead" and a studio manager will check it in person.</div>
+    <div style="margin-top:14px"><button class="textbtn">Show my passport instead</button></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-su4')">Continue</button></div>
+</section>
+<!-- 34-fl-su4.html -->
+<section class="scr fl fl" id="s-fl-su4" data-nav="Sign up 4 · How it works" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 4 of 4</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+    <h1 class="h1" style="margin-bottom:16px">How it works</h1>
+    <div class="timeline">
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">You choose</div><div class="tl-d">Request only the deliveries you want. No minimum hours, no penalty for saying no.</div></div></div>
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Work for anyone</div><div class="tl-d">Deliver for other apps at the same time. You can send a substitute who passed the same checks.</div></div></div>
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Paid per delivery</div><div class="tl-d">£7 / £9 / £11 by distance, shown before you request. Weekly statement, paid every Friday.</div></div></div>
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Your own tax</div><div class="tl-d">You're self-employed. The first £1,000 a year is tax-free under the trading allowance.</div></div></div>
+    </div>
+    <button class="check on" onclick="this.classList.toggle('on')"><span class="cb"><svg class="i"><use href="#fl-i-check"/></svg></span><span class="ct">I've read the <u>Courier agreement</u> and the <u>Privacy notice</u>.</span></button>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-pending')">Create account</button></div>
+</section>
+<!-- 35-fl-pending.html -->
+<section class="scr fl fl" id="s-fl-pending" data-nav="Waiting for check" data-group="Freelance · Start">
+  <div class="appbar"><span class="ib"></span><div class="ttl" style="text-align:center"><img src="logo.svg" alt="Floritta" style="height:13px;width:auto;margin:0 auto"></div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <div class="caps muted mt16" style="margin-top:24px">Account created</div>
+    <h1 class="h-display" style="margin:8px 0 14px">Thanks, Sam.</h1>
+    <p class="soft" style="margin:0 0 24px">A studio manager checks your right to work, usually within 24 hours. We'll send a notification as soon as you can request deliveries.</p>
+    <div class="timeline">
+      <div class="tl-step done"><div class="ind"><i><svg class="i"><use href="#fl-i-check"/></svg></i></div><div><div class="tl-t">Account and details</div><div class="tl-d">Today 21:14</div></div></div>
+      <div class="tl-step now"><div class="ind"><i>2</i></div><div><div class="tl-t">Right-to-work check</div><div class="tl-d">Share code W7K 4PX 9QM · in progress</div></div></div>
+      <div class="tl-step todo"><div class="ind"><i>3</i></div><div><div class="tl-t">Request your first delivery</div><div class="tl-d">Orders up to £99 for your first 5 deliveries</div></div></div>
+    </div>
+    <div class="panel --ok sm mt16" style="margin-top:12px">Meanwhile, add your usual route home – you'll see what's on your way from day one.</div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="FL.setV(0);App.tab('fl-board')">See available deliveries</button></div>
+</section>
+<!-- 36-fl-link.html -->
+<section class="scr fl fl" id="s-fl-link" data-nav="Link the Telegram bot" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Already in the bot</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:16px 0 8px">Move to the app in one step</h1>
+    <p class="soft sm" style="margin:0 0 18px">Your deliveries, routes and earnings come with you. The bot keeps working too.</p>
+    <div class="timeline">
+      <div class="tl-step done"><div class="ind"><i>1</i></div><div><div class="tl-t">Open @floritta_freelance_bot</div><div class="tl-d">Tap <b>Get the app</b> in the menu</div></div></div>
+      <div class="tl-step now"><div class="ind"><i>2</i></div><div><div class="tl-t">Type the 6-digit code here</div><div class="tl-d">It works for 10 minutes</div></div></div>
+    </div>
+    <div class="code-boxes mt8"><span class="on">4</span><span class="on">8</span><span class="on">1</span><span class="on">0</span><span class="on">7</span><span class="on">3</span></div>
+    <div class="field mt16" style="margin-top:22px"><label for="fl-ln-e">Email for signing in</label><input class="input" id="fl-ln-e" value="sam.k@example.com"></div>
+    <div class="field"><label for="fl-ln-p">Choose a password</label><input class="input" id="fl-ln-p" type="password" value="password12"></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="FL.setV(1);App.toast('Linked. Welcome back, Sam.');App.tab('fl-board')">Link my account</button></div>
+</section>
+<!-- 37-fl-board.html -->
+<section class="scr fl fl" id="s-fl-board" data-tab="fl-board" data-nav="Available deliveries" data-group="Freelance · Deliveries">
+  <div class="appbar">
+    <div class="ttl"><img src="logo.svg" alt="Floritta" style="height:13px;width:auto"></div>
+    <button class="ib" aria-label="Notifications" onclick="App.go('fl-notif')"><svg class="i"><use href="#fl-i-bell"/></svg><span class="dot">2</span></button>
+    <button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button>
+  </div>
+  <div class="scr-body has-tab">
+    <div class="pad"><h1 class="h1" style="margin:4px 0 14px">Deliveries</h1>
+      <div class="seg" id="fl-day-seg"><button class="on">Today · 7</button><button>Tomorrow · 12</button></div>
+    </div>
+    <div class="pad" style="margin-top:14px" id="fl-board-banner"></div>
+    <div class="chips" style="margin:14px 0 12px"><button class="chip on">All</button><button class="chip">On my routes · 3</button><button class="chip">My areas · 4</button><button class="chip">Pick up now</button></div>
+    <div class="dlist" id="fl-board-list"></div>
+    <p class="hint pad" style="margin-top:14px;text-align:center">New deliveries appear from about 2 hours before pickup.</p>
+  </div>
+</section>
+<!-- 38-fl-dlv.html -->
+<section class="scr fl fl" id="s-fl-dlv" data-nav="Delivery details" data-group="Freelance · Deliveries">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delivery</div><span class="ib"></span></div>
+  <div class="scr-body has-cta">
+    <div class="map fl-mapbox"><svg class="fl-map" viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice" aria-label="Map: studio SE1 to Battersea SW11">
+  <rect width="400" height="190" fill="#f2f2f4"/>
+  <path d="M-10 40 C 60 30, 90 70, 150 78 S 250 60, 290 96 S 360 170, 410 150" stroke="#d9dcd6" stroke-width="22" fill="none"/>
+  <path d="M-10 40 C 60 30, 90 70, 150 78 S 250 60, 290 96 S 360 170, 410 150" stroke="#cfd5d1" stroke-width="1" fill="none"/>
+  <rect x="300" y="120" width="70" height="44" fill="#e2e6da"/>
+  <rect x="40" y="110" width="46" height="30" fill="#e2e6da"/>
+  <g stroke="#fdfdfd" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M0 150 L120 130 L210 140 L400 120"/><path d="M60 0 L90 190"/><path d="M180 0 L170 190"/><path d="M260 0 L300 190"/><path d="M0 95 L400 70"/>
+  </g>
+  <g stroke="#fdfdfd" stroke-width="2.5" fill="none"><path d="M0 120 L400 100"/><path d="M130 0 L120 190"/><path d="M225 0 L240 190"/><path d="M340 0 L350 190"/><path d="M0 175 L400 160"/></g>
+  <text x="158" y="73" font-size="8" letter-spacing="2" fill="#8b8378" font-family="Jost,sans-serif">RIVER THAMES</text>
+  <text x="306" y="146" font-size="7" letter-spacing="1" fill="#7a8a6b" font-family="Jost,sans-serif">BATTERSEA PARK</text>
+  <circle cx="328" cy="62" r="26" fill="rgba(180,89,95,.14)" stroke="#b4595f" stroke-width="1" stroke-dasharray="3 3"/>
+  <path d="M70 128 C 120 118, 150 110, 196 96 S 280 72, 322 64" stroke="#1e1a17" stroke-width="2" fill="none" stroke-dasharray="6 5"/>
+  <rect x="64" y="122" width="12" height="12" fill="#1e1a17"/>
+</svg>
+<span class="mk" style="left:22px;top:146px">Studio SE1</span><span class="mk --ink" style="right:18px;top:22px">SW11 · area</span>
+<span class="fl-map-note">Exact address after the studio confirms</span></div>
+    <div class="pad" style="margin-top:18px">
+      <div class="flex" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div><div class="caps muted">Today · 17:00–19:00</div><h1 class="h1" style="margin-top:6px">Battersea, SW11</h1></div>
+        <div style="font-family:var(--f-display);font-size:40px;font-weight:300;line-height:1">£9</div>
+      </div>
+      <div class="wrap-chips mt8" style="margin-top:10px"><span class="tag --sale">Peak</span><span class="tag --ink">Hard window</span><span class="tag">Band M · 6.4 km</span></div>
+    </div>
+    <div class="row" style="margin-top:14px"><svg class="i"><use href="#fl-i-pin"/></svg><div class="rt"><div class="l">Pick up · Floritta studio</div><div class="d">80 Willow Walk, SE1 5SY · ready from 16:30</div></div></div>
+    <div class="row"><svg class="i"><use href="#fl-i-nav"/></svg><div class="rt"><div class="l">Drop off · Battersea SW11 2</div><div class="d">Full address after the studio confirms</div></div></div>
+    <div class="row"><svg class="i"><use href="#fl-i-bike"/></svg><div class="rt"><div class="l">About 28 min by bike</div><div class="d">One medium bouquet · 1.2 kg · flat bag fits</div></div></div>
+    <div class="pad mt16" style="margin-top:16px"><div class="ann sm soft">Hard window: the recipient has asked for it before 19:00. If you can't make it, withdraw before pickup – nothing happens to your account.</div></div>
+  </div>
+  <div class="cta-bar"><div id="fl-dlv-cta"></div></div>
+</section>
+<!-- 39-fl-mine.html -->
+<section class="scr fl fl" id="s-fl-mine" data-tab="fl-mine" data-nav="My deliveries" data-group="Freelance · My deliveries">
+  <div class="appbar"><div class="ttl">My deliveries</div><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="scr-body has-tab">
+    <div class="pad"><button class="live" onclick="App.go('fl-run')"><span class="lv-ic"><svg class="i"><use href="#fl-i-bike"/></svg></span><span><span class="lv-t" style="display:block">Battersea SW11 · by 19:00</span><span class="lv-d" style="display:block" id="fl-mine-live-d">Confirmed · pick up from 16:30</span></span><span class="lv-r">£9</span></button></div>
+    <div class="sec-head"><div class="caps muted">Requested · waiting for the studio</div></div>
+    <button class="ocard" onclick="App.go('fl-dlv')"><img src="img/red-roses.webp" alt=""><div class="mn"><div class="ot">Clapham SW4</div><div class="om"><span>Tomorrow 09:00–12:00</span><span class="pill --review">Requested</span></div></div><div class="oc">£7</div></button>
+    <div class="sec-head"><div class="caps muted">Done this week</div><button class="link" onclick="App.tab('fl-earn')">Earnings</button></div>
+    <button class="ocard"><img src="img/lilac-dream.webp" alt=""><div class="mn"><div class="ot">Kennington SE11</div><div class="om"><span>Mon 13:00</span><span class="pill --done">Delivered</span></div></div><div class="oc">£7</div></button>
+    <button class="ocard"><img src="img/pink-garden.webp" alt=""><div class="mn"><div class="ot">Canary Wharf E14</div><div class="om"><span>Tue 18:40</span><span class="pill --done">Delivered</span></div></div><div class="oc">£11</div></button>
+    <button class="ocard"><img src="img/white-spray.webp" alt=""><div class="mn"><div class="ot">Vauxhall SW8</div><div class="om"><span>Wed 12:10</span><span class="pill">Returned · £10.50</span></div></div><div class="oc">£10.5</div></button>
+  </div>
+</section>
+<!-- 40-fl-run.html -->
+<section class="scr fl fl" id="s-fl-run" data-nav="Delivery in progress" data-group="Freelance · My deliveries">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Battersea · by 19:00</div><button class="ib" aria-label="Write to the studio" onclick="App.go('fl-studio')"><svg class="i"><use href="#fl-i-msg"/></svg></button></div>
+  <div class="scr-body">
+    <div class="pad">
+      <div class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><div class="caps muted">Show at the studio</div><div style="font-family:var(--f-display);font-size:30px;line-height:1.1">Order 186412</div></div><img src="img/peach-posy.webp" alt="" style="width:56px;height:70px;object-fit:cover"></div>
+      <div class="timeline" id="fl-run-tl" style="margin-top:20px"></div>
+    </div>
+    <div class="sec-head" style="margin-top:8px"><div class="caps muted">Recipient</div></div>
+    <div class="row"><svg class="i"><use href="#fl-i-user"/></svg><div class="rt"><div class="l">Emma W.</div><div class="d">Flat 4, 21 Lavender Hill, SW11 5QT</div></div></div>
+    <div class="row" id="fl-run-phone"></div>
+    <div class="row"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Note from the sender</div><div class="d">Ring twice, the bell is quiet. Leave with the concierge if out.</div></div></div>
+    <div class="pad" style="display:grid;gap:8px;margin:18px 0 24px">
+      <a class="btn --ghost --block" href="https://www.google.com/maps/dir/?api=1&destination=SW11+5QT&travelmode=bicycling" target="_blank" rel="noopener"><svg class="i"><use href="#fl-i-nav"/></svg>Open in Google Maps</a>
+      <button class="btn --ghost --block" onclick="FL.sheet('problem')"><svg class="i"><use href="#fl-i-alert"/></svg>Problem with delivery</button>
+      <div style="text-align:center;margin-top:6px" id="fl-run-withdraw"><button class="textbtn" onclick="FL.sheet('withdraw')">Withdraw from this delivery</button></div>
+    </div>
+  </div>
+</section>
+<!-- 41-fl-done.html -->
+<section class="scr fl fl" id="s-fl-done" data-nav="Delivered" data-group="Freelance · My deliveries">
+  <div class="scr-body pad" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+    <div style="width:64px;height:64px;background:var(--ok);color:#fff;display:grid;place-items:center;margin:0 auto 20px"><svg class="i" style="width:30px;height:30px"><use href="#fl-i-check"/></svg></div>
+    <div class="caps muted">Delivered 18:22</div>
+    <h1 class="h-display" style="margin:8px 0 12px">Thank you, Sam.</h1>
+    <p class="soft" style="margin:0 0 6px">£9.00 added to this week's statement.</p>
+    <p class="hint" style="margin:0 0 28px">The sender gets your photo with the delivery message.</p>
+    <button class="btn --block" onclick="App.tab('fl-board')">More deliveries</button>
+    <div style="margin-top:16px"><button class="textbtn" onclick="App.tab('fl-earn')">See earnings</button></div>
+  </div>
+</section>
+<!-- 42-fl-way.html -->
+<section class="scr fl fl" id="s-fl-way" data-tab="fl-way" data-nav="Where are you going?" data-group="Freelance · On my way">
+  <div class="appbar"><div class="ttl">On my way</div><button class="ib" aria-label="Saved routes" onclick="App.go('fl-saved')"><svg class="i"><use href="#fl-i-route"/></svg></button><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="scr-body has-tab">
+    <div class="pad">
+      <h1 class="h1" style="margin:4px 0 16px">Where are you going?</h1>
+      <div class="field"><label for="fl-w-from">From</label><input class="input" id="fl-w-from" value="My location · Bermondsey SE1"></div>
+      <div class="field"><label for="fl-w-to">To</label><input class="input" id="fl-w-to" value="SW11 1AJ · Clapham Junction"><span class="hint">A postcode, or drop a pin on the map.</span></div>
+      <div class="seg" style="margin-bottom:14px"><button>Walk</button><button class="on">Bike</button><button>Transit</button></div>
+      <button class="btn --block" onclick="document.getElementById('way-res').hidden=false">Show deliveries on my way</button>
+    </div>
+    <div id="fl-way-res">
+      <div class="sec-head"><div><div class="caps muted">2 deliveries fit · 34 min trip</div></div></div>
+      <div class="dlist">
+        <button class="dcard" onclick="App.go('fl-dlv')"><div class="top"><div><div class="when">Today · 17:00–19:00</div><div class="where">Battersea SW11</div></div><div class="pay">£9</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-clock"/></svg>+6 min detour</span><span>Pick up at the studio on your way</span></div></button>
+        <button class="dcard" onclick="App.go('fl-dlv')"><div class="top"><div><div class="when">Today · 18:00–20:00</div><div class="where">Vauxhall SW8</div></div><div class="pay">£7</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-clock"/></svg>+9 min detour</span></div></button>
+      </div>
+      <p class="hint pad" style="margin-top:12px">Navigation opens in Google Maps. Trip times are estimates.</p>
+    </div>
+  </div>
+</section>
+<!-- 43-fl-saved.html -->
+<section class="scr fl fl" id="s-fl-saved" data-tab="fl-way" data-nav="My routes and areas" data-group="Freelance · On my way">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Routes and areas</div><span class="ib"></span></div>
+  <div class="scr-body has-tab">
+    <div class="sec-head" style="margin-top:12px"><div class="h2">My routes</div><span class="caps muted">2 of 3</span></div>
+    <div class="row"><svg class="i"><use href="#fl-i-route"/></svg><div class="rt"><div class="l">Home from uni</div><div class="d">WC1E → SE15 · Bike · Mon–Thu 16:30–18:00</div></div><button class="ib" aria-label="Delete"><svg class="i" style="color:var(--grey)"><use href="#fl-i-x"/></svg></button></div>
+    <div class="row"><svg class="i"><use href="#fl-i-route"/></svg><div class="rt"><div class="l">Saturday gym</div><div class="d">SE15 → SW11 · Transit · Sat 09:00–11:00</div></div><button class="ib" aria-label="Delete"><svg class="i" style="color:var(--grey)"><use href="#fl-i-x"/></svg></button></div>
+    <div class="pad" style="margin-top:12px"><button class="btn --ghost --block" onclick="FL.sheet('route')"><svg class="i"><use href="#fl-i-plus"/></svg>Add a route</button></div>
+    <div class="sec-head"><div class="h2">My areas</div></div>
+    <div class="pad"><p class="soft sm" style="margin:0 0 12px">Get notified about deliveries to these postcode areas.</p>
+      <div class="wrap-chips"><span class="chip on">SE1 ×</span><span class="chip on">SE15 ×</span><span class="chip on">SE11 ×</span><span class="chip on">SW8 ×</span><button class="chip"><svg class="i" style="width:14px;height:14px"><use href="#fl-i-plus"/></svg>Add area</button></div>
+    </div>
+  </div>
+</section>
+<!-- 44-fl-earn.html -->
+<section class="scr fl fl" id="s-fl-earn" data-tab="fl-earn" data-nav="Earnings" data-group="Freelance · Earnings">
+  <div class="appbar"><div class="ttl">Earnings</div><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="scr-body has-tab">
+    <div class="stats num"><div><b>£63</b><span>This week</span></div><div><b>£214</b><span>October</span></div><div><b>£63</b><span>Unpaid</span></div></div>
+    <div class="pad" style="margin-top:12px"><div class="panel sm soft" style="display:flex;gap:10px;align-items:center"><svg class="i"><use href="#fl-i-bank"/></svg><span>Paid every Friday to the account ending <b class="num">4821</b>. Last payout £81.00 on 17 Oct.</span></div></div>
+    <div class="sec-head"><div class="h2">Statements</div></div>
+    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 43 · 20–26 Oct</div><div class="d">7 deliveries · issued Mon 27 Oct</div></div><span class="pill --review">Check it</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 42 · 13–19 Oct</div><div class="d">9 deliveries · £81.00</div></div><span class="pill --done">Paid</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 41 · 6–12 Oct</div><div class="d">8 deliveries · £70.00</div></div><span class="pill --done">Paid</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-bank')"><svg class="i"><use href="#fl-i-bank"/></svg><div class="rt"><div class="l">Bank details</div><div class="d">Account ending 4821</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <button class="row" onclick="App.go('fl-tax')"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Tax &amp; status</div><div class="d">Self-employed · trading allowance £1,000</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+  </div>
+</section>
+<!-- 45-fl-stmt.html -->
+<section class="scr fl fl" id="s-fl-stmt" data-tab="fl-earn" data-nav="Weekly statement" data-group="Freelance · Earnings">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Statement FS-2026-W43-0007</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:8px 0 4px">Week 43</h1>
+    <p class="soft sm" style="margin:0 0 14px">20–26 October · Floritta Ltd · paid Friday 31 October</p>
+    <div class="num">
+      <div class="stline"><div>Kennington SE11<div class="sd">Mon 20 · order 186211</div></div><span class="sv">£7.00</span></div>
+      <div class="stline"><div>Canary Wharf E14<div class="sd">Tue 21 · order 186260 · band L</div></div><span class="sv">£11.00</span></div>
+      <div class="stline"><div>Vauxhall SW8 · returned<div class="sd">Wed 22 · full rate + 50% for the return</div></div><span class="sv">£10.50</span></div>
+      <div class="stline"><div>Battersea SW11<div class="sd">Thu 23 · order 186412</div></div><span class="sv">£9.00</span></div>
+      <div class="stline"><div>3 more deliveries<div class="sd">Fri–Sun</div></div><span class="sv">£25.50</span></div>
+      <div class="stline total"><div>Total</div><span class="sv">£63.00</span></div>
+    </div>
+    <p class="hint">No tax is taken off – you report this income yourself.</p>
+  </div>
+  <div class="cta-bar" style="flex-direction:row"><button class="btn --ghost" style="flex:1" onclick="FL.sheet('query')">Something is wrong</button><button class="btn" style="flex:1" onclick="App.toast('Thanks – statement confirmed.')">All correct</button></div>
+</section>
+<!-- 46-fl-bank.html -->
+<section class="scr fl fl" id="s-fl-bank" data-tab="fl-earn" data-nav="Bank details" data-group="Freelance · Earnings">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Bank details</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:8px 0 8px">Where we pay you</h1>
+    <p class="soft sm" style="margin:0 0 20px">A UK account in your own name. Only the payout team sees it.</p>
+    <div class="field"><label for="fl-b-n">Name on the account</label><input class="input" id="fl-b-n" value="Sam Kowalski"></div>
+    <div class="field"><label for="fl-b-s">Sort code</label><input class="input num" id="fl-b-s" value="••-••-14"></div>
+    <div class="field"><label for="fl-b-a">Account number</label><input class="input num" id="fl-b-a" value="••••4821"><span class="hint">Hidden after saving. To change it, type the whole number again.</span></div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" onclick="App.toast('Bank details saved.');App.back()">Save</button></div>
+</section>
+<!-- 47-fl-tax.html -->
+<section class="scr fl fl" id="s-fl-tax" data-tab="fl-earn" data-nav="Tax & status" data-group="Freelance · Earnings">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Tax &amp; status</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <h1 class="h1" style="margin:8px 0 16px">You're self-employed</h1>
+    <div class="acc">
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Your choice, every time</div><div class="d">No minimum hours, no schedule, no penalty for withdrawing or saying no.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Work for others</div><div class="d">Deliver for any other company at the same time.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Send a substitute</div><div class="d">Someone who passed the same right-to-work check can take a delivery for you.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Tax</div><div class="d">The first £1,000 of self-employed income each tax year is tax-free (trading allowance). Above that, register for Self Assessment.</div></div></div>
+      <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Reporting to HMRC</div><div class="d">From 2026 platforms report what they pay sellers and couriers to HMRC once a year. Your statements match that report.</div></div></div>
+    </div>
+    <div style="margin:18px 0 28px;display:grid;gap:10px"><a class="textbtn" href="https://www.gov.uk/working-for-yourself" target="_blank" rel="noopener">gov.uk – Working for yourself</a><a class="textbtn" href="https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income" target="_blank" rel="noopener">gov.uk – Trading allowance</a></div>
+  </div>
+</section>
+<!-- 48-fl-studio.html -->
+<section class="scr fl fl" id="s-fl-studio" data-tab="fl-studio" data-nav="Studio · messages" data-group="Freelance · Studio">
+  <div class="appbar"><div class="ttl">Studio</div><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+  <div class="pad"><div class="panel sm soft" style="display:flex;gap:10px;align-items:center"><svg class="i"><use href="#fl-i-clock"/></svg><span>A studio manager replies 08:00–21:00, usually within 10 minutes. Stuck at the door? Use <b>Problem with delivery</b> on the delivery itself.</span></div></div>
+  <div class="scr-body pad" style="display:flex;flex-direction:column;gap:10px;padding-bottom:150px">
+    <div class="caps muted" style="text-align:center;margin:10px 0">Today</div>
+    <div class="bubble --me"><small>You · 16:41</small>I'm 10 min late to the studio, the bridge is closed.</div>
+    <div class="bubble --them"><small>Studio (Kamila) · 16:43</small>No problem, the bouquet will be at the front desk. Order 186412.</div>
+    <div class="bubble --me"><small>You · 18:05</small>Concierge says flat 4 is empty. Leave with him?</div>
+    <div class="bubble --them"><small>Studio (Kamila) · 18:06</small>Yes, the sender agreed. Take the photo with the concierge desk please.</div>
+  </div>
+  <div class="cta-bar" style="flex-direction:row;align-items:center;bottom:var(--tab-h)"><button class="ib" aria-label="Attach photo"><svg class="i"><use href="#fl-i-camera"/></svg></button><input class="input" id="fl-st-msg" placeholder="Message to the studio" style="height:44px;flex:1"><button class="btn --sm">Send</button></div>
+</section>
+<!-- 49-fl-me.html -->
+<section class="scr fl fl" id="s-fl-me" data-tab="fl-me" data-nav="Profile" data-group="Freelance · Profile">
+  <div class="appbar"><div class="ttl">Profile</div></div>
+  <div class="scr-body has-tab">
+    <div class="pad" style="display:flex;gap:14px;align-items:center;margin:6px 0 16px">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:20px;letter-spacing:.04em;font-weight:500">SK</div>
+      <div><div class="h2">Sam Kowalski</div><div class="sm muted">Self-employed courier · Bike · since Oct 2026</div><div style="margin-top:6px" id="fl-me-pill"></div></div>
+    </div>
+    <div class="stats num"><div><b>23</b><span>Delivered</span></div><div><b>0</b><span>Problems</span></div><div><b>SE15</b><span>Home area</span></div></div>
+    <div style="margin-top:14px">
+      <button class="row" onclick="App.go('fl-notif')"><svg class="i"><use href="#fl-i-bell"/></svg><div class="rt"><div class="l">Notifications</div><div class="d">Areas and routes · near the studio on</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-alco')"><svg class="i"><use href="#fl-i-glass"/></svg><div class="rt"><div class="l">Alcohol deliveries</div><div class="d">Trained · valid until April 2027</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.tab('fl-studio')"><svg class="i"><use href="#fl-i-msg"/></svg><div class="rt"><div class="l">Write to the studio</div><div class="d">Kamila replied 2 h ago</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-tax')"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Tax &amp; status</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row"><svg class="i"><use href="#fl-i-shield"/></svg><div class="rt"><div class="l">Right to work</div><div class="d">Checked 23 Oct 2026 · valid until March 2027</div></div></button>
+      <button class="row"><svg class="i"><use href="#fl-i-help"/></svg><div class="rt"><div class="l">Help and courier agreement</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-welcome')"><svg class="i"><use href="#fl-i-out"/></svg><div class="rt"><div class="l">Sign out</div></div></button>
+      <button class="row --danger" onclick="App.go('fl-delete')"><svg class="i" style="color:var(--accent)"><use href="#fl-i-trash"/></svg><div class="rt"><div class="l">Delete account</div></div></button>
+    </div>
+  </div>
+</section>
+<!-- 50-fl-notif.html -->
+<section class="scr fl fl" id="s-fl-notif" data-tab="fl-me" data-nav="Notifications" data-group="Freelance · Profile">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Notifications</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <h1 class="h1" style="margin:8px 0 6px">New deliveries</h1>
+    <p class="soft sm" style="margin:0 0 8px">Which ones should we tell you about?</p>
+    <div id="fl-pm">
+      <button class="radio on"><span class="rd"></span><span><span class="rl" style="display:block">My areas and routes</span><span class="rdd" style="display:block">Recommended</span></span></button>
+      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">Only my areas</span></span></button>
+      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">Only my routes</span></span></button>
+      <button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">None</span><span class="rdd" style="display:block">You can still open the app and look</span></span></button>
+    </div>
+    <p class="hint" style="margin:10px 0 0">Quiet from 21:00 to 08:00, and never more than 6 a day.</p>
+    <div class="row" style="padding-left:0;padding-right:0;margin-top:18px;border-top:1px solid var(--hair)"><div class="rt"><div class="l">Near the studio</div><div class="d">When you pass within 2 miles of the studio and there's something ready to pick up. Uses your location only for this; we don't store it.</div></div><button class="switch on" onclick="this.classList.toggle('on')" aria-label="Near the studio"></button></div>
+    <div class="row" style="padding-left:0;padding-right:0"><div class="rt"><div class="l">Messages from the studio</div><div class="d">Replies and changes to your deliveries</div></div><button class="switch on" onclick="this.classList.toggle('on')" aria-label="Messages"></button></div>
+  </div>
+</section>
+<!-- 51-fl-alco.html -->
+<section class="scr fl fl" id="s-fl-alco" data-tab="fl-me" data-nav="Alcohol training" data-group="Freelance · Profile">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Alcohol deliveries · 18+</div><span class="ib"></span></div>
+  <div class="scr-body pad">
+    <div class="caps muted" style="margin-top:8px">Question 3 of 8</div>
+    <div class="progress" style="margin:10px 0 20px"><i style="width:37%"></i></div>
+    <h1 class="h2" style="margin-bottom:18px">The recipient looks about 22 and has no ID. What do you do?</h1>
+    <div id="fl-quiz">
+      <button class="qopt" data-ok="0">Hand it over – the sender already paid</button>
+      <button class="qopt" data-ok="1">Don't hand it over and bring it back to the studio</button>
+      <button class="qopt" data-ok="0">Leave it with a neighbour</button>
+    </div>
+    <div class="panel --ok sm" id="fl-quiz-fb" hidden>Right. Challenge 25: if they look under 25, ask for ID. No valid ID – no alcohol. You're paid the full rate plus 50% for the return.</div>
+    <p class="hint" style="margin-top:18px">Floritta premises licence 889934. Training is valid for 6 months. Until you pass, deliveries with alcohol don't show up for you.</p>
+  </div>
+</section>
+<!-- 52-fl-delete.html -->
+<section class="scr fl fl" id="s-fl-delete" data-nav="Delete account" data-group="Freelance · Profile">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delete account</div><span class="ib"></span></div>
+  <div class="scr-body has-cta pad">
+    <h1 class="h1" style="margin:8px 0 14px">Delete your courier account?</h1>
+    <div class="sec-head" style="padding:0;margin:8px 0 6px"><div class="caps muted">We delete now</div></div>
+    <div class="sm soft">Sign-in, phone number, home postcode, routes and areas, bank details, notification settings and messages.</div>
+    <div class="sec-head" style="padding:0;margin:20px 0 6px"><div class="caps muted">The law asks us to keep</div></div>
+    <div class="sm soft">The right-to-work check record – 2 years after your last delivery (Home Office). Statements and payments – 6 years (HMRC). Nobody uses them for anything else, and they are then deleted.</div>
+    <div class="panel --warn sm mt16" style="margin-top:18px">Unpaid earnings (£63.00) are still paid on Friday.</div>
+    <button class="check" onclick="this.classList.toggle('on')" style="margin-top:10px"><span class="cb"><svg class="i"><use href="#fl-i-check"/></svg></span><span class="ct">I understand this can't be undone.</span></button>
+  </div>
+  <div class="cta-bar"><button class="btn --accent --block" onclick="App.toast('Account deleted.');App.go('fl-welcome')">Delete my account</button></div>
+</section>
+
 
 <style>
 /* shared (scoped to my seven screens + my sheets) */
@@ -1407,7 +1770,8 @@ html[data-style="glass"] .lr .lr-seg i{border-radius:999px}
 <li><b>Live Activity</b> требует новой нативной сборки (не по OTA). Делаем отдельным релизом после экранов?</li>
 </ul>
 
-  </aside>
+  
+</aside>
 </div>
 
 <script>
@@ -1426,7 +1790,7 @@ window.STAFF=[
  {id:"oleh",n:"Oleh",role:"courier",title:"Courier",initials:"OL",onShift:true},
  {id:"max",n:"Max",role:"courier",title:"Seasonal courier",staff_type:"seasonal",initials:"MX"}
 ];
-window.PERSONAS=[{id:"kamila",label:"Florist"},{id:"andrii",label:"Courier"},{id:"valeria",label:"Manager"},{id:"ayana",label:"Trainee"}];
+window.PERSONAS=[{id:"kamila",label:"Florist · staff"},{id:"andrii",label:"Courier · staff"},{id:"valeria",label:"Manager"},{id:"ayana",label:"Trainee"}];
 const T=(h,m=0,dayOffset=0)=>{const d=new Date(2026,9,20,h,m);d.setDate(d.getDate()+dayOffset);return d.toISOString()};
 window.TASKS=[
  {id:101,title:"Opening checklist – shop floor",desc:"Daily opening routine before 8:30. Tick each step; the fridge temperature needs a number in the comment.",assignee:"kamila",by:"valeria",status:"done",due:T(8,30),repeat:"Every day · 8:30",tags:["shop"],checklist:[{t:"Lights, music, door sign",d:true},{t:"Fridge temperature logged",d:true},{t:"Buckets: fresh water + Chrysal",d:true},{t:"Till float counted",d:true},{t:"Pavement display out",d:true}],comments:[{by:"kamila",t:"Fridge 4 °C",at:T(8,21)}],doneAt:T(8,22)},
@@ -4027,5 +4391,1023 @@ S.report=function(){
 
 })();
 </script>
+<!-- ============ WORKER CONTOUR (casual / zero-hours) – overlay on the staff prototype, 21.10.2026 ============ -->
+<style>
+.wk-offer{border:1px solid var(--hair);padding:14px var(--gutter);margin:0 var(--gutter) 10px;background:var(--paper)}
+.wk-offer .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.wk-offer .hrs{font-family:var(--f-display);font-size:26px;font-weight:300;line-height:1.05;margin-top:4px}
+.wk-offer .meta{font-size:13px;color:var(--graphite);margin-top:6px}
+.wk-offer .btns{display:flex;gap:8px;margin-top:14px}
+.wk-offer .btns .btn{flex:1}
+.wk-offer.mine{border-color:var(--ink)}
+.wk-offer.gone{opacity:.45}
+.wk-kv{display:grid;grid-template-columns:1fr auto;gap:0;margin:0 var(--gutter);font-size:14px;border-top:1px solid var(--hair)}
+.wk-kv>span,.wk-kv>span:first-child{padding:11px 0;border-bottom:1px solid var(--hair);text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink)}
+.wk-kv>span.soft{color:var(--graphite)}
+.wk-kv>span:nth-child(even){padding-left:16px;text-align:right}
+.wk-kv .t{font-weight:500}
+.wk-kv.--info{grid-template-columns:36% 1fr;gap:0;border:1px solid var(--hair)}
+.wk-kv.--info>span{padding:13px 14px;line-height:1.4}
+.wk-kv.--info>span:nth-child(odd){font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);border-right:1px solid var(--hair);padding-top:15px}
+.wk-kv.--info>span:nth-child(even){color:var(--ink);text-align:left;padding-left:14px}
+.wk-kv.--info>span:nth-last-child(-n+2){border-bottom:0}
+.wk-kv .t+ .t{}
+.wk-badge{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--light);padding:2px 8px;color:var(--graphite)}
+</style>
+<script>
+(function(){
+  const A=window.App;const W={};window.WK=W;
+  /* ---- data ---- */
+  STAFF.forEach(s=>{s.engagement=(s.staff_type==='seasonal')?'worker':'employee'});
+  const z=STAFF.find(s=>s.id==='zhadra');z.title='Florist · casual';z.rate=13.21;
+  const mx=STAFF.find(s=>s.id==='max');mx.title='Courier · casual';mx.rate=15.50;
+  if(window.PERSONAS&&!PERSONAS.find(p=>p.id==='zhadra'))PERSONAS.unshift({id:'zhadra',label:'Worker · casual'});
+  const isWorker=u=>(u||A.me()).engagement==='worker';
+  const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
+  const lab=off=>{const d=dOf(off);return `${DAYS[(d.getDay()+6)%7]} ${d.getDate()} ${['Oct','Nov'][d.getMonth()-9]}`};
+  /* offers: published by the studio; the worker takes or skips – nothing else happens */
+  W.offers=[
+    {id:1,off:0,hrs:'15:00–22:00',h:7,role:'florist',place:'SE1 studio',spots:1,taken:1,status:'accepted',pub:72},
+    {id:2,off:2,hrs:'08:00–15:00',h:7,role:'florist',place:'SE1 studio',spots:2,taken:1,status:'open',pub:96},
+    {id:3,off:3,hrs:'12:00–20:00',h:8,role:'florist',place:'SE1 studio',spots:1,taken:0,status:'open',pub:30,note:'Pre-Halloween · expect a busy day'},
+    {id:4,off:5,hrs:'08:00–15:00',h:7,role:'florist',place:'SE1 studio',spots:2,taken:0,status:'open',pub:120},
+    {id:5,off:6,hrs:'10:00–16:00',h:6,role:'florist',place:'SW6 shop',spots:1,taken:0,status:'open',pub:120},
+    {id:6,off:9,hrs:'08:00–15:00',h:7,role:'florist',place:'SE1 studio',spots:3,taken:0,status:'open',pub:48},
+    {id:7,off:-2,hrs:'12:00–20:00',h:8,role:'florist',place:'SE1 studio',spots:1,taken:1,status:'cancelled',pub:200,cancelNotice:9,comp:3}
+  ];
+  W.notice=48; /* hours – a setting, not a constant: the 2027 regulations will fix the threshold */
+  W.ghOffer={weeks:12,avg:21.5,pattern:'Mon, Thu, Sat',answered:null};
+  const fmtGBP=n=>'£'+n.toFixed(2);
+
+  /* ---- Shift offers (replaces the rota for workers) ---- */
+  const origSchedule=window.mount_schedule;
+  window.mount_schedule=function(p){
+    const u=A.me();
+    const ttl=document.querySelector('#s-schedule .ttl');
+    if(!isWorker(u)){if(ttl)ttl.textContent='Schedule';return origSchedule(p)}
+    if(ttl)ttl.textContent='Shift offers';
+    const el=document.getElementById('sch-body');
+    const mine=W.offers.filter(o=>o.status==='accepted');
+    const open=W.offers.filter(o=>o.status==='open'||o.status==='skipped');
+    const cancelled=W.offers.filter(o=>o.status==='cancelled');
+    const card=o=>{
+      const left=o.spots-o.taken;
+      if(o.status==='accepted')return `<div class="wk-offer mine"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="pill --done">Yours</span></div><div class="hrs">${o.hrs}</div><div class="meta">${o.h} h · ${o.place} · ${fmtGBP(u.rate)}/h + bonus</div><div class="btns"><button class="btn --sm --ghost" onclick="WK.release(${o.id})">Can't make it</button></div><div class="xs muted mt8">Release it any time before it starts – nothing is recorded against you.</div></div>`;
+      if(o.status==='skipped')return `<div class="wk-offer gone"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="wk-badge">Skipped</span></div><div class="hrs">${o.hrs}</div><div class="meta">${o.place} · still open – <button class="textbtn" onclick="WK.unskip(${o.id})">take it after all</button></div></div>`;
+      return `<div class="wk-offer"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="xs muted">${left} place${left===1?'':'s'} left</span></div><div class="hrs">${o.hrs}</div><div class="meta">${o.h} h · ${o.place} · ${fmtGBP(u.rate)}/h + bonus${o.note?' · '+o.note:''}</div><div class="btns"><button class="btn --sm --secondary" onclick="WK.skip(${o.id})">Skip</button><button class="btn --sm" onclick="WK.take(${o.id})">Take this shift</button></div></div>`;
+    };
+    const gh=W.ghOffer.answered?'':`<div class="panel blk" style="margin:0 var(--gutter) 18px;border-color:var(--ink)"><div class="caps muted">Guaranteed hours</div><div class="h3 mt8">You've worked about ${W.ghOffer.avg} h a week for ${W.ghOffer.weeks} weeks</div><p class="sm soft" style="margin:6px 0 14px">By law we must offer you a contract with those hours. You can say no and keep choosing shifts.</p><button class="btn --sm --secondary" onclick="App.go('guaranteed')">See the offer</button></div>`;
+    const canc=cancelled.map(o=>`<div class="wk-offer gone" style="opacity:.8"><div class="top"><span class="caps muted">${lab(o.off)}</span><span class="wk-badge">Cancelled by studio</span></div><div class="hrs">${o.hrs}</div><div class="meta">Cancelled ${o.cancelNotice} h before start. We're sorry – the shift is simply off; nothing is paid or deducted.</div></div>`).join('');
+    el.innerHTML=`
+      <div class="note" style="padding-top:0">No rota for you. We publish shifts, you take the ones that suit you. Skipping or ignoring an offer is not recorded and changes nothing – not your pay, not what we offer next.</div>
+      ${gh}
+      <div class="sec-head" style="margin-top:6px"><div class="h2">Your shifts</div><span class="xs muted">${mine.reduce((s,o)=>s+o.h,0)} h booked</span></div>
+      ${mine.length?mine.map(card).join(''):'<div class="note">Nothing booked yet.</div>'}
+      <div class="sec-head"><div class="h2">Open shifts</div><span class="xs muted">next 2 weeks</span></div>
+      ${open.map(card).join('')}
+      ${canc?`<div class="sec-head"><div class="h2">Cancelled</div></div>${canc}`:''}
+      <div class="grp">How this works</div>
+      <div class="wk-kv --info">
+        <span class="soft">Notice of a shift</span><span>at least ${W.notice} h before it starts</span>
+        <span class="soft">Releasing a shift</span><span>please 24 h before – or offer it to a colleague</span>
+        <span class="soft">If you release late</span><span>no fee, no rating – it goes back on the board as urgent; the release is on record, and a pattern of late releases is the one reason we may end the arrangement, in writing</span>
+        <span class="soft">Pay</span><span>hourly, never below £12.71, + bouquet bonus</span>
+        <span class="soft">Holiday</span><span>builds up as you work (12.07 % of your hours, up to 28 days); paid when you take it</span>
+      </div>
+      <div class="note">You're a casual worker: free to take or leave work, free to work elsewhere. Inside a shift the studio's standards apply like for everyone.</div>`;
+  };
+  W.take=id=>{const o=W.offers.find(x=>x.id===id);o.status='accepted';o.taken++;A.haptic();A.toast(`Booked · ${lab(o.off)}, ${o.hrs}`);setTimeout(()=>A.push('Shift booked',`${lab(o.off)} · ${o.hrs} · ${o.place}`,{icon:'check'}),600);window.mount_schedule()};
+  W.skip=id=>{const o=W.offers.find(x=>x.id===id);o.status='skipped';A.haptic();A.toast('Skipped – no effect on future offers');window.mount_schedule()};
+  W.unskip=id=>{const o=W.offers.find(x=>x.id===id);o.status='open';window.mount_schedule()};
+  W.release=id=>{const o=W.offers.find(x=>x.id===id);
+    A.sheet(`<div class="sh-head"><div class="h3">Release this shift?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(o.off)} · ${o.hrs}. It goes back to the open list. No fee, no rating, no effect on what we offer you next. The shift and the time you released it stay in your record, like every shift. We ask for 24 h notice when you can – or pass it to a colleague who wants it.</p><div class="caps muted" style="margin:18px 0 6px">Offer it to a colleague</div><button class="radio" onclick="App.closeSheet();App.toast('Offered to Max – he gets one push');WK.releaseDo(${o.id},'max')"><span class="rd"></span><span class="f1"><span class="sm">Max</span> <span class="xs muted">· casual courier, free that day</span></span></button></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();WK.releaseDo(${o.id})">Release to the board</button></div>`)};
+  W.releaseDo=(id,to)=>{const o=W.offers.find(x=>x.id===id);o.status='open';o.taken--;if(to){o.note='Offered to '+to.charAt(0).toUpperCase()+to.slice(1)+' first'}else{const soon=o.off<=1;if(soon){o.note='Urgent · +£1/h';o.pub=1}A.toast('Released – shift is open again')}window.mount_schedule()};
+
+  /* ---- Guaranteed-hours offer (ERA 2025, from 2027) ---- */
+  const screens=document.querySelector('.screens');
+  const mk=(id,ttl,body)=>{const s=document.createElement('section');s.className='scr me5';s.id='s-'+id;s.dataset.nav=ttl;s.dataset.group='Worker';s.innerHTML=`<div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('schedule')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">${ttl}</div></div><div class="scr-body" id="${id}-body" style="padding-bottom:32px">${body||''}</div>`;screens.appendChild(s);return s};
+  mk('guaranteed','Guaranteed hours');
+  mk('pay','Pay statement');
+  window.mount_guaranteed=function(){
+    const g=W.ghOffer,el=document.getElementById('guaranteed-body');
+    el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Offer · 20 Oct 2026</div><h1 class="h1 mt8">${g.avg} hours a week, guaranteed</h1>
+      <p class="soft" style="margin:14px 0 0">Over the last ${g.weeks} weeks you took shifts most weeks – on average ${g.avg} h, usually ${g.pattern}. The law asks us to offer you a contract that guarantees those hours.</p></div>
+      <div class="grp">What changes if you accept</div>
+      <div class="wk-kv --info">
+        <span class="soft">Hours</span><span>${g.avg} h a week, on a rota we agree with you</span>
+        <span class="soft">Status</span><span>employee, from 1 Nov 2026</span>
+        <span class="soft">Pay</span><span>same hourly rate, same bonus</span>
+        <span class="soft">Holiday</span><span>5.6 weeks a year, taken as days off</span>
+        <span class="soft">Sick pay, pension</span><span>yes</span>
+        <span class="soft">Shifts</span><span>rota + swaps, instead of open offers</span>
+      </div>
+      <div class="grp">If you say no</div>
+      <div class="note" style="padding-top:0">Nothing changes. You keep choosing shifts as now. We'll make the same offer again after the next ${g.weeks} weeks if the pattern holds. Saying no is never held against you.</div>
+      ${g.answered?`<div class="panel blk" style="margin:20px var(--gutter) 0"><div class="sm"><b>${g.answered==='yes'?'Accepted':'Declined'}</b> · 20 Oct</div><div class="xs soft">${g.answered==='yes'?'Tatiana will send your written terms within 7 days.':'We\'ll ask again in '+g.weeks+' weeks.'}</div></div>`:
+      `<div class="blk" style="margin-top:24px;display:grid;gap:8px"><button class="btn --block" onclick="WK.gh('yes')">Accept the contract</button><button class="btn --secondary --block" onclick="WK.gh('no')">No thanks – keep choosing shifts</button></div>`}`;
+  };
+  W.gh=a=>{W.ghOffer.answered=a;A.haptic();A.toast(a==='yes'?'Accepted – terms on the way':'Noted – nothing changes');window.mount_guaranteed()};
+
+  /* ---- Pay statement: hours × rate, learning, bonus share, rolled-up holiday 12.07 % ---- */
+  window.mount_pay=function(){
+    const u=A.me(),el=document.getElementById('pay-body'),rate=u.rate||13.21;
+    const hrs=21.5,learn=0.5,bonus=9.90,pot=4.20;
+    const base=hrs*rate,learnP=learn*rate,sub=base+learnP+bonus+pot,tot=sub;const holAcc=Math.round((hrs+learn)*0.1207),holBank=61,holCap=196;
+    el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">${fmtGBP(tot)}</h1><div class="sm soft mt4">Paid Fri 23 Oct · PAYE</div></div>
+      <div class="grp">Breakdown</div>
+      <div class="wk-kv">
+        <span class="soft">${hrs} h × ${fmtGBP(rate)}</span><span>${fmtGBP(base)}</span>
+        <span class="soft">Learning · ${learn*60} min (paid)</span><span>${fmtGBP(learnP)}</span>
+        <span class="soft">Bouquet bonus · 22 bouquets</span><span>${fmtGBP(bonus)}</span>
+        <span class="soft">Team pot share (by hours)</span><span>${fmtGBP(pot)}</span>
+        <span class="soft t">Total before tax</span><span class="t">${fmtGBP(tot)}</span>
+        <span class="soft">Holiday earned this week</span><span>+${holAcc} h</span>
+      </div>
+      <div class="note">Tax and National Insurance are taken off through PAYE, as for everyone on the team. Your hourly rate is never below £12.71 for any hour you work, including learning.</div>
+      <div class="grp">Holiday</div>
+      <div class="blk"><div class="panel"><div class="flex ai-c jc-sb"><span class="caps muted">Built up so far</span><span class="xs muted">cap 28 days · ${holCap} h</span></div><div class="h2 mt8">${holBank} h <span class="h4 muted" style="font-weight:300">≈ 8.7 days</span></div><div class="progress mt12"><i style="width:${Math.round(holBank/holCap*100)}%"></i></div><p class="sm soft" style="margin:12px 0 14px">Every hour you work adds 12.07 % to this. When you want a paid week off, take no shifts and request it here – we pay it at your average rate over the last 52 paid weeks, bonuses included.</p><button class="btn --sm --secondary" onclick="App.toast('Request sent – paid with the next statement')">Take paid holiday</button></div></div>
+      <div class="note">Holiday can't be swapped for cash while you work with us – only paid out if you leave.</div>
+      <div class="grp">Earlier weeks</div>
+      <div class="rows" style="border-top:1px solid var(--hair)">
+        <div class="row st"><span class="rt"><div class="l">Week 41 · 5–11 Oct</div><div class="d">Paid 16 Oct</div></span><span class="val" style="color:var(--ink)">£338.12</span></div>
+        <div class="row st"><span class="rt"><div class="l">Week 40 · 28 Sep–4 Oct</div><div class="d">Paid 9 Oct</div></span><span class="val" style="color:var(--ink)">£0.00 · no shifts</span></div>
+      </div>
+      <div class="note">A week with no shifts is just a week with no shifts.</div>`;
+  };
+
+  /* ---- Me: swap rows for a worker ---- */
+  const origMe=window.mount_me;
+  window.mount_me=function(){
+    origMe();const u=A.me();if(!isWorker(u))return;
+    const el=document.getElementById('me-body');
+    const since=el.querySelector('.prof .tt.xs');if(since)since.textContent='Casual worker · 1 Nov 2026 – 15 Mar 2027 · free to work elsewhere';
+    el.querySelectorAll('.row').forEach(r=>{
+      const l=r.querySelector('.l');if(!l)return;const t=l.textContent.trim();
+      if(t==='Schedule'){l.textContent='Shift offers';r.querySelector('.d').innerHTML=`<span class="accent">${W.offers.filter(o=>o.status==='open').length} open</span> · ${W.offers.filter(o=>o.status==='accepted').length} booked`}
+      if(t==='Time sheet'){r.querySelector('.d').textContent='Hours inside your booked shifts'}
+      if(t==='Leave request'){r.outerHTML=`<button class="row" onclick="App.go('agreement')">${A.icon('help').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">My agreement</div><div class="d">Casual worker · from 1 Nov 2026 · ends 15 Mar 2027 (peak season)</div></span><span class="val">${(window.AG&&AG.signed('worker'))?'Signed':'To sign'}</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button><button class="row" onclick="App.go('pay')">${A.icon('award').replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">Pay statements</div><div class="d">Weekly · PAYE · holiday 61 h built up</div></span><span class="val">£362.80</span>${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`}
+    });
+    const pills=el.querySelector('.pillrow');if(pills)pills.innerHTML=`<span class="pill --plain">Casual worker</span><span class="pill --plain">Shop floor</span>`;
+    const wk=el.querySelector('.sec-head .h2');if(wk&&wk.textContent==='This week')wk.textContent='This week · booked';
+    const ln=[...el.querySelectorAll('.note')].find(n=>/Learning is paid/.test(n.textContent));if(ln)ln.textContent='Only booked shifts count. Learning inside a shift is paid time.';
+    const sb=el.querySelector('.shiftb .btns');if(sb){const g=sb.querySelector('.--ghost');if(g){g.textContent='Shift offers'}}
+    const today=W.offers.find(o=>o.status==='accepted'&&o.off===0);const shb=el.querySelector('.shiftb');
+    if(shb){const c=shb.querySelector('.caps');const b=shb.querySelector('.big');const l=shb.querySelector('.sm.soft');
+      if(today){if(c)c.textContent='Today · booked '+today.hrs;if(b)b.textContent=today.hrs.split('–')[0];if(l)l.textContent='Your booked shift · clock in from '+today.hrs.split('–')[0]}
+      else{if(c)c.textContent='Today · nothing booked';if(l)l.textContent='Take a shift from the offers if you like'}}
+    const ts=[...el.querySelectorAll('.row')].find(r=>/Time sheet/.test(r.textContent));if(ts){const v=ts.querySelector('.val');if(v)v.textContent='38 h 30'}
+  };
+
+  /* ---- Home: a quiet strip for workers ---- */
+  const origHome=window.mount_home;
+  window.mount_home=function(){origHome();const u=A.me();if(!isWorker(u))return;
+    const body=document.getElementById('td-body');if(!body)return;
+    const n=W.offers.filter(o=>o.status==='open').length,m=W.offers.filter(o=>o.status==='accepted');
+    const strip=document.createElement('div');strip.className='panel blk';strip.style.margin='0 var(--gutter) 18px';
+    strip.innerHTML=`<div class="flex ai-c jc-sb"><span class="caps muted">Shifts</span><span class="pill --plain">casual</span></div><div class="h3 mt8">${n} open shifts you could take</div><div class="sm soft mt4">${m.length?`Booked: ${m.map(o=>lab(o.off)+' '+o.hrs).join(' · ')}`:'Nothing booked yet'}</div><button class="btn --sm --secondary mt16" onclick="App.go('schedule')">See offers</button>`;
+    body.insertBefore(strip,body.firstChild);
+    const today=W.offers.find(o=>o.status==='accepted'&&o.off===0);
+    body.querySelectorAll('*').forEach(e=>{if(e.children.length===0&&/Shift 8:00–16:00/.test(e.textContent))e.textContent=e.textContent.replace('Shift 8:00–16:00',today?'Booked '+today.hrs:'Nothing booked today')});
+  };
+
+  /* ---- Splash ---- */
+  const origSplash=window.mount_splash;
+  window.mount_splash=function(){origSplash();const u=A.me();if(isWorker(u)){document.getElementById('sp-eyebrow').textContent='Floritta Team · casual worker';document.querySelector('.sp-lead').textContent='Open shifts, your hours and lessons – nothing you have to do.'}};
+
+  /* ---- Manager: open shifts board inside Schedule (View as Valeria) ---- */
+  const origSchedule2=window.mount_schedule;
+  window.mount_schedule=function(p){origSchedule2(p);const u=A.me();if(isWorker(u)||!(u.role==='manager'||u.role==='owner'))return;
+    const el=document.getElementById('sch-body');const open=W.offers.filter(o=>o.status!=='cancelled');
+    const rows=open.map(o=>`<div class="appr"><div class="f1"><div class="sm"><b>${lab(o.off)}</b> · ${o.hrs} · ${o.place}</div><div class="xs muted">${o.taken}/${o.spots} taken${o.status==='accepted'?' · Zhadra':''} · published ${o.pub} h ago${o.pub<W.notice?' · <span class="accent">under notice</span>':''}</div></div><button class="btn --xs --secondary" onclick="App.toast('Cancelled – workers get one push; nothing is paid or deducted')">Cancel</button></div>`).join('');
+    const box=document.createElement('div');box.innerHTML=`<div class="grp first">Open shifts for casual workers · ${open.length}</div>${rows}<div class="blk" style="margin:12px 0 8px"><button class="btn --secondary --block --sm" onclick="WK.publish()">Publish a shift</button></div><div class="note" style="padding-top:0">Casual workers pick from this list. You can't assign them – only publish and wait.</div><div class="grp">Agreements ending soon</div><div class="appr"><div class="f1"><div class="sm"><b>Max</b> · casual courier · ends 15 Dec 2026</div><div class="xs muted">Decide by 1 Dec: extend, let it end, or offer a contract</div></div><button class="btn --xs --secondary" onclick="App.toast('Reminder set for 1 Dec')">Remind me</button></div><div class="appr"><div class="f1"><div class="sm"><b>Zhadra</b> · casual florist · ends 15 Mar 2027</div><div class="xs muted">Decide by 1 Mar</div></div></div>`;
+    el.insertBefore(box,el.firstChild);
+  };
+  W.publish=()=>A.sheet(`<div class="sh-head"><div class="h3">Publish a shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Day</label><input class="input" value="Sat 31 Oct"></div><div class="field"><label>Hours</label><input class="input" value="12:00–20:00"></div><div class="field"><label>Places</label><input class="input" value="2"></div><div class="field"><label>Note</label><input class="input" placeholder="e.g. Halloween – busy day"></div><p class="xs muted" style="margin:0">Starts in 11 days – well over the ${W.notice} h notice. Workers get one push; no reminders.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Published to 2 casual florists')">Publish</button></div>`);
+
+  /* ---- gutter notes + nav ---- */
+  const nav=document.getElementById('nav-list');
+  if(nav){['guaranteed','pay'].forEach(id=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.go('${id}')"><span>${id==='pay'?'Pay statement':'Guaranteed hours'}</span><small>worker</small></button>`;nav.appendChild(li)});
+    const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур worker (копия прототипа, 21.10)</h4><ul>
+      <li><b>Zhadra</b> – casual worker. Войти как она: «View as» в Me или персона слева.</li>
+      <li><b>Shift offers</b> вместо Schedule: студия публикует, worker берёт или пропускает. Пропуск и отказ ничего не записывают.</li>
+      <li><b>Guaranteed hours</b> – предложение по 12 неделям (ERA 2025, с 2027). «Нет» ничего не меняет.</li>
+      <li><b>Pay statement</b> – часы × ставка ≥ £12.71, обучение оплачено, PAYE; отпуск копится в часах (12,07 %, потолок 28 дней) и платится при взятии.</li>
+      <li><b>Внутри смены</b> всё как у всех: clock-in, задачи, уроки, бонус. Отличие только между сменами.</li>
+      <li><b>Менеджер</b> (View as Valeria → Schedule) видит доску открытых смен и может только публиковать, не назначать.</li>
+      <li><b>Срок договора</b> – «My agreement» в Me (worker и self-employed) с датой окончания; у менеджера в Schedule – «Agreements ending soon» с датой решения за 2 недели.</li><li><b>My agreement</b> – краткое содержание договора, галочка «прочитала», подпись пальцем (Clear / Sign), после подписи – дата, версия, картинка подписи. У Zhadra не подписан (на Today – напоминание), у Dana подписан на бумаге (скан от HR).</li><li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
+  /* ---- start as Zhadra ---- */
+  A.setUser('zhadra');A.state.clockedIn=false;
+  document.title='Floritta Staff — worker contour (copy)';
+  if(A.state.current){A.go(A.state.current,{},{replace:true})}
+})();
+</script>
+
+<!-- ============ CONTRACTOR CONTOUR (genuinely self-employed) – overlay, 21.10.2026 ============ -->
+<style>
+.ct-job{border:1px solid var(--hair);padding:14px var(--gutter);margin:0 var(--gutter) 10px;background:var(--paper)}
+.ct-job .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.ct-job .fee{font-family:var(--f-display);font-size:30px;font-weight:300;line-height:1;margin-top:6px}
+.ct-job .meta{font-size:13px;color:var(--graphite);margin-top:6px}
+.ct-job .btns{display:flex;gap:8px;margin-top:14px}
+.ct-job .btns .btn{flex:1}
+.ct-job.mine{border-color:var(--ink)}
+.ct-hide{display:none!important}
+</style>
+<script>
+(function(){
+  const A=window.App;const C={};window.CT=C;
+  STAFF.push({id:'dana',n:'Dana',role:'courier',title:'Courier · self-employed',initials:'DA',engagement:'contractor'});
+  const isCtr=u=>(u||A.me()).engagement==='contractor';
+  const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
+  const lab=off=>{const d=dOf(off);return `${DAYS[(d.getDay()+6)%7]} ${d.getDate()} ${['Oct','Nov'][d.getMonth()-9]}`};
+  const gbp=n=>'£'+n.toFixed(2);
+  /* jobs: published with a fixed fee; the courier applies, withdraws, sends a substitute or proposes a price on special jobs */
+  C.jobs=[
+    {id:11,off:0,win:'14:00–16:00',to:'SW11 · 6.2 km',fee:7,status:'mine',pickup:'13:30',note:'Hand to recipient, PIN'},
+    {id:12,off:0,win:'17:00–19:00',to:'SE16 · 3.1 km',fee:7,status:'open',pickup:'16:30'},
+    {id:13,off:1,win:'10:00–12:00',to:'N1 · 9.8 km',fee:9,status:'open',pickup:'09:20',hard:true},
+    {id:14,off:1,win:'12:00–18:00',to:'TW9 · 17 km · event, 12 boxes',fee:11,status:'open',pickup:'11:00',special:true},
+    {id:15,off:2,win:'09:00–11:00',to:'E2 · 4.4 km',fee:7,status:'open',pickup:'08:30'},
+    {id:16,off:3,win:'any time',to:'SW6 → SE1 · stock run',fee:14,status:'open',pickup:'flexible',special:true}
+  ];
+  C.profile={utr:'',other:['Deliveroo','Stuart'],insurance:'Hire & Reward · valid to 03.2027',vehicle:'Own car',invoice:'own'};
+  const card=j=>{
+    if(j.status==='mine')return `<div class="ct-job mine"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --done">Yours</span></div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · collect ${j.pickup}${j.note?' · '+j.note:''}</div><div class="btns"><button class="btn --sm --ghost" onclick="CT.sub(${j.id})">Send a substitute</button><button class="btn --sm --secondary" onclick="CT.withdraw(${j.id})">Withdraw</button></div></div>`;
+    if(j.status==='applied')return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --review">Applied</span></div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · first application that passes the checks is confirmed</div></div>`;
+    if(j.status==='proposed')return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span><span class="pill --review">Your price sent</span></div><div class="fee">${gbp(j.fee)} <span class="xs muted">→ ${gbp(j.proposed)}</span></div><div class="meta">${j.to} · studio answers in the app</div></div>`;
+    return `<div class="ct-job"><div class="top"><span class="caps muted">${lab(j.off)} · ${j.win}</span>${j.hard?'<span class="wk-badge">hard window</span>':j.special?'<span class="wk-badge">special</span>':''}</div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.to} · collect ${j.pickup}</div><div class="btns"><button class="btn --sm" onclick="CT.apply(${j.id})">Apply</button></div></div>`;
+  };
+  const board=()=>{
+    const mine=C.jobs.filter(j=>j.status==='mine'),open=C.jobs.filter(j=>j.status!=='mine');
+    return `<div class="note" style="padding:0 var(--gutter) 8px">Jobs with a fixed fee. Apply if you want one, ignore the rest. Nothing is required of you, and nothing is recorded when you pass.</div>
+      <div class="sec-head" style="margin-top:6px"><div class="h2">Your jobs</div><span class="xs muted">${mine.length} · ${gbp(mine.reduce((s,j)=>s+j.fee,0))}</span></div>
+      ${mine.length?mine.map(card).join(''):'<div class="note">No jobs taken.</div>'}
+      <div class="sec-head"><div class="h2">Jobs board</div><span class="xs muted">today + 3 days</span></div>
+      ${open.map(card).join('')}
+      <div class="grp">How this works</div>
+      <div class="wk-kv --info">
+        <span class="soft">Fee</span><span>fixed per job, shown before you apply</span>
+        <span class="soft">Who does it</span><span>you, or a substitute you choose (18+, right to work checked)</span>
+        <span class="soft">Withdraw</span><span>any time before collection – no fee, no mark</span>
+        <span class="soft">Other clients</span><span>work for anyone, also while carrying our item</span>
+        <span class="soft">Paid</span><span>weekly statement, or your own invoice</span>
+        <span class="soft">Holiday, sick pay</span><span>none – you are in business on your own account</span>
+      </div>`;
+  };
+  C.apply=id=>{const j=C.jobs.find(x=>x.id===id);j.status='applied';A.haptic();A.toast('Applied');setTimeout(()=>{j.status='mine';A.push('Job confirmed',`${lab(j.off)} · ${j.win} · ${j.to}`,{icon:'check'});C.remount()},1400);C.remount()};
+  C.withdraw=id=>{const j=C.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Withdraw from this job?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(j.off)} · ${j.win} · ${j.to}. It goes back on the board. No fee, no rating, no effect on future jobs. The withdrawal stays in the job's record, like everything else. Please only before collection.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();CT.withdrawDo(${id})">Withdraw</button></div>`)};
+  C.withdrawDo=id=>{const j=C.jobs.find(x=>x.id===id);j.status='open';A.toast('Withdrawn – job is back on the board');C.remount()};
+  C.sub=id=>{const j=C.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Send a substitute</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">You don't need our permission. The person must be 18+ and have had a right-to-work check with us – that's the law, not our choice. You stay responsible for the job and pay them what you agree.</p><div class="field"><label>Who is collecting?</label><input class="input" placeholder="Name or @telegram"></div><p class="xs muted" style="margin:0">Not registered yet? They register in the app, we check right to work within 24 h, then they can collect.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();CT.subDo(${id})">Tell the studio</button></div>`)};
+  C.subDo=id=>{const j=C.jobs.find(x=>x.id===id);j.note='Substitute: Ivan collects';A.toast('Noted – Ivan collects, fee still paid to you');C.remount()};
+  C.propose=id=>{const j=C.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Propose your price</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">${j.to}. Listed at ${gbp(j.fee)}. Special jobs can be priced by you; the studio accepts or declines in the app.</p><div class="field"><label>Your price</label><input class="input" id="ct-price" value="${(j.fee*1.6).toFixed(0)}"></div><div class="field"><label>Why (optional)</label><input class="input" placeholder="e.g. 12 boxes, two trips"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();CT.proposeDo(${id})">Send</button></div>`)};
+  C.proposeDo=id=>{const j=C.jobs.find(x=>x.id===id);const v=parseFloat((document.getElementById('ct-price')||{}).value)||j.fee*1.6;j.status='proposed';j.proposed=v;A.toast('Price sent to the studio');C.remount()};
+  C.remount=()=>{const cur=A.state.current;if(cur==='home')window.mount_home();else if(cur==='jobs')window.mount_jobs();else if(cur==='me')window.mount_me()};
+
+  /* ---- screens ---- */
+  const screens=document.querySelector('.screens');
+  const mk=(id,ttl,back)=>{const s=document.createElement('section');s.className='scr me5';s.id='s-'+id;s.dataset.nav=ttl;s.dataset.group='Self-employed';s.innerHTML=`<div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('${back||'me'}')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">${ttl}</div></div><div class="scr-body" id="${id}-body" style="padding-bottom:32px"></div>`;screens.appendChild(s);return s};
+  mk('jobs','Jobs board','home');mk('statements','Statements & invoices');mk('bizprofile','Business profile');mk('taxstatus','Tax & status');
+  window.mount_jobs=function(){document.getElementById('jobs-body').innerHTML=board()};
+  window.mount_statements=function(){
+    const el=document.getElementById('statements-body');
+    el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">£127.00</h1><div class="sm soft mt4">Paid Fri 23 Oct · bank transfer · gross, no deductions</div></div>
+      <div class="grp">Jobs in this statement</div>
+      <div class="wk-kv">
+        <span class="soft">14 deliveries × £7–£11</span><span>£118.00</span>
+        <span class="soft">1 hard window</span><span>£1.50</span>
+        <span class="soft">1 return to studio (recipient absent)</span><span>£4.50</span>
+        <span class="soft">Peak Sat 17 Oct</span><span>£3.00</span>
+        <span class="soft t">Total</span><span class="t">£127.00</span>
+      </div>
+      <div class="note">No tax or National Insurance is taken off – you handle your own. No holiday pay, sick pay or pension: this is a statement for services, not wages.</div>
+      <div class="grp">Your invoice instead?</div>
+      <div class="blk"><div class="panel"><div class="h4">Send your own invoice</div><p class="sm soft" style="margin:6px 0 14px">If you prefer to invoice us, upload it here and we pay against it. Otherwise this weekly statement is the record.</p><div class="flex" style="gap:8px"><button class="btn --secondary --sm" onclick="App.toast('Upload – demo')">Upload invoice</button><button class="btn --ghost --sm" onclick="App.toast('PDF – demo')">Download statement</button></div></div></div>
+      <div class="grp">Earlier</div>
+      <div class="rows" style="border-top:1px solid var(--hair)"><div class="row st"><span class="rt"><div class="l">Week 41</div><div class="d">Paid 16 Oct · your invoice #0041</div></span><span class="val" style="color:var(--ink)">£96.00</span></div><div class="row st"><span class="rt"><div class="l">Week 40</div><div class="d">No jobs</div></span><span class="val" style="color:var(--ink)">£0.00</span></div></div>`;
+  };
+  window.mount_bizprofile=function(){
+    const p=C.profile,el=document.getElementById('bizprofile-body');
+    el.innerHTML=`<div class="note" style="padding-top:8px">Optional. It never affects which jobs you see or get. We ask once a quarter at most, and only keep what you type here.</div>
+      <div class="grp">Your business</div>
+      <div class="blk"><div class="field"><label>UTR (optional)</label><input class="input" placeholder="10 digits" value="${p.utr}"></div>
+      <div class="field"><label>Other platforms or clients you work for (optional)</label><input class="input" value="${p.other.join(', ')}"></div>
+      <div class="field"><label>Courier insurance</label><input class="input" value="${p.insurance}"></div>
+      <div class="field"><label>Vehicle</label><input class="input" value="${p.vehicle}"></div>
+      <div class="field"><label>How you'd like to be paid</label><input class="input" value="${p.invoice==='own'?'My own invoice':'Weekly statement'}"></div></div>
+      <div class="blk" style="margin-top:8px"><button class="btn --block --secondary" onclick="App.toast('Saved')">Save</button></div>
+      <div class="note">Why we ask: it helps both of us show, if anyone ever asks, that you run your own business. Leaving it empty changes nothing.</div>`;
+  };
+  window.mount_taxstatus=function(){
+    document.getElementById('taxstatus-body').innerHTML=`<div class="pad" style="padding-top:8px"><h1 class="h2">You work for yourself</h1><p class="soft" style="margin:12px 0 0">You are a self-employed courier, not an employee or worker of Floritta. You choose which jobs to take, you may send a substitute, and you may work for anyone else at any time.</p></div>
+      <div class="grp">Tax</div>
+      <div class="wk-kv --info"><span class="soft">Income tax & NI</span><span>yours to declare (Self Assessment)</span><span class="soft">Trading allowance</span><span>first £1,000 a year tax-free</span><span class="soft">From us</span><span>weekly statement or your invoice, paid gross</span></div>
+      <div class="grp">Not included</div>
+      <div class="wk-kv --info"><span class="soft">Holiday pay</span><span>no</span><span class="soft">Sick pay</span><span>no</span><span class="soft">Pension</span><span>no</span><span class="soft">Minimum wage</span><span>no – a price per job instead</span></div>
+      <div class="note">Agreement v1.0 signed 03.10.2026 · <button class="textbtn" onclick="App.go('agreement')">Open</button></div>`;
+  };
+
+  /* ---- home / me / tabs for a contractor ---- */
+  const origHome=window.mount_home,origMe=window.mount_me;
+  window.mount_home=function(){if(!isCtr())return origHome();
+    const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
+    const mine=C.jobs.filter(j=>j.status==='mine'&&j.off===0);
+    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Dana</h1><div class="sm soft mt4">${mine.length?`${mine.length} job today · collect ${mine[0].pickup}`:'No jobs taken today'}</div></div>
+      ${board()}`;
+  };
+  window.mount_me=function(){if(!isCtr())return origMe();
+    const u=A.me(),el=document.getElementById('me-body');
+    const R=(i,l,d,v,fn)=>`<button class="row" onclick="${fn}">${A.icon(i).replace('<svg','<svg class="ic"')}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${v?`<span class="val">${v}</span>`:''}${A.icon('chev').replace('<svg','<svg class="chev"')}</button>`;
+    el.innerHTML=`<div class="prof" style="margin-top:6px">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${u.n}</h1><div class="tt">${u.title}</div><div class="tt xs muted">Works with Floritta since Oct 2026 · own business</div></div></div>
+      <div class="pillrow" style="padding:14px var(--gutter) 0"><span class="pill --plain">Self-employed</span><span class="pill --plain">Own car</span><span class="pill --plain">Also on Deliveroo</span></div>
+      <div class="grp">Jobs</div><div class="rows">
+        ${R('calendar','Jobs board',`${C.jobs.filter(j=>j.status!=='mine').length} open · ${C.jobs.filter(j=>j.status==='mine').length} taken`,'',"App.go('jobs')")}
+        ${R('award','Statements & invoices','Weekly · gross · or your own invoice','£127.00',"App.go('statements')")}
+      </div>
+      <div class="grp">Your business</div><div class="rows">
+        ${R('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
+        ${R('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
+        ${R('calendar','My agreement','Services agreement · 3 Oct 2026 – 30 Sep 2027 · renew by 1 Sep',(window.AG&&AG.signed('contractor'))?'Signed':'To sign',"App.go('agreement')")}
+      </div>
+      <div class="grp">Preferences</div><div class="rows">
+        ${R('bell','Job alerts','By area and time · max 6 a day · quiet 21–08','On',"App.go('settings')")}
+        ${R('globe','Language','','English',"ME5.openLang()")}
+      </div>
+      <div class="grp">Support</div><div class="rows">${R('help','Help','Collection, handover, problems','',"App.go('help')")}${R('eye','View as','','',"ME5.openViewAs()")}${R('logout','Sign out','','',"ME5.signOut()")}</div>
+      <div class="note tc" style="padding:28px var(--gutter) 8px">No shifts, no rota, no tasks, no lessons. Briefs come with each job.</div>`;
+  };
+  const tabs=()=>{const ct=isCtr();document.querySelectorAll('#tabbar .tab').forEach(t=>{const k=t.dataset.tab;if(k==='tasks'||k==='learn')t.classList.toggle('ct-hide',ct);if(k==='work'){const s=t.querySelector('span:not(.dot)');if(s)s.textContent=ct?'MY JOBS':(t.dataset.lbl||s.textContent);if(!t.dataset.lbl&&s)t.dataset.lbl=s.textContent}});document.getElementById('tabbar').style.gridTemplateColumns=ct?'repeat(3,1fr)':''};
+  document.addEventListener('user',tabs);
+  const origWork=window.mount_work;window.mount_work=function(p){if(!isCtr())return origWork&&origWork(p);A.go('jobs',{},{replace:true})};
+  const origSplash=window.mount_splash;window.mount_splash=function(){origSplash();if(isCtr()){document.getElementById('sp-eyebrow').textContent='Floritta Jobs · self-employed';document.querySelector('.sp-lead').textContent='Jobs with a fixed fee. Take what suits you.'}};
+  /* persona + nav */
+  const pe=document.getElementById('persona');if(pe&&!pe.querySelector('[data-id="dana"]')){const u=A.user('dana');const b=document.createElement('button');b.dataset.id='dana';b.innerHTML=`${A.avatar(u,'--sm')}<span>${u.n}</span><small>Courier · self-employed</small>`;b.onclick=()=>A.setUser('dana');pe.insertBefore(b,pe.children[1]||null)}
+  const nav=document.getElementById('nav-list');if(nav){[['jobs','Jobs board'],['statements','Statements & invoices'],['bizprofile','Business profile'],['taxstatus','Tax & status']].forEach(([id,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.setUser('dana');App.go('${id}')"><span>${l}</span><small>self-employed</small></button>`;nav.appendChild(li)});
+    const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур self-employed (Dana)</h4><ul><li><b>Jobs board</b> – работы с фиксированной ценой за задачу; Apply / Withdraw без последствий.</li><li><b>Send a substitute</b> – без нашего разрешения, только 18+ и проверка права на работу (закон).</li><li><b>Statements & invoices</b> – gross, без вычетов, без holiday pay; можно слать свой счёт.</li><li><b>Business profile</b> – добровольно, раз в квартал: UTR, другие клиенты, страховка.</li><li>Нет смен, роты, задач, уроков и табеля. Три вкладки вместо пяти.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
+  tabs();
+})();
+</script>
+
+<!-- ============ AGREEMENT SIGNING (worker + contractor) – overlay, 22.10.2026 ============ -->
+<style>
+.ag-doc{border:1px solid var(--hair);margin:0 var(--gutter);padding:18px 16px;background:var(--paper)}
+.ag-sig{position:relative;margin:0 var(--gutter);border:1px solid var(--ink);background:#fff;height:170px}
+.ag-sig canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.ag-sig .line{position:absolute;left:16px;right:16px;bottom:38px;border-bottom:1px solid var(--light);pointer-events:none}
+.ag-sig .ph{position:absolute;left:16px;bottom:14px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);pointer-events:none}
+.ag-sig .x{position:absolute;left:16px;bottom:44px;font-family:var(--f-display);font-size:22px;color:var(--grey);pointer-events:none}
+.ag-signed img{display:block;max-width:100%;height:90px;object-fit:contain;object-position:left;margin-top:10px;border-bottom:1px solid var(--hair)}
+.ag-check{display:flex;gap:12px;align-items:flex-start;margin:16px var(--gutter) 0;text-align:left;font-size:14px;color:var(--graphite)}
+.ag-check i{flex:none;width:20px;height:20px;border:1px solid var(--ink);margin-top:1px;display:flex;align-items:center;justify-content:center}
+.ag-check.on i::after{content:"";width:10px;height:10px;background:var(--ink)}
+</style>
+<script>
+(function(){
+  const A=window.App;const G={};window.AG=G;
+  G.docs={
+    worker:{title:'Casual Worker Agreement',ver:'v1.0',from:'1 Nov 2026',to:'15 Mar 2027',signed:null,
+      terms:[['Your status','casual worker – not an employee, not self-employed'],['Work','we publish shifts; you take the ones you want. No obligation either way between shifts'],['Pay','hourly rate per hour worked (never below £12.71) + bouquet bonus, weekly, through PAYE'],['Holiday','12.07 % of your hours builds up, up to 28 days a year; paid when you take it'],['Sick pay, pension','Statutory Sick Pay; workplace pension if you qualify'],['Inside a shift','studio standards, clock-in, tasks and lessons apply like for everyone'],['Ending','either of us, in writing; this agreement ends on 15 Mar 2027 unless renewed']]},
+    contractor:{title:'Services Agreement',ver:'v1.0',from:'3 Oct 2026',to:'30 Sep 2027',signed:{via:'paper',at:'3 Oct 2026, 11:05',by:'HR · Sasha',img:null},
+      terms:[['Your status','self-employed – you run your own business'],['Jobs','fixed fee per job, shown before you apply; apply or withdraw freely before collection'],['Substitute','you may send someone else (18+, right to work checked)'],['Other clients','you may work for anyone'],['Pay','weekly statement or your own invoice, gross – you handle your own tax'],['Not included','holiday pay, sick pay, pension'],['Ending','either of us, 7 days in writing; ends 30 Sep 2027 unless renewed']]}
+  };
+  const kind=()=>{const u=A.me();return u.engagement==='contractor'?'contractor':u.engagement==='worker'?'worker':null};
+  G.signed=k=>!!(G.docs[k]&&G.docs[k].signed);
+  let drawn=false,agreed=false;
+  /* screen */
+  const s=document.createElement('section');s.className='scr me5';s.id='s-agreement';s.dataset.nav='My agreement';s.dataset.group='Worker';
+  s.innerHTML=`<div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My agreement</div></div><div class="scr-body has-cta" id="agreement-body"></div><div class="cta-bar" id="agreement-cta"></div>`;
+  document.querySelector('.screens').appendChild(s);
+  window.mount_agreement=function(){
+    const k=kind()||'worker',d=G.docs[k],el=document.getElementById('agreement-body'),cta=document.getElementById('agreement-cta');
+    drawn=false;agreed=false;
+    const kv=d.terms.map(t=>`<span>${t[0]}</span><span>${t[1]}</span>`).join('');
+    const head=`<div class="pad" style="padding-top:8px"><div class="caps muted">${d.ver} · ${d.from} – ${d.to}</div><h1 class="h2 mt8">${d.title}</h1><div class="sm soft mt4">Floritta LTD · Unit 3 The Willows, 80 Willow Walk, London SE1 5SY</div></div>
+      <div class="grp">In short</div><div class="wk-kv --info">${kv}</div>
+      <div class="blk" style="margin-top:14px"><button class="btn --secondary --block --sm" onclick="App.toast('Full agreement PDF – demo')">Read the full agreement (PDF)</button></div>`;
+    if(d.signed){
+      const sg=d.signed;
+      el.innerHTML=head+`<div class="grp">Signature</div><div class="blk ag-signed"><div class="panel"><div class="flex ai-c jc-sb"><span class="caps muted">Signed</span><span class="pill --done">${sg.via==='app'?'In the app':'On paper'}</span></div><div class="sm mt8"><b>${sg.at}</b></div><div class="xs soft mt4">${sg.via==='app'?`${d.ver} · signed by you on this phone`:`${d.ver} · signed at the studio · scan uploaded by ${sg.by}`}</div>${sg.img?`<img src="${sg.img}" alt="Your signature">`:''}</div></div>
+        <div class="note">A signed copy is always here. If we change the agreement, you'll be asked to sign the new version – the old one stays on record.</div>`;
+      cta.innerHTML=`<button class="btn --block --secondary" onclick="App.toast('Signed PDF – demo')">Download signed copy</button>`;
+      return;
+    }
+    el.innerHTML=head+`
+      <div class="grp">Sign</div>
+      <button class="ag-check" id="ag-read" onclick="AG.toggleRead()"><i></i><span>I have read the agreement and agree to it.</span></button>
+      <div class="sm soft" style="margin:16px var(--gutter) 8px">Sign with your finger in the box.</div>
+      <div class="ag-sig"><canvas id="ag-canvas" aria-label="Signature pad"></canvas><span class="x">×</span><span class="line"></span><span class="ph">Signature · ${A.me().n}</span></div>
+      <div class="note">Prefer paper? Ask HR at the studio – they sign with you and upload the scan, and it shows up here. You can start taking shifts once either is done.</div>`;
+    cta.innerHTML=`<button class="btn --ghost" onclick="AG.clear()">Clear</button><button class="btn" id="ag-sign" disabled onclick="AG.sign()">Sign</button>`;
+    setTimeout(G.initPad,30);
+  };
+  G.toggleRead=()=>{agreed=!agreed;document.getElementById('ag-read').classList.toggle('on',agreed);A.haptic();G.upd()};
+  G.upd=()=>{const b=document.getElementById('ag-sign');if(b)b.disabled=!(drawn&&agreed)};
+  G.initPad=()=>{
+    const c=document.getElementById('ag-canvas');if(!c)return;const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+    c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);const x=c.getContext('2d');x.scale(dpr,dpr);
+    x.lineWidth=2.2;x.lineCap='round';x.lineJoin='round';x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#1e1a17';
+    let down=false,lx=0,ly=0;
+    const pos=e=>{const b=c.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]};
+    c.onpointerdown=e=>{down=true;c.setPointerCapture(e.pointerId);[lx,ly]=pos(e);x.beginPath();x.arc(lx,ly,1.1,0,Math.PI*2);x.fillStyle=x.strokeStyle;x.fill()};
+    c.onpointermove=e=>{if(!down)return;const [nx,ny]=pos(e);x.beginPath();x.moveTo(lx,ly);x.lineTo(nx,ny);x.stroke();lx=nx;ly=ny;if(!drawn){drawn=true;document.querySelectorAll('.ag-sig .x,.ag-sig .ph').forEach(n=>n.style.opacity=.35);G.upd()}};
+    c.onpointerup=c.onpointercancel=()=>{down=false};
+  };
+  G.clear=()=>{const c=document.getElementById('ag-canvas');if(!c)return;c.getContext('2d').clearRect(0,0,c.width,c.height);drawn=false;document.querySelectorAll('.ag-sig .x,.ag-sig .ph').forEach(n=>n.style.opacity=1);G.upd()};
+  G.sign=()=>{const k=kind()||'worker',d=G.docs[k],c=document.getElementById('ag-canvas');
+    d.signed={via:'app',at:'22 Oct 2026, '+new Date().toTimeString().slice(0,5),img:c.toDataURL('image/png')};
+    A.haptic();A.toast('Signed – a copy is saved here');setTimeout(()=>A.push('Agreement signed',`${d.title} ${d.ver} · copy in My agreement`,{icon:'check'}),700);window.mount_agreement()};
+  /* Today: reminder for an unsigned worker */
+  const origHome=window.mount_home;window.mount_home=function(){origHome();const k=kind();if(!k||G.signed(k))return;const body=document.getElementById('td-body');if(!body)return;
+    const b=document.createElement('div');b.className='panel blk';b.style.margin='0 var(--gutter) 14px';b.style.borderColor='var(--ink)';
+    b.innerHTML=`<div class="caps muted">Before your first ${k==='worker'?'shift':'job'}</div><div class="h3 mt8">Sign your agreement</div><div class="sm soft mt4">Takes a minute. Or sign on paper with HR at the studio.</div><button class="btn --sm mt16" onclick="App.go('agreement')">Read and sign</button>`;
+    body.insertBefore(b,body.firstChild)};
+  /* nav */
+  const nav=document.getElementById('nav-list');if(nav){const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="agreement" onclick="App.go('agreement')"><span>My agreement · sign</span><small>worker / s-e</small></button>`;nav.appendChild(li)}
+})();
+</script>
+
+
+<!-- ============ RESERVE (Work with us → app) + FLORIST JOBS (self-employed) – overlay, 22.10.2026 ============ -->
+<!-- Additive only: no existing screen, persona or function is changed. Every override falls through to the previous version for other personas. -->
+<style>
+.rs-steps{margin:0 var(--gutter);border-top:1px solid var(--hair)}
+.rs-step{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.rs-step .n{flex:none;width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px}
+.rs-step.done .n{background:var(--ink);color:var(--paper)}
+.rs-step.done .n svg{width:14px;height:14px;stroke:var(--paper)}
+.rs-step.wait .n{border-style:dashed}
+.rs-step.off{opacity:.45}
+.rs-step .l{font-size:15px}
+.rs-step .d{font-size:13px;color:var(--graphite);margin-top:3px;line-height:1.4}
+.rs-step .s{margin-left:auto;flex:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);padding-top:4px}
+.rs-bar{height:2px;background:var(--hair);margin:14px var(--gutter) 0}
+.rs-bar i{display:block;height:2px;background:var(--ink);transition:width .4s}
+.rs-path{display:block;width:calc(100% - 2*var(--gutter));margin:0 var(--gutter) 10px;border:1px solid var(--hair);padding:16px;text-align:left;background:var(--paper)}
+.rs-path.on{border-color:var(--ink)}
+.rs-path .hd{display:flex;align-items:center;gap:12px}
+.rs-path .hd i{flex:none;width:20px;height:20px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.rs-path.on .hd i::after{content:"";width:10px;height:10px;background:var(--ink)}
+.rs-path ul{margin:10px 0 0 32px;padding:0;font-size:13px;color:var(--graphite);line-height:1.55}
+.rs-mail{margin:0 var(--gutter);border:1px solid var(--hair);background:#fff}
+.rs-mail .hdr{padding:12px 14px;border-bottom:1px solid var(--hair);font-size:12px;color:var(--grey);line-height:1.6}
+.rs-mail .hdr b{color:var(--ink);font-weight:500}
+.rs-mail .bd{padding:22px 18px 8px;font-size:14px;line-height:1.6;color:var(--ink)}
+.rs-mail .bd p{margin:0 0 12px}
+.rs-mail .code{font-family:var(--f-display);font-size:30px;font-weight:300;letter-spacing:.08em;margin:6px 0 2px}
+.rs-mail .stores{display:flex;gap:8px;margin:14px 0}
+.rs-mail .stores span{flex:1;border:1px solid var(--ink);padding:10px;text-align:center;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.rs-mail .ft{padding:14px 18px 18px;border-top:1px solid var(--hair);font-size:12px;color:var(--grey);line-height:1.55}
+.rs-mail .ft u{color:var(--ink)}
+.rs-funnel{display:grid;grid-template-columns:repeat(4,1fr);margin:0 var(--gutter);border:1px solid var(--hair)}
+.rs-funnel div{padding:12px 8px;border-right:1px solid var(--hair)}
+.rs-funnel div:last-child{border-right:0}
+.rs-funnel b{display:block;font-family:var(--f-display);font-size:28px;font-weight:300;line-height:1}
+.rs-funnel small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:6px;line-height:1.3}
+.rs-chip{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--light);padding:1px 6px;color:var(--graphite);margin-right:4px}
+.rs-hide{display:none!important}
+.rs-grp{padding:30px var(--gutter) 10px;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);font-weight:400}
+.rs-note{padding:14px var(--gutter);font-size:13px;color:var(--graphite);line-height:1.5}
+.rs-warn{margin:10px 0 0;padding:10px 12px;border-left:2px solid var(--ink);background:var(--silver);font-size:13px;color:var(--graphite)}
+</style>
+<script>
+(function(){
+  const A=window.App;const R={};window.RS=R;
+  /* ---- people ---- */
+  STAFF.push({id:'lina',n:'Lina',role:'florist',title:'Florist · in the reserve',initials:'LI',engagement:'reserve'});
+  STAFF.push({id:'mira',n:'Mira',role:'florist',title:'Florist · self-employed',initials:'MI',engagement:'contractor'});
+  if(window.PERSONAS){PERSONAS.splice(1,0,{id:'lina',label:'Reserve · new'},{id:'mira',label:'Florist · self-employed'})}
+  const isRes=u=>(u||A.me()).engagement==='reserve';
+  const isMira=u=>(u||A.me()).id==='mira';
+  const isMgr=u=>(u||A.me()).role==='manager';
+  const gbp=n=>'£'+n.toFixed(0);
+  const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
+  const lab=off=>{const d=dOf(off);return `${DAYS[(d.getDay()+6)%7]} ${d.getDate()} ${['Oct','Nov'][d.getMonth()-9]}`};
+  const ic=(n,c)=>A.icon(n).replace('<svg',`<svg class="${c||'ic'}"`);
+
+  /* ---- onboarding state for Lina (came from the Work with us form) ---- */
+  R.ob={
+    paths:{shifts:false,jobs:false},
+    rtw:'todo',            /* todo → sent → checked */
+    pay:false,
+    signed:{worker:false,contractor:false},
+    lessons:false
+  };
+  const steps=()=>{const o=R.ob,p=o.paths,any=p.shifts||p.jobs;
+    return [
+      {k:'details',l:'Your details',d:'From your application: SE16 · weddings, hand-tied · weekends',done:true,fn:"RS.details()"},
+      {k:'paths',l:'How you\'d like to work',d:any?[p.shifts?'Shifts at the studio':null,p.jobs?'Event & wedding jobs':null].filter(Boolean).join(' + '):'Shifts, jobs, or both',done:any,fn:"App.go('rs-paths')"},
+      {k:'rtw',l:'Right to work',d:o.rtw==='checked'?'Checked on GOV.UK · 22 Oct · by Valeria':o.rtw==='sent'?'Share code sent · we check within 24 h':'Share code from GOV.UK, or your UK / Irish passport',done:o.rtw==='checked',wait:o.rtw==='sent',fn:"App.go('rs-rtw')"},
+      {k:'pay',l:'Pay details',d:o.pay?'Bank · NI number saved':p.jobs&&!p.shifts?'Bank account · UTR optional':'Bank account · National Insurance number',done:o.pay,fn:"RS.paySheet()"},
+      {k:'sign',l:p.shifts&&p.jobs?'Sign your two agreements':'Sign your agreement',d:!any?'After you choose how to work':[p.shifts?`Casual Worker Agreement${o.signed.worker?' ✓':''}`:null,p.jobs?`Florist Services Agreement${o.signed.contractor?' ✓':''}`:null].filter(Boolean).join(' · '),done:any&&(!p.shifts||o.signed.worker)&&(!p.jobs||o.signed.contractor),off:!any,fn:any?"RS.signSheet()":""},
+      {k:'lessons',l:'Two short lessons',d:p.shifts?'Studio safety 6 min · Our standards 8 min · paid with your first shift':'Only for studio shifts – jobs come with their own brief',done:o.lessons||(any&&!p.shifts),off:!p.shifts,fn:p.shifts?"RS.lessons()":""}
+    ]};
+  const ready=()=>steps().every(s=>s.done);
+
+  /* ---- screens ---- */
+  const screens=document.querySelector('.screens');
+  const mk=(id,ttl,back,cta)=>{const s=document.createElement('section');s.className='scr me5';s.id='s-'+id;s.dataset.nav=ttl;s.dataset.group='Reserve';s.innerHTML=`<div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('${back||'home'}')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">${ttl}</div></div><div class="scr-body${cta?' has-cta':''}" id="${id}-body" style="padding-bottom:32px"></div>${cta?`<div class="cta-bar" id="${id}-cta"></div>`:''}`;screens.appendChild(s);return s};
+  mk('rs-email','Invite email · preview','home');
+  mk('rs-paths','How you\'d like to work','home',true);
+  mk('rs-rtw','Right to work','home',true);
+  mk('reserve','Reserve · manager','home');
+
+  /* 1. the email the candidate gets when a manager presses «Invite to reserve» in CRM */
+  window.mount_rs_email=function(){
+    document.getElementById('rs-email-body').innerHTML=`<div class="rs-note" style="padding-top:8px">Sent from CRM when a manager presses <b>Invite to reserve</b> on a Work-with-us application. One email, no follow-up chasers.</div>
+      <div class="rs-mail">
+        <div class="hdr"><b>Floritta Studio</b><br>To: Lina K.<br>Subject: <b>You're in the Floritta reserve</b></div>
+        <div class="bd">
+          <p>Hi Lina,</p>
+          <p>Thank you for applying through <i>Work with us</i>. We loved your wedding work and would like to keep you in our reserve of florists.</p>
+          <p><b>How it works.</b> Download the Floritta Team app and join with your code. When we have an open shift at the studio or a wedding or event job, it comes to your phone. You take what suits you and ignore the rest – no obligation either way.</p>
+          <div class="caps muted" style="margin-top:16px">Your code · valid 14 days</div>
+          <div class="code">FLR-7Q4K</div>
+          <div class="stores"><span>App Store</span><span>Google Play</span></div>
+          <p class="sm soft">In the app you'll choose how you'd like to work – shifts at our studio (paid hourly, with holiday pay), event jobs for a fixed fee as your own business, or both – check your right to work and sign a short agreement. About 10 minutes.</p>
+          <p>See you soon,<br>Floritta Studio · 80 Willow Walk, SE1</p>
+        </div>
+        <div class="ft">We keep your application for 12 months to offer you work, then delete it. <u>Remove me from the reserve</u> – deletes your application now. Privacy notice: floritta.uk/privacy</div>
+      </div>
+      <div class="rs-note">Wording to be approved by the solicitor (status terms) before launch.</div>`;
+  };
+
+  /* 2. choose how to work – two separate legal relationships, chosen by the person */
+  window.mount_rs_paths=function(){
+    const p=R.ob.paths;
+    document.getElementById('rs-paths-body').innerHTML=`<div class="pad" style="padding-top:8px"><h1 class="h2">Two ways to work with us</h1><p class="soft" style="margin:10px 0 0">Choose one or both. They are separate agreements – you can change your mind later.</p></div>
+      <button class="rs-path${p.shifts?' on':''}" onclick="RS.toggle('shifts')"><div class="hd"><i></i><div><div class="h4">Shifts at the studio</div><div class="xs muted">casual worker</div></div></div>
+        <ul><li>We send open shifts, you take the ones you want</li><li>Paid per hour, never below £12.71, + bouquet bonus, through PAYE</li><li>Holiday builds up as you work (12.07 %), sick pay, pension if you qualify</li><li>Inside a shift: clock-in, studio tasks and standards like for everyone</li></ul></button>
+      <button class="rs-path${p.jobs?' on':''}" onclick="RS.toggle('jobs')"><div class="hd"><i></i><div><div class="h4">Event & wedding jobs</div><div class="xs muted">self-employed · your own business</div></div></div>
+        <ul><li>Whole jobs for a fixed fee: weddings, installs, workshops, batches made at your place</li><li>Your design within the client's brief, your tools, your timing</li><li>You may send another florist instead of you</li><li>You invoice us, handle your own tax; no holiday or sick pay</li></ul></button>
+      <div class="rs-note">Not sure? Most florists start with shifts. Jobs suit people who already work for other clients.</div>`;
+    document.getElementById('rs-paths-cta').innerHTML=`<button class="btn --block" ${p.shifts||p.jobs?'':'disabled'} onclick="App.back('home')">Save</button>`;
+  };
+  R.toggle=k=>{R.ob.paths[k]=!R.ob.paths[k];A.haptic();window.mount_rs_paths()};
+
+  /* 3. right to work – share code (any nationality) or UK/IE passport via a certified IDVT provider */
+  window.mount_rs_rtw=function(){
+    const st=R.ob.rtw,el=document.getElementById('rs-rtw-body'),cta=document.getElementById('rs-rtw-cta');
+    if(st!=='todo'){
+      el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">${st==='checked'?'Done':'Sent 22 Oct, 10:14'}</div><h1 class="h2 mt8">${st==='checked'?'Right to work checked':'We\'re checking'}</h1><p class="soft" style="margin:10px 0 0">${st==='checked'?'Checked on GOV.UK by Valeria on 22 Oct. Nothing else to do. If your permission has an end date, we\'ll remind you a month before.':'A manager checks your share code on GOV.UK, usually the same day. You\'ll get a notification.'}</p></div>
+        <div class="rs-grp">What we keep</div><div class="wk-kv --info"><span>Record</span><span>the GOV.UK result page, date and who checked</span><span>How long</span><span>while you work with us + 2 years, then deleted</span></div>`;
+      cta.innerHTML=st==='sent'?`<button class="btn --block --secondary" onclick="RS.rtwDemo()">Demo: manager checks it</button>`:`<button class="btn --block" onclick="App.back('home')">Done</button>`;
+      return;
+    }
+    el.innerHTML=`<div class="rs-note" style="padding-top:8px">The law asks us to check this before anyone works on our orders – for shifts and for jobs alike.</div>
+      <div class="rs-grp">Share code</div>
+      <div class="blk"><div class="field"><label>Share code from GOV.UK</label><input class="input" placeholder="W3K 9PL 2XQ" value="W3K 9PL 2XQ"></div>
+      <div class="field"><label>Date of birth</label><input class="input" value="14 / 03 / 1996"></div>
+      <p class="xs muted" style="margin:0">Get it at gov.uk/prove-right-to-work – takes 2 minutes.</p></div>
+      <div class="rs-grp">British or Irish passport?</div>
+      <div class="blk"><button class="btn --secondary --block --sm" onclick="App.toast('Passport scan + selfie via certified provider – demo')">Scan passport instead</button><p class="xs muted" style="margin:8px 0 0">Checked by a Home Office-certified provider. Or show it at the studio.</p></div>`;
+    cta.innerHTML=`<button class="btn --block" onclick="RS.rtwSend()">Send for check</button>`;
+  };
+  R.rtwSend=()=>{R.ob.rtw='sent';A.haptic();A.toast('Sent – we check within 24 h');window.mount_rs_rtw()};
+  R.rtwDemo=()=>{R.ob.rtw='checked';A.push('Right to work checked','You\'re one step from your first offer',{icon:'check'});window.mount_rs_rtw()};
+
+  R.details=()=>A.sheet(`<div class="sh-head"><div class="h3">Your details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">From your Work-with-us application on 19 Oct. Edit anything.</p><div class="field"><label>Name</label><input class="input" value="Lina K."></div><div class="field"><label>Phone</label><input class="input" value="+44 7··· ··· 412"></div><div class="field"><label>Area</label><input class="input" value="SE16"></div><div class="field"><label>Skills</label><input class="input" value="weddings, hand-tied"></div><div class="field"><label>Usually free</label><input class="input" value="weekends, Mon"></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Saved')">Save</button></div>`);
+  R.paySheet=()=>{const p=R.ob.paths,jobsOnly=p.jobs&&!p.shifts;A.sheet(`<div class="sh-head"><div class="h3">Pay details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Account name</label><input class="input" value="Lina K."></div><div class="field"><label>Sort code · account</label><input class="input" value="04-00-04 · 1234····"></div>${jobsOnly?'':'<div class="field"><label>National Insurance number</label><input class="input" value="QQ 12 34 56 C"></div>'}${p.jobs?'<div class="field"><label>UTR (optional, for jobs)</label><input class="input" placeholder="10 digits"></div>':''}<p class="xs muted" style="margin:0">${p.shifts?'Shifts are paid through PAYE – we need your NI number. ':''}${p.jobs?'Jobs are paid gross – you handle your own tax.':''}</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.ob.pay=true;App.toast('Saved');window.mount_home()">Save</button></div>`)};
+  R.signSheet=()=>{const p=R.ob.paths,s=R.ob.signed;
+    const doc=(k,t,v,terms)=>`<div class="panel" style="margin-bottom:12px"><div class="flex ai-c jc-sb"><div class="h4">${t}</div>${s[k]?'<span class="pill --done">Signed</span>':''}</div><div class="xs muted mt4">${v}</div><div class="wk-kv --info" style="margin:12px 0 0">${terms.map(x=>`<span>${x[0]}</span><span>${x[1]}</span>`).join('')}</div>${s[k]?'':`<button class="btn --sm mt16" onclick="RS.sign('${k}')">Read and sign</button>`}</div>`;
+    A.sheet(`<div class="sh-head"><div class="h3">Your agreement${p.shifts&&p.jobs?'s':''}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body">
+      ${p.shifts?doc('worker','Casual Worker Agreement','v1.0 · for studio shifts',AG.docs.worker.terms.slice(0,4)):''}
+      ${p.jobs?doc('contractor','Florist Services Agreement','v1.0 · for event & wedding jobs',[['Your status','self-employed – your own business'],['Jobs','whole jobs for a fixed fee, shown before you apply'],['How','your design within the client\'s brief, your tools'],['Substitute','another florist may do it instead of you (right to work checked)'],['Pay','your invoice or our statement, gross']]):''}
+      <p class="xs muted" style="margin:4px 0 0">In the build: the same signing screen as <b>My agreement</b> – finger signature or paper with HR.</p></div>`,{full:true})};
+  R.sign=k=>{R.ob.signed[k]=true;A.haptic();A.toast('Signed – copy saved in My agreement');R.signSheet();window.mount_home()};
+  R.lessons=()=>{R.ob.lessons=true;A.toast('Lessons done – paid at your hourly rate with your first shift');window.mount_home()};
+
+  /* Lina – Today = onboarding checklist, then «you're in» */
+  const origHome=window.mount_home;
+  window.mount_home=function(){
+    if(!isRes()){origHome();if(isMgr())R.mgrPanel();return}
+    const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
+    const st=steps(),act=st.filter(s=>!s.off),done=act.filter(s=>s.done).length;
+    const list=st.map((s,i)=>`<button class="rs-step${s.done?' done':''}${s.wait?' wait':''}${s.off?' off':''}" ${s.fn?`onclick="${s.fn}"`:''}><span class="n">${s.done?A.icon('check'):i+1}</span><span class="f1"><div class="l">${s.l}</div><div class="d">${s.d}</div></span><span class="s">${s.done?'Done':s.wait?'Checking':s.off?'':'To do'}</span></button>`).join('');
+    const p=R.ob.paths;
+    document.getElementById('td-body').innerHTML=ready()
+      ?`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve</div><h1 class="h1 mt8">You're in, Lina</h1><p class="soft" style="margin:10px 0 0">${p.shifts?'Open shifts':''}${p.shifts&&p.jobs?' and ':''}${p.jobs?'event jobs':''} will come to this phone. Take what suits you – nothing is expected of you, and passing is never recorded.</p></div>
+        <div class="rs-grp">Alerts</div><div class="wk-kv --info"><span>When</span><span>as soon as something matches · quiet 21:00–08:00</span><span>How many</span><span>max 6 a day</span><span>Matches</span><span>your area (SE16 + 5 km), weekends, Mon</span></div>
+        <div class="blk" style="margin-top:16px"><button class="btn --block" onclick="RS.samplePush()">Show a sample offer</button></div>
+        <div class="rs-note">Your first ${p.shifts?'shift':'job'} opens the rest of the app${p.shifts?' – Today, tasks and lessons, like for the whole team':''}.</div>`
+      :`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve · joined with FLR-7Q4K</div><h1 class="h1 mt8">Hello, Lina</h1><p class="soft" style="margin:10px 0 0">A few steps and we can start sending you offers. About 10 minutes.</p></div>
+        <div class="rs-bar"><i style="width:${Math.round(done/act.length*100)}%"></i></div>
+        <div class="sm soft" style="padding:8px var(--gutter) 14px">${done} of ${act.length} done</div>
+        <div class="rs-steps">${list}</div>
+        <div class="rs-note">Changed your mind? <button class="textbtn" onclick="RS.leave()">Leave the reserve</button> – we delete your application.</div>`;
+  };
+  R.samplePush=()=>{const p=R.ob.paths;if(p.shifts)A.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h + bonus · Take or skip',{icon:'calendar'});else A.push('New job · £420','Sat 24 Oct · wedding, Chelsea · arch + 8 centrepieces',{icon:'calendar'})};
+  R.leave=()=>A.confirm('Leave the reserve?','We delete your application and this account. No more emails or alerts. You can apply again any time on floritta.uk.','Leave and delete',()=>A.toast('Deleted – demo'));
+
+  /* Lina – Me: short, no team sections */
+  const origMe=window.mount_me;
+  window.mount_me=function(){if(!isRes())return origMe();
+    const u=A.me(),el=document.getElementById('me-body');
+    const Rw=(i,l,d,fn)=>`<button class="row" onclick="${fn}">${ic(i)}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${ic('chev','chev')}</button>`;
+    el.innerHTML=`<div class="prof" style="margin-top:6px">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${u.n}</h1><div class="tt">${u.title}</div><div class="tt xs muted">Applied 19 Oct · invited 20 Oct</div></div></div>
+      <div class="rs-grp">Reserve</div><div class="rows">
+        ${Rw('check','Getting ready',ready()?'All done':'Steps to your first offer',"App.tab('home')")}
+        ${Rw('calendar','How I work','Shifts, jobs or both',"App.go('rs-paths')")}
+        ${Rw('bell','Offer alerts','Area, days, quiet hours',"App.go('settings')")}
+      </div>
+      <div class="rs-grp">Privacy</div><div class="rows">
+        ${Rw('eye','What we keep','Application for 12 months, then deleted','App.toast(\'Privacy notice – demo\')')}
+        ${Rw('trash','Leave the reserve','Deletes your application now',"RS.leave()")}
+      </div>`;
+  };
+
+  /* tabs: a reserve member only has Today + Me until the first shift or job */
+  const tabs=()=>{const r=isRes();document.querySelectorAll('#tabbar .tab').forEach(t=>{const k=t.dataset.tab;t.classList.toggle('rs-hide',r&&(k==='tasks'||k==='learn'||k==='work'))});if(r)document.getElementById('tabbar').style.gridTemplateColumns='repeat(2,1fr)'};
+  document.addEventListener('user',tabs);
+  const origSplash=window.mount_splash;window.mount_splash=function(){origSplash();if(!isRes())return;
+    document.getElementById('sp-eyebrow').textContent='Floritta reserve';document.getElementById('sp-title').innerHTML='Welcome,<br>Lina.';document.querySelector('.sp-lead').textContent='Open shifts and event jobs, straight to your phone.';
+    const b=document.getElementById('sp-face');b.innerHTML='Join with invite code';b.onclick=()=>A.sheet(`<div class="sh-head"><div class="h3">Join the reserve</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Invite code from your email</label><input class="input" value="FLR-7Q4K"></div><div class="field"><label>Email</label><input class="input" value="lina.k@····.com"></div><p class="xs muted" style="margin:0">The code links this app to your application – no forms twice. Then Face ID or a PIN.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.go('home');App.state.history=[]">Continue</button></div>`);
+    const pin=document.getElementById('sp-pin');if(pin)pin.textContent='See the invite email';pin.onclick=()=>A.go('rs-email')};
+
+  /* ---- Mira – self-employed florist: whole jobs for a fixed fee ---- */
+  R.jobs=[
+    {id:31,off:0,title:'Restaurant install · Mayfair W1',what:'6 large urns + bar garland, brief & mood board attached',when:'15:00–18:00',fee:140,mat:'flowers supplied by Floritta, your tools',status:'mine'},
+    {id:32,off:4,title:'Wedding · Chelsea Old Town Hall',what:'ceremony arch + 8 table centrepieces',when:'set up 07:30–10:30',fee:420,mat:'flowers to the client\'s order, collected from SE1',status:'open'},
+    {id:33,off:6,title:'Workshop host · SW6 shop',what:'wreath workshop, 12 guests, 2.5 h – your own format',when:'18:00–20:30',fee:150,mat:'kits ready on the table',status:'open'},
+    {id:34,off:8,title:'Corporate lobby · EC2',what:'3 statement vases, weekly refresh – one visit',when:'any time Wed before 09:00',fee:95,mat:'buy to the brief, budget £120, receipt',status:'open'},
+    {id:35,off:16,title:'Batch at your studio',what:'20 hand-tied bouquets to the photo spec',when:'collect stems 08:00 SE1 · back by 14:00',fee:180,mat:'stems from us, wrap & tools yours',status:'open'}
+  ];
+  const jcard=j=>{
+    const head=`<div class="top"><span class="caps muted">${lab(j.off)} · ${j.when}</span>${j.status==='mine'?'<span class="pill --done">Yours</span>':j.status==='applied'?'<span class="pill --review">Applied</span>':''}</div><div class="h4 mt8">${j.title}</div><div class="fee">${gbp(j.fee)}</div><div class="meta">${j.what} · ${j.mat}</div>`;
+    if(j.status==='mine')return `<div class="ct-job mine">${head}<div class="btns"><button class="btn --sm --ghost" onclick="RS.brief(${j.id})">Brief</button><button class="btn --sm --ghost" onclick="RS.sub(${j.id})">Send a florist</button><button class="btn --sm --secondary" onclick="RS.withdraw(${j.id})">Withdraw</button></div></div>`;
+    if(j.status==='applied')return `<div class="ct-job">${head}<div class="meta">The studio confirms in the app, usually within the hour.</div></div>`;
+    return `<div class="ct-job">${head}<div class="btns"><button class="btn --sm --secondary" onclick="RS.brief(${j.id})">Brief</button><button class="btn --sm" onclick="RS.apply(${j.id})">Apply</button></div></div>`;
+  };
+  const fboard=()=>{const mine=R.jobs.filter(j=>j.status==='mine'),open=R.jobs.filter(j=>j.status!=='mine');
+    return `<div class="rs-note" style="padding:0 var(--gutter) 8px">Whole jobs with a fixed fee. Apply if one suits you. Passing is not recorded and changes nothing.</div>
+      <div class="sec-head" style="margin-top:6px"><div class="h2">Your jobs</div><span class="xs muted">${mine.length} · ${gbp(mine.reduce((s,j)=>s+j.fee,0))}</span></div>
+      ${mine.length?mine.map(jcard).join(''):'<div class="rs-note">No jobs taken.</div>'}
+      <div class="sec-head"><div class="h2">Open jobs</div><span class="xs muted">next 3 weeks</span></div>
+      ${open.map(jcard).join('')}
+      <div class="rs-grp">How this works</div>
+      <div class="wk-kv --info">
+        <span class="soft">Fee</span><span>fixed for the whole job, shown before you apply</span>
+        <span class="soft">How you do it</span><span>your design within the client's brief; we check the result against the brief, not your hours</span>
+        <span class="soft">Who does it</span><span>you, or a florist you choose (right to work checked)</span>
+        <span class="soft">Tools</span><span>yours</span>
+        <span class="soft">Withdraw</span><span>any time – please early, or send a florist; no fee, no mark</span>
+        <span class="soft">If the client isn't happy</span><span>you fix it or we agree a lower fee for that job</span>
+        <span class="soft">Paid</span><span>your invoice or our statement, gross</span>
+        <span class="soft">Holiday, sick pay</span><span>none – you are in business on your own account</span>
+      </div>`;
+  };
+  R.remount=()=>{const c=A.state.current;if(c==='home')window.mount_home();else if(c==='jobs')window.mount_jobs()};
+  R.apply=id=>{const j=R.jobs.find(x=>x.id===id);j.status='applied';A.haptic();A.toast('Applied');setTimeout(()=>{j.status='mine';A.push('Job confirmed',`${lab(j.off)} · ${j.title}`,{icon:'check'});R.remount()},1400);R.remount()};
+  R.withdraw=id=>{const j=R.jobs.find(x=>x.id===id);A.confirm('Withdraw from this job?',`${lab(j.off)} · ${j.title}. It goes back to open jobs. No fee, no rating, no effect on future jobs. Please tell us as early as you can – or send a florist instead.`,'Withdraw',()=>{j.status='open';A.toast('Withdrawn');R.remount()})};
+  R.sub=id=>{const j=R.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Send a florist instead</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">You don't need our permission. The florist must have had a right-to-work check with us – the law, not our choice. You stay responsible for the job and pay them what you agree.</p><div class="field"><label>Who does it?</label><input class="input" placeholder="Name or phone"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Noted – fee still paid to you')">Tell the studio</button></div>`)};
+  R.brief=id=>{const j=R.jobs.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">${j.title}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="caps muted">${lab(j.off)} · ${j.when}</div><div class="h2 mt8">${gbp(j.fee)}</div><div class="wk-kv --info" style="margin:14px 0 0"><span>The result</span><span>${j.what}</span><span>Client's brief</span><span>palette ivory & blush, no lilies, 3 reference photos</span><span>Materials</span><span>${j.mat}</span><span>On site</span><span>venue contact in the app on the day</span><span>Done when</span><span>photo of the finished work in the job</span></div><p class="xs muted" style="margin:12px 0 0">The brief describes the result. How and in what order you work is up to you.</p></div><div class="sh-foot">${j.status==='open'?`<button class="btn" onclick="App.closeSheet();RS.apply(${id})">Apply</button>`:'<button class="btn --secondary" onclick="App.closeSheet()">Close</button>'}</div>`,{full:true})};
+
+  const origJobs=window.mount_jobs;window.mount_jobs=function(p){if(!isMira())return origJobs&&origJobs(p);const t=document.querySelector('#s-jobs .ttl');if(t)t.textContent='Event jobs';document.getElementById('jobs-body').innerHTML=fboard()};
+  document.addEventListener('screen',e=>{if(e.detail.id==='jobs'&&!isMira()){const t=document.querySelector('#s-jobs .ttl');if(t)t.textContent='Jobs board'}});
+  const prevHome=window.mount_home;window.mount_home=function(){if(!isMira())return prevHome();
+    const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
+    const t=R.jobs.filter(j=>j.status==='mine'&&j.off===0);
+    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Mira</h1><div class="sm soft mt4">${t.length?`Today: ${t[0].title} · ${t[0].when}`:'No jobs today'}</div></div>${fboard()}`};
+  const prevMe=window.mount_me;window.mount_me=function(){if(!isMira())return prevMe();
+    const u=A.me(),el=document.getElementById('me-body');
+    const Rw=(i,l,d,v,fn)=>`<button class="row" onclick="${fn}">${ic(i)}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${v?`<span class="val">${v}</span>`:''}${ic('chev','chev')}</button>`;
+    el.innerHTML=`<div class="prof" style="margin-top:6px">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${u.n}</h1><div class="tt">${u.title}</div><div class="tt xs muted">Own studio in E8 · weddings & events</div></div></div>
+      <div class="pillrow" style="padding:14px var(--gutter) 0"><span class="pill --plain">Self-employed</span><span class="pill --plain">Own tools</span><span class="pill --plain">Other clients</span></div>
+      <div class="rs-grp">Jobs</div><div class="rows">
+        ${Rw('calendar','Event jobs',`${R.jobs.filter(j=>j.status!=='mine').length} open · ${R.jobs.filter(j=>j.status==='mine').length} taken`,'',"App.go('jobs')")}
+        ${Rw('award','Statements & invoices','Per job · gross · or your own invoice','£610',"App.go('statements')")}
+      </div>
+      <div class="rs-grp">Your business</div><div class="rows">
+        ${Rw('users','Business profile','UTR, other clients, insurance – optional','',"App.go('bizprofile')")}
+        ${Rw('help','Tax & status','Self-employed · agreement v1.0','',"App.go('taxstatus')")}
+      </div>
+      <div class="rs-grp">Preferences</div><div class="rows">${Rw('bell','Job alerts','Weddings, installs · max 6 a day · quiet 21–08','On',"App.go('settings')")}${Rw('eye','View as','','',"ME5.openViewAs()")}</div>
+      <div class="rs-note tc" style="padding:28px var(--gutter) 8px">No shifts, no clock-in, no tasks, no lessons. Each job comes with its brief.</div>`};
+  const prevSt=window.mount_statements;window.mount_statements=function(){if(!isMira())return prevSt();
+    document.getElementById('statements-body').innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">£610.00</h1><div class="sm soft mt4">Paid Fri 23 Oct · against your invoice #MK-118 · gross</div></div>
+      <div class="rs-grp">Jobs</div><div class="wk-kv"><span class="soft">Wedding · Marylebone · arch + 10 tables</span><span>£420.00</span><span class="soft">Corporate lobby · EC2 · 2 visits × £95</span><span>£190.00</span><span class="soft t">Total</span><span class="t">£610.00</span></div>
+      <div class="rs-note">No tax or NI taken off, no holiday pay or pension – a payment for services, not wages. Materials you bought to a brief are repaid at cost against the receipt, outside the fee.</div>`};
+  const prevWork=window.mount_work;window.mount_work=function(p){if(!isMira())return prevWork&&prevWork(p);A.go('jobs',{},{replace:true})};
+
+  /* ---- manager: Reserve – invite, check right to work, offer shifts and jobs ---- */
+  R.people=[
+    {n:'Lina K.',sk:'weddings, hand-tied',paths:['Shifts','Jobs'],st:'rtw',at:'share code sent 22 Oct'},
+    {n:'Olena M.',sk:'retail, hand-tied',paths:['Shifts'],st:'ready',at:'ready since 14 Oct'},
+    {n:'Priya S.',sk:'installations',paths:['Jobs'],st:'ready',at:'ready since 9 Oct'},
+    {n:'Tom R.',sk:'funeral, retail',paths:['Shifts'],st:'onb',at:'3 of 5 steps'},
+    {n:'Aigerim B.',sk:'weddings',paths:[],st:'invited',at:'invited 20 Oct · not opened the app'},
+    {n:'Chloe D.',sk:'hand-tied',paths:['Shifts','Jobs'],st:'ready',at:'ready since 2 Oct'}
+  ];
+  R.pool=[{n:'Sofia P.',sk:'weddings',d:'applied 18 Oct'},{n:'Marta L.',sk:'retail',d:'applied 17 Oct'},{n:'Ben H.',sk:'installations',d:'applied 12 Oct'}];
+  const stPill={rtw:'<span class="pill --urgent">RTW to check</span>',ready:'<span class="pill --done">Ready</span>',onb:'<span class="pill --doing">Onboarding</span>',invited:'<span class="pill --todo">Invited</span>'};
+  window.mount_reserve=function(){
+    const P=R.people,cnt=s=>P.filter(p=>p.st===s).length,rtw=P.filter(p=>p.st==='rtw');
+    document.getElementById('reserve-body').innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Florists · from Work with us</div><h1 class="h2 mt8">Reserve</h1></div>
+      <div class="rs-funnel"><div><b>34</b><small>Applied</small></div><div><b>${P.length+12}</b><small>Invited</small></div><div><b>${P.filter(p=>p.st!=='invited').length+6}</b><small>In the app</small></div><div><b>${cnt('ready')}</b><small>Ready</small></div></div>
+      ${rtw.length?`<div class="sec-head"><div class="h2">Waiting for you</div><span class="xs muted">${rtw.length}</span></div>${rtw.map(p=>`<div class="ct-job"><div class="top"><span class="caps muted">Right to work</span>${stPill.rtw}</div><div class="h4 mt8">${p.n}</div><div class="meta">${p.at} · check it on GOV.UK, then record the result here</div><div class="btns"><button class="btn --sm" onclick="RS.rtwCheck('${p.n}')">Record the check</button></div></div>`).join('')}`:''}
+      <div class="sec-head"><div class="h2">People</div><span class="xs muted">${P.length}</span></div>
+      <div class="rows" style="border-top:1px solid var(--hair)">${P.map(p=>`<div class="row st"><span class="rt"><div class="l">${p.n} ${p.paths.map(x=>`<span class="rs-chip">${x}</span>`).join('')}</div><div class="d">${p.sk} · ${p.at}</div></span>${stPill[p.st]}</div>`).join('')}</div>
+      <div class="rs-note">No acceptance rates, rankings or «reliability» here – on purpose: passing on offers must never count against anyone.</div>
+      <div class="rs-grp">Actions</div>
+      <div class="blk" style="display:grid;gap:8px"><button class="btn --block" onclick="RS.inviteSheet()">Invite from applications</button><button class="btn --block --secondary" onclick="RS.offerSheet()">Offer an open shift</button><button class="btn --block --secondary" onclick="RS.jobSheet()">Post an event job</button></div>`;
+  };
+  R.rtwCheck=n=>A.sheet(`<div class="sh-head"><div class="h3">Right to work · ${n}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">Open GOV.UK «View a job applicant's right to work», enter share code W3K 9PL 2XQ and date of birth, compare the photo with the person.</p><button class="radio"><span class="f1">Unlimited right to work</span></button><button class="radio"><span class="f1">Time-limited – until <input class="input" style="height:36px;width:130px;display:inline-block" placeholder="dd/mm/yyyy"></span></button><button class="radio"><span class="f1">No right to work – do not offer anything</span></button><div class="field mt16"><label>GOV.UK result (PDF)</label><button class="btn --secondary --sm" onclick="App.toast('Upload – demo')">Attach</button></div><p class="xs muted" style="margin:0">Saved with your name and the time. Kept while they work with us + 2 years.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.rtwDone('${n}')">Save check</button></div>`,{full:true});
+  R.rtwDone=n=>{const p=R.people.find(x=>x.n===n);p.st='onb';p.at='right to work checked 22 Oct · by Valeria';if(n==='Lina K.')R.ob.rtw='checked';A.toast('Recorded');window.mount_reserve()};
+  R.inviteSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Invite to the reserve</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 6px">Applications from Work with us, florists only. Same button in CRM → Candidates.</p>${R.pool.map(c=>`<button class="ag-check on" style="margin:12px 0 0" onclick="this.classList.toggle('on')"><i></i><span><b>${c.n}</b> · ${c.sk} · ${c.d}</span></button>`).join('')}<div class="blk" style="padding:0;margin-top:18px"><button class="btn --ghost --sm" onclick="App.closeSheet();App.go('rs-email')">Preview the email</button></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.inviteDo()">Send ${R.pool.length} invites</button></div>`,{full:true});
+  R.inviteDo=()=>{R.pool.forEach(c=>R.people.push({n:c.n,sk:c.sk,paths:[],st:'invited',at:'invited 22 Oct'}));R.pool=[];A.toast('Invites sent – each gets a code valid 14 days');window.mount_reserve()};
+  R.offerSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Offer an open shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Shift</label><input class="input" value="Sat 24 Oct · 08:00–15:00 · SE1 studio"></div><div class="field"><label>Places</label><input class="input" value="2"></div><div class="field"><label>Rate</label><input class="input" value="£13.21/h + bouquet bonus"></div><div class="field"><label>Who gets the alert</label><input class="input" value="Ready for shifts · ${R.people.filter(p=>p.st==='ready'&&p.paths.includes('Shifts')).length} people · area & days match"></div><div class="rs-warn">Published 43 h before the start – under our 48 h notice. Fine for an extra shift; from 2027 the law sets the notice, so the app keeps when each offer went out.</div><p class="xs muted" style="margin:12px 0 0">First to take it gets it. You publish – you never assign a reserve florist to a shift.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent');App.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h',{icon:'calendar',to:'reserve'})">Send offer</button></div>`,{full:true});
+  R.jobSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Post an event job</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Job</label><input class="input" value="Wedding · Chelsea Old Town Hall"></div><div class="field"><label>The result</label><input class="input" value="ceremony arch + 8 table centrepieces"></div><div class="field"><label>Fixed fee</label><input class="input" value="£420"></div><div class="field"><label>Brief</label><input class="input" value="palette, 3 photos, no lilies"></div><div class="field"><label>Who gets the alert</label><input class="input" value="Ready for jobs · ${R.people.filter(p=>p.st==='ready'&&p.paths.includes('Jobs')).length} people"></div><p class="xs muted" style="margin:0">A job is a result for a fee – never hours, a rate or a time to be at the studio. If it needs to be done in our studio under a manager, it's a shift, not a job.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Posted');App.push('New job · £420','Sat 24 Oct · wedding, Chelsea',{icon:'calendar',to:'reserve'})">Post job</button></div>`,{full:true});
+  R.mgrPanel=()=>{const body=document.getElementById('td-body');if(!body)return;const n=R.people.filter(p=>p.st==='rtw').length;const b=document.createElement('div');b.className='panel blk';b.style.margin='0 var(--gutter) 14px';
+    b.innerHTML=`<div class="caps muted">Reserve</div><div class="h3 mt8">${n?`${n} right-to-work check${n>1?'s':''} waiting`:'Reserve is up to date'}</div><div class="sm soft mt4">${R.people.filter(p=>p.st==='ready').length} florists ready · ${R.pool.length} new applications to invite</div><button class="btn --sm mt16" onclick="App.go('reserve')">Open reserve</button>`;
+    body.insertBefore(b,body.firstChild)};
+
+  /* ---- notes for the build (sidebar) ---- */
+  const nav=document.getElementById('nav-list');if(nav){const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Резерв и заказы для флористов (22.10)</h4><ul>
+    <li><b>Только добавлено</b> – прежние экраны, персоны и функции не менялись. Новые экраны – группа «Reserve» в списке слева.</li>
+    <li><b>Lina</b> (Reserve · new) – пришла из формы Work with us. Splash → «Join with invite code» → Today = 6 шагов: данные из анкеты, выбор пути (смены / заказы / оба), right to work (share code или паспорт UK/IE), банк и NI, договор(ы), 2 урока (только для смен, оплачиваются). Готово → «You're in», дальше push.</li>
+    <li><b>Invite email · preview</b> – письмо из CRM по кнопке «Invite to reserve»: код на 14 дней, ссылки на сторы, «Remove me from the reserve».</li>
+    <li><b>Mira</b> (Florist · s-e) – заказы целиком за фиксированную цену: свадьба, инсталляция, мастер-класс, партия у себя. Brief описывает результат, не процесс. Можно прислать другого флориста. Нет смен, clock-in, задач, уроков, рейтингов.</li>
+    <li><b>Reserve · manager</b> (Valeria, плашка на Today) – воронка, очередь проверок right to work с записью «кто и когда проверил», приглашение из анкет, «Offer an open shift» (только публиковать, не назначать; предупреждение при уведомлении &lt; 48 ч), «Post an event job». Нарочно без процента принятия и рейтингов.</li>
+    <li>ТЗ: волт Floritta_Brain_Main/Юридическое/Резерв_флористов_ТЗ_2026-10-22.md</li></ul>`;nav.parentNode.appendChild(n)}
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<!-- ============ FREELANCE COURIER MODE (Sam) – 23.10.2026 ============ -->
+
+<style>
+/* ===== Freelance courier mode (Sam) – approved 23.10.2026 ===== */
+.fl svg.i,#fl-tabbar svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#fl-tabbar .tab svg{width:24px;height:24px}
+#fl-tabbar .tab .dot{position:absolute;top:8px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;background:var(--accent);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.fl .tag:not([class*="--"]){background:var(--silver)}.fl .tag.--warn{background:var(--warn-bg);color:var(--warn)}
+.fl .ann{margin:0}
+.fl .live{width:100%;text-align:left}
+.fl .h-display{text-wrap:balance}
+.fl .textbtn.accent{color:var(--accent)}
+.fl .sec-head .link{font-size:12px}
+.fl-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fl-tiles .tile{padding:14px 12px;min-height:92px}
+.fl-tiles .tile svg{width:24px;height:24px}
+.fl .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:4px 0 20px}
+.fl .steps i{height:3px;background:var(--light)}.fl .steps i.on{background:var(--ink)}
+.fl .code-boxes{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.fl .code-boxes span{height:56px;border:1px solid var(--ink);display:grid;place-items:center;font-family:var(--f-display);font-size:30px}
+.fl .hint{font-size:12px;color:var(--grey)}
+.fl .dcard{display:block;width:100%;text-align:left;border:1px solid var(--hair);padding:14px;background:var(--paper);transition:border-color var(--m-fast)}
+.fl .dcard:active{border-color:var(--ink)}
+.fl .dcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.fl .dcard .when{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey)}
+.fl .dcard .where{font-family:var(--f-display);font-size:24px;font-weight:400;line-height:1.1;margin-top:4px}
+.fl .dcard .pay{font-family:var(--f-display);font-size:30px;font-weight:300;line-height:1;white-space:nowrap}
+.fl .dcard .meta{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--graphite);margin-top:8px;align-items:center}
+.fl .dcard .meta span{display:inline-flex;align-items:center;gap:5px}.fl .dcard .meta svg{width:15px;height:15px}
+.fl .dcard .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.fl .dlist{display:grid;gap:8px;padding:0 var(--gutter)}
+.fl .ocard .mn{flex:1;min-width:0}.fl .ocard img{width:52px;height:64px}
+.fl .tl-step .tl-a{margin:2px 0 14px}
+.fl .tl-step .ind i{font-style:normal;font-size:12px;color:var(--grey)}.fl .tl-step.done .ind i,.fl .tl-step.now .ind i{color:inherit}
+.fl .tl-step.done .ind i{color:var(--paper)}
+.fl .tl-step .ind i svg{width:14px;height:14px;stroke-width:2}
+.fl .stline{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.fl .stline .sd{color:var(--grey);font-size:12px;margin-top:1px}.fl .stline .sv{white-space:nowrap}
+.fl .stline.total{border-bottom:0;font-size:16px;font-weight:400;border-top:1px solid var(--ink);margin-top:4px}
+.fl .bubble{padding:12px 14px;max-width:82%;font-size:14px;line-height:1.45}
+.fl .bubble.--me{background:var(--ink);color:var(--paper);margin-left:auto}.fl .bubble.--them{background:var(--silver)}
+.fl .bubble small{display:block;font-size:11px;opacity:.65;margin-bottom:3px}
+.fl .qopt{display:block;width:100%;text-align:left;border:1px solid var(--light);padding:14px;font-size:15px;margin-bottom:8px}
+.fl .qopt.right{border-color:var(--ok);background:var(--ok-bg)}.fl .qopt.wrong{border-color:var(--accent);background:var(--accent-bg)}
+.fl .wl-hero{position:relative;height:52%;min-height:300px;overflow:hidden;background:var(--silver)}
+.fl .wl-hero img.ph{width:100%;height:100%;object-fit:cover}
+.fl .wl-hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(253,253,253,0) 45%,var(--paper) 100%)}
+.fl .wl-hero .logo{position:absolute;top:66px;left:50%;transform:translateX(-50%);height:15px;width:auto}
+.fl .wl-body{padding:0 24px 24px;margin-top:-28px;position:relative;display:flex;flex-direction:column;gap:12px}
+.fl .rl{font-size:15px}.fl .rdd{font-size:13px;color:var(--grey);margin-top:1px}
+.fl .row.--danger .l{color:var(--accent)}
+.fl-mapbox{height:190px}.fl-mapbox::before{display:none}
+.fl-mapbox svg.fl-map{position:absolute;inset:0;width:100%;height:100%}
+.fl-mapbox .mk{position:absolute;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--paper);padding:3px 7px;border:1px solid var(--ink)}
+.fl-mapbox .mk.--ink{background:var(--ink);color:var(--paper)}
+.fl-mapbox .fl-map-note{position:absolute;left:12px;bottom:10px;right:12px;text-align:right;font-size:11px;color:var(--graphite)}
+#notes[data-fl]>:not(#fl-notes){display:none}
+#fl-notes{display:none}#notes[data-fl] #fl-notes{display:block}
+#fl-notes h3{font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1.05;color:var(--ink);margin:0 0 12px}
+#fl-notes .fl-ctl{display:inline-grid;grid-auto-flow:column;border:1px solid var(--light);margin:0 0 8px}
+#fl-notes .fl-ctl button{padding:7px 11px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+#fl-notes .fl-ctl button.on{background:var(--ink);color:var(--paper)}
+#fl-notes .fl-push{display:block;width:100%;text-align:left;padding:7px 10px;border:1px solid var(--hair);margin-bottom:4px;font-size:13px}
+#fl-notes .fl-push:hover{background:var(--silver)}
+</style>
+
+<script>
+(function(){
+  const A=window.App;
+  STAFF.push({id:'sam',n:'Sam',role:'courier',title:'Freelance courier · self-employed',initials:'SK',engagement:'freelance'});
+  PERSONAS.push({id:'sam',label:'Freelance courier · self-employed'});
+const NOTES={
+ 'fl-welcome':['Вход в приложение','<ul><li>Один экран для всех: сотрудник студии входит как раньше, новый курьер жмёт <b>Become a Floritta courier</b>.</li><li>Кнопка показывается только в воркспейсе Floritta.</li><li>«I already use the Telegram bot» – связка с ботом, без второй регистрации.</li></ul><h4>Статус</h4><ul><li>Нет слов shift / job / employee. «Deliveries», «request».</li></ul>'],
+ 'fl-signin':['Вход','<ul><li>Общий вход CRM, новая роль freelance.</li><li>Роль <code>freelance</code> → приложение показывает только 5 вкладок курьера, ни одного экрана сотрудника.</li><li>Восстановление пароля – уже есть.</li></ul>'],
+ 'fl-su1':['Регистрация · 1','<ul><li>Почта + пароль (решение 22.10).</li><li>Новая точка CRM новая точка API приложения в CRM: создаёт пользователя с ролью freelance и курьера, сразу выдаёт токен.</li><li>Почту подтверждаем ссылкой – иначе не восстановить пароль.</li></ul>'],
+ 'fl-su2':['Регистрация · 2','<ul><li>Те же поля, что в боте: имя, телефон, транспорт, домашний посткод.</li><li>Car – с подсказкой про Hire &amp; Reward: заявку CRM пустит только после отметки менеджера о страховке.</li></ul>'],
+ 'fl-su3':['Право на работу','<ul><li>Share code + дата рождения (18+) – как в боте, проверяет менеджер на gov.uk.</li><li>С 01.10.2026 проверка обязательна для платформ (BSAI Act 2025 s.48).</li><li>Британский / ирландский паспорт – share code нет, менеджер смотрит паспорт.</li></ul>'],
+ 'fl-su4':['Как это работает','<ul><li>Короткая выжимка договора самозанятого: выбор, другие заказчики, замена, оплата за доставку, свои налоги.</li><li>Галочка согласия – с датой и версией договора в CRM.</li></ul><h4>Почему</h4><ul><li>Риск статуса worker (Uber v Aslam): экран прямо говорит, что контроля и штрафов нет.</li></ul>'],
+ 'fl-pending':['Ждёт проверки','<ul><li>Менеджеру – карточка «🆕 New freelancer» на дашборде CRM.</li><li>Доска видна сразу, «Request» объясняет, почему пока нельзя (переключатель слева «Ждёт проверки»).</li><li>Пуш, когда менеджер нажал Verify.</li></ul>'],
+ 'fl-link':['Связка с ботом','<ul><li>Разовый перенос регистрации из бота (единственное, что разрешено правилом): код из бота → почта и пароль в приложении.</li><li>После переноса приложение с ботом никак не связано: заказы, деньги и сообщения – только через CRM.</li></ul>'],
+ 'fl-board':['Доступные доставки','<ul><li>новая точка API приложения в CRM</li><li>Карточка как в боте: слот, район, км, оплата, Peak / Hard window / 18+.</li><li>Фильтры: по маршрутам, по районам, «забрать сейчас».</li><li>Чёрная плашка – «рядом со студией» (геозона 2 мили вместо живой геопозиции Telegram).</li></ul>'],
+ 'fl-dlv':['Карточка доставки','<ul><li>Точный адрес – только после подтверждения, телефон – только после забора (как в боте).</li><li>новая точка API приложения в CRM; ответы CRM показываются текстом: не проверен, алкоголь без обучения, лимит £99 для новичка.</li><li>Withdraw без последствий – прямо на экране.</li></ul>'],
+ 'fl-mine':['Мои доставки','<ul><li>новая точка API приложения в CRM.</li><li>Активная – сверху чёрной плашкой; ниже – ждут подтверждения студии и выполненные за неделю.</li><li>Возврат в студию – отдельной строкой с оплатой +50 %.</li></ul>'],
+ 'fl-run':['Доставка в работе','<ul><li>Шаги: I\'m on my way → Picked up (фото) → Delivered (фото). Нажимайте кнопки – шаги двигаются.</li><li>PIN выключен с 25.09 – не спрашиваем; код готов, если CRM снова включит.</li><li>Алкоголь: перед фото – вопрос про документ или отказ с причиной.</li><li>«Problem with delivery» – 4 причины, как в боте, + пятая «I can’t continue – I’ll bring it back».</li><li><b>Отказ после забора</b>: Withdraw исчезает после фото забора (CRM тоже не даёт). Остаётся «Problem with delivery» → менеджер звонит и решает: вернуть в студию или передать другому курьеру. Решение Tatiana 23.10: если курьер сам не может продолжить – платим 50 % ставки за возврат (при отказе получателя у двери – полная ставка + 50 %).</li><li>Фото – через очередь офлайн приложения: уйдёт, когда появится сеть.</li></ul>'],
+ 'fl-done':['Вручено','<ul><li>Сумма сразу в неделю.</li><li>Фото уходит заказчику с сообщением о доставке (как сейчас).</li></ul>'],
+ 'fl-way':['Куда едешь?','<ul><li>новая точка API приложения в CRM: откуда (геопозиция или посткод) → куда → транспорт → доставки с крюком и оплатой.</li><li>Навигация – только ссылкой в Google Maps, свой навигатор не строим.</li></ul>'],
+ 'fl-saved':['Маршруты и районы','<ul><li>новая точка API приложения в CRM, до 3 маршрутов; <code>/areas</code> – outcode.</li><li>По ним CRM шлёт пуши о новых доставках в приложение.</li></ul>'],
+ 'fl-earn':['Заработок','<ul><li>новая точка API приложения в CRM, новая точка API приложения в CRM</li><li>Неделя / месяц / не выплачено, последняя выплата, счёт – последние 4 цифры.</li><li>Слово «Earnings», не «Pay» и не «Salary».</li></ul>'],
+ 'fl-stmt':['Недельная выписка','<ul><li>FS-YYYY-Www-NNNN, как в CRM (договор п. 6.4) – инвойсы не собираем.</li><li>«All correct» / «Something is wrong» → вопрос менеджеру выплат (Саша).</li></ul>'],
+ 'fl-bank':['Реквизиты','<ul><li>новая точка API приложения в CRM.</li><li>После сохранения номер скрыт, в логи не пишется.</li></ul>'],
+ 'fl-tax':['Налоги и статус','<ul><li>Тот же экран, что в боте: self-employed, trading allowance £1 000, отчётность платформ в HMRC.</li><li>Перед отправкой в магазины – прогон текстов через скилл legal.</li></ul>'],
+ 'fl-me':['Профиль','<ul><li>Открывается кружком с инициалами справа вверху.</li><li>Без рейтинга курьера на экране (риск статуса).</li><li>«Delete account» – обязательна для Apple (5.1.1(v)), если аккаунт создаётся в приложении.</li></ul>'],
+ 'fl-notif':['Уведомления','<ul><li><code>push_mode</code>: районы и маршруты / районы / маршруты / выкл. – как в боте.</li><li>Тихие часы 21–08, не больше 6 в день – настройка CRM.</li><li>«Near the studio» – системная геозона: батарею почти не ест, точку не храним; нужно согласие на геопозицию в фоне.</li></ul>'],
+ 'fl-alco':['Обучение по алкоголю','<ul><li>6 экранов правил + 8 вопросов, тот же <code>training.VERSION</code>, что в боте.</li><li>Лицензия 889934, усл. 342 – действует 6 месяцев.</li><li>Нажмите ответ – покажется пояснение.</li></ul>'],
+ 'fl-studio':['Студия – вкладка внизу','<ul><li>По просьбе Tatiana 23.10: связь со студией всегда под рукой – отдельная вкладка в нижнем меню, красная точка = непрочитанный ответ.</li><li>Профиль переехал в кружок с инициалами справа вверху на каждой вкладке (Apple советует не больше 5 вкладок).</li><li>Сообщение приходит менеджерам во Входящие CRM (не в Telegram), ответ менеджера – сюда пушем.</li><li>Текст и фото; голосовые – позже.</li></ul>'],
+ 'fl-delete':['Удаление аккаунта','<ul><li>Новая точка CRM: выключить вход, отозвать токены, стереть всё лишнее.</li><li>Храним по закону: запись проверки права на работу – 2 года, выписки и выплаты – 6 лет.</li><li>Без этого экрана Apple приложение не пропустит.</li></ul>']
+};
+const BOARD=[
+ {when:'Today · 17:00–19:00',where:'Battersea SW11',pay:'£9',km:'6.4 km',t:'28 min',tags:['<span class="tag --sale">Peak</span>','<span class="tag --ink">Hard window</span>'],img:'peach-posy'},
+ {when:'Today · 18:00–20:00',where:'Vauxhall SW8',pay:'£7',km:'3.1 km',t:'15 min',tags:['<span class="tag">On your route</span>'],img:'red-roses'},
+ {when:'Today · 18:00–21:00',where:'Canary Wharf E14',pay:'£11',km:'8.9 km',t:'40 min',tags:['<span class="tag --warn">18+ · alcohol</span>'],img:'pink-garden'},
+ {when:'Today · 19:00–21:00',where:'Peckham SE15',pay:'£7',km:'4.2 km',t:'19 min',tags:['<span class="tag">Near home</span>'],img:'lilac-dream'}
+];
+
+  const FL=window.FL={v:1,runStep:1,photoFor:'pickup',
+    sheet(id){const el=document.getElementById('fl-sh-'+id);if(!el)return;A.sheet(el.innerHTML)},
+    setV(v){this.v=v;document.querySelectorAll('#fl-vt button').forEach(b=>b.classList.toggle('on',+b.dataset.v===v));this.render()},
+    push(kind){
+      const P={route:['New delivery on your route','Battersea SW11 · today 17:00–19:00 · £9 · +6 min','fl-dlv','route'],confirm:['The studio confirmed','Battersea SW11 by 19:00 – pick up from 16:30','fl-run','check'],near:['You are 0.7 mi from the studio','3 deliveries ready to pick up now · from £7','fl-board','pin'],reply:['Studio (Kamila)','No problem, the bouquet will be at the front desk.','fl-studio','chat']}[kind];
+      if(A.state.me!=='sam')A.setUser('sam',{silent:true});
+      A.push(P[0],P[1],{icon:P[3],go:[P[2],{}]});
+    },
+    openPhoto(f){this.photoFor=f;document.getElementById('fl-ph-title').textContent=f==='pickup'?'Photo at pickup':'Photo of the delivery';document.getElementById('fl-ph-cap').textContent=f==='pickup'?'Bouquet and order label in the frame':'Bouquet at the door or with the recipient';this.sheet('photo')},
+    photoDone(){A.closeSheet();if(this.photoFor==='pickup'){this.runStep=3;this.render();A.toast('Picked up. Phone number unlocked.')}else{this.runStep=1;A.go('fl-done')}},
+    render(){
+  // board banner + list
+  const bb=document.getElementById('fl-board-banner');
+  bb.innerHTML=this.v?'<button class="live" onclick="App.go(\'board\')"><span class="lv-ic"><svg class="i"><use href="#fl-i-pin"/></svg></span><span><span class="lv-t" style="display:block">You\'re 0.7 mi from the studio</span><span class="lv-d" style="display:block">3 ready to pick up now</span></span><span class="lv-r">3</span></button>'
+   :'<div class="panel --warn sm"><b>Checking your right to work.</b> You can look around; requests open as soon as a manager has checked it – usually within 24 hours.</div>';
+  document.getElementById('fl-board-list').innerHTML=BOARD.map(d=>'<button class="dcard" onclick="App.go(\'dlv\')"><div class="top"><div style="min-width:0"><div class="when">'+d.when+'</div><div class="where">'+d.where+'</div></div><div class="pay">'+d.pay+'</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-pin"/></svg>From SE1</span><span><svg class="i"><use href="#fl-i-bike"/></svg>'+d.km+' · '+d.t+'</span></div><div class="tags">'+d.tags.join('')+'</div></button>').join('');
+  document.getElementById('fl-dlv-cta').innerHTML=this.v?'<button class="btn --block" onclick="FL.sheet(\'requested\')">Request this delivery<span class="bp">£9.00</span></button><div class="xs muted">You can withdraw any time before pickup.</div>'
+   :'<button class="btn --block" disabled>Request this delivery<span class="bp">£9.00</span></button><div class="xs muted">Requests open once your right to work is checked.</div>';
+  document.getElementById('fl-me-pill').innerHTML=this.v?'<span class="pill --done">Checked · can request</span>':'<span class="pill --review">Waiting for check</span>';
+  // run timeline
+  const s=this.runStep, st=(i)=>i<s?'done':(i===s?'now':'todo'), ic=(i,n)=>i<s?'<svg class="i"><use href="#fl-i-check"/></svg>':n;
+  const steps=[
+   ['Confirmed by the studio','Today 16:02'],
+   ['On your way to the studio',s===1?'<div class="tl-a"><button class="btn --sm" onclick="FL.runStep=2;FL.render();App.toast(\'The studio knows you are coming.\')">I\'m on my way</button></div>':'16:21 · the studio was told'],
+   ['Picked up – photo',s===2?'<div class="tl-a"><button class="btn --sm" onclick="FL.openPhoto(\'pickup\')"><svg class="i"><use href="#fl-i-camera"/></svg>Take pickup photo</button></div>':(s>2?'16:48':'At the studio, show order 186412')],
+   ['Delivered – photo',s===3?'<div class="tl-a" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn --sm" onclick="FL.openPhoto(\'deliver\')"><svg class="i"><use href="#fl-i-camera"/></svg>Delivered – photo</button><button class="btn --sm --ghost" onclick="FL.sheet(\'age\')">18+ order</button></div>':'By 19:00']
+  ];
+  document.getElementById('fl-run-tl').innerHTML=steps.map((x,i)=>'<div class="tl-step '+st(i)+'"><div class="ind"><i>'+ic(i,i+1)+'</i></div><div><div class="tl-t">'+x[0]+'</div>'+(x[1].startsWith('<')?x[1]:'<div class="tl-d">'+x[1]+'</div>')+'</div></div>').join('');
+  document.getElementById('fl-run-phone').innerHTML=s>=3?'<svg class="i"><use href="#fl-i-phone"/></svg><div class="rt"><div class="l num">07700 900 117</div><div class="d">Call or text the recipient</div></div>'
+   :'<svg class="i" style="color:var(--grey)"><use href="#fl-i-lock"/></svg><div class="rt"><div class="l muted">Phone number</div><div class="d">Shown after pickup</div></div>';
+  document.getElementById('fl-run-withdraw').hidden=s>=3;
+  document.getElementById('fl-mine-live-d').textContent=['Confirmed · pick up from 16:30','Confirmed · pick up from 16:30','On your way to the studio','Picked up · deliver by 19:00'][s];
+ }
+  };
+  /* tab bar of the courier mode: B's own bar hides on fl- screens */
+  const sync=id=>{
+    const el=document.getElementById('s-'+id);const isFl=!!(id&&id.startsWith('fl-'));
+    const tb=document.getElementById('tabbar'),ft=document.getElementById('fl-tabbar');
+    if(isFl){tb.classList.add('hide');const t=el&&el.dataset.tab;ft.classList.toggle('hide',!t);ft.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.tab===t));FL.render()}
+    else ft.classList.add('hide');
+    const notes=document.getElementById('notes');if(!notes)return;
+    if(isFl){notes.dataset.fl='1';const n=NOTES[id];document.getElementById('fl-notes-body').innerHTML=n?'<h3>'+n[0]+'</h3>'+n[1]:''}else delete notes.dataset.fl;
+  };
+  document.addEventListener('screen',e=>{const id=e.detail.id;if(id.startsWith('fl-')&&A.state.me!=='sam')A.setUser('sam',{silent:true});sync(id)});
+  const origBack=A.back;A.back=function(f){origBack(A.state.me==='sam'?'fl-board':f);sync(A.state.current)};
+  document.addEventListener('user',()=>{const cur=A.state.current||'';
+    if(A.state.me==='sam'&&!cur.startsWith('fl-'))setTimeout(()=>A.go('fl-board',{},{replace:true}),0);
+    if(A.state.me!=='sam'&&cur.startsWith('fl-'))setTimeout(()=>A.go('home',{},{replace:true}),0)});
+  /* screens, sheets, bar, notes */
+  const scr=document.querySelector('.screens');
+  const wrap=document.createElement('div');wrap.innerHTML=`
+
+
+        `;
+  while(wrap.firstChild)scr.appendChild(wrap.firstChild);
+  const app=document.getElementById('app');
+  const extra=document.createElement('div');extra.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="fl-i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="fl-i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="fl-i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="fl-i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="fl-i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1112 0v5l1.5 2h-15zM10 20.5a2 2 0 004 0"/></symbol>
+  <symbol id="fl-i-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol>
+  <symbol id="fl-i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></symbol>
+  <symbol id="fl-i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h7.5a3.5 3.5 0 000-7h-7a3.5 3.5 0 010-7H16"/></symbol>
+  <symbol id="fl-i-pound" viewBox="0 0 24 24"><path d="M16.5 7.5A4 4 0 009 8.5V12m-2.5 0h8M9 12v3.5c0 1.5-.8 2.8-2.5 3.5h11"/></symbol>
+  <symbol id="fl-i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20.5c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+  <symbol id="fl-i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0113 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+  <symbol id="fl-i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="fl-i-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M5.5 16L9 9h6l3.5 7M9 9l3 7h-1M14 6h2.5l-1.5 3"/></symbol>
+  <symbol id="fl-i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2-6 3 3v3M12 15l-1-5 4 1.5 2 2.5M11 10l-3 2v3"/></symbol>
+  <symbol id="fl-i-train" viewBox="0 0 24 24"><rect x="5.5" y="3.5" width="13" height="13" rx="0"/><path d="M5.5 11h13M8.5 20l2-3.5M15.5 20l-2-3.5"/><circle cx="9" cy="14" r=".6"/><circle cx="15" cy="14" r=".6"/></symbol>
+  <symbol id="fl-i-car" viewBox="0 0 24 24"><path d="M4 16v-3.5L6 8h12l2 4.5V16zM4 16v2.5h2.5V16M17.5 16v2.5H20V16"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></symbol>
+  <symbol id="fl-i-camera" viewBox="0 0 24 24"><path d="M3.5 8h4l1.5-2.5h6L16.5 8h4v11h-17z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="fl-i-alert" viewBox="0 0 24 24"><path d="M12 3.5L21 19.5H3z"/><path d="M12 9.5v4.5M12 16.8v.2"/></symbol>
+  <symbol id="fl-i-msg" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="fl-i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.5 4.5-2 1.5a11 11 0 005.5 5.5l1.5-2 4.5 1.5v3a2 2 0 01-2 2A16.5 16.5 0 014.5 5.5a2 2 0 012-2z"/></symbol>
+  <symbol id="fl-i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/></symbol>
+  <symbol id="fl-i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="fl-i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.2-7.5 9.5-4.3-1.3-7.5-5-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="fl-i-doc" viewBox="0 0 24 24"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5M9 13h6M9 16.5h6"/></symbol>
+  <symbol id="fl-i-trash" viewBox="0 0 24 24"><path d="M4.5 6.5h15M9 6.5V4h6v2.5M6.5 6.5l1 14h9l1-14"/></symbol>
+  <symbol id="fl-i-glass" viewBox="0 0 24 24"><path d="M7 3.5h10l-1 8a4 4 0 01-8 0zM12 15.5V20.5M8.5 20.5h7"/></symbol>
+  <symbol id="fl-i-nav" viewBox="0 0 24 24"><path d="M20 4L3.5 11l7 2.5L13 20.5z"/></symbol>
+  <symbol id="fl-i-bank" viewBox="0 0 24 24"><path d="M3.5 9L12 4l8.5 5zM5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 20h17"/></symbol>
+  <symbol id="fl-i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 114 2c-.9.6-1.6 1.1-1.6 2.3M12 16.8v.2"/></symbol>
+  <symbol id="fl-i-out" viewBox="0 0 24 24"><path d="M14 4.5H5v15h9M10 12h10M16.5 8.5L20 12l-3.5 3.5"/></symbol>
+  <symbol id="fl-i-tg" viewBox="0 0 24 24"><path d="M21 4L2.5 11.5l6 2 2 6.5 3.5-4 5 3.5z"/><path d="M8.5 13.5L18 7"/></symbol>
+</svg><nav class="tabbar hide" id="fl-tabbar">
+          <button class="tab" data-tab="fl-board" onclick="App.tab('fl-board')"><svg class="i"><use href="#fl-i-box"/></svg>Deliveries<span class="dot">7</span></button>
+          <button class="tab" data-tab="fl-mine" onclick="App.tab('fl-mine')"><svg class="i"><use href="#fl-i-bag"/></svg>Mine</button>
+          <button class="tab" data-tab="fl-way" onclick="App.tab('fl-way')"><svg class="i"><use href="#fl-i-route"/></svg>My way</button>
+          <button class="tab" data-tab="fl-earn" onclick="App.tab('fl-earn')"><svg class="i"><use href="#fl-i-pound"/></svg>Earnings</button>
+          <button class="tab" data-tab="fl-studio" onclick="App.tab('fl-studio')"><svg class="i"><use href="#fl-i-msg"/></svg>Studio<span class="dot">1</span></button>
+        </nav>
+        <div class="fl-sheet-src" hidden id="fl-sh-photo"><div class="sh-head"><div class="h3" id="fl-ph-title">Photo of the bouquet</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><div class="cam"><img src="img/peach-posy.webp" alt=""><div class="frame"></div><div class="cap" id="fl-ph-cap">Bouquet and order label in the frame</div></div></div>
+          <div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet()">Retake</button><button class="btn" onclick="FL.photoDone()">Use photo</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-age"><div class="sh-head"><div class="h3">Check the recipient's age</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><p class="soft sm" style="margin:0 0 6px">This order has alcohol. Ask for ID if they look under 25. Choose what you saw – we don't store any numbers.</p>
+            <button class="radio on"><span class="rd"></span><span class="rl">Passport</span></button><button class="radio"><span class="rd"></span><span class="rl">Photo driving licence</span></button><button class="radio"><span class="rd"></span><span class="rl">PASS card or UK armed forces ID</span></button><button class="radio"><span class="rd"></span><span class="rl">Clearly over 25 – no ID asked</span></button>
+            <div style="margin-top:16px;text-align:center"><button class="textbtn accent" onclick="FL.sheet('refuse')">Can't hand over – refuse</button></div></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();FL.openPhoto('deliver')">Continue to photo</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-refuse"><div class="sh-head"><div class="h3">Why can't you hand it over?</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><button class="radio on"><span class="rd"></span><span class="rl">No ID</span></button><button class="radio"><span class="rd"></span><span class="rl">Under 18 or ID says under 18</span></button><button class="radio"><span class="rd"></span><span class="rl">Seems drunk</span></button><button class="radio"><span class="rd"></span><span class="rl">Other reason</span></button>
+            <div class="panel sm soft" style="margin-top:14px">Bring the order back to the studio. You're paid the full rate plus 50% for the return.</div></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('The studio knows. Bring it back when you can.')">Tell the studio</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-problem"><div class="sh-head"><div class="h3">Problem with delivery</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><button class="radio on"><span class="rd"></span><span class="rl">Recipient isn't answering</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't find the address</span></button><button class="radio"><span class="rd"></span><span class="rl">Can't deliver for another reason</span></button><button class="radio"><span class="rd"></span><span class="rl">The bouquet got damaged</span></button><button class="radio"><span class="rd"></span><span><span class="rl" style="display:block">I can't continue – I'll bring it back</span><span class="rdd" style="display:block">Bike broke, something urgent. You're paid 50% for bringing it back.</span></span></button>
+            <div class="field" style="margin-top:14px"><label for="fl-pr-n">Anything to add</label><textarea class="input" id="fl-pr-n">Rang three times, no answer. Waiting outside.</textarea></div></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent. The studio will reply here.')">Send to the studio</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-withdraw"><div class="sh-head"><div class="h3">Withdraw from this delivery?</div></div>
+          <div class="sh-body"><p class="soft sm" style="margin:0">That's fine – it goes back to other couriers. Nothing changes on your account.</p></div>
+          <div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();App.toast('Withdrawn.');App.tab('fl-board')">Withdraw</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-query"><div class="sh-head"><div class="h3">What looks wrong?</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body"><div class="field"><label for="fl-q-n">Tell the payout team</label><textarea class="input" id="fl-q-n">The Vauxhall return was on Thursday, not Wednesday – is that the same order?</textarea></div><p class="hint" style="margin:0">They reply within 2 working days. Your payout isn't held up.</p></div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent to the payout team.')">Send</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-route"><div class="sh-head"><div class="h3">Add a route</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div>
+          <div class="sh-body">
+            <div class="field"><label for="fl-r-l">Name</label><input class="input" id="fl-r-l" value="Home from work"></div>
+            <div class="field"><label for="fl-r-f">From (postcode)</label><input class="input" id="fl-r-f" value="EC2A 4NE"></div>
+            <div class="field"><label for="fl-r-t">To (postcode)</label><input class="input" id="fl-r-t" value="SE15 4QL"></div>
+            <div class="field"><label>Days</label><div class="wrap-chips"><span class="chip on">Mon</span><span class="chip on">Tue</span><span class="chip on">Wed</span><span class="chip on">Thu</span><span class="chip">Fri</span><span class="chip">Sat</span><span class="chip">Sun</span></div></div>
+            <div class="field"><label for="fl-r-w">Usually leaving</label><input class="input" id="fl-r-w" value="17:30 – 18:30"></div>
+          </div>
+          <div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Route saved. We will tell you what fits it.')">Save route</button></div></div>
+
+        <div class="fl-sheet-src" hidden id="fl-sh-requested">
+          <div class="sh-body" style="text-align:center;padding-top:16px"><div class="caps muted">Requested</div><h2 class="h1" style="margin:8px 0 10px">The studio will confirm soon.</h2><p class="soft sm" style="margin:0 0 6px">Usually within 15 minutes. You'll get a notification with the full address.</p></div>
+          <div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet();App.tab('fl-board')">More deliveries</button><button class="btn" onclick="App.closeSheet();App.tab('fl-mine')">My deliveries</button></div></div>
+
+        `;
+  while(extra.firstChild)app.appendChild(extra.firstChild);
+  const notes=document.getElementById('notes');
+  if(notes){const n=document.createElement('div');n.id='fl-notes';n.className='notes';
+    n.innerHTML=`<h4>Курьер-фрилансер (Sam)</h4><div style="border:2px solid var(--accent);padding:12px 14px;margin:0 0 14px"><div class="caps" style="color:var(--accent);margin-bottom:6px">Правило · Tatiana 23.10</div><ul style="margin:0;padding-left:16px"><li>БОТ ФРИЛАНСЕРОВ (@floritta_freelance_bot) И ФРИЛАНСЕР-КУРЬЕР В ПРИЛОЖЕНИИ – ДВЕ НЕЗАВИСИМЫЕ КОДОВЫЕ ВЕТКИ. ОНИ НИКАК НЕ СВЯЗАНЫ МЕЖДУ СОБОЙ.</li><li>ПРИЛОЖЕНИЕ НЕ ЗАВИСИТ ОТ БОТА: НЕ ВЫЗЫВАЕТ ЕГО, НЕ ПОЛЬЗУЕТСЯ ЕГО API В CRM (/api/v1/freelance/*), ЕГО ТОКЕНАМИ, ТЕКСТАМИ, ЧАТАМИ TELEGRAM И ЕГО КОДОМ.</li><li>КОД ФРИЛАНСЕРА-КУРЬЕРА ДЛЯ ПРИЛОЖЕНИЯ ПИШЕТСЯ ЗАНОВО – И В ПРИЛОЖЕНИИ, И В CRM. ЗАКАЗЫ ФРИЛАНСЕРАМ ПРИЛОЖЕНИЯ ВЫДАЮТСЯ С ДАШБОРДА CRM.</li><li>РАЗРЕШЕНО ТОЛЬКО ОДНО: КУРЬЕР, КОТОРЫЙ ЗАРЕГИСТРИРОВАЛСЯ В БОТЕ, МОЖЕТ ОДИН РАЗ ПЕРЕНЕСТИ СВОЮ РЕГИСТРАЦИЮ В ПРИЛОЖЕНИЕ. ПОСЛЕ ПЕРЕНОСА – НИКАКОЙ СВЯЗИ С БОТОМ.</li></ul></div><div class="fl-ctl" id="fl-vt"><button data-v="1" class="on">Проверен</button><button data-v="0">Ждёт проверки</button></div>
+      <div style="margin:6px 0 4px" class="eyebrow">Показать пуш</div>
+      <button class="fl-push" onclick="FL.push('route')">Новая доставка по маршруту</button><button class="fl-push" onclick="FL.push('confirm')">Студия подтвердила</button><button class="fl-push" onclick="FL.push('near')">Рядом со студией</button><button class="fl-push" onclick="FL.push('reply')">Ответ студии</button>
+      <div id="fl-notes-body" style="margin-top:22px"></div>
+      <h4>Отдельная роль</h4><ul><li><b>Sam</b> – self-employed <b>курьер</b>: видит только доставки на доске, точный адрес – после подтверждения студией, телефон получателя – после забора. Не видит заказы целиком, клиентов, склад, задачи и обучение сотрудников.</li><li><b>Sam ≠ Dana</b> (решение Tatiana 23.10): Dana – наш постоянный самозанятый курьер по договору (на год, своя машина, Hire &amp; Reward, инвойсы); Sam – фрилансер с доски из бота: по пути, пешком / велосипед / транспорт, £7–11 за доставку. Это две разные роли, не сводить.</li><li>Mira – самозанятая флористка, у неё свой доступ к заказу (бриф целиком).</li></ul>`;
+    notes.insertBefore(n,notes.firstChild);
+    n.querySelectorAll('#fl-vt button').forEach(b=>b.onclick=()=>FL.setV(+b.dataset.v))}
+  /* small interactions */
+  document.addEventListener('click',e=>{
+    const t=e.target.closest('.fl-tiles .tile');if(t){t.parentNode.querySelectorAll('.tile').forEach(x=>x.classList.toggle('on',x===t));return}
+    const sg=e.target.closest('.fl .seg button');if(sg){sg.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===sg));return}
+    const ch=e.target.closest('.fl .chips .chip');if(ch){ch.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===ch));return}
+    const r=e.target.closest('#sheet-inner .radio, .fl .radio');if(r){const box=r.parentNode;box.querySelectorAll(':scope > .radio').forEach(x=>x.classList.toggle('on',x===r));return}
+    const q=e.target.closest('.fl .qopt');if(q){q.classList.add(q.dataset.ok==='1'?'right':'wrong');if(q.dataset.ok==='1')document.getElementById('fl-quiz-fb').hidden=false}
+  });
+  FL.render();
+})();
+</script>
+<!-- ============ /FREELANCE COURIER MODE ============ -->
+
+
 </body>
 </html>

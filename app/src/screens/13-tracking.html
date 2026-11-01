@@ -1,0 +1,42 @@
+<section class="scr" id="s-tracking" data-nav="Tracking" data-group="Account">
+  <div class="appbar"><button class="ib" onclick="App.back('orders')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="t-ttl">Order #715529</div><button class="ib" onclick="App.toast('Tracking link copied')" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button></div>
+  <div class="scr-body" id="t-body">
+    <div class="map" id="t-map">
+      <svg viewBox="0 0 400 250" preserveAspectRatio="none">
+        <path class="road" d="M 46 158 C 90 150 110 110 150 100 C 200 88 230 120 275 96 C 310 78 325 72 346 66"/>
+        <path class="road" d="M 0 200 C 120 190 200 210 400 170" opacity=".5"/>
+        <path class="road" d="M 120 0 C 130 80 110 160 140 250" opacity=".5"/>
+        <path class="road" d="M 300 0 C 290 90 320 180 290 250" opacity=".5"/>
+        <path class="route" id="t-route" d="M 46 158 C 90 150 110 110 150 100 C 200 88 230 120 275 96 C 310 78 325 72 346 66"/>
+      </svg>
+      <div class="pin" style="left:11.5%;top:63.2%"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><path d="M12 9.5V4M12 20v-5.5M9.5 12H4M20 12h-5.5"/></svg></div>
+      <div class="pin-l" style="left:11.5%;top:70%">Willow Walk</div>
+      <div class="pin dest" style="left:86.5%;top:26.4%"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg></div>
+      <div class="pin-l" style="left:86.5%;top:33%">Anna · SE1</div>
+      <div class="courier" id="t-courier"></div>
+      <div class="eta" id="t-eta"></div>
+    </div>
+    <div class="pad" style="margin-top:24px">
+      <div class="h2" id="t-head"></div>
+      <div class="soft sm mt8" id="t-sub"></div>
+    </div>
+    <div class="hr"></div>
+    <div class="timeline" id="t-tl"></div>
+    <div id="t-done"></div>
+    <div class="sec-head"><div class="h2" id="t-courier-h">Your courier</div></div>
+    <div id="t-courier-card"></div>
+    <div class="sec-head"><div class="h2">Recipient</div></div>
+    <div class="pad">
+      <div class="flex ai-c g12"><div class="av --soft" style="width:40px;height:40px;border-radius:50%;background:var(--silver);display:grid;place-items:center;font-family:var(--f-display);font-size:17px;flex:none">A</div><div class="f1"><div>Anna Whitfield</div><div class="muted sm">+44 7700 900 ··· · 14 Tanner St, SE1 3PH</div></div></div>
+      <button class="btn --ghost --block mt16" onclick="App.toast('Live tracking sent to Anna by SMS')"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg>Share live tracking with Anna</button>
+    </div>
+    <div class="sec-head"><div class="h2">Order details</div></div>
+    <div class="pad"><div class="acc" id="t-acc"></div></div>
+    <div class="pad mt24"><button class="panel --ok" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="App.go('care')">${""}<div class="f1"><div class="sm">Keep it alive · 7-day care programme</div><div class="xs muted mt4">Daily tips, +5 Petals per check-in, Caretaker badge on day 7</div></div><span class="textbtn">Start</span></button></div>
+    <div class="pad flex g10 mt24" style="gap:10px">
+      <button class="btn --ghost f1" onclick="window.trkReorder()">Reorder</button>
+      <button class="btn --ghost f1" onclick="App.go('help')">Get help</button>
+    </div>
+    <button class="dev" onclick="window.trkNext()">Simulate next step</button>
+  </div>
+</section>
