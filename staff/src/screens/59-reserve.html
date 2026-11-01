@@ -1,0 +1,567 @@
+<style>
+/* ---------- Reserve contour (B) · static screens s-rs2-* ---------- */
+.rs2-demo{display:flex;gap:6px;overflow-x:auto;padding:6px var(--gutter) 0;scrollbar-width:none}
+.rs2-demo::-webkit-scrollbar{display:none}
+.rs2-demo .chip{height:28px;font-size:11px;padding:0 10px}
+.rs2-demo .lbl{flex:none;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);align-self:center;margin-right:2px}
+.rs2-ptr{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:8px 0 2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.rs2-ptr svg{width:14px;height:14px;stroke:var(--grey);fill:none;stroke-width:1.5}
+.rs2-err{color:var(--accent);font-size:13px;margin:-6px 0 14px}
+.rs2-field.err .input{border-color:var(--accent)}
+.rs2-spin{display:inline-block;width:16px;height:16px;border:1.5px solid var(--light);border-top-color:var(--ink);animation:rs2spin .8s linear infinite}
+@keyframes rs2spin{to{transform:rotate(360deg)}}
+.rs2-state{margin:16px var(--gutter) 0;padding:16px;background:var(--silver)}
+.rs2-state.--err{border-left:2px solid var(--accent)}
+.rs2-state .h4{margin-bottom:4px}
+.rs2-panel{margin:16px var(--gutter) 0;padding:16px}
+.rs2-panel .h4{margin-bottom:4px}
+.rs2-panel .code{font-family:var(--f-display);font-size:26px;font-weight:300;letter-spacing:.1em;margin:8px 0 6px}
+.rs2-views{margin:14px var(--gutter) 0}
+.rs2-offer{border:1px solid var(--hair);padding:14px var(--gutter);margin:0 var(--gutter) 10px}
+.rs2-offer.mine{border-color:var(--ink)}
+.rs2-offer .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rs2-offer .meta{font-size:13px;color:var(--graphite);margin-top:6px;line-height:1.45}
+.rs2-offer .btns{display:flex;gap:8px;margin-top:12px}
+.rs2-offer .btns .btn{flex:1}
+.rs2-prof{display:flex;align-items:center;gap:16px;padding:6px var(--gutter) 0}
+.rs2-prof .nm{font-family:var(--f-display);font-weight:300;font-size:34px;line-height:1.05;margin:0}
+.rs2-prof .tt{font-size:14px;color:var(--graphite);margin-top:2px}
+.rs2-lang{display:flex;gap:8px;padding:0 var(--gutter)}
+.rs2-lens{margin:14px var(--gutter) 0;padding:14px 16px;background:var(--ink);color:var(--paper);display:flex;align-items:center;gap:12px}
+.rs2-lens .btn{flex:none;background:var(--paper);color:var(--ink);height:36px;padding:0 14px}
+.rs2-absent{padding:22px var(--gutter) 6px;font-size:12px;color:var(--grey);line-height:1.5}
+.rs2-login .hint{font-size:12px;color:var(--grey)}
+.rs2-login .link{display:block;width:100%;text-align:center;margin-top:22px}
+.rs2-login .link[disabled]{opacity:.4;pointer-events:none}
+.rs2-login .dev{font-size:12px;color:var(--grey);margin-top:14px;text-align:center}
+.rs2-mem{margin:0 0 14px;padding:10px 12px;background:var(--silver);font-size:12px;color:var(--graphite);line-height:1.5}
+.rs2-person{border:1px solid var(--hair);padding:14px var(--gutter);margin:0 var(--gutter) 10px}
+.rs2-person .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rs2-person .meta{font-size:13px;color:var(--graphite);margin-top:4px}
+.rs2-person .btns{display:flex;gap:8px;margin-top:12px}
+.rs2-person .btns .btn{flex:1}
+.rs2-empty{padding:12px var(--gutter) 4px;font-size:13px;color:var(--grey)}
+.rs2-foot{padding:18px var(--gutter) 8px;font-size:12px;color:var(--grey);line-height:1.5}
+</style>
+
+<!-- ============ Sign in (classic, pre-auth) with the reserve-code link ============ -->
+<!-- ids: TM-RES-001 TM-RES-008 -->
+<section class="scr fl rs2-login" id="s-rs2-login" data-nav="Sign in · code link" data-group="Reserve · B">
+  <div class="appbar"><span class="ib"></span><div class="ttl caps">Sign in</div><span class="ib"></span></div>
+  <div class="scr-body pad" id="rs2-login-body"></div>
+</section>
+
+<!-- ============ /reserve-code – "I have a reserve code" ============ -->
+<!-- ids: TM-RES-002 TM-RES-003 TM-RES-004 TM-RES-005 TM-RES-006 TM-RES-007 TM-RES-008 -->
+<section class="scr fl rs2-login" id="s-rs2-code" data-nav="Reserve code · sign in" data-group="Reserve · B">
+  <div class="appbar"><button class="ib" onclick="RS2.codeBack()" aria-label="Back" id="rs2-code-backbtn"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl caps">Reserve code</div><span class="ib"></span></div>
+  <div class="scr-body pad" id="rs2-code-body"></div>
+</section>
+
+<!-- ============ /change-password – first password after the code ============ -->
+<!-- ids: TM-RES-005 TM-RES-035 -->
+<section class="scr fl rs2-login" id="s-rs2-password" data-nav="Set password · after code" data-group="Reserve · B">
+  <div class="appbar"><span class="ib"></span><div class="ttl caps">New password</div><span class="ib"></span></div>
+  <div class="scr-body pad" id="rs2-password-body"></div>
+</section>
+
+<!-- ============ /b – Today for the reserve: onboarding checklist ============ -->
+<!-- ids: TM-RES-009 TM-RES-010 TM-RES-011 TM-RES-012 TM-RES-013 TM-RES-014 TM-RES-015 TM-RES-016 TM-RES-017 TM-RES-018 TM-RES-019 TM-RES-020 TM-RES-073 TM-RES-074 -->
+<section class="scr me5" id="s-rs2-today" data-tab="home" data-nav="Today · reserve" data-group="Reserve · B">
+  <div class="appbar"><div class="ttl" id="rs2-today-ttl">Today</div><span class="ib" id="rs2-today-av"></span></div>
+  <div class="scr-body has-tab" id="rs2-today-body"></div>
+</section>
+
+<!-- ============ /b/work – offers for the reserve ============ -->
+<!-- ids: TM-RES-021 TM-RES-022 TM-RES-023 TM-RES-024 TM-RES-025 TM-RES-026 TM-RES-027 TM-RES-072 -->
+<section class="scr me5" id="s-rs2-work" data-tab="work" data-nav="Work · reserve" data-group="Reserve · B">
+  <div class="appbar"><div class="ttl" id="rs2-work-ttl">Work</div></div>
+  <div class="scr-body has-tab" id="rs2-work-body"></div>
+</section>
+
+<!-- ============ /b/me – short profile for the reserve ============ -->
+<!-- ids: TM-RES-028 TM-RES-029 TM-RES-030 TM-RES-031 TM-RES-032 TM-RES-033 TM-RES-034 TM-RES-035 TM-RES-036 TM-RES-037 TM-RES-074 -->
+<section class="scr me5" id="s-rs2-me" data-tab="me" data-nav="Me · reserve" data-group="Reserve · B">
+  <div class="appbar"><div class="ttl" id="rs2-me-ttl">Me</div></div>
+  <div class="scr-body has-tab" id="rs2-me-body"></div>
+</section>
+
+<!-- ============ /b/reserve/paths – step 1 ============ -->
+<!-- ids: TM-RES-038 TM-RES-039 TM-RES-040 TM-RES-041 TM-RES-042 TM-RES-071 -->
+<section class="scr me5" id="s-rs2-paths" data-nav="Step 1 · how to work" data-group="Reserve · B">
+  <div class="appbar"><button class="ib" onclick="App.back('rs2-today')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">How you want to work</div></div>
+  <div class="scr-body has-cta" id="rs2-paths-body"></div>
+  <div class="cta-bar" id="rs2-paths-cta"></div>
+</section>
+
+<!-- ============ /b/reserve/rtw – step 2 ============ -->
+<!-- ids: TM-RES-043 TM-RES-044 TM-RES-045 TM-RES-046 TM-RES-047 TM-RES-048 TM-RES-049 TM-RES-050 TM-RES-071 -->
+<section class="scr me5" id="s-rs2-rtw" data-nav="Step 2 · right to work" data-group="Reserve · B">
+  <div class="appbar"><button class="ib" onclick="App.back('rs2-today')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Right to work</div></div>
+  <div class="scr-body has-cta" id="rs2-rtw-body"></div>
+  <div class="cta-bar" id="rs2-rtw-cta"></div>
+</section>
+
+<!-- ============ /b/reserve/pay – step 3 ============ -->
+<!-- ids: TM-RES-051 TM-RES-052 TM-RES-053 TM-RES-054 TM-RES-055 TM-RES-056 TM-RES-057 TM-RES-071 -->
+<section class="scr me5" id="s-rs2-pay" data-nav="Step 3 · pay details" data-group="Reserve · B">
+  <div class="appbar"><button class="ib" onclick="App.back('rs2-today')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Pay details</div></div>
+  <div class="scr-body has-cta" id="rs2-pay-body"></div>
+  <div class="cta-bar" id="rs2-pay-cta"></div>
+</section>
+
+<!-- ============ /b/reserve/manager – Reserve (manager) ============ -->
+<!-- ids: TM-RES-058 TM-RES-059 TM-RES-060 TM-RES-061 TM-RES-062 TM-RES-063 TM-RES-064 TM-RES-065 TM-RES-066 TM-RES-067 TM-RES-068 TM-RES-069 TM-RES-070 TM-RES-072 TM-RES-073 -->
+<section class="scr me5" id="s-rs2-manager" data-nav="Reserve · manager (B)" data-group="Reserve · B">
+  <div class="appbar"><button class="ib" onclick="App.back('me')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Reserve</div></div>
+  <div class="scr-body" id="rs2-manager-body" style="padding-bottom:32px"></div>
+</section>
+
+<script>
+(function(){const A=window.App;
+/* ---------- state (demo, in memory only) ---------- */
+const S=window.RS2={
+  ob:{paths:{shifts:true,jobs:false},rtw:'sent',share:'W3K9PL2XQ',pay:false,last4:null,agr:{worker:false,self_employed:false},lessons:false,complete:false},
+  net:'ok',            /* ok | loading | unavailable | error  – GET /me/reserve-onboarding */
+  mnet:'ok',           /* the same for GET /reserve (manager) */
+  lang:'en',
+  again:false,         /* rtw: «Send again» pressed while status = sent */
+  editPay:false,       /* pay: «Enter different details» */
+  view:null,           /* work: shifts | jobs */
+  contour:'reserve',   /* what CRM will say at the next /me: reserve | worker | self_employed */
+  pending:null,        /* reserve code kept in memory until /change-password */
+  signing:false,resp:'ok',codeErr:null,
+  busy:null
+};
+const LINA='lina';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/</g,'&lt;');
+const isRes=()=>A.me().engagement==='reserve';
+const isMgr=()=>['manager','owner'].includes(A.role());
+const lens=()=>isMgr();                                   /* admin looking through the «Reserve» contour lens */
+const ensureRes=()=>{if(!isRes()&&!lens())A.setUser(LINA,{silent:true})};
+const ensureMgr=()=>{if(!isMgr())A.setUser('valeria',{silent:true})};
+const first=()=>A.me().n.split(' ')[0];
+const longDate=()=>A.NOW.toLocaleDateString(S.lang==='ru'?'ru-RU':'en-GB',{weekday:'long',day:'numeric',month:'long'});
+const ic=(n,c)=>A.icon(n).replace('<svg',`<svg class="${c||'ic'}"`);
+S.go=id=>A.go(id);
+
+/* ---------- strings: bCopy().reserve.* (en / ru) – TM-RES-074 ---------- */
+const STR={
+  en:{today:'Today',work:'Work',me:'Me',hello:n=>`Hello, ${n}`,inTitle:n=>`You're in, ${n}`,
+    lead:'A few steps and we can start sending you offers.',progress:(d,t)=>`${d} of ${t} done`,
+    unavailable:'Not available on this account',unavailableBody:'The reserve module is not switched on for this CRM, or this account is not in the reserve. Nothing to retry.',
+    loadError:'Could not load. Pull down to try again.',loading:'Loading…',
+    steps:{paths:'How you want to work',rtw:'Right to work',pay:'Pay details',agreement:'Agreement',agreements:'Agreements',lessons:'Two lessons'},
+    st:{done:'Done',wait:'Waiting',todo:'To do'},
+    leave:'Changed your mind? How to leave the reserve',
+    inBody:(s,j)=>`${s&&j?'Open shifts and jobs':s?'Open shifts':'Jobs'} will come to this phone. Take what suits you – nothing is expected of you.`,
+    seeOffers:'See offers',inNote:'The first offers open as soon as the studio has one that matches.',
+    notYet:'A little early',notYetBody:'Finish the steps on Today and offers will open here.',toSteps:'Back to steps',
+    noPaths:'You have not chosen how you want to work yet.',shifts:'Shifts',jobs:'Jobs',
+    ready:'All done',left:n=>`${n} of 5 steps left`,howIWork:'How I work',lessons:'Lessons',language:'Language',changePw:'Change password',signOut:'Sign out',
+    subtitle:r=>`Reserve · ${r}`},
+  ru:{today:'Сегодня',work:'Работа',me:'Я',hello:n=>`Здравствуйте, ${n}`,inTitle:n=>`Вы в команде, ${n}`,
+    lead:'Несколько шагов, и мы начнём присылать предложения.',progress:(d,t)=>`выполнено ${d} из ${t}`,
+    unavailable:'Недоступно для этого аккаунта',unavailableBody:'Модуль резерва не включён в этой CRM или аккаунт не в резерве. Повторять нечего.',
+    loadError:'Не удалось загрузить. Потяните вниз, чтобы повторить.',loading:'Загрузка…',
+    steps:{paths:'Как вы хотите работать',rtw:'Право на работу',pay:'Платёжные данные',agreement:'Договор',agreements:'Договоры',lessons:'Два урока'},
+    st:{done:'Сделано',wait:'Ждём',todo:'Не сделано'},
+    leave:'Передумали? Как выйти из резерва',
+    inBody:(s,j)=>`${s&&j?'Открытые смены и задания':s?'Открытые смены':'Задания'} будут приходить на этот телефон. Берите, что подходит, – никаких обязательств.`,
+    seeOffers:'Смотреть предложения',inNote:'Первые предложения откроются, как только у студии появится подходящее.',
+    notYet:'Пока рано',notYetBody:'Закончите шаги на вкладке «Сегодня» – и здесь появятся предложения.',toSteps:'К шагам',
+    noPaths:'Вы ещё не выбрали, как хотите работать.',shifts:'Смены',jobs:'Задания',
+    ready:'Всё готово',left:n=>`шагов осталось · ${n} из 5`,howIWork:'Как я работаю',lessons:'Уроки',language:'Язык',changePw:'Сменить пароль',signOut:'Выйти',
+    subtitle:r=>`Резерв · ${r}`}
+};
+const L=()=>STR[S.lang];
+const roleName=()=>({florist:'florist',courier:'courier',manager:'manager',owner:'owner'})[A.role()]||'florist';
+
+/* ---------- onboarding model (mirrors reserve/model.ts) ---------- */
+const agreementsNeeded=()=>{const p=S.ob.paths,a=[];if(p.shifts)a.push({kind:'worker',title:'Casual worker agreement'});if(p.jobs)a.push({kind:'self_employed',title:'Jobs agreement'});return a};
+const steps=()=>{const o=S.ob,p=o.paths,any=p.shifts||p.jobs,ag=agreementsNeeded(),signed=ag.filter(a=>o.agr[a.kind]).length,T=L().steps;
+  return [
+    {id:'paths',title:T.paths,sub:any?[p.shifts?L().shifts.toLowerCase():null,p.jobs?L().jobs.toLowerCase():null].filter(Boolean).join(' / '):'Shifts at the studio, jobs, or both',st:any?'done':'todo',go:"RS2.go('rs2-paths')",tid:'b-reserve-step-paths'},
+    {id:'rtw',title:T.rtw,sub:o.rtw==='checked'?'Checked by the studio':o.rtw==='sent'?'Sent – the studio checks it within 24 h':'Share code from GOV.UK',st:o.rtw==='checked'?'done':o.rtw==='sent'?'wait':'todo',go:"RS2.go('rs2-rtw')",tid:'b-reserve-step-rtw'},
+    {id:'pay',title:T.pay,sub:o.pay?`Bank account ending ${o.last4}`:'Where the studio pays you',st:o.pay?'done':'todo',go:"RS2.go('rs2-pay')",tid:'b-reserve-step-pay'},
+    {id:'agreements',title:ag.length>1?T.agreements:T.agreement,sub:!any?'Choose how you want to work first':`Signed ${signed} of ${ag.length}`,st:!any?'off':signed===ag.length?'done':'todo',go:any?"RS2.openAgreement()":null},
+    {id:'lessons',title:T.lessons,sub:o.lessons?'Studio safety · Our standards':'Studio safety 6 min · Our standards 8 min',st:o.lessons?'done':'todo',go:"RS2.lessons()"}
+  ]};
+const progress=()=>({done:steps().filter(x=>x.st==='done').length,total:5});
+const isReady=()=>S.ob.complete;   /* only CRM's word – the app never sums the steps itself */
+
+/* ---------- shared pieces ---------- */
+const demo=items=>`<div class="rs2-demo"><span class="lbl">Demo</span>${items.map(([l,fn,on])=>`<button class="chip${on?' on':''}" onclick="${fn}">${l}</button>`).join('')}</div>`;
+const netChips=(key,re)=>demo([['Data',`RS2.setNet('${key}','ok','${re}')`,S[key]==='ok'],['Loading',`RS2.setNet('${key}','loading','${re}')`,S[key]==='loading'],['Unavailable 404/403',`RS2.setNet('${key}','unavailable','${re}')`,S[key]==='unavailable'],['Error',`RS2.setNet('${key}','error','${re}')`,S[key]==='error']]);
+S.setNet=(key,v,re)=>{S[key]=v;window['mount_'+re]()};
+const ptr=re=>`<button class="rs2-ptr" onclick="RS2.refresh('${re}')">${A.icon('repeat')} Pull down to refresh</button>`;
+S.refresh=re=>{A.haptic();const k=re==='rs2_manager'?'mnet':'net';const was=S[k];S[k]='loading';window['mount_'+re]();setTimeout(()=>{S[k]=was==='loading'?'ok':was;window['mount_'+re]();A.toast('Refreshed')},600)};
+const stateBlock=key=>{const v=S[key];
+  if(v==='loading')return `<div class="rs2-state"><span class="rs2-spin"></span><span class="sm soft" style="margin-left:10px">${L().loading}</span></div>`;
+  if(v==='unavailable')return `<div class="rs2-state"><div class="h4">${L().unavailable}</div><div class="sm soft">${L().unavailableBody}</div></div>`;
+  if(v==='error')return `<div class="rs2-state --err"><div class="h4">${L().loadError}</div><button class="textbtn mt8" onclick="RS2.refresh('${key==='mnet'?'rs2_manager':A.state.current.replace(/-/g,'_')}')">Try again</button></div>`;
+  return null};
+const lensBlock=()=>`<div class="rs2-state"><div class="h4">${L().unavailable}</div><div class="sm soft">You are looking through the «Reserve» lens as ${esc(A.me().n)}. Onboarding data belongs to the reserve member only – the server answers 403.</div></div>`;
+S.alert=(t,m)=>A.sheet(`<div class="sh-head"><div class="h3">${esc(t)}</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">${esc(m)}</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>`);
+const sheetHead=t=>`<div class="sh-head"><div class="h3">${t}</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon('close')}</button></div>`;
+
+/* ========== Sign in (classic) with the «I have a reserve code» link ========== */
+window.mount_rs2_login=function(){
+  $('rs2-login-body').innerHTML=`<h1 class="h1 mt16" style="margin:16px 0 24px">Welcome back.</h1>
+    <div class="field"><label for="rs2-li-e">Email</label><input class="input" id="rs2-li-e" value="" placeholder="name@example.com" autocapitalize="none"></div>
+    <div class="field"><label for="rs2-li-p">Password</label><input class="input" id="rs2-li-p" type="password" value="" placeholder="••••••••"></div>
+    <button class="btn --block" id="rs2-li-btn" onclick="RS2.staffSignIn()">Sign in</button>
+    <div style="text-align:center;margin-top:18px"><button class="textbtn" onclick="App.toast('Reset link sent – demo')">Forgot password</button></div>
+    <!-- ids: TM-RES-001 -->
+    <button class="textbtn link" id="rs2-li-code" ${S.signing?'disabled':''} onclick="RS2.go('rs2-code')">I have a reserve code</button>
+    <p class="hint" style="text-align:center;margin-top:24px">Invited through Work with us? Use the 8-character code from your email – no password yet.</p>
+    <!-- ids: TM-RES-008 -->
+    <p class="hint" style="text-align:center;margin-top:10px">Classic pre-sign-in style, like Sign in and Forgot password – not the B shell.</p>`;
+};
+S.staffSignIn=()=>{S.signing=true;const b=$('rs2-li-btn'),l=$('rs2-li-code');b.innerHTML='<span class="rs2-spin"></span>';l.setAttribute('disabled','');
+  setTimeout(()=>{S.signing=false;window.mount_rs2_login();A.toast('Wrong email or password – demo (staff sign in)')},900)};
+
+/* ========== /reserve-code ========== */
+window.mount_rs2_code=function(){const el=$('rs2-code-body');
+  const email=S.codeEmail||'',code=S.codeVal||'';
+  const can=email.trim().length>0&&code.replace(/\s/g,'').length>=4&&!S.signing;
+  el.innerHTML=`<h1 class="h1 mt16" style="margin:16px 0 8px">Your reserve code.</h1>
+    <p class="sm soft" style="margin:0 0 22px">The email you applied with and the 8-character code from the invite. The code becomes your first password.</p>
+    ${demo([['Server: OK',"RS2.setResp('ok')",S.resp==='ok'],['429 too many',"RS2.setResp('429')",S.resp==='429'],['410 expired',"RS2.setResp('410')",S.resp==='410'],['401 wrong',"RS2.setResp('401')",S.resp==='401'],['500 other',"RS2.setResp('500')",S.resp==='500']])}
+    <!-- ids: TM-RES-002 -->
+    <div class="field mt16"><label for="rs2-c-e">Email</label><input class="input" id="rs2-c-e" type="email" autocapitalize="none" autocomplete="username" inputmode="email" placeholder="name@example.com" value="${esc(email)}" ${S.signing?'disabled':''} oninput="RS2.codeInput()"></div>
+    <!-- ids: TM-RES-003 -->
+    <div class="field rs2-field${S.codeErr?' err':''}"><label for="rs2-c-c">Code from the email</label><input class="input" id="rs2-c-c" autocapitalize="characters" autocomplete="one-time-code" placeholder="FLR7Q4KA" style="text-transform:uppercase;letter-spacing:.12em" value="${esc(code)}" ${S.signing?'disabled':''} oninput="RS2.codeInput()" onkeydown="if(event.key==='Enter')RS2.codeSubmit()"></div>
+    <!-- ids: TM-RES-006 -->
+    ${S.codeErr?`<div class="rs2-err">${esc(S.codeErr)}</div>`:''}
+    <!-- ids: TM-RES-004 -->
+    <button class="btn --block" id="rs2-c-btn" ${can?'':'disabled'} onclick="RS2.codeSubmit()">${S.signing?'<span class="rs2-spin"></span>':'Sign in'}</button>
+    <div class="dev">Signing in on: this iPhone · the code is sent once and never written to the phone</div>
+    <!-- ids: TM-RES-007 -->
+    <button class="textbtn link" ${S.signing?'disabled':''} onclick="RS2.codeBack()">Back to sign in</button>
+    <!-- ids: TM-RES-008 -->
+    <p class="hint" style="text-align:center;margin-top:24px">Classic pre-sign-in style, device theme, keyboard-aware – same as Sign in and Forgot password.</p>`;
+};
+S.setResp=v=>{S.resp=v;S.codeErr=null;window.mount_rs2_code()};
+S.codeInput=()=>{S.codeEmail=$('rs2-c-e').value;S.codeVal=$('rs2-c-c').value.toUpperCase();const b=$('rs2-c-btn');const can=S.codeEmail.trim().length>0&&S.codeVal.replace(/\s/g,'').length>=4;if(can)b.removeAttribute('disabled');else b.setAttribute('disabled','')};
+S.codeBack=()=>{if(S.signing)return;A.back('rs2-login')};
+S.codeSubmit=()=>{if(S.signing)return;const email=(S.codeEmail||'').trim(),code=(S.codeVal||'').replace(/\s/g,'');if(!email||code.length<4)return;
+  S.pending=code;        /* TM-RES-005: kept in memory only, handed to /change-password once */
+  S.signing=true;S.codeErr=null;window.mount_rs2_code();
+  setTimeout(()=>{S.signing=false;
+    const E={'429':'Too many attempts – sign in is blocked for a while. Try again later.','410':'This code has expired. Ask the studio for a new invite.','401':'Wrong code or email. Check the invite email.','500':'That did not work. Check your connection and try again.'};
+    if(S.resp!=='ok'){S.codeErr=E[S.resp];S.pending=null;window.mount_rs2_code();return}
+    window.mount_rs2_code();A.toast('Signed in – session established');
+    /* the root guard sees must_change_password and sends the person to /change-password */
+    setTimeout(()=>A.go('rs2-password',{},{replace:true}),400)},900)};
+
+/* ========== /change-password (first password after the code) ========== */
+window.mount_rs2_password=function(){
+  const taken=S.pending;S.pending=null;   /* takePendingReserveCode(): read once, then forgotten */
+  S.pwCurrent=taken||S.pwCurrent||'';
+  $('rs2-password-body').innerHTML=`<h1 class="h1 mt16" style="margin:16px 0 8px">Set a password.</h1>
+    <p class="sm soft" style="margin:0 0 18px">Your invite code only works once. Choose a password for next time.</p>
+    <!-- ids: TM-RES-005 -->
+    <div class="rs2-mem">${taken?'Current password filled in from your reserve code – it was held in memory only and is now forgotten.':'Current password: type the one you use. (No reserve code in memory – it is taken once.)'}</div>
+    <div class="field"><label for="rs2-pw-c">Current password</label><input class="input" id="rs2-pw-c" type="password" value="${esc(S.pwCurrent)}" placeholder="••••••••"></div>
+    <div class="field"><label for="rs2-pw-n">New password</label><input class="input" id="rs2-pw-n" type="password" placeholder="at least 8 characters" oninput="RS2.pwInput()"></div>
+    <div class="field"><label for="rs2-pw-r">Repeat</label><input class="input" id="rs2-pw-r" type="password" placeholder="••••••••" oninput="RS2.pwInput()"></div>
+    <button class="btn --block" id="rs2-pw-btn" disabled onclick="RS2.pwSave()">Save and continue</button>
+    <p class="hint" style="text-align:center;margin-top:24px">Shared screen with the whole team (/change-password) – it only knows about the code because it was remembered for it.</p>`;
+};
+S.pwInput=()=>{const n=$('rs2-pw-n').value,r=$('rs2-pw-r').value,b=$('rs2-pw-btn');if(n.length>=8&&n===r)b.removeAttribute('disabled');else b.setAttribute('disabled','')};
+S.pwSave=()=>{A.haptic();A.toast('Password saved');S.pwCurrent='';if(!isRes())A.setUser(LINA,{silent:true});A.state.history=[];A.go('rs2-today',{},{replace:true})};
+
+/* ========== /b – Today for the reserve ========== */
+window.mount_rs2_today=function(){ensureRes();const el=$('rs2-today-body'),o=S.ob;
+  $('rs2-today-ttl').textContent=L().today;$('rs2-today-av').innerHTML=A.avatar(A.state.me,'--sm');
+  const chips=demo([['Steps',"RS2.setComplete(false)",!o.complete],['Complete (CRM)',"RS2.setComplete(true)",o.complete],['Loading',"RS2.setNet('net','loading','rs2_today')",S.net==='loading'],['Unavailable',"RS2.setNet('net','unavailable','rs2_today')",S.net==='unavailable'],['Error',"RS2.setNet('net','error','rs2_today')",S.net==='error'],['Data',"RS2.setNet('net','ok','rs2_today')",S.net==='ok'],['Reset',"RS2.reset()"]]);
+  /* ids: TM-RES-010 */
+  const head=`<div class="pad" style="padding-top:4px"><div class="caps muted">${longDate()}</div><h1 class="h1 mt8">${o.complete?L().inTitle(first()):L().hello(first())}</h1>${o.complete?'':`<p class="sm soft" style="margin:10px 0 0">${L().lead}</p>`}</div>`;
+  const st=lens()?lensBlock():stateBlock('net');
+  if(st){el.innerHTML=chips+ptr('rs2_today')+head+st;return}
+  /* contour switched on the server after an offer – the phone learns at the next /me (TM-RES-073) */
+  const switchNote=S.contour!=='reserve'?`<div class="rs2-panel panel --ink"><div class="caps" style="opacity:.7">Next /me refresh</div><div class="h4 mt8">The studio made you a ${S.contour==='worker'?'casual worker':'self-employed florist'}</div><p class="sm" style="margin:6px 0 0;opacity:.85">Until the app re-reads /me this screen stays the reserve one. Then the team screens open.</p><button class="btn --sm mt16" style="background:var(--paper);color:var(--ink)" onclick="RS2.switchContour()">Demo: refresh /me</button></div>`:'';
+  if(o.complete){
+    const p=o.paths;
+    /* ids: TM-RES-020 */
+    el.innerHTML=chips+ptr('rs2_today')+head+switchNote+`<div class="rs2-panel panel --ok"><div class="h4">You're in</div><p class="sm soft" style="margin:4px 0 0">${L().inBody(p.shifts,p.jobs)}</p><button class="btn --block mt16" onclick="RS2.go('rs2-work')">${L().seeOffers}</button><p class="xs muted" style="margin:10px 0 0">${L().inNote}</p></div>
+      <div class="rs-grp">Your steps</div><div class="rs-steps">${stepRows(true)}</div>
+      <div class="rs-note">${leaveLink()}</div>`;
+    return}
+  const pr=progress();
+  /* ids: TM-RES-013 */
+  el.innerHTML=chips+ptr('rs2_today')+head+switchNote+`<div class="rs-bar"><i style="width:${Math.round(pr.done/pr.total*100)}%"></i></div><div class="sm soft" style="padding:8px var(--gutter) 14px">${L().progress(pr.done,pr.total)}</div>
+    <div class="rs-steps">${stepRows(false)}</div>
+    <!-- ids: TM-RES-019 -->
+    <div class="rs-note">${leaveLink()}</div>
+    <div class="rs2-absent">Nothing from the team Today here – no tasks, orders, hours or bell. On purpose.</div>`;
+};
+/* ids: TM-RES-014 TM-RES-015 TM-RES-016 TM-RES-017 TM-RES-018 */
+const stepRows=()=>steps().map((s,i)=>`<button class="rs-step${s.st==='done'?' done':''}${s.st==='wait'?' wait':''}${s.st==='off'?' off':''}" ${s.go?`onclick="${s.go}"`:'disabled style="cursor:default"'}><span class="n">${s.st==='done'?A.icon('check'):i+1}</span><span class="f1"><div class="l">${s.title}</div><div class="d">${s.sub}</div></span><span class="s">${s.st==='done'?L().st.done:s.st==='wait'?`<span class="pill --review">${L().st.wait}</span>`:s.st==='off'?'':L().st.todo}</span></button>`).join('');
+const leaveLink=()=>`<button class="textbtn" onclick="RS2.leave()">${L().leave}</button>`;
+S.leave=()=>A.sheet(`${sheetHead('Leaving the reserve')}<div class="sh-body"><p class="soft" style="margin:0 0 10px">Write to the studio – hello at the studio email or a message to your manager – and we remove you from the reserve and delete your application. Nothing happens from this screen: no request is sent.</p><p class="xs muted" style="margin:0">You can apply again any time through Work with us.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>`);
+S.setComplete=v=>{S.ob.complete=v;if(v){S.ob.rtw='checked'}window.mount_rs2_today()};
+S.reset=()=>{Object.assign(S.ob,{paths:{shifts:true,jobs:false},rtw:'sent',pay:false,last4:null,agr:{worker:false,self_employed:false},lessons:false,complete:false});S.net='ok';S.contour='reserve';S.again=false;S.editPay=false;window.mount_rs2_today();A.toast('Demo reset')};
+S.openAgreement=()=>{const ag=agreementsNeeded();if(!ag.length)return;const a=ag.find(x=>!S.ob.agr[x.kind])||ag[0];agreementSheet(a.kind)};
+const agreementSheet=kind=>{const t=kind==='worker'?'Casual worker agreement':'Jobs agreement',signed=S.ob.agr[kind];
+  A.sheet(`${sheetHead(t)}<div class="sh-body"><p class="xs muted" style="margin:0 0 10px">Shared B signing screen (/b/agreement?kind=${kind}) – shown here as a sheet.</p><div class="wk-kv --info">${kind==='worker'?'<span>Status</span><span>casual worker · PAYE, holiday pay</span><span>Shifts</span><span>offered, never assigned – take or skip</span><span>Pay</span><span>hourly, weekly</span>':'<span>Status</span><span>self-employed · your own business</span><span>Jobs</span><span>a fixed fee for a result, shown before you take it</span><span>Pay</span><span>by statement, gross</span>'}</div>${signed?'<div class="rs2-panel panel --ok" style="margin:14px 0 0"><div class="h4">Signed</div><div class="sm soft">Copy kept in CRM. Read-only here.</div></div>':''}</div><div class="sh-foot">${signed?'<button class="btn" onclick="App.closeSheet()">Close</button>':`<button class="btn --secondary" onclick="App.closeSheet()">Later</button><button class="btn" onclick="RS2.sign('${kind}')">Sign</button>`}</div>`,{full:true})};
+S.sign=kind=>{S.ob.agr[kind]=true;A.haptic();A.closeSheet();A.toast('Signed – copy kept in CRM');remount()};
+S.lessons=()=>{A.toast('Opens the shared Learning screen – two lessons for the reserve');S.ob.lessons=true;A.go('learn')};
+S.switchContour=()=>{const c=S.contour;A.toast(c==='worker'?'Contour: casual worker – team screens open':'Contour: self-employed – jobs board opens');S.contour='reserve';S.ob.complete=false;A.state.history=[];A.setUser(c==='worker'?'zhadra':'mira');A.go('home',{},{replace:true})};
+const remount=()=>{const cur=A.state.current;const f=window['mount_'+(cur||'').replace(/-/g,'_')];if(cur&&cur.startsWith('rs2-')&&f)f()};
+
+/* ========== /b/work – offers ========== */
+const OFFERS=[
+  {id:1,when:'Sat 24 Oct · 08:00–15:00',where:'SE1 studio',rate:'£13.21/h + bouquet bonus',places:2,st:'open'},
+  {id:2,when:'Sun 25 Oct · 09:00–14:00',where:'SE1 studio',rate:'£13.21/h',places:1,st:'open'},
+  {id:3,when:'Mon 26 Oct · 07:00–12:00',where:'SW6 shop',rate:'£13.21/h',places:1,st:'taken'}
+];
+const JOBS=[
+  {id:11,title:'Wedding · Chelsea Old Town Hall',what:'ceremony arch + 8 table centrepieces',when:'Sat 24 Oct · set up 07:30–10:30',fee:420,st:'open'},
+  {id:12,title:'Workshop host · SW6 shop',what:'wreath workshop, 12 guests, 2.5 h',when:'Thu 29 Oct · 18:00–20:30',fee:150,st:'open'},
+  {id:13,title:'Restaurant install · Mayfair W1',what:'6 urns + bar garland',when:'Tue 20 Oct · 15:00–18:00',fee:140,st:'mine'}
+];
+S.offers=OFFERS;S.jobs=JOBS;
+window.mount_rs2_work=function(){ensureRes();const el=$('rs2-work-body'),o=S.ob,p=o.paths;
+  $('rs2-work-ttl').textContent=L().work;
+  const chips=demo([['Not yet',"RS2.setComplete(false);RS2.go('rs2-work')",!o.complete],['Ready',"RS2.setComplete(true);RS2.go('rs2-work')",o.complete],['Both paths',"RS2.paths(true,true)",p.shifts&&p.jobs],['Shifts only',"RS2.paths(true,false)",p.shifts&&!p.jobs],['Jobs only',"RS2.paths(false,true)",!p.shifts&&p.jobs],['No paths',"RS2.paths(false,false)",!p.shifts&&!p.jobs],['Unavailable',"RS2.setNet('net','unavailable','rs2_work')",S.net==='unavailable'],['Data',"RS2.setNet('net','ok','rs2_work')",S.net==='ok']]);
+  /* ids: TM-RES-023 */
+  const st=lens()?lensBlock():stateBlock('net');
+  if(st){el.innerHTML=chips+st;return}
+  if(!o.complete){
+    /* ids: TM-RES-022 */
+    el.innerHTML=chips+`<div class="rs2-state" style="margin-top:20px"><div class="h4">${L().notYet}</div><div class="sm soft">${L().notYetBody}</div><button class="btn --sm mt16" onclick="RS2.go('rs2-today')">${L().toSteps}</button></div>`;return}
+  if(!p.shifts&&!p.jobs){el.innerHTML=chips+`<div class="rs2-state" style="margin-top:20px"><div class="h4">${L().noPaths}</div><button class="btn --sm mt16" onclick="RS2.go('rs2-paths')">Choose</button></div>`;return}
+  const views=[p.shifts?'shifts':null,p.jobs?'jobs':null].filter(Boolean);
+  if(!views.includes(S.view))S.view=views[0];
+  /* ids: TM-RES-024 */
+  const seg=views.length>1?`<div class="seg rs2-views"><button class="${S.view==='shifts'?'on':''}" onclick="RS2.setView('shifts')">${L().shifts}</button><button class="${S.view==='jobs'?'on':''}" onclick="RS2.setView('jobs')">${L().jobs}</button></div>`:'';
+  /* TM-RES-027: no scroll of its own – the embedded list is the scrolling part */
+  el.innerHTML=chips+seg+(S.view==='shifts'?shiftsList():jobsList());
+};
+S.setView=v=>{S.view=v;A.haptic();window.mount_rs2_work()};
+S.paths=(s,j)=>{S.ob.paths={shifts:s,jobs:j};remount()};
+/* ids: TM-RES-025 */
+const shiftsList=()=>{const open=OFFERS.filter(x=>x.st!=='hidden');
+  return `<div class="rs-grp">Open shifts · ${open.filter(x=>x.st==='open').length}</div>`+(open.length?open.map(x=>`<div class="rs2-offer${x.st==='taken'?' mine':''}"><div class="top"><span class="caps muted">${x.when}</span>${x.st==='taken'?'<span class="pill --done">Yours</span>':`<span class="pill --todo">${x.places} place${x.places>1?'s':''}</span>`}</div><div class="h4 mt8">${x.where}</div><div class="meta">${x.rate} · same as a casual worker: first to take it gets it</div><div class="btns">${x.st==='taken'?`<button class="btn --sm --secondary" onclick="RS2.shift(${x.id},'cancel')">Cancel</button>`:`<button class="btn --sm" onclick="RS2.shift(${x.id},'take')">Take</button>`}</div></div>`).join(''):'<div class="rs2-empty">No open shifts right now. We will push one as soon as it appears.</div>')+`<div class="rs2-foot">GET /shift-offers · POST /shift-offers/{id}/take|cancel – the same list a casual worker sees.</div>`};
+S.shift=(id,act)=>{const x=OFFERS.find(o=>o.id===id);if(act==='cancel'){A.confirm('Cancel this shift?','The place goes back to the open list.','Cancel shift',()=>{x.st='open';A.toast('Cancelled');window.mount_rs2_work()});return}
+  x.st='taken';A.haptic();A.toast('Taken – see you at the studio');window.mount_rs2_work()};
+/* ids: TM-RES-026 */
+const jobsList=()=>`<div class="rs-grp">Jobs board · ${JOBS.filter(x=>x.st==='open').length} open</div>`+(JOBS.length?JOBS.map(j=>`<div class="rs2-offer${j.st!=='open'?' mine':''}"><div class="top"><span class="caps muted">${j.when}</span>${j.st==='mine'?'<span class="pill --done">Yours</span>':j.st==='done'?'<span class="pill --done">Done</span>':''}</div><div class="h4 mt8">${j.title}</div><div class="h2 mt8">${A.fmt(j.fee)}</div><div class="meta">${j.what} · fixed fee for the result</div><div class="btns">${j.st==='open'?`<button class="btn --sm" onclick="RS2.job(${j.id},'take')">Take</button>`:j.st==='mine'?`<button class="btn --sm" onclick="RS2.jobDone(${j.id})">Mark done</button><button class="btn --sm --secondary" onclick="RS2.job(${j.id},'withdraw')">Withdraw</button>`:'<span class="xs muted">Paid by statement</span>'}</div></div>`).join(''):'<div class="rs2-empty">No jobs posted yet.</div>')+`<div class="rs2-foot">GET /contractor-jobs · POST /contractor-jobs/{id}/take|withdraw · /done with a photo – the same board a self-employed florist sees.</div>`;
+S.job=(id,act)=>{const j=JOBS.find(x=>x.id===id);if(act==='take'){j.st='mine';A.toast('Job is yours – brief in the card')}else{j.st='open';A.toast('Withdrawn')}A.haptic();window.mount_rs2_work()};
+S.jobDone=id=>A.sheet(`${sheetHead('Mark done')}<div class="sh-body"><p class="sm soft" style="margin:0 0 14px">A photo of the result goes with it – the manager accepts and it lands on your statement.</p><button class="btn --secondary --block" onclick="App.toast('Camera – demo')">${A.icon('camera')} Add photo</button></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS2.jobDone2(${id})">Send</button></div>`);
+S.jobDone2=id=>{const j=JOBS.find(x=>x.id===id);j.st='done';A.toast('Sent for acceptance');window.mount_rs2_work()};
+
+/* ========== /b/me – short profile ========== */
+window.mount_rs2_me=function(){ensureRes();const el=$('rs2-me-body'),u=A.me(),o=S.ob,pr=progress();
+  $('rs2-me-ttl').textContent=L().me;
+  const Rw=(i,l,d,fn)=>`<button class="row" onclick="${fn}">${ic(i)}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${ic('chev','chev')}</button>`;
+  const ag=agreementsNeeded();
+  const p=o.paths,paths=p.shifts&&p.jobs?'both':p.shifts?L().shifts.toLowerCase():p.jobs?L().jobs.toLowerCase():'not chosen';
+  el.innerHTML=`
+    <!-- ids: TM-RES-028 -->
+    <div class="rs2-prof">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${esc(u.n)}</h1><div class="tt">${L().subtitle(roleName())}</div><div class="mt8"><span class="pill --todo">Reserve</span></div></div></div>
+    ${lens()?`<!-- ids: TM-RES-029 --><div class="rs2-lens"><div class="f1"><div class="caps" style="opacity:.7">Viewing as…</div><div class="sm mt4">You are looking at the reserve contour through the lens. Steps below are unavailable to you.</div></div><button class="btn --sm" onclick="RS2.lensOff()">Mine</button></div>`:''}
+    <div class="rs-grp">Reserve</div><div class="rows">
+      <!-- ids: TM-RES-030 -->
+      ${Rw('check','Getting ready',lens()?L().unavailable:o.complete?L().ready:L().left(pr.total-pr.done),"RS2.go('rs2-today')")}
+      <!-- ids: TM-RES-031 -->
+      ${Rw('calendar',L().howIWork,lens()?L().unavailable:paths,"RS2.go('rs2-paths')")}
+      <!-- ids: TM-RES-032 -->
+      ${lens()?'':ag.map(a=>Rw('edit',a.title,o.agr[a.kind]?'Signed':'Needs signing',`RS2.agreement('${a.kind}')`)).join('')}
+      <!-- ids: TM-RES-033 -->
+      ${Rw('book',L().lessons,o.lessons?'Done':'Two short lessons',"RS2.lessons()")}
+    </div>
+    <!-- ids: TM-RES-034 -->
+    <div class="rs-grp">${L().language}</div>
+    <div class="rs2-lang">${[['en','English'],['ru','Русский'],['sys','System']].map(([k,l])=>`<button class="chip${(S.langMode||'en')===k?' on':''}" onclick="RS2.setLang('${k}')">${l}</button>`).join('')}</div>
+    <div class="rs2-absent" style="padding-top:8px">Saved on device (secure store) – no account call.</div>
+    <div class="rs-grp">Account</div><div class="rows">
+      <!-- ids: TM-RES-035 -->
+      ${Rw('lock',L().changePw,'',"RS2.go('rs2-password')")}
+      <!-- ids: TM-RES-036 -->
+      ${Rw('logout',L().signOut,'',"RS2.signOut()")}
+    </div>
+    <!-- ids: TM-RES-037 -->
+    <div class="rs2-absent">Nothing from the shop here – no notifications or bell, announcements, classic view, clock-in, bonuses or timesheet. On purpose.</div>`;
+};
+S.lensOff=()=>{A.toast('Lens off – your own contour');A.go('me',{},{replace:true})};
+S.agreement=kind=>agreementSheet(kind);
+S.setLang=k=>{S.langMode=k;S.lang=k==='ru'?'ru':'en';A.haptic();A.toast(k==='sys'?'Following the phone language (English here)':k==='ru'?'Русский':'English');remount();document.querySelectorAll('#tabbar .tab').forEach(t=>{const k2=t.dataset.tab;const m={home:L().today,work:L().work,me:L().me}[k2];if(!m)return;const tn=[...t.childNodes].find(n=>n.nodeType===3&&n.textContent.trim());if(tn)tn.textContent=m})};
+S.signOut=()=>{A.toast('Signed out – push unregistered');A.state.history=[];A.go('rs2-login',{},{replace:true})};
+
+/* ========== /b/reserve/paths – step 1 ========== */
+S.pick=null;
+window.mount_rs2_paths=function(){ensureRes();const el=$('rs2-paths-body'),cta=$('rs2-paths-cta');
+  if(!S.pick)S.pick={...S.ob.paths};
+  const chips=demo([['Data',"RS2.setNet('net','ok','rs2_paths')",S.net==='ok'],['Loading',"RS2.setNet('net','loading','rs2_paths')",S.net==='loading'],['Unavailable',"RS2.setNet('net','unavailable','rs2_paths')",S.net==='unavailable'],['Save → 422',"RS2.pathsErr=true;App.toast('Next save returns 422')"]]);
+  /* ids: TM-RES-039 TM-RES-071 */
+  const st=lens()?lensBlock():stateBlock('net');
+  if(st){el.innerHTML=chips+st;cta.innerHTML='';return}
+  const p=S.pick,can=(p.shifts||p.jobs)&&!S.busy;
+  el.innerHTML=chips+`<div class="pad" style="padding-top:8px"><h1 class="h2">Two ways to work with us</h1><p class="soft" style="margin:10px 0 0">Choose one or both. Each comes with its own agreement – you can change your mind later.</p></div>
+    <!-- ids: TM-RES-040 -->
+    <button class="rs-path${p.shifts?' on':''}" role="checkbox" aria-checked="${!!p.shifts}" onclick="RS2.toggle('shifts')"><div class="hd"><i></i><div><div class="h4">Shifts at the studio</div><div class="xs muted">casual worker · hourly, PAYE, holiday pay</div></div></div><ul><li>We send open shifts, you take the ones you want</li><li>Inside a shift: clock-in, tasks and standards like everyone</li></ul></button>
+    <button class="rs-path${p.jobs?' on':''}" role="checkbox" aria-checked="${!!p.jobs}" onclick="RS2.toggle('jobs')"><div class="hd"><i></i><div><div class="h4">Jobs and events</div><div class="xs muted">self-employed · fixed fee, your own business</div></div></div><ul><li>Whole jobs for a fee: weddings, installs, workshops</li><li>Your design within the brief, your tools, your timing</li></ul></button>
+    <!-- ids: TM-RES-041 -->
+    ${p.shifts||p.jobs?'':'<div class="rs-note" style="color:var(--accent)">Choose at least one to continue.</div>'}
+    ${S.pathsMsg?`<div class="rs-note" style="color:var(--accent)">${esc(S.pathsMsg)}</div>`:''}`;
+  /* ids: TM-RES-042 */
+  cta.innerHTML=`<button class="btn --block" ${can?'':'disabled'} onclick="RS2.savePaths()">${S.busy==='paths'?'<span class="rs2-spin"></span>':'Save'}</button>`;
+};
+S.toggle=k=>{S.pick[k]=!S.pick[k];S.pathsMsg=null;A.haptic();window.mount_rs2_paths()};
+S.savePaths=()=>{if(S.busy)return;S.busy='paths';window.mount_rs2_paths();
+  setTimeout(()=>{S.busy=null;if(S.pathsErr){S.pathsErr=false;S.pathsMsg='Pick at least one way to work.';window.mount_rs2_paths();return}
+    S.ob.paths={...S.pick};S.pick=null;S.pathsMsg=null;A.toast('Saved');A.back('rs2-today')},700)};
+document.addEventListener('screen',e=>{if(e.detail.id!=='rs2-paths')S.pick=null});
+
+/* ========== /b/reserve/rtw – step 2 ========== */
+window.mount_rs2_rtw=function(){ensureRes();const el=$('rs2-rtw-body'),cta=$('rs2-rtw-cta'),o=S.ob;
+  const chips=demo([['To do',"RS2.rtw('todo')",o.rtw==='todo'],['Sent',"RS2.rtw('sent')",o.rtw==='sent'],['Checked (CRM)',"RS2.rtw('checked')",o.rtw==='checked'],['Unavailable',"RS2.setNet('net','unavailable','rs2_rtw')",S.net==='unavailable'],['Data',"RS2.setNet('net','ok','rs2_rtw')",S.net==='ok']]);
+  /* ids: TM-RES-044 TM-RES-071 */
+  const st=lens()?lensBlock():stateBlock('net');
+  if(st){el.innerHTML=chips+st;cta.innerHTML='';return}
+  /* ids: TM-RES-045 */
+  const intro=`<div class="pad" style="padding-top:8px"><p class="soft" style="margin:0">By law we check everyone's right to work before the first shift or job. Get a share code at gov.uk/prove-right-to-work and send it here – the studio checks it within 24 hours and records who checked. British or Irish passport? Show it at the studio instead.</p></div>`;
+  const form=`<!-- ids: TM-RES-048 --><div class="rs-grp">Share code</div><div class="blk"><div class="field rs2-field${S.rtwErr?' err':''}"><label for="rs2-rtw-code">Share code from GOV.UK</label><input class="input" id="rs2-rtw-code" autocapitalize="characters" autocorrect="off" placeholder="W3K 9PL 2XQ" style="text-transform:uppercase;letter-spacing:.1em" value="${esc(S.rtwVal||'')}" oninput="RS2.rtwInput()"></div>${S.rtwErr?`<div class="rs2-err">${esc(S.rtwErr)}</div>`:''}<p class="xs muted" style="margin:0">Spaces and dashes are fine – we tidy them. No photos, scans or uploads here: a text code only.</p></div>`;
+  let body='',btn='';
+  if(o.rtw==='checked'){
+    /* ids: TM-RES-046 TM-RES-050 */
+    body=`<div class="rs2-panel panel --ok"><div class="h4">Checked</div><div class="sm soft">The studio checked your right to work. Nothing else to do.</div></div><div class="rs2-absent">«Checked» is only ever set by a manager in CRM – never by the app.</div>`;
+    btn=`<button class="btn --block" onclick="App.back('rs2-today')">Done</button>`;
+  }else if(o.rtw==='sent'&&!S.again){
+    /* ids: TM-RES-047 TM-RES-050 */
+    body=`<div class="rs2-panel panel --warn"><div class="h4">Sent – the studio will check it</div><div class="sm soft">Usually within 24 hours. You will get a notification.</div><div class="code">${esc(o.share)}</div><button class="textbtn" onclick="RS2.sendAgain()">Send again</button></div><div class="rs2-absent">Waiting for a manager in CRM (POST /reserve/{id}/rtw-check). The app cannot mark it checked itself.</div>`;
+    btn=`<button class="btn --block --secondary" onclick="RS2.rtwDemoCheck()">Demo: manager checks it</button>`;
+  }else{
+    body=form;
+    /* ids: TM-RES-049 */
+    btn=`<button class="btn --block" ${S.busy==='rtw'?'disabled':''} onclick="RS2.rtwSend()">${S.busy==='rtw'?'<span class="rs2-spin"></span>':'Send code'}</button>`;
+  }
+  el.innerHTML=chips+intro+body;cta.innerHTML=btn;
+};
+S.rtw=v=>{S.ob.rtw=v;S.again=false;S.rtwErr=null;window.mount_rs2_rtw()};
+S.sendAgain=()=>{S.again=true;S.rtwErr=null;window.mount_rs2_rtw()};
+S.rtwInput=()=>{S.rtwVal=$('rs2-rtw-code').value.toUpperCase();S.rtwErr=null};
+S.rtwSend=()=>{if(S.busy)return;const code=(S.rtwVal||'').toUpperCase().replace(/[\s-]/g,'');
+  if(!/^[A-Z0-9]{9}$/.test(code)){S.rtwErr='Too short – a share code is 9 letters and digits.';window.mount_rs2_rtw();return}
+  S.busy='rtw';window.mount_rs2_rtw();
+  setTimeout(()=>{S.busy=null;S.ob.share=code;S.ob.rtw='sent';S.again=false;S.rtwVal='';A.haptic();A.toast('Sent – we check within 24 h');window.mount_rs2_rtw()},700)};
+S.rtwDemoCheck=()=>{S.ob.rtw='checked';S.ob.complete=true;A.push('Right to work checked','You are in – offers will follow',{icon:'check',go:['rs2-today']});window.mount_rs2_rtw()};
+document.addEventListener('screen',e=>{if(e.detail.id!=='rs2-rtw'){S.again=false;S.rtwErr=null}});
+
+/* ========== /b/reserve/pay – step 3 ========== */
+window.mount_rs2_pay=function(){ensureRes();const el=$('rs2-pay-body'),cta=$('rs2-pay-cta'),o=S.ob,p=o.paths;
+  const chips=demo([['Not saved',"RS2.payDemo(false)",!o.pay],['Saved',"RS2.payDemo(true)",o.pay],['Unavailable',"RS2.setNet('net','unavailable','rs2_pay')",S.net==='unavailable'],['Data',"RS2.setNet('net','ok','rs2_pay')",S.net==='ok']]);
+  /* ids: TM-RES-052 TM-RES-071 */
+  const st=lens()?lensBlock():stateBlock('net');
+  if(st){el.innerHTML=chips+st;cta.innerHTML='';return}
+  /* ids: TM-RES-053 */
+  const intro=`<div class="pad" style="padding-top:8px"><p class="soft" style="margin:0 0 10px">The bank account the studio pays you into. Sent once, stored encrypted in CRM – this phone keeps nothing and only ever sees the last four digits.</p>${(p.shifts||!p.jobs)?'<p class="sm soft" style="margin:0 0 8px"><b>Shifts</b> – paid weekly through PAYE with a payslip.</p>':''}${p.jobs?'<p class="sm soft" style="margin:0 0 8px"><b>Jobs</b> – paid by statement after the studio accepts the result; you invoice or we self-bill.</p>':''}</div>`;
+  let body='',btn='';
+  if(o.pay&&!S.editPay){
+    /* ids: TM-RES-054 */
+    body=`<div class="rs2-panel panel --ok"><div class="h4">Saved · account ending ${esc(o.last4)}</div><div class="sm soft">Only the last four digits come back to the phone.</div><button class="btn --sm --secondary mt16" onclick="RS2.startEditPay()">Enter different details</button></div>`;
+    btn=`<button class="btn --block" onclick="App.back('rs2-today')">Done</button>`;
+  }else{
+    const f=S.payForm||(S.payForm={name:'',sort:'',acc:''});
+    /* ids: TM-RES-055 */
+    body=`<div class="rs-grp">Bank account</div><div class="blk">
+      <div class="field rs2-field${S.payErr&&S.payErr.f==='name'?' err':''}"><label for="rs2-pay-name">Name on the account</label><input class="input" id="rs2-pay-name" value="${esc(f.name)}" placeholder="As it appears at the bank" oninput="RS2.payInput()"></div>
+      <div class="field rs2-field${S.payErr&&S.payErr.f==='sort'?' err':''}"><label for="rs2-pay-sort">Sort code</label><input class="input" id="rs2-pay-sort" inputmode="numeric" placeholder="12-34-56" maxlength="8" value="${esc(f.sort)}" oninput="RS2.payInput()"></div>
+      <div class="field rs2-field${S.payErr&&S.payErr.f==='acc'?' err':''}"><label for="rs2-pay-acc">Account number</label><input class="input" id="rs2-pay-acc" inputmode="numeric" placeholder="8 digits" maxlength="8" value="${esc(f.acc)}" oninput="RS2.payInput()"></div>
+      <!-- ids: TM-RES-056 -->
+      ${S.payErr?`<div class="rs2-err">${esc(S.payErr.m)}</div>`:''}
+      <p class="xs muted" style="margin:0">Checked on the phone before sending: name 2+ characters, sort code 6 digits, account number 8 digits. Nothing is saved on the device.</p></div>`;
+    const can=f.name.trim()&&f.sort.trim()&&f.acc.trim()&&!S.busy;
+    /* ids: TM-RES-057 */
+    btn=`<button class="btn --block" id="rs2-pay-btn" ${can?'':'disabled'} onclick="RS2.paySave()">${S.busy==='pay'?'<span class="rs2-spin"></span>':'Save'}</button>`;
+  }
+  el.innerHTML=chips+intro+body;cta.innerHTML=btn;
+};
+S.payDemo=v=>{S.ob.pay=v;S.ob.last4=v?'1234':null;S.editPay=false;S.payForm=null;S.payErr=null;window.mount_rs2_pay()};
+S.startEditPay=()=>{S.editPay=true;S.payForm=null;window.mount_rs2_pay()};
+S.payInput=()=>{const f=S.payForm;f.name=$('rs2-pay-name').value;const sd=$('rs2-pay-sort').value.replace(/\D/g,'').slice(0,6);f.sort=sd.replace(/(\d{2})(?=\d)/g,'$1-');if($('rs2-pay-sort').value!==f.sort)$('rs2-pay-sort').value=f.sort;f.acc=$('rs2-pay-acc').value.replace(/\D/g,'').slice(0,8);if($('rs2-pay-acc').value!==f.acc)$('rs2-pay-acc').value=f.acc;S.payErr=null;
+  const b=$('rs2-pay-btn');if(f.name.trim()&&f.sort.trim()&&f.acc.trim())b.removeAttribute('disabled');else b.setAttribute('disabled','')};
+S.paySave=()=>{if(S.busy)return;const f=S.payForm,sort=f.sort.replace(/\D/g,''),acc=f.acc.replace(/\D/g,'');
+  if(f.name.trim().length<2){S.payErr={f:'name',m:'Name on the account – at least 2 characters.'};window.mount_rs2_pay();return}
+  if(sort.length!==6){S.payErr={f:'sort',m:'Sort code – exactly 6 digits, like 12-34-56.'};window.mount_rs2_pay();return}
+  if(acc.length!==8){S.payErr={f:'acc',m:'Account number – exactly 8 digits.'};window.mount_rs2_pay();return}
+  S.busy='pay';window.mount_rs2_pay();
+  setTimeout(()=>{S.busy=null;S.ob.pay=true;S.ob.last4=acc.slice(-4);S.editPay=false;S.payForm=null;A.haptic();A.toast('Saved – sent once, not kept on the phone');window.mount_rs2_pay()},700)};
+document.addEventListener('screen',e=>{if(e.detail.id!=='rs2-pay'){S.editPay=false;S.payForm=null;S.payErr=null}});
+
+/* ========== /b/reserve/manager – Reserve ========== */
+S.people=[
+  {id:'tom',n:'Tom R.',status:'ready',rtw:'checked',paths:{shifts:true,jobs:true}},
+  {id:'chloe',n:'Chloe D.',status:'ready',rtw:'checked',paths:{shifts:false,jobs:true}},
+  {id:'marta',n:'Marta L.',status:'ready',rtw:'sent',code:'Q7P2LM9XA',paths:null},
+  {id:'sofia',n:'Sofia P.',status:'onboarding',rtw:'todo',paths:{shifts:true,jobs:false},steps:{done:1,total:5}},
+  {id:'aigerim',n:'Aigerim B.',status:'invited',expires:'3 Nov 2026'},
+  {id:'ben',n:'Ben H.',status:'invited',expires:'27 Oct 2026'}
+];
+const lina=()=>({id:'lina',n:'Lina K.',status:S.ob.complete?'ready':'onboarding',rtw:S.ob.rtw,code:S.ob.share,paths:S.ob.paths,steps:progress(),offered:S.contour!=='reserve'});
+const pathsLabel=p=>!p?'paths not chosen yet':p.shifts&&p.jobs?'shifts and jobs':p.shifts?'shifts':p.jobs?'jobs':'paths not chosen yet';
+window.mount_rs2_manager=function(){ensureMgr();const el=$('rs2-manager-body');
+  const chips=demo([['Data',"RS2.setNet('mnet','ok','rs2_manager')",S.mnet==='ok'],['Loading',"RS2.setNet('mnet','loading','rs2_manager')",S.mnet==='loading'],['Unavailable 404/403',"RS2.setNet('mnet','unavailable','rs2_manager')",S.mnet==='unavailable'],['Error',"RS2.setNet('mnet','error','rs2_manager')",S.mnet==='error'],['Empty',"RS2.setNet('mnet','empty','rs2_manager')",S.mnet==='empty'],['Button → 422',"RS2.mErr=true;App.toast('Next button returns 422')"]]);
+  /* ids: TM-RES-058 */
+  const intro=`<div class="pad" style="padding-top:8px"><div class="caps muted">Florists · from Work with us</div><p class="soft" style="margin:8px 0 0">Invited → onboarding → ready. Check right-to-work codes here; offer shifts or jobs to people who are ready – that moves them into the team contour.</p></div>`;
+  /* ids: TM-RES-069 */
+  const st=stateBlock('mnet');
+  if(st){el.innerHTML=chips+ptr('rs2_manager')+intro+st;return}
+  const all=S.mnet==='empty'?[]:[lina(),...S.people].filter(p=>!p.offered);
+  const G={invited:all.filter(p=>p.status==='invited'),onboarding:all.filter(p=>p.status==='onboarding'),ready:all.filter(p=>p.status==='ready'),rtw:all.filter(p=>p.rtw==='sent')};
+  const busy=id=>S.busy===id;
+  el.innerHTML=chips+ptr('rs2_manager')+intro+`
+    <!-- ids: TM-RES-060 -->
+    <div class="stats s" style="margin-top:16px"><div><b>${G.invited.length}</b><span>Invited</span></div><div><b>${G.onboarding.length}</b><span>Onboarding</span></div><div><b>${G.ready.length}</b><span>Ready</span></div></div>
+    <!-- ids: TM-RES-061 -->
+    <div class="sec-head"><div class="h2">Right to work to check</div><span class="xs muted">${G.rtw.length}</span></div>
+    ${G.rtw.length?G.rtw.map(p=>`<div class="rs2-person"><div class="top"><div class="h4">${esc(p.n)}</div><span class="pill --review">Waiting</span></div><div class="meta">code: ${esc(p.code||'')} · check it on GOV.UK, then record it here</div>
+      <!-- ids: TM-RES-062 -->
+      <div class="btns"><button class="btn --sm" ${busy(p.id)?'disabled':''} onclick="RS2.rtwCheck('${p.id}')">${busy(p.id)?'<span class="rs2-spin"></span>':'Checked'}</button></div></div>`).join(''):'<div class="rs2-empty">Nothing to check.</div>'}
+    <!-- ids: TM-RES-063 -->
+    <div class="sec-head"><div class="h2">Ready</div><span class="xs muted">${G.ready.length}</span></div>
+    ${G.ready.length?G.ready.map(p=>{const sh=!p.paths||p.paths.shifts,jb=!p.paths||p.paths.jobs;return `<div class="rs2-person"><div class="top"><div class="h4">${esc(p.n)}</div><span class="pill --done">Ready</span></div><div class="meta">${pathsLabel(p.paths)}${p.rtw!=='checked'?' · right to work not checked yet':''}</div>
+      <!-- ids: TM-RES-064 TM-RES-065 -->
+      <div class="btns">${sh?`<button class="btn --sm" ${busy(p.id)?'disabled':''} onclick="RS2.offer('${p.id}','shifts')">Offer shifts</button>`:''}${jb?`<button class="btn --sm --secondary" ${busy(p.id)?'disabled':''} onclick="RS2.offer('${p.id}','jobs')">Offer jobs</button>`:''}</div></div>`}).join(''):'<div class="rs2-empty">No one is ready yet.</div>'}
+    <!-- ids: TM-RES-066 -->
+    <div class="sec-head"><div class="h2">Onboarding</div><span class="xs muted">${G.onboarding.length}</span></div>
+    ${G.onboarding.length?G.onboarding.map(p=>`<div class="rs2-person"><div class="top"><div class="h4">${esc(p.n)}</div><span class="pill --doing">Onboarding</span></div><div class="meta">${p.steps.done} of ${p.steps.total} steps · ${pathsLabel(p.paths)}</div></div>`).join(''):'<div class="rs2-empty">No one in onboarding.</div>'}
+    <!-- ids: TM-RES-067 -->
+    <div class="sec-head"><div class="h2">Invited</div><span class="xs muted">${G.invited.length}</span></div>
+    ${G.invited.length?G.invited.map(p=>`<div class="rs2-person"><div class="top"><div class="h4">${esc(p.n)}</div><span class="pill --todo">Invited</span></div><div class="meta">code valid until ${esc(p.expires)}</div></div>`).join(''):'<div class="rs2-empty">No open invites.</div>'}
+    <!-- ids: TM-RES-068 -->
+    <div class="rs2-foot">Inviting happens in CRM – Candidates. The app only moves people who are already in.</div>`;
+};
+const run=(id,fn)=>{if(S.busy)return;S.busy=id;window.mount_rs2_manager();
+  setTimeout(()=>{S.busy=null;
+    /* ids: TM-RES-070 */
+    if(S.mErr){S.mErr=false;S.alert('Could not do that','422 · Right to work has not been checked yet.');window.mount_rs2_manager();return}
+    try{fn()}finally{window.mount_rs2_manager()}},700)};
+S.rtwCheck=id=>run(id,()=>{if(id==='lina'){S.ob.rtw='checked';S.ob.complete=true}else{const p=S.people.find(x=>x.id===id);p.rtw='checked';if(p.status==='onboarding')p.status='ready'}A.toast(`Recorded – checked by ${A.me().n}, ${A.fmtTime(A.NOW)}`)});
+S.offer=(id,kind)=>{const p=id==='lina'?lina():S.people.find(x=>x.id===id);
+  if(p.rtw!=='checked'){S.mErr=true}
+  run(id,()=>{if(id==='lina'){S.contour=kind==='shifts'?'worker':'self_employed';
+      /* ids: TM-RES-072 TM-RES-073 */
+      if(kind==='shifts')A.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h',{icon:'calendar',to:'Lina',go:['rs2-work']});else A.push('New job · £420','Wedding, Chelsea – arch + 8 centrepieces',{icon:'calendar',to:'Lina',go:['rs2-work']});
+    }else{p.offered=true}
+    S.alert(`${p.n} got the offer`,kind==='shifts'?'They are now a casual worker – open shifts go to their phone. Their app switches at its next /me.':'They are now self-employed – jobs go to their phone. Their app switches at its next /me.')})};
+
+/* ========== tab bar: three tabs Today / Work / Me on the reserve screens ========== */
+const MAP={home:'rs2-today',work:'rs2-work',me:'rs2-me'};
+const onRs2=()=>(A.state.current||'').startsWith('rs2-');
+const tb=document.getElementById('tabbar');
+if(tb){tb.addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b||!onRs2())return;const to=MAP[b.dataset.tab];if(!to)return;e.stopPropagation();A.haptic();A.state.history=[];A.go(to)},true)}
+let savedTabs=null;
+const applyTabs=()=>{if(!tb)return;const on=onRs2();
+  if(on){if(!savedTabs)savedTabs={grid:tb.style.gridTemplateColumns,hide:[...tb.querySelectorAll('.tab')].map(t=>t.classList.contains('rs-hide'))};
+    tb.querySelectorAll('.tab').forEach(t=>{const k=t.dataset.tab;t.classList.toggle('rs-hide',k==='tasks'||k==='learn')});tb.style.gridTemplateColumns='repeat(3,1fr)'}
+  else if(savedTabs){[...tb.querySelectorAll('.tab')].forEach((t,i)=>t.classList.toggle('rs-hide',savedTabs.hide[i]));tb.style.gridTemplateColumns=savedTabs.hide.some(Boolean)?savedTabs.grid:'';savedTabs=null}};
+document.addEventListener('screen',applyTabs);
+/* runs after the shell's own tab listeners: they have just set the bar for the new persona – remember that and re-apply the three reserve tabs */
+document.addEventListener('user',()=>{if(onRs2()){savedTabs=null;applyTabs()}});
+})();
+</script>
