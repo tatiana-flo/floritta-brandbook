@@ -16,6 +16,10 @@
 .dr-scr .tbl td.wrap{white-space:normal;line-height:1.3}
 .dr-scr .tbl tr.r.--linked td{background:var(--sel-bg);box-shadow:inset 3px 0 0 var(--sel)}
 .dr-scr .tbl tr.drawer td{height:auto;padding:16px 12px 18px;white-space:normal;background:var(--paper-2);max-width:none}
+#s-delivery-freelance .tbl th.c-name{width:230px}
+#s-delivery-freelance .tbl th.c-acts{width:360px}
+#s-delivery-freelance .tbl td.c-name,#s-delivery-freelance .tbl td.c-acts{max-width:none}
+#s-delivery-freelance .tbl td.c-acts .sm{white-space:normal;line-height:1.3}
 .dr-scr .dr-apps{display:flex;flex-direction:column;gap:4px;font-size:12.5px}
 .dr-scr .dr-apps .ap{display:flex;align-items:center;gap:8px}
 .dr-scr .dr-apps .ap .textbtn{font-size:11px}
@@ -219,8 +223,7 @@ window.DRX={
       if(!rtwDone)acts.push(`<button class="btn --ghost --sm" onclick="DRX.flVerifyForm('${c.id}')">${ic("upload")} Verify right to work</button>`);
       if(c.transport==="car")acts.push(`<button class="btn --ghost --sm" onclick="DRX.flInsForm('${c.id}')">${ic("card")} Insurance verified</button>`);
       if(DR.flags.app&&!c.app)acts.push(c.invite?`<span class="sm muted">Invite sent to ${E(c.invite.email)} – code works until ${c.invite.until} · <button class="textbtn" onclick="DRX.flInviteForm('${c.id}')">Send a new code</button></span>`:`<button class="btn --ghost --sm" onclick="DRX.flInviteForm('${c.id}')">${ic("mail")} Invite to app</button>`);
-      return `<tr class="r ${DR.fl.linked===c.id?"--linked":""} ${open?"on":""}" id="dr-cr-${c.id}"><td class="wrap"><b style="cursor:pointer" onclick="DRX.flOpen('${c.id}')">${E(c.n)}</b> ${c.app?`<span class="tag --ink" title="${E(c.appEmail||"")}">App</span>`:""}<span class="sub">${open?"click to collapse":"click for rating & notes"}</span></td>
-        <td class="tnum">${c.phone}</td><td>${c.transport}</td><td class="tnum">${c.home}</td><td>${c.source}</td>
+      return `<tr class="r ${DR.fl.linked===c.id?"--linked":""} ${open?"on":""}" id="dr-cr-${c.id}"><td class="wrap c-name"><b style="cursor:pointer" onclick="DRX.flOpen('${c.id}')">${E(c.n)}</b> ${c.app?`<span class="tag --ink" title="${E(c.appEmail||"")}">App</span>`:""}<span class="sub tnum">${c.phone} · ${c.transport} · ${c.home} · ${c.source}</span><span class="sub">${open?"click to collapse":"click for rating & notes"}</span></td>
         <td class="num">${c.jobs}${c.newcomer?` <span class="tag --line" title="Newcomer – order value limit applies">new</span>`:""}</td>
         <td title="Internal rating over the last 60 days – never shown to the courier"><span class="tag ${c.rating==="Reliable"?"--okl":c.rating==="Watch"?"--acc":""}">${c.rating}</span></td>
         <td class="num">${c.onTime===null?"–":c.onTime+" %"}</td><td class="wrap sm ${iss.length?"accent":"muted"}">${iss.length?iss.join(" · "):"–"}</td>
@@ -228,8 +231,8 @@ window.DRX={
         <td class="wrap">${c.transport!=="car"?"–":c.ins&&c.ins.ok?`<span class="ok">Insurance verified</span><span class="sub">until ${c.ins.exp}</span>`:`<span class="accent">Insurance not verified</span>`}</td>
         <td class="wrap">${c.alcohol?`Trained until ${c.alcohol}<span class="sub"><button class="textbtn --accent" onclick="DRX.flRevoke('${c.id}')">Revoke</button></span>`:"–"}</td>
         <td class="wrap"><div class="col" style="gap:6px;align-items:flex-start">${acts.join("")||"<span class='muted sm'>–</span>"}</div></td></tr>
-        ${open?`<tr class="drawer"><td colspan="13">${this.flDrawer(c)}</td></tr>`:""}`}).join("");
-    return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Phone</th><th>Transport</th><th>Home postcode</th><th>Source</th><th class="num">Jobs done</th><th title="New / Watch / Reliable – internal 60-day rating">Rating</th><th class="num">On time</th><th>Issues</th><th>Right to work</th><th>Insurance</th><th>Alcohol</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>
+        ${open?`<tr class="drawer"><td colspan="9">${this.flDrawer(c)}</td></tr>`:""}`}).join("");
+    return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th class="c-name">Name · phone · transport · home · source</th><th class="num">Jobs done</th><th title="New / Watch / Reliable – internal 60-day rating">Rating</th><th class="num">On time</th><th>Issues</th><th>Right to work</th><th>Insurance</th><th>Alcohol</th><th class="c-acts">Actions</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div class="dr-method">Share code, date of birth, RTW documents and bank digits are personal data – shown only here, only to managers; every document view is audited. Rating and notes are internal and never reach the courier.</div>`;
   },
   flOpen(id){DR.fl.open=DR.fl.open===id?null:id;this.re();if(DR.fl.open){setTimeout(()=>{const r=document.getElementById("dr-cr-"+id);if(r)r.scrollIntoView({block:"center",behavior:"smooth"})},60)}},
@@ -354,6 +357,7 @@ window.DRX={
     <div class="sec-head"><span class="h3">Cancellation reasons</span><span class="sm muted">manual – us · carrier – courier · race – another carrier won</span></div>${S?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Reason</th><th class="num">Cancelled</th></tr></thead><tbody><tr><td>manual · booked our own courier</td><td class="num">${Math.round(S.n*S.cancel/100)-2}</td></tr><tr><td>carrier · no courier found</td><td class="num">2</td></tr><tr><td>race · own courier accepted first</td><td class="num">0</td></tr></tbody></table></div>`:this.empty("undo","No cancellations in this period")}</div></div>`}
 };
 
+if(window.__dr2init)window.__dr2init();
 /* ---- mounts ---- */
 window.mount_delivery_freelance=function(params){
   const A=App,$=A.$,ic=A.icon;if(params&&(params.tab||params.courier||params.week))DRX.flGo(params);
