@@ -1,0 +1,245 @@
+<style>
+.fl .flx-ava{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em}
+.fl .flx-ava.--lg{width:64px;height:64px;font-size:20px}
+.fl .flx-demo{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 0;border-top:1px dashed var(--light);border-bottom:1px dashed var(--light);font-size:11px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase}
+.fl .flx-demo>span{display:inline-flex;gap:4px;flex-wrap:wrap}
+.fl .flx-demo button{font-size:10px;padding:3px 7px;border:1px solid var(--light);letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
+.fl .flx-demo button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.fl .flx-refresh{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;color:var(--grey);padding:4px 0}
+.fl .flx-refresh .textbtn{font-size:11px}
+.fl .flx-empty{text-align:center;padding:36px 20px;border:1px solid var(--hair)}
+.fl .flx-empty .h3{margin-bottom:8px}
+.fl .flx-notyet{font-size:13px;color:var(--grey);text-align:center;padding:24px 20px}
+.fl .input.err{border-color:var(--accent)}
+.fl .flx-gate{font-size:12px;color:var(--accent);margin-top:8px;line-height:1.45}
+.fl .stats .flx-warn b{color:var(--accent)}
+.fl .flx-badge{font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--ink)}
+.fl .flx-badge.--ok{background:var(--ink);color:var(--paper)}
+.fl .flx-prop{border:1px dashed var(--accent);padding:10px 12px;font-size:12px;color:var(--accent);margin:0 var(--gutter) 12px}
+</style>
+
+<section class="scr fl" id="s-fl-rtw" data-nav="Right to work · new share code (proposal)" data-group="Freelance · Profile">
+  <!-- ids: TM-FL-114 TM-FL-093 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-me')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Right to work</div><span class="ib"></span></div>
+  <div class="scr-body has-cta">
+    <div class="flx-prop" style="margin-top:12px">Proposal – the API method <code>POST /me/rtw</code> exists, but the app has no screen for it yet. Decision for Tatiana.</div>
+    <div class="pad">
+      <h1 class="h1" style="margin:4px 0 8px">Send a new share code</h1>
+      <p class="soft sm" style="margin:0 0 18px">Your previous check expired on 20 Oct 2026. Get a fresh code at gov.uk/prove-right-to-work and send it here – a manager re-checks it, usually within 24 hours. Until then you can look at the board but not request.</p>
+      <div class="field"><label for="fl-rtw-sc">New share code</label><input class="input num" id="fl-rtw-sc" value="" placeholder="e.g. W7K 4PX 9QM" style="letter-spacing:.12em" oninput="FLX.rtwValidate()"><span class="hint">9 letters and digits. Spaces and dashes don't matter.</span></div>
+      <div class="field"><label for="fl-rtw-dob">Date of birth</label><input class="input num" id="fl-rtw-dob" value="1996-03-14" placeholder="YYYY-MM-DD" oninput="FLX.rtwValidate()"></div>
+      <div class="panel sm soft">British or Irish passport? Bring it to the studio instead – a manager checks it in person.</div>
+    </div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" id="fl-rtw-send" disabled onclick="FLX.rtwSend()">Send for checking</button></div>
+</section>
+
+<section class="scr fl" id="s-fl-verify" data-nav="Verify email (proposal)" data-group="Freelance · Start">
+  <!-- ids: TM-FL-113 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-pending')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Verify your email</div><span class="ib"></span></div>
+  <div class="scr-body has-cta">
+    <div class="flx-prop" style="margin-top:12px">Proposal – the API method <code>POST /verify-email</code> exists, but no screen calls it. Without it a forgotten password can't be reset. Decision for Tatiana.</div>
+    <div class="pad">
+      <h1 class="h1" style="margin:4px 0 8px">Check your inbox</h1>
+      <p class="soft sm" style="margin:0 0 18px">We sent a 6-digit code to <b>sam.k@example.com</b>. Type it here – it works for 30 minutes.</p>
+      <div class="code-boxes" id="fl-vf-boxes"><span class="on">4</span><span class="on">8</span><span class="on">1</span><span class="on">0</span><span></span><span></span></div>
+      <div class="field" style="margin-top:18px"><label for="fl-vf-code">Code</label><input class="input num" id="fl-vf-code" value="4810" maxlength="6" style="letter-spacing:.3em" oninput="FLX.vfInput(this)"></div>
+      <div style="text-align:center;margin-top:8px"><button class="textbtn" onclick="App.toast('New code sent')">Send the code again</button></div>
+    </div>
+  </div>
+  <div class="cta-bar"><button class="btn --block" id="fl-vf-go" disabled onclick="App.toast('Email verified');App.back('fl-pending')">Verify</button></div>
+</section>
+
+<script>
+(function(){const A=window.App,FL=window.FL;if(!FL)return;
+const $=(s,r)=>(r||document).querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const X=window.FLX={
+ status:'verified',board:'list',filter:'all',dlv:'open',gate:'none',alcohol:false,cam:'ok',mine:'normal',way:'fit',wayShown:false,wayModeV:'Bike',
+ studio:'normal',earn:'normal',stmt:'issued',rtw:'checked',alco:'trained',delLive:false,langV:'en',pushModeV:'both',quiet:['21:00','08:00'],nearV:true,
+ signup:'ok',link:'ok',bank:'ok',su:{rtw:'code',transport:'bike'},
+ routes:[{n:'Home from uni',f:'WC1E 6BT',t:'SE15 4QL',m:'Bike',d:'Mon–Thu',w:'16:30'},{n:'Saturday gym',f:'SE15 4QL',t:'SW11 1AJ',m:'Transit',d:'Sat',w:'09:00'}],
+ areas:['SE1','SE15','SE11','SW8'],
+ msgs:[{me:true,t:'16:41',x:"I'm 10 min late to the studio, the bridge is closed."},{me:false,who:'Kamila',t:'16:43',x:'No problem, the bouquet will be at the front desk. Order 186412.'},{me:true,t:'18:05',x:'Concierge says flat 4 is empty. Leave with him?'},{me:false,who:'Kamila',t:'18:06',x:'Yes, the sender agreed. Take the photo with the concierge desk please.'}]
+};
+const BOARD=[
+ {when:'Today · 12:00–14:00',where:'Bermondsey SE16',pay:'£7',km:'2.2 km',t:'11 min',tags:[['Your area','--ok'],['Pick up from 11:30','']],area:true,soon:true},
+ {when:'Today · 17:00–19:00',where:'Battersea SW11',pay:'£9',km:'6.4 km',t:'28 min',tags:[['Peak','--sale'],['Hard window','--ink'],['On your route','--ok']],route:true},
+ {when:'Today · 18:00–20:00',where:'Vauxhall SW8',pay:'£7',km:'3.1 km',t:'15 min',tags:[['On your route','--ok'],['Your area','--ok']],route:true,area:true},
+ {when:'Today · 18:00–21:00',where:'Canary Wharf E14',pay:'£11',km:'8.9 km',t:'40 min',tags:[['18+ · alcohol','--warn'],['Special','']],alcohol:true},
+ {when:'Today · 19:00–21:00',where:'Peckham SE15',pay:'£7',km:'4.2 km',t:'19 min',tags:[['Your area','--ok']],area:true},
+ {when:'Tomorrow · 09:00–12:00',where:'Clapham SW4',pay:'£7',km:'4.8 km',t:'22 min',tags:[['Requested','badge']],state:'applied'},
+ {when:'Tomorrow · 17:00–19:00',where:'Peckham SE15',pay:'£7',km:'4.2 km',t:'19 min',tags:[['Confirmed','badge-ok'],['Your area','--ok']],state:'mine',area:true}
+];
+const isPostcode=v=>/^[A-Z]{1,2}\d[A-Z\d]?(\s*\d[A-Z]{2})?$/i.test((v||'').trim());
+const isOutcode=v=>/^[A-Z]{1,2}\d[A-Z\d]?$/i.test((v||'').trim());
+const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||'');
+const isStrong=v=>v.length>=8&&/[a-z]/i.test(v)&&/\d/.test(v);
+const isTime=v=>/^([01]\d|2[0-3]):[0-5]\d$/.test(v||'');
+const isShare=v=>/^[A-Z0-9]{9}$/i.test((v||'').replace(/[\s-]/g,''));
+const isAdult=v=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v||'');if(!m)return false;const d=new Date(Date.UTC(+m[1],+m[2]-1,+m[3]));const n=new Date(Date.UTC(2026,9,20));return (n-d)/31557600000>=18};
+const dis=(id,on)=>{const e=document.getElementById(id);if(e)e.disabled=!on};
+const err=(id,on)=>{const e=document.getElementById(id);if(e)e.classList.toggle('err',!!on)};
+/* demo strips */
+function demo(id,key,opts,fn){const el=document.getElementById(id);if(!el)return;el.innerHTML=opts.map(o=>'<button class="'+(X[key]===o[0]?'on':'')+'" data-v="'+o[0]+'">'+o[1]+'</button>').join('');
+ el.querySelectorAll('button').forEach(b=>b.onclick=()=>{X[key]=b.dataset.v;if(b.dataset.v==='true')X[key]=true;if(b.dataset.v==='false')X[key]=false;fn&&fn();X.render()})}
+X.setStatus=s=>{if(s==='blocked'){X.status='blocked';FL.v=0;document.querySelectorAll('#fl-vt button').forEach(b=>b.classList.remove('on'));FL.render()}else FL.setV(s==='verified'?1:0)};
+X.refresh=()=>{A.haptic();A.toast('Refreshed · 11:12')};
+X.sheet=(name)=>{const S=SHEETS[name];if(S)A.sheet(S())};
+/* ---------- sign-up ---------- */
+X.suValidate=()=>{const e=$('#fl-su-e'),p=$('#fl-su-p');if(e&&p){const ok=isEmail(e.value)&&isStrong(p.value);err('fl-su-e',e.value&&!isEmail(e.value));err('fl-su-p',p.value&&!isStrong(p.value));dis('fl-su1-next',ok)}
+ const n=$('#fl-su-n'),ph=$('#fl-su-ph'),pc=$('#fl-su-pc');if(n&&ph&&pc){const ok=n.value.trim().length>=2&&ph.value.replace(/\D/g,'').length>=10&&isPostcode(pc.value);err('fl-su-pc',pc.value&&!isPostcode(pc.value));err('fl-su-ph',ph.value&&ph.value.replace(/\D/g,'').length<10);dis('fl-su2-next',ok)}
+ const sc=$('#fl-su-sc'),dob=$('#fl-su-dob');if(sc&&dob){let ok;if(X.su.rtw==='code'){ok=isShare(sc.value)&&isAdult(dob.value);err('fl-su-sc',sc.value&&!isShare(sc.value));err('fl-su-dob',dob.value&&!isAdult(dob.value));const h=$('#fl-su-dob-hint');if(h)h.textContent=dob.value&&!isAdult(dob.value)?'You must be 18 or over to deliver for Floritta.':'The Home Office check needs it. You must be 18 or over.'}else ok=isAdult($('#fl-su-dob2').value);dis('fl-su3-next',ok)}
+ const ag=$('#fl-su-agree');if(ag)dis('fl-su4-next',ag.classList.contains('on'))};
+X.suTransport=b=>{b.parentNode.querySelectorAll('.tile').forEach(t=>t.classList.toggle('on',t===b));X.su.transport=b.dataset.t;$('#fl-su-car').hidden=b.dataset.t!=='car';X.suValidate()};
+X.suRtw=m=>{X.su.rtw=m;$('#fl-su3-code').hidden=m!=='code';$('#fl-su3-passport').hidden=m!=='passport';X.suValidate()};
+X.suCreate=()=>{const E={ok:null,closed:'Sign-up isn\'t open yet. The studio is still setting it up – try again in a few days.',taken:'This email already has an account. Sign in instead, or use another email.',age:'You must be 18 or over to deliver for Floritta.',v422:'Server says: the mobile number must have at least 10 digits.',other:'Something went wrong. Check your connection and try again.'}[X.signup];
+ const box=$('#fl-su-err');if(E){box.hidden=false;box.textContent=E;return}box.hidden=true;A.toast('Account created · signed in');FL.setV(0);A.go('fl-pending')};
+/* ---------- link ---------- */
+X.linkValidate=()=>{const c=$('#fl-ln-c'),e=$('#fl-ln-e'),p=$('#fl-ln-p');if(!c)return;const ok=c.value.replace(/[\s-]/g,'').length>=6&&isEmail(e.value)&&isStrong(p.value);err('fl-ln-e',e.value&&!isEmail(e.value));err('fl-ln-p',p.value&&!isStrong(p.value));dis('fl-ln-go',ok)};
+X.linkGo=()=>{const E={ok:null,expired:'This code has expired (14 days). Ask the studio for a new one.',invalid:'The code didn\'t match. Check it with the studio – it\'s 8 characters.',other:'Something went wrong. Check your connection and try again.'}[X.link];const box=$('#fl-ln-err');if(E){box.hidden=false;box.textContent=E;return}box.hidden=true;FL.setV(1);A.toast('Linked. Welcome back, Sam.');A.tab('fl-board')};
+/* ---------- board ---------- */
+function card(d,extra){const tags=d.tags.map(t=>t[1]==='badge'?'<span class="flx-badge">'+t[0]+'</span>':t[1]==='badge-ok'?'<span class="flx-badge --ok">'+t[0]+'</span>':'<span class="tag '+t[1]+'">'+t[0]+'</span>').join('');
+ return '<button class="dcard" onclick="FLX.openDlv(\''+(d.state||'open')+'\')"><div class="top"><div style="min-width:0"><div class="when">'+d.when+'</div><div class="where">'+d.where+'</div></div><div class="pay">'+d.pay+'</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-pin"/></svg>From the studio SE1</span><span><svg class="i"><use href="#fl-i-bike"/></svg>'+d.km+' · '+d.t+'</span>'+(extra||'')+'</div><div class="tags">'+tags+'</div></button>'}
+X.openDlv=(state)=>{X.dlv=state;A.go('fl-dlv')};
+function renderBoard(){const bb=document.getElementById('fl-board-banner');if(!bb)return;
+ demo('flx-d-status','status',[['verified','Verified'],['pending','Pending'],['blocked','Blocked']],()=>X.setStatus(X.status));
+ demo('flx-d-board','board',[['list','Normal'],['empty','Empty'],['notyet','Not yet (404)']]);
+ bb.innerHTML=X.status==='pending'?'<div class="panel --warn sm"><b>Checking your right to work.</b> You can look around; requests open as soon as a manager has checked it – usually within 24 hours.</div>'
+  :X.status==='blocked'?'<div class="panel --accent sm"><b>Your account is paused.</b> Write to the studio – a manager will explain and can switch it back on. <button class="textbtn accent" style="margin-top:6px" onclick="App.tab(\'fl-studio\')">Write to the studio</button></div>':'';
+ const chips=[['all','All'],['route','On my routes'],['area','My areas'],['soon','Pick up now']];
+ $('#flx-board-chips').innerHTML=chips.map(c=>'<button class="chip '+(X.filter===c[0]?'on':'')+'" onclick="FLX.filter=\''+c[0]+'\';FLX.render()">'+c[1]+(c[0]!=='all'?' · '+BOARD.filter(d=>!d.state&&d[c[0]]).length:'')+'</button>').join('');
+ const list=$('#fl-board-list');
+ if(X.board==='notyet'){list.innerHTML='<div class="flx-notyet">Not available yet – the studio is still setting things up.</div>';return}
+ const rows=X.board==='empty'?[]:BOARD.filter(d=>d.state||X.filter==='all'||d[X.filter]);
+ list.innerHTML=rows.length?rows.map(d=>card(d)).join(''):'<div class="flx-empty"><div class="h3">Nothing to request right now.</div><p class="soft sm" style="margin:0">New deliveries appear about 2 hours before pickup. Add a route or an area and we\'ll tell you.</p><button class="btn --ghost --sm" style="margin-top:14px" onclick="App.go(\'fl-saved\')">My routes and areas</button></div>'}
+/* ---------- delivery ---------- */
+const GATES={none:'',not_verified:'Your right to work isn\'t checked yet – requests open after the check, usually within 24 hours.',rtw:'Your right-to-work check has expired. Send a new share code from your profile.',insurance:'Car deliveries need Hire & Reward insurance – a manager confirms your policy first.',alcohol_training:'This order has alcohol. Finish the 18+ training (Profile → Alcohol deliveries) and it opens for you.',newcomer_limit:'For your first 5 deliveries we offer orders up to £99. This one is above – more will come.',taken:'Someone has just taken this one. Pick another – the board refreshes.'};
+function renderDlv(){const cta=document.getElementById('fl-dlv-cta');if(!cta)return;
+ demo('flx-d-dlv','dlv',[['open','Open'],['applied','Requested'],['mine','Confirmed']]);
+ demo('flx-d-gate','gate',[['none','None'],['not_verified','Not verified'],['rtw','RTW expired'],['insurance','Insurance'],['alcohol_training','Alcohol training'],['newcomer_limit','Newcomer £99'],['taken','Taken (409)'],['other','Other (alert)']]);
+ const known=X.dlv==='mine';$('#flx-dlv-addr').textContent=known?'Flat 4, 21 Lavender Hill, SW11 5QT':'Full address after the studio confirms';$('#flx-dlv-mapnote').textContent=known?'Address confirmed by the studio':'Exact address after the studio confirms';
+ const st=$('#flx-dlv-state');
+ if(X.dlv==='applied')st.innerHTML='<div class="panel --warn sm"><b>Requested.</b> The studio confirms, usually within 15 minutes. You\'ll get a notification with the full address.</div>';
+ else if(X.dlv==='mine')st.innerHTML='<div class="panel --ok sm"><b>Confirmed · pick up from 16:30.</b> The studio knows you\'re coming.</div><a class="btn --ghost --block" style="margin-top:10px" href="https://www.google.com/maps/dir/?api=1&destination=SW11+5QT&travelmode=bicycling" target="_blank" rel="noopener"><svg class="i"><use href="#fl-i-nav"/></svg>Open in Google Maps</a>';
+ else st.innerHTML='';
+ const canReq=X.status==='verified';
+ if(X.dlv==='open')cta.innerHTML='<button class="btn --block" '+(canReq?'':'disabled')+' onclick="FLX.request()">Request this delivery<span class="bp">£9.00</span></button><div class="flx-gate" id="flx-dlv-gate"></div><div class="xs muted">'+(canReq?'You can withdraw any time before pickup.':X.status==='blocked'?'Your account is paused – write to the studio.':'Requests open once your right to work is checked.')+'</div>';
+ else if(X.dlv==='applied')cta.innerHTML='<button class="btn --ghost --block" onclick="FLX.sheet(\'withdraw\')">Withdraw my request</button><div class="xs muted">No consequences – it goes back to other couriers.</div>';
+ else cta.innerHTML='<button class="btn --block" onclick="App.go(\'fl-run\')">Delivery in progress<span class="bp">£9.00</span></button><div style="text-align:center;margin-top:8px"><button class="textbtn" onclick="FLX.sheet(\'withdraw\')">Withdraw from this delivery</button></div>'}
+X.request=()=>{const g=$('#flx-dlv-gate');if(X.gate==='other'){A.sheet('<div class="sh-head"><div class="h3">Couldn\'t request</div></div><div class="sh-body"><p class="soft sm" style="margin:0">Server error 500. Try again in a minute – if it keeps happening, write to the studio.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>');return}
+ if(X.gate!=='none'){g.textContent=GATES[X.gate];A.haptic();return}g.textContent='';X.dlv='applied';X.render();FL.sheet('requested')};
+/* ---------- run ---------- */
+function renderRun(){const tl=document.getElementById('fl-run-tl');if(!tl)return;
+ demo('flx-d-alcohol','alcohol',[['false','Flowers'],['true','18+ alcohol']]);demo('flx-d-cam','cam',[['ok','OK'],['denied','Camera off'],['offline','Offline']]);
+ const s=FL.runStep,st=i=>i<s?'done':(i===s?'now':'todo'),ic=(i,n)=>i<s?'<svg class="i"><use href="#fl-i-check"/></svg>':n;
+ const steps=[['Confirmed by the studio','Today 16:02'],
+  ['On your way to the studio',s===1?'<div class="tl-a"><button class="btn --sm" onclick="FL.runStep=2;FLX.render();App.toast(\'The studio knows you are coming.\')">I\'m on my way</button><div class="xs muted" style="margin-top:6px">The studio gets a notification</div></div>':(s>1?'16:21 · the studio was told':'')],
+  ['Picked up – photo',s===2?'<div class="tl-a"><button class="btn --sm" onclick="FLX.photo(\'pickup\')"><svg class="i"><use href="#fl-i-camera"/></svg>Take pickup photo</button><div class="xs muted" style="margin-top:6px">Live camera only · opens the recipient\'s phone number</div></div>':(s>2?'16:48':'At the studio, show order 186412')],
+  ['Delivered – photo'+(X.alcohol?' · 18+ order':''),s===3?'<div class="tl-a"><button class="btn --sm" onclick="'+(X.alcohol?'FLX.sheet(\'age\')':'FLX.photo(\'deliver\')')+'"><svg class="i"><use href="#fl-i-camera"/></svg>Delivered – photo'+(X.alcohol?' · 18+ order':'')+'</button><div class="xs muted" style="margin-top:6px">'+(X.alcohol?'Age check first, then the photo':'Bouquet at the door or with the recipient')+'</div></div>':'By 19:00']];
+ tl.innerHTML=steps.map((x,i)=>'<div class="tl-step '+st(i)+'"><div class="ind"><i>'+ic(i,i+1)+'</i></div><div><div class="tl-t">'+x[0]+'</div>'+(x[1].startsWith('<')?x[1]:'<div class="tl-d">'+x[1]+'</div>')+'</div></div>').join('')}
+X.photo=f=>{if(X.cam==='denied'){A.sheet('<div class="sh-head"><div class="h3">Camera is off</div></div><div class="sh-body"><p class="soft sm" style="margin:0">Floritta Team needs the camera for pickup and delivery photos. Turn it on in Settings → Floritta Team → Camera. Photos from the gallery aren\'t accepted.</p></div><div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet()">Not now</button><button class="btn" onclick="App.closeSheet();App.toast(\'Opens iOS Settings\')">Open Settings</button></div>');return}FL.openPhoto(f)};
+const origDone=FL.photoDone.bind(FL);FL.photoDone=function(){if(X.cam==='offline'){A.closeSheet();A.sheet('<div class="sh-head"><div class="h3">No connection</div></div><div class="sh-body"><p class="soft sm" style="margin:0 0 8px">The photo wasn\'t sent and isn\'t kept on the device. Find signal and take it again – the step stays open.</p><p class="hint" style="margin:0">Freelance deliveries have no offline queue, unlike staff couriers.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">Try again</button></div>');return}origDone()};
+X.runWithdraw=()=>{FL.runStep=1;X.dlv='open';A.toast('Withdrawn. It\'s back on the board.');A.tab('fl-board')};
+/* ---------- mine ---------- */
+function renderMine(){const m=document.getElementById('flx-mine-main');if(!m)return;demo('flx-d-mine','mine',[['normal','Normal'],['empty','Empty'],['notyet','Not yet (404)']]);
+ const e=$('#flx-mine-empty');m.hidden=X.mine!=='normal';e.hidden=X.mine==='normal';
+ e.innerHTML=X.mine==='empty'?'<div class="flx-empty" style="margin-top:12px"><div class="h3">No deliveries yet.</div><p class="soft sm" style="margin:0">Pick one on the board – it shows up here once the studio confirms.</p><button class="btn --sm" style="margin-top:14px" onclick="App.tab(\'fl-board\')">Deliveries</button></div>':'<div class="flx-notyet">Not available yet – the studio is still setting things up.</div>'}
+/* ---------- way ---------- */
+X.wayValidate=()=>{const f=$('#fl-w-from'),t=$('#fl-w-to');if(!f)return;const ok=isPostcode(f.value)&&isPostcode(t.value);err('fl-w-from',f.value&&!isPostcode(f.value));err('fl-w-to',t.value&&!isPostcode(t.value));dis('fl-w-go',ok)};
+X.wayMode=b=>{b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));X.wayModeV=b.textContent};
+X.wayGo=()=>{X.wayShown=true;A.haptic();X.render()};
+function renderWay(){const r=document.getElementById('fl-way-res');if(!r)return;demo('flx-d-way','way',[['fit','2 fit'],['none','Nothing'],['notyet','Not yet (404)']]);
+ $('#flx-way-routes-d').textContent=X.routes.length+' route'+(X.routes.length===1?'':'s')+' · '+(X.areas.join(', ')||'no areas');
+ r.hidden=!X.wayShown;if(!X.wayShown)return;
+ if(X.way==='notyet'){r.innerHTML='<div class="flx-notyet">Not available yet – the studio is still setting things up.</div>';return}
+ if(X.way==='none'){r.innerHTML='<div class="sec-head"><div class="caps muted">0 deliveries fit · 34 min trip</div></div><div class="pad"><div class="flx-empty"><div class="h3">Nothing on this path yet.</div><p class="soft sm" style="margin:0">Save it as a route and we\'ll tell you when something appears.</p><button class="btn --ghost --sm" style="margin-top:14px" onclick="FLX.routeAdd()">Save as a route</button></div></div>';return}
+ r.innerHTML='<div class="sec-head"><div class="caps muted">2 deliveries fit · 34 min trip by '+esc(X.wayModeV.toLowerCase())+'</div></div><div class="dlist">'+card(BOARD[1],'<span style="color:var(--ok)"><svg class="i"><use href="#fl-i-clock"/></svg>+6 min detour</span>')+card(BOARD[2],'<span style="color:var(--ok)"><svg class="i"><use href="#fl-i-clock"/></svg>+9 min detour</span>')+'</div><p class="hint pad" style="margin-top:12px">Navigation opens in Google Maps. Trip times are estimates.</p>'}
+/* ---------- routes & areas ---------- */
+function renderRoutes(){const el=document.getElementById('flx-routes');if(!el)return;$('#flx-routes-n').textContent=X.routes.length+' of 3';
+ el.innerHTML=X.routes.length?X.routes.map((r,i)=>'<div class="row"><svg class="i"><use href="#fl-i-route"/></svg><div class="rt"><div class="l">'+esc(r.n)+'</div><div class="d">'+esc(r.f)+' → '+esc(r.t)+' · '+esc(r.m)+' · '+esc(r.d)+(r.w?' · leaving '+esc(r.w):'')+'</div></div><button class="ib" aria-label="Delete" onclick="FLX.routeDel('+i+')"><svg class="i" style="color:var(--grey)"><use href="#fl-i-x"/></svg></button></div>').join('')
+  :'<div class="pad"><div class="flx-empty"><div class="h3">No routes yet.</div><p class="soft sm" style="margin:0">Add the way you usually go – home from work, to the gym – and we\'ll show what\'s on it.</p></div></div>';
+ $('#flx-areas').innerHTML=X.areas.map((a,i)=>'<button class="chip on" onclick="FLX.areaDel('+i+')">'+esc(a)+' ×</button>').join('')+(X.areas.length?'':'<span class="xs muted">No areas yet</span>')}
+X.routeDel=i=>{X.routes.splice(i,1);A.toast('Route deleted · list sent to the studio');X.render()};
+X.routeAdd=()=>{if(X.routes.length>=3){A.sheet('<div class="sh-head"><div class="h3">Maximum three routes</div></div><div class="sh-body"><p class="soft sm" style="margin:0">Delete one to add another.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>');return}X.sheet('route')};
+X.routeValidate=()=>{const n=$('#fl-r-l'),f=$('#fl-r-f'),t=$('#fl-r-t'),w=$('#fl-r-w');if(!n)return;const ok=n.value.trim().length>0&&isPostcode(f.value)&&isPostcode(t.value)&&(!w.value||isTime(w.value));err('fl-r-f',f.value&&!isPostcode(f.value));err('fl-r-t',t.value&&!isPostcode(t.value));err('fl-r-w',w.value&&!isTime(w.value));dis('fl-r-save',ok)};
+X.routeSave=()=>{const days=[...document.querySelectorAll('#fl-r-days .chip.on')].map(c=>c.textContent).join(', ')||'Any day';X.routes.push({n:$('#fl-r-l').value.trim(),f:$('#fl-r-f').value.toUpperCase().trim(),t:$('#fl-r-t').value.toUpperCase().trim(),m:$('#fl-r-m .on').textContent,d:days,w:$('#fl-r-w').value});A.closeSheet();A.toast('Route saved · all routes sent to the studio');X.render()};
+X.areaAdd=()=>{const i=$('#fl-area-in');const v=i.value.toUpperCase().trim();if(!isOutcode(v)){err('fl-area-in',true);A.toast('An outcode like SE15, please');return}err('fl-area-in',false);if(!X.areas.includes(v))X.areas.push(v);i.value='';A.toast('Areas saved');X.render()};
+X.areaDel=i=>{X.areas.splice(i,1);A.toast('Area removed · areas saved');X.render()};
+/* ---------- studio ---------- */
+function renderStudio(){const b=document.getElementById('flx-studio-body');if(!b)return;demo('flx-d-studio','studio',[['normal','Normal'],['empty','Empty'],['notyet','Not yet (404)'],['offline','Send fails']]);
+ if(X.studio==='notyet'){b.innerHTML='<div class="flx-notyet">Not available yet – the studio is still setting things up.</div>';return}
+ if(X.studio==='empty'){b.innerHTML='<div class="flx-empty" style="margin-top:12px"><div class="h3">No messages yet.</div><p class="soft sm" style="margin:0">Write when you need the studio – running late, can\'t find the entrance, anything.</p></div>';return}
+ b.innerHTML='<div class="caps muted" style="text-align:center;margin:10px 0">Today</div>'+X.msgs.map(m=>'<div class="bubble '+(m.me?'--me':'--them')+'"><small>'+(m.me?'You':'Studio ('+esc(m.who)+')')+' · '+m.t+'</small>'+esc(m.x)+'</div>').join('');b.scrollTop=b.scrollHeight}
+X.studioSend=()=>{const i=$('#fl-st-msg');const v=i.value.trim();if(!v)return;if(X.studio==='offline'){A.sheet('<div class="sh-head"><div class="h3">Couldn\'t send</div></div><div class="sh-body"><p class="soft sm" style="margin:0">No connection. Your text stays in the box – try again in a moment.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>');return}
+ X.studio='normal';X.msgs.push({me:true,t:'11:12',x:v});i.value='';dis('fl-st-send',false);X.render();setTimeout(()=>{X.msgs.push({me:false,who:'Kamila',t:'11:13',x:'Got it, thanks Sam.'});X.render();FL.push('reply')},1500)};
+/* ---------- earnings ---------- */
+function renderEarn(){const s=document.getElementById('flx-earn-stats');if(!s)return;demo('flx-d-earn','earn',[['normal','Normal'],['nobank','No bank details'],['first','First week']]);
+ const first=X.earn==='first';s.innerHTML='<div><b>'+(first?'£0':'£57')+'</b><span>This week</span></div><div><b>'+(first?'£0':'£214')+'</b><span>This month</span></div><div><b>'+(first?'£0':'£57')+'</b><span>Unpaid</span></div>';
+ const b=$('#flx-earn-bank');const bank=X.earn!=='nobank';
+ b.innerHTML=(first?'<div class="panel --ok sm" style="margin-bottom:10px">Your first delivery starts the week. Pick one on the board.</div>':'')+(bank?'<div class="panel sm soft" style="display:flex;gap:10px;align-items:center"><svg class="i"><use href="#fl-i-bank"/></svg><span>Paid every Friday to the account ending <b class="num">4821</b>. Last payout £81.00 on 17 Oct.</span></div>':'<button class="panel --warn sm" style="display:flex;gap:10px;align-items:center;width:100%;text-align:left" onclick="App.go(\'fl-bank\')"><svg class="i"><use href="#fl-i-bank"/></svg><span><b>Add your bank details</b> so Friday\'s payout can go out.</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>');
+ $('#flx-earn-bank-d').textContent=bank?'Account ending 4821':'Not added';const md=$('#flx-me-bank-d');if(md)md.textContent=bank?'Account ending 4821':'Not added';
+ const pill={issued:'<span class="pill --review">Check it</span>',confirmed:'<span class="pill --done">Confirmed</span>',queried:'<span class="pill --review">Query sent</span>',paid:'<span class="pill --done">Paid</span>'}[X.stmt];
+ const st=[['Week 43 · 20–26 Oct','7 deliveries · '+(X.stmt==='paid'?'£57.00':'issued Mon 27 Oct'),pill],['Week 42 · 13–19 Oct','9 deliveries · £81.00','<span class="pill --done">Paid</span>'],['Week 41 · 6–12 Oct','8 deliveries · £70.00','<span class="pill --done">Paid</span>'],['Week 40 · 29 Sep–5 Oct','1 delivery · £6.00','<span class="pill --done">Paid</span>']];
+ $('#flx-earn-stmts').innerHTML=first?'<p class="hint pad">No statements yet – the first one is issued on Monday after your first delivery.</p>':st.map(r=>'<button class="row" onclick="App.go(\'fl-stmt\')"><div class="rt"><div class="l num">'+r[0]+'</div><div class="d">'+r[1]+'</div></div>'+r[2]+'<svg class="i chev"><use href="#fl-i-chev"/></svg></button>').join('')}
+function renderStmt(){const c=document.getElementById('flx-stmt-cta');if(!c)return;demo('flx-d-stmt','stmt',[['issued','Issued'],['confirmed','Confirmed'],['queried','Query sent'],['paid','Paid']]);
+ const s=$('#flx-stmt-status');
+ if(X.stmt==='issued'){s.innerHTML='';c.innerHTML='<button class="btn --ghost" style="flex:1" onclick="FLX.sheet(\'query\')">Something is wrong</button><button class="btn" style="flex:1" onclick="FLX.stmtConfirm()">All correct</button>'}
+ else{const p={confirmed:['--done','Confirmed · paid on Friday'],queried:['--review','Query sent · the payout team replies within 2 working days, the payout isn\'t held up'],paid:['--done','Paid · Fri 31 Oct to the account ending 4821']}[X.stmt];s.innerHTML='<div class="panel sm soft" style="display:flex;gap:10px;align-items:center"><span class="pill '+p[0]+'">'+p[1].split(' · ')[0]+'</span><span>'+p[1].split(' · ').slice(1).join(' · ')+'</span></div>';c.innerHTML='<div class="xs muted" style="flex:1;text-align:center;padding:12px 0">'+p[1]+'</div>'}}
+X.stmtConfirm=()=>{X.stmt='confirmed';A.toast('Confirmed. Paid on Friday.');X.render()};
+X.queryValidate=()=>{dis('fl-q-send',$('#fl-q-n').value.trim().length>=3)};
+X.querySend=()=>{X.stmt='queried';A.closeSheet();A.toast('Sent to the payout team.');X.render()};
+/* ---------- bank ---------- */
+X.bankValidate=()=>{const n=$('#fl-b-n'),s=$('#fl-b-s'),a=$('#fl-b-a');if(!n)return;const sd=s.value.replace(/\D/g,''),ad=a.value.replace(/\D/g,'');if(sd.length===6&&s.value!==sd.replace(/(\d{2})(?=\d)/g,'$1-'))s.value=sd.replace(/(\d{2})(?=\d)/g,'$1-');
+ const ok=n.value.trim().length>=2&&sd.length===6&&ad.length===8;err('fl-b-n',n.value&&n.value.trim().length<2);err('fl-b-s',s.value&&sd.length!==6);err('fl-b-a',a.value&&ad.length!==8);dis('fl-b-save',ok)};
+X.bankSave=()=>{demo('flx-d-bank','bank',[['ok','OK'],['v422','422 · check digits']]);const box=$('#fl-b-err');if(X.bank==='v422'){box.hidden=false;box.textContent='Check the sort code and the account number – the bank didn\'t recognise them.';return}box.hidden=true;X.earn='normal';$('#fl-b-s').value='';$('#fl-b-a').value='';dis('fl-b-save',false);A.toast('Saved. Fridays go here now.');X.render();A.back('fl-earn')};
+/* ---------- profile ---------- */
+const RTW={none:['Not sent','Send a share code from sign-up','--todo'],review:['Under review','Share code W7K 4PX 9QM · a manager is checking','--review'],checked:['Checked','Valid until 20 Mar 2027','--done'],expired:['Expired','Send a new share code','--review'],failed:['Not confirmed','The code didn\'t check out – write to the studio','--todo']};
+function renderMe(){const p=document.getElementById('fl-me-pill');if(!p)return;demo('flx-d-rtw','rtw',[['none','Not sent'],['review','Review'],['checked','Checked'],['expired','Expired'],['failed','Not confirmed']]);
+ p.innerHTML={verified:'<span class="pill --done">Checked · can request</span>',pending:'<span class="pill --review">Waiting for check</span>',blocked:'<span class="pill --todo" style="color:var(--accent)">Paused</span>'}[X.status];
+ const probs=X.rtw==='failed'?1:0;$('#flx-me-stats').innerHTML='<div><b>23</b><span>Delivered</span></div><div class="'+(probs?'flx-warn':'')+'"><b>'+probs+'</b><span>Problems</span></div><div><b>SE15</b><span>Home area</span></div>';
+ $('#flx-me-notif-d').textContent={both:'Areas and routes',areas:'Only my areas',routes:'Only my routes',none:'Off'}[X.pushModeV]+' · near the studio '+(X.nearV?'on':'off');
+ $('#flx-me-alco-d').textContent=X.alco==='trained'?'Trained · valid until 20 Apr 2027':'Not trained · 18+ deliveries hidden';
+ $('#flx-me-routes-d').textContent=X.routes.length+' route'+(X.routes.length===1?'':'s')+' · '+(X.areas.join(', ')||'no areas');
+ const r=RTW[X.rtw];$('#flx-me-rtw').innerHTML='<svg class="i"><use href="#fl-i-shield"/></svg><div class="rt"><div class="l">Right to work <span class="pill '+r[2]+'" style="margin-left:6px">'+r[0]+'</span></div><div class="d">'+r[1]+(X.rtw==='expired'?' · <button class="textbtn accent" onclick="App.go(\'fl-rtw\')">Send a new one (proposal)</button>':'')+'</div></div>';
+ document.querySelectorAll('#flx-lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===X.langV))}
+X.lang=b=>{X.langV=b.dataset.l;A.toast(b.dataset.l==='ru'?'Язык: русский · сохранено на устройстве':'Language: '+b.textContent+' · saved on device');X.render()};
+/* ---------- notifications ---------- */
+function renderNotif(){const pm=document.getElementById('fl-pm');if(!pm)return;pm.querySelectorAll('.radio').forEach(r=>r.classList.toggle('on',r.dataset.m===X.pushModeV));const n=$('#fl-near');n.classList.toggle('on',X.nearV)}
+X.pushMode=b=>{X.pushModeV=b.dataset.m;A.toast('Saved');X.render()};
+X.quietValidate=()=>{const f=$('#fl-q-from').value,t=$('#fl-q-to').value;const ok=isTime(f)&&isTime(t)&&(f!==X.quiet[0]||t!==X.quiet[1]);err('fl-q-from',f&&!isTime(f));err('fl-q-to',t&&!isTime(t));dis('fl-q-save',ok)};
+X.quietSave=()=>{X.quiet=[$('#fl-q-from').value,$('#fl-q-to').value];dis('fl-q-save',false);A.toast('Quiet hours '+X.quiet[0]+'–'+X.quiet[1]+' saved')};
+X.near=b=>{X.nearV=!X.nearV;b.classList.toggle('on',X.nearV);A.toast(X.nearV?'Near the studio: on':'Near the studio: off');X.render()};
+/* ---------- alcohol ---------- */
+function renderAlco(){const s=document.getElementById('flx-alco-status');if(!s)return;demo('flx-d-alco','alco',[['trained','Trained'],['untrained','Not trained'],['nolesson','No lesson yet']]);
+ s.innerHTML=X.alco==='trained'?'<div class="panel --ok sm"><b>You\'ve done the training.</b> Valid until 20 Apr 2027 – we\'ll remind you a month before.</div>':'<div class="panel --warn sm"><b>Not trained yet.</b> Until you pass, deliveries with alcohol don\'t show up for you.</div>';
+ $('#flx-alco-cta').innerHTML=X.alco==='trained'?'':X.alco==='untrained'?'<button class="btn --block" onclick="App.go(\'lesson\',{id:4})">Start the lesson<span class="bp">4 min</span></button><p class="hint" style="margin-top:8px;text-align:center">Opens the shared learning screen · 8 questions at the end</p>':'<p class="soft sm" style="text-align:center;margin:0">The lesson opens here as soon as the studio publishes it.</p>'}
+/* ---------- delete ---------- */
+X.delRender=()=>{const b=document.getElementById('flx-del-btn');if(!b)return;demo('flx-d-del','delLive',[['false','No live delivery'],['true','Delivery in progress']]);const live=X.delLive===true;$('#flx-del-live').hidden=!live;b.disabled=live||!$('#flx-del-ok').classList.contains('on')};
+/* ---------- rtw / verify (proposals) ---------- */
+X.rtwValidate=()=>{dis('fl-rtw-send',isShare($('#fl-rtw-sc').value)&&isAdult($('#fl-rtw-dob').value))};
+X.rtwSend=()=>{X.rtw='review';A.toast('Sent. A manager checks it within 24 hours.');X.render();A.back('fl-me')};
+X.vfInput=i=>{const v=i.value.replace(/\D/g,'').slice(0,6);i.value=v;[...document.querySelectorAll('#fl-vf-boxes span')].forEach((s,k)=>{s.textContent=v[k]||'';s.classList.toggle('on',!!v[k])});dis('fl-vf-go',v.length===6)};
+/* ---------- sheets ---------- */
+const SHEETS={
+ withdraw:()=>'<div class="sh-head"><div class="h3">Withdraw from this delivery?</div></div><div class="sh-body"><p class="soft sm" style="margin:0">That\'s fine – it goes back to other couriers. Nothing changes on your account.</p></div><div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();FLX.dlv=\'open\';FL.runStep=1;App.toast(\'Withdrawn.\');App.back(\'fl-board\')">Withdraw</button></div>',
+ problem:()=>{const after=FL.runStep>=3;return '<div class="sh-head"><div class="h3">Problem with delivery</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div><div class="sh-body"><div id="fl-pr-list">'+
+  [['no_answer','Recipient isn\'t answering',after?'Refused at the door: full rate + 50% for the return':''],['wrong_address','Can\'t find the address',after?'Full rate + 50% for the return':''],['refused','Can\'t deliver for another reason',after?'Full rate + 50% for the return':''],['damaged','The bouquet got damaged',''],['cant_continue','I can\'t continue – I\'ll bring it back',after?'Bike broke, something urgent. 50% of the rate for bringing it back':'Before pickup nothing is paid – just withdraw instead']].map((o,i)=>'<button class="radio '+(i===0?'on':'')+'" data-r="'+o[0]+'" onclick="this.parentNode.querySelectorAll(\'.radio\').forEach(r=>r.classList.toggle(\'on\',r===this))"><span class="rd"></span><span><span class="rl" style="display:block">'+o[1]+'</span>'+(o[2]?'<span class="rdd" style="display:block">'+o[2]+'</span>':'')+'</span></button>').join('')+
+  '</div>'+(after?'':'<p class="hint" style="margin:10px 0 0">Before the pickup photo there\'s no payment for a problem – if you can\'t make it, withdraw and nothing happens.</p>')+'<div class="field" style="margin-top:14px"><label for="fl-pr-n">Anything to add</label><textarea class="input" id="fl-pr-n" placeholder="Rang three times, no answer. Waiting outside."></textarea></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();FLX.problemSent()">Send to the studio</button></div>'},
+ age:()=>'<div class="sh-head"><div class="h3">Check the recipient\'s age</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div><div class="sh-body"><p class="soft sm" style="margin:0 0 10px">This order has alcohol. If they look under 25, ask for ID – passport, photo driving licence or PASS card.</p><div class="panel --warn sm">No ID – don\'t hand it over. Report a problem and bring it back: you\'re paid the full rate plus 50%.</div><p class="hint" style="margin:10px 0 0">We don\'t record what you saw – only that you checked.</p></div><div class="sh-foot"><button class="btn --ghost" onclick="App.closeSheet();FLX.sheet(\'problem\');setTimeout(()=>{const r=document.querySelector(\'#fl-pr-list [data-r=refused]\');r&&r.click()},50)">Problem with delivery</button><button class="btn" onclick="App.closeSheet();FLX.photo(\'deliver\')">ID checked – to the photo</button></div>',
+ query:()=>'<div class="sh-head"><div class="h3">What looks wrong?</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div><div class="sh-body"><div class="field"><label for="fl-q-n">Tell the payout team</label><textarea class="input" id="fl-q-n" placeholder="At least 3 characters" oninput="FLX.queryValidate()"></textarea></div><p class="hint" style="margin:0">They reply within 2 working days. Your payout isn\'t held up.</p></div><div class="sh-foot"><button class="btn" id="fl-q-send" disabled onclick="FLX.querySend()">Send</button></div>',
+ route:()=>'<div class="sh-head"><div class="h3">Add a route</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div><div class="sh-body"><div class="field"><label for="fl-r-l">Name</label><input class="input" id="fl-r-l" value="Home from work" oninput="FLX.routeValidate()"></div><div class="field"><label for="fl-r-f">From (postcode)</label><input class="input num" id="fl-r-f" value="EC2A 4NE" oninput="FLX.routeValidate()"></div><div class="field"><label for="fl-r-t">To (postcode)</label><input class="input num" id="fl-r-t" value="SE15 4QL" oninput="FLX.routeValidate()"></div><div class="field"><label>How</label><div class="seg" id="fl-r-m"><button onclick="FLX.wayMode(this)">Walk</button><button class="on" onclick="FLX.wayMode(this)">Bike</button><button onclick="FLX.wayMode(this)">Transit</button><button onclick="FLX.wayMode(this)">Car</button></div></div><div class="field"><label>Days</label><div class="wrap-chips" id="fl-r-days">'+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i)=>'<button class="chip '+(i<4?'on':'')+'" onclick="this.classList.toggle(\'on\')">'+d+'</button>').join('')+'</div></div><div class="field"><label for="fl-r-w">Usually leaving (HH:MM)</label><input class="input num" id="fl-r-w" value="17:30" placeholder="optional" oninput="FLX.routeValidate()"></div></div><div class="sh-foot"><button class="btn" id="fl-r-save" onclick="FLX.routeSave()">Save route</button></div>',
+ password:()=>'<div class="sh-head"><div class="h3">Change password</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div><div class="sh-body"><p class="hint" style="margin:0 0 12px">The same screen studio staff use.</p><div class="field"><label for="fl-pw-o">Current password</label><input class="input" id="fl-pw-o" type="password"></div><div class="field"><label for="fl-pw-n">New password</label><input class="input" id="fl-pw-n" type="password"><span class="hint">At least 8 characters, letters and numbers.</span></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast(\'Password changed\')">Save</button></div>',
+ agreement:()=>'<div class="sh-head"><div class="h3">Courier agreement</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div><div class="sh-body"><p class="soft sm">Self-employed courier agreement, version 2026-10. You choose each delivery; you may work for others and send a substitute who passed the same checks; Floritta pays per delivery on a weekly statement (clause 6.4); you handle your own tax. Full text in the app.</p></div>',
+ privacy:()=>'<div class="sh-head"><div class="h3">Privacy notice</div><button class="ib" onclick="App.closeSheet()" aria-label="Close"><svg class="i"><use href="#fl-i-x"/></svg></button></div><div class="sh-body"><p class="soft sm">We keep your sign-in, phone, home postcode, routes, areas and bank details to run deliveries and pay you. Location is used only for "near the studio" pushes and isn\'t stored. Right-to-work records are kept 2 years, statements 6 years.</p></div>'
+};
+X.problemSent=()=>{A.sheet('<div class="sh-head"><div class="h3">Sent</div></div><div class="sh-body"><p class="soft sm" style="margin:0">A studio manager will call you in a minute and decide: bring it back or hand over to another courier.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.back(\'fl-mine\')">OK</button></div>')};
+/* ---------- render all + hooks ---------- */
+X.render=()=>{renderBoard();renderDlv();renderRun();renderMine();renderWay();renderRoutes();renderStudio();renderEarn();renderStmt();renderMe();renderNotif();renderAlco();X.delRender();demo('flx-d-signup','signup',[['ok','OK'],['closed','Not open (404)'],['taken','Email taken'],['age','Under 18'],['v422','422 text'],['other','Error']]);demo('flx-d-link','link',[['ok','OK'],['expired','Expired (410)'],['invalid','Wrong code'],['other','Error']]);demo('flx-d-bank','bank',[['ok','OK'],['v422','422 · check digits']]);X.suValidate();X.linkValidate();X.wayValidate();X.bankValidate();X.rtwValidate()};
+const origRender=FL.render.bind(FL);FL.render=function(){origRender();X.render()};
+const origSetV=FL.setV.bind(FL);FL.setV=function(v){X.status=v?'verified':'pending';origSetV(v)};
+const origPush=FL.push.bind(FL);FL.push=function(k){if(k==='reply'){X.studio='normal'}origPush(k)};
+document.addEventListener('screen',e=>{if(e.detail.id==='fl-delete'){const c=document.getElementById('flx-del-ok');c&&c.classList.remove('on');X.delRender()}});
+if(document.getElementById('fl-board-banner'))X.render();
+})();
+</script>

@@ -1,15 +1,20 @@
-<section class="scr fl fl" id="s-fl-board" data-tab="fl-board" data-nav="Available deliveries" data-group="Freelance · Deliveries">
+<section class="scr fl" id="s-fl-board" data-tab="fl-board" data-nav="Available deliveries" data-group="Freelance · Deliveries">
+  <!-- ids: TM-FL-001 TM-FL-002 TM-FL-003 TM-FL-004 TM-FL-005 TM-FL-031 -->
   <div class="appbar">
     <div class="ttl"><img src="logo.svg" alt="Floritta" style="height:13px;width:auto"></div>
-    <button class="ib" aria-label="Notifications" onclick="App.go('fl-notif')"><svg class="i"><use href="#fl-i-bell"/></svg><span class="dot">2</span></button>
-    <button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button>
+    <button class="ib" aria-label="Profile" onclick="App.go('fl-me')"><span class="flx-ava">SK</span></button>
   </div>
   <div class="scr-body has-tab">
-    <div class="pad"><h1 class="h1" style="margin:4px 0 14px">Deliveries</h1>
-      <div class="seg" id="fl-day-seg"><button class="on">Today · 7</button><button>Tomorrow · 12</button></div>
+    <div class="pad"><h1 class="h1" style="margin:4px 0 10px">Deliveries</h1>
+      <!-- ids: TM-FL-028 TM-FL-023 -->
+      <div class="flx-refresh"><span>Updated 11:12 · refreshes every 30 s while open · pull down to refresh</span><button class="textbtn" onclick="FLX.refresh()">Refresh</button></div>
+      <div class="flx-demo"><span>Demo · account</span><span id="flx-d-status"></span><span>list</span><span id="flx-d-board"></span></div>
     </div>
-    <div class="pad" style="margin-top:14px" id="fl-board-banner"></div>
-    <div class="chips" style="margin:14px 0 12px"><button class="chip on">All</button><button class="chip">On my routes · 3</button><button class="chip">My areas · 4</button><button class="chip">Pick up now</button></div>
+    <!-- ids: TM-FL-025 TM-FL-026 -->
+    <div class="pad" style="margin-top:12px" id="fl-board-banner"></div>
+    <!-- ids: TM-FL-024 -->
+    <div class="chips" style="margin:12px 0 12px" id="flx-board-chips"></div>
+    <!-- ids: TM-FL-023 TM-FL-029 TM-FL-027 -->
     <div class="dlist" id="fl-board-list"></div>
     <p class="hint pad" style="margin-top:14px;text-align:center">New deliveries appear from about 2 hours before pickup.</p>
   </div>

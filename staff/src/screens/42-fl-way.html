@@ -1,20 +1,20 @@
-<section class="scr fl fl" id="s-fl-way" data-tab="fl-way" data-nav="Where are you going?" data-group="Freelance · On my way">
-  <div class="appbar"><div class="ttl">On my way</div><button class="ib" aria-label="Saved routes" onclick="App.go('fl-saved')"><svg class="i"><use href="#fl-i-route"/></svg></button><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+<section class="scr fl" id="s-fl-way" data-tab="fl-way" data-nav="Where are you going?" data-group="Freelance · On my way">
+  <!-- ids: TM-FL-005 TM-FL-031 -->
+  <div class="appbar"><div class="ttl">My way</div><button class="ib" aria-label="Profile" onclick="App.go('fl-me')"><span class="flx-ava">SK</span></button></div>
   <div class="scr-body has-tab">
     <div class="pad">
       <h1 class="h1" style="margin:4px 0 16px">Where are you going?</h1>
-      <div class="field"><label for="fl-w-from">From</label><input class="input" id="fl-w-from" value="My location · Bermondsey SE1"></div>
-      <div class="field"><label for="fl-w-to">To</label><input class="input" id="fl-w-to" value="SW11 1AJ · Clapham Junction"><span class="hint">A postcode, or drop a pin on the map.</span></div>
-      <div class="seg" style="margin-bottom:14px"><button>Walk</button><button class="on">Bike</button><button>Transit</button></div>
-      <button class="btn --block" onclick="document.getElementById('way-res').hidden=false">Show deliveries on my way</button>
+      <!-- ids: TM-FL-060 -->
+      <div class="field"><label for="fl-w-from">From</label><input class="input num" id="fl-w-from" value="SE15 4QL" oninput="FLX.wayValidate()"><span class="hint">Your home postcode by default.</span></div>
+      <div class="field"><label for="fl-w-to">To</label><input class="input num" id="fl-w-to" value="SW11 1AJ" oninput="FLX.wayValidate()"><span class="hint" id="fl-w-hint">A UK postcode, full (SW11 1AJ) or outcode (SW11).</span></div>
+      <div class="seg" style="margin-bottom:14px" id="fl-w-mode"><button onclick="FLX.wayMode(this)">Walk</button><button class="on" onclick="FLX.wayMode(this)">Bike</button><button onclick="FLX.wayMode(this)">Transit</button><button onclick="FLX.wayMode(this)">Car</button></div>
+      <!-- ids: TM-FL-061 -->
+      <button class="btn --block" id="fl-w-go" onclick="FLX.wayGo()">Show deliveries on my way</button>
+      <div class="flx-demo" style="margin-top:12px"><span>Demo · result</span><span id="flx-d-way"></span></div>
     </div>
-    <div id="fl-way-res">
-      <div class="sec-head"><div><div class="caps muted">2 deliveries fit · 34 min trip</div></div></div>
-      <div class="dlist">
-        <button class="dcard" onclick="App.go('fl-dlv')"><div class="top"><div><div class="when">Today · 17:00–19:00</div><div class="where">Battersea SW11</div></div><div class="pay">£9</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-clock"/></svg>+6 min detour</span><span>Pick up at the studio on your way</span></div></button>
-        <button class="dcard" onclick="App.go('fl-dlv')"><div class="top"><div><div class="when">Today · 18:00–20:00</div><div class="where">Vauxhall SW8</div></div><div class="pay">£7</div></div><div class="meta"><span><svg class="i"><use href="#fl-i-clock"/></svg>+9 min detour</span></div></button>
-      </div>
-      <p class="hint pad" style="margin-top:12px">Navigation opens in Google Maps. Trip times are estimates.</p>
-    </div>
+    <!-- ids: TM-FL-062 -->
+    <div id="fl-way-res" hidden></div>
+    <!-- ids: TM-FL-063 -->
+    <div style="margin-top:20px"><button class="row" onclick="App.go('fl-saved')"><svg class="i"><use href="#fl-i-route"/></svg><div class="rt"><div class="l">My routes and areas</div><div class="d" id="flx-way-routes-d"></div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button></div>
   </div>
 </section>

@@ -1,15 +1,21 @@
-<section class="scr fl fl" id="s-fl-link" data-nav="Link the Telegram bot" data-group="Freelance · Start">
-  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Already in the bot</div><span class="ib"></span></div>
+<section class="scr fl" id="s-fl-link" data-nav="Link the Telegram bot" data-group="Freelance · Start">
+  <div class="appbar"><button class="ib" onclick="App.back('fl-welcome')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Already in the bot</div><span class="ib"></span></div>
   <div class="scr-body has-cta pad">
+    <!-- ids: TM-FL-019 -->
     <h1 class="h1" style="margin:16px 0 8px">Move to the app in one step</h1>
-    <p class="soft sm" style="margin:0 0 18px">Your deliveries, routes and earnings come with you. The bot keeps working too.</p>
+    <p class="soft sm" style="margin:0 0 18px">Your courier record, routes and statements come with you. This is a one-time move – after it the app and the bot are not connected.</p>
     <div class="timeline">
-      <div class="tl-step done"><div class="ind"><i>1</i></div><div><div class="tl-t">Open @floritta_freelance_bot</div><div class="tl-d">Tap <b>Get the app</b> in the menu</div></div></div>
-      <div class="tl-step now"><div class="ind"><i>2</i></div><div><div class="tl-t">Type the 6-digit code here</div><div class="tl-d">It works for 10 minutes</div></div></div>
+      <div class="tl-step done"><div class="ind"><i>1</i></div><div><div class="tl-t">Ask the studio for an app code</div><div class="tl-d">A manager sends it from the CRM: 8 characters, valid for 14 days</div></div></div>
+      <div class="tl-step now"><div class="ind"><i>2</i></div><div><div class="tl-t">Type the code, your email and a new password</div><div class="tl-d">That's it – you're signed in</div></div></div>
     </div>
-    <div class="code-boxes mt8"><span class="on">4</span><span class="on">8</span><span class="on">1</span><span class="on">0</span><span class="on">7</span><span class="on">3</span></div>
-    <div class="field mt16" style="margin-top:22px"><label for="fl-ln-e">Email for signing in</label><input class="input" id="fl-ln-e" value="sam.k@example.com"></div>
-    <div class="field"><label for="fl-ln-p">Choose a password</label><input class="input" id="fl-ln-p" type="password" value="password12"></div>
+    <!-- ids: TM-FL-020 -->
+    <div class="field mt8"><label for="fl-ln-c">App code</label><input class="input num" id="fl-ln-c" value="K7M2-P9QD" style="letter-spacing:.2em;text-transform:uppercase" oninput="FLX.linkValidate()"><span class="hint">Capital letters and digits, at least 6.</span></div>
+    <div class="field"><label for="fl-ln-e">Email for signing in</label><input class="input" id="fl-ln-e" value="sam.k@example.com" oninput="FLX.linkValidate()"></div>
+    <div class="field"><label for="fl-ln-p">New password</label><input class="input" id="fl-ln-p" type="password" value="password12" oninput="FLX.linkValidate()"><span class="hint">At least 8 characters, letters and numbers.</span></div>
+    <!-- ids: TM-FL-022 -->
+    <div class="panel --accent sm" id="fl-ln-err" hidden></div>
+    <div class="flx-demo" style="margin-top:14px"><span>Demo · server answer</span><span id="flx-d-link"></span></div>
   </div>
-  <div class="cta-bar"><button class="btn --block" onclick="FL.setV(1);App.toast('Linked. Welcome back, Sam.');App.tab('fl-board')">Link my account</button></div>
+  <!-- ids: TM-FL-021 -->
+  <div class="cta-bar"><button class="btn --block" id="fl-ln-go" onclick="FLX.linkGo()">Link my account</button></div>
 </section>

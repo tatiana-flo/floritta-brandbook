@@ -1,5 +1,6 @@
-<section class="scr fl fl" id="s-fl-dlv" data-nav="Delivery details" data-group="Freelance · Deliveries">
-  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delivery</div><span class="ib"></span></div>
+<section class="scr fl" id="s-fl-dlv" data-nav="Delivery details" data-group="Freelance · Deliveries">
+  <!-- ids: TM-FL-029 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-board')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Delivery</div><span class="ib"></span></div>
   <div class="scr-body has-cta">
     <div class="map fl-mapbox"><svg class="fl-map" viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice" aria-label="Map: studio SE1 to Battersea SW11">
   <rect width="400" height="190" fill="#f2f2f4"/>
@@ -18,18 +19,27 @@
   <rect x="64" y="122" width="12" height="12" fill="#1e1a17"/>
 </svg>
 <span class="mk" style="left:22px;top:146px">Studio SE1</span><span class="mk --ink" style="right:18px;top:22px">SW11 · area</span>
-<span class="fl-map-note">Exact address after the studio confirms</span></div>
+<span class="fl-map-note" id="flx-dlv-mapnote">Exact address after the studio confirms</span></div>
+    <!-- ids: TM-FL-032 TM-FL-041 -->
     <div class="pad" style="margin-top:18px">
       <div class="flex" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
         <div><div class="caps muted">Today · 17:00–19:00</div><h1 class="h1" style="margin-top:6px">Battersea, SW11</h1></div>
         <div style="font-family:var(--f-display);font-size:40px;font-weight:300;line-height:1">£9</div>
       </div>
-      <div class="wrap-chips mt8" style="margin-top:10px"><span class="tag --sale">Peak</span><span class="tag --ink">Hard window</span><span class="tag">Band M · 6.4 km</span></div>
+      <div class="wrap-chips mt8" style="margin-top:10px"><span class="tag --sale">Peak</span><span class="tag --ink">Hard window</span><span class="tag">Band M · 6.4 km</span><span class="tag --ok" id="flx-dlv-route-tag">On your route</span></div>
+      <div class="flx-refresh" style="margin-top:8px"><span>Pull down to refresh</span><button class="textbtn" onclick="FLX.refresh()">Refresh</button></div>
     </div>
-    <div class="row" style="margin-top:14px"><svg class="i"><use href="#fl-i-pin"/></svg><div class="rt"><div class="l">Pick up · Floritta studio</div><div class="d">80 Willow Walk, SE1 5SY · ready from 16:30</div></div></div>
-    <div class="row"><svg class="i"><use href="#fl-i-nav"/></svg><div class="rt"><div class="l">Drop off · Battersea SW11 2</div><div class="d">Full address after the studio confirms</div></div></div>
+    <!-- ids: TM-FL-033 -->
+    <div class="row" style="margin-top:10px"><svg class="i"><use href="#fl-i-pin"/></svg><div class="rt"><div class="l">Pick up · Floritta studio</div><div class="d">80 Willow Walk, SE1 5SY · ready from 16:30</div></div></div>
+    <div class="row"><svg class="i"><use href="#fl-i-nav"/></svg><div class="rt"><div class="l">Drop off · Battersea SW11</div><div class="d" id="flx-dlv-addr">Full address after the studio confirms</div></div></div>
     <div class="row"><svg class="i"><use href="#fl-i-bike"/></svg><div class="rt"><div class="l">About 28 min by bike</div><div class="d">One medium bouquet · 1.2 kg · flat bag fits</div></div></div>
+    <!-- ids: TM-FL-034 -->
     <div class="pad mt16" style="margin-top:16px"><div class="ann sm soft">Hard window: the recipient has asked for it before 19:00. If you can't make it, withdraw before pickup – nothing happens to your account.</div></div>
+    <!-- ids: TM-FL-037 TM-FL-038 TM-FL-039 TM-FL-040 -->
+    <div class="pad" id="flx-dlv-state" style="margin-top:16px"></div>
+    <!-- ids: TM-FL-036 -->
+    <div class="pad" style="margin-top:14px"><div class="flx-demo"><span>Demo · state</span><span id="flx-d-dlv"></span><span>CRM gate</span><span id="flx-d-gate"></span></div></div>
   </div>
+  <!-- ids: TM-FL-035 TM-FL-036 -->
   <div class="cta-bar"><div id="fl-dlv-cta"></div></div>
 </section>
