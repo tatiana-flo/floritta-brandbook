@@ -3,6 +3,7 @@
 #s-route .scr-body.has-tab.cr-hascta{padding-bottom:calc(var(--tab-h) + var(--btn-h) + 56px + var(--safe-b))}
 #s-route .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b))}
 html[data-style="glass"] #s-route .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b) + 22px)}
+.app:has(#s-route .scr-body.cr-hascta) .toast{bottom:calc(var(--tab-h) + var(--btn-h) + 44px + var(--safe-b))}
 .cr-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--ink);height:32px;flex:none}
 .cr-seg button{font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;padding:0 12px;transition:all var(--m-fast)}
 .cr-seg button.on{background:var(--ink);color:var(--paper)}
@@ -42,7 +43,7 @@ html[data-style="glass"] #s-route .cta-bar{bottom:calc(var(--tab-h) + var(--safe
 .cr-poll{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 var(--gutter);font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);margin-top:14px}
 .cr-ptr{display:flex;align-items:center;justify-content:center;gap:8px;height:0;overflow:hidden;font-size:12px;color:var(--grey);transition:height var(--m-base) var(--m-ease)}
 .cr-ptr.on{height:40px}
-.cr-stop{display:block;width:100%;text-align:left;padding:14px var(--gutter);border-bottom:1px solid var(--hair);background:var(--paper)}
+.cr-stop{display:block;width:100%;text-align:left;cursor:pointer;padding:14px var(--gutter);border-bottom:1px solid var(--hair);background:var(--paper)}
 .cr-stop:active{background:var(--silver)}
 .cr-stop.--pod{opacity:.72}
 .cr-stop .hd{display:flex;align-items:flex-start;gap:10px}
@@ -82,7 +83,7 @@ html[data-style="glass"] #s-route .cta-bar{bottom:calc(var(--tab-h) + var(--safe
 .cr-map .rv{fill:none;stroke:var(--light);stroke-width:22;opacity:.55}
 .cr-map .rd{fill:none;stroke:var(--hair);stroke-width:1.5}
 .cr-map .pin{cursor:pointer}
-.cr-map .pin circle{fill:var(--accent);stroke:var(--paper);stroke-width:2}
+.cr-map .pin circle{fill:var(--ink);stroke:var(--paper);stroke-width:2}
 .cr-map .pin.--pod circle{fill:var(--ok)}
 .cr-map .pin.--next circle{fill:var(--grey)}
 .cr-map .pin text{font-family:var(--f-body);font-size:10px;fill:var(--ink);text-anchor:middle}
@@ -96,7 +97,7 @@ html[data-style="glass"] #s-route .cta-bar{bottom:calc(var(--tab-h) + var(--safe
 .cr-callout .d{font-size:12px;color:var(--grey);margin-top:2px}
 .cr-callout svg{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;margin-left:auto}
 .cr-legend{position:absolute;left:12px;top:12px;display:flex;gap:10px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);background:var(--paper);padding:4px 8px}
-.cr-legend i{display:inline-block;width:8px;height:8px;margin-right:4px;background:var(--accent);vertical-align:0}
+.cr-legend i{display:inline-block;width:8px;height:8px;margin-right:4px;background:var(--ink);vertical-align:0}
 .cr-legend i.ok{background:var(--ok)}.cr-legend i.nx{background:var(--grey)}
 .cr-lock{padding:40px var(--gutter)}
 .cr-demo{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14px}
@@ -280,7 +281,7 @@ function stopCard(s,idx){
     else if(canTake)act=`<div class="act"><button class="btn --sm --ghost" style="flex:0 0 auto;padding:0 12px" aria-label="Scan the label QR" onclick="event.stopPropagation();CR.tripActions.scan('${s.code}')">${I('scan')}</button><button class="btn --sm ${s.readyState==='ready'?'':'--ghost'}" onclick="event.stopPropagation();CR.tripActions.take('${s.code}',{via:'button'})">${I('box')} Picked up order</button></div>`;
     else if(s.nextRun)act=`<div class="act"><span class="xs muted">Still in the shop – goes on your next run.</span></div>`;
   }
-  return `<button class="cr-stop ${done?'--pod':''}" onclick="App.go('stop',{code:'${s.code}'})"><div class="hd">${num}<div class="f1" style="min-width:0"><div class="code">#${s.code}<small>CRM ${s.crm}</small></div>${bd.length?`<div class="bd">${bd.join('')}</div>`:''}</div><div class="rt">${badgeRight(s)}</div></div>${zone}<div class="addr">${s.line1?`${s.line1}, ${s.pc}`:'No address on this order.'}${s.failure?` · <span class="accent">${s.failure.label} · ${s.failure.at}</span>`:''}</div>${items}${act}</button>`;
+  return `<div class="cr-stop ${done?'--pod':''}" role="button" tabindex="0" onclick="App.go('stop',{code:'${s.code}'})"><div class="hd">${num}<div class="f1" style="min-width:0"><div class="code">#${s.code}<small>CRM ${s.crm}</small></div>${bd.length?`<div class="bd">${bd.join('')}</div>`:''}</div><div class="rt">${badgeRight(s)}</div></div>${zone}<div class="addr">${s.line1?`${s.line1}, ${s.pc}`:'No address on this order.'}${s.failure?` · <span class="accent">${s.failure.label} · ${s.failure.at}</span>`:''}</div>${items}${act}</div>`;
 }
 function listView(){
   const main=C.stops.filter(s=>!s.nextRun), nxt=C.stops.filter(s=>s.nextRun);

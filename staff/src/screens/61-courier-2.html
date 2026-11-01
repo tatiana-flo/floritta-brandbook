@@ -1,0 +1,216 @@
+<style>
+/* ---------- manager: Deliveries today (dispatch) ---------- */
+#s-cr-dispatch .scr-body.has-tab.cr-hascta{padding-bottom:calc(var(--tab-h) + var(--btn-h) + 56px + var(--safe-b))}
+#s-cr-dispatch .cta-bar{bottom:calc(var(--tab-h) + var(--safe-b))}
+.dp-tabs{display:flex;gap:0;margin:8px var(--gutter) 0;border-bottom:1px solid var(--hair)}
+.dp-tabs button{flex:1;padding:10px 4px;font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);border-bottom:2px solid transparent;margin-bottom:-1px}
+.dp-tabs button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.dp-pend{margin:12px var(--gutter) 0;padding:14px 16px;background:var(--warn-bg);display:flex;align-items:center;gap:12px;width:calc(100% - 2*var(--gutter));text-align:left}
+.dp-pend .t{font-size:15px}
+.dp-pend .d{font-size:12px;color:var(--warn);margin-top:3px;letter-spacing:var(--ls-caps);text-transform:uppercase}
+.dp-pend svg{width:18px;height:18px;stroke:var(--warn);fill:none;stroke-width:1.5;margin-left:auto;flex:none}
+.dp-cour{margin-top:20px}
+.dp-ch{display:flex;align-items:center;gap:10px;padding:0 var(--gutter)}
+.dp-ch .sw{width:10px;height:10px;flex:none}
+.dp-ch .n{font-size:17px}
+.dp-ch .p{font-size:12px;color:var(--grey);margin-left:auto}
+.dp-ch .p.on{color:var(--ok)}
+.dp-cl{padding:4px var(--gutter) 0;font-size:13px;color:var(--graphite);line-height:1.5}
+.dp-cl .wait{color:var(--warn)}
+.dp-cl .late{color:var(--accent)}.dp-cl .mid{color:var(--warn)}.dp-cl .ok{color:var(--ok)}
+.dp-cl .lk{display:inline-flex;align-items:center;gap:4px;color:var(--ink);border-bottom:1px solid var(--light);font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;margin-top:6px}
+.dp-cl .ib-i{display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid var(--light);font-size:11px;vertical-align:-5px;margin-left:4px}
+.dp-stop{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;cursor:pointer;padding:12px var(--gutter);border-top:1px solid var(--hair)}
+.dp-stop.--cur{box-shadow:inset 2px 0 0 var(--accent)}
+.dp-stop.--done{opacity:.55}
+.dp-stop .ix{width:26px;height:26px;display:grid;place-items:center;font-size:12px;color:var(--paper);flex:none}
+.dp-stop .l1{font-size:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.dp-stop .l1 small{color:var(--grey);font-size:12px}
+.dp-stop .l2{font-size:12px;color:var(--graphite);margin-top:3px;line-height:1.4}
+.dp-stop .l3{font-size:12px;margin-top:3px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dp-stop .l3 .late{color:var(--accent)}
+.dp-stop .l3 .ib-i{display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid var(--light);font-size:11px}
+.dp-stop .fl{font-size:12px;color:var(--accent);margin-top:3px}
+.dp-un{display:block;width:100%;text-align:left;padding:12px var(--gutter);border-bottom:1px solid var(--hair)}
+.dp-un .t{font-size:14px}.dp-un .d{font-size:12px;color:var(--grey);margin-top:3px}
+.dp-map{position:relative;height:430px;background:var(--silver);margin-top:12px;overflow:hidden}
+.dp-map svg{position:absolute;inset:0;width:100%;height:100%}
+.dp-map .rv{fill:none;stroke:var(--light);stroke-width:22;opacity:.55}
+.dp-map .rd{fill:none;stroke:var(--hair);stroke-width:1.5}
+.dp-map .pin{cursor:pointer}
+.dp-map .pin text{font-family:var(--f-body);font-size:10px;fill:var(--paper);text-anchor:middle}
+.dp-map .pin .lb{font-size:9px;fill:var(--graphite)}
+.dp-map .pin.--done{opacity:.45}
+.dp-map .cp rect{stroke:var(--paper);stroke-width:2}
+.dp-map .cp text{font-family:var(--f-body);font-size:9px;font-weight:500;fill:var(--paper);text-anchor:middle}
+.dp-map .fx{fill:none;stroke:var(--accent);stroke-width:2}
+.dp-map .lbl{font-family:var(--f-body);font-size:8px;letter-spacing:.2em;fill:var(--grey);text-transform:uppercase}
+.dp-leg{position:absolute;left:12px;bottom:12px;display:flex;gap:10px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);background:var(--paper);padding:4px 8px}
+.dp-leg i{display:inline-block;width:8px;height:8px;margin-right:4px}
+.dp-adv{margin:0 var(--gutter);padding:14px 0;border-bottom:1px solid var(--hair)}
+.dp-adv .h{display:flex;align-items:center;gap:8px;font-size:16px}
+.dp-adv .m{font-size:13px;color:var(--graphite);margin-top:4px;line-height:1.5}
+.dp-adv .run{margin-top:10px;padding:12px;background:var(--silver)}
+.dp-adv .run .t{font-size:14px;display:flex;justify-content:space-between}
+.dp-adv .run .d{font-size:12px;color:var(--graphite);margin-top:4px;line-height:1.5}
+.dp-adv .run .st{font-size:12px;margin-top:6px;display:flex;flex-wrap:wrap;gap:6px}
+.dp-adv .run .btn{margin-top:10px}
+.dp-cause{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.dp-cause svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5}
+.dp-cause .m{font-size:12px;color:var(--grey)}
+.dp-cause b{font-weight:400;font-variant-numeric:tabular-nums}
+.dp-ed{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair)}
+.dp-ed .ix{width:24px;height:24px;display:grid;place-items:center;font-size:11px;color:var(--paper);background:var(--ink);flex:none}
+.dp-ed .t{font-size:14px}.dp-ed .d{font-size:12px;color:var(--grey);margin-top:2px}
+.dp-ed .ar{display:flex;flex-direction:column;gap:2px;margin-left:auto}
+.dp-ed .ar button,.dp-ed .x{width:30px;height:24px;border:1px solid var(--light);display:grid;place-items:center}
+.dp-ed .ar button svg,.dp-ed .x svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.8}
+.dp-ed .ar button[disabled]{opacity:.3}
+.dp-ed .x{height:50px;color:var(--accent);border-color:var(--accent-bg)}
+.dp-ev{padding:12px;background:var(--silver);font-size:13px;line-height:1.5;margin-top:12px}
+.dp-ev .acc{color:var(--accent)}.dp-ev .ok{color:var(--ok)}
+.dp-route{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.dp-route .ix{width:24px;height:24px;display:grid;place-items:center;font-size:11px;background:var(--ink);color:var(--paper);flex:none}
+.dp-route .d{font-size:12px;color:var(--grey);margin-top:2px}
+.dp-route .r{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--graphite)}
+</style>
+
+<!-- Manager · Deliveries today – the Work → Deliveries view for manager/admin (classic manager-deliveries-screen). Andrii's run is live from the courier demo state, so Valeria's "Confirm route" answers Andrii's "Ready to leave". -->
+<!-- ids: TM-COURIER-001 TM-DISP-001 TM-DISP-002 TM-DISP-003 TM-DISP-004 TM-DISP-005 TM-DISP-021 -->
+<section class="scr" id="s-cr-dispatch" data-tab="work" data-nav="Deliveries today · manager" data-group="Deliveries">
+  <div class="appbar" id="dp-bar"></div>
+  <div class="scr-body has-tab" id="dp-body">
+    <!-- rendered by mount_cr_dispatch:
+         ids: TM-DISP-020 TM-DISP-022 TM-DISP-023 TM-DISP-024 – pending trip banner → trip sheet (Confirm / Change order / Return to courier with note)
+         ids: TM-DISP-006 TM-DISP-007 TM-DISP-008 TM-DISP-009 TM-DISP-010 – courier section: colour, presence, trip state, plan/fact with tone, now line, cost line, counts, Change route
+         ids: TM-DISP-011 TM-DISP-012 TM-DISP-013 TM-DISP-014 TM-DISP-015 – stop row: numbered circle, state, current stop, recipient, First, 18+, address, plan/actual + i, late / not on plan, failure reason, tap → order
+         ids: TM-DISP-016 – Not assigned sub-tab
+         ids: TM-DISP-017 TM-DISP-018 TM-DISP-019 – couriers map, show on map focus, delay causes sheet
+         ids: TM-DISP-025 TM-DISP-026 TM-DISP-027 TM-DISP-028 TM-DISP-029 TM-DISP-030 TM-DISP-031 – route editor (arrows, costing, Optimize, Save order / Confirm this order, remove, add order, sheet for a confirmed run)
+         ids: TM-DISP-032 TM-DISP-033 TM-DISP-034 – Advisor sub-tab, refresh runs it now, Assign orders (N) -->
+  </div>
+  <div class="cta-bar" id="dp-cta" style="display:none"></div>
+</section>
+
+<script>
+(function(){
+'use strict';
+const A=window.App, I=n=>A.icon(n), $=id=>document.getElementById(id), C=window.CR;
+const ic=C.ic, sh=C.sh, alert=C.alert, stamp=C.stamp;
+const D={tab:'couriers',mode:'list',load:'ok',focus:null,adv:'ok',advAt:'11:05'};
+const COL={andrii:'var(--ink)',oleh:'var(--graphite)',max:'var(--light)'};
+const OLEH=[
+  {code:'715650',crm:'62-50',who:'Mr Adeyemi',area:'Clapham SW4',line1:'12 Abbeville Road',pc:'SW4 9LA',slot:'10:00–13:00',plan:'10:40',fact:'10:48',state:'delivered',x:210,y:360},
+  {code:'715651',crm:'62-51',who:'Hana S.',area:'Brixton SW2',line1:'4 Josephine Avenue',pc:'SW2 2LA',slot:'10:00–13:00',plan:'11:05',fore:'11:20',state:'picked',cur:true,late:15,x:290,y:330},
+  {code:'715652',crm:'62-52',who:'T. Nowak',area:'Stockwell SW9',line1:'77 Landor Road',pc:'SW9 9RT',slot:'09:00–12:00',plan:'10:20',fact:'10:26',state:'failed',failure:{label:'Nobody home',note:'rang twice, no answer, called – voicemail'},x:250,y:300}
+];
+const andriiStops=()=>C.stops.filter(s=>!s.nextRun&&s.courier!==null);
+const unassigned=()=>[{code:'715627',who:'Anonymous sender',area:'Kensington W8',line1:'9 Argyll Road',pc:'W8 7DA',slot:'18:00–21:00',n:'Rose-tinted daydream basket',x:60,y:120}].concat(C.stops.filter(s=>s.courier===null).map(s=>({code:s.code,who:s.who,area:s.area,line1:s.line1,pc:s.pc,slot:s.slot,n:s.name,x:s.x,y:s.y})));
+const tone=m=>m>10?'late':m>0?'mid':'ok';
+
+/* ---- pieces ---- */
+function pendBanner(){const t=C.trip;if(!(t&&t.status==='awaiting_confirmation')||D.tab!=='couriers')return '';const n=C.takenList().length;
+  return `<button class="dp-pend" onclick="CR.dp.pendSheet()"><div><div class="t">Andrii is ready to leave – ${n} order${n>1?'s':''}</div><div class="d">Confirm the route · ready since ${t.requestedAt}</div></div>${I('chev')}</button>`}
+function tripState(){const t=C.trip;if(!C.demo.tripMode)return 'on the road · back ≈ 13:40 (in 148 min)';if(!t)return 'no run yet';
+  return {heading_to_shop:'heading to shop · ~6 min',at_shop:`at the shop since ${t.arrivedAt}`,awaiting_confirmation:'<span class="wait">waiting for route confirmation</span>',confirmed:'on the road · back ≈ 13:58 (in 166 min)'}[t.status]}
+function andriiSection(){
+  const t=C.trip,conf=!C.demo.tripMode||(t&&t.status==='confirmed');const st=andriiStops();const del=st.filter(s=>s.hasPod).length,fail=st.filter(s=>s.failure).length,rem=st.length-del-fail;
+  const pf=conf?`<div>finish <span class="late">plan 13:20 · forecast 13:42 (+22)</span> <button class="ib-i" aria-label="Why off plan" onclick="CR.dp.causes('finish','Andrii')">i</button><br>return <span class="late">plan 13:40 · forecast 13:58 (+18)</span> <button class="ib-i" aria-label="Why off plan" onclick="CR.dp.causes('back','Andrii')">i</button></div><div>now: ${t?'driving to #715619 · 4 min':'on the road'}</div><div>≈ £6.40 per delivery · plan £5.10 · delivered ${del} of ${st.length}</div>`:`<div>now: ${t&&t.status==='heading_to_shop'?'on the road':'at the shop'}</div><div>plan £5.10 per delivery</div>`;
+  const edit=conf&&C.demo.tripMode&&rem>0?`<button class="lk" onclick="CR.dp.editor('confirmed')">${ic('edit',12)} Change route</button>`:'';
+  const rows=st.slice().sort((a,b)=>(a.hasPod?-1:0)-(b.hasPod?-1:0)||((a.position||99)-(b.position||99))).map((s,i)=>stopRow(s,'andrii',i,conf)).join('');
+  return `<div class="dp-cour"><div class="dp-ch"><span class="sw" style="background:${COL.andrii}"></span><span class="n">Andrii</span><span class="p on">online</span></div><div class="dp-cl">${tripState()}<br>${st.length} stops · ${del} delivered${fail?' · '+fail+' failed':''} · back at ${conf?'13:58':'13:40'}${pf}${edit}</div>${rows||`<div class="dp-cl muted">No stops planned.</div>`}</div>`;
+}
+function stopRow(s,cid,i,conf){
+  const done=s.hasPod||s.failure,cur=conf&&!done&&s.position===1,num=done?'✓':(conf&&s.position)||'·';
+  const state=s.hasPod?'Delivered':s.failure?'Not delivered':s.taken?'Picked up':'Waiting';
+  const plan=conf&&!done?`<span>Plan ${s.eta} · ≈ ${C.hm(+s.eta.split(':')[0]*60+ +s.eta.split(':')[1]+11)} · <span class="late">+11 min</span></span><button class="ib-i" aria-label="Why" onclick="event.stopPropagation();CR.dp.causes('stop','#${s.code}')">i</button>`:s.hasPod?`<span>Plan 10:20 · Actual ${s.deliveredAt} · <span class="late">+11 min</span></span><button class="ib-i" onclick="event.stopPropagation();CR.dp.causes('stop','#${s.code}')">i</button>`:'';
+  return `<div class="dp-stop ${cur?'--cur':''} ${done?'--done':''}" role="button" onclick="App.go('cr-order',{code:'${s.code}'})"><span class="ix" style="background:${COL[cid]}">${num}</span><span class="f1"><div class="l1">#${s.code}<small>CRM ${s.crm}</small><small>· ${state}</small>${cur?'<span class="pill cr-pill-acc">delivering now</span>':''}${s.priorityFirst&&!done?'<span class="pill --doing">First</span>':''}${s.isAlcohol||s.ageRestricted?'<span class="pill cr-pill-acc">18+</span>':''}</div><div class="l2">${s.who} · ${s.line1}, ${s.pc}${conf&&!done?` · ${s.eta} (in ${Math.max(1,(+s.eta.split(':')[0]*60+ +s.eta.split(':')[1])-C.NOWM)} min)`:''} · ${s.slot}</div>${plan?`<div class="l3">${plan}${conf&&!done&&i===3?'<span class="late">11 min late</span>':''}</div>`:''}${s.failure?`<div class="fl">${s.failure.label}${s.failure.note?' · '+s.failure.note:''}</div>`:''}</span></div>`;
+}
+function olehSection(){
+  const rows=OLEH.map(s=>{const done=s.state!=='picked';const lt=s.late?`<span class="late">${s.late} min late</span>`:s.fact?`<span class="${tone(8)}">+${Math.abs(+s.fact.slice(3)-+s.plan.slice(3))} min</span>`:'';
+    return `<div class="dp-stop ${s.cur?'--cur':''} ${done?'--done':''}" role="button" onclick="App.go('cr-order',{code:'715602'})"><span class="ix" style="background:${COL.oleh}">${s.state==='delivered'?'✓':s.state==='failed'?'✕':'1'}</span><span class="f1"><div class="l1">#${s.code}<small>CRM ${s.crm}</small><small>· ${{delivered:'Delivered',failed:'Not delivered',picked:'Picked up'}[s.state]}</small>${s.cur?'<span class="pill cr-pill-acc">delivering now</span>':''}</div><div class="l2">${s.who} · ${s.line1}, ${s.pc} · ${s.slot}</div><div class="l3"><span>Plan ${s.plan} · ${s.fact?'Actual '+s.fact:'≈ '+s.fore}</span>${lt}<button class="ib-i" onclick="event.stopPropagation();CR.dp.causes('stop','#${s.code}')">i</button>${s.code==='715651'?'<span class="muted">not on the plan</span>':''}</div>${s.failure?`<div class="fl">${s.failure.label} · ${s.failure.note}</div>`:''}</span></div>`}).join('');
+  return `<div class="dp-cour"><div class="dp-ch"><span class="sw" style="background:${COL.oleh}"></span><span class="n">Oleh</span><span class="p">last seen 3 min ago</span></div><div class="dp-cl">on the road · back ≈ 12:05 (in 53 min)<br>3 stops · 1 delivered · 1 failed · back at 12:05<div>finish <span class="mid">plan 11:30 · forecast 11:38 (+8)</span> <button class="ib-i" onclick="CR.dp.causes('finish','Oleh')">i</button> · return <span class="ok">plan 12:05 · forecast 12:05 (on plan)</span></div><div>now: at the door #715651 · 6 min</div><div>≈ £7.90 per delivery · plan £6.00 · delivered 1 of 3</div></div>${rows}</div>`;
+}
+function maxSection(){return `<div class="dp-cour"><div class="dp-ch"><span class="sw" style="background:${COL.max}"></span><span class="n">Max</span><span class="p">off shift</span></div><div class="dp-cl muted">No stops planned.</div></div>`}
+function unassignedTab(){const u=unassigned();
+  return `<div class="pad mt12"><p class="xs muted" style="margin:0 0 8px">Delivery orders for today with no courier yet.</p></div>${u.length?u.map(o=>`<button class="dp-un" onclick="App.go('cr-order',{code:'${o.code}'})"><div class="t">#${o.code} · ${o.n}</div><div class="d">${o.who} · ${o.line1}, ${o.pc} · ${o.slot}</div></button>`).join(''):`<div class="cr-empty"><b>All orders are assigned.</b>Nothing is waiting for a courier.</div>`}`}
+function mapTab(){
+  const pins=[];
+  if(D.tab==='couriers'){andriiStops().forEach(s=>pins.push({x:s.x,y:s.y,c:COL.andrii,n:s.hasPod?'✓':s.position||'·',code:s.code,done:!!(s.hasPod||s.failure)}));OLEH.forEach(s=>pins.push({x:s.x,y:s.y,c:COL.oleh,n:s.state==='delivered'?'✓':s.state==='failed'?'✕':'1',code:s.code,done:s.state!=='picked'}))}
+  else unassigned().forEach(o=>pins.push({x:o.x||80,y:o.y||140,c:'var(--grey)',n:'·',code:o.code,done:false}));
+  const cp=D.tab==='couriers'?`<g class="cp"><rect x="306" y="68" width="22" height="16" fill="${COL.andrii}"/><text x="317" y="79">AN</text></g><g class="cp"><rect x="280" y="318" width="22" height="16" fill="${COL.oleh}"/><text x="291" y="329">OL</text></g>`:'';
+  const fx=D.focus?`<circle class="fx" cx="${D.focus.x}" cy="${D.focus.y}" r="18"/><text class="lbl" x="${D.focus.x}" y="${D.focus.y-24}" style="text-anchor:middle;fill:var(--accent)">${D.focus.label}</text>`:'';
+  return `<div class="dp-map"><svg viewBox="0 0 390 430" preserveAspectRatio="xMidYMid slice"><path class="rv" d="M-20 200 C 80 260, 180 190, 260 250 S 400 230, 420 260"/><path class="rd" d="M0 80 L390 110 M0 330 L390 300 M140 0 L170 430 M280 0 L250 430 M40 0 L60 430"/><text class="lbl" x="300" y="275">Thames</text><rect x="318" y="50" width="12" height="12" fill="var(--ink)"/><text class="lbl" x="334" y="60">Shop</text>
+    ${pins.map(p=>`<g class="pin ${p.done?'--done':''}" onclick="App.go('cr-order',{code:'${p.code}'})"><circle cx="${p.x}" cy="${p.y}" r="11" fill="${p.c}" stroke="var(--paper)" stroke-width="2"/><text x="${p.x}" y="${p.y+3.5}">${p.n}</text><text class="lb" x="${p.x}" y="${p.y+24}">#${p.code}</text></g>`).join('')}${cp}${fx}</svg>
+    <div class="dp-leg">${D.tab==='couriers'?`<span><i style="background:${COL.andrii}"></i>Andrii</span><span><i style="background:${COL.oleh}"></i>Oleh</span><span><i style="background:var(--paper);border:1px solid var(--ink)"></i>AN / OL position</span>`:'<span><i style="background:var(--grey)"></i>Not assigned</span>'}</div></div><div class="pad mt8"><div class="xs muted">The map frames the pins once per set of points, not on every poll. On a device without a map key the list keeps working and the map says “The map is not available on this device.”</div></div>`;
+}
+function advisorTab(){
+  if(D.adv==='na')return `<div class="cr-empty"><b>Update the CRM to see the advisor here.</b>Or ask for the delivery.manage right.</div>`;
+  if(D.adv==='clear')return `<div class="cr-empty"><b>Every delivery order is covered.</b>as of ${D.advAt}</div>`;
+  if(D.adv==='error')return `<div class="cr-empty --err"><b>Could not load the advice.</b>Pull down to try again.</div>`;
+  return `<div class="pad mt12"><div class="flex ai-c jc-sb"><span class="caps muted">as of ${D.advAt}</span><button class="textbtn" onclick="CR.dp.advRefresh()">Refresh now</button></div><div class="sm soft mt8">Own: 4 orders · Uber: 1 order · ≈ £5.60/order</div></div>
+    <div class="dp-adv"><div class="h"><span class="dp-ch" style="padding:0"><span class="sw" style="background:${COL.andrii}"></span></span>Andrii</div><div class="m">${C.trip&&C.trip.status==='confirmed'?'on the road · back ≈ 13:58 – the next run is built for the return':'at the shop · nothing to carry yet'}</div>
+      <div class="run"><div class="t"><span>Run 1 · leaves 11:30</span><span>3 orders · 3/6 slots</span></div><div class="d">1 h 10 min · back ≈ 12:40 · ≈ £5.10/order · across the river ×1<br>waiting until 11:25: #715611 (ready by 11:25) · bulky</div><div class="st"><span class="chip" style="height:26px;font-size:11px">#715619 assigned</span><span class="chip" style="height:26px;font-size:11px">#715602</span><span class="chip" style="height:26px;font-size:11px">#715611</span></div><button class="btn --sm --block" onclick="CR.dp.advAssign('andrii',2)">Assign orders (2)</button></div>
+      <div class="run"><div class="t"><span>Run 2 · leaves 13:50</span><span>2 orders · 2/6 slots</span></div><div class="d">55 min · back ≈ 14:45 · ≈ £6.20/order<br>#715640 (window 16:00–19:00, zone free from 18:00) · #715623</div><button class="btn --sm --block --ghost" onclick="CR.dp.advAssign('andrii',1)">Assign 1 more</button></div></div>
+    <div class="dp-adv"><div class="h"><span class="dp-ch" style="padding:0"><span class="sw" style="background:${COL.oleh}"></span></span>Oleh</div><div class="m">on the road · back ≈ 12:05 – the next run is built for the return</div><div class="run"><div class="t"><span>Run 2 · leaves 12:10</span><span>1 order · 1/6 slots</span></div><div class="d">35 min · back ≈ 12:45 · ≈ £8.40/order</div><button class="btn --sm --block --ghost" onclick="CR.dp.advAssign('oleh',1)">Assign orders (1)</button></div></div>
+    <div class="dp-adv"><div class="h">${ic('truck',18)} Uber</div><div class="m">#715627 · Kensington 18:00–21:00 · ~25 min · due soon – no courier back in time · ours would be £11.20</div><button class="btn --sm --ghost mt12" onclick="CR.co.uber()">Call Uber for #715627</button></div>
+    <div class="dp-adv" style="border-bottom:0"><div class="caps muted">Notes</div><div class="m">#715611 waits for the balloons (ready by 11:25). #715640 is alcohol – only Andrii has the Challenge 25 refresher this week.</div></div>`;
+}
+
+/* ---- mount ---- */
+window.mount_cr_dispatch=function(){
+  const r=C.rk();const bar=$('dp-bar'),body=$('dp-body'),cta=$('dp-cta');
+  if(r!=='manager'){bar.innerHTML=`<div class="ttl">Deliveries today</div>`;body.innerHTML=`<div class="cr-lock"><div class="panel"><div class="h3">Deliveries today is for managers</div><p class="sm soft" style="margin:8px 0 16px">Managers and admins see every courier's run, orders without a courier and the dispatch advisor. A manager with the driver permission still gets this view – the role wins.</p><button class="btn --sm" onclick="App.setUser('valeria')">View as Valeria · manager</button></div></div>`;cta.style.display='none';return}
+  const un=unassigned().length, canToggle=D.load==='ok'&&D.tab!=='advisor';
+  bar.innerHTML=`<div class="ttl">Deliveries today</div>${canToggle?`<div class="cr-seg"><button class="${D.mode==='list'?'on':''}" onclick="CR.dp.mode('list')">List</button><button class="${D.mode==='map'?'on':''}" onclick="CR.dp.mode('map')">Map</button></div>`:''}<button class="ib" aria-label="Demo" onclick="CR.dp.demo()">${I('dots')}</button>`;
+  const tabs=`<div class="dp-tabs"><button class="${D.tab==='couriers'?'on':''}" onclick="CR.dp.tab('couriers')">Couriers</button><button class="${D.tab==='unassigned'?'on':''}" onclick="CR.dp.tab('unassigned')">Not assigned${un?' · '+un:''}</button><button class="${D.tab==='advisor'?'on':''}" onclick="CR.dp.tab('advisor')">Advisor</button></div>`;
+  let content='';
+  if(D.tab==='advisor')content=advisorTab();
+  else if(D.load==='loading')content=`<div class="cr-skel"><i class="skeleton"></i><i class="skeleton"></i></div>`;
+  else if(D.load==='na')content=`<div class="cr-empty --err"><b>Update the CRM to see the couriers’ runs here.</b>The CRM answered 404 – this does not retry.</div>`;
+  else if(D.load==='error')content=`<div class="cr-empty --err"><b>Could not load the couriers’ runs.</b>Pull down to try again.<div class="mt12"><button class="btn --sm --ghost" onclick="CR.dp.set('load','ok')">Retry</button></div></div>`;
+  else if(D.load==='none')content=D.tab==='couriers'?`<div class="cr-empty"><b>No couriers on the road today.</b>Nobody with a delivery shift is clocked in.</div>`:unassignedTab();
+  else if(D.mode==='map')content=mapTab();
+  else content=D.tab==='couriers'?`${andriiSection()}${olehSection()}${maxSection()}`:unassignedTab();
+  body.innerHTML=`${tabs}${pendBanner()}${content}<div class="cr-poll"><span>Refreshes every 30 s while open · last ${C.demo.pollLast}</span><button class="textbtn" onclick="CR.dp.refresh()">Refresh</button></div><div style="height:24px"></div>`;
+  cta.style.display='none';body.classList.remove('cr-hascta');
+};
+
+/* ---- actions ---- */
+const ED={seq:[],pending:false,moved:false};
+C.dp={
+  tab(t){D.tab=t;D.focus=null;mount_cr_dispatch()},mode(m){D.mode=m;if(m==='list')D.focus=null;mount_cr_dispatch()},set(k,v){D[k]=v;A.closeSheet();mount_cr_dispatch()},
+  refresh(){A.toast('Refreshing…');setTimeout(()=>{C.demo.pollLast=stamp();A.toast('Updated · '+C.demo.pollLast);mount_cr_dispatch()},500)},
+  demo(){A.sheet(sh('Demo · deliveries today',`<div class="cr-note" style="margin-bottom:8px">Couriers data</div><div class="cr-chipw">${[['ok','Loaded'],['loading','Loading'],['na','CRM outdated (404)'],['error','Error'],['none','No couriers']].map(x=>`<button class="chip ${D.load===x[0]?'on':''}" onclick="CR.dp.set('load','${x[0]}')">${x[1]}</button>`).join('')}</div><div class="cr-note" style="margin:16px 0 8px">Advisor</div><div class="cr-chipw">${[['ok','Advice'],['clear','All covered'],['na','Unavailable'],['error','Error']].map(x=>`<button class="chip ${D.adv===x[0]?'on':''}" onclick="CR.dp.set('adv','${x[0]}')">${x[1]}</button>`).join('')}</div><div class="cr-note" style="margin:16px 0 8px">Andrii's trip</div><div class="cr-chipw"><button class="chip" onclick="App.closeSheet();CR.demoSet('tripState','awaiting_confirmation');CR.dp.pushConfirm()">Push: Andrii ready to leave</button><button class="chip" onclick="App.closeSheet();CR.demoSet('tripState','confirmed')">Confirmed</button><button class="chip" onclick="App.closeSheet();CR.demoSet('tripState','at_shop')">At shop</button></div>`,`<button class="btn --block" onclick="App.closeSheet()">Done</button>`),{full:true})},
+  pushConfirm(){A.push('Andrii is ready to leave','2 orders · confirm the route',{icon:'truck',go:['cr-dispatch',{}]});mount_cr_dispatch()},
+  pendSheet(){const st=C.takenList();if(!(C.trip&&C.trip.status==='awaiting_confirmation')){alert('Already answered','Another manager has already answered.');mount_cr_dispatch();return}
+    A.sheet(sh('Andrii · ready to leave',`<p class="xs muted" style="margin:0 0 8px">ready since ${C.trip.requestedAt} · ${st.length} order${st.length>1?'s':''}</p>${st.map((s,i)=>`<div class="dp-route"><span class="ix">${i+1}</span><span class="f1">#${s.code} · ${s.area}${s.priorityFirst?' <span class="pill --doing">First</span>':''}<div class="d">${s.line1} · ${s.slot}</div></span><span class="r">${s.eta}</span></div>`).join('')}<div class="dp-ev">48 min on the road · across the river ×1 · back at 13:40 · Congestion Charge £15</div>`,`<button class="btn --ghost" onclick="CR.dp.reject()">Return to courier</button><button class="btn --secondary" onclick="CR.dp.editor('pending')">Change order</button><button class="btn" onclick="CR.dp.confirm()">Confirm route</button>`),{full:true})},
+  confirm(seq){if(C._inFlight)return;C._inFlight=true;A.closeSheet();
+    if(!(C.trip&&C.trip.status==='awaiting_confirmation')){C._inFlight=false;alert('Already answered','Another manager has already answered.');mount_cr_dispatch();return}
+    if(seq)seq.forEach((c,i)=>{const s=C.stop(c);if(s)s.position=i+1});
+    C.tripActions.confirm('Valeria');C._inFlight=false;A.haptic();A.toast('Route confirmed – the courier is on the way.');
+    setTimeout(()=>A.push('Route confirmed','Valeria confirmed your route · '+C.takenList().length+' stops',{icon:'route',to:'Andrii',go:['route',{}]}),700);mount_cr_dispatch()},
+  reject(){A.sheet(sh('What should change?',`<div class="field"><label>Note for the courier (optional)</label><textarea class="cr-ta" id="dp-rej" placeholder="e.g. take #715602 first – the recipient leaves at 11" style="width:100%;min-height:80px;border:1px solid var(--light);padding:12px;font:300 15px var(--f-body)"></textarea></div>`,`<button class="btn --secondary" onclick="CR.dp.pendSheet()">Back</button><button class="btn" onclick="CR.dp.rejectSend()">Send back</button>`))},
+  rejectSend(){const v=($('dp-rej')||{}).value||'';A.closeSheet();C.tripActions.reject(v.trim());A.toast('Sent back to the courier.');setTimeout(()=>A.push('Route sent back',v.trim()||'The manager is changing the route',{icon:'flag',to:'Andrii',go:['route',{}]}),700);mount_cr_dispatch()},
+  editor(kind){ED.kind=kind;ED.seq=(kind==='pending'?C.takenList():andriiStops().filter(s=>!s.hasPod&&!s.failure)).map(s=>s.code);ED.moved=false;ED.opt=ED.seq.slice();C.dp.edRender()},
+  edRender(){const seq=ED.seq;const worse=ED.moved&&seq.join()!==ED.opt.join();const delta=worse?12:0;
+    const rows=seq.map((c,i)=>{const s=C.stop(c);return `<div class="dp-ed"><span class="ix">${i+1}</span><span class="f1"><div class="t">#${c} · ${s.area}${s.priorityFirst?' <span class="pill --doing">First</span>':''}</div><div class="d">${s.line1} · ${s.slot} · ETA ≈ ${s.eta}${worse&&i===seq.length-1?' · <span class="accent">+20 min late</span>':''}</div></span><span class="ar"><button ${i===0?'disabled':''} aria-label="Move up" onclick="CR.dp.edMove(${i},-1)">${I('chev').replace('<svg','<svg style="transform:rotate(-90deg)"')}</button><button ${i===seq.length-1?'disabled':''} aria-label="Move down" onclick="CR.dp.edMove(${i},1)">${I('chev').replace('<svg','<svg style="transform:rotate(90deg)"')}</button></span><button class="x" aria-label="Remove from route" onclick="CR.dp.edRemove('${c}')">${I('close')}</button></div>`}).join('');
+    const ev=ED.evaluating?`<div class="dp-ev"><span class="cr-spin"></span> Calculating…</div>`:`<div class="dp-ev">This order: ${96+delta} min · ${worse?`<span class="acc">+${delta} min vs optimal · late: #${seq[seq.length-1]} +20 min</span><br>Planner recommends its own order: 96 min – tap Optimize`:'<span class="ok">optimal</span>'} · across the river ×1 · back ≈ ${worse?'13:52':'13:40'}</div>`;
+    A.sheet(sh(ED.kind==='pending'?'Route order':'Route · Andrii',`<p class="xs muted" style="margin:0 0 4px">Move the stops with the arrows – every order is costed against the best one.</p>${rows||'<div class="cr-empty"><b>No open stops to order.</b></div>'}${ev}<div class="cr-chipw mt12"><button class="chip" onclick="CR.dp.edOptimal()">Optimize</button><button class="chip" onclick="CR.dp.edAdd()">+ Add order</button></div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button>${ED.kind==='pending'?`<button class="btn" onclick="CR.dp.edSave(true)">Confirm this order</button>`:`<button class="btn" onclick="CR.dp.edSave(false)">Save order</button>`}`),{full:true})},
+  edMove(i,d){const s=ED.seq;const j=i+d;if(j<0||j>=s.length)return;[s[i],s[j]]=[s[j],s[i]];ED.moved=true;ED.evaluating=true;C.dp.edRender();clearTimeout(ED.t);ED.t=setTimeout(()=>{ED.evaluating=false;C.dp.edRender()},400)},
+  edOptimal(){ED.seq=ED.opt.slice();ED.moved=false;C.dp.edRender()},
+  edRemove(c){A.confirm('Remove from the route?',`Remove #${c} from Andrii's route? The order goes back to unassigned; if the courier already has the bouquet they will be asked to bring it back.`,'Remove',()=>{const s=C.stop(c);s.courier=null;s.taken=null;ED.seq=ED.seq.filter(x=>x!==c);ED.opt=ED.opt.filter(x=>x!==c);A.toast('#'+c+' is back in Not assigned');C.dp.edRender()})},
+  edAdd(){const cands=[{code:'715627',src:'unassigned'},{code:'715651',src:'with Oleh'},{code:'715623',src:'unassigned',van:false}].concat(C.stops.filter(s=>s.courier===null).map(s=>({code:s.code,src:'unassigned'})));
+    A.sheet(sh('Add an order',`<p class="xs muted" style="margin:0 0 4px">Unassigned orders first, then the other couriers’ open stops.</p>${cands.map(c=>`<button class="wk-pick" onclick="CR.dp.edAddDo('${c.code}')"><span class="f1"><b class="h4" style="font-weight:400">#${c.code}</b><span class="xs">${c.src}${c.code==='715651'?' · already in the van':''}</span></span>${I('chev')}</button>`).join('')}`,`<button class="btn --secondary" onclick="CR.dp.edRender()">Back</button>`),{full:true})},
+  edAddDo(c){const s=C.stop(c);if(s){s.courier='andrii';s.nextRun=false;s.position=ED.seq.length+1;if(!s.taken&&ED.kind==='pending')s.taken=stamp()}A.toast(`#${c} assigned to Andrii. It joins the route once the courier takes it, or goes to the next run if the courier has already left.`,{ms:4200});if(s&&s.taken){ED.seq.push(c);ED.opt.push(c)}C.dp.edRender()},
+  edSave(confirm){const worse=ED.moved&&ED.seq.join()!==ED.opt.join();const go=()=>{if(confirm){C.dp.confirm(ED.seq)}else{ED.seq.forEach((c,i)=>{const s=C.stop(c);if(s)s.position=i+1});A.closeSheet();A.toast('Order saved.');setTimeout(()=>A.push('Route changed','The manager changed the route order',{icon:'route',to:'Andrii',go:['route',{}]}),700);mount_cr_dispatch()}};
+    if(worse){A.confirm('Change the route?',`This order is +12 min vs the optimal; late: #${ED.seq[ED.seq.length-1]} +20 min. Are you sure this order is better?`,confirm?'Yes, confirm':'Yes, save',go)}else go()},
+  causes(kind,who){const title=kind==='stop'?`${who} – off plan`:kind==='finish'?`${who} – finish`:`${who} – return`;
+    const parts=[['clock','Left the shop late','8 min'],['route','Traffic','10 min',true],['pin','Long at a door','4 min',true],['flag','No GPS','2 min, estimated']];
+    A.sheet(sh(title,`<div class="sm" style="margin:0 0 4px;color:var(--accent)">Late +22 min, of which:</div>${parts.map(p=>`<div class="dp-cause">${I(p[0])}<span>${p[1]}${p[3]?`<br><button class="textbtn" style="font-size:11px" onclick="CR.dp.showOnMap('${p[1]}')">show on map</button>`:''}</span><b>${p[2]}</b></div>`).join('')}<p class="xs muted" style="margin:12px 0 0">Red over 10 min late, amber up to 10, green on plan or early. Parts come from the CRM with the courier's pings.</p>`,`<button class="btn --block --secondary" onclick="App.closeSheet()">Close</button>`),{full:true})},
+  showOnMap(label){A.closeSheet();D.tab='couriers';D.mode='map';D.focus={x:230,y:250,label};mount_cr_dispatch()},
+  advRefresh(){A.toast('Running the advisor…');setTimeout(()=>{D.advAt=stamp();A.toast('Advice refreshed · '+D.advAt);mount_cr_dispatch()},900)},
+  advAssign(cid,n){const name=A.user(cid).n;A.confirm('Assign orders',`Assign to ${name} – orders: ${n}?`,'Assign',()=>{if(C._advStale){C._advStale=false;alert('Advice changed','The advice has changed – refreshed, press again.');D.advAt=stamp();mount_cr_dispatch();return}C._advStale=true;A.haptic();A.toast('Assigned: '+n);setTimeout(()=>A.push('New drops for you',n+' order'+(n>1?'s':'')+' from the dispatch advisor',{icon:'truck',to:name}),700)})}
+};
+})();
+</script>
