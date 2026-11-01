@@ -1,0 +1,410 @@
+<style>
+/* ---- /web ---- */
+#s-web .web-prog{height:3px;background:var(--light);position:relative;overflow:hidden;margin-top:-3px;opacity:0;transition:opacity var(--m-fast)}
+#s-web .web-prog.on{opacity:1}
+#s-web .web-prog>i{position:absolute;left:0;top:0;bottom:0;background:var(--ink);transition:width .5s var(--m-ease);min-width:5%}
+#s-web .web-demo{display:flex;gap:6px;overflow-x:auto;padding:8px var(--gutter);border-bottom:1px solid var(--hair);scrollbar-width:none;align-items:center;flex:none}
+#s-web .web-demo::-webkit-scrollbar{display:none}
+#s-web .web-demo .chip{height:28px;padding:0 10px;font-size:11px;flex:none}
+#s-web .web-demo .lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);flex:none;margin-right:4px}
+#s-web .web-view{position:relative;flex:1;min-height:0;overflow-y:auto;background:var(--paper)}
+#s-web .web-skel{position:absolute;inset:0;padding:20px var(--gutter);pointer-events:none;background:var(--paper)}
+#s-web .web-skel .skeleton{height:14px;margin-bottom:12px}
+#s-web .web-site{padding:18px var(--gutter) 40px;font-size:14px}
+#s-web .web-site .site-h{font-family:var(--f-display);font-weight:300;font-size:28px;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}
+#s-web .web-site .stem{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair)}
+#s-web .web-site .stem img{width:48px;height:48px;object-fit:cover;background:var(--silver);flex:none}
+#s-web .web-site .tot{display:flex;justify-content:space-between;padding:14px 0;font-size:15px}
+#s-web .web-site .links{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:24px;font-size:13px}
+#s-web .web-site .links a{border-bottom:1px solid var(--light);padding-bottom:1px;color:var(--ink)}
+#s-web .web-site .cookie{font-size:11px;color:var(--grey);border:1px solid var(--hair);padding:8px 10px;margin-top:20px}
+#s-web .web-site .hidden-note{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-bottom:14px}
+#s-web .web-empty{padding:72px var(--gutter) 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+#s-web .web-empty svg{width:32px;height:32px;stroke:var(--grey);fill:none;stroke-width:1.5}
+#s-web .web-empty .btn{width:100%;margin-top:10px}
+#s-web .web-foot{flex:none;padding:8px var(--gutter) calc(10px + var(--safe-b));font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:10px}
+/* ---- system ---- */
+#s-sys .sec,#s-sys-ui .sec{padding:0 var(--gutter)}
+#s-sys .caps.hd,#s-sys-ui .caps.hd{padding:28px var(--gutter) 8px;color:var(--grey)}
+#s-sys .row,#s-sys-ui .row{padding-left:var(--gutter);padding-right:var(--gutter)}
+#s-sys .row .k{font-size:11px;color:var(--grey);font-family:ui-monospace,Menlo,monospace;letter-spacing:0;text-transform:none;margin-top:2px}
+#s-sys .row .btn{flex:none}
+#s-sys .sw{display:flex;align-items:center;gap:14px;padding:14px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+#s-sys .sw .rt{flex:1}
+#s-sys .sw .l{font-size:15px}
+#s-sys .sw .d{font-size:13px;color:var(--grey);margin-top:1px}
+#s-sys .link-in{display:flex;gap:8px;padding:0 var(--gutter)}
+#s-sys .link-in .input{font-size:14px;font-family:ui-monospace,Menlo,monospace}
+#s-sys .note{font-size:12px;color:var(--grey);padding:10px var(--gutter) 0;line-height:1.45}
+#s-sys-ui .demo-card{width:170px}
+#s-sys-ui .ui-empty{padding:28px var(--gutter);display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;border:1px solid var(--hair);margin:0 var(--gutter)}
+#s-sys-ui .ui-empty svg{width:32px;height:32px;stroke:var(--grey);fill:none;stroke-width:1.5}
+#s-sys-ui .ui-empty .btn{width:100%;margin-top:6px}
+#s-sys-ui .busy .btn.is-busy{opacity:.6;pointer-events:none}
+#s-sys-ui .spin{width:16px;height:16px;border:1.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:hspin .8s linear infinite}
+#s-sys-ui .field.--err .input{border-color:var(--accent)}
+#s-sys-ui .field .err{font-size:12px;color:var(--accent);display:none}
+#s-sys-ui .field.--err .err{display:block}
+#s-sys-ui .badge-demo .ib{border:1px solid var(--hair)}
+#s-sys-ui .qa-demo{position:relative;display:inline-grid;place-items:center;width:40px;height:40px;border:1px solid var(--light)}
+#s-sys-ui .qa-demo svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-sys-ui .qa-demo.done{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#s-sys-ui .card .qa{position:absolute;right:0;bottom:0;width:36px;height:36px;border:1px solid var(--light);background:var(--paper);display:grid;place-items:center;color:var(--ink)}
+#s-sys-ui .card .qa svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+#s-sys-ui .card .qa.done{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+/* ---- not found ---- */
+#s-notfound .nf{padding:80px var(--gutter) 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+#s-notfound .nf code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--grey);word-break:break-all}
+/* ---- push banner (appended to #app by the script) ---- */
+#sys-push{position:absolute;left:10px;right:10px;top:calc(8px + var(--safe-t));z-index:60;background:var(--paper);border:1px solid var(--light);padding:10px 12px;display:flex;gap:10px;align-items:flex-start;transform:translateY(-140%);transition:transform .4s var(--m-ease);text-align:left;cursor:pointer}
+#sys-push.on{transform:none}
+#sys-push .pi{width:36px;height:36px;background:var(--ink);display:grid;place-items:center;flex:none}
+#sys-push .pi svg{width:18px;height:18px;stroke:var(--paper);fill:none;stroke-width:1.5}
+#sys-push .pt{font-size:13px;font-weight:500}
+#sys-push .pd{font-size:12px;color:var(--graphite);margin-top:1px;line-height:1.4}
+#sys-push .pm{font-size:10px;color:var(--grey);margin-left:auto;flex:none;letter-spacing:.06em;text-transform:uppercase}
+</style>
+
+<!-- ===================== /web – site page inside the app ===================== -->
+<!-- ids: APP-SHELL-012 – /web is a normal stack screen (not a sheet); swipe from the edge goes back when the page has no history -->
+<section class="scr" id="s-web" data-nav="Web page (/web)" data-group="System">
+  <!-- ids: APP-WEB-003 APP-WEB-004 APP-WEB-005 APP-WEB-006 APP-WEB-007 – title from ?title=, else the page <title> (before " | ", 40 chars; "Just a moment…" and bare URLs rejected), else "Floritta";
+       Back = page history first, then close the screen (iOS edge swipe and Android back follow the same rule – never both at once); cross = close at once -->
+  <div class="appbar">
+    <button class="ib" onclick="Sys.webBack()" aria-label="Back">${back}</button>
+    <div class="ttl" id="web-ttl">Build your own</div>
+    <button class="ib" onclick="Sys.webLeave()" aria-label="Close">${close}</button>
+  </div>
+  <!-- ids: APP-WEB-008 – thin progress bar under the app bar while loading (never below 5 %) -->
+  <div class="web-prog" id="web-prog"><i style="width:5%"></i></div>
+  <div class="web-demo"><span class="lbl">Demo</span>
+    <button class="chip" onclick="Sys.webOpen({url:'https://floritta.uk/build-a-bouquet',title:'Build your own'})">Builder</button>
+    <button class="chip" onclick="Sys.webOpen({url:'/subscriptions'})">No ?title</button>
+    <button class="chip" onclick="Sys.webState('error')">No network / 5xx</button>
+    <button class="chip" onclick="Sys.webOpen({url:'https://example.com/offer'})">Foreign link</button>
+    <button class="chip" onclick="Sys.webPay()">Pay link</button>
+    <button class="chip" onclick="Sys.webState('success')">Thank-you page</button>
+    <button class="chip" onclick="Sys.webState('unpaid')">Unpaid order page</button>
+    <button class="chip" onclick="Sys.webCrash()">Process crash</button>
+  </div>
+  <div class="web-view" id="web-view">
+    <!-- ids: APP-WEB-009 – skeleton until the first paint, max 8 s, does not catch touches; shown again after the post-payment reload -->
+    <div class="web-skel" id="web-skel" hidden><div class="skeleton" style="width:60%;height:26px"></div><div class="skeleton" style="width:90%"></div><div class="skeleton" style="width:80%"></div><div class="skeleton" style="height:120px;margin-top:20px"></div><div class="skeleton" style="width:70%;margin-top:20px"></div><div class="skeleton" style="width:50%"></div></div>
+    <div id="web-content"></div>
+  </div>
+  <!-- ids: APP-WEB-017 APP-WEB-018 – pull-to-refresh disabled for good (iOS touches froze, 24.10.2026); cookies shared with the system (site sign-in persists), user agent + "FlorittaApp/1.0" -->
+  <div class="web-foot"><span>floritta.uk · signed-in state shared</span><span>FlorittaApp/1.0 · no pull-to-refresh</span></div>
+  <!-- ids: APP-WEB-001 APP-WEB-002 – only https floritta.uk / www.floritta.uk / app.floritta.ai; a path such as /subscriptions becomes https://floritta.uk/subscriptions;
+       anything else → "This link cannot be opened in the app / It is not a Floritta page." + Close -->
+  <!-- ids: APP-WEB-010 APP-WEB-011 – injected before content: site header, ticker, breadcrumbs, footer, newsletter, WhatsApp button, cookie banner and checkout steps hidden; paper background, no rubber-band, no long-press link menu;
+       cookie choice "decline optional" written automatically only when no choice exists – consent is never accepted -->
+  <!-- ids: APP-WEB-012 APP-WEB-013 APP-WEB-014 – pay links (/basket/pay/<id>, /api/payments/stripe/pay/<id>) open the system browser full-screen (Apple Pay / Google Pay) and the page reloads on return;
+       Stripe, 3-D Secure, Cloudflare check, Apple Pay gateway and Google Customer Reviews stay inside; tel:, mailto:, sms:, whatsapp: and foreign sites open outside; other schemes blocked -->
+  <!-- ids: APP-WEB-015 APP-WEB-016 – network error / 5xx → "This page did not load / Please check your connection and try again." + "Try again" (4xx shown as is); crashed web process reloads itself -->
+  <!-- ids: APP-WEB-019 APP-WEB-020 APP-WEB-024 – every +/− on /build-a-bouquet saves the bouquet to the site basket; the app keeps line, pence and stem count from the page message (floritta hosts + secret nonce only);
+       leaving with an unordered bouquet → toast "Your bouquet is kept in the basket – open Build your own to finish" -->
+  <!-- ids: APP-WEB-021 APP-WEB-022 APP-WEB-023 APP-WEB-025 – on /basket/order/<hash>/success the app reads the order number ("Thank you" present, no pay link) and saves the order in Orders:
+       "Your own bouquet · N stems" or "Floritta order", code from the hash when no number; green toast "Order #N saved in Orders" once; unpaid order pages and messages without nonce ignored -->
+</section>
+
+<!-- ===================== Unmatched route ===================== -->
+<!-- ids: APP-SHELL-041 – unknown deep-link path shows expo-router's standard "Unmatched route" (no custom 404 yet) -->
+<section class="scr" id="s-notfound" data-nav="Unmatched route" data-group="System">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back">${back}</button><div class="ttl">Unmatched route</div></div>
+  <div class="scr-body"><div class="nf">${help}<div class="h3">Page could not be found</div><code id="nf-path">floritta://unknown</code><div class="sm soft">Standard expo-router screen – a Floritta 404 is a redesign task.</div><button class="btn --block mt16" onclick="App.tab('home')">Go to home screen</button></div></div>
+</section>
+
+<!-- ===================== System: launch, flags, storage, links ===================== -->
+<section class="scr" id="s-sys" data-nav="System · flags, storage, links" data-group="System">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back">${back}</button><div class="ttl">System</div><button class="textbtn" onclick="App.go('sys-ui')">Components</button></div>
+  <div class="scr-body">
+    <div class="note">Stand-only panel: what the app does under the hood – launch, feature flags, on-device storage, deep links, pushes. Nothing here is a customer screen.</div>
+
+    <div class="caps hd">Launch</div>
+    <!-- ids: APP-SHELL-001 APP-SHELL-002 APP-SHELL-003 APP-SHELL-004 APP-SHELL-005 – cold start: splash until fonts + stores are loaded, 1.5 s cap, reminders re-planned -->
+    <button class="row" onclick="Sys.coldStart(false)">${repeat}<div class="rt"><div class="l">Cold start</div><div class="d">Splash while fonts and 9 stores load · reminders re-planned</div></div>${chev}</button>
+    <button class="row" onclick="Sys.coldStart(true)">${clock}<div class="rt"><div class="l">Cold start · slow storage</div><div class="d">Splash never longer than 1.5 s – Home opens, stores finish behind</div></div>${chev}</button>
+    <!-- ids: APP-SHELL-009 – return to foreground refreshes queries (Flora chat, Community) -->
+    <button class="row" onclick="Sys.foreground()">${eye}<div class="rt"><div class="l">Return from background</div><div class="d">Flora chat and Community refetch · same-day status recomputed</div></div>${chev}</button>
+    <!-- ids: APP-SHELL-013 APP-SHELL-057 – invisible pending-payment check on start and on return: paid → order saved, bag cleared, toast -->
+    <button class="row" onclick="Sys.pendingPay()">${card}<div class="rt"><div class="l">Pending payment check</div><div class="d">Hidden page check of the last pay link (checkout.v1) · paid → Orders, bag cleared</div></div>${chev}</button>
+    <!-- ids: APP-SHELL-011 APP-SHELL-014 – gesture off on the Thank-you screen; dark status bar, light theme, portrait, no iPad -->
+    <div class="row"><span class="ic">${lock}</span><div class="rt"><div class="l">Device rules</div><div class="d">Dark status bar · light theme only · portrait · no iPad · swipe-back off on the Thank-you screen</div></div></div>
+
+    <div class="caps hd">Feature flags</div>
+    <!-- ids: APP-SHELL-024 APP-SHELL-030 APP-SHELL-031 – flags from src/lib/flags.ts; community off hides the tab and sends post / member / tag / compose links to Home; petals off sends Care and Living to Home; bloomLive unused -->
+    <div id="sys-flags"></div>
+    <div class="note">Flags are compiled in (community = on, petals = on, bloomLive = off in every build). <code>setFlagOverride</code> exists but no screen calls it – this panel is the stand's stand-in.</div>
+
+    <div class="caps hd">Notifications</div>
+    <!-- ids: APP-SHELL-006 APP-SHELL-007 APP-SHELL-008 – banner + list while the app is open (no sound, no badge); tap opens data.url ("/category/anniversary"), cold and warm -->
+    <button class="row" onclick="Sys.push()">${bell}<div class="rt"><div class="l">Send test reminder push</div><div class="d">Banner on top of the app · tap opens the occasion category</div></div>${chev}</button>
+    <!-- ids: APP-SHELL-015 APP-HOME-030 – permissions: notifications (icon #1e1a17), photos & camera only for a Community post, no microphone; asked 2 s after the first Home, once per install -->
+    <div class="row"><span class="ic">${info}</span><div class="rt"><div class="l">Permissions</div><div class="d">Notifications · Photos & camera (Community post only) · no microphone</div><div class="k" id="sys-perm">notifications: not asked yet</div></div><button class="btn --xs --ghost" onclick="window.home_permPrompt(true)">Ask again</button></div>
+
+    <div class="caps hd">Saved on this device</div>
+    <!-- ids: APP-SHELL-050 APP-SHELL-051 APP-SHELL-052 APP-SHELL-053 APP-SHELL-054 APP-SHELL-055 APP-SHELL-056 APP-SHELL-057 APP-SHELL-058 APP-SHELL-059 APP-SHELL-060 APP-SHELL-061
+         AsyncStorage keys floritta.shop.* and the Flora token in the keychain; writes before hydration are queued and merged, write errors ignored; nothing syncs between devices or survives reinstall -->
+    <div id="sys-stores"></div>
+    <div class="note">No account and no backend: nothing above syncs between devices or survives a reinstall. Changes made before a store has loaded are queued and written on top of the saved data.</div>
+
+    <div class="caps hd">Open a link (floritta://)</div>
+    <!-- ids: APP-SHELL-040 APP-SHELL-041 APP-SHELL-042 – any file route opens by path; unknown → Unmatched route; https://floritta.uk links are not intercepted (no universal links) -->
+    <div class="link-in"><input class="input" id="sys-link" value="floritta://occasions" spellcheck="false" onkeydown="if(event.key==='Enter')Sys.link(this.value)"><button class="btn" onclick="Sys.link(document.getElementById('sys-link').value)">Open</button></div>
+    <div class="chips mt12" id="sys-link-chips"></div>
+    <div class="note">Universal links (https://floritta.uk/…) are not set up – they open in Safari, not the app.</div>
+
+    <div class="caps hd">Home demo states</div>
+    <!-- ids: APP-HOME-009 APP-HOME-002 APP-HOME-016 APP-HOME-026 APP-HOME-047 – toggles for the Home conditions: same-day closed, no postcode (there is no "Clear postcode" button in the app – only this stand toggle), no reminders, no ready-now products, empty inbox -->
+    <div id="sys-home"></div>
+    <div class="mt16 pad" style="padding-bottom:40px"><button class="btn --block" onclick="App.tab('home')">Open Home</button></div>
+  </div>
+</section>
+
+<!-- ===================== System: shared components ===================== -->
+<section class="scr" id="s-sys-ui" data-nav="System · components" data-group="System">
+  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back">${back}</button><div class="ttl">Components</div></div>
+  <div class="scr-body">
+    <div class="caps hd">Toast</div>
+    <!-- ids: APP-SHELL-070 APP-SHELL-071 – toast above the tab bar: ink / green ok / accent, 2.4 s, fades; a new toast replaces the old one; toast with an underlined action lives 3.2 s and is the only toast that takes touches -->
+    <div class="sec flex g8" style="flex-wrap:wrap">
+      <button class="btn --sm --ghost" onclick="App.toast('Saved')">Ink</button>
+      <button class="btn --sm --ghost" onclick="App.toast('<span style=&quot;color:var(--ok)&quot;>Order #4821 saved in Orders</span>')">Ok</button>
+      <button class="btn --sm --ghost" onclick="App.toast('<span style=&quot;color:var(--accent)&quot;>Something went wrong</span>')">Accent</button>
+      <button class="btn --sm --ghost" onclick="App.toast('Added to bag',{action:{label:'View bag',onclick:'App.tab(\'bag\')'},ms:3200})">With action</button>
+    </div>
+
+    <div class="caps hd">Product card · heart · quick add</div>
+    <!-- ids: APP-SHELL-072 APP-SHELL-078 APP-SHELL-079 – 4:5 photo with up to 2 tags (Sale red, Ready now green), heart outline → filled accent with haptic, name, price + struck old price, tap prefetches the photo and opens the product; square quick-add shows a tick for 1.3 s -->
+    <div class="hscroll" id="ui-cards"></div>
+
+    <div class="caps hd">Buttons</div>
+    <!-- ids: APP-SHELL-080 – buttons with light haptic, busy spinner and disabled state -->
+    <div class="sec flex g8 busy" style="flex-wrap:wrap">
+      <button class="btn" id="ui-busy" onclick="Sys.busy(this)">Confirm</button>
+      <button class="btn --secondary" disabled>Disabled</button>
+      <button class="btn --ghost" onclick="App.haptic();App.toast('Light haptic')">Ghost</button>
+    </div>
+
+    <div class="caps hd">Quantity stepper</div>
+    <!-- ids: APP-SHELL-074 – "− N +" from 1 to 20, the edge button fades and does not react -->
+    <div class="sec flex ai-c g12"><div class="qty"><button id="ui-q-minus" onclick="Sys.qty(-1)" aria-label="Decrease quantity">−</button><span id="ui-q">1</span><button id="ui-q-plus" onclick="Sys.qty(1)" aria-label="Increase quantity">+</button></div><span class="xs muted">1–20</span></div>
+
+    <div class="caps hd">Text field</div>
+    <!-- ids: APP-SHELL-081 – border darkens on focus; error = accent border and text under the field -->
+    <div class="sec"><div class="field" id="ui-field"><label>Email</label><input class="input" placeholder="you@example.com" oninput="document.getElementById('ui-field').classList.remove('--err')"><div class="err">Please enter a valid email address</div></div><button class="btn --sm --ghost" onclick="document.getElementById('ui-field').classList.add('--err')">Show error</button></div>
+
+    <div class="caps hd">Switch row</div>
+    <!-- ids: APP-SHELL-082 – square switch; the whole row toggles -->
+    <button class="row" onclick="const s=this.querySelector('.switch');s.classList.toggle('on');App.haptic()"><div class="rt"><div class="l">Reminder notifications</div><div class="d">A week before and the day before</div></div><span class="switch on"></span></button>
+
+    <div class="caps hd">App bar</div>
+    <!-- ids: APP-SHELL-075 APP-SHELL-076 – Back goes back, or Home when there is nothing to go back to (opened from a link); action icons with a badge, 99+ cap -->
+    <div class="sec flex ai-c g12 badge-demo">
+      <button class="ib" onclick="App.state.history=[];App.back()" aria-label="Back">${back}</button><span class="xs muted">Back with empty history → Home</span>
+      <button class="ib" style="margin-left:auto" onclick="Sys.badge(this)" aria-label="Reminders">${bell}<span class="dot" data-n="3">3</span></button>
+    </div>
+
+    <div class="caps hd">Bottom sheet</div>
+    <!-- ids: APP-SHELL-073 – square sheet over a scrim, title and Close cross, scrim tap closes, footer button rises above the keyboard, up to 88 % tall -->
+    <div class="sec"><button class="btn --ghost --block" onclick="Sys.sheet()">Open a sheet</button></div>
+
+    <div class="caps hd">Empty state</div>
+    <!-- ids: APP-SHELL-077 – icon, title, text, full-width action (only when both label and handler exist) -->
+    <div class="ui-empty mt8">${heart}<div class="h3">Nothing saved yet</div><div class="sm soft">Tap the heart on any bouquet to keep it here.</div><button class="btn" onclick="App.tab('shop')">Browse flowers</button></div>
+    <div style="height:40px"></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  ["s-web","s-notfound","s-sys","s-sys-ui"].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=el.innerHTML.replace(/\$\{(\w+)\}/g,(m,n)=>{const i=App.icon(n);return i?(n==="chev"?i.replace("<svg",'<svg class="chev"'):(["back","close"].includes(n)?i:i.replace("<svg",'<svg class="ic"'))):m})});
+  const D=window.ShellDemo;
+  const Sys=window.Sys={};
+
+  /* ================= flags ================= */
+  const FLAG_INFO={community:"Community tab and /community/* screens",petals:"Care and Living screens (Petals)",bloomLive:"Bloom live feed – not used anywhere"};
+  const COMMUNITY_SCREENS=["community","post-view","member","hashtag","compose"],PETALS_SCREENS=["care","living"];
+  function applyFlags(){
+    const tab=$('.tab[data-tab="community"]');if(tab)tab.style.display=D.flags.community?"":"none";
+    App.state.flags.bloomLive=D.flags.bloomLive;
+    $$("#nav-list button").forEach(b=>{const s=document.getElementById("s-"+b.dataset.screen);if(!s)return;
+      const off=(s.dataset.flag&&!D.flags[s.dataset.flag])||(COMMUNITY_SCREENS.includes(b.dataset.screen)&&!D.flags.community)||(PETALS_SCREENS.includes(b.dataset.screen)&&!D.flags.petals);
+      b.style.opacity=off?".45":""});
+  }
+  const _go=App.go;
+  App.go=function(id,params,opts){
+    if(!D.flags.community&&COMMUNITY_SCREENS.includes(id)){App.toast("Community is switched off in this build");return _go("home",{},{replace:true})}
+    if(!D.flags.petals&&PETALS_SCREENS.includes(id)){App.toast("Petals is switched off in this build");return _go("home",{},{replace:true})}
+    return _go(id,params,opts);
+  };
+  function renderFlags(){
+    $("#sys-flags").innerHTML=Object.keys(D.flags).map(k=>`<button class="sw" onclick="Sys.flag('${k}')"><div class="rt"><div class="l">flags.${k}</div><div class="d">${FLAG_INFO[k]}</div></div><span class="switch ${D.flags[k]?"on":""}"></span></button>`).join("");
+  }
+  Sys.flag=k=>{D.flags[k]=!D.flags[k];App.haptic();renderFlags();applyFlags();D.emit();App.toast(`flags.${k} = ${D.flags[k]}${k==="community"&&!D.flags[k]?" · tab hidden, links go to Home":""}`)};
+
+  /* ================= stores ================= */
+  const STORES=[
+    {k:"bag.v1",l:"Bag lines and promo code",v:()=>`${App.bagCount()} item${App.bagCount()===1?"":"s"}${App.state.promo?" · "+App.state.promo:""}`},
+    {k:"saved.v1",l:"Favourites",v:()=>`${App.state.fav.size} product id${App.state.fav.size===1?"":"s"}`},
+    {k:"orders.v1",l:"Orders made on this device (tracking link with order hash)",v:()=>"3 orders"},
+    {k:"profile.v1",l:"Guest profile: name, email, phone, addresses, save-details, notifications switch, permission-asked flag",v:()=>`${App.state.user.name} · ${D.addresses.length} addresses · asked: ${D.notifAsked?"yes":"no"}`},
+    {k:"reminders.v1",l:"Reminders and their scheduled notification ids",v:()=>`${D.noReminders?0:D.reminders.length} reminders`},
+    {k:"home.deliver-to.v1",l:"Deliver-to postcode from Home (prefills checkout)",v:()=>D.noPostcode?"empty":App.state.user.postcode},
+    {k:"order-choice.v1",l:"Chosen delivery date and window",v:()=>`${D.delivery.date} · ${D.delivery.window}`},
+    {k:"checkout.v1 · checkout.account-offer.v1",l:"Pending pay link for Resume and the background check; dismissed account offers",v:()=>D.pending?"pending link · 4 min ago":"no pending payment"},
+    {k:"community.v1 · petals.v1 · care.v1 · living.v1 · search.recent.v1",l:"Likes and own posts · Petals balance · flower care · Living thanks · recent searches",v:()=>`${App.state.petals.toLocaleString("en-GB")} Petals · 3 recent searches`},
+    {k:"keychain · floritta.chat.token / .device",l:"Flora guest chat: device id and server token in the keychain – losing them starts a new chat",v:()=>D.chatToken===false?"cleared – new chat on next message":"set after the first message"}
+  ];
+  function renderStores(){
+    $("#sys-stores").innerHTML=STORES.map((s,i)=>`<div class="row"><div class="rt"><div class="l">${esc(s.l)}</div><div class="k">floritta.shop.${esc(s.k)}</div><div class="d">${esc(s.v())}</div></div><button class="btn --xs --ghost" onclick="Sys.clearStore(${i})">Clear</button></div>`).join("")
+      +`<div class="row"><div class="rt"><div class="l">Write before load</div><div class="d">A change made before the store has loaded is queued and written on top of the saved data; write errors are ignored silently.</div></div><button class="btn --xs --ghost" onclick="Sys.queuedWrite()">Try</button></div>`;
+  }
+  Sys.clearStore=i=>{const s=STORES[i];App.confirm("Clear "+s.k+"?","Stand demo of a lost store – the app has no button for this. The screen that uses it will show its empty state.","Clear",()=>{
+    switch(i){case 0:App.clearBag();break;case 1:App.state.fav.clear();document.dispatchEvent(new CustomEvent("fav"));break;case 4:D.noReminders=true;break;case 5:D.noPostcode=true;break;case 6:D.delivery={date:"–",window:"–"};break;case 7:D.pending=false;break;case 9:D.chatToken=false;break;default:break}
+    D.emit();renderStores();renderHome();App.toast(`${s.k} cleared · saved on device`)})};
+  Sys.queuedWrite=()=>{App.toast("Queued · written after hydrate");setTimeout(()=>App.toast("<span style='color:var(--ok)'>Merged on top of the saved data</span>"),1200)};
+
+  /* ================= launch, foreground, pending payment, push ================= */
+  Sys.coldStart=slow=>{
+    App.state.history=[];_go("splash",{},{replace:true});
+    const foot=$("#sp-foot");if(foot)foot.textContent=slow?"Loading saved data…":"Hand-tied in Bermondsey";
+    setTimeout(()=>{if(App.state.current!=="splash")return;_go("home",{},{replace:true});App.state.history=[];
+      if(slow)App.toast("Storage was slow – opened after 1.5 s, stores finish in the background");else App.toast("Fonts and 9 stores loaded · reminders re-planned");},slow?1500:900);
+  };
+  Sys.foreground=()=>{App.haptic();App.toast("Back in foreground · Flora chat and Community refetched");D.emit()};
+  Sys.pendingPay=()=>{
+    if(!D.pending){App.toast("No pending pay link in checkout.v1 – nothing to check");return}
+    App.toast("Checking the last pay link…");
+    setTimeout(()=>{D.pending=false;App.clearBag();renderStores();App.toast("<span style='color:var(--ok)'>Order #4820 paid – saved in Orders, bag cleared</span>",{action:{label:"Orders",onclick:"App.go('orders')"},ms:3200})},1100);
+  };
+  let pushEl,pushT;
+  Sys.push=(opts={})=>{
+    if(!pushEl){pushEl=document.createElement("button");pushEl.id="sys-push";$("#app").appendChild(pushEl)}
+    const url=opts.url||"/category/anniversary";
+    pushEl.innerHTML=`<div class="pi">${App.icon("bell")}</div><div><div class="pt">${esc(opts.title||"Sophie & Tom's anniversary in 3 days")}</div><div class="pd">${esc(opts.body||"Flowers can be delivered that morning – have a look.")}</div></div><span class="pm">now</span>`;
+    pushEl.onclick=()=>{Sys.hidePush();Sys.link("floritta:/"+url)};
+    requestAnimationFrame(()=>pushEl.classList.add("on"));clearTimeout(pushT);pushT=setTimeout(Sys.hidePush,4500);
+    const pe=$("#sys-perm");if(pe)pe.textContent="notifications: "+(D.notifAllowed===false?"denied – banner would not show":D.notifAllowed?"allowed":"not asked yet");
+  };
+  Sys.hidePush=()=>{pushEl&&pushEl.classList.remove("on")};
+
+  /* ================= deep links ================= */
+  const LINKS=["floritta://product/peach-garden-posy","floritta://category/birthday","floritta://orders/4821","floritta://reminders","floritta://occasions","floritta://flora","floritta://web?url=/subscriptions&title=Subscriptions","floritta://community/post/12","floritta://care","floritta://something/else","https://floritta.uk/roses"];
+  Sys.link=u=>{
+    u=(u||"").trim();const inp=$("#sys-link");if(inp)inp.value=u;
+    if(/^https?:\/\//i.test(u)){App.toast("Opens in Safari – universal links are not set up");return}
+    const m=u.match(/^floritta:\/\/([^?]*)(\?.*)?$/);
+    if(!m){App.toast("Not a floritta:// link");return}
+    const path=m[1].replace(/^\/+|\/+$/g,""),q=new URLSearchParams(m[2]||"");const seg=path.split("/");
+    const go=(id,p)=>{App.state.history=[];App.go(id,p||{})};
+    if(seg[0]==="product")return go("pdp",{id:1});
+    if(seg[0]==="category")return go("category",{occasion:(seg[1]||"birthday").replace(/-/g," ").replace(/^\w/,c=>c.toUpperCase())});
+    if(seg[0]==="orders")return go(document.getElementById("s-tracking")?"tracking":"orders",{id:1});
+    if(seg[0]==="web")return Sys.webOpen({url:q.get("url")||"",title:q.get("title")||""},true);
+    if(seg[0]==="community")return go(seg[1]==="post"?"post-view":seg[1]==="member"?"member":seg[1]==="tag"?"hashtag":seg[1]==="compose"?"compose":"community",{id:1});
+    if(["reminders","occasions","flora","care","living","bag","shop","saved","orders","account","help","search","builder","subscriptions","petals"].includes(seg[0])&&document.getElementById("s-"+seg[0]))return go(seg[0]);
+    if(path===""||path==="home")return go("home");
+    $("#nf-path").textContent=u;return go("notfound");
+  };
+
+  /* ================= /web ================= */
+  const HOSTS=["floritta.uk","www.floritta.uk","app.floritta.ai"];
+  const W={url:"",title:"",state:"",hist:[],stems:{},ordered:false,loadT:null,skelT:null};
+  const STEMS=[["Garden rose","img/peach-posy.webp",6.5],["Spray rose","img/white-spray.webp",4],["Eucalyptus","img/veronica.webp",3],["Lisianthus","img/lilac-dream.webp",4.5]];
+  function resolve(u){
+    if(!u)return null;if(u.startsWith("/"))u="https://floritta.uk"+u;
+    try{const x=new URL(u);if(x.protocol!=="https:"||!HOSTS.includes(x.hostname))return null;return x}catch(e){return null}
+  }
+  const pageTitle=u=>{const p=u.pathname;return p.startsWith("/build-a-bouquet")?"Build a bouquet":p.startsWith("/subscriptions")?"Flower subscriptions":p.startsWith("/privacy")?"Privacy policy":p.startsWith("/basket/order")?"Thank you":p.startsWith("/basket")?"Your basket":"Floritta"};
+  function setTitle(t){$("#web-ttl").textContent=(t||"").split(" | ")[0].slice(0,40)||"Floritta"}
+  function stemsCount(){return Object.values(W.stems).reduce((a,b)=>a+b,0)}
+  function stemsTotal(){return Object.keys(W.stems).reduce((a,i)=>a+W.stems[i]*STEMS[i][2],0)}
+  function progress(on,w){const p=$("#web-prog");p.classList.toggle("on",on);p.firstElementChild.style.width=(w||5)+"%"}
+  function load(state,ms=700){
+    clearTimeout(W.loadT);clearTimeout(W.skelT);
+    const skel=$("#web-skel");skel.hidden=false;progress(true,15);
+    W.skelT=setTimeout(()=>{skel.hidden=true},8000);
+    setTimeout(()=>progress(true,65),120);
+    W.loadT=setTimeout(()=>{progress(true,100);setTimeout(()=>progress(false,5),300);skel.hidden=true;render(state)},ms);
+  }
+  function render(state){
+    W.state=state;const c=$("#web-content");const u=resolve(W.url);
+    if(state==="bad"){setTitle("Floritta");c.innerHTML=`<div class="web-empty">${App.icon("share")}<div class="h3">This link cannot be opened in the app</div><div class="sm soft">It is not a Floritta page.</div><button class="btn" onclick="Sys.webLeave()">Close</button></div>`;return}
+    if(state==="error"){c.innerHTML=`<div class="web-empty">${App.icon("info")}<div class="h3">This page did not load</div><div class="sm soft">Please check your connection and try again.</div><button class="btn" onclick="Sys.webState('page')">Try again</button></div>`;return}
+    if(!W.title&&u)setTitle(pageTitle(u));
+    const chrome=`<div class="hidden-note">Site header, ticker, breadcrumbs, footer, newsletter, WhatsApp button and cookie banner are hidden in-app</div>`;
+    const links=`<div class="links"><a onclick="Sys.webNav('/privacy')">Privacy</a><a onclick="Sys.webExternal('tel:+442030000000','Phone app')">Call 020 3000 0000</a><a onclick="Sys.webExternal('whatsapp://send','WhatsApp')">WhatsApp</a><a onclick="Sys.webExternal('mailto:info@floritta.uk','Mail app')">Email</a><a onclick="Sys.webExternal('https://www.instagram.com/floritta.uk','Safari')">Instagram</a></div>`;
+    if(state==="privacy"){c.innerHTML=`<div class="web-site">${chrome}<div class="site-h">Privacy policy</div><p class="soft">Floritta Ltd, 80 Willow Walk, London SE1 5SY. We keep your order details for seven years for tax purposes…</p>${links}</div>`;return}
+    if(state==="subs"){c.innerHTML=`<div class="web-site">${chrome}<div class="site-h">Flower subscriptions</div><p class="soft">Weekly, fortnightly or monthly bouquets, delivered across London. Pause or cancel any time.</p><button class="btn --block mt16" onclick="App.toast('Site button · stays inside the page')">Choose a plan</button>${links}</div>`;return}
+    if(state==="checkout"){c.innerHTML=`<div class="web-site">${chrome}<div class="site-h">Checkout</div><div class="xs muted mt8">Checkout steps bar hidden in-app</div><div class="tot"><span>Your own bouquet · ${stemsCount()} stems</span><b>${App.fmt(stemsTotal())}</b></div><div class="tot" style="border-top:1px solid var(--hair)"><span>Delivery · today 15:00–18:00</span><b>£7.95</b></div><button class="btn --block mt16" onclick="Sys.webPay()">Pay ${App.fmt(stemsTotal()+7.95)} · Apple Pay</button><div class="xs muted mt12">Stripe, 3-D Secure and the Cloudflare check stay inside this page; the pay link itself opens in Safari.</div></div>`;return}
+    if(state==="unpaid"){c.innerHTML=`<div class="web-site">${chrome}<div class="site-h">Order #4822</div><p class="soft">Awaiting payment.</p><button class="btn --block" onclick="Sys.webPay()">Pay now</button><div class="xs muted mt12">No "Thank you" and a pay link is present → the app does not record this order (and ignores page messages without its nonce).</div></div>`;return}
+    if(state==="success"){const code=W.orderCode||"4821";const own=stemsCount()>0;
+      c.innerHTML=`<div class="web-site">${chrome}<div class="site-h">Thank you</div><p class="soft">Order #${code} is confirmed. We will send a photo before it leaves the studio.</p><div class="tot"><span>${own?`Your own bouquet · ${stemsCount()} stems`:"Floritta order"}</span><b>${own?App.fmt(stemsTotal()+7.95):"£—"}</b></div><button class="btn --secondary --block mt16" onclick="Sys.webLeave()">Back to the app</button></div>`;
+      if(!W.recorded){W.recorded=true;W.ordered=true;App.toast(`<span style='color:var(--ok)'>Order #${code} saved in Orders</span>`,{action:{label:"Orders",onclick:"App.go('orders')"},ms:3200})}
+      return}
+    // builder page
+    c.innerHTML=`<div class="web-site">${chrome}<div class="site-h">Build a bouquet</div><p class="soft" style="margin:8px 0 6px">Pick your stems – we hand-tie them today.</p>
+      ${STEMS.map((s,i)=>`<div class="stem"><img src="${s[1]}" alt=""><div class="f1"><div>${s[0]}</div><div class="xs muted">${App.fmt(s[2])} a stem</div></div><div class="qty"><button onclick="Sys.webStem(${i},-1)" aria-label="Decrease">−</button><span id="web-st-${i}">${W.stems[i]||0}</span><button onclick="Sys.webStem(${i},1)" aria-label="Increase">+</button></div></div>`).join("")}
+      <div class="tot"><span id="web-bb">${stemsCount()?`${stemsCount()} stems kept in the site basket`:"Add at least 5 stems"}</span><b id="web-tt">${App.fmt(stemsTotal())}</b></div>
+      <button class="btn --block" id="web-go" ${stemsCount()<5?"disabled":""} onclick="Sys.webState('checkout')">Go to checkout</button>
+      <div class="cookie">Cookies: optional cookies declined automatically (no choice was saved) · consent is never accepted on your behalf</div>${links}</div>`;
+  }
+  Sys.webOpen=(p,fromLink)=>{
+    W.url=p.url||"";W.title=p.title||"";W.hist=[];W.recorded=false;W.ordered=false;W.orderCode=null;W.state="loading";
+    setTitle(W.title||"Floritta");
+    if(App.state.current!=="web")App.go("web",p);
+    const u=resolve(W.url);
+    if(!u){render("bad");return}
+    load(u.pathname.startsWith("/subscriptions")?"subs":u.pathname.startsWith("/privacy")?"privacy":"page");
+  };
+  window.mount_web=function(params){if(params&&params.url&&params.url!==W.url)Sys.webOpen(params);else if(!W.state)Sys.webOpen({url:"https://floritta.uk/build-a-bouquet",title:"Build your own"})};
+  Sys.webState=s=>{if(s==="page"||s==="success"||s==="unpaid")load(s,s==="page"?700:900);else render(s)};
+  Sys.webNav=path=>{W.hist.push(W.state);if(!W.title)setTitle(pageTitle(new URL("https://floritta.uk"+path)));load(path==="/privacy"?"privacy":"page",500)};
+  Sys.webBack=()=>{if(W.hist.length){const s=W.hist.pop();if(!W.title)setTitle(s==="page"?"Build a bouquet":"Floritta");load(s,400);App.toast("Back in page history")}else Sys.webLeave()};
+  Sys.webLeave=()=>{
+    if(stemsCount()&&!W.ordered)App.toast("Your bouquet is kept in the basket – open Build your own to finish",{ms:3200});
+    W.state="";App.back("home");
+  };
+  Sys.webStem=(i,d)=>{W.stems[i]=Math.max(0,(W.stems[i]||0)+d);App.haptic();
+    const el=$("#web-st-"+i);if(el)el.textContent=W.stems[i];const bb=$("#web-bb"),tt=$("#web-tt"),go=$("#web-go");
+    if(bb)bb.textContent=stemsCount()?`${stemsCount()} stems kept in the site basket`:"Add at least 5 stems";if(tt)tt.textContent=App.fmt(stemsTotal());if(go)go.disabled=stemsCount()<5;
+    if(stemsCount())App.toast(`Site basket updated · ${stemsCount()} stems · ${App.fmt(stemsTotal())} (message with nonce)`);else App.toast("Bouquet forgotten (item = null)")};
+  Sys.webPay=()=>{
+    App.sheet(`<div class="sh-head"><div class="h3">Opens in Safari</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body"><p class="soft sm" style="margin:0 0 12px">Pay links (/basket/pay/…) leave the in-app page and open full-screen in the system browser so Apple Pay / Google Pay work. On return the page reloads.</p><div class="panel flex ai-c g12">${App.icon("card").replace("<svg",'<svg style="width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5"')}<div class="f1"><div class="h4">floritta.uk/basket/pay/4821</div><div class="xs muted">Apple Pay · •••• 4242</div></div></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();Sys.webState('unpaid')">Return unpaid</button><button class="btn" onclick="App.closeSheet();ShellDemo.pending=false;Sys.webOrderCode='4821';Sys.webState('success')">Pay £${(stemsTotal()+7.95).toFixed(2)}</button></div>`);
+  };
+  Object.defineProperty(Sys,"webOrderCode",{set(v){W.orderCode=v}});
+  Sys.webExternal=(u,app)=>App.toast(`Opens outside the app · ${app} (${u.split(":")[0]}:)`);
+  Sys.webCrash=()=>{$("#web-content").innerHTML="";App.toast("Web process terminated – reloading");load(W.state||"page",900)};
+
+  /* ================= home demo states ================= */
+  const HOME_TOGGLES=[["sameDayClosed","Same-day closed (after 22:00)","Grey dot, next-day line and Book ahead on Home"],["noPostcode","No postcode saved","Chip reads “Deliver to Add postcode” – there is no Clear button in the app"],["noReminders","No reminders","Home shows “Never miss a date”, bell badge disappears"],["noReady","No ready-now products","“Ready now” block hidden"],["emptyInbox","Empty inbox","Notifications screen shows its empty state"]];
+  function renderHome(){
+    $("#sys-home").innerHTML=HOME_TOGGLES.map(([k,l,d])=>`<button class="sw" onclick="ShellDemo.toggle('${k}');Sys.renderHome()"><div class="rt"><div class="l">${l}</div><div class="d">${d}</div></div><span class="switch ${D[k]?"on":""}"></span></button>`).join("");
+  }
+  Sys.renderHome=renderHome;
+
+  /* ================= components ================= */
+  let q=1;
+  Sys.qty=d=>{q=Math.min(20,Math.max(1,q+d));$("#ui-q").textContent=q;$("#ui-q-minus").style.opacity=q<=1?".35":"";$("#ui-q-plus").style.opacity=q>=20?".35":"";App.haptic()};
+  Sys.busy=b=>{App.haptic();b.classList.add("is-busy");const t=b.innerHTML;b.innerHTML='<span class="spin"></span>';setTimeout(()=>{b.classList.remove("is-busy");b.innerHTML=t;App.toast("Done")},1200)};
+  Sys.badge=b=>{const d=b.querySelector(".dot");const n=d.dataset.n==="3"?120:3;d.dataset.n=n;d.textContent=n>99?"99+":n;App.haptic()};
+  Sys.sheet=()=>App.sheet(`<div class="sh-head"><div class="h3">Sheet title</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div><div class="sh-body"><p class="soft sm" style="margin:0 0 12px">Square, over the scrim, up to 88 % tall. Tap the scrim or the cross to close; Android back does the same.</p><div class="field"><label>Note</label><input class="input" placeholder="The footer button rises above the keyboard"></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Saved')">Save</button></div>`);
+  function renderCards(){
+    const el=$("#ui-cards");if(!el||el.children.length)return;
+    el.innerHTML=[1,4].map(id=>`<div class="demo-card" style="flex:none">${App.card(App.product(id),{meta:false,add:false})}</div>`).join("");
+    $$("#ui-cards .card").forEach(c=>{const b=document.createElement("button");b.className="qa";b.setAttribute("aria-label","Add to bag");b.innerHTML=App.icon("bag");b.onclick=e=>{e.stopPropagation();window.home_quick(+c.dataset.id,b)};c.appendChild(b)});
+  }
+
+  /* ================= mounts ================= */
+  window.mount_sys=function(){renderFlags();renderStores();renderHome();$("#sys-link-chips").innerHTML=LINKS.map(l=>`<button class="chip" onclick="Sys.link('${l}')">${l.replace("floritta://","")}</button>`).join("");
+    const pe=$("#sys-perm");pe.textContent="notifications: "+(D.notifAsked?(D.notifAllowed?"allowed":D.notifAllowed===false?"denied":"dismissed"):"not asked yet")};
+  window.mount_sys_ui=function(){renderCards();Sys.qty(0)};
+  window.mount_notfound=function(){};
+  D.pending=true;D.on(()=>{if(App.state.current==="sys"){renderStores();renderHome()}});
+  document.addEventListener("fav",()=>{$$("#ui-cards .card").forEach(c=>{const f=c.querySelector(".fav");f&&f.classList.toggle("on",App.state.fav.has(+c.dataset.id))})});
+  applyFlags();document.addEventListener("DOMContentLoaded",applyFlags);
+})();
+</script>
