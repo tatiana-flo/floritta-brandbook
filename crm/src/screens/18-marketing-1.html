@@ -1,0 +1,661 @@
+<style>
+/* ===== 18 · Marketing & Growth (scoped .mk) – part 1: hub, Demo requests, Site leads, Growth ×5, Promo, UTM, UTM analytics, Attribution, Referrals, Placements ===== */
+.mk .scr-head{gap:8px 12px}
+.mk .sub-nav{display:flex;gap:2px;border-bottom:1px solid var(--hair);margin:0 0 16px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
+.mk .sub-nav::-webkit-scrollbar{display:none}
+.mk .sub-nav button{height:36px;padding:0 12px;font-size:13px;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.mk .sub-nav button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.mk .sub-nav button:hover:not(.on){color:var(--ink)}
+.mk .sub-nav button .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+.mk .sub-nav .ext{color:var(--grey);font-size:11px;margin-left:2px}
+.mk .page-sub{font-size:13px;color:var(--graphite);margin:-6px 0 14px}
+.mk .page-sub b{font-weight:500;color:var(--ink)}
+.mk .note{font-size:12.5px;color:var(--grey);line-height:1.45}
+.mk .auto{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase}
+.mk .auto i{width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block}
+.mk .auto.--off i{background:var(--light)}
+.mk .hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.mk .hub .tile{border:1px solid var(--hair);padding:16px 18px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:border-color var(--m-fast);min-width:0}
+.mk .hub .tile:hover{border-color:var(--grey)}
+.mk .hub .tile .h3{display:flex;align-items:center;gap:10px}
+.mk .hub .tile .meta{font-size:12.5px;color:var(--graphite)}
+.mk .hub .tile .k{font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1;font-variant-numeric:tabular-nums;margin-top:4px}
+.mk .hub .tile .k.accent{color:var(--accent)}
+.mk .hub .tile .chips{margin-top:6px}
+.mk .hub .tile .chip{height:24px;font-size:11.5px;padding:0 8px}
+.mk .lead{border:1px solid var(--hair);padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:start}
+.mk .lead+.lead{border-top:0}
+.mk .lead.--late{box-shadow:inset 3px 0 0 var(--accent);background:var(--accent-bg)}
+.mk .lead .l-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px}
+.mk .lead .l-top b{font-weight:500}
+.mk .lead .l-meta{font-size:12px;color:var(--graphite);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mk .lead .l-msg{font-size:13px;color:var(--ink);margin-top:2px}
+.mk .lead .l-wa{font-size:12.5px;color:var(--graphite);font-style:normal}
+.mk .lead .l-note{font-size:12.5px;color:var(--graphite);border-left:2px solid var(--light);padding-left:8px}
+.mk .lead .l-acts{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.mk .lead .l-acts .row{gap:6px}
+.mk .lead .l-err{font-size:12px;color:var(--accent)}
+.mk .lead .audio{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 10px;border:1px solid var(--light);font-size:12px;color:var(--graphite);background:var(--paper)}
+.mk .lead .audio .bar{height:12px;width:90px;gap:2px}
+.mk .lead .audio .bar i{min-width:2px}
+.mk .lead.--done{opacity:.7}
+.mk .fold{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid var(--hair);background:var(--silver);cursor:pointer;font-size:13px;margin-top:12px}
+.mk .fold svg{width:14px;height:14px;transition:transform var(--m-fast)}
+.mk .fold.open svg{transform:rotate(90deg)}
+.mk .card-row{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:8px 16px;padding:12px 14px;border:1px solid var(--hair);align-items:center}
+.mk .card-row+.card-row{border-top:0}
+.mk .card-row .nm{font-size:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mk .card-row .sub{font-size:12px;color:var(--grey);margin-top:2px}
+.mk .card-row .sub.accent{color:var(--accent)}
+.mk .card-row .att{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--graphite)}
+.mk .card-row .att .progress{width:100%}
+.mk .card-row .acts{display:flex;gap:6px;align-items:center;justify-content:flex-end;grid-column:1/-1}
+.mk .card-row .edit-panel{grid-column:1/-1;border-top:1px solid var(--hair);padding-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mk .bar-list{display:flex;flex-direction:column;gap:8px}
+.mk .bar-list .b{display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:10px;align-items:center;font-size:12.5px}
+.mk .bar-list .b .progress{height:8px}
+.mk .conf{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.mk .conf>div{border:1px solid var(--hair);padding:10px 12px}
+.mk .conf>div.on{box-shadow:inset 0 3px 0 var(--accent)}
+.mk .conf .kpi-s{margin-top:4px}
+.mk .clickid{display:inline-block;max-width:120px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;cursor:pointer}
+.mk .kpi-card.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+.mk .kpi-card.--static{cursor:default}
+.mk .kpi-card.--static:hover{border-color:var(--hair)}
+.mk .banner{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--hair);font-size:13px;margin-bottom:16px}
+.mk .banner.--ok{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+.mk .banner.--accent{background:var(--accent-bg);color:var(--accent);border-color:transparent}
+.mk .banner.--warn{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.mk .banner .sp{flex:1}
+.mk .two{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start}
+.mk .two.--eq{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mk .stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.mk .tbl td.wrap{white-space:normal;max-width:none}
+.mk .flash{font-size:12.5px;padding:8px 12px;border:1px solid var(--hair);background:var(--silver);margin-bottom:12px}
+.mk .inline-save{display:flex;align-items:center;gap:6px}
+.mk .inline-save .input{width:120px;height:28px;font-size:12.5px}
+.mk .role-note{font-size:12px;color:var(--grey);display:inline-flex;align-items:center;gap:6px}
+.mk .usage-row{display:flex;gap:10px;flex-wrap:wrap}
+.mk .usage-row .chip{cursor:default;height:34px;flex-direction:column;align-items:flex-start;gap:0;padding:4px 12px;line-height:1.1}
+.mk .usage-row .chip small{font-size:10.5px;color:var(--grey)}
+.mk .status-sel{height:28px;font-size:12.5px;width:auto;min-width:120px;padding-right:26px}
+.mk .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.mk .qr{width:160px;height:160px;background:var(--silver);display:grid;grid-template-columns:repeat(12,1fr);gap:1px;padding:8px;margin:0 auto}
+.mk .qr i{background:var(--paper)}.mk .qr i.on{background:var(--ink)}
+.mk .month{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--light);height:var(--btn-h-s)}
+.mk .month b{font-weight:400;font-size:13px;padding:0 10px;min-width:110px;text-align:center}
+.mk .month .ib{width:30px;height:30px}
+.mk .acc-list .li{cursor:default}
+.mk .tbl th.sort .ar{display:inline-block;width:10px;color:var(--ink);margin-left:3px}
+.mk .ph-only{display:none}
+[data-size="ipad"] .mk .hub{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="ipad"] .mk .conf{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="ipad"] .mk .two{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] .mk .tbl .acts{opacity:1}
+[data-size="phone"] .mk .hub{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .mk .two,[data-size="phone"] .mk .two.--eq{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .mk .conf{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .mk .lead{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .mk .lead .l-acts{align-items:flex-start}
+[data-size="phone"] .mk .card-row{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .mk .ph-hide{display:none}
+[data-size="phone"] .mk .ph-only{display:block}
+</style>
+
+<!-- ids: MKTG-098 MKTG-054 — hub: entry to every Marketing & Growth page, sub-navs (MarketingNav 13 tabs, GrowthNav 5 tabs) -->
+<section class="scr mk" id="s-marketing" data-nav="Marketing hub" data-group="Marketing &amp; Growth" data-title="Marketing &amp; Growth" data-roles="owner manager" data-parent="marketing">
+  <div class="scr-head" id="mk-hub-head"></div>
+  <div class="scr-body" id="mk-hub-body"></div>
+</section>
+
+<!-- ids: MKTG-001 MKTG-002 MKTG-003 MKTG-004 MKTG-005 MKTG-006 MKTG-007 MKTG-008 MKTG-009 MKTG-010 MKTG-011 MKTG-012 MKTG-013 MKTG-014 — Demo requests: KPI «N new to follow up», tabs All/New/Contacted/Closed, columns Date/Name/Email/Phone/Business/Type/Message/Status, inline status select (no audit), empty state, 25-per-page note + pagination, entry from Overview card -->
+<section class="scr mk" id="s-mk-demo" data-nav="Demo requests" data-group="Marketing &amp; Growth" data-title="Demo requests" data-sub="Floritta One" data-roles="owner manager" data-parent="marketing">
+  <div class="scr-head" id="mk-demo-head"></div>
+  <div class="scr-body" id="mk-demo-body"></div>
+</section>
+
+<!-- ids: MKTG-015 MKTG-016 MKTG-017 MKTG-018 MKTG-019 MKTG-020 MKTG-021 MKTG-022 MKTG-023 MKTG-024 MKTG-025 MKTG-026 MKTG-027 MKTG-028 MKTG-029 MKTG-030 — Site leads archive: Telegram card on first lead, KPI, tabs All/New/No answer/Contacted/Closed, columns Date/Form+path/Name/Phone/Social/Message/Voice player/Product/Status, inline status select with the 3-tries rule, empty state, 25 per page, entry from Overview «Needs attention» (?status=new) -->
+<!-- ids: MKTG-031 MKTG-032 MKTG-033 MKTG-034 MKTG-035 MKTG-036 MKTG-037 MKTG-038 MKTG-039 MKTG-040 MKTG-041 MKTG-042 MKTG-043 MKTG-044 MKTG-045 MKTG-046 MKTG-047 MKTG-048 MKTG-049 MKTG-050 MKTG-051 MKTG-052 MKTG-053 MKTG-301 MKTG-302 — Site leads board (lives on /orders in the old CRM, here as the Board tab): «N waiting for a call», All leads →, Clear all (admin), empty «No callback requests waiting.», lead row, 30-min red stripe, No answer ×N, Reached by, text/voice/product, Became order, WhatsApp chip, Message on WhatsApp (+ Opening chat… / Call failed), last inbound, last note, Add a note (Enter/Esc), All notes, Call via Ringover, Reached, No answer, Back to queue, delete (admin), Reached in last 7 days fold, busy lock, 60-s poll -->
+<section class="scr mk" id="s-mk-leads" data-nav="Site leads" data-group="Marketing &amp; Growth" data-title="Site leads" data-sub="floritta.uk forms" data-roles="owner manager" data-parent="marketing">
+  <div class="scr-head" id="mk-leads-head"></div>
+  <div class="scr-body" id="mk-leads-body"></div>
+</section>
+
+<!-- ids: MKTG-054 MKTG-055 MKTG-056 MKTG-057 MKTG-058 MKTG-059 MKTG-060 MKTG-061 MKTG-062 MKTG-063 MKTG-064 MKTG-065 MKTG-066 MKTG-067 MKTG-068 MKTG-069 MKTG-070 MKTG-071 MKTG-072 MKTG-073 MKTG-074 MKTG-303 — Growth · Upsell: GrowthNav, PeriodSelect (Today / 7 / 30 / Quarter / Single day / Custom + Apply), KPIs, no-SKU warning, curation note, add-on cards (SKU line, site status, On toggle, Edit → Link to a SKU + Site product id on blur), bundle cards (saving, components, drift/draft), New bundle form, empty lists -->
+<section class="scr mk" id="s-mk-upsell" data-nav="Growth · Upsell" data-group="Marketing &amp; Growth" data-title="Growth" data-sub="Upsell" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-upsell-head"></div>
+  <div class="scr-body" id="mk-upsell-body"></div>
+</section>
+
+<!-- ids: MKTG-075 MKTG-076 MKTG-077 MKTG-078 — Growth · Reviews: three KPIs and the note -->
+<section class="scr mk" id="s-mk-reviews" data-nav="Growth · Reviews" data-group="Marketing &amp; Growth" data-title="Growth" data-sub="Reviews" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-reviews-head"></div>
+  <div class="scr-body" id="mk-reviews-body"></div>
+</section>
+
+<!-- ids: MKTG-079 MKTG-080 MKTG-081 MKTG-082 — Growth · Retention: three KPIs (churn risk warn tone) and the note -->
+<section class="scr mk" id="s-mk-retention" data-nav="Growth · Retention" data-group="Marketing &amp; Growth" data-title="Growth" data-sub="Retention" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-retention-head"></div>
+  <div class="scr-body" id="mk-retention-body"></div>
+</section>
+
+<!-- ids: MKTG-083 MKTG-084 MKTG-085 MKTG-086 MKTG-087 MKTG-088 MKTG-089 MKTG-304 — Growth · Automations: New automation modal (name required, errors visible, Save locks), table Name/Trigger/Action/Status toggle/Enabled tag, empty state, note always under the table -->
+<section class="scr mk" id="s-mk-automations" data-nav="Growth · Automations" data-group="Marketing &amp; Growth" data-title="Growth" data-sub="Automations" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-automations-head"></div>
+  <div class="scr-body" id="mk-automations-body"></div>
+</section>
+
+<!-- ids: MKTG-090 MKTG-091 MKTG-092 MKTG-093 MKTG-094 MKTG-095 MKTG-096 MKTG-097 — Growth · Uber Ads: connect banner + Connect (OAuth), keys-not-set state, connected banner + API error, Disconnect (with confirm in the new design), KPIs live vs manual, campaigns table, empty -->
+<section class="scr mk" id="s-mk-uberads" data-nav="Growth · Uber Ads" data-group="Marketing &amp; Growth" data-title="Growth" data-sub="Uber Ads" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-uberads-head"></div>
+  <div class="scr-body" id="mk-uberads-body"></div>
+</section>
+
+<!-- ids: MKTG-098 MKTG-099 MKTG-100 MKTG-101 MKTG-102 MKTG-103 MKTG-104 MKTG-105 MKTG-106 MKTG-107 MKTG-108 MKTG-109 MKTG-110 MKTG-111 MKTG-112 MKTG-113 MKTG-114 MKTG-115 MKTG-116 MKTG-117 MKTG-118 MKTG-119 — Marketing · Promo codes: MarketingNav, New code, table (Code+source+partner, Value, Min order, Used → usage history modal, Last used, Window, Status), Edit, Delete (confirm), code form (all fields, Single use, Referral partner), Who brings the redemptions, Checkout usage chips, usage table, inline Source + Save, New batch, insert batches list, Download CSV, empty states -->
+<section class="scr mk" id="s-mk-promo" data-nav="Marketing · Promo codes" data-group="Marketing &amp; Growth" data-title="Marketing" data-sub="Promo codes" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-promo-head"></div>
+  <div class="scr-body" id="mk-promo-body"></div>
+</section>
+
+<!-- ids: MKTG-229 MKTG-230 MKTG-231 MKTG-232 MKTG-233 MKTG-234 MKTG-235 MKTG-236 MKTG-237 MKTG-238 — Marketing · UTM builder: normalisation note, New link modal (presets, fields, paid warning, live preview + Copy), table Campaign / URL Copy / Short link Copy / Clicks / QR modal with Download PNG / Delete (confirm: printed QR will 404), empty -->
+<section class="scr mk" id="s-mk-utm" data-nav="Marketing · UTM builder" data-group="Marketing &amp; Growth" data-title="Marketing" data-sub="UTM builder" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-utm-head"></div>
+  <div class="scr-body" id="mk-utm-body"></div>
+</section>
+
+<!-- ids: MKTG-239 MKTG-240 MKTG-241 MKTG-242 MKTG-243 MKTG-244 MKTG-245 MKTG-246 MKTG-247 MKTG-248 MKTG-310 MKTG-311 — Marketing · UTM analytics: period, KPIs, table with Dirty tag / medium=paid flags and CAC*, notes under the table, Top sources bars, Ad spend form (London date, campaign locks source), last 20 entries, delete confirm, empty states -->
+<section class="scr mk" id="s-mk-utm-analytics" data-nav="Marketing · UTM analytics" data-group="Marketing &amp; Growth" data-title="Marketing" data-sub="UTM analytics" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-utma-head"></div>
+  <div class="scr-body" id="mk-utma-body"></div>
+</section>
+
+<!-- ids: MKTG-249 MKTG-250 MKTG-251 MKTG-252 MKTG-253 MKTG-254 MKTG-255 MKTG-256 MKTG-257 MKTG-258 MKTG-309 — Marketing · Attribution: period (keeps Unknown only), KPIs incl. coverage, confidence breakdown, by source with fallback pill, survey, Unknown only, recent orders (gclid pill, long URLs), cron line, empty states -->
+<section class="scr mk" id="s-mk-attribution" data-nav="Marketing · Attribution" data-group="Marketing &amp; Growth" data-title="Marketing" data-sub="Attribution" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-attr-head"></div>
+  <div class="scr-body" id="mk-attr-body"></div>
+</section>
+
+<!-- ids: MKTG-259 MKTG-260 MKTG-261 MKTG-262 MKTG-263 MKTG-264 MKTG-265 MKTG-266 MKTG-267 MKTG-268 MKTG-269 MKTG-270 MKTG-271 — Marketing · Referrals: month picker, Export CSV, New partner, totals, partners table with referral/slug link, Mark payout confirm, Edit, partner form, accruals table, hold hint, cron 04:45, empty states -->
+<section class="scr mk" id="s-mk-referrals" data-nav="Marketing · Referrals" data-group="Marketing &amp; Growth" data-title="Marketing" data-sub="Referrals" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-ref-head"></div>
+  <div class="scr-body" id="mk-ref-body"></div>
+</section>
+
+<!-- ids: MKTG-272 MKTG-273 MKTG-274 MKTG-275 MKTG-276 MKTG-277 MKTG-278 MKTG-279 MKTG-280 MKTG-281 MKTG-282 MKTG-283 MKTG-284 MKTG-285 MKTG-286 — Marketing · Placements: New placement, GA4 note, status / period / platform filters, sortable columns, Platform + Access, URLs, Visits/Orders/Revenue with – and ≈, Status / Last checked / Notes, Mark checked, Edit, Delete, form with Generate UTM, empty -->
+<section class="scr mk" id="s-mk-placements" data-nav="Marketing · Placements" data-group="Marketing &amp; Growth" data-title="Marketing" data-sub="Placements" data-roles="owner" data-parent="marketing">
+  <div class="scr-head" id="mk-plc-head"></div>
+  <div class="scr-body" id="mk-plc-body"></div>
+</section>
+
+<script>
+/* ===== 18 · Marketing & Growth – shared runtime + demo data (fictional) ===== */
+window.MK=(()=>{
+const A=App,$=A.$,$$=A.$$,esc=A.esc,ic=A.icon,fmt=A.fmt,T=A.T,NOW=A.NOW;
+const st={ // demo states (toggled from the «Demo data» menu on each screen)
+  demoStatus:"all",demoEmpty:false,demoPage:1,
+  leadsTab:"board",leadsStatus:"all",leadsEmpty:false,leadsBusy:{},leadsNote:null,leadsNotesOpen:{},leadsFold:false,leadsWa:{},leadsCall:{},leadsPoll:true,
+  period:"30d",periodFrom:"",periodTo:"",noSku:true,bridge:true,upEmpty:false,upEdit:{},
+  autoEmpty:false,uber:"manual",
+  promoEmpty:false,promoSrc:{},promoBridge:true,
+  utmEmpty:false,utmaPeriod:"30d",spendMode:"dated",attrPeriod:"30d",unknownOnly:false,attrEmpty:false,
+  refMonth:"2026-10",refEmpty:false,plcStatus:"all",plcPeriod:"all",plcPlat:"all",plcSort:["platform",1],plcGa4:true,plcEmpty:false
+};
+const admin=()=>A.role()==="owner";
+const mins=iso=>Math.round((NOW-new Date(iso))/6e4);
+const ago=iso=>{const m=mins(iso);if(m<60)return m+" min";const h=Math.round(m/60);if(h<24)return h+" h";return Math.round(h/24)+" d"};
+const dt=iso=>A.fmtDate(iso)+" "+A.fmtTime(iso);
+const C=A.data.customers,P=A.data.products,O=A.data.orders;
+/* --- Demo requests --- */
+const DEMO=[
+ {id:1,at:T(9,12,0),name:"Harriet Lowe",email:"harriet@studiofleur.example",phone:"+44 7700 900214",biz:"Studio Fleur",type:"Florist · 2 shops",msg:"We run two shops in Leeds and want to see how the production board works.\nBest time: mornings.",status:"new"},
+ {id:2,at:T(17,40,-1),name:"Tom Reddy",email:"tom@bloomandco.example",phone:"",biz:"Bloom & Co",type:"Florist · online only",msg:"Interested in the WhatsApp inbox and photo-before-delivery.",status:"new"},
+ {id:3,at:T(11,5,-2),name:"Priya Mehta",email:"priya@petalpost.example",phone:"+44 7700 900377",biz:"Petal Post",type:"Subscription flowers",msg:"Do you support weekly subscriptions and Xero?",status:"contacted"},
+ {id:4,at:T(15,20,-4),name:"Marcus Bell",email:"m.bell@greenhouse.example",phone:"+44 7700 900488",biz:"Greenhouse Events",type:"Events / weddings",msg:"Looking for a demo before our busy season.",status:"contacted"},
+ {id:5,at:T(10,0,-9),name:"Elena Ortiz",email:"elena@floraviva.example",phone:"",biz:"Flora Viva",type:"Florist · 1 shop",msg:"Just curious about pricing.",status:"closed"},
+ {id:6,at:T(13,30,-12),name:"Oscar Lindgren",email:"oscar@nordicstems.example",phone:"+44 7700 900512",biz:"Nordic Stems",type:"Wholesale",msg:"Not a florist – wholesale. Probably not a fit.",status:"closed"}
+];
+/* --- Site leads --- */
+const LEADS=[
+ {id:1,at:T(9,55,0),form:"Quick order – product page",path:"/product/peony-basket",c:5008,social:"",msg:"Can I get this delivered tomorrow before 10?",voice:false,product:"Peony Basket",status:"new",attempts:0,notes:[],order:null,wa:null},
+ {id:2,at:T(10,30,0),form:"Bespoke order – header button",path:"/bespoke",c:5016,social:"@edward.sato",msg:"",voice:true,product:"",status:"new",attempts:0,notes:[],order:null,wa:{count:3,last:T(10,33,0),inbound:"Is Thursday afternoon possible?"}},
+ {id:3,at:T(8,10,0),form:"B2B enquiry",path:"/corporate",c:5005,social:"",msg:"Weekly reception flowers for a Shad Thames office, budget £80–120/week.",voice:false,product:"",status:"no_answer",attempts:2,lastTry:T(10,5,0),notes:[{who:"valeria",at:T(10,6,0),t:"Voicemail left, will try after lunch"},{who:"eliza",at:T(8,40,0),t:"Line busy"}],order:null,wa:null},
+ {id:4,at:T(16,20,-1),form:"Quick order – product page",path:"/product/red-roses",c:5002,social:"",msg:"Anniversary – 24 red roses, Friday.",voice:false,product:"Red Roses",status:"contacted",attempts:1,contactedAt:T(16,48,-1),contactedBy:"valeria",notes:[{who:"valeria",at:T(16,50,-1),t:"Booked by phone, paid by link"}],order:O[3].id,wa:null},
+ {id:5,at:T(12,0,-3),form:"Waitlist – peonies",path:"/peonies",c:5012,social:"@freya.h",msg:"Tell me when peonies are back.",voice:false,product:"",status:"contacted",attempts:0,contactedAt:T(12,30,-3),contactedBy:"eliza",notes:[],order:null,wa:{count:1,last:T(12,31,-3),inbound:"Thanks!"}},
+ {id:6,at:T(9,0,-6),form:"Bespoke order – header button",path:"/bespoke",c:5020,social:"",msg:"Sympathy spray for Friday, white only.",voice:false,product:"",status:"closed",attempts:3,lastTry:T(14,0,-5),notes:[],order:null,wa:null},
+ {id:7,at:T(18,0,-8),form:"Quick order – product page",path:"/product/pink-garden",c:5003,social:"",msg:"",voice:true,product:"Pink Garden",status:"contacted",attempts:0,contactedAt:T(18,20,-8),contactedBy:"valeria",notes:[],order:null,wa:null}
+];
+LEADS.forEach(l=>{const c=C.find(x=>x.id===l.c);l.name=c.n;l.phone=c.phone});
+const LEAD_ST={new:"New",no_answer:"No answer",contacted:"Contacted",closed:"Closed"};
+const leadPill=s=>`<span class="pill --plain ${s==="new"?"--queue":s==="no_answer"?"--late":s==="contacted"?"--ready":"--todo"}">${LEAD_ST[s]}</span>`;
+/* --- Growth --- */
+const ADDONS=P.filter(p=>p.addon).map((p,i)=>({id:p.id,name:p.name,price:p.price,linked:i!==5,sku:i!==5?p.sku:"",offered:i===0||i===3||i===4?true:i===6?null:false,siteId:i<4?String(3100+i):"",on:i!==2,attach:[18.4,6.1,4.2,31.5,9.8,0,2.7][i],orders:[41,14,9,70,22,0,6][i],units:[44,14,9,78,23,0,6][i],revenue:[528,308,162,312,552,0,168][i]}));
+const BUNDLES=[
+ {id:1,name:"Roses & Charbonnel",price:150,separate:174,comps:[{q:1,sku:"FL-1001 Red Roses · Deluxe",price:130,missing:false},{q:1,sku:"AD-205 Chocolates · Charbonnel",price:24,missing:false},{q:1,sku:"AD-204 Greeting card",price:4,missing:false}],attach:3.2,orders:7,revenue:1050,drift:false,published:true},
+ {id:2,name:"Birthday set",price:118,separate:118,comps:[{q:1,sku:"FL-1006 Peach Posy",price:120,missing:false},{q:1,sku:"AD-201 Balloon · helium",price:12,missing:true}],attach:0,orders:0,revenue:0,drift:true,published:false}
+];
+const AUTOS=[{id:1,name:"Review request after delivery",trigger:{event:"order_delivered",delay:"2h"},action:{type:"send_review_request",channel:"whatsapp"},on:true},{id:2,name:"Win-back after 90 days",trigger:{event:"customer_idle",days:"90"},action:{type:"draft_whatsapp",template:"winback"},on:false},{id:3,name:"Birthday reminder",trigger:{event:"occasion_in",days:"5"},action:{type:"send_reminder"},on:true}];
+const UBER_CAMPS=[{name:"Bermondsey · same-day",status:"Published",spend:184,imp:21400,clicks:612,orders:23,roas:3.4},{name:"Peony week",status:"Paused",spend:62,imp:8100,clicks:201,orders:6,roas:2.1},{name:"Christmas wreaths (draft)",status:"Draft",spend:0,imp:0,clicks:0,orders:0,roas:0}];
+/* --- Promo --- */
+const PARTNERS=[
+ {id:1,name:"Amelia Hale",company:"Hale Weddings",slug:"hale-weddings",seg:"Wedding planner",rate:10,status:"active",email:"amelia@haleweddings.example",phone:"+44 7700 900611",orders:6,goods:1480,accrued:148,hold:62,payable:86,paid:0,notes:""},
+ {id:2,name:"The Glasshouse SE1",company:"The Glasshouse",slug:"glasshouse-se1",seg:"Venue",rate:8,status:"active",email:"events@glasshouse.example",phone:"",orders:3,goods:640,accrued:51.2,hold:51.2,payable:0,paid:0,notes:"Venue partner since Sep"},
+ {id:3,name:"Zara Marchetti",company:"",slug:"zara-m",seg:"Influencer",rate:12,status:"paused",email:"",phone:"+44 7700 900703",orders:4,goods:420,accrued:50.4,hold:0,payable:0,paid:50.4,notes:""},
+ {id:4,name:"Lens & Petal",company:"Lens & Petal Studio",slug:"lens-petal",seg:"Photographer / stylist",rate:5,status:"ended",email:"hi@lenspetal.example",phone:"",orders:0,goods:0,accrued:0,hold:0,payable:0,paid:0,notes:"Ended Aug 2026"}
+];
+const PROMO=A.data.promos.map((p,i)=>Object.assign({},p,{type:p.unit==="%"?"percent":"fixed",min:[30,0,100,40,0][i],limit:[0,200,50,300,0][i],per:[1,1,0,1,1][i],starts:i===1?T(9,0,-20):"",ends:i===1?T(23,59,5):i===3?T(23,59,-2):"",source:["Website banner","Instagram","B2B deck","insert:Autumn box","Birthday email"][i],partner:i===2?2:null,last:T(ri(8,20),ri(0,59),-ri(0,6))}));
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+const BATCHES=[{id:1,label:"Autumn box",at:T(9,0,-40),n:200,used:54,until:"20 Apr 2027",value:10,min:40},{id:2,label:"Wedding sample box",at:T(9,0,-95),n:50,used:9,until:"20 Jan 2027",value:15,min:60}];
+const USAGE=[{code:"NEW15",uses:38,paid:36,revenue:3290,period:"Sep–Oct",src:"Other codes"},{code:"FLR-7K2P9Q",uses:1,paid:1,revenue:84,period:"Oct",src:"Insert in the box"},{code:"GLASSHOUSE8",uses:3,paid:3,revenue:640,period:"Oct",src:"Referral partners"},{code:"PEONY10",uses:21,paid:19,revenue:1870,period:"Oct",src:"Other codes"},{code:"VIP5",uses:2,paid:2,revenue:310,period:"Sep",src:"Other codes"}];
+/* --- UTM --- */
+const UTM=A.data.tracking.map((t,i)=>Object.assign({},t,{short:["q7m2x9ka","p3f8d1vz","b9k2m4rt","s6d1g8hn","w2p9c4le","a5x7q1mb","o8n3v6yz","e4t2k9pd","t1v8r3ws","p7b6n2qx","h9c4m1ze","q2r5t8lk"][i],term:i===2?"flowers london":"",content:i===0?"link-1":""}));
+const UTM_PRESETS={"Custom":["","",""],"Instagram bio":["instagram","bio",""],"Facebook ad":["facebook","cpc","{campaign}"],"Google Ads":["google","cpc","{campaign}"],"Google Business":["google","gbp","profile"],"WhatsApp":["whatsapp","chat",""],"Wazzup":["wazzup","chat",""],"Email":["email","newsletter","{campaign}"],"SMS":["sms","sms",""],"Bark":["bark","listing","profile"],"Bridebook":["bridebook","listing","profile"],"Uber Eats":["ubereats","marketplace","menu"],"QR flyer":["qr","print","{campaign}"]};
+const SPEND=[{id:1,on:T(9,0,-1),amount:48,camp:"brand-uk",source:"google"},{id:2,on:T(9,0,-2),amount:51,camp:"brand-uk",source:"google"},{id:3,on:T(9,0,-3),amount:120,camp:"",source:"instagram"},{id:4,on:T(9,0,-8),amount:38,camp:"same-day-se1",source:"google"}];
+/* --- Placements --- */
+const PLC=[
+ {id:1,platform:"Google Business Profile",access:true,url:"https://business.google.com/floritta-se1",link:"https://floritta.uk/?utm_source=google&utm_medium=gbp&utm_campaign=profile",status:"active",checked:T(9,0,-3),notes:"Weekly post from the agent",visits:412,orders:19,revenue:1980,shared:false},
+ {id:2,platform:"Bark",access:true,url:"https://bark.example/pro/floritta",link:"https://floritta.uk/?utm_source=bark&utm_medium=listing&utm_campaign=profile",status:"active",checked:T(9,0,-12),notes:"",visits:64,orders:3,revenue:290,shared:false},
+ {id:3,platform:"Bridebook",access:true,url:"https://bridebook.example/suppliers/floritta",link:"https://floritta.uk/?utm_source=bridebook&utm_medium=listing&utm_campaign=profile",status:"pending",checked:null,notes:"Awaiting approval",visits:0,orders:0,revenue:0,shared:false},
+ {id:4,platform:"Yell",access:false,url:"https://yell.example/biz/floritta-london",link:"https://floritta.uk/",status:"nout",checked:T(9,0,-40),notes:"Old listing, no login",visits:null,orders:null,revenue:null,shared:false},
+ {id:5,platform:"Time Out · florists guide",access:false,url:"https://timeout.example/london/best-florists",link:"https://floritta.uk/?utm_source=timeout&utm_medium=article&utm_campaign=best-florists",status:"broken",checked:T(9,0,-1),notes:"Article moved – 404 on our link",visits:28,orders:1,revenue:95,shared:false},
+ {id:6,platform:"Hitched",access:true,url:"https://hitched.example/florists/floritta",link:"https://floritta.uk/?utm_source=hitched&utm_medium=listing&utm_campaign=profile",status:"active",checked:T(9,0,-5),notes:"",visits:51,orders:2,revenue:410,shared:true}
+];
+const PLC_ST={active:"Active",broken:"Broken",nout:"No UTM",pending:"Pending"};
+/* ---- shared UI ---- */
+const MNAV=[["mk-promo","Promo codes"],["mk-social","Social"],["mk-comments","Comments"],["mk-studio","Studio"],["mk-agents","Agents"],["mk-trends","Trends"],["mk-utm","UTM builder"],["mk-utm-analytics","UTM analytics"],["mk-attribution","Attribution"],["mk-referrals","Referrals"],["mk-placements","Placements"],["mk-emails","Emails"],["mk-pinterest","Pinterest"]];
+const GNAV=[["mk-upsell","Upsell"],["mk-reviews","Reviews"],["mk-retention","Retention"],["mk-automations","Automations"],["mk-uberads","Uber Ads"]];
+const nav=(kind,cur)=>`<div class="sub-nav">${(kind==="m"?MNAV:GNAV).map(([id,n])=>`<button class="${id===cur?"on":""}" onclick="App.go('${id}')">${n}${id==="mk-pinterest"?`<span class="ext" title="/settings/integrations/pinterest">${ic("link")}</span>`:""}${id==="mk-comments"?`<span class="n">${window.MK2?MK2.unanswered():""}</span>`:""}</button>`).join("")}</div>`;
+const head=(id,h)=>{$("#"+id).innerHTML=h};
+const demoBtn=(fn)=>`<button class="btn --ghost --sm" onclick="${fn}">${ic("columns")} Demo data</button>`;
+const re=()=>A.remount();
+const roleNote=t=>`<span class="role-note">${ic("lock")} ${t}</span>`;
+const confirmDel=(fn,txt)=>A.confirm("Delete this item?",txt||"This cannot be undone.","Delete",fn,{danger:true});
+const copy=(what)=>A.toast("Copied"+(what?" · "+what:""));
+const hubKpis=()=>({demoNew:DEMO.filter(d=>d.status==="new").length,leadsWait:LEADS.filter(l=>l.status==="new"||l.status==="no_answer").length,unansw:window.MK2?MK2.unanswered():4,promoLive:PROMO.filter(p=>promoStatus(p)==="Active").length,payable:PARTNERS.reduce((s,p)=>s+p.payable,0)});
+const promoStatus=p=>{if(p.starts&&new Date(p.starts)>NOW)return"Scheduled";if(p.ends&&new Date(p.ends)<NOW)return"Expired";return"Active"};
+/* PeriodSelect (MKTG-055): Today button + list; Single day applies at once; Custom needs Apply */
+function periodCtl(ev){
+  const set=(v)=>{st.period=v;re();A.toast("Period · "+periodLbl())};
+  A.pop(ev,["Period",{t:(st.period==="7d"?"· ":"")+"7 days",fn:()=>set("7d")},{t:(st.period==="30d"?"· ":"")+"30 days",fn:()=>set("30d")},{t:(st.period==="q"?"· ":"")+"Quarter",fn:()=>set("q")},"-",{t:"Single day…",ic:"calendar",fn:()=>A.modal({title:"Single day",body:`<div class="field"><label>Date</label><input class="input" type="date" value="2026-10-19" onchange="MK.st.period='day';MK.st.periodFrom=this.value;App.closeModal();App.remount();App.toast('Applied at once · '+this.value)"></div><div class="note mt8">Applies as soon as you pick a date – no Apply button in this mode.</div>`})},{t:"Custom dates…",ic:"calendar",fn:()=>A.modal({title:"Custom dates",body:`<div class="grid g2"><div class="field"><label>From</label><input class="input" type="date" id="mk-pf" oninput="MK.periodCheck()"></div><div class="field"><label>To</label><input class="input" type="date" id="mk-pt" oninput="MK.periodCheck()"></div></div><div class="note mt8">Apply stays off while a date is empty or “from” is later than “to”. The server falls back to 30 days for a window over 366 days. Both modes send period=custom.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="mk-papply" disabled onclick="MK.st.period='custom';MK.st.periodFrom=App.$('#mk-pf').value;MK.st.periodTo=App.$('#mk-pt').value;App.closeModal();App.remount();App.toast('Period applied')">Apply</button>`})}]);
+}
+function periodCheck(){const f=$("#mk-pf").value,t=$("#mk-pt").value;$("#mk-papply").disabled=!(f&&t&&f<=t)}
+const periodLbl=()=>({today:"Today","7d":"7 days","30d":"30 days",q:"Quarter",day:"Day · "+st.periodFrom,custom:st.periodFrom+" → "+st.periodTo})[st.period]||st.period;
+const periodBar=()=>`<div class="row" style="gap:6px"><button class="btn --sm ${st.period==="today"?"":"--ghost"}" onclick="MK.st.period='today';App.remount()">Today</button><button class="btn --ghost --sm" onclick="MK.periodCtl(event)">${periodLbl()} ${ic("down")}</button></div>`;
+/* simple period chips for ?period= screens */
+const periodChips=(key,opts)=>`<div class="chips">${opts.map(([v,l])=>`<button class="chip ${st[key]===v?"on":""}" onclick="MK.st.${key}='${v}';App.remount()">${l}</button>`).join("")}</div>`;
+const pager=(n,per=25)=>n>per?`<div class="row mt8 sm muted" style="justify-content:space-between"><span>Showing ${per} of ${n} · page ${st.demoPage} of ${Math.ceil(n/per)}</span><div class="row" style="gap:4px"><button class="btn --ghost --sm" onclick="App.toast('Previous page')">${ic("back")}</button><button class="btn --ghost --sm" onclick="App.toast('Next page')">${ic("chev")}</button></div></div>`:`<div class="note mt8">${n} records · the old CRM showed only the latest 25 with no pager – the pager above appears once there are more.</div>`;
+
+/* ===== HUB ===== */
+window.mount_marketing=function(){
+  const k=hubKpis(),isA=admin();
+  head("mk-hub-head",`<div class="h2">Marketing &amp; Growth</div><span class="sp"></span>${roleNote(isA?"Owner (admin): all pages":"Manager: Demo requests and Site leads only – Growth and Marketing are admin-only")}`);
+  const tile=(id,t,icn,meta,k,cls,chips)=>`<div class="tile" onclick="App.go('${id}')"><div class="h3">${ic(icn)} ${t}</div><div class="meta">${meta}</div><div class="k ${cls||""}">${k}</div>${chips?`<div class="chips">${chips}</div>`:""}</div>`;
+  let h=`<div class="sec-head"><div class="h3">Leads</div><span class="auto"><i></i> Site leads board refreshes every 60 s</span></div><div class="hub">
+   ${tile("mk-leads","Site leads","inbox","Callback requests from floritta.uk forms",k.leadsWait+" waiting",k.leadsWait?"accent":"")}
+   ${tile("mk-demo","Demo requests","sparkle","Book-a-demo queue from the Floritta One landing",k.demoNew+" new to follow up")}
+  </div>`;
+  if(isA)h+=`<div class="sec-head"><div class="h3">Growth</div><span class="note">GrowthNav: Upsell · Reviews · Retention · Automations · Uber Ads</span></div><div class="hub">
+   ${tile("mk-upsell","Upsell","gift","Add-ons and bundles · attach rate","18.4%")}
+   ${tile("mk-reviews","Reviews","star","Review funnel – three numbers","212 published")}
+   ${tile("mk-retention","Retention","refresh","One-order vs repeat, churn risk","61 at risk","accent")}
+   ${tile("mk-automations","Automations","zap","Trigger → action registry (nothing runs it yet)","3 rules")}
+   ${tile("mk-uberads","Uber Ads","truck","Campaigns on Uber Eats · live or manual","£246 · 7d")}
+  </div>
+  <div class="sec-head"><div class="h3">Marketing</div><span class="note">MarketingNav: 13 tabs, Pinterest lives under /settings/integrations</span></div><div class="hub">
+   ${tile("mk-promo","Promo codes","tag","Codes the checkout accepts, insert batches",k.promoLive+" active")}
+   ${tile("mk-social","Social planner","calendar","Month calendar, adapters, AI drafts","6 scheduled")}
+   ${tile("mk-comments","Comments","chat","Public replies, mentions, Google reviews",k.unansw+" to answer",k.unansw?"accent":"")}
+   ${tile("mk-studio","Studio","sparkle","AI content studio in the brand voice","drafts only")}
+   ${tile("mk-agents","Agents","play","Weekly Threads / Google agent, auto-publish","Sun 17:40")}
+   ${tile("mk-trends","Trends","eye","Competitor feed and idea bank","8 posts · 3 ideas")}
+   ${tile("mk-utm","UTM builder","link","Tracked links, /r short links, QR","12 links")}
+   ${tile("mk-utm-analytics","UTM analytics","growth","Clicks, orders, CAC by tag","£2,120 · 30d")}
+   ${tile("mk-attribution","Attribution","filter","Where every order came from","UTM 71%")}
+   ${tile("mk-referrals","Referrals","award","Partners, commissions, payouts",fmt(k.payable)+" payable")}
+   ${tile("mk-placements","Placements","map","External listings and their traffic","1 broken","accent")}
+   ${tile("mk-emails","Emails","mail","Transactional email texts · 13 languages","14 unreviewed")}
+   ${tile("mk-pinterest","Pinterest","pin","Catalog feed, auto-pins, CAPI","connected")}
+  </div>`;
+  $("#mk-hub-body").innerHTML=h;
+  A.registerCommands([{g:"Go to",t:"Site leads",ic:"inbox",fn:()=>A.go("mk-leads")},{g:"Go to",t:"Marketing · Promo codes",ic:"tag",fn:()=>A.go("mk-promo")},{g:"Go to",t:"Marketing · Social planner",ic:"calendar",fn:()=>A.go("mk-social")},{g:"Go to",t:"Growth · Upsell",ic:"gift",fn:()=>A.go("mk-upsell")}]);
+};
+
+/* ===== DEMO REQUESTS (MKTG-001…014) ===== */
+window.mount_mk_demo=function(params){
+  if(params&&params.status)st.demoStatus=params.status;
+  const rows=st.demoEmpty?[]:DEMO.filter(d=>st.demoStatus==="all"||d.status===st.demoStatus);
+  const cnt=s=>DEMO.filter(d=>s==="all"||d.status===s).length;
+  const nNew=st.demoEmpty?0:DEMO.filter(d=>d.status==="new").length;
+  head("mk-demo-head",`<div><div class="h2">Demo requests</div><div class="sm soft">${nNew} new to follow up</div></div><span class="sp"></span>${roleNote("manager, admin")}${demoBtn("MK.demoMenu(event)")}`);
+  const sel=d=>`<select class="select status-sel" onchange="MK.demoStatus(${d.id},this.value)">${["new","contacted","closed"].map(s=>`<option value="${s}" ${d.status===s?"selected":""}>${s==="new"?"New":s==="contacted"?"Contacted":"Closed"}</option>`).join("")}</select>`;
+  $("#mk-demo-body").innerHTML=`
+   <div class="views">${[["all","All"],["new","New"],["contacted","Contacted"],["closed","Closed"]].map(([v,l])=>`<button class="${st.demoStatus===v?"on":""}" onclick="MK.st.demoStatus='${v}';App.remount()">${l}<span class="n">${cnt(v)}</span></button>`).join("")}<span class="sp"></span><span class="note" style="align-self:center">?status= in the URL · Overview card «Demo requests» opens this list when new &gt; 0</span></div>
+   ${rows.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Business</th><th class="ph-hide">Type</th><th class="ph-hide">Message</th><th>Status</th></tr></thead><tbody>
+   ${rows.map(d=>`<tr class="r" onclick="MK.demoOpen(${d.id})"><td class="tnum">${dt(d.at)}</td><td><b>${esc(d.name)}</b></td><td><a href="mailto:${esc(d.email)}" onclick="event.stopPropagation();App.toast('Opens your mail app · ${esc(d.email)}')" class="link" style="text-transform:none;letter-spacing:0">${esc(d.email)}</a></td><td class="tnum">${d.phone?`<a href="tel:" onclick="event.stopPropagation();App.toast('Calling ${esc(d.phone)}')">${esc(d.phone)}</a>`:"–"}</td><td>${esc(d.biz)}</td><td class="ph-hide">${esc(d.type)}</td><td class="wrap ph-hide" style="max-width:320px;font-size:12.5px;white-space:pre-line">${esc(d.msg)}</td><td onclick="event.stopPropagation()"><div class="row" style="gap:6px">${d.status==="new"?A.pill("queue","New"):d.status==="contacted"?A.pill("ready","Contacted"):A.pill("todo","Closed")}${sel(d)}</div></td></tr>`).join("")}
+   </tbody></table></div>${pager(st.demoEmpty?0:DEMO.length+(st.demoStatus==="all"?30:0))}
+   <div class="note mt8">${ic("info")} Status changes save at once (PATCH demo.status) – no audit, no history, no notification. Source field arrives from the server but was never shown; here it is in the row sheet.</div>`
+   :`<div class="empty">${ic("sparkle")}<div class="h3">No demo requests yet.</div><div class="sm">They arrive from “Book a demo” on the Floritta One landing (POST /api/demo-requests).</div></div>`}`;
+};
+function demoStatus(id,v){const d=DEMO.find(x=>x.id===id);d.status=v;re();A.toast(`${d.name} · ${v==="new"?"New":v==="contacted"?"Contacted":"Closed"} – saved, no audit trail`)}
+function demoOpen(id){const d=DEMO.find(x=>x.id===id);A.sheet({eyebrow:"Demo request · "+dt(d.at),title:esc(d.name),body:`<dl class="kv"><dt>Business</dt><dd>${esc(d.biz)} · ${esc(d.type)}</dd><dt>Email</dt><dd>${esc(d.email)}</dd><dt>Phone</dt><dd>${d.phone||"–"}</dd><dt>Source</dt><dd>Floritta One landing · “Book a demo”</dd><dt>Message</dt><dd style="white-space:pre-line">${esc(d.msg)}</dd><dt>Status</dt><dd><select class="select status-sel" onchange="MK.demoStatus(${d.id},this.value);App.closeSheet()">${["new","contacted","closed"].map(s=>`<option value="${s}" ${d.status===s?"selected":""}>${s}</option>`).join("")}</select></dd></dl>`,foot:`<button class="btn --ghost --sm" onclick="App.toast('Opens your mail app')">${ic("mail")} Email</button>${d.phone?`<button class="btn --ghost --sm" onclick="App.toast('Calling via Ringover')">${ic("phone")} Call</button>`:""}<span class="sp"></span><button class="btn --sm" onclick="MK.demoStatus(${d.id},'contacted');App.closeSheet()">${ic("check")} Mark contacted</button>`})}
+function demoMenu(ev){A.pop(ev,["Demo data",{t:(st.demoEmpty?"":"· ")+"6 requests",ic:"list",fn:()=>{st.demoEmpty=false;re()}},{t:(st.demoEmpty?"· ":"")+"Empty queue",ic:"moon",fn:()=>{st.demoEmpty=true;re()}}])}
+
+/* ===== SITE LEADS (MKTG-015…053, 301, 302) ===== */
+window.mount_mk_leads=function(params){
+  if(params&&params.status){st.leadsStatus=params.status;st.leadsTab="archive"}
+  if(params&&params.tab)st.leadsTab=params.tab;
+  const isA=admin();
+  const waiting=st.leadsEmpty?[]:LEADS.filter(l=>l.status!=="contacted"&&l.status!=="closed");
+  const reached=st.leadsEmpty?[]:LEADS.filter(l=>l.status==="contacted"&&mins(l.contactedAt)<7*1440);
+  head("mk-leads-head",`<div><div class="h2">Site leads</div><div class="sm soft">${waiting.length} new requests from floritta.uk forms</div></div>
+   <div class="seg-ctl"><button class="${st.leadsTab==="board"?"on":""}" onclick="MK.st.leadsTab='board';App.remount()">Board <span class="n">${waiting.length}</span></button><button class="${st.leadsTab==="archive"?"on":""}" onclick="MK.st.leadsTab='archive';App.remount()">All leads</button></div>
+   <span class="sp"></span><span class="auto ${st.leadsPoll?"":"--off"}" title="Orders/Index useInertiaPoll · 60 000 ms; the tick is skipped while another request runs and paused while the new-order form is open"><i></i> ${st.leadsPoll?"Refreshes every 60 s":"Paused · new-order form open"}</span>
+   ${roleNote(isA?"admin: can delete and Clear all":"manager: no delete, no Clear all")}${demoBtn("MK.leadsMenu(event)")}`);
+  $("#mk-leads-body").innerHTML=st.leadsTab==="board"?leadsBoard(waiting,reached,isA):leadsArchive(isA);
+  A.registerCommands([{g:"Actions",t:"Site leads · back to queue oldest",ic:"inbox",fn:()=>A.go("mk-leads")}]);
+};
+function leadRow(l,isA){
+  const late=l.status==="new"&&mins(l.at)>30,done=l.status==="contacted",busy=st.leadsBusy[l.id];
+  const o=l.order?A.order(l.order):null;const wa=st.leadsWa[l.id];const call=st.leadsCall[l.id];
+  const notes=l.notes.slice().sort((a,b)=>new Date(b.at)-new Date(a.at));const open=st.leadsNotesOpen[l.id];
+  return `<div class="lead ${late?"--late":""} ${done?"--done":""}">
+   <div class="col" style="gap:6px;min-width:0">
+    <div class="l-top"><b>${esc(l.name)}</b><a class="tnum" href="tel:" onclick="App.toast('Calling ${esc(l.phone)}')">${esc(l.phone)}</a><span class="tag">${esc(l.form)}</span>${l.social?`<span class="sm muted">${esc(l.social)}</span>`:""}<span class="sm muted">waiting ${ago(l.at)}</span></div>
+    ${late?`<div class="sm accent">${ic("alert")} No reaction for over 30 min</div>`:""}
+    ${l.status==="no_answer"?`<div class="l-meta accent">No answer ×${l.attempts}, last try ${ago(l.lastTry)}</div>`:""}
+    ${done?`<div class="l-meta ok">Reached ${ago(l.contactedAt)} · by ${esc(A.user(l.contactedBy).n)}</div>`:""}
+    ${l.msg?`<div class="l-msg">${esc(l.msg)}</div>`:""}
+    ${l.voice?`<div class="row"><span class="audio" title="Streams from floritta.uk · loads on play (preload=none)"><button class="ib" style="width:22px;height:22px" onclick="App.toast('Playing voice message · streamed from floritta.uk')">${ic("play")}</button><span class="bar">${Array.from({length:18},(_,i)=>`<i style="height:${30+((i*37)%70)}%"></i>`).join("")}</span><span class="tnum">0:14</span></span></div>`:""}
+    ${l.product?`<div class="l-meta">Product: <a class="link" style="text-transform:none;letter-spacing:0" onclick="App.toast('Opens floritta.uk product page')">${esc(l.product)}</a></div>`:""}
+    ${o?`<div class="l-meta"><span class="pill --ready --plain" style="cursor:pointer" onclick="App.openOrder(${o.id})">Became order #${o.id} · ${fmt(o.total)}</span></div>`:""}
+    ${l.wa?`<div class="l-meta"><button class="chip" onclick="App.go('inbox',{customer:${l.c}})">${ic("chat")} WhatsApp ${l.wa.count} msgs · ${ago(l.wa.last)} →</button></div>${l.wa.inbound?`<div class="l-wa"><i>“${esc(l.wa.inbound)}”</i></div>`:""}`:(l.phone?`<div class="l-meta"><button class="chip" ${wa==="busy"?"disabled":""} onclick="MK.leadWa(${l.id})">${ic("chat")} ${wa==="busy"?"Opening chat…":"Message on WhatsApp"}</button>${wa==="fail"?`<span class="l-err">Call failed</span>`:""}</div>`:"")}
+    ${notes.length?`<div class="l-note"><b>${esc(A.user(notes[0].who).n)}</b> · ${ago(notes[0].at)} · ${esc(notes[0].t)}</div>`:""}
+    ${open&&notes.length>1?notes.slice(1).map(n=>`<div class="l-note"><b>${esc(A.user(n.who).n)}</b> · ${ago(n.at)} · ${esc(n.t)}</div>`).join(""):""}
+    ${st.leadsNote===l.id?`<div class="row"><input class="input" id="mk-note-in" placeholder="Add a note… Enter to save, Esc to close" onkeydown="if(event.key==='Enter'){MK.leadNoteSave(${l.id},this.value)}else if(event.key==='Escape'){MK.st.leadsNote=null;App.remount()}"><span class="kbd">↵</span><span class="kbd">esc</span></div>`:""}
+    <div class="row" style="gap:10px">${notes.length>1?`<button class="textbtn" onclick="MK.st.leadsNotesOpen[${l.id}]=!MK.st.leadsNotesOpen[${l.id}];App.remount()">${open?"Hide notes":"All notes ("+notes.length+")"}</button>`:""}</div>
+   </div>
+   <div class="l-acts">
+    <div class="row">${l.phone?`<button class="btn --sm ${done?"--ghost":""}" ${busy?"disabled":""} onclick="MK.leadCall(${l.id})">${ic("phone")} Call</button>`:""}<button class="ib" title="Add a note" onclick="MK.st.leadsNote=${l.id};App.remount();setTimeout(()=>App.$('#mk-note-in')?.focus(),50)">${ic("edit")}</button>${isA?`<button class="ib" title="Delete lead (admin)" onclick="MK.leadDel(${l.id})">${ic("trash")}</button>`:""}</div>
+    ${call?`<span class="sm ${call==="fail"?"accent":"muted"}">${call==="fail"?"Call failed: gateway refused (502)":"Ringing your phone"}</span>`:""}
+    <div class="row">${done?`<button class="btn --ghost --sm" ${busy?"disabled":""} onclick="MK.leadStatus(${l.id},'new')">${ic("undo")} Back to queue</button>`:`<button class="btn --ghost --sm" ${busy?"disabled":""} onclick="MK.leadStatus(${l.id},'contacted')">${ic("check")} Reached</button><button class="btn --ghost --sm" ${busy?"disabled":""} title="After the 3rd try the lead goes to the archive" onclick="MK.leadStatus(${l.id},'no_answer')">No answer${l.attempts?" ×"+l.attempts:""}</button>`}</div>
+   </div></div>`;
+}
+function leadsBoard(waiting,reached,isA){
+  const all=waiting.concat(reached);
+  if(!all.length)return `<div class="empty">${ic("inbox")}<div class="h3">No site leads on the board</div><div class="sm">The block is hidden on the orders board when there are no leads at all. Leads arrive from the Bespoke order, Quick order, B2B and waitlist forms on floritta.uk; the first one (not a re-send) also posts a card to managers in Telegram.</div><button class="btn --ghost --sm" onclick="MK.st.leadsEmpty=false;App.remount()">Show demo leads</button></div>`;
+  return `<div class="row mb16" style="gap:12px"><div class="h3">Site leads <span class="muted sm">· ${waiting.length} waiting for a call</span></div><button class="textbtn" onclick="MK.st.leadsTab='archive';App.remount()">All leads →</button><span class="sp"></span>${isA&&all.length?`<button class="btn --ghost --sm" onclick="MK.leadsClear()">${ic("trash")} Clear all</button>`:""}</div>
+   <div class="note mb16">${ic("info")} New leads post a card to managers in Telegram (NotifySiteLeadJob) · the board re-reads every 60 s, so the 30-min stripe and colleagues' notes update without a reload.</div>
+   ${waiting.length?waiting.map(l=>leadRow(l,isA)).join(""):`<div class="empty" style="border:1px solid var(--hair)">${ic("check")}<div class="h3">No callback requests waiting.</div></div>`}
+   ${reached.length?`<button class="fold ${st.leadsFold?"open":""}" onclick="MK.st.leadsFold=!MK.st.leadsFold;App.remount()">${ic("chev")} Reached in the last 7 days (${reached.length})</button>${st.leadsFold?`<div class="mt8">${reached.map(l=>leadRow(l,isA)).join("")}</div>`:""}`:""}`;
+}
+function leadsArchive(isA){
+  const rows=st.leadsEmpty?[]:LEADS.filter(l=>st.leadsStatus==="all"||l.status===st.leadsStatus);
+  const cnt=s=>LEADS.filter(l=>s==="all"||l.status===s).length;
+  const sel=l=>`<select class="select status-sel" onchange="MK.leadStatus(${l.id},this.value)">${Object.keys(LEAD_ST).map(s=>`<option value="${s}" ${l.status===s?"selected":""}>${LEAD_ST[s]}</option>`).join("")}</select>`;
+  return `<div class="views">${[["all","All"],["new","New"],["no_answer","No answer"],["contacted","Contacted"],["closed","Closed"]].map(([v,l])=>`<button class="${st.leadsStatus===v?"on":""}" onclick="MK.st.leadsStatus='${v}';App.remount()">${l}<span class="n">${cnt(v)}</span></button>`).join("")}<span class="sp"></span><span class="note" style="align-self:center">?status= · Overview «Needs attention» counts New + No answer and opens ?status=new – here the count and the tab match</span></div>
+  ${rows.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Form</th><th>Name</th><th>Phone</th><th>Social</th><th class="ph-hide">Message</th><th class="ph-hide">Product</th><th>Status</th></tr></thead><tbody>
+  ${rows.map(l=>`<tr class="r"><td class="tnum">${dt(l.at)}</td><td><div>${esc(l.form)}</div><a class="sub" title="${esc(l.path)}" onclick="App.toast('Opens floritta.uk${esc(l.path)} in a new tab')">${esc(l.path)}</a></td><td><b>${esc(l.name)}</b></td><td class="tnum"><a href="tel:" onclick="App.toast('Calling ${esc(l.phone)}')">${esc(l.phone)}</a></td><td>${esc(l.social)||"–"}</td><td class="wrap ph-hide" style="max-width:300px;font-size:12.5px">${esc(l.msg)}${l.voice?`<div class="row mt8"><span class="audio"><button class="ib" style="width:22px;height:22px" onclick="App.toast('Playing voice message')">${ic("play")}</button><span class="tnum">0:14</span><span class="xs muted">voice · loads on play</span></span></div>`:""}</td><td class="ph-hide">${l.product?`<a class="link" style="text-transform:none;letter-spacing:0" onclick="App.toast('Opens the product on floritta.uk')">${esc(l.product)}</a>`:"–"}</td><td><div class="row" style="gap:6px">${leadPill(l.status)}${sel(l)}</div></td></tr>`).join("")}
+  </tbody></table></div>${pager(LEADS.length+(st.leadsStatus==="all"?40:0))}
+  <div class="note mt8">${ic("info")} Status rules are server-side: Contacted stamps who/when · No answer adds a try and the 3rd try closes the lead by itself (NO_ANSWER_LIMIT=3) · New resets tries and the “reached by” stamp. No audit, no notifications. ${isA?"":"Managers can change status but not delete."}</div>`
+  :`<div class="empty">${ic("inbox")}<div class="h3">No leads yet</div><div class="sm">They arrive from the Bespoke order and Quick order forms on floritta.uk.</div></div>`}`;
+}
+function leadStatus(id,s){const l=LEADS.find(x=>x.id===id);st.leadsBusy[id]=true;re();setTimeout(()=>{st.leadsBusy[id]=false;const me=A.me().id;
+  if(s==="contacted"){l.status="contacted";l.contactedAt=NOW.toISOString();l.contactedBy=me;A.toast(`${l.name} · Reached – kept in the 7-day fold`)}
+  else if(s==="no_answer"){l.attempts++;l.lastTry=NOW.toISOString();if(l.attempts>=3){l.status="closed";A.toast(`${l.name} · 3rd try – closed and moved to the archive`)}else{l.status="no_answer";A.toast(`${l.name} · No answer ×${l.attempts}`)}}
+  else if(s==="new"){l.status="new";l.attempts=0;l.contactedAt=null;l.contactedBy=null;A.toast(`${l.name} · Back to queue – tries reset`)}
+  else{l.status=s;A.toast(`${l.name} · ${LEAD_ST[s]}`)}
+  re()},350)}
+function leadCall(id){const l=LEADS.find(x=>x.id===id);st.leadsCall[id]=Math.random()<.8?"ring":"fail";st.leadsBusy[id]=true;re();setTimeout(()=>{st.leadsBusy[id]=false;re()},900);A.toast(st.leadsCall[id]==="ring"?"Ringover: your phone rings first, then "+l.name:"Call failed: gateway refused")}
+function leadWa(id){const l=LEADS.find(x=>x.id===id);st.leadsWa[id]="busy";re();setTimeout(()=>{if(Math.random()<.85){st.leadsWa[id]=null;l.wa={count:1,last:NOW.toISOString(),inbound:""};A.toast("Sent: “Hello! You left a callback request on floritta.uk – how can we help?” · opening chat");A.go("inbox",{customer:l.c})}else{st.leadsWa[id]="fail";re()}},900)}
+function leadNoteSave(id,v){if(!v.trim()){st.leadsNote=null;re();return}const l=LEADS.find(x=>x.id===id);l.notes.push({who:A.me().id,at:NOW.toISOString(),t:v.trim()});st.leadsNote=null;re();A.toast("Note added to the journal – nothing overwritten")}
+function leadDel(id){const l=LEADS.find(x=>x.id===id);A.confirm("Delete this lead?","It leaves the board; the record is kept in the database – but in the old CRM it also vanished from the archive (soft delete, index without trashed). Admin only.","Delete",()=>{LEADS.splice(LEADS.indexOf(l),1);re();A.toast(l.name+" removed from the board")},{danger:true})}
+function leadsClear(){const n=LEADS.filter(l=>l.status!=="closed").length;A.confirm(`Delete all ${n} leads from the board?`,"The records are kept. Admin only · soft-deletes every row on the board (waiting + reached in 7 days). Note: in the old CRM they also disappeared from the archive.",`Clear all (${n})`,()=>{st.leadsEmpty=true;re();A.toast(n+" leads cleared from the board")},{danger:true})}
+function leadsMenu(ev){A.pop(ev,["Demo data",{t:(st.leadsEmpty?"":"· ")+"7 leads on the board",ic:"list",fn:()=>{st.leadsEmpty=false;re()}},{t:(st.leadsEmpty?"· ":"")+"Empty board (block hidden)",ic:"moon",fn:()=>{st.leadsEmpty=true;re()}},"-",{t:"60-s poll · "+(st.leadsPoll?"running":"paused (new-order form open)"),ic:"refresh",fn:()=>{st.leadsPoll=!st.leadsPoll;re()}}])}
+
+/* ===== GROWTH · UPSELL (MKTG-054…074, 303) ===== */
+window.mount_mk_upsell=function(){
+  head("mk-upsell-head",`<div class="h2">Growth</div><span class="sp"></span>${periodBar()}${demoBtn("MK.upMenu(event)")}`);
+  const addons=st.upEmpty?[]:ADDONS,bundles=st.upEmpty?[]:BUNDLES;
+  const noSku=st.noSku?addons.filter(a=>!a.linked).length:0;
+  const withA=142,all=771;
+  const siteLine=a=>a.offered===true?`<span class="ok">Offered on the site</span>`:a.offered===false?`<span class="warn">Not offered on the site – add it to an add-on group in the CMS</span>`:`<span class="muted">Site status unknown – catalog bridge unavailable</span>`;
+  const addonCard=a=>`<div class="card-row">
+    <div><div class="nm"><b>${esc(a.name)}</b><span class="muted">${fmt(a.price)}</span>${a.on?"":A.pill("todo","Off")}</div>
+     <div class="sub ${a.linked?"":"accent"}">${a.linked?"SKU: "+esc(a.sku):"Not linked to a SKU – cannot be sold"}</div>
+     <div class="sub">${st.bridge?siteLine(a):`<span class="muted">Site status unknown – catalog bridge unavailable</span>`}</div></div>
+    <div class="att"><span>Attach rate <b class="tnum">${a.attach}%</b></span><div class="progress"><i style="width:${Math.min(100,a.attach*3)}%"></i></div><span class="tnum">${a.orders} orders · ${a.units} pcs · ${fmt(a.revenue)}</span></div>
+    <div class="acts"><label class="check sm"><input type="checkbox" ${a.on?"checked":""} onchange="MK.addonToggle(${a.id},this.checked)"> On</label><button class="btn --ghost --sm" onclick="MK.st.upEdit[${a.id}]=!MK.st.upEdit[${a.id}];App.remount()">${ic("edit")} Edit</button></div>
+    ${st.upEdit[a.id]?`<div class="edit-panel"><div class="field"><label>Link to a SKU</label><input class="input" placeholder="Search catalogue variants… (bundles excluded)" value="${esc(a.sku)}" oninput="MK.skuSearch(this)"><div class="note">One SKU – at most one add-on. Pick → PUT growth.addons.update {product_variant_id}, audited.</div></div><div class="field"><label>Site product id</label><input class="input" placeholder="shop_products.id on floritta.uk" value="${esc(a.siteId)}" onblur="MK.siteId(${a.id},this.value)"><div class="note">Saves on blur – no button. Empty = unlink. Old CRM sent a PUT + audit row on every blur even if unchanged; here only when changed.</div></div></div>`:""}
+   </div>`;
+  const bundleCard=b=>{const sav=b.separate-b.price;return `<div class="card-row">
+    <div><div class="nm"><b>${esc(b.name)}</b><span class="muted">${fmt(b.price)}</span>${b.published?"":A.pill("todo","Draft")}</div>
+     <div class="sub ${sav>0?"":"accent"}">${sav>0?`${fmt(sav)} saved vs ${fmt(b.separate)} separately – ${Math.round(sav/b.separate*100)}%`:"No saving vs buying the parts separately – do not advertise one"}</div>
+     <div class="sub">${b.comps.map(c=>`${c.q} × ${esc(c.sku)} · ${fmt(c.price)}${c.missing?` <span class="accent">component SKU deleted, fix the bundle</span>`:""}`).join(" &nbsp;·&nbsp; ")}</div>
+     ${b.drift?`<div class="sub accent">This bundle's contents are incomplete – the saving shown on the site may be wrong.</div>`:""}
+     ${b.published?"":`<div class="sub warn">Draft – not on the site yet. Add photos and a description in Catalog, then publish.</div>`}</div>
+    <div class="att"><span>Attach rate <b class="tnum">${b.attach}%</b></span><div class="progress"><i style="width:${Math.min(100,b.attach*3)}%"></i></div><span class="tnum">${b.orders} sold · ${fmt(b.revenue)}</span></div>
+    <div class="acts"><button class="btn --ghost --sm" onclick="App.go('catalog')">${ic("catalog")} Open in Catalog</button></div></div>`};
+  $("#mk-upsell-body").innerHTML=`${nav("g","mk-upsell")}
+   <div class="grid g6 mb16" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+    <div class="kpi-card --static"><span class="caps">Attach rate</span><span class="kpi-s">${(withA/all*100).toFixed(1)}%</span><span class="delta">${withA} of ${all} paid orders</span></div>
+    <div class="kpi-card --static"><span class="caps">Average order</span><span class="kpi-s">£96</span><span class="delta">${periodLbl()}</span></div>
+    <div class="kpi-card --static"><span class="caps">AOV difference</span><span class="kpi-s">+£21</span><span class="delta">${st.period==="today"?"Needs orders both with and without an add-on":"£114 with an add-on vs £93 without"}</span></div>
+    <div class="kpi-card --static"><span class="caps">Items/order</span><span class="kpi-s">1.24</span><span class="delta">incl. add-ons</span></div>
+    <div class="kpi-card --static"><span class="caps">Add-on revenue</span><span class="kpi-s">£2,030</span><span class="delta">${periodLbl()}</span></div>
+   </div>
+   ${noSku?`<div class="banner --accent">${ic("alert")} ${noSku} add-on(s) have no SKU behind them, so they cannot be bought.<span class="sp"></span><button class="textbtn --accent" onclick="MK.st.upEdit[${addons.find(a=>!a.linked).id}]=true;App.remount()">link now</button></div>`:""}
+   <div class="note mb16">The site checkout shows at most 3 add-ons – which ones is set in the CMS of floritta.uk, not here. Toggling an add-on here changes what the Comms upsell advisor suggests; the checkout is unchanged.</div>
+   <div class="sec-head"><div class="h3">Add-ons</div><span class="note">${addons.length} items</span></div>
+   ${addons.length?addons.map(addonCard).join(""):`<div class="empty" style="border:1px solid var(--hair)">${ic("gift")}<div class="h3">No add-ons yet</div><div class="sm">Add-ons are created outside this page (growth.addons.store has no screen). The old CRM showed nothing here at all.</div></div>`}
+   <div class="sec-head"><div class="h3">Bundles</div><button class="btn --sm" onclick="MK.newBundle()">${ic("plus")} New bundle</button></div>
+   ${bundles.length?bundles.map(bundleCard).join(""):`<div class="empty" style="border:1px solid var(--hair)">${ic("box")}<div class="h3">No bundles yet</div><div class="sm">Create one – it starts as a draft product in Catalog.</div></div>`}`;
+};
+function addonToggle(id,v){const a=ADDONS.find(x=>x.id===id);a.on=v;re();A.toast(`${a.name} · ${v?"on":"off"} – audited (addon.toggle); Comms advisor updated, site checkout unchanged`)}
+function skuSearch(inp){if(inp.value.length>1)A.toast("Searching /api/catalog/variants?q="+inp.value.slice(0,12)+" … (debounced)")}
+function siteId(id,v){const a=ADDONS.find(x=>x.id===id);if(a.siteId===v)return;a.siteId=v;A.toast(v?`Site product id ${v} saved – site sales now count toward ${a.name}`:"Site product id cleared – link removed")}
+function newBundle(){const S={name:"",price:"",comps:[]};const re2=()=>{const sep=S.comps.reduce((s,c)=>s+c.price*c.q,0);const sav=sep-(+S.price||0);$("#mk-bsep").textContent=fmt(sep);$("#mk-bsav").textContent=(sav>0?fmt(sav)+" ("+Math.round(sav/sep*100)+"%)":"–");$("#mk-bsave").disabled=!(S.name&&+S.price>0&&S.comps.length>=2);$("#mk-bcomps").innerHTML=S.comps.map((c,i)=>`<div class="row sm" style="gap:8px"><span style="flex:1">${esc(c.sku)}</span><input class="input" type="number" min="1" max="99" value="${c.q}" style="width:64px" onchange="MK._b.comps[${i}].q=Math.min(99,Math.max(1,+this.value));MK._b.re()"><span class="tnum">${fmt(c.price)}</span><button class="ib" onclick="MK._b.comps.splice(${i},1);MK._b.re()">${ic("close")}</button></div>`).join("")||`<div class="note">Nothing inside yet – search a SKU above (no duplicates).</div>`};
+  window.MK._b=Object.assign(S,{re:re2,add:(name,price)=>{if(S.comps.find(c=>c.sku===name)){A.toast("Already inside");return}S.comps.push({sku:name,price,q:1});re2()}});
+  A.modal({title:"New bundle",wide:true,body:`<div class="grid g2"><div class="field"><label>Bundle name</label><input class="input" oninput="MK._b.name=this.value;MK._b.re()"></div><div class="field"><label>Bundle price £</label><input class="input" type="number" oninput="MK._b.price=this.value;MK._b.re()"></div></div>
+   <div class="field mt16"><label>Add what is inside</label><div class="row"><input class="input" id="mk-bq" placeholder="Search SKU…"><button class="btn --ghost --sm" onclick="MK.bundlePick(event)">${ic("search")} Find</button></div></div>
+   <div class="col mt8" id="mk-bcomps"></div>
+   <div class="hr"></div><dl class="kv"><dt>Bought separately</dt><dd id="mk-bsep">£0</dd><dt>Saving</dt><dd id="mk-bsav">–</dd></dl>
+   <div class="note mt8">Save creates a draft bundle product (is_bundle, variant “Standard”) with a component manifest and a compare-at price; it is not on the site until published from Catalog. Audited.</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="mk-bsave" disabled onclick="App.closeModal();BUNDLES.push({id:Date.now(),name:MK._b.name,price:+MK._b.price,separate:MK._b.comps.reduce((s,c)=>s+c.price*c.q,0),comps:MK._b.comps.map(c=>({q:c.q,sku:c.sku,price:c.price,missing:false})),attach:0,orders:0,revenue:0,drift:false,published:false});App.remount();App.toast('Bundle saved as a draft – publish it from Catalog')">Save</button>`,onMount:re2});
+}
+function bundlePick(ev){const q=($("#mk-bq").value||"").toLowerCase();const items=P.filter(p=>!p.addon||true).filter(p=>!q||p.name.toLowerCase().includes(q)||p.sku.toLowerCase().includes(q)).slice(0,6);A.pop(ev,["Catalogue variants (bundles excluded)",...items.map(p=>({t:p.sku+" "+p.name+" · "+fmt(p.price),fn:()=>MK._b.add(p.sku+" "+p.name,p.price)}))])}
+function upMenu(ev){A.pop(ev,["Demo data",{t:"Add-on without SKU · "+(st.noSku?"shown":"hidden"),ic:"alert",fn:()=>{st.noSku=!st.noSku;re()}},{t:"Catalog bridge · "+(st.bridge?"available":"unavailable"),ic:"link",fn:()=>{st.bridge=!st.bridge;re()}},{t:(st.upEmpty?"· ":"")+"Empty lists",ic:"moon",fn:()=>{st.upEmpty=!st.upEmpty;re()}}])}
+
+/* ===== GROWTH · REVIEWS / RETENTION (MKTG-075…082) ===== */
+window.mount_mk_reviews=function(){head("mk-reviews-head",`<div class="h2">Growth</div><span class="sp"></span><span class="note">Three numbers, no actions – review requests themselves go out from Comms</span>`);
+  $("#mk-reviews-body").innerHTML=`${nav("g","mk-reviews")}<div class="grid g3"><div class="kpi-card" onclick="App.toast('In the old CRM this is Review::count() – every review record, not requests actually sent')"><span class="caps">Requests sent</span><span class="kpi">284</span><span class="delta">= all review records (not only sent requests)</span></div><div class="kpi-card --static"><span class="caps">Reviews left</span><span class="kpi">231</span><span class="delta">Published + Hidden</span></div><div class="kpi-card --static"><span class="caps">Published</span><span class="kpi">212</span><span class="delta">visible on floritta.uk</span></div></div><div class="note mt16">Requests go through comms adapters, consent respected.</div><div class="row mt16" style="gap:8px"><button class="btn --ghost --sm" onclick="App.go('mk-comments',{platform:'google'})">${ic("star")} Google reviews queue</button><button class="btn --ghost --sm" onclick="App.go('analytics')">${ic("growth")} Ratings in Analytics</button></div>`};
+window.mount_mk_retention=function(){head("mk-retention-head",`<div class="h2">Growth</div><span class="sp"></span><span class="note">All-time cohorts · RetentionReadModel('all')</span>`);
+  $("#mk-retention-body").innerHTML=`${nav("g","mk-retention")}<div class="grid g3"><div class="kpi-card --static"><span class="caps">One-order customers</span><span class="kpi">1,912</span><span class="delta">buyers minus returning, all time</span></div><div class="kpi-card --static"><span class="caps">Repeat customers</span><span class="kpi">188</span><span class="delta">9.1% of site buyers</span></div><div class="kpi-card --warn" onclick="App.go('customers',{view:'idle'})"><span class="caps">Churn risk</span><span class="kpi warn">61</span><span class="delta">last paid order older than 90 days · click to open the list</span></div></div><div class="note mt16">Campaigns are automations; no auto-send.</div>`};
+
+/* ===== GROWTH · AUTOMATIONS (MKTG-083…089, 304) ===== */
+window.mount_mk_automations=function(){
+  head("mk-automations-head",`<div class="h2">Growth</div><span class="sp"></span>${demoBtn("MK.autoMenu(event)")}<button class="btn --sm" onclick="MK.newAuto()">${ic("plus")} New automation</button>`);
+  const rows=st.autoEmpty?[]:AUTOS;const kv=o=>Object.entries(o).map(([k,v])=>`<span class="tag --line">${esc(k)}: ${esc(v)}</span>`).join(" ");
+  $("#mk-automations-body").innerHTML=`${nav("g","mk-automations")}<div class="banner --warn">${ic("info")} Registry only – no code executes these rules yet (the Automation model is read nowhere else). Do not promise customers an automatic message.</div>
+   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Trigger</th><th>Action</th><th>Status</th><th></th></tr></thead><tbody>${rows.length?rows.map(a=>`<tr class="r"><td>${esc(a.name)}</td><td class="wrap">${kv(a.trigger)}</td><td class="wrap">${kv(a.action)}</td><td><span class="switch ${a.on?"on":""}" onclick="MK.autoToggle(${a.id})"></span></td><td style="text-align:right">${a.on?`<span class="pill --ready --plain">Enabled</span>`:`<span class="pill --todo --plain">Disabled</span>`}</td></tr>`).join(""):`<tr><td colspan="5"><div class="empty">${ic("zap")}<div class="h3">No automations</div></div></td></tr>`}</tbody></table></div>
+   <div class="note mt8">Customer-facing actions go through adapters + consent + manual confirm.</div>`;
+};
+function autoToggle(id){const a=AUTOS.find(x=>x.id===id);a.on=!a.on;re();A.toast(`${a.name} · ${a.on?"enabled":"disabled"} – audited`)}
+function newAuto(){A.modal({title:"New automation",body:`<form id="mk-af" onsubmit="return false"><div class="field"><label>Name</label><input class="input" id="mk-an" required oninput="App.$('#mk-aerr').textContent=''"><div class="xs accent" id="mk-aerr"></div></div><div class="grid g2 mt8"><div class="field"><label>Trigger</label><input class="input" id="mk-at" placeholder="e.g. order_delivered"></div><div class="field"><label>Action</label><input class="input" id="mk-aa" placeholder="e.g. send_review_request"></div></div><label class="check mt16"><input type="checkbox" id="mk-ae" checked> Enabled</label><div class="note mt8">Saved to the registry with an audit row. Nothing is scheduled or sent. Server errors show under the field and Save locks while the request runs (the old modal swallowed both).</div></form>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="mk-asave" onclick="MK.autoSave()">Save</button>`})}
+function autoSave(){const n=$("#mk-an").value.trim();if(!n){$("#mk-aerr").textContent="The name field is required.";return}if(n.length>120){$("#mk-aerr").textContent="Max 120 characters.";return}const b=$("#mk-asave");b.disabled=true;b.textContent="Saving…";setTimeout(()=>{AUTOS.push({id:Date.now(),name:n,trigger:{event:$("#mk-at").value||"–"},action:{type:$("#mk-aa").value||"–"},on:$("#mk-ae").checked});A.closeModal();st.autoEmpty=false;re();A.toast("Automation saved – registry only")},500)}
+function autoMenu(ev){A.pop(ev,["Demo data",{t:(st.autoEmpty?"· ":"")+"Empty table",ic:"moon",fn:()=>{st.autoEmpty=!st.autoEmpty;re()}}])}
+
+/* ===== GROWTH · UBER ADS (MKTG-090…097) ===== */
+window.mount_mk_uberads=function(){
+  const m=st.uber;const live=m==="live";
+  head("mk-uberads-head",`<div class="h2">Growth</div><span class="sp"></span>${demoBtn("MK.uberMenu(event)")}${m==="live"||m==="error"?`<button class="btn --ghost --sm" onclick="MK.uberDisconnect()">${ic("close")} Disconnect</button>`:""}`);
+  let banner="";
+  if(m==="nokeys")banner=`<div class="banner">${ic("lock")} Uber Ads API keys are not set on the server (UBERADS_CLIENT_ID / UBERADS_CLIENT_SECRET).</div>`;
+  else if(m==="manual")banner=`<div class="banner">${ic("truck")} Connect the Floritta Uber Ads account to pull live campaigns and spend.<span class="sp"></span><button class="btn --sm" onclick="MK.uberConnect()">Connect Uber Ads</button></div>`;
+  else banner=`<div class="banner --ok">${ic("check")} Uber Ads connected — Floritta Ltd · Bermondsey<span class="sp"></span><span class="auto"><i></i> live</span></div>${m==="error"?`<div class="banner --accent">${ic("alert")} Uber Ads API: 429 rate limited – showing the last cached report (1 h ago).</div>`:""}`;
+  const rows=m==="empty"?[]:UBER_CAMPS;const spend=rows.reduce((s,c)=>s+c.spend,0);
+  $("#mk-uberads-body").innerHTML=`${nav("g","mk-uberads")}${banner}
+   <div class="grid g3 mb16"><div class="kpi-card --static"><span class="caps">Spend 7d</span><span class="kpi-s">${fmt(spend)}</span><span class="delta">${live?"from the Uber Ads 7-day report":"manual mode: this is the sum of every campaign's spend, not 7 days"}</span></div>${live?`<div class="kpi-card --static"><span class="caps">Impressions</span><span class="kpi-s">29,500</span></div><div class="kpi-card --static"><span class="caps">Clicks</span><span class="kpi-s">813</span></div>`:`<div class="kpi-card --static"><span class="caps">Orders</span><span class="kpi-s">${rows.reduce((s,c)=>s+c.orders,0)}</span></div><div class="kpi-card --static"><span class="caps">ROAS</span><span class="kpi-s">×2.9</span></div>`}</div>
+   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Campaign</th><th>Status</th><th class="num">${live?"Spend 7d":"Spend"}</th><th class="num">${live?"Impressions":"Orders"}</th><th class="num">${live?"Clicks":"ROAS"}</th></tr></thead><tbody>${rows.length?rows.map(c=>`<tr class="r" onclick="App.toast('${esc(c.name)} · opens in Uber Ads manager')"><td>${esc(c.name)}</td><td>${c.status==="Published"?A.pill("ready","Published"):c.status==="Paused"?A.pill("review","Paused"):A.pill("todo","Draft")}</td><td class="num">${fmt(c.spend)}</td><td class="num">${live?c.imp.toLocaleString("en-GB"):c.orders}</td><td class="num">${live?c.clicks:("×"+c.roas)}</td></tr>`).join(""):`<tr><td colspan="5"><div class="empty">${ic("truck")}<div class="h3">No campaigns</div></div></td></tr>`}</tbody></table></div>
+   <div class="note mt8">${live?"Live: campaigns and the 7-day report come from the Uber Ads API.":"Manual: rows are AdCampaign records entered by hand."}</div>`;
+};
+function uberConnect(){A.modal({title:"Connect Uber Ads",body:`You will be sent to Uber to sign in (OAuth). On return the token is stored, the audit row <b>uber_ads.connected</b> is written and a flash confirms.`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();MK.st.uber='live';App.remount();App.toast('Uber Ads connected · audit uber_ads.connected')">Continue to Uber</button>`})}
+function uberDisconnect(){A.confirm("Disconnect Uber Ads?","Live campaigns and spend stop updating; manual rows stay. (The old CRM disconnected without asking.)","Disconnect",()=>{st.uber="manual";re();A.toast("Uber Ads disconnected · audit uber_ads.disconnected")},{danger:true})}
+function uberMenu(ev){const o=(v,t)=>({t:(st.uber===v?"· ":"")+t,fn:()=>{st.uber=v;re()}});A.pop(ev,["Demo state",o("nokeys","Keys not set on server"),o("manual","Not connected · manual campaigns"),o("live","Connected · live API"),o("error","Connected · API error"),o("empty","Connected · no campaigns")])}
+
+/* ===== MARKETING · PROMO (MKTG-098…119) ===== */
+window.mount_mk_promo=function(params){
+  head("mk-promo-head",`<div class="h2">Marketing</div><span class="sp"></span>${demoBtn("MK.promoMenu(event)")}<button class="btn --ghost --sm" onclick="MK.newBatch()">${ic("printer")} New batch</button><button class="btn --sm" onclick="MK.promoForm()">${ic("plus")} New code</button>`);
+  const rows=st.promoEmpty?[]:PROMO;
+  const attrib=[["Insert in the box",54,"£540"],["Referral partners",12,"£186"],["Other codes",81,"£1,122"]];
+  $("#mk-promo-body").innerHTML=`${nav("m","mk-promo")}
+   ${rows.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Code</th><th>Value</th><th class="num">Min order</th><th class="num">Used</th><th class="ph-hide">Last used</th><th class="ph-hide">Window</th><th>Status</th><th></th></tr></thead><tbody>
+   ${rows.map(p=>{const s=promoStatus(p);const pt=p.partner?PARTNERS.find(x=>x.id===p.partner):null;return `<tr class="r"><td><b class="code">${esc(p.code)}</b><span class="sub">${esc(p.source)}${pt?` · Partner: ${esc(pt.name)}`:""}</span></td><td>${p.type==="percent"?p.value+"%":fmt(p.value)}</td><td class="num">${p.min?fmt(p.min):"–"}</td><td class="num"><button class="link" style="text-transform:none;letter-spacing:0" onclick="MK.promoHistory(${p.id})">${p.uses} / ${p.limit||"∞"}</button></td><td class="tnum ph-hide">${dt(p.last)}</td><td class="ph-hide">${p.starts||p.ends?`${p.starts?A.fmtDate(p.starts):"…"} → ${p.ends?A.fmtDate(p.ends):"…"}`:"Always on"}</td><td>${s==="Active"?A.pill("ready","Active"):s==="Scheduled"?A.pill("review","Scheduled"):A.pill("todo","Expired")}</td><td style="text-align:right"><span class="acts"><button class="ib" title="Edit" onclick="MK.promoForm(${p.id})">${ic("edit")}</button><button class="ib" title="Delete" onclick="MK.promoDel(${p.id})">${ic("trash")}</button></span></td></tr>`}).join("")}
+   </tbody></table></div>`:`<div class="empty" style="border:1px solid var(--hair)">${ic("tag")}<div class="h3">No promo codes</div><button class="btn --sm" onclick="MK.promoForm()">New code</button></div>`}
+   <div class="two mt24"><div class="stack">
+    <div class="panel"><div class="p-head"><div class="h4">Checkout usage – every code ever applied on the site</div>${st.promoBridge?`<span class="note">storefront.orders.promocode · cached 5 min</span>`:""}</div>
+     ${st.promoBridge?`<div style="padding:12px 14px"><div class="usage-row">${[["Insert in the box",54,"£4,860"],["Referral partners",3,"£640"],["Other codes",61,"£5,470"],["Unlabelled",2,"£310"]].map(([n,u,r])=>`<span class="chip"><b>${n}</b><small>${u} paid · ${r}</small></span>`).join("")}</div></div>
+     <table class="tbl"><thead><tr><th>Code</th><th class="num">Uses</th><th class="num">Paid</th><th class="num">Revenue</th><th class="ph-hide">Period</th><th>Source</th></tr></thead><tbody>${USAGE.map((u,i)=>{const cur=st.promoSrc[u.code]??u.src;const changed=cur!==u.src;const own=PROMO.find(p=>p.code===u.code);return `<tr><td class="code">${esc(u.code)}${own?"":`<span class="sub">not a CRM code – label only</span>`}</td><td class="num">${u.uses}</td><td class="num">${u.paid}</td><td class="num">${fmt(u.revenue)}</td><td class="ph-hide">${u.period}</td><td><span class="inline-save"><input class="input" value="${esc(cur)}" onchange="MK.st.promoSrc['${u.code}']=this.value;App.remount()" id="mk-src-${i}">${changed?`<button class="btn --sm" onclick="MK.promoSrcSave('${u.code}')">Save</button>`:""}</span></td></tr>`}).join("")}</tbody></table>`
+     :`<div class="empty">${ic("link")}<div class="sm">Storefront bridge is not configured – site-wide usage is unavailable.</div></div>`}</div>
+   </div><div class="stack">
+    <div class="panel"><div class="p-head"><div class="h4">Who brings the redemptions · last 90 days</div></div><div style="padding:12px 14px" class="bar-list">${attrib.map(([n,c,v])=>`<div class="b"><span>${n}</span><div class="progress"><i style="width:${c/81*100}%"></i></div><span class="tnum" title="${v} in discounts">${c}</span></div>`).join("")}<div class="note">Cancelled redemptions excluded · amount = discounts given</div></div></div>
+    <div class="panel"><div class="p-head"><div class="h4">Insert codes for the box</div><button class="textbtn" onclick="MK.newBatch()">New batch</button></div>
+     ${BATCHES.length?`<div class="list">${BATCHES.map(b=>`<div class="li" style="cursor:default"><div class="t"><b>${esc(b.label)} · ${A.fmtDate(b.at)}</b><small>Used: ${b.used} / ${b.n} · Valid until ${b.until} · £${b.value} off, min £${b.min}</small></div><button class="btn --ghost --sm" onclick="App.toast('Downloading ${esc(b.label)}.csv · code, value_gbp, min_order_gbp, valid_until, used')">${ic("download")} Download CSV</button></div>`).join("")}</div>`:`<div class="empty"><div class="sm">No insert batches yet.</div></div>`}</div>
+   </div></div>`;
+  if(params&&params.code)promoHistory(PROMO.find(p=>p.code===params.code)?.id);
+};
+function promoHistory(id){const p=PROMO.find(x=>x.id===id);if(!p)return;const rows=O.slice(0,Math.min(6,p.uses30)).map((o,i)=>({at:o.placed,order:i===3?"ext-7f3a":o.id,disc:p.type==="percent"?Math.round(o.total*p.value/100):p.value,released:i===4}));
+  A.modal({title:p.code+" · usage history",wide:true,body:`<div class="xs muted mb8" id="mk-ph-st">Loading…</div><table class="tbl" id="mk-ph"><thead><tr><th>When</th><th>Order</th><th class="num">Discount</th><th>Applied / Released</th></tr></thead><tbody></tbody></table>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button>`,onMount:()=>setTimeout(()=>{const ok=Math.random()<.9;$("#mk-ph-st").textContent=ok?(rows.length?"Up to 200 rows":"No redemptions yet."):"Could not load the history – try again. (The old modal showed “No redemptions yet.” on an error.)";$("#mk-ph-st").className="xs "+(ok?"muted":"accent");if(ok)$("#mk-ph tbody").innerHTML=rows.map(r=>`<tr><td class="tnum">${dt(r.at)}</td><td>${typeof r.order==="number"?`<button class="link" style="text-transform:none;letter-spacing:0" onclick="App.closeModal();App.openOrder(${r.order})">#${r.order}</button>`:`<span class="code">${r.order}</span> <span class="xs muted">external ref</span>`}</td><td class="num">${fmt(r.disc)}</td><td>${r.released?A.pill("todo","Released"):A.pill("ready","Applied")}</td></tr>`).join("")},500)})}
+function promoForm(id){const p=id?PROMO.find(x=>x.id===id):{code:"",type:"percent",value:10,min:0,source:"",limit:0,per:0,starts:"",ends:"",partner:null};
+  A.modal({title:id?"Edit code":"New code",wide:true,body:`<div class="grid g3"><div class="field"><label>Code</label><input class="input code" id="mk-pc" value="${esc(p.code)}" placeholder="LETTERS-123" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9_-]/g,'')"><div class="note">Latin letters, digits, - and _ · upper-cased · unique</div></div><div class="field"><label>Type</label><select class="select" id="mk-ptype" onchange="App.$('#mk-pvl').textContent=this.value==='percent'?'Value, % (up to 100)':'Value, £'"><option value="percent" ${p.type==="percent"?"selected":""}>Percent</option><option value="fixed" ${p.type==="fixed"?"selected":""}>Fixed</option></select></div><div class="field"><label id="mk-pvl">${p.type==="percent"?"Value, % (up to 100)":"Value, £"}</label><input class="input" type="number" value="${p.value}"><div class="note">Fixed is stored in pence – entered here in £</div></div></div>
+   <div class="grid g3 mt8"><div class="field"><label>Min order £</label><input class="input" type="number" value="${p.min||""}"></div><div class="field"><label>Source</label><input class="input" value="${esc(p.source)}" placeholder="Where the code is shown"></div><div class="field"><label>Referral partner</label><select class="select" ${p.partner?"":""}><option>No partner</option>${PARTNERS.map(x=>`<option ${p.partner===x.id?"selected":""}>${esc(x.name)}${x.company?" · "+esc(x.company):""}</option>`).join("")}</select><div class="note">Orders with this code count for the partner (stronger than UTM) and accrue commission in Referrals</div></div></div>
+   <div class="grid g3 mt8"><div class="field"><label>Usage limit</label><input class="input" type="number" value="${p.limit||""}" placeholder="unlimited"></div><div class="field"><label>Per-customer limit</label><input class="input" type="number" id="mk-pper" value="${p.per||""}" placeholder="unlimited"></div><div class="field" style="justify-content:flex-end"><label class="check"><input type="checkbox" ${p.per===1?"checked":""} onchange="App.$('#mk-pper').value=this.checked?'1':''"> Single use – one redemption per customer</label><div class="note">Same field as Per-customer limit = 1</div></div></div>
+   <div class="grid g2 mt8"><div class="field"><label>Starts</label><input class="input" type="date" value="${p.starts?p.starts.slice(0,10):""}"></div><div class="field"><label>Ends</label><input class="input" type="date" value="${p.ends?p.ends.slice(0,10):""}"></div></div>
+   <div class="note mt8">${id?"Saving changes how the checkout on floritta.uk treats this code immediately (audit before/after).":"The checkout validates, redeems and releases codes via /api/promo/validate · redeem · release."}</div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="MK.promoSave(${id||0})">Save</button>`})}
+function promoSave(id){const code=$("#mk-pc").value.trim();if(!code){A.toast("Code is required");return}if(!id&&PROMO.find(p=>p.code===code)){A.toast("This code already exists");return}if(id){PROMO.find(p=>p.id===id).code=code}else PROMO.push({id:Date.now(),code,type:$("#mk-ptype").value,value:10,unit:"%",min:0,limit:0,per:1,uses:0,uses30:0,starts:"",ends:"",source:"",partner:null,last:NOW.toISOString(),revenue30:0});A.closeModal();st.promoEmpty=false;re();A.toast(code+" saved – live on the checkout, audited")}
+function promoDel(id){const p=PROMO.find(x=>x.id===id);A.confirm("Delete "+p.code+"?","Hard delete, audited. The code stops being accepted on floritta.uk immediately – consider setting an end date instead.","Delete",()=>{PROMO.splice(PROMO.indexOf(p),1);re();A.toast(p.code+" deleted")},{danger:true})}
+function promoSrcSave(code){const v=st.promoSrc[code];const own=PROMO.find(p=>p.code===code);if(own)own.source=v;USAGE.find(u=>u.code===code).src=v;delete st.promoSrc[code];re();A.toast(own?`Source saved on ${code} (audited) · cache reset`:v?`Label saved for external code ${code}`:`Label removed for ${code}`)}
+function newBatch(){A.modal({title:"New batch",body:`<div class="grid g2"><div class="field"><label>How many codes</label><input class="input" type="number" min="1" max="500" value="100" id="mk-bn"></div><div class="field"><label>£ off</label><input class="input" type="number" min="1" max="100" value="10"></div><div class="field"><label>Min order £</label><input class="input" type="number" value="40"></div><div class="field"><label>Valid for months</label><input class="input" type="number" min="1" max="24" value="6"></div></div><div class="field mt8"><label>Batch label</label><input class="input" id="mk-bl" placeholder="e.g. Christmas box"><div class="note">Codes FLR-XXXXXX · fixed £ off · single use, 1 per customer · valid from today (London) · source insert:&lt;label&gt;</div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="(()=>{const n=+App.$('#mk-bn').value||100;const l=App.$('#mk-bl').value||'Batch';MK.BATCHES.unshift({id:Date.now(),label:l,at:App.NOW.toISOString(),n,used:0,until:'20 Apr 2027',value:10,min:40});App.closeModal();App.remount();App.toast(n+' codes created · audit promo.batch – download the CSV for the printer')})()">Create batch</button>`})}
+function promoMenu(ev){A.pop(ev,["Demo data",{t:(st.promoEmpty?"· ":"")+"No codes",ic:"moon",fn:()=>{st.promoEmpty=!st.promoEmpty;re()}},{t:"Storefront bridge · "+(st.promoBridge?"configured":"missing"),ic:"link",fn:()=>{st.promoBridge=!st.promoBridge;re()}}])}
+
+/* ===== MARKETING · UTM BUILDER (MKTG-229…238) ===== */
+window.mount_mk_utm=function(){
+  head("mk-utm-head",`<div class="h2">Marketing</div><span class="sp"></span>${demoBtn("MK.utmMenu(event)")}<button class="btn --sm" onclick="MK.utmForm()">${ic("plus")} New link</button>`);
+  const rows=st.utmEmpty?[]:UTM;
+  $("#mk-utm-body").innerHTML=`${nav("m","mk-utm")}<div class="note mb16">Tags are normalized: lowercase, no spaces. Short links /r/{code} count a click and redirect; QR codes point at the short link.</div>
+   ${rows.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Campaign</th><th>URL</th><th class="ph-hide">Short link</th><th class="num">Clicks</th><th></th></tr></thead><tbody>${rows.map(u=>`<tr class="r"><td><b>${esc(u.name)}</b><span class="sub">${esc(u.source)} / ${esc(u.medium)} / ${esc(u.campaign)}</span></td><td><span class="code" style="max-width:260px;display:inline-block;overflow:hidden;text-overflow:ellipsis;vertical-align:middle" title="${esc(u.url)}">${esc(u.url)}</span> <button class="textbtn" onclick="MK.copy('full URL')">Copy</button></td><td class="ph-hide"><span class="code">/r/${u.short}</span> <button class="textbtn" onclick="MK.copy('floritta.uk/r/${u.short}')">Copy</button></td><td class="num">${u.clicks.toLocaleString("en-GB")}</td><td style="text-align:right"><span class="acts"><button class="ib" title="QR" onclick="MK.utmQr(${u.id})">${ic("scan")}</button><button class="ib" title="Delete" onclick="MK.utmDel(${u.id})">${ic("trash")}</button></span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty" style="border:1px solid var(--hair)">${ic("link")}<div class="h3">No links</div><button class="btn --sm" onclick="MK.utmForm()">New link</button></div>`}`;
+};
+function utmForm(){const S={url:"https://floritta.uk/",source:"",medium:"",campaign:"",term:"",content:""};window.MK._u=S;
+  const norm=v=>String(v||"").toLowerCase().trim().replace(/\s+/g,"-");
+  const prev=()=>{const q=["source","medium","campaign","term","content"].filter(k=>S[k]).map(k=>"utm_"+k+"="+norm(S[k])).join("&");const ok=S.url&&S.source&&S.medium;$("#mk-uprev").textContent=ok?S.url+(S.url.includes("?")?"&":"?")+q:"Fill in URL, source and medium to preview";$("#mk-upaid").style.display=norm(S.medium)==="paid"?"":"none";$("#mk-ureq").style.display=(S.presetName&&UTM_PRESETS[S.presetName][2]==="{campaign}"&&!S.campaign)?"":"none"};
+  S.prev=prev;S.set=(k,v)=>{S[k]=v;prev()};S.preset=(p)=>{S.presetName=p;const [s,m,c]=UTM_PRESETS[p];S.source=s;S.medium=m;S.campaign=c==="{campaign}"?"":c;$("#mk-us").value=s;$("#mk-um").value=m;$("#mk-uc").value=S.campaign;$("#mk-uc").placeholder=c==="{campaign}"?"required for this preset":"";prev()};
+  A.modal({title:"New link",wide:true,body:`<div class="grid g2"><div class="field"><label>Preset</label><select class="select" onchange="MK._u.preset(this.value)">${Object.keys(UTM_PRESETS).map(p=>`<option>${p}</option>`).join("")}</select></div><div class="field"><label>Target URL</label><input class="input" value="https://floritta.uk/" oninput="MK._u.set('url',this.value)"></div></div>
+   <div class="grid g3 mt8"><div class="field"><label>Source</label><input class="input" id="mk-us" oninput="MK._u.set('source',this.value)"></div><div class="field"><label>Medium</label><input class="input" id="mk-um" oninput="MK._u.set('medium',this.value)"><div class="note accent" id="mk-upaid" style="display:none">medium “paid” is not allowed – use cpc, social, affiliate… so the analytics does not mix channels</div></div><div class="field"><label>Campaign</label><input class="input" id="mk-uc" oninput="MK._u.set('campaign',this.value)"><div class="note accent" id="mk-ureq" style="display:none">Campaign is required for this preset</div></div></div>
+   <div class="grid g2 mt8"><div class="field"><label>Term</label><input class="input" oninput="MK._u.set('term',this.value)"></div><div class="field"><label>Content</label><input class="input" oninput="MK._u.set('content',this.value)"></div></div>
+   <div class="field mt16"><label>Preview</label><div class="row"><span class="code" id="mk-uprev" style="flex:1;word-break:break-all;white-space:normal"></span><button class="btn --ghost --sm" onclick="MK.copy('preview link')">Copy</button></div></div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="MK.utmSave()">Save</button>`,onMount:prev})}
+function utmSave(){const S=MK._u;if(!S.url||!S.source||!S.medium){A.toast("URL, source and medium are required");return}if(String(S.medium).toLowerCase().trim()==="paid"){A.toast("medium=paid is rejected by the server");return}const code=Math.random().toString(36).slice(2,10).padEnd(8,"x");UTM.unshift({id:Date.now(),name:(S.presetName||"Custom")+" · "+S.campaign,source:S.source.toLowerCase(),medium:S.medium.toLowerCase(),campaign:(S.campaign||"").toLowerCase().replace(/\s+/g,"-"),clicks:0,visits:0,orders:0,revenue:0,url:$("#mk-uprev").textContent,short:code,created:NOW.toISOString()});A.closeModal();st.utmEmpty=false;re();A.toast("Link saved · short code /r/"+code+" · audited")}
+function utmQr(id){const u=UTM.find(x=>x.id===id);const cells=Array.from({length:144},(_,i)=>((i*7+id*13)%5<2||i<36&&i%12<3)?"on":"").map(c=>`<i class="${c}"></i>`).join("");A.modal({title:"QR code",body:`<div class="qr">${cells}</div><div class="sm" style="text-align:center;margin-top:10px"><span class="code">floritta.uk/r/${u.short}</span></div><div class="note mt8" style="text-align:center">Drawn in the browser · PNG 1024 px</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Close</button><button class="btn --sm" onclick="App.closeModal();App.toast('Downloading qr-${u.short}.png · 1024 px')">${ic("download")} Download PNG</button>`})}
+function utmDel(id){const u=UTM.find(x=>x.id===id);A.confirm("Delete this link?",`Hard delete, audited. /r/${u.short} will return 404 from now on – any printed QR codes with it stop working. ${u.clicks} clicks so far.`,"Delete",()=>{UTM.splice(UTM.indexOf(u),1);re();A.toast("Link deleted · /r/"+u.short+" now 404")},{danger:true})}
+function utmMenu(ev){A.pop(ev,["Demo data",{t:(st.utmEmpty?"· ":"")+"No links",ic:"moon",fn:()=>{st.utmEmpty=!st.utmEmpty;re()}}])}
+
+/* ===== MARKETING · UTM ANALYTICS (MKTG-239…248, 310, 311) ===== */
+window.mount_mk_utm_analytics=function(){
+  head("mk-utma-head",`<div class="h2">Marketing</div><span class="sp"></span>${periodChips("utmaPeriod",[["7d","7 days"],["30d","30 days"],["90d","90 days"],["all","All time"]])}${demoBtn("MK.utmaMenu(event)")}`);
+  const k=st.utmaPeriod==="7d"?.3:st.utmaPeriod==="30d"?1:st.utmaPeriod==="90d"?2.6:4;
+  const byKey={};UTM.forEach(u=>{const key=u.source+" / "+u.medium;byKey[key]=byKey[key]||{src:u.source,med:u.medium,clicks:0,orders:0,revenue:0,camps:new Set()};byKey[key].clicks+=u.clicks;byKey[key].orders+=Math.round(u.orders*k);byKey[key].revenue+=Math.round(u.revenue*k);byKey[key].camps.add(u.campaign)});
+  const rows=Object.values(byKey);
+  rows.push({src:"Instagram ",med:"paid",clicks:88,orders:2,revenue:190,dirty:true,paid:true,camps:new Set(["old-ad"])});
+  const spendFor=r=>{if(st.spendMode==="none")return null;const s=SPEND.filter(x=>x.source===r.src||(x.camp&&r.camps.has(x.camp)));if(!s.length)return null;const dated=st.spendMode==="dated";return{amt:s.reduce((a,x)=>a+x.amount,0),lifetime:!dated}};
+  const hasSpend=st.spendMode!=="none";
+  $("#mk-utma-body").innerHTML=`${nav("m","mk-utm-analytics")}
+   <div class="grid g4 mb16"><div class="kpi-card --static"><span class="caps">Clicks</span><span class="kpi-s">${rows.reduce((s,r)=>s+r.clicks,0).toLocaleString("en-GB")}</span><span class="delta">cumulative – not per period</span></div><div class="kpi-card --static"><span class="caps">Orders</span><span class="kpi-s">${rows.reduce((s,r)=>s+r.orders,0)}</span></div><div class="kpi-card --static"><span class="caps">Revenue</span><span class="kpi-s">${fmt(rows.reduce((s,r)=>s+r.revenue,0))}</span></div><div class="kpi-card --static"><span class="caps">Conversion</span><span class="kpi-s">${(rows.reduce((s,r)=>s+r.orders,0)/rows.reduce((s,r)=>s+r.clicks,0)*100).toFixed(1)}%</span><span class="delta">orders / clicks</span></div></div>
+   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Source / medium</th><th class="num">Clicks</th><th class="num">Orders</th><th class="num">Revenue</th><th class="num ph-hide">Conversion</th><th class="num">CAC</th></tr></thead><tbody>${rows.length?rows.map(r=>{const sp=spendFor(r);return `<tr class="r"><td>${esc(r.src)} / ${esc(r.med)} ${r.dirty?`<span class="tag --accent" title="Tag has capitals or spaces – normalise the link">Dirty tag</span>`:""}${r.paid?`<span class="tag --accent" title="medium=paid mixes channels – use cpc / social / affiliate">medium=paid</span>`:""}</td><td class="num">${r.clicks.toLocaleString("en-GB")}</td><td class="num">${r.orders}</td><td class="num">${fmt(r.revenue)}</td><td class="num ph-hide">${r.clicks?(r.orders/r.clicks*100).toFixed(1)+"%":"–"}</td><td class="num">${sp&&r.orders?fmt(Math.round(sp.amt/r.orders))+(sp.lifetime?`<span title="Spend for this campaign over its whole lifetime, not the period" class="warn">*</span>`:""):"–"}</td></tr>`}).join(""):`<tr><td colspan="6"><div class="empty"><div class="sm">No data</div></div></td></tr>`}</tbody></table></div>
+   <div class="note mt8">Clicks are cumulative since the link was created. ${!hasSpend?"No ad spend logged – CAC is empty.":st.spendMode==="dated"?"CAC = spend logged for the period ÷ orders.":"CAC* = lifetime campaign spend ÷ orders (no dated spend for this period)."}</div>
+   <div class="two mt24"><div class="panel"><div class="p-head"><div class="h4">Top sources by orders</div></div><div style="padding:12px 14px" class="bar-list">${rows.filter(r=>r.orders).sort((a,b)=>b.orders-a.orders).slice(0,6).map((r,_,arr)=>`<div class="b"><span>${esc(r.src)}</span><div class="progress"><i style="width:${r.orders/arr[0].orders*100}%"></i></div><span class="tnum">${r.orders}</span></div>`).join("")||`<div class="note">No orders in this period.</div>`}</div></div>
+   <div class="panel"><div class="p-head"><div class="h4">Ad spend</div></div><div style="padding:12px 14px"><div class="note mb8">Log spend by date for period-accurate CAC. Stored in pence, entered in £.</div><div class="grid g2"><div class="field"><label>Date</label><input class="input" type="date" id="mk-sd" value="2026-10-20"><div class="note">Defaults to today in Europe/London (the old form used the browser's UTC date)</div></div><div class="field"><label>Amount £</label><input class="input" type="number" id="mk-sa" placeholder="0.00"></div><div class="field"><label>Campaign</label><select class="select" id="mk-sc" onchange="App.$('#mk-ss').disabled=!!this.value;if(this.value)App.$('#mk-ss').value=''"><option value="">– no campaign –</option>${[...new Set(UTM.map(u=>u.campaign))].map(c=>`<option>${esc(c)}</option>`).join("")}</select></div><div class="field"><label>Source</label><input class="input" id="mk-ss" placeholder="google, instagram…"><div class="note">Locked when a campaign is chosen</div></div></div><div class="row mt8" style="justify-content:flex-end"><button class="btn --sm" onclick="MK.spendAdd()">Add</button></div>
+    <div class="hr"></div>${hasSpend&&SPEND.length?`<table class="tbl"><thead><tr><th>Date</th><th>Campaign / source</th><th class="num">Amount</th><th></th></tr></thead><tbody>${SPEND.slice(0,20).map(s=>`<tr><td class="tnum">${A.fmtDate(s.on)}</td><td>${esc(s.camp||s.source)}</td><td class="num">${fmt(s.amount)}</td><td style="text-align:right"><button class="ib" onclick="MK.spendDel(${s.id})">${ic("trash")}</button></td></tr>`).join("")}</tbody></table><div class="note mt8">Last 20 entries</div>`:`<div class="empty"><div class="sm">No spend entries yet</div></div>`}</div></div></div>`;
+};
+function spendAdd(){const a=+$("#mk-sa").value;if(!a){A.toast("Amount is required");return}SPEND.unshift({id:Date.now(),on:$("#mk-sd").value+"T09:00:00",amount:a,camp:$("#mk-sc").value,source:($("#mk-ss").value||"").toLowerCase().trim()});st.spendMode="dated";re();setTimeout(()=>{$("#mk-sd").value="2026-10-20"},0);A.toast("Spend logged · CAC updated – date and campaign kept, amount and source cleared")}
+function spendDel(id){A.confirm("Delete this spend entry?","Audited; CAC in the table recalculates.","Delete",()=>{SPEND.splice(SPEND.findIndex(s=>s.id===id),1);re();A.toast("Spend entry deleted")},{danger:true})}
+function utmaMenu(ev){const o=(v,t)=>({t:(st.spendMode===v?"· ":"")+t,fn:()=>{st.spendMode=v;re()}});A.pop(ev,["Spend basis",o("dated","Dated spend for the period"),o("lifetime","Lifetime campaign spend (CAC*)"),o("none","No spend logged")])}
+
+/* ===== MARKETING · ATTRIBUTION (MKTG-249…258, 309) ===== */
+window.mount_mk_attribution=function(){
+  head("mk-attr-head",`<div class="h2">Marketing</div><span class="sp"></span>${periodChips("attrPeriod",[["7d","7 days"],["30d","30 days"],["90d","90 days"],["all","All time"]])}<label class="check sm"><input type="checkbox" ${st.unknownOnly?"checked":""} onchange="MK.st.unknownOnly=this.checked;App.remount()"> Unknown only</label>${demoBtn("MK.attrMenu(event)")}`);
+  const srcs=[["google / cpc / brand-uk","auto",96,9120,31],["instagram / bio / oct-bio","auto",41,3870,13],["Our emails / newsletter / autumn-edit","auto",29,2740,9],["direct","direct",38,3400,12],["google (organic)","referrer",46,4210,15],["whatsapp / broadcast","self-reported",33,2980,11],["partner · Hale Weddings","partner code",6,1480,2],["repeat","repeat customer",14,1260,5],["unknown","unknown",8,690,3]];
+  const conf=[["exact",168],["inferred",54],["estimate",21],["self-reported",33],["repeat customer",14],["unknown",st.attrEmpty?0:8]];
+  const heard=[["Google search",61,"38%","52"],["Instagram",47,"29%","41"],["Friend / colleague",28,"17%","0"],["Walked past the shop",15,"9%","0"],["Other",11,"7%","4"]];
+  const recent=(st.attrEmpty?[]:O.filter(o=>o.chan==="Website").slice(0,12)).map((o,i)=>{const u=UTM[i%UTM.length];const unknown=i%5===4;return{o,u:unknown?null:u,heard:heard[i%5][0],gclid:i%3===0?"CjwKCAjw"+o.id+"BRBqEiwA1J5x9Qz7kL"+i:"",fbclid:i%4===1?"IwAR2k"+o.id+"xYz":"",ref:unknown?"":i%2?"https://www.google.com/":"https://l.instagram.com/?u=https%3A%2F%2Ffloritta.uk",landing:"https://floritta.uk"+(i%2?"/same-day-flower-delivery-london":"/bouquets")+"?utm_source="+(u?u.source:""),q:i%3===0?"same day flowers london · flower delivery se1":""}}).filter(r=>!st.unknownOnly||!r.u);
+  $("#mk-attr-body").innerHTML=`${nav("m","mk-attribution")}
+   <div class="grid g6 mb16" style="grid-template-columns:repeat(5,minmax(0,1fr))"><div class="kpi-card --static"><span class="caps">Orders</span><span class="kpi-s">311</span></div><div class="kpi-card --static"><span class="caps">Revenue</span><span class="kpi-s">£29,750</span></div><div class="kpi-card --static"><span class="caps">With UTM</span><span class="kpi-s">221</span></div><div class="kpi-card --static"><span class="caps">UTM coverage</span><span class="kpi-s">71%</span></div><div class="kpi-card --static"><span class="caps">Site source coverage</span><span class="kpi-s ${st.attrEmpty?"accent":""}">${st.attrEmpty?"94%":"99.2%"}</span><span class="delta">target 99%</span></div></div>
+   <div class="sec-head"><div class="h3">Confidence breakdown</div><span class="note">paid website orders · ${({"7d":"7 days","30d":"30 days","90d":"90 days",all:"all time"})[st.attrPeriod]}</span></div>
+   <div class="conf">${conf.map(([n,v])=>`<div class="${n==="unknown"&&v?"on":""}"><span class="caps">${n}</span><div class="kpi-s">${v}</div></div>`).join("")}</div>
+   <div class="two mt24"><div class="panel"><div class="p-head"><div class="h4">By source / medium / campaign</div></div>${st.attrEmpty?`<div class="empty"><div class="sm">No orders</div></div>`:`<table class="tbl"><thead><tr><th>Source</th><th class="num">Orders</th><th class="num">Revenue</th><th class="num">Share</th></tr></thead><tbody>${srcs.map(([s,fb,o,r,sh])=>`<tr><td>${esc(s)} ${fb!=="auto"?`<span class="tag --line" title="${fb==="referrer"?"No UTM – taken from the HTTP referrer":fb==="self-reported"?"From the “how did you hear” survey":fb==="repeat customer"?"Customer already bought before – first touch kept":fb==="partner code"?"Promo code tied to a referral partner – beats UTM":fb==="direct"?"No referrer, no tags":fb==="GA4 estimate"?"Estimated from GA4 sessions":"Nothing matched"}">${fb}</span>`:""}</td><td class="num">${o}</td><td class="num">${fmt(r)}</td><td class="num">${sh}%</td></tr>`).join("")}</tbody></table>`}</div>
+   <div class="panel"><div class="p-head"><div class="h4">How buyers heard about us (survey)</div><span class="note">52% answered</span></div>${st.attrEmpty?`<div class="empty"><div class="sm">No orders</div></div>`:`<table class="tbl"><thead><tr><th>Answer</th><th class="num">Orders</th><th class="num">Share</th><th class="num">Came by tag</th></tr></thead><tbody>${heard.map(([a,o,s,t])=>`<tr><td>${a}</td><td class="num">${o}</td><td class="num">${s}</td><td class="num">${t}</td></tr>`).join("")}</tbody></table><div class="note" style="padding:8px 14px">“Came by tag” = answered this but arrived with a UTM that says otherwise.</div>`}</div></div>
+   <div class="sec-head"><div class="h3">Recent orders</div><span class="note">last 50 · ${st.unknownOnly?"unknown source only":"all"}</span></div>
+   ${recent.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Order</th><th>Placed</th><th class="ph-hide">Heard from</th><th>Source</th><th class="ph-hide">Keyword</th><th class="ph-hide">First touch</th><th class="ph-hide">Last touch</th><th class="ph-hide">Probable queries</th><th class="num">Total</th></tr></thead><tbody>${recent.map(r=>`<tr class="r"><td><button class="link" style="text-transform:none;letter-spacing:0" onclick="App.openOrder(${r.o.id})">#${r.o.id}</button></td><td class="tnum">${dt(r.o.placed)}</td><td class="ph-hide">${r.heard}</td><td>${r.u?`${esc(r.u.source)} / ${esc(r.u.medium)}<span class="sub">${esc(r.u.campaign)}</span>`:`<span class="pill --late --plain">unknown</span>`}${r.gclid?` <span class="tag --line clickid" title="gclid: ${r.gclid}" onclick="this.classList.toggle('clickid');this.textContent=this.classList.contains('clickid')?'gclid':'gclid: ${r.gclid}'">gclid</span>`:""}${r.fbclid?` <span class="tag --line clickid" title="fbclid: ${r.fbclid}" onclick="this.classList.toggle('clickid');this.textContent=this.classList.contains('clickid')?'fbclid':'fbclid: ${r.fbclid}'">fbclid</span>`:""}</td><td class="ph-hide">${r.u&&r.u.term?esc(r.u.term):"–"}</td><td class="ph-hide"><span class="code" title="${esc(r.ref)}" style="display:inline-block;max-width:120px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle">${r.ref?esc(r.ref):"–"}</span></td><td class="ph-hide"><span class="code" title="${esc(r.landing)}" style="display:inline-block;max-width:140px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle">${esc(r.landing)}</span></td><td class="ph-hide xs">${r.q?esc(r.q):"–"}</td><td class="num">${fmt(r.o.total)}</td></tr>`).join("")}</tbody></table></div>`:`<div class="empty" style="border:1px solid var(--hair)"><div class="sm">No orders</div></div>`}
+   <div class="row mt16" style="gap:16px"><span class="auto"><i></i> GA4 enrich 06:30</span><span class="auto"><i></i> Search Console 06:45</span><span class="auto"><i></i> Coverage check 07:30 (alerts)</span><span class="auto --off"><i></i> Raw attribution log purged 03:40</span></div>`;
+};
+function attrMenu(ev){A.pop(ev,["Demo data",{t:(st.attrEmpty?"· ":"")+"Empty tables / coverage below target",ic:"moon",fn:()=>{st.attrEmpty=!st.attrEmpty;re()}}])}
+
+/* ===== MARKETING · REFERRALS (MKTG-259…271) ===== */
+window.mount_mk_referrals=function(){
+  head("mk-ref-head",`<div class="h2">Marketing</div><span class="sp"></span><span class="month"><button class="ib" onclick="MK.refMonth(-1)">${ic("back")}</button><b>${refLbl()}</b><button class="ib" onclick="MK.refMonth(1)">${ic("chev")}</button></span>${demoBtn("MK.refMenu(event)")}<button class="btn --ghost --sm" onclick="App.toast('Downloading referrals-${st.refMonth}.csv – accruals for bank payouts and the accountant')">${ic("download")} Export CSV</button><button class="btn --sm" onclick="MK.partnerForm()">${ic("plus")} New partner</button>`);
+  const ps=st.refEmpty?[]:PARTNERS;const tot=k=>ps.reduce((s,p)=>s+p[k],0);
+  const accr=st.refEmpty?[]:[[O[1].id,1,T(10,0,-3),210,10,21,"hold","Hold until 2 Dec"],[O[5].id,1,T(14,0,-9),180,10,18,"hold","Hold until 26 Nov"],[O[9].id,2,T(11,0,-12),240,8,19.2,"hold","Hold until 23 Nov"],[O[12].id,1,T(9,0,-48),430,10,43,"payable","–"],[O[15].id,1,T(9,0,-52),430,10,43,"payable","–"],[O[18].id,3,T(9,0,-60),120,12,14.4,"paid","Paid 1 Oct"],[O[20].id,3,T(9,0,-58),90,12,10.8,"void","Order cancelled"]];
+  $("#mk-ref-body").innerHTML=`${nav("m","mk-referrals")}
+   <div class="grid g6 mb16" style="grid-template-columns:repeat(5,minmax(0,1fr))"><div class="kpi-card --static"><span class="caps">Orders</span><span class="kpi-s">${tot("orders")}</span></div><div class="kpi-card --static"><span class="caps">Accrued</span><span class="kpi-s">${fmt(tot("accrued"))}</span></div><div class="kpi-card --static"><span class="caps">On hold</span><span class="kpi-s">${fmt(tot("hold"))}</span><span class="delta">45-day hold</span></div><div class="kpi-card --static"><span class="caps">Payable</span><span class="kpi-s">${fmt(tot("payable"))}</span></div><div class="kpi-card --static"><span class="caps">Paid</span><span class="kpi-s">${fmt(tot("paid"))}</span></div></div>
+   <div class="sec-head"><div class="h3">Partners</div></div>
+   ${ps.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Partner</th><th class="ph-hide">Segment</th><th class="num">Rate</th><th class="num">Orders</th><th class="num ph-hide">Goods ex VAT</th><th class="num ph-hide">Accrued</th><th class="num ph-hide">On hold</th><th class="num">Payable</th><th class="num ph-hide">Paid</th><th>Status</th><th></th></tr></thead><tbody>${ps.map(p=>`<tr class="r"><td><b>${esc(p.name)}</b>${p.company?` <span class="muted">· ${esc(p.company)}</span>`:""}<span class="sub"><span class="code" title="https://floritta.uk/?utm_source=partner&utm_medium=referral&utm_campaign=${p.slug}">referral/${p.slug}</span> <button class="textbtn" onclick="MK.copy('partner link')">copy</button></span></td><td class="ph-hide">${esc(p.seg)}</td><td class="num">${p.rate}%</td><td class="num">${p.orders}</td><td class="num ph-hide">${fmt(p.goods)}</td><td class="num ph-hide">${fmt(p.accrued)}</td><td class="num ph-hide">${fmt(p.hold)}</td><td class="num"><b>${fmt(p.payable)}</b></td><td class="num ph-hide">${fmt(p.paid)}</td><td>${p.status==="active"?A.pill("ready","Active"):p.status==="paused"?A.pill("review","Paused"):A.pill("todo","Ended")}</td><td style="text-align:right"><span class="acts">${p.payable>0?`<button class="btn --ghost --sm" onclick="MK.payout(${p.id})">Mark payout</button>`:""}<button class="ib" title="Edit" onclick="MK.partnerForm(${p.id})">${ic("edit")}</button></span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty" style="border:1px solid var(--hair)">${ic("award")}<div class="h3">No partners yet</div><button class="btn --sm" onclick="MK.partnerForm()">New partner</button></div>`}
+   <div class="sec-head"><div class="h3">Accruals this month</div><span class="auto"><i></i> 04:45 cron moves accruals older than 45 days from On hold to Payable</span></div>
+   ${accr.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Order</th><th>Partner</th><th>Date</th><th class="num">Goods ex VAT</th><th class="num">Rate</th><th class="num">Commission</th><th>Status</th><th>Hold until / paid</th></tr></thead><tbody>${accr.map(([oid,pid,d,g,r,c,s,h])=>`<tr class="r"><td><button class="link" style="text-transform:none;letter-spacing:0" onclick="App.openOrder(${oid})">#${oid}</button></td><td>${esc(PARTNERS.find(p=>p.id===pid).name)}</td><td class="tnum">${A.fmtDate(d)}</td><td class="num">${fmt(g)}</td><td class="num">${r}%</td><td class="num">${fmt(c)}</td><td>${s==="hold"?A.pill("review","On hold"):s==="payable"?A.pill("ready","Payable"):s==="paid"?A.pill("done","Paid"):A.pill("cancelled","Void")}</td><td>${h}</td></tr>`).join("")}</tbody></table></div>`:`<div class="empty" style="border:1px solid var(--hair)"><div class="sm">No accruals this month</div></div>`}
+   <div class="note mt8">An accrual is created when a paid order carries the partner's code or link; it stays On hold for 45 days (refund window), then becomes Payable. Mark payout only records the payment – no money moves.</div>`;
+};
+const refLbl=()=>new Date(st.refMonth+"-01T12:00:00").toLocaleDateString("en-GB",{month:"long",year:"numeric"});
+function refMonth(d){const [y,m]=st.refMonth.split("-").map(Number);const x=new Date(y,m-1+d,1);st.refMonth=x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0");re();A.toast("?month="+st.refMonth)}
+function payout(id){const p=PARTNERS.find(x=>x.id===id);A.confirm("Mark payout",`Mark this month's payable accruals for ${p.name} (${fmt(p.payable)}) as paid? Every accrual is audited. This records the payment only – transfer the money from the bank yourself.`,"Mark as paid",()=>{p.paid+=p.payable;p.payable=0;re();A.toast(p.name+" · payout recorded")})}
+function partnerForm(id){const p=id?PARTNERS.find(x=>x.id===id):{name:"",company:"",email:"",phone:"",seg:"Wedding planner",rate:10,status:"active",notes:""};
+  A.modal({title:id?"Edit partner":"New partner",wide:true,body:`<div class="grid g2"><div class="field"><label>Name</label><input class="input" id="mk-pn" value="${esc(p.name)}" required></div><div class="field"><label>Company</label><input class="input" value="${esc(p.company)}"></div><div class="field"><label>Email</label><input class="input" value="${esc(p.email)}"></div><div class="field"><label>Phone</label><input class="input" value="${esc(p.phone)}" placeholder="+44 7700 900000"></div><div class="field"><label>Segment</label><select class="select">${["Wedding planner","Venue","Corporate","Influencer","Photographer / stylist","Other"].map(s=>`<option ${p.seg===s?"selected":""}>${s}</option>`).join("")}</select></div><div class="field"><label>Rate %</label><input class="input" type="number" min="0" max="100" step="0.5" value="${p.rate}"></div><div class="field"><label>Status</label><select class="select">${["active","paused","ended"].map(s=>`<option value="${s}" ${p.status===s?"selected":""}>${s[0].toUpperCase()+s.slice(1)}</option>`).join("")}</select></div><div class="field"><label>Notes</label><input class="input" value="${esc(p.notes)}"></div></div>${id?`<div class="note mt8">Partner link: <span class="code">https://floritta.uk/?utm_source=partner&utm_medium=referral&utm_campaign=${p.slug}</span> – the slug does not change on rename, so live links keep working.</div>`:`<div class="note mt8">A slug is created from the name for the partner link.</div>`}`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="(()=>{const n=App.$('#mk-pn').value.trim();if(!n){App.toast('Name is required');return}${id?`MK.PARTNERS.find(x=>x.id===${id}).name=n;`:`MK.PARTNERS.push({id:Date.now(),name:n,company:'',slug:n.toLowerCase().replace(/[^a-z0-9]+/g,'-'),seg:'Other',rate:10,status:'active',email:'',phone:'',orders:0,goods:0,accrued:0,hold:0,payable:0,paid:0,notes:''});`}App.closeModal();MK.st.refEmpty=false;App.remount();App.toast('Partner saved – audited')})()">Save</button>`})}
+function refMenu(ev){A.pop(ev,["Demo data",{t:(st.refEmpty?"· ":"")+"No partners / no accruals",ic:"moon",fn:()=>{st.refEmpty=!st.refEmpty;re()}}])}
+
+/* ===== MARKETING · PLACEMENTS (MKTG-272…286) ===== */
+window.mount_mk_placements=function(){
+  head("mk-plc-head",`<div class="h2">Marketing</div><span class="sp"></span>${demoBtn("MK.plcMenu(event)")}<button class="btn --sm" onclick="MK.plcForm()">${ic("plus")} New placement</button>`);
+  const k=st.plcPeriod==="7d"?.25:st.plcPeriod==="30d"?1:st.plcPeriod==="90d"?2.4:4;
+  let rows=(st.plcEmpty?[]:PLC).filter(p=>st.plcStatus==="all"||p.status===st.plcStatus).filter(p=>st.plcPlat==="all"||p.platform===st.plcPlat);
+  const [sk,sd]=st.plcSort;const val=p=>sk==="platform"?p.platform:sk==="visits"?(p.visits??-1):sk==="orders"?(p.orders??-1):sk==="status"?PLC_ST[p.status]:(p.checked?new Date(p.checked).getTime():0);
+  rows.sort((a,b)=>(val(a)>val(b)?1:val(a)<val(b)?-1:0)*sd);
+  const th=(key,l,cls="")=>`<th class="sort ${cls}" onclick="MK.plcSort('${key}')">${l}${sk===key?`<span class="ar">${sd>0?"↑":"↓"}</span>`:""}</th>`;
+  const urlCell=u=>`<span class="code" title="${esc(u)}" style="display:inline-block;max-width:180px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;cursor:pointer" onclick="App.toast('Opens in a new tab')">${esc(u.replace(/^https?:\/\//,""))}</span>`;
+  const num=(p,k2)=>p[k2]===null?`<span class="muted" title="No UTM in the link – nothing to count">–</span>`:`${p.shared?`<span title="This UTM is shared by several placements – the number is approximate">≈</span>`:""}${k2==="revenue"?fmt(Math.round(p[k2]*k)):Math.round(p[k2]*k)}`;
+  $("#mk-plc-body").innerHTML=`${nav("m","mk-placements")}
+   <div class="note mb8">A register of where Floritta is listed – directories, profiles, blog mentions – and what each brings. Visits and orders are matched by the source / medium / campaign triple in the placement's link.</div>
+   ${st.plcGa4?"":`<div class="banner --warn">${ic("alert")} Visits come from Google Analytics 4, which is not connected: ADC credentials missing on the server. Orders still count.</div>`}
+   <div class="toolbar"><div class="chips">${[["all","All statuses"],["active","Active"],["broken","Broken"],["nout","No UTM"],["pending","Pending"]].map(([v,l])=>`<button class="chip ${st.plcStatus===v?"on":""}" onclick="MK.st.plcStatus='${v}';App.remount()">${l}</button>`).join("")}</div><span class="sp"></span>${periodChips("plcPeriod",[["7d","7 days"],["30d","30 days"],["90d","90 days"],["all","All time"]])}<select class="select" style="width:auto;height:30px" onchange="MK.st.plcPlat=this.value;App.remount()"><option value="all">All platforms</option>${[...new Set(PLC.map(p=>p.platform))].map(p=>`<option ${st.plcPlat===p?"selected":""}>${esc(p)}</option>`).join("")}</select></div>
+   ${rows.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr>${th("platform","Platform")}<th>Page URL</th><th class="ph-hide">Link to our site</th>${th("visits","Visits","num")}${th("orders","Orders","num")}<th class="num ph-hide">Revenue</th>${th("status","Status")}${th("checked","Last checked","ph-hide")}<th class="ph-hide">Notes</th><th></th></tr></thead><tbody>${rows.map(p=>`<tr class="r"><td><b>${esc(p.platform)}</b> ${p.access?`<span class="tag --line" title="We can edit this listing">Access</span>`:""}</td><td>${urlCell(p.url)}</td><td class="ph-hide">${urlCell(p.link)}</td><td class="num">${num(p,"visits")}</td><td class="num">${num(p,"orders")}</td><td class="num ph-hide">${num(p,"revenue")}</td><td>${p.status==="active"?A.pill("ready","Active"):p.status==="broken"?A.pill("late","Broken"):p.status==="nout"?A.pill("review","No UTM"):A.pill("queue","Pending")}</td><td class="tnum ph-hide">${p.checked?A.fmtDate(p.checked):"Never"}</td><td class="ph-hide xs" style="max-width:160px">${esc(p.notes)||"–"}</td><td style="text-align:right"><span class="acts"><button class="btn --ghost --sm" onclick="MK.plcCheck(${p.id})">Mark checked</button><button class="ib" title="Edit" onclick="MK.plcForm(${p.id})">${ic("edit")}</button><button class="ib" title="Delete" onclick="MK.plcDel(${p.id})">${ic("trash")}</button></span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty" style="border:1px solid var(--hair)">${ic("map")}<div class="h3">No placements yet</div><button class="btn --sm" onclick="MK.plcForm()">New placement</button></div>`}
+   <div class="note mt8">Filters, platform and sort are client-side (not in the URL); only ?period= is.</div>`;
+};
+function plcSort(k){st.plcSort=st.plcSort[0]===k?[k,-st.plcSort[1]]:[k,1];re()}
+function plcCheck(id){const p=PLC.find(x=>x.id===id);p.checked=NOW.toISOString();re();A.toast(p.platform+" · checked now – audited")}
+function plcDel(id){const p=PLC.find(x=>x.id===id);confirmDel(()=>{PLC.splice(PLC.indexOf(p),1);re();A.toast(p.platform+" deleted (soft) – audited")},"Soft delete, audited.")}
+function plcForm(id){const p=id?PLC.find(x=>x.id===id):{platform:"",url:"",link:"https://floritta.uk/",status:"pending",access:false,notes:""};window.MK._p=Object.assign({},p);
+  A.modal({title:id?"Edit placement":"New placement",wide:true,body:`<div class="grid g2"><div class="field"><label>Platform</label><input class="input" id="mk-plp" list="mk-plats" value="${esc(p.platform)}" oninput="MK._p.platform=this.value;App.$('#mk-gen').disabled=!this.value.trim()"><datalist id="mk-plats">${[...new Set(PLC.map(x=>x.platform))].map(x=>`<option value="${esc(x)}">`).join("")}</datalist></div><div class="field"><label>Page URL</label><input class="input" value="${esc(p.url)}" oninput="MK._p.url=this.value" placeholder="https://…"></div></div>
+   <div class="field mt8"><label>Link to our site</label><div class="row"><input class="input" id="mk-pll" value="${esc(p.link)}" oninput="MK._p.link=this.value"><button class="btn --ghost --sm" id="mk-gen" ${p.platform?"":"disabled"} onclick="MK.plcUtm()">Generate UTM</button></div><div class="note" id="mk-plu">${p.link.includes("utm_")?"UTM: "+p.link.split("?")[1].split("&").map(x=>x.split("=")[1]).join(" / "):"Generate UTM builds a floritta.uk link tagged from the platform name (overwrites the field)"}</div></div>
+   <div class="grid g2 mt8"><div class="field"><label>Status</label><select class="select" onchange="MK._p.status=this.value">${Object.entries(PLC_ST).map(([v,l])=>`<option value="${v}" ${p.status===v?"selected":""}>${l}</option>`).join("")}</select></div><div class="field" style="justify-content:flex-end"><label class="check"><input type="checkbox" ${p.access?"checked":""} onchange="MK._p.access=this.checked"> We can edit it</label></div></div>
+   <div class="field mt8"><label>Notes</label><input class="input" value="${esc(p.notes)}" oninput="MK._p.notes=this.value"></div>`,
+   foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="MK.plcSave(${id||0})">Save</button>`})}
+function plcUtm(){const n=(MK._p.platform||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");const link=`https://floritta.uk/?utm_source=${n}&utm_medium=listing&utm_campaign=profile`;MK._p.link=link;$("#mk-pll").value=link;$("#mk-plu").textContent="UTM: "+n+" / listing / profile";A.toast("UTM generated · usage counted (feature-events)")}
+function plcSave(id){const p=MK._p;if(!p.platform.trim()||!p.url.trim()){A.toast("Platform and Page URL are required");return}if(id)Object.assign(PLC.find(x=>x.id===id),p);else PLC.push(Object.assign({id:Date.now(),checked:null,visits:p.link.includes("utm_")?0:null,orders:p.link.includes("utm_")?0:null,revenue:p.link.includes("utm_")?0:null,shared:false},p,{status:p.link.includes("utm_")?p.status:"nout"}));A.closeModal();st.plcEmpty=false;re();A.toast("Placement saved – audited")}
+function plcMenu(ev){A.pop(ev,["Demo data",{t:"GA4 · "+(st.plcGa4?"connected":"not connected"),ic:"growth",fn:()=>{st.plcGa4=!st.plcGa4;re()}},{t:(st.plcEmpty?"· ":"")+"No placements",ic:"moon",fn:()=>{st.plcEmpty=!st.plcEmpty;re()}}])}
+
+return {st,nav,head,demoBtn,re,roleNote,confirmDel,copy,ago,dt,mins,admin,periodCtl,periodCheck,periodChips,
+  DEMO,LEADS,ADDONS,BUNDLES,AUTOS,PARTNERS,PROMO,BATCHES,UTM,SPEND,PLC,
+  demoStatus,demoOpen,demoMenu,leadStatus,leadCall,leadWa,leadNoteSave,leadDel,leadsClear,leadsMenu,
+  addonToggle,skuSearch,siteId,newBundle,bundlePick,upMenu,autoToggle,newAuto,autoSave,autoMenu,uberConnect,uberDisconnect,uberMenu,
+  promoHistory,promoForm,promoSave,promoDel,promoSrcSave,newBatch,promoMenu,utmForm,utmSave,utmQr,utmDel,utmMenu,spendAdd,spendDel,utmaMenu,attrMenu,
+  refMonth,payout,partnerForm,refMenu,plcSort,plcCheck,plcDel,plcForm,plcUtm,plcSave,plcMenu};
+})();
+["marketing","mk-demo","mk-leads","mk-upsell","mk-reviews","mk-retention","mk-automations","mk-uberads","mk-promo","mk-utm","mk-utm-analytics","mk-attribution","mk-referrals","mk-placements"].forEach(id=>document.addEventListener("orders",()=>{if(App.state.current===id)App.remount()}));
+</script>

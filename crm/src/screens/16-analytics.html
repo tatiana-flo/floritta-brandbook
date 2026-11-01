@@ -1,0 +1,609 @@
+<style>
+/* ===== 16 · Analytics (31 reports) – shared styles, scoped to .an-scr ===== */
+.an-scr .scr-head{flex-direction:column;align-items:stretch;gap:10px;padding:10px var(--pad)}
+.an-scr .an-nav{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;font-size:12px}
+.an-scr .an-nav .g{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);margin:0 4px 0 10px}
+.an-scr .an-nav .g:first-child{margin-left:0}
+.an-scr .an-nav button{height:26px;padding:0 9px;border:1px solid transparent;color:var(--graphite);white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.an-scr .an-nav button:hover{background:var(--silver);color:var(--ink)}
+.an-scr .an-nav button.on{background:var(--sel);color:var(--on-sel)}
+.an-scr .an-nav button.lock{color:var(--grey)}
+.an-scr .an-nav button svg{width:12px;height:12px}
+.an-scr .an-nav .kbd{margin-left:auto}
+.an-scr .an-ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:36px}
+.an-scr .an-period{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.an-scr .an-sel{width:auto;min-width:150px;height:30px}
+.an-scr .an-date{width:140px;height:30px}
+.an-scr .an-lbl{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.an-scr .an-fresh{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--grey);white-space:nowrap}
+.an-scr .an-fresh svg{width:14px;height:14px}
+.an-scr .an-kpi{cursor:default}
+.an-scr .an-kpi .delta{line-height:1.3;white-space:normal}
+.an-scr .an-kpi.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+.an-scr .an-kpi.--alert{box-shadow:inset 0 3px 0 var(--accent)}
+.an-scr .an-kpi.--sm .kpi-s{font-size:22px}
+.an-scr .an-bar{display:grid;grid-template-columns:150px minmax(0,1fr) 70px auto;gap:10px;align-items:center;padding:5px 0;font-size:13px}
+.an-scr .an-bar .l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.an-scr .an-bar .v{text-align:right}
+.an-scr .an-bar .s{min-width:60px}
+.an-scr .an-bar .progress{height:8px}
+.an-scr .an-bar .l code{font-size:12px;background:var(--silver);padding:0 4px}
+.an-scr .an-chart{position:relative;height:140px;display:flex;align-items:flex-end;gap:2px;padding:0 2px;border-bottom:1px solid var(--hair)}
+.an-scr .an-chart .c{flex:1;display:flex;flex-direction:column-reverse;justify-content:flex-start;height:100%;cursor:pointer;min-width:3px}
+.an-scr .an-chart .c:hover i{opacity:.75}
+.an-scr .an-chart .c i{display:block;min-height:0}
+.an-scr .an-chart .c i.k0{background:var(--sel)}.an-scr .an-chart .c i.k1{background:var(--grey)}.an-scr .an-chart .c i.k2{background:var(--light)}.an-scr .an-chart .c i.k3{background:var(--hair)}
+.an-scr .an-chart .c i.k4{background:var(--graphite)}.an-scr .an-chart .c i.k5{background:var(--silver);box-shadow:inset 0 0 0 1px var(--light)}.an-scr .an-chart .c i.k6{background:var(--warn-bg)}
+.an-scr .an-chart.--accent .c i.k0{background:var(--accent)}
+.an-scr .an-chart .c.on i{outline:1px solid var(--ink)}
+.an-scr .an-chart svg.ln{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.an-scr .an-chart svg.ln path{fill:none;stroke:var(--warn);stroke-width:1.5}
+.an-scr .an-chart svg.ln.--ink path{stroke:var(--ink);stroke-dasharray:3 3}
+.an-scr .an-ax{display:flex;justify-content:space-between;font-size:11px;color:var(--grey);margin-top:4px}
+.an-scr .an-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--graphite);margin:8px 0 4px;align-items:center}
+.an-scr .an-legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+.an-scr .an-legend i.ln{width:14px;height:0;border-top:2px solid var(--warn)}
+.an-scr .an-detail{font-size:12.5px;color:var(--graphite);min-height:20px;margin-top:6px}
+.an-scr .an-detail b{color:var(--ink);font-weight:400}
+.an-scr .an-tabs{display:flex;gap:2px;border-bottom:1px solid var(--hair);margin:0 0 12px;flex-wrap:wrap}
+.an-scr .an-tabs button{height:36px;padding:0 12px;font-size:13px;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.an-scr .an-tabs button .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+.an-scr .an-tabs button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.an-scr .an-tabs button .dot{margin-right:2px}
+.an-scr .an-rule{font-size:12.5px;color:var(--graphite);line-height:1.5}
+.an-scr .an-rule code{font-size:12px;background:var(--silver);padding:0 4px}
+.an-scr .an-cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.an-scr .an-cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.an-scr .an-mini{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.an-scr .an-mini .r{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid var(--hair)}
+.an-scr .an-mini .r:last-child{border-bottom:0}
+.an-scr .an-mini .r b{font-weight:400;font-variant-numeric:tabular-nums}
+.an-scr .an-heat{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}
+.an-scr .an-heat th{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);font-weight:400;padding:4px 2px;text-align:center}
+.an-scr .an-heat th:first-child{text-align:left;width:38px}
+.an-scr .an-heat td{height:30px;text-align:center;border:1px solid var(--paper);cursor:pointer;font-variant-numeric:tabular-nums}
+.an-scr .an-heat td.pk{outline:2px solid var(--accent);outline-offset:-2px}
+.an-scr .an-pager{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--grey);margin-top:10px}
+.an-scr .tbl td.w{width:30%;min-width:200px}
+.an-scr .tbl td.neg,.an-scr .neg{color:var(--accent)}
+.an-scr .tbl td.pos,.an-scr .pos{color:var(--ok)}
+.an-scr .tbl tr.dim td{color:var(--grey)}
+.an-scr .tbl tr.tot td{font-weight:500;background:var(--silver)}
+.an-scr .an-okr{border:1px solid var(--hair);padding:14px 16px}
+.an-scr .an-kr{display:grid;grid-template-columns:minmax(0,1fr) 150px 110px;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--hair);font-size:13px}
+.an-scr .an-kr .progress{height:6px}
+.an-scr .an-funnel .st{display:grid;grid-template-columns:180px minmax(0,1fr) 80px 90px;gap:10px;align-items:center;padding:6px 0;font-size:13px}
+.an-scr .an-funnel .st .progress{height:14px}
+.an-scr .an-cond{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.an-scr .an-cond:last-child{border-bottom:0}
+.an-scr .an-cond .mark{width:20px;height:20px;display:grid;place-items:center;flex:none}
+.an-scr .an-cond .mark.ok{color:var(--ok)}.an-scr .an-cond .mark.no{color:var(--accent)}
+.an-scr .an-hint{font-size:12px;color:var(--grey);display:inline-flex;align-items:center;gap:6px}
+.an-scr .an-hint svg{width:13px;height:13px}
+.an-scr .an-chip-list{display:flex;gap:6px;flex-wrap:wrap}
+.an-scr .an-inline{display:inline-flex;align-items:center;gap:6px}
+.an-scr .input.--n{width:64px;height:28px;padding:0 6px}
+.an-scr .an-gate{max-width:520px;margin:40px auto}
+.an-scr .an-tip{border-bottom:1px dotted var(--grey);cursor:help}
+[data-size="phone"] .an-scr .an-hm{display:none}
+[data-size="phone"] .an-scr .an-ctl .seg-ctl{flex-wrap:wrap;height:auto}
+[data-size="phone"] .an-scr .an-ctl .seg-ctl button{height:30px}
+[data-size="phone"] .an-scr .an-sel{min-width:120px}
+[data-size="phone"] .an-scr .grid.g6{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .an-scr .an-cols2,[data-size="phone"] .an-scr .an-cols3{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .an-scr .an-bar{grid-template-columns:100px minmax(0,1fr) 60px}
+[data-size="phone"] .an-scr .an-bar .s{display:none}
+[data-size="phone"] .an-scr .an-kr,[data-size="phone"] .an-scr .an-funnel .st{grid-template-columns:minmax(0,1fr) 80px}
+[data-size="ipad"] .an-scr .an-cols3{grid-template-columns:repeat(2,minmax(0,1fr))}
+</style>
+
+<!-- ids: ANLT-001 Sidebar item «Analytics» → CEO (owner, manager with analytics.view) · ANLT-003 sub-nav of 31 reports, grouped and wrapping · ANLT-004 florist sees only «Florist bonus» · ANLT-005 manager without analytics.view sees the full nav but every other report answers 403 · ANLT-011 server gate (read: admin or analytics.view; writes: admin only) · ANLT-006 «Today» button · ANLT-007 Period dropdown with presets + Single day + Custom dates · ANLT-008 Single day calendar applies at once · ANLT-009 From / To + Apply (disabled while invalid, >366 days falls back) · ANLT-010 period keeps the other filters (basis on CEO, account on Usage) · ANLT-012 inbound links from Overview («View report», «Full report») -->
+<section class="scr an-scr" id="s-analytics" data-nav="Analytics · CEO" data-group="Analytics" data-title="Analytics" data-sub="CEO" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-analytics"></div>
+  <!-- ids: ANLT-013 load for the period (30 days default) · ANLT-014 Period presets · ANLT-015 Count by: Order date (paid) / Delivery date, default Delivery date · ANLT-022 freshness line «Data as of … · last order came in …» -->
+  <!-- ids: ANLT-016 Revenue (paid, minus delivery, refunds, marketplace commission) · ANLT-017 Average order · ANLT-018 Orders + «£0 orders not counted: N» · ANLT-019 Customers · ANLT-020 Subscription MRR («–» when none) · ANLT-021 LTV:CAC (CAC fixed £17) -->
+  <!-- ids: ANLT-023 The owner's numbers: gross margin + recipe coverage (warn < 50 %) · ANLT-024 Repeat buyers · ANLT-025 Stock loss (alert > 15 %, «nothing received») · ANLT-026 Cost per delivery (3 captions) · ANLT-027 Platform ratings · ANLT-028 Where customers come from (survey, warn < 20 % answered) -->
+  <!-- ids: ANLT-029 Revenue mix by channel · ANLT-030 Orders by channel & day + AOV step line, day detail · ANLT-031 table by day with Total row · ANLT-032 «No orders in this period» -->
+  <div class="scr-body" id="b-analytics"></div>
+</section>
+
+<!-- ids: ANLT-033 load bonus table · ANLT-034 Period · ANLT-035 view: Full table / Scheme 1 – to share / Scheme 2 – to share · ANLT-036 «to share» view hides takings and head-count · ANLT-037 how the day's takings are counted · ANLT-038 Takings for the period, Average per day · ANLT-039 card per scheme · ANLT-040 untrusted days are grey and excluded · ANLT-041 partially paid orders not counted · ANLT-042 Copy table (TSV, «Copied» 2 s) · ANLT-043 Download Excel (audit analytics.bonus.export) · ANLT-044 full table with incomplete-data days and Total row · ANLT-045 scheme rule cards -->
+<section class="scr an-scr" id="s-an-bonus" data-nav="Manager bonus" data-group="Analytics" data-title="Analytics" data-sub="Manager bonus" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-bonus"></div><div class="scr-body" id="b-an-bonus"></div>
+</section>
+
+<!-- ids: ANLT-046 load · ANLT-047 Period · ANLT-048 Total losses (alert > 0) · ANLT-049 Unpaid at risk – live snapshot · ANLT-050 Lost in chats (warn) · ANLT-051 Total costs + prev period · ANLT-052 Unpaid orders block with age buckets · ANLT-053 Manager chat outcomes · ANLT-054 Marketplace commissions by channel (flowwow → Udora) · ANLT-055 Uber Eats by store (only with 2+ stores) · ANLT-056 Delivery cost + in-house pending note · ANLT-057 Systems cost · ANLT-058 Marketplace fees by day + AOV line -->
+<section class="scr an-scr" id="s-an-losses" data-nav="Losses &amp; costs" data-group="Analytics" data-title="Analytics" data-sub="Losses &amp; costs" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-losses"></div><div class="scr-body" id="b-an-losses"></div>
+</section>
+
+<!-- ids: ANLT-059 load channel P&L · ANLT-060 Period (was inside the page body – moved to the head, note kept) · ANLT-061 Revenue, Marketplace fees, Refunds, Net · ANLT-062 recipe coverage note · ANLT-063 table Channel … Net (red < 0), Margin, Recipes · ANLT-064 «No orders in this period» -->
+<section class="scr an-scr" id="s-an-channel-pnl" data-nav="Channel P&amp;L" data-group="Analytics" data-title="Analytics" data-sub="Channel P&amp;L" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-channel-pnl"></div><div class="scr-body" id="b-an-channel-pnl"></div>
+</section>
+
+<!-- ids: ANLT-065 live margin evaluation of site items and marketplace menus · ANLT-066 403 without inventory.cost · ANLT-067 counters At a loss / Goods over target / No data / Fine · ANLT-068 assumptions line · ANLT-069 status tabs (At a loss open by default, resets page) · ANLT-070 channel dropdown · ANLT-071 search by name · ANLT-072 Item: status dot, urgent mark, grey reason · ANLT-073 Channel, Price, Goods by recipe, Full cost, Left over (red < 0), Recommended, Sold in 90 d · ANLT-074 pagination 50 · ANLT-075 «Nothing found» · ANLT-076 morning Telegram «Margin traffic light» with link here -->
+<section class="scr an-scr" id="s-an-margin" data-nav="Margin" data-group="Analytics" data-title="Analytics" data-sub="Margin" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-margin"></div><div class="scr-body" id="b-an-margin"></div>
+</section>
+
+<!-- ids: ANLT-077 confirmed sales by delivery day · ANLT-078 Period · ANLT-079 Orders, Value, Average order · ANLT-080 Delivery charged + N paid deliveries · ANLT-081 bars By channel (avg), By method, By status (raw enum keys) · ANLT-082 Refund requests: Requests, Share, Amount asked · ANLT-083 Why / How it ended · ANLT-084 Latest requests → order card · ANLT-085 «No refund requests recorded» · ANLT-012 «View report» link from Overview lands here -->
+<section class="scr an-scr" id="s-an-orders" data-nav="Orders report" data-group="Analytics" data-title="Analytics" data-sub="Orders" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-orders"></div><div class="scr-body" id="b-an-orders"></div>
+</section>
+
+<!-- ids: ANLT-086 sales by variant · ANLT-087 Period · ANLT-088 KPIs (units, revenue, SKU, margin, margin landed) · ANLT-089 Top sellers · ANLT-090 Slow movers · ANLT-091 ABC by revenue (A / B / C cards + table) · ANLT-303 «No data» in each table -->
+<section class="scr an-scr" id="s-an-products" data-nav="Products" data-group="Analytics" data-title="Analytics" data-sub="Products" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-products"></div><div class="scr-body" id="b-an-products"></div>
+</section>
+
+<!-- ids: ANLT-092 top-50 for the period · ANLT-093 Period: Last 30 / 90 days, Single day, Custom (no Today) · ANLT-094 KPIs incl. Without a recipe · ANLT-095 search with 350 ms delay · ANLT-096 Only without a recipe · ANLT-097 sort Orders / Units / Revenue · ANLT-098 Product + variant, «Built by customer» row · ANLT-099 Recipe tag · ANLT-100 pagination 20 · ANLT-101 Export CSV (audit) · ANLT-102 «No paid orders in this period yet.» · ANLT-304 period change resets search, sort, filter and page -->
+<section class="scr an-scr" id="s-an-top-products" data-nav="Top products" data-group="Analytics" data-title="Analytics" data-sub="Top products" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-top-products"></div><div class="scr-body" id="b-an-top-products"></div>
+</section>
+
+<!-- ids: ANLT-103 builder sales + funnel · ANLT-104 Period · ANLT-105 Orders with a built bouquet + revenue with delta vs previous period · ANLT-106 Average per order, Stems sold · ANLT-107 Website and CRM table · ANLT-108 Website builder funnel · ANLT-109 «site has not sent builder visits yet» / incomplete warning · ANLT-110 row click opens the order · ANLT-111 order list columns · ANLT-112 «Showing the N newest of M» · ANLT-113 empty state -->
+<section class="scr an-scr" id="s-an-bouquet-builder" data-nav="Bouquet builder" data-group="Analytics" data-title="Analytics" data-sub="Bouquet builder" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-bouquet-builder"></div><div class="scr-body" id="b-an-bouquet-builder"></div>
+</section>
+
+<!-- ids: ANLT-114 not-home cases for the period · ANLT-115 Period · ANLT-116 resolver disabled banner · ANLT-117 Saved without a second trip, Cases opened, Median time to a decision · ANLT-118 How the rest ended · ANLT-119 how it is counted -->
+<section class="scr an-scr" id="s-an-not-home" data-nav="Nobody home" data-group="Analytics" data-title="Analytics" data-sub="Nobody home" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-not-home"></div><div class="scr-body" id="b-an-not-home"></div>
+</section>
+
+<!-- ids: ANLT-120 customer analytics · ANLT-121 Period affects only new / returning · ANLT-122 Customers, Returning, Returning rate, Average LTV (all time) · ANLT-123 Returning bars · ANLT-124 LTV distribution (raw pence keys) · ANLT-125 top-10 by spend · ANLT-305 «No data» -->
+<section class="scr an-scr" id="s-an-customers" data-nav="Customers report" data-group="Analytics" data-title="Analytics" data-sub="Customers" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-customers"></div><div class="scr-body" id="b-an-customers"></div>
+</section>
+
+<!-- ids: ANLT-126 cohorts (All time default) · ANLT-127 Period incl. Today that the server maps to All time · ANLT-128 cached 6 h indicator · ANLT-129 KPIs · ANLT-130 «No identified customers in this period» · ANLT-131 cohort table · ANLT-132 Orders per customer + AOV line · ANLT-133 repeat revenue share phrase · ANLT-134 Top 20 by LTV with phone · ANLT-135 guests footnote -->
+<section class="scr an-scr" id="s-an-retention" data-nav="Retention &amp; LTV" data-group="Analytics" data-title="Analytics" data-sub="Retention &amp; LTV" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-retention"></div><div class="scr-body" id="b-an-retention"></div>
+</section>
+
+<!-- ids: ANLT-136 all-time, no period · ANLT-137 Area, Orders, Revenue (top-50 postcodes collapsed to outward code) · ANLT-138 «No data» -->
+<section class="scr an-scr" id="s-an-areas" data-nav="Areas" data-group="Analytics" data-title="Analytics" data-sub="Areas" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-areas"></div><div class="scr-body" id="b-an-areas"></div>
+</section>
+
+<!-- ids: ANLT-139 all-time, no period · ANLT-140 placed → confirmed → produced → fulfilled with −N % · ANLT-141 raw i18n keys shown by the old page (fixed labels here, raw key kept as hint) · ANLT-306 −NaN % guard and empty state -->
+<section class="scr an-scr" id="s-an-events" data-nav="Events" data-group="Analytics" data-title="Analytics" data-sub="Events" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-events"></div><div class="scr-body" id="b-an-events"></div>
+</section>
+
+<!-- ids: ANLT-142 histogram (8 weeks, by slot) · ANLT-143 By delivery slot / By order time · ANLT-144 window 8 / 12 / 26 wks / All time · ANLT-145 window line + orders without a slot · ANLT-146 staffing hint · ANLT-147 heat map Mon–Sun × 8–22 with cell detail · ANLT-148 Orders by hour of day + AOV line -->
+<section class="scr an-scr" id="s-an-peaks" data-nav="Peaks" data-group="Analytics" data-title="Analytics" data-sub="Peaks" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-peaks"></div><div class="scr-body" id="b-an-peaks"></div>
+</section>
+
+<!-- ids: ANLT-149 by month (24 default) · ANLT-150 window 12 / 24 / 36 mo · ANLT-151 Best, Worst, Average month, Channels · ANLT-152 all-channels note + running / imported note · ANLT-153 monthly revenue bars with average line · ANLT-154 table Month, channels, Orders, Revenue, avg, Season index, YoY · ANLT-155 «No orders in this window» -->
+<section class="scr an-scr" id="s-an-seasonality" data-nav="Seasonality" data-group="Analytics" data-title="Analytics" data-sub="Seasonality" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-seasonality"></div><div class="scr-body" id="b-an-seasonality"></div>
+</section>
+
+<script>
+/* ===== 16 · Analytics – shared runtime A16 (demo data fictional) ===== */
+window.A16=(()=>{
+  const A=App,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt;
+  const hsh=(i,k)=>{const x=Math.sin(i*12.9898+k*78.233+7.7)*43758.5453;return x-Math.floor(x)};
+  const ri=(i,k,a,b)=>a+Math.floor(hsh(i,k)*(b-a+1));
+  const pct=(a,b)=>b?Math.round(a/b*100):0;
+  const n=(v)=>Number(v).toLocaleString("en-GB");
+  /* demo switches (shared across pages) */
+  const D={view:true,cost:false,empty:false,resolver:true,tracking:true,storefront:true,ratings:true,survey:true,lowCoverage:false,untrusted:false,partial:true,uberStores:false,counting:true,incomplete:false,subs:true,tiers:true,unmarked:true,waits:true,many:true,peak:true,idle:true,outside:true,unmarkedList:true,overdue:true,warnShowcase:true,notes:true};
+  const S={};
+  const st=(id,def)=>S[id]||(S[id]=Object.assign({mode:"preset"},def));
+  const CH=["Website","WhatsApp","Phone","Deliveroo","Uber Eats","Instagram","Walk-in"];
+  const PRESETS={today:"Today","7d":"7 days","14d":"14 days","30d":"30 days","90d":"90 days","180d":"180 days",month:"This month",prevMonth:"Last month",quarter:"Quarter",year:"Year",all:"All time","l30":"Last 30 days","l90":"Last 90 days"};
+  const LEN={today:1,"7d":7,"14d":14,"30d":30,"90d":90,"180d":180,month:20,prevMonth:30,quarter:92,year:365,all:720,l30:30,l90:90};
+  const TABS=[["analytics","CEO","ceo"],["an-bonus","Manager bonus","bonus"],["an-losses","Losses & costs","losses"],["an-channel-pnl","Channel P&L","channel-pnl"],["an-margin","Margin","margin"],["an-orders","Orders","orders"],["an-products","Products","products"],["an-top-products","Top products","top-products"],["an-bouquet-builder","Bouquet builder","bouquet-builder"],["an-not-home","Nobody home","not-home"],["an-customers","Customers","customers"],["an-retention","Retention & LTV","retention"],["an-areas","Areas","areas"],["an-events","Events","events"],["an-peaks","Peaks","peaks"],["an-seasonality","Seasonality","seasonality"],["an-calls","Calls","calls"],["an-comms","Comms / Managers","comms"],["an-funnel","Funnel","funnel"],["an-payments","Payments","payments"],["an-loyalty","Loyalty","loyalty"],["an-languages","Languages","languages"],["an-website","Website","website"],["an-popularity","Popularity","popularity"],["an-unpaid","Unpaid","unpaid"],["an-okr","OKR","okr"],["an-features","Features","features"],["an-usage","Usage","usage"],["an-worktime","Worktime","worktime"],["an-staff","Staff","staff"],["florist-bonus","Florist bonus","florist-bonus"]];
+  const GROUPS=[["Money",["analytics","an-bonus","an-losses","an-channel-pnl","an-margin","an-payments","an-unpaid"]],["Sales",["an-orders","an-products","an-top-products","an-bouquet-builder","an-popularity","an-loyalty"]],["Customers",["an-customers","an-retention","an-areas","an-languages"]],["Demand",["an-events","an-peaks","an-seasonality","an-funnel","an-website"]],["Team",["an-calls","an-comms","an-worktime","an-staff","florist-bonus","an-okr"]],["System",["an-not-home","an-features","an-usage"]]];
+  const tab=id=>TABS.find(t=>t[0]===id);
+  const admin=()=>A.role()==="owner";
+  const florist=()=>A.role()==="florist";
+  const canRead=()=>admin()||(A.role()==="manager"&&D.view);
+  const slug=id=>tab(id)?tab(id)[2]:id;
+
+  /* ---- nav (ANLT-003/004/005) ---- */
+  function nav(cur){
+    if(A.state.size==="phone")return `<div class="an-nav"><select class="select" style="height:32px" onchange="A16.open(this.value)">${florist()?`<option value="florist-bonus">Florist bonus</option>`:GROUPS.map(([g,ids])=>`<optgroup label="${g}">${ids.map(id=>`<option value="${id}" ${id===cur?"selected":""}>${tab(id)[1]}${!canRead()&&id!=="florist-bonus"?" · 403":""}</option>`).join("")}</optgroup>`).join("")}</select></div>`;
+    if(florist())return `<div class="an-nav"><span class="g">Analytics</span><button class="on" onclick="App.go('florist-bonus')">Florist bonus</button><span class="an-hint">Florists see their bonus only</span></div>`;
+    let h=`<div class="an-nav">`;
+    GROUPS.forEach(([g,ids])=>{h+=`<span class="g">${g}</span>`;ids.forEach(id=>{const t=tab(id);const locked=!canRead()&&id!=="florist-bonus";h+=`<button class="${id===cur?"on":""} ${locked?"lock":""}" onclick="A16.open('${id}')" title="${locked?"403 · needs analytics.view":"/analytics/"+t[2]}">${locked?ic("lock"):""}${esc(t[1])}</button>`})});
+    h+=`<span class="kbd" title="Previous / next report">[ ]</span></div>`;return h;
+  }
+  function open(id){const t=tab(id);if(!canRead()&&id!=="florist-bonus"){A.toast("403 · /analytics/"+t[2]+" needs analytics.view – ask the owner (Settings → Team)");return}A.go(id)}
+  function step(dir){const cur=A.state.current;const i=TABS.findIndex(t=>t[0]===cur);if(i<0)return;const nx=TABS[(i+dir+TABS.length)%TABS.length][0];open(nx)}
+  document.addEventListener("keydown",e=>{const tag=(e.target.tagName||"").toLowerCase();if(tag==="input"||tag==="textarea"||tag==="select")return;if(!tab(A.state.current))return;if(e.key==="]")step(1);else if(e.key==="[")step(-1)});
+
+  /* ---- period (ANLT-006…010) ---- */
+  function periodLabel(id){const s=S[id];if(s.mode==="day")return "Single day · "+fmtD(s.day);if(s.mode==="custom")return s.applied?fmtD(s.from)+" – "+fmtD(s.to):"Custom – pick dates and Apply";return PRESETS[s.period]||s.period}
+  const fmtD=v=>v?new Date(v+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"}):"–";
+  function period(id,presets,opts={}){
+    const s=S[id];
+    const opt=presets.map(p=>`<option value="${p}" ${s.mode==="preset"&&s.period===p?"selected":""}>${PRESETS[p]}</option>`).join("");
+    return `<div class="an-period">${presets.includes("today")?`<button class="chip ${s.mode==="preset"&&s.period==="today"?"on":""}" onclick="A16.setPeriod('${id}','today')">Today</button>`:""}
+      <select class="select an-sel" title="Period" onchange="A16.setPeriod('${id}',this.value)">${opt}<option value="__day" ${s.mode==="day"?"selected":""}>Single day</option><option value="__custom" ${s.mode==="custom"?"selected":""}>Custom dates</option></select>
+      ${s.mode==="day"?`<span class="an-lbl">Day</span><input type="date" class="input an-date" value="${s.day}" onchange="A16.setDay('${id}',this.value)">`:""}
+      ${s.mode==="custom"?`<span class="an-lbl">From</span><input type="date" class="input an-date" id="an-from-${id}" value="${s.from||""}" oninput="A16.custCheck('${id}')"><span class="an-lbl">To</span><input type="date" class="input an-date" id="an-to-${id}" value="${s.to||""}" oninput="A16.custCheck('${id}')"><button class="btn --sm" id="an-apply-${id}" disabled onclick="A16.applyCustom('${id}')">Apply</button>`:""}
+      <span class="xs muted">${periodLabel(id)}${opts.note?" · "+opts.note:""}</span></div>`;
+  }
+  function setPeriod(id,v){const s=S[id];if(v==="__day"){s.mode="day";s.day=s.day||"2026-10-20"}else if(v==="__custom"){s.mode="custom";s.applied=false}else{s.mode="preset";s.period=v}if(s.onPeriod)s.onPeriod();A.remount()}
+  function setDay(id,v){S[id].day=v;A.remount();A.toast("Single day · "+fmtD(v))}
+  function custCheck(id){const f=$("#an-from-"+id).value,t=$("#an-to-"+id).value;const b=$("#an-apply-"+id);const ok=f&&t&&f<=t;b.disabled=!ok;S[id].from=f;S[id].to=t}
+  function applyCustom(id){const s=S[id];const d=Math.round((new Date(s.to)-new Date(s.from))/864e5)+1;if(d>366){A.toast("Range over 366 days – server falls back to the page default");s.mode="preset";A.remount();return}s.applied=true;A.remount();A.toast("Custom range · "+fmtD(s.from)+" – "+fmtD(s.to))}
+  function len(id){const s=S[id];if(s.mode==="day")return 1;if(s.mode==="custom")return s.applied?Math.max(1,Math.round((new Date(s.to)-new Date(s.from))/864e5)+1):LEN[s.period]||30;return LEN[s.period]||30}
+  function url(id,q){const parts=[];const s=S[id];if(s&&q!==false&&!(q&&q.includes("period="))){if(s.mode==="day")parts.push("period=custom&from="+s.day+"&to="+s.day);else if(s.mode==="custom"&&s.applied)parts.push("period=custom&from="+s.from+"&to="+s.to);else if(s.mode==="preset"&&s.period)parts.push("period="+s.period)}if(q)parts.push(q);$("#url").textContent="app.floritta.ai/analytics/"+slug(id)+(parts.length?"?"+parts.join("&"):"")}
+
+  /* ---- head / gate / demo ---- */
+  function head(id,o={}){
+    const parts=[];if(o.period)parts.push(period(id,o.period,o.pnote));if(o.controls)parts.push(o.controls);
+    const fresh=o.fresh===false?"":`<span class="an-fresh" title="Read-only report · refreshes on every open">${ic("refresh")}${o.fresh||"Live · 10:42"}</span>`;
+    $("#h-"+id).innerHTML=nav(id)+`<div class="an-ctl">${parts.join("")}<span class="sp"></span>${fresh}${o.back?`<button class="btn --ghost --sm" onclick="App.back()">${ic("back")} Back</button>`:""}<button class="btn --ghost --sm" onclick="A16.demo(event,'${id}')">${ic("columns")} Demo</button></div>`;
+    S[id].demo=o.demo||[];
+  }
+  function gate(id,o={}){
+    if(!canRead()&&id!=="florist-bonus"){$("#b-"+id).innerHTML=`<div class="empty an-gate">${ic("lock")}<div class="h3">403 · needs analytics.view</div><div class="sm">Reading Analytics needs the owner role or the analytics.view right (Settings → Team → Grant). Writes – OKR check-in, Popularity, monthly metrics – stay with the owner.</div><button class="btn --secondary --sm" onclick="A16.toggle('view')">Grant analytics.view (demo)</button></div>`;return false}
+    if(o.cost&&!admin()&&!D.cost){$("#b-"+id).innerHTML=`<div class="empty an-gate">${ic("lock")}<div class="h3">403 · needs inventory.cost</div><div class="sm">The Margin tab is visible to everyone with analytics.view, but the server refuses the page without the inventory.cost right. Turn it on in Demo or ask the owner.</div><button class="btn --secondary --sm" onclick="A16.toggle('cost')">Grant inventory.cost (demo)</button></div>`;return false}
+    return true;
+  }
+  const GLOBAL=[["view","Manager has analytics.view"],["cost","Manager has inventory.cost"],["empty","Empty data (no orders)"]];
+  function demo(ev,id){const items=["Demo state",...GLOBAL.map(x=>({t:(D[x[0]]?"✓ ":"○ ")+x[1],fn:()=>toggle(x[0])}))];const own=S[id].demo||[];if(own.length){items.push("-","This page");own.forEach(x=>items.push({t:(D[x[0]]?"✓ ":"○ ")+x[1],fn:()=>toggle(x[0])}))}A.pop(ev,items)}
+  function toggle(k){D[k]=!D[k];A.remount();A.toast("Demo · "+k+" "+(D[k]?"on":"off"))}
+
+  /* ---- components ---- */
+  const kpi=(l,v,sub,cls="")=>`<div class="kpi-card an-kpi ${cls}"><span class="caps">${l}</span><span class="kpi-s tnum">${v}</span>${sub?`<span class="delta">${sub}</span>`:""}</div>`;
+  const sec=(t,r="")=>`<div class="sec-head"><div class="h3">${t}</div>${r}</div>`;
+  const note=(t,cls="")=>`<div class="note-box ${cls}">${t}</div>`;
+  const empty=(t,sub="",icon="list")=>`<div class="empty">${ic(icon)}<div class="h3">${t}</div>${sub?`<div class="sm">${sub}</div>`:""}</div>`;
+  function bars(items,o={}){const max=Math.max(1,...items.map(i=>i.v));return `<div class="an-bars">${items.map(i=>`<div class="an-bar"><span class="l" title="${esc(i.title||i.l)}">${i.l}</span><div class="progress ${i.cls||""}"><i style="width:${pct(i.v,max)}%"></i></div><span class="v tnum">${o.f?o.f(i.v):n(i.v)}</span><span class="s xs muted">${i.sub||""}</span></div>`).join("")}</div>`}
+  function tbl(cols,rows,o={}){
+    if(!rows.length)return empty(o.empty||"No data",o.emptySub||"",o.icon);
+    const th=cols.map(c=>`<th class="${c.num?"num":""} ${c.sort?"sort":""} ${c.hm?"an-hm":""}" ${c.sort?`onclick="${c.sort}" title="Sort"`:""}>${c.l}${c.sorted?(c.sorted==="desc"?" ↓":" ↑"):""}</th>`).join("");
+    const tr=rows.map((r,i)=>`<tr class="${o.click?"r":""} ${o.row?o.row(r,i):""}" ${o.click?`onclick="${o.click(r,i)}"`:""}>${cols.map(c=>`<td class="${c.num?"num":""} ${c.hm?"an-hm":""} ${c.wrap?"wrap":""} ${c.cls?c.cls(r):""}">${c.r?c.r(r,i):esc(r[c.k])}</td>`).join("")}</tr>`).join("");
+    return `<div class="tbl-wrap ${o.flush?"--flush":""}" ${o.h?`style="max-height:${o.h}px"`:""}><table class="tbl" style="min-width:${o.minw||(cols.length>7?cols.length*118:0)}px"><thead><tr>${th}</tr></thead><tbody>${o.pre||""}${tr}</tbody>${o.foot?`<tfoot><tr>${o.foot}</tr></tfoot>`:""}</table></div>`;
+  }
+  /* stacked daily chart + optional AOV step line; click a column → visible detail line (touch-friendly) */
+  function daily(id,days,keys,o={}){
+    const H=o.h||130;const tot=d=>keys.reduce((s,k)=>s+(d[k.k]||0),0);const max=Math.max(1,...days.map(tot));
+    const cols=days.map((d,i)=>`<div class="c" title="${esc(d.label)} · ${keys.map(k=>k.l+" "+n(d[k.k]||0)).join(" · ")}${o.aov?" · avg "+fmt(d.aov||0):""}" onclick="A16.detail('${id}',${i})">${keys.map((k,ki)=>`<i class="k${ki}" style="height:${Math.round((d[k.k]||0)/max*H)}px"></i>`).join("")}</div>`).join("");
+    let line="";
+    if(o.aov&&days.length>1){const mx=Math.max(1,...days.map(d=>d.aov||0));const w=100/days.length;let p="";days.forEach((d,i)=>{const x=(i*w).toFixed(2),x2=((i+1)*w).toFixed(2),y=(100-(d.aov||0)/mx*90).toFixed(1);p+=(i?`H${x} V${y} `:`M${x} ${y} `)+`H${x2} `});line=`<svg class="ln ${o.lineCls||""}" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${p}" vector-effect="non-scaling-stroke"/></svg>`}
+    S[id]._days=days;S[id]._keys=keys;S[id]._aov=!!o.aov;
+    return `<div class="an-legend">${keys.map((k,ki)=>`<span><i class="k${ki}" style="background:var(${["--sel","--grey","--light","--hair","--graphite","--silver","--warn-bg"][ki]||"--sel"})${o.accent&&ki===0?";background:var(--accent)":""}"></i>${k.l}</span>`).join("")}${o.aov?`<span><i class="ln"></i>${o.aovLabel||"Average order"}</span>`:""}${o.legendExtra||""}</div><div class="an-chart ${o.accent?"--accent":""}" style="height:${H+10}px">${cols}${line}</div><div class="an-ax"><span>${esc(days[0]?.label||"")}</span><span>${days.length} ${o.unit||"days"}</span><span>${esc(days[days.length-1]?.label||"")}</span></div><div class="an-detail" id="an-detail-${id}">${o.detail||"Tap a column for the day's numbers"}</div>`;
+  }
+  function detail(id,i){const s=S[id];const d=s._days[i];if(!d)return;$("#an-detail-"+id).innerHTML=`<b>${esc(d.label)}</b> · ${s._keys.map(k=>k.l+" <b>"+n(d[k.k]||0)+"</b>").join(" · ")}${s._aov?" · average order <b>"+fmt(d.aov||0)+"</b>":""}`;$$(".an-chart .c",document.getElementById("s-"+id)).forEach((c,k)=>c.classList.toggle("on",k===i))}
+  const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  /* daily series oldest → newest with channel split */
+  function series(id,seed=1,scale=1){const N=len(id);const s=S[id];const end=s.mode==="day"?new Date(s.day+"T12:00:00"):(s.mode==="custom"&&s.applied)?new Date(s.to+"T12:00:00"):new Date(A.NOW);return Array.from({length:N},(_,k)=>{const i=N-1-k;const d=new Date(end);d.setDate(d.getDate()-i);const dow=d.getDay();const wk=(dow===0||dow===6)?1.3:1;const by={};let orders=0,rev=0;CH.forEach((c,ci)=>{const base=[14,5,3,6,4,2,3][ci];const v=D.empty?0:Math.round(base*wk*scale*(0.6+hsh(i,seed+ci)*0.9));by[c]=v;orders+=v;rev+=v*ri(i,seed+ci+40,68,138)});return {i,date:d,label:d.toLocaleDateString("en-GB",{day:"numeric",month:"short"}),dow,by,orders,rev,aov:orders?Math.round(rev/orders):0}})}
+  const sum=(arr,f)=>arr.reduce((s,x)=>s+f(x),0);
+  const delta=(a,b)=>b?`<span class="${a>=b?"pos":"neg"}">${a>=b?"↑":"↓"} ${Math.abs(Math.round((a-b)/b*100))}%</span> vs previous period`:"nothing to compare with";
+  const pager=(id,page,pages,total,per,fn)=>`<div class="an-pager"><span>${total?`${(page-1)*per+1}–${Math.min(total,page*per)} of ${n(total)}`:""}</span><span class="sp"></span><button class="btn --ghost --sm" ${page<=1?"disabled":""} onclick="${fn}(${page-1})">${ic("back")}</button><span>Page ${page} / ${pages||1}</span><button class="btn --ghost --sm" ${page>=pages?"disabled":""} onclick="${fn}(${page+1})">${ic("chev")}</button><span class="xs">?page=${page}</span></div>`;
+  function copyText(t,lbl){try{navigator.clipboard&&navigator.clipboard.writeText(t)}catch(e){}A.toast(lbl||"Copied")}
+  function download(name,audit){A.modal({title:"Download · "+name,body:`<div class="kv"><dt>File</dt><dd><code>${esc(name)}</code></dd><dt>Scope</dt><dd>the whole filtered report, not just the visible page</dd><dt>Audit</dt><dd>written as <code>${esc(audit)}</code> with who and when</dd></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('${esc(name)} · downloading')">${ic("download")} Download</button>`})}
+  const staffBy=role=>A.data.staff.filter(s=>s.role===role);
+  const money=v=>v<0?"−"+fmt(-v):fmt(v);
+  return {D,S,st,CH,TABS,tab,admin,florist,canRead,nav,open,step,period,setPeriod,setDay,custCheck,applyCustom,len,url,head,gate,demo,toggle,kpi,sec,note,empty,bars,tbl,daily,detail,series,sum,delta,pager,copyText,download,staffBy,money,hsh,ri,pct,n,fmtD,periodLabel,$$};
+})();
+
+/* ===== CEO (s-analytics) ===== */
+window.mount_analytics=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="analytics";
+  const s=X.st(id,{period:"30d",basis:"fulfil"});
+  A.registerCommands(X.TABS.map(t=>({g:"Analytics",t:"Analytics · "+t[1],ic:"growth",fn:()=>X.open(t[0])})));
+  X.head(id,{period:["today","7d","30d","month","prevMonth","quarter"],fresh:"Data as of 10:42 · last order came in 10:31",demo:[["subs","Active subscriptions"],["ratings","Platform ratings synced"],["survey","Survey answers"],["lowCoverage","Recipe coverage < 50 %"]],
+    controls:`<span class="an-lbl">Count by</span><div class="seg-ctl"><button class="${s.basis==="placed"?"on":""}" onclick="A16.S.analytics.basis='placed';App.remount()">Order date (paid)</button><button class="${s.basis==="fulfil"?"on":""}" onclick="A16.S.analytics.basis='fulfil';App.remount()">Delivery date</button></div><span class="an-hint">${s.basis==="placed"?"by the day the money came in (London)":"by delivery day – the default"}</span>`});
+  X.url(id,"basis="+s.basis);
+  if(!X.gate(id))return;
+  const days=X.series(id,1);const orders=X.sum(days,d=>d.orders),rev=X.sum(days,d=>d.rev);const free=D.empty?0:3;const cust=Math.round(orders*0.82);
+  const cov=D.lowCoverage?41:78;
+  let h=`<div class="grid g6">${X.kpi("Revenue",fmt(rev),"paid orders, minus delivery, refunds and marketplace commission")}${X.kpi("Average order",orders?fmt(Math.round(rev/orders)):"–","per paid order")}${X.kpi("Orders",X.n(orders),free?`£0 orders not counted: ${free}`:"paid, excluding cancelled")}${X.kpi("Customers",X.n(cust),"unique buyers in the period")}${X.kpi("Subscription MRR",D.subs?fmt(34*45):"–",D.subs?"34 active subscriptions × £45":"no active subscriptions – nothing to estimate")}${X.kpi("LTV : CAC","4.6","CAC is a fixed £17")}</div>`;
+  h+=X.sec("The owner's numbers",`<span class="an-hint">${ic("info")} ${s.basis==="placed"?"by the day the order was paid":"by the day the order was delivered"}</span>`);
+  h+=`<div class="grid g6">${X.kpi("Gross margin","54%",`recipes cover ${cov}% of sold lines${cov<50?" – treat as a lower bound":""}`,cov<50?"--warn":"")}${X.kpi("Repeat buyers","31%",`${Math.round(cust*0.31)} of ${cust} had bought before`)}${X.kpi("Stock loss",D.empty?"–":"18%",D.empty?"nothing received in this period":"write-offs £1,240 vs received £6,900",D.empty?"":"--alert")}${X.kpi("Cost per delivery",D.empty?"–":"£7.40",D.empty?"in-house runs not costed yet":"34 drops · 6 without a cost",D.empty?"--warn":"--warn")}${D.ratings?X.kpi("Platform ratings","4.6","Google 4.8 (212) · Deliveroo 4.6 (148) · Uber Eats 4.5 (96)"):X.kpi("Platform ratings","–","no ratings synced yet")}${D.survey?X.kpi("Where customers come from","Instagram 38%","Google 27% · friends 19% · passing by 16% · 142 of "+X.n(orders)+" orders answered",orders&&142/orders<0.2?"--warn":""):""}</div>`;
+  h+=X.sec("Revenue mix");
+  const mix=X.CH.map(c=>{const o=X.sum(days,d=>d.by[c]);const r=o*X.ri(1,c.length,72,130);return {l:c==="Walk-in"?"Walk-in (shop)":c,v:r,sub:`${X.n(o)} orders · avg ${o?fmt(Math.round(r/o)):"–"}`}}).sort((a,b)=>b.v-a.v);
+  h+=orders?X.bars(mix,{f:fmt}):X.empty("No orders in this period");
+  if(orders){h+=X.sec("Orders by channel & day");h+=X.daily(id,days.map(d=>Object.assign({},d,{web:d.by.Website,msg:d.by.WhatsApp+d.by.Instagram+d.by.Phone,mkt:d.by.Deliveroo+d.by["Uber Eats"],shop:d.by["Walk-in"]})),[{k:"web",l:"Website"},{k:"msg",l:"Messengers & phone"},{k:"mkt",l:"Marketplaces"},{k:"shop",l:"Shop"}],{aov:true})}
+  h+=X.sec("By day");
+  const cols=[{l:"Date",k:"label"},...X.CH.map(c=>({l:c,num:true,r:r=>X.n(r.by[c])})),{l:"Total",num:true,r:r=>X.n(r.orders)},{l:"Average order",num:true,r:r=>r.orders?fmt(r.aov):"–"}];
+  const tot={label:"Total",by:{},orders,aov:orders?Math.round(rev/orders):0};X.CH.forEach(c=>tot.by[c]=X.sum(days,d=>d.by[c]));
+  h+=orders?X.tbl(cols,[tot,...days.slice().reverse()],{row:r=>r.label==="Total"?"tot":"",h:360}):X.empty("No orders in this period","Change the period or the counting basis");
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Manager bonus ===== */
+window.mount_an_bonus=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-bonus";
+  const s=X.st(id,{period:"30d",view:"full",copied:false});
+  X.head(id,{period:["today","7d","30d","month","prevMonth","quarter"],demo:[["untrusted","Days before the trusted date"],["partial","Partially paid orders present"]],
+    controls:`<div class="seg-ctl"><button class="${s.view==="full"?"on":""}" onclick="A16.S['an-bonus'].view='full';App.remount()">Full table</button><button class="${s.view==="s1"?"on":""}" onclick="A16.S['an-bonus'].view='s1';App.remount()">Scheme 1 – to share</button><button class="${s.view==="s2"?"on":""}" onclick="A16.S['an-bonus'].view='s2';App.remount()">Scheme 2 – to share</button></div><span class="an-hint">${s.view==="full"?"view is local – reload returns to Full table":"safe to screenshot for the team: no takings, no head-count"}</span>`});
+  X.url(id);if(!X.gate(id))return;
+  const days=X.series(id,3);const rows=days.map(d=>{const t=D.empty?0:Math.round(d.rev*0.86);const p1=t<800?0:t<1500?3:5,p2=t<1000?0:t<2000?2:4;const untrusted=D.untrusted&&d.i>24;const incomplete=d.i===0;return {d,t,o:d.orders,p1,p2,pool1:Math.round(t*p1/100),pool2:Math.round(t*p2/100),untrusted,incomplete}}).reverse();
+  const live=rows.filter(r=>!r.untrusted);const takings=X.sum(live,r=>r.t),pool1=X.sum(live,r=>r.pool1),pool2=X.sum(live,r=>r.pool2),edays=live.filter(r=>r.t>0).length;
+  const shared=s.view!=="full";const k=s.view==="s1"?1:2;
+  let h="";
+  if(shared){
+    h+=`<div class="row mb16"><div><div class="h2">Scheme ${k} · per person</div><div class="sm muted">${X.periodLabel(id)}</div></div><span class="sp"></span><button class="btn --ghost --sm" onclick="A16.copyText('${rows.map(r=>r.d.label+"\\t"+(k===1?Math.round(r.pool1/4):Math.round(r.pool2/6))).join("\\n")}','Copied · date and per person only')">${ic("copy")} Copy table</button><button class="btn --sm" onclick="A16.download('manager-bonus-scheme${k}.xlsx','analytics.bonus.export')">${ic("download")} Download Excel</button></div>`;
+    h+=X.tbl([{l:"Date",r:r=>r.d.label},{l:"Per person",num:true,r:r=>r.untrusted?"–":fmt(k===1?Math.round(r.pool1/4):Math.round(r.pool2/6))}],rows,{foot:`<td>Total</td><td class="num">${fmt(k===1?Math.round(pool1/4):Math.round(pool2/6))}</td>`,h:460});
+  }else{
+    h+=X.note(`<b>How the day's takings are counted:</b> only PAID orders, minus delivery and refunds; the day is the day the order was entered in the CRM.`);
+    h+=`<div class="grid g4 mt16">${X.kpi("Takings for the period",fmt(takings),X.periodLabel(id))}${X.kpi("Average per day",fmt(edays?Math.round(takings/edays):0),`${edays} days · ${X.n(X.sum(live,r=>r.o))} orders`)}${X.kpi("Scheme 1 · per person",fmt(Math.round(pool1/4)),`split by 4 · ${live.filter(r=>r.p1).length} earning days · pool ${fmt(pool1)}`)}${X.kpi("Scheme 2 · per person",fmt(Math.round(pool2/6)),`split by 6 · ${live.filter(r=>r.p2).length} earning days · pool ${fmt(pool2)}`)}</div>`;
+    if(D.untrusted)h+=X.note(`${ic("info")} Days before <b>9 Jul 2026</b> (the trusted-data date) are shown grey and are not in the totals.`,"mt16");
+    if(D.partial)h+=X.note(`${ic("alert")} <b>4 partially paid orders (£486)</b> are not counted – they join the takings once paid in full.`,"--warn mt8");
+    h+=`<div class="row mt16"><span class="sp"></span><button class="btn --ghost --sm" onclick="A16.copyText('date\\torders\\ttakings','Copied – paste into Google Sheets')">${ic("copy")} Copy table</button><button class="btn --sm" onclick="A16.download('manager-bonus-${s.period||"custom"}.xlsx','analytics.bonus.export')">${ic("download")} Download Excel</button></div>`;
+    const pp=(r,p,pool,div)=>r.untrusted?"–":p?`${p}% · ${fmt(pool)} · <b>${fmt(Math.round(pool/div))}</b>`:"–";
+    h+=`<div class="mt8">`+X.tbl([{l:"Date",r:r=>r.d.label+(r.incomplete?` <span class="tag --line">incomplete data</span>`:"")},{l:"Orders",num:true,r:r=>X.n(r.o)},{l:"Takings",num:true,r:r=>fmt(r.t)},{l:"Scheme 1 · split by 4 · % / pool / per person",num:true,r:r=>pp(r,r.p1,r.pool1,4)},{l:"Scheme 2 · split by 6 · % / pool / per person",num:true,r:r=>pp(r,r.p2,r.pool2,6)}],rows,{row:r=>r.untrusted?"dim":"",foot:`<td>Total · days: ${edays}</td><td class="num">${X.n(X.sum(live,r=>r.o))}</td><td class="num">${fmt(takings)}</td><td class="num">${fmt(pool1)} · ${fmt(Math.round(pool1/4))}</td><td class="num">${fmt(pool2)} · ${fmt(Math.round(pool2/6))}</td>`,h:380})+`</div>`;
+    h+=X.sec("Scheme rules");
+    h+=`<div class="an-cols2"><div class="card"><span class="caps">Scheme 1 · split by 4</span><div class="an-rule">below £800 → no bonus<br>£800 – £1,499 → 3%<br>from £1,500 → 5%</div></div><div class="card"><span class="caps">Scheme 2 · split by 6</span><div class="an-rule">below £1,000 → no bonus<br>£1,000 – £1,999 → 2%<br>from £2,000 → 4%</div></div></div>`;
+  }
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Losses & costs ===== */
+window.mount_an_losses=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-losses";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","quarter"],demo:[["uberStores","Two Uber Eats stores"],["partial","In-house courier cost pending"]]});
+  X.url(id);if(!X.gate(id))return;
+  const days=X.series(id,5);const E=D.empty;
+  const unpaid=E?0:1860,chatLost=E?0:1240,losses=unpaid+chatLost,costs=E?0:X.sum(days,d=>d.rev)*0.11;
+  let h=`<div class="grid g4">${X.kpi("Total losses",fmt(losses),"unpaid not chased + estimated lost in chats",losses?"--alert":"")}${X.kpi("Unpaid at risk",fmt(unpaid),"current, now – not tied to the period",unpaid?"--alert":"")}${X.kpi("Lost in chats",fmt(chatLost),"estimate: lost chats × average order",chatLost?"--warn":"")}${X.kpi("Total costs",fmt(Math.round(costs)),"prev: "+fmt(Math.round(costs*0.93)))}</div>`;
+  h+=`<div class="an-cols2 mt24"><div class="card"><span class="caps">Unpaid orders (cart abandonment)</span><div class="an-mini"><div class="r"><span>Outstanding</span><b>${E?0:14} · ${fmt(E?0:2140)}</b></div><div class="r"><span>No reminder sent</span><b>${E?0:5}</b></div><div class="r"><span>No chat about it</span><b>${E?0:3}</b></div><div class="r"><span>Not followed up (lost)</span><b class="neg">${E?0:6} · ${fmt(unpaid)}</b></div></div><div class="caps mt16">By age</div>${X.bars([{l:"0–3 days",v:E?0:6},{l:"3–7 days",v:E?0:4},{l:"7–14 days",v:E?0:2},{l:"14+ days",v:E?0:2,cls:"--accent"}])}</div>
+  <div class="card"><span class="caps">Manager chat outcomes</span><div class="an-mini"><div class="r"><span>Lost chats</span><b class="neg">${E?0:11}</b></div><div class="r"><span>Missed upsells</span><b class="warn">${E?0:7}</b></div><div class="r"><span>Average order value</span><b>${fmt(E?0:113)}</b></div><div class="r"><span>Estimated lost (lost × AOV)</span><b class="neg">${fmt(chatLost)}</b></div><div class="r"><span>Confirmed lost (dead orders)</span><b>${fmt(E?0:420)}</b></div></div></div></div>`;
+  const fees=[["Deliveroo",X.sum(days,d=>d.by.Deliveroo),29],["Uber Eats",X.sum(days,d=>d.by["Uber Eats"]),30],["Udora",E?0:9,15]];
+  h+=`<div class="an-cols3 mt16"><div class="card"><span class="caps">Marketplace commissions</span><div class="h3 mb8">${fmt(E?0:X.sum(fees,f=>f[1]*52*f[2]/100))}</div>${E?`<div class="muted sm">Nothing in this period</div>`:`<div class="an-mini">${fees.map(f=>`<div class="r"><span>${f[0]} · ${f[1]} orders · ${f[2]}%</span><b>${fmt(Math.round(f[1]*52*f[2]/100))}</b></div>`).join("")}</div>`}${D.uberStores&&!E?`<div class="caps mt16">Uber Eats by store</div><div class="an-mini"><div class="r"><span>Bermondsey SE1</span><b>${fmt(640)}</b></div><div class="r"><span>Fulham SW6</span><b>${fmt(310)}</b></div></div>`:""}</div>
+  <div class="card"><span class="caps">Delivery cost</span><div class="an-mini"><div class="r"><span>External gateways (Uber Direct, Stuart)</span><b>${fmt(E?0:720)}</b></div><div class="r"><span>Own couriers · ${E?0:212} drops</span><b>${fmt(E?0:1480)}</b></div><div class="r"><span>Total</span><b>${fmt(E?0:2200)}</b></div></div>${D.partial?X.note(`${ic("info")} In-house courier runs are not costed yet – own-courier figure is a placeholder rate.`,"--warn mt8"):""}</div>
+  <div class="card"><span class="caps">Systems cost</span><div class="an-mini"><div class="r"><span>Subscriptions (CRM, Ringover, Wazzup…)</span><b>${fmt(E?0:412)}</b></div><div class="r"><span>Stripe fees (estimate)</span><b>${fmt(E?0:Math.round(X.sum(days,d=>d.rev)*0.015))}</b></div><div class="r"><span>Total</span><b>${fmt(E?0:412+Math.round(X.sum(days,d=>d.rev)*0.015))}</b></div></div></div></div>`;
+  if(!E){h+=X.sec("Marketplace fees by day");h+=X.daily(id,days.map(d=>Object.assign({},d,{fee:Math.round((d.by.Deliveroo*0.29+d.by["Uber Eats"]*0.3)*52),aov:52+X.ri(d.i,9,0,18)})),[{k:"fee",l:"Fees £"}],{aov:true,accent:true,aovLabel:"Average marketplace order"})}
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Channel P&L ===== */
+window.mount_an_channel_pnl=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-channel-pnl";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","month","prevMonth","quarter"],pnote:"period control moved from the page body to the head"});
+  X.url(id);if(!X.gate(id))return;
+  const days=X.series(id,7);
+  const rows=X.CH.map(c=>{const o=X.sum(days,d=>d.by[c]);const rev=o*X.ri(2,c.length,70,135);const fee=["Deliveroo","Uber Eats"].includes(c)?Math.round(rev*0.3):0;const ref=Math.round(rev*(c==="Website"?0.02:0.01));const fl=Math.round(rev*(["Deliveroo","Uber Eats"].includes(c)?0.52:0.38));const net=rev-fee-ref-fl;return {c,o,rev,fee,ref,fl,net,m:rev?Math.round(net/rev*100):0,rec:X.ri(3,c.length,55,96)}}).filter(r=>r.o>0);
+  const T=k=>X.sum(rows,r=>r[k]);
+  let h=`<div class="grid g4">${X.kpi("Revenue",fmt(T("rev")))}${X.kpi("Marketplace fees",fmt(T("fee")),"Deliveroo and Uber Eats commission")}${X.kpi("Refunds",fmt(T("ref")))}${X.kpi("Net after fees & flowers",fmt(T("net")),T("rev")?Math.round(T("net")/T("rev")*100)+"% margin":"")}</div>`;
+  h+=X.note(`${ic("info")} Flower cost comes from recipes – <b>${rows.length?Math.round(X.sum(rows,r=>r.rec)/rows.length):0}% of sold lines</b> have one, so cost is a lower bound and Net is optimistic.`,"mt16");
+  h+=X.sec("By channel");
+  const d=v=>v?fmt(v):"–";
+  h+=X.tbl([{l:"Channel",k:"c"},{l:"Orders",num:true,r:r=>X.n(r.o)},{l:"Revenue",num:true,r:r=>fmt(r.rev)},{l:"Refunds (−)",num:true,r:r=>d(r.ref)},{l:"Platform fee (−)",num:true,r:r=>d(r.fee)},{l:"Flowers (−)",num:true,r:r=>d(r.fl)},{l:"Net",num:true,r:r=>X.money(r.net),cls:r=>r.net<0?"neg":""},{l:"Margin",num:true,r:r=>r.m+"%"},{l:"Recipes",num:true,r:r=>r.rec+"%"}],rows,{empty:"No orders in this period"});
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Margin ===== */
+window.mount_an_margin=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-margin";
+  const s=X.st(id,{status:"red",chan:"all",q:"",page:1});
+  X.head(id,{fresh:"Live evaluation · not the morning snapshot",demo:[["cost","Manager has inventory.cost"]]});
+  X.url(id,false);if(!X.gate(id,{cost:true}))return;
+  const chans=["Website","Uber Eats","Deliveroo","Just Eat","Udora"];
+  const items=A.data.products.filter(p=>!p.addon).flatMap((p,i)=>chans.slice(0,1+(i%3)).map((c,k)=>{const price=Math.round(p.price*(k?1.25:1));const goods=Math.round(price*(0.3+X.hsh(i,k)*0.55));const full=Math.round(goods+price*0.24+6);const left=price-full;const status=i%7===3?"grey":left<0?"red":left<price*0.12?"yellow":"green";return {p,c,price,goods,full,left,rec:Math.round(full/0.68),sold:X.ri(i,k+20,0,140),status,urgent:status==="red"&&i%4===0,reason:status==="grey"?["£0 price","no recipe","item without a cost in the recipe"][i%3]:""}}));
+  const counts={red:0,yellow:0,grey:0,green:0};items.forEach(x=>counts[x.status]++);
+  let h=`<div class="grid g4">${X.kpi("At a loss",counts.red,"price below full cost",counts.red?"--alert":"")}${X.kpi("Goods over target",counts.yellow,"below target margin",counts.yellow?"--warn":"")}${X.kpi("No data",counts.grey,"no recipe or no cost")}${X.kpi("Fine",counts.green,"margin on target")}</div>`;
+  h+=X.note(`<b>Assumptions:</b> flowers & gifts target 35% of price · waste 8% · packaging £3.50 · labour £4.00 per bouquet`,"mt16");
+  const TABS=[["red","At a loss","--accent"],["yellow","Below target","--warn"],["grey","No data",""],["green","Fine","--ok"],["all","All",""]];
+  h+=`<div class="an-tabs mt16">${TABS.map(t=>`<button class="${s.status===t[0]?"on":""}" onclick="A16.S['an-margin'].status='${t[0]}';A16.S['an-margin'].page=1;App.remount()"><span class="dot ${t[2]}"></span>${t[1]}<span class="n">${t[0]==="all"?items.length:counts[t[0]]}</span></button>`).join("")}</div>`;
+  h+=`<div class="toolbar"><div class="search">${ic("search")}<input placeholder="Search by name" value="${esc(s.q)}" oninput="A16.S['an-margin'].q=this.value;A16.S['an-margin'].page=1;App.remount();document.querySelector('#s-an-margin .search input').focus()"></div><select class="select an-sel" onchange="A16.S['an-margin'].chan=this.value;A16.S['an-margin'].page=1;App.remount()"><option value="all">All channels</option>${chans.map(c=>`<option ${s.chan===c?"selected":""}>${c}</option>`).join("")}</select><span class="sp"></span><button class="btn --ghost --sm" onclick="A16.marginTg()">${ic("send")} Telegram preview 07:00</button></div>`;
+  const f=items.filter(x=>(s.status==="all"||x.status===s.status)&&(s.chan==="all"||x.c===s.chan)&&(!s.q||x.p.name.toLowerCase().includes(s.q.toLowerCase())));
+  const PER=50,pages=Math.max(1,Math.ceil(f.length/PER)),page=Math.min(s.page,pages);
+  const dotCls={red:"--accent",yellow:"--warn",grey:"",green:"--ok"};
+  h+=X.tbl([{l:"Item",cls:()=>"w",r:r=>`<span class="an-inline">${r.urgent?`<span class="accent" title="Urgent – sells a lot at a loss">${ic("alert")}</span>`:`<span class="dot ${dotCls[r.status]}"></span>`}${esc(r.p.name)}${r.reason?`<span class="muted xs">· ${r.reason}</span>`:""}</span>`},{l:"Channel",r:r=>`<span class="an-inline"><span class="dot ${dotCls[r.status]}"></span>${r.c}</span>`},{l:"Price",num:true,r:r=>fmt(r.price)},{l:"Goods by recipe",num:true,r:r=>r.status==="grey"?"–":`${fmt(r.goods)} · ${Math.round(r.goods/r.price*100)}%`},{l:"Full cost",num:true,hm:true,r:r=>r.status==="grey"?"–":fmt(r.full)},{l:"Left over",num:true,r:r=>r.status==="grey"?"–":X.money(r.left),cls:r=>r.left<0&&r.status!=="grey"?"neg":""},{l:"Recommended",num:true,r:r=>r.status==="grey"?"–":fmt(r.rec)},{l:"Sold in 90 d",num:true,hm:true,r:r=>X.n(r.sold)}],f.slice((page-1)*PER,page*PER),{empty:"Nothing found",emptySub:"Try another status tab, channel or name",h:420});
+  h+=X.pager(id,page,pages,f.length,PER,"A16.marginPage");
+  $("#b-"+id).innerHTML=h;
+};
+A16.marginPage=p=>{A16.S["an-margin"].page=p;App.remount()};
+A16.marginTg=()=>App.modal({title:"Telegram · Margin traffic light",body:`<div class="note-box"><b>07:00 · analytics:margin-watch</b><br>🔴 At a loss: 3 items changed since yesterday<br>· Peony Basket · Uber Eats · left over −£4.10<br>· Wreath · classic · Website · left over −£1.80<br>🟡 Below target: 2 new<br>Open the list in CRM → app.floritta.ai/analytics/margin</div><div class="sm muted mt8">Sent to the owners' chat by the morning cron; the link lands on this page with «At a loss» open.</div>`});
+
+/* ===== Orders report ===== */
+window.mount_an_orders=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-orders";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","quarter"],back:true,fresh:"Confirmed sales · by delivery day"});
+  X.url(id);if(!X.gate(id))return;
+  const days=X.series(id,11);const o=X.sum(days,d=>d.orders),v=X.sum(days,d=>d.rev);const E=D.empty;
+  let h=`<div class="grid g4">${X.kpi("Orders",X.n(o))}${X.kpi("Value",fmt(v),"without delivery")}${X.kpi("Average order",o?fmt(Math.round(v/o)):"–")}${X.kpi("Delivery charged",fmt(E?0:Math.round(o*0.58*12)),`${E?0:Math.round(o*0.58)} orders with a paid delivery – not revenue`)}</div>`;
+  const byC=X.CH.map(c=>{const k=X.sum(days,d=>d.by[c]);return {l:c,v:k,sub:"avg "+fmt(X.ri(4,c.length,70,135))}});
+  const raw=(k,v)=>({l:`<code>${k}</code>`,v,title:k+" – raw enum key, no translation on the old page"});
+  h+=`<div class="an-cols3 mt24"><div><span class="caps">By channel</span>${X.bars(byC)}</div><div><span class="caps">By method</span>${X.bars([raw("delivery",Math.round(o*0.84)),raw("collection",Math.round(o*0.16))])}</div><div><span class="caps">By status</span>${X.bars([raw("fulfilled",Math.round(o*0.9)),raw("in_production",Math.round(o*0.04)),raw("confirmed",Math.round(o*0.04)),raw("cancelled",Math.round(o*0.02))])}</div></div>`;
+  h+=X.note(`${ic("info")} Method and status labels are the raw enum keys on the current page – the redesign should translate them (delivery → Delivery, in_production → In production).`,"mt16");
+  const claims=E?[]:A.data.orders.slice(0,7).map((x,i)=>({o:x,reason:["Wilted on arrival","Late delivery","Wrong bouquet","Damaged vase","Not as pictured","Late delivery","Wilted on arrival"][i],amount:i%3?Math.round(x.total*0.4):null,res:["Refunded","Replaced","Declined","Refunded","Credit note","Replaced","Pending"][i],at:X.fmtD("2026-10-"+String(19-i).padStart(2,"0"))}));
+  h+=X.sec("Refund requests",`<span class="an-hint">${ic("calendar")} by the date of the request, not delivery</span>`);
+  h+=`<div class="grid g3">${X.kpi("Requests",claims.length)}${X.kpi("Share of orders",o?(claims.length/o*100).toFixed(1)+"%":"–")}${X.kpi("Amount asked for",fmt(X.sum(claims,c=>c.amount||c.o.total)))}</div>`;
+  if(claims.length){
+    const cnt=(arr,k)=>Object.entries(arr.reduce((m,c)=>(m[c[k]]=(m[c[k]]||0)+1,m),{})).map(([l,v])=>({l,v})).sort((a,b)=>b.v-a.v);
+    h+=`<div class="an-cols2 mt16"><div><span class="caps">Why</span>${X.bars(cnt(claims,"reason"))}</div><div><span class="caps">How it ended</span>${X.bars(cnt(claims,"res"))}</div></div>`;
+    h+=X.sec("Latest requests",`<span class="muted xs">up to 25</span>`);
+    h+=X.tbl([{l:"Order",r:r=>`<button class="link" onclick="event.stopPropagation();App.openOrder(${r.o.id})">#${r.o.id}</button>`},{l:"Asked",k:"at"},{l:"Customer",r:r=>esc(A.customer(r.o.customer).n)},{l:"Reason",k:"reason"},{l:"Amount",num:true,r:r=>r.amount?fmt(r.amount)+" · partial":"Full · "+fmt(r.o.total)},{l:"Outcome",r:r=>A.pill(r.res==="Pending"?"review":r.res==="Declined"?"cancelled":"done",r.res)}],claims,{click:r=>`App.openOrder(${r.o.id})`});
+  }else h+=X.empty("No refund requests recorded in this period.","Requests are logged from the order card → Report a problem");
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Products ===== */
+window.mount_an_products=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-products";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","quarter"]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;
+  const vars=E?[]:A.data.products.filter(p=>!p.addon).flatMap((p,i)=>(p.sizes.length?p.sizes:["Standard"]).map((sz,k)=>{const price=Math.round(p.price*(k===1?1.3:k===2?1.7:1));const units=Math.max(0,Math.round(p.stats.orders30*[0.55,0.3,0.15][k]));const cost=Math.round(price*(0.3+X.hsh(i,k)*0.25));const landed=Math.round(cost*1.14);return {name:p.name+" · "+sz,p,units,rev:units*price,price,cost,m:Math.round((price-cost)/price*100),landed,ml:Math.round((price-landed)/price*100)}})).filter(v=>v.units>0).sort((a,b)=>b.units-a.units);
+  const units=X.sum(vars,v=>v.units),rev=X.sum(vars,v=>v.rev);
+  const avg=(k)=>vars.length?Math.round(X.sum(vars,v=>v[k])/vars.length):0;
+  let h=`<div class="grid g6">${X.kpi("Units sold",X.n(units),"was labelled «Orders» – fixed")}${X.kpi("Revenue",fmt(rev))}${X.kpi("SKUs sold",vars.length,"was labelled «Product» – fixed")}${X.kpi("Margin",avg("m")+"%","by recipe, average",avg("m")<0?"--warn":"")}${X.kpi("Margin (landed)",avg("ml")+"%","stems at clock + freight and fees")}${X.kpi("Recipe coverage","78%","of sold lines")}</div>`;
+  const cols=[{l:"Product",cls:()=>"w",r:r=>`<button class="link" onclick="App.go('catalog',{open:${r.p.id}})">${esc(r.name)}</button>`},{l:"Units",num:true,r:r=>X.n(r.units)},{l:"Revenue",num:true,r:r=>fmt(r.rev)},{l:"Price",num:true,r:r=>fmt(r.price)},{l:"Cost",num:true,r:r=>fmt(r.cost)},{l:"Margin",num:true,r:r=>r.m+"%",cls:r=>r.m<0?"neg":""},{l:"Landed cost",num:true,hm:true,r:r=>fmt(r.landed)},{l:"Margin (landed)",num:true,r:r=>r.ml+"%",cls:r=>r.ml<0?"neg":""}];
+  h+=X.sec("Top sellers",`<span class="muted xs">10 variants by units</span>`);h+=X.tbl(cols,vars.slice(0,10),{empty:"No data"});
+  h+=X.sec("Slow movers",`<span class="muted xs">10 variants with the fewest sales</span>`);h+=X.tbl(cols,vars.slice(-10).reverse(),{empty:"No data"});
+  h+=X.sec("ABC by revenue");
+  let acc=0;const abc=vars.slice().sort((a,b)=>b.rev-a.rev).map(v=>{acc+=v.rev;const sh=rev?acc/rev:0;return Object.assign({},v,{cls:sh<=0.8?"A":sh<=0.95?"B":"C",share:rev?(v.rev/rev*100).toFixed(1):0})});
+  const grp=c=>abc.filter(v=>v.cls===c);
+  h+=`<div class="grid g3 mb16">${["A","B","C"].map(c=>X.kpi(c==="A"?"A · core":c==="B"?"B · support":"C · tail",grp(c).length+" SKU",`${fmt(X.sum(grp(c),v=>v.rev))} · ${rev?Math.round(X.sum(grp(c),v=>v.rev)/rev*100):0}% of revenue`)).join("")}</div>`;
+  h+=X.tbl([{l:"Class",r:r=>`<span class="tag ${r.cls==="A"?"--ink":r.cls==="B"?"":"--line"}">${r.cls}</span>`},{l:"Product",k:"name",cls:()=>"w"},{l:"Units",num:true,r:r=>X.n(r.units)},{l:"Revenue",num:true,r:r=>fmt(r.rev)},{l:"Share",num:true,r:r=>r.share+"%"},{l:"Margin",num:true,r:r=>r.m+"%"}],abc,{empty:"No data",h:380});
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Top products ===== */
+window.mount_an_top_products=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-top-products";
+  const s=X.st(id,{period:"l30",q:"",noRecipe:false,sort:"rev",dir:"desc",page:1});
+  s.onPeriod=()=>{s.q="";s.noRecipe=false;s.sort="rev";s.dir="desc";s.page=1;App.toast("Period changed – search, sort, filter and page reset (as on the current page)")};
+  X.head(id,{period:["l30","l90"],pnote:"no Today here"});
+  X.url(id,`q=${encodeURIComponent(s.q)}&sort=${s.sort}&dir=${s.dir}&noRecipe=${s.noRecipe?1:0}&page=${s.page}`);if(!X.gate(id))return;
+  const E=D.empty;
+  let rows=E?[]:A.data.products.filter(p=>!p.addon).flatMap((p,i)=>p.sizes.map((sz,k)=>({name:p.name,variant:sz,orders:Math.round(p.stats.orders30*[0.6,0.3,0.1][k]*(s.period==="l90"?3:1)),units:0,rev:0,recipe:["full","full","none","partial"][(i+k)%4]}))).map(r=>{r.units=Math.round(r.orders*1.08);r.rev=r.units*X.ri(r.name.length,r.variant.length,60,180);return r}).filter(r=>r.orders>0);
+  rows.push({name:"Built by customer (all constructor bouquets)",variant:"",orders:E?0:41,units:E?0:41,rev:E?0:3690,recipe:"built"});
+  rows=rows.filter(r=>r.orders>0).sort((a,b)=>b.rev-a.rev).slice(0,50);
+  const noRec=rows.filter(r=>r.recipe==="none");
+  let h=`<div class="grid g4">${X.kpi("Products in the top 50",rows.length)}${X.kpi("Revenue (top 50)",fmt(X.sum(rows,r=>r.rev)))}${X.kpi("Units sold",X.n(X.sum(rows,r=>r.units)))}${X.kpi("Without a recipe",noRec.length,`${rows.length?Math.round(X.sum(noRec,r=>r.rev)/Math.max(1,X.sum(rows,r=>r.rev))*100):0}% of the top 50's revenue`,noRec.length?"--warn":"")}</div>`;
+  h+=`<div class="toolbar mt24"><div class="search">${ic("search")}<input placeholder="Product or variant" value="${esc(s.q)}" oninput="clearTimeout(A16.S['an-top-products']._t);A16.S['an-top-products']._t=setTimeout(()=>{A16.S['an-top-products'].q=this.value;A16.S['an-top-products'].page=1;App.remount();document.querySelector('#s-an-top-products .search input').focus()},350)"></div><label class="check"><input type="checkbox" ${s.noRecipe?"checked":""} onchange="A16.S['an-top-products'].noRecipe=this.checked;A16.S['an-top-products'].page=1;App.remount()"> Only without a recipe</label><span class="an-hint">350 ms delay · state in URL</span><span class="sp"></span><button class="btn --ghost --sm" onclick="A16.download('top-products-${s.period}.csv','analytics.top_products.export')">${ic("download")} Export CSV</button></div>`;
+  let f=rows.filter(r=>(!s.q||(r.name+" "+r.variant).toLowerCase().includes(s.q.toLowerCase()))&&(!s.noRecipe||r.recipe==="none"));
+  f.sort((a,b)=>(s.dir==="desc"?-1:1)*(a[s.sort]-b[s.sort]));
+  const PER=20,pages=Math.max(1,Math.ceil(f.length/PER)),page=Math.min(s.page,pages);
+  const sortTh=k=>`A16.tpSort('${k}')`;
+  const tag={full:A.pill("done","Has a recipe"),none:A.pill("cancelled","No recipe"),partial:A.pill("partial","Partial recipe"),built:A.pill("queue","Built by customer")};
+  h+=X.tbl([{l:"Product",cls:()=>"w",r:r=>`${esc(r.name)}${r.variant?`<span class="sub">${esc(r.variant)}</span>`:""}`},{l:"Orders",num:true,sort:sortTh("orders"),sorted:s.sort==="orders"?s.dir:"",r:r=>X.n(r.orders)},{l:"Units",num:true,sort:sortTh("units"),sorted:s.sort==="units"?s.dir:"",r:r=>X.n(r.units)},{l:"Revenue",num:true,sort:sortTh("rev"),sorted:s.sort==="rev"?s.dir:"",r:r=>fmt(r.rev)},{l:"Recipe",r:r=>tag[r.recipe]}],f.slice((page-1)*PER,page*PER),{empty:"No paid orders in this period yet.",h:460});
+  h+=X.pager(id,page,pages,f.length,PER,"A16.tpPage");
+  $("#b-"+id).innerHTML=h;
+};
+A16.tpSort=k=>{const s=A16.S["an-top-products"];if(s.sort===k)s.dir=s.dir==="desc"?"asc":"desc";else{s.sort=k;s.dir="desc"}s.page=1;App.remount()};
+A16.tpPage=p=>{A16.S["an-top-products"].page=p;App.remount()};
+
+/* ===== Bouquet builder ===== */
+window.mount_an_bouquet_builder=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-bouquet-builder";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["7d","30d","month","prevMonth","quarter"],demo:[["counting","Site sends builder events"],["incomplete","Funnel step out of order"],["many","More than 50 orders"]]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const site=E?0:38,crm=E?0:11,all=site+crm,prev=E?0:41;const revS=site*96,revC=crm*118,rev=revS+revC,revP=prev*101;
+  let h=`<div class="grid g4">${X.kpi("Orders with a built bouquet",all,`website ${site} · CRM ${crm} · ${X.delta(all,prev)}`)}${X.kpi("Built bouquet revenue",fmt(rev),`website ${fmt(revS)} · CRM ${fmt(revC)} · ${X.delta(rev,revP)}`)}${X.kpi("Average per order",all?fmt(Math.round(rev/all)):"–",X.delta(all?rev/all:0,prev?revP/prev:0))}${X.kpi("Stems sold",X.n(all*23),`Bouquets: ${all+4}`)}</div>`;
+  h+=X.sec("Website and CRM");
+  h+=X.tbl([{l:"Source",r:r=>`<span class="tag ${r.s==="Website"?"--ink":""}">${r.s}</span>`},{l:"Orders",num:true,k:"o"},{l:"Bouquets",num:true,k:"b"},{l:"Stems",num:true,k:"st"},{l:"Bouquet revenue",num:true,r:r=>fmt(r.rev)},{l:"Per order",num:true,r:r=>r.o?fmt(Math.round(r.rev/r.o)):"–"},{l:"Previous period",num:true,r:r=>r.prev}],[{s:"Website",o:site,b:site+2,st:site*22,rev:revS,prev:E?0:29},{s:"CRM /constructor",o:crm,b:crm+2,st:crm*26,rev:revC,prev:E?0:12}],{empty:"No data"});
+  h+=`<div class="xs muted mt8">Previous period = the same number of days before the start of this one.</div>`;
+  h+=X.sec("Website builder funnel");
+  if(!D.counting)h+=X.note(`${ic("info")} The site has not sent builder visits yet – the funnel starts once bouquet_builder_view / start / add events arrive.`);
+  else{const st=[["Opened the builder",E?0:1240],["Picked the first stem",E?0:610],["Added a bouquet to the basket",D.incomplete?720:E?0:142],["Paid",site]];
+    h+=(D.incomplete?X.note(`${ic("alert")} A later step is larger than an earlier one – not every storefront event is firing. Treat the funnel as incomplete.`,"--warn mb8"):"")+`<div class="an-funnel">${st.map((x,i)=>`<div class="st"><span>${x[0]}</span><div class="progress"><i style="width:${X.pct(x[1],st[0][1])}%"></i></div><b class="tnum">${X.n(x[1])}</b><span class="muted xs">${i?(st[i-1][1]?Math.round(x[1]/st[i-1][1]*100)+"% of the previous step":"–"):""}</span></div>`).join("")}</div><div class="xs muted mt8">Overall conversion ${st[0][1]?(site/st[0][1]*100).toFixed(1):"–"}% · Counted since 12 Aug 2026</div>`}
+  h+=X.sec("Orders",D.many&&!E?`<span class="muted xs">Showing the 50 newest of 63</span>`:"");
+  const list=E?[]:A.data.orders.slice(0,12).map((o,i)=>({o,src:i%3?"Website":"CRM",stems:18+i*2,bq:1+(i%3===0?1:0),paid:X.fmtD("2026-10-"+String(20-i).padStart(2,"0"))}));
+  h+=X.tbl([{l:"Order",r:r=>"#"+r.o.id},{l:"Paid",k:"paid"},{l:"Source",r:r=>`<span class="tag ${r.src==="Website"?"--ink":""}">${r.src}</span>`},{l:"Stems",num:true,r:r=>`${r.stems} (${r.bq} bouquet${r.bq>1?"s":""})`},{l:"Bouquet",num:true,r:r=>fmt(Math.round(r.stems*4.2))},{l:"Order total",num:true,hm:true,r:r=>fmt(r.o.total)},{l:"Status",r:r=>A.orderPill(r.o)}],list,{click:r=>`App.openOrder(${r.o.id})`,empty:"No paid orders with a built bouquet in this period",h:340});
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Nobody home ===== */
+window.mount_an_not_home=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,D=X.D;const id="an-not-home";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","quarter"],demo:[["resolver","Resolver enabled"]]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const closed=E?0:23,saved=E?0:17,open=E?0:2;
+  let h="";
+  if(!D.resolver)h+=X.note(`${ic("alert")} The not-home resolver is off (DELIVERY_NOT_HOME_RESOLVER_ENABLED) – new cases are not being opened; the figures below are history only.`,"--warn mb16");
+  h+=`<div class="grid g3">${X.kpi("Saved without a second trip",closed?Math.round(saved/closed*100)+"%":"–",`${saved} of ${closed} closed cases, decided within 20 min`)}${X.kpi("Cases opened",closed+open,`${open} still open`)}${X.kpi("Median time to a decision",E?"–":"11 min","from the courier's «nobody home» to the manager's decision")}</div>`;
+  h+=X.sec("How the rest ended");
+  h+=`<div class="grid g3">${X.kpi("Redelivered (second trip)",E?0:4,"courier went back later the same day")}${X.kpi("Returned to the studio",E?0:1,"collected by the customer next day")}${X.kpi("Cancelled",E?0:1,"refunded in full")}</div>`;
+  h+=X.note(`<b>How it is counted:</b> cases by the day they were opened; «saved» = a decision inside the 20-minute window that avoided a second trip (left with a neighbour, concierge, safe place, or recipient reached). Window from <code>delivery.not_home_resolver.saved_within_min</code>.`,"mt24");
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Customers report ===== */
+window.mount_an_customers=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-customers";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","quarter"],pnote:"affects only New / Returning"});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const N=X.len(id);const newC=E?0:Math.round(N*4.1),ret=E?0:Math.round(N*1.6);
+  let h=`<div class="grid g4">${X.kpi("Customers",X.n(E?0:3412),"all time")}${X.kpi("Returning",X.n(E?0:1021),"all time")}${X.kpi("Returning rate",E?"–":"29.9%","all time")}${X.kpi("Average LTV",E?"–":fmt(164),"all time")}</div>`;
+  h+=`<div class="an-cols2 mt24"><div><span class="caps">New vs returning · ${X.periodLabel(id)}</span>${X.bars([{l:"New customers",v:newC},{l:"Returning",v:ret}])}</div><div><span class="caps">Average LTV · distribution</span>${X.bars([{l:"£0 – £50",v:E?0:1860,title:"raw key 0-5000 (pence) on the current page"},{l:"£50 – £100",v:E?0:912},{l:"£100 – £250",v:E?0:468},{l:"£250+",v:E?0:172}])}<div class="xs muted">Buckets were labelled in raw pence (0-5000, 5000-10000…) – shown in pounds here.</div></div></div>`;
+  h+=X.sec("Top 10 customers by spend",`<span class="muted xs">all time</span>`);
+  const top=E?[]:A.data.customers.slice().sort((a,b)=>b.spent-a.spent).slice(0,10);
+  h+=X.tbl([{l:"Customer",r:r=>`<button class="link" onclick="event.stopPropagation();App.openCustomer(${r.id})">${esc(r.n)}</button>`},{l:"Orders",num:true,k:"orders"},{l:"LTV",num:true,r:r=>fmt(r.spent)}],top,{empty:"No data",click:r=>`App.openCustomer(${r.id})`});
+  h+=`<div class="xs muted mt8">The current page has no link to the customer card and reuses «Customers» / «Average LTV» as column labels – fixed here.</div>`;
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Retention & LTV ===== */
+window.mount_an_retention=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-retention";
+  const s=X.st(id,{period:"all"});
+  X.head(id,{period:["today","7d","14d","30d","90d","180d","year","all"],fresh:"Cached 6 h · computed 08:00",pnote:s.period==="today"?"server has no Today – shows All time":""});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const buyers=E?0:(s.period==="all"||s.period==="today"?3412:Math.round(X.len(id)*5.2));
+  let h=`<div class="grid g6">${X.kpi("Customers",X.n(buyers),X.periodLabel(id))}${X.kpi("Returned (2+ orders)",E?"–":"28%")}${X.kpi("Avg LTV",E?"–":fmt(171))}${X.kpi("Avg order value",E?"–":fmt(104),"whole customer lifetime")}${X.kpi("Median time to 2nd order",E?"–":"47 days")}<div class="kpi-card an-kpi --sm"><span class="caps">Freshness</span><span class="kpi-s">6 h</span><span class="delta">cache per period · fresh orders appear later <button class="textbtn" onclick="App.toast('Cache cleared · recomputing (demo)')">refresh</button></span></div></div>`;
+  if(!buyers){h+=X.empty("No identified customers in this period","Guest orders without a customer record are excluded; widen the period.");$("#b-"+id).innerHTML=h;return}
+  h+=X.sec("Cohorts by month of first purchase");
+  const months=["Earlier","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10"];
+  const co=months.map((m,i)=>{const c=i?X.ri(i,51,40,160):1240;const m0=c*X.ri(i,52,70,110);const f=k=>i+k>=12?"–":fmt(Math.round(m0*[0,0.14,0.09,0.07,0.05,0.04][k]||0));return {m,c,m0:fmt(m0),m1:f(1),m2:f(2),m3:f(3),m6:f(4),m12:f(5),l3:fmt(Math.round(m0*1.3/c)),l6:fmt(Math.round(m0*1.42/c)),l12:fmt(Math.round(m0*1.55/c))}}).reverse();
+  h+=X.tbl([{l:"Cohort",k:"m"},{l:"Customers",num:true,k:"c"},{l:"Month 0 revenue",num:true,k:"m0"},{l:"M+1",num:true,k:"m1"},{l:"M+2",num:true,hm:true,k:"m2"},{l:"M+3",num:true,k:"m3"},{l:"M+6",num:true,hm:true,k:"m6"},{l:"M+12",num:true,k:"m12"},{l:"LTV M+3",num:true,hm:true,k:"l3"},{l:"LTV M+6",num:true,hm:true,k:"l6"},{l:"LTV M+12",num:true,hm:true,k:"l12"}],co,{h:300});
+  h+=X.sec("Orders per customer");
+  h+=X.daily(id,[{label:"1 order",v:2460,aov:96},{label:"2 orders",v:520,aov:104},{label:"3–5",v:318,aov:118},{label:"6+",v:114,aov:131}],[{k:"v",l:"Customers"}],{aov:true,unit:"buckets",detail:"Repeat customers (2+ orders) bring <b>41%</b> of revenue (£148,200)"});
+  h+=X.sec("Top 20 customers by LTV");
+  const top=A.data.customers.slice().sort((a,b)=>b.spent-a.spent).slice(0,20);
+  h+=X.tbl([{l:"Customer",r:r=>`<button class="link" onclick="event.stopPropagation();App.openCustomer(${r.id})">${esc(r.n)}</button>`},{l:"Phone",r:r=>`<span class="tnum">${esc(r.phone)}</span>`},{l:"Orders",num:true,k:"orders"},{l:"LTV",num:true,r:r=>fmt(r.spent)},{l:"First order",hm:true,r:r=>"Mar "+r.since},{l:"Last order",hm:true,r:r=>X.fmtD("2026-10-"+String(1+(r.id%19)).padStart(2,"0"))}],top,{click:r=>`App.openCustomer(${r.id})`,h:360});
+  h+=`<div class="xs muted mt8">Guest orders without a customer are excluded – 9% (312 orders). Phone numbers on screen: consider masking for analytics.view holders.</div>`;
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Areas ===== */
+window.mount_an_areas=function(){
+  const A=App,X=A16,$=A.$,fmt=A.fmt,D=X.D;const id="an-areas";
+  X.st(id,{});X.head(id,{fresh:"All time · no period"});X.url(id,false);if(!X.gate(id))return;
+  const rows=D.empty?[]:["SE1","SE16","SE17","SW1","SE11","E1","SE15","SW6","EC1","SE5","W1","N1"].map((a,i)=>{const o=Math.round(1400*Math.pow(0.68,i)+X.ri(i,3,0,30));return {a,o,r:o*X.ri(i,4,78,120)}});
+  let h=X.sec("Orders by postcode area",`<span class="an-hint">top-50 full postcodes by revenue, collapsed to the outward code</span>`);
+  h+=X.tbl([{l:"Area",r:r=>`<span class="tag --line">${r.a}</span>`},{l:"Orders",num:true,r:r=>X.n(r.o)},{l:"Revenue",num:true,r:r=>fmt(r.r)},{l:"Share",num:true,r:r=>X.pct(r.r,X.sum(rows,x=>x.r))+"%"}],rows,{empty:"No data"});
+  h+=`<div class="mt16">${X.bars(rows.slice(0,6).map(r=>({l:r.a,v:r.o})))}</div>`;
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Events ===== */
+window.mount_an_events=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,D=X.D;const id="an-events";
+  X.st(id,{});X.head(id,{fresh:"All time · no period"});X.url(id,false);if(!X.gate(id))return;
+  const E=D.empty;const st=[["placed","Order placed",E?0:9140],["confirmed","Confirmed",E?0:8620],["produced","In production / made",E?0:8390],["fulfilled","Fulfilled",E?0:8210]];
+  let h=`<div class="row mb8"><div><div class="h3">Events funnel</div><div class="xs muted">Tracked order statuses (the page is titled «storefront events», but it shows order statuses)</div></div></div>`;
+  h+=`<div class="an-funnel">${st.map((x,i)=>{const prev=i?st[i-1][2]:null;const drop=prev?Math.round((1-x[2]/prev)*100):null;return `<div class="st"><span>${x[1]} <span class="muted xs" title="raw key analytics.events.steps.${x[0]} shown on the current page">(${x[0]})</span></span><div class="progress"><i style="width:${X.pct(x[2],st[0][2])}%"></i></div><b class="tnum">${X.n(x[2])}</b><span class="xs ${drop>5?"neg":"muted"}">${i?(prev?"−"+drop+"%":"–"):""}</span></div>`}).join("")}</div>`;
+  if(E)h+=X.empty("No orders yet","The current page has no empty state and prints −NaN% when a step is zero – guarded here.");
+  h+=X.note(`${ic("info")} Old page defects not carried over: labels came through as raw i18n keys, and a zero previous step printed «−NaN%» / «−-Infinity%». Three pages show a funnel (Website, Funnel, Events) – keep their different definitions.`,"mt16");
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Peaks ===== */
+window.mount_an_peaks=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-peaks";
+  const s=X.st(id,{window:8,basis:"slot"});
+  X.head(id,{fresh:"Histogram · "+(s.window?s.window+" weeks":"all time"),demo:[["peak","Peak cell present"]],controls:`<div class="seg-ctl"><button class="${s.basis==="slot"?"on":""}" onclick="A16.S['an-peaks'].basis='slot';App.remount()">By delivery slot</button><button class="${s.basis==="placed"?"on":""}" onclick="A16.S['an-peaks'].basis='placed';App.remount()">By order time</button></div><div class="chips">${[8,12,26,0].map(w=>`<button class="chip ${s.window===w?"on":""}" onclick="A16.S['an-peaks'].window=${w};App.remount()">${w?w+" wks":"All time"}</button>`).join("")}</div>`});
+  X.url(id,`window=${s.window}&basis=${s.basis}`);if(!X.gate(id))return;
+  const E=D.empty;const total=E?0:(s.window||60)*118;
+  let h=`<div class="row mb8"><div class="h3">${s.basis==="slot"?"Demand by promised delivery slot":"Demand by the time the order came in"}</div><span class="sp"></span><span class="sm muted">${s.window?`${X.fmtD("2026-0"+(8-Math.floor(s.window/5))+"-25")} → 20 Oct`:"All time"} · ${X.n(total)} orders${s.basis==="slot"&&!E?` · 112 delivery orders (${Math.round(112/total*100)}%) carry no promised slot`:""}</span></div>`;
+  if(D.peak&&!E)h+=X.note(`${ic("info")} Staff up around the peak day/hour to protect SLA – the peak is <b>Fri 12:00–14:00</b> (outlined below).`,"mb16");
+  const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],hours=Array.from({length:15},(_,i)=>8+i);
+  const val=(d,hh)=>E?0:Math.round((s.window||60)*(0.3+X.hsh(d*20+hh,s.basis==="slot"?1:2))*(hh>=10&&hh<=15?2:hh<=9||hh>=20?0.5:1)*(d>=4?1.3:1)/4);
+  const max=Math.max(1,...days.flatMap((d,di)=>hours.map(hh=>val(di,hh))));
+  h+=`<div class="tbl-wrap"><table class="an-heat"><thead><tr><th></th>${hours.map(hh=>`<th>${hh}</th>`).join("")}</tr></thead><tbody>${days.map((d,di)=>`<tr><th>${d}</th>${hours.map(hh=>{const v=val(di,hh);return `<td class="${D.peak&&di===4&&hh===12?"pk":""}" style="background:color-mix(in srgb,var(--sel) ${Math.round(v/max*85)}%,var(--paper));color:${v/max>0.5?"var(--paper)":"var(--ink)"}" title="${d} ${hh}:00 – ${v} orders · avg ${fmt(90+X.ri(di,hh,0,40))}" onclick="document.getElementById('an-pk-detail').innerHTML='<b>${d} ${hh}:00–${hh+1}:00</b> · ${v} orders · average order ${fmt(90+X.ri(di,hh,0,40))}'">${v||""}</td>`}).join("")}</tr>`).join("")}</tbody></table></div><div class="an-detail" id="an-pk-detail">Tap a cell for orders and average order – day labels are Mon–Sun in English on the old page and never translated.</div>`;
+  h+=X.sec("Orders by hour of day",`<span class="muted xs">all days together</span>`);
+  h+=X.daily(id,hours.map(hh=>({label:hh+":00",v:days.reduce((sum,_,di)=>sum+val(di,hh),0),aov:92+X.ri(hh,7,0,36)})),[{k:"v",l:"Orders"}],{aov:true,unit:"hours"});
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Seasonality ===== */
+window.mount_an_seasonality=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-seasonality";
+  const s=X.st(id,{window:24});
+  X.head(id,{fresh:"By month · fulfilment date · all channels",controls:`<div class="chips">${[12,24,36].map(w=>`<button class="chip ${s.window===w?"on":""}" onclick="A16.S['an-seasonality'].window=${w};App.remount()">${w} mo</button>`).join("")}</div>`});
+  X.url(id,"window="+s.window);if(!X.gate(id))return;
+  if(D.empty){$("#b-"+id).innerHTML=X.empty("No orders in this window");return}
+  const CHS=["Website","Messengers","Marketplaces","Shop"];
+  const rows=Array.from({length:s.window},(_,k)=>{const i=s.window-1-k;const d=new Date(2026,9-i,1);const m=d.getMonth();const seas=[1.4,1.9,1.6,.9,1.05,.85,.8,.75,.9,1.15,.95,1.3][m];const by={};let o=0;CHS.forEach((c,ci)=>{const v=Math.round([120,60,70,40][ci]*seas*(0.85+X.hsh(i,ci+30)*0.3)*(1-i/80));by[c]=v;o+=v});const rev=o*X.ri(i,33,82,118);return {i,d,label:d.toLocaleDateString("en-GB",{month:"short",year:"2-digit"}),key:d.getFullYear()+"-"+String(m+1).padStart(2,"0"),by,o,rev,aov:Math.round(rev/o),running:i===0,imported:i>=s.window-3&&s.window>12}});
+  const avg=Math.round(X.sum(rows,r=>r.rev)/rows.length);const best=rows.slice().sort((a,b)=>b.rev-a.rev)[0],worst=rows.slice().sort((a,b)=>a.rev-b.rev)[0];const flagged=rows.filter(r=>r.running||r.imported).length;
+  let h=`<div class="grid g4">${X.kpi("Best month",best.label,fmt(best.rev))}${X.kpi("Worst month",worst.label,fmt(worst.rev))}${X.kpi("Average month",fmt(avg),`averaged over ${rows.length} months · ${flagged>1?"imported months included":"live CRM data only"}`)}${X.kpi("Channels","Website · Messengers · Marketplaces","top-3 by revenue")}</div>`;
+  h+=X.note(`${ic("info")} Seasonality covers <b>all channels</b>, not only the website.${flagged?` Months marked <b>· running</b> are not finished; <b>· imported</b> came from the old spreadsheet and are shown paler.`:""}`,"mt16");
+  h+=X.sec("Revenue by month");
+  h+=X.daily(id,rows.map(r=>Object.assign({},r,{v:r.running||r.imported?0:r.rev,pale:r.running||r.imported?r.rev:0,aov:avg})),[{k:"v",l:"Revenue"},{k:"pale",l:"Running / imported"}],{aov:true,aovLabel:"Average month",unit:"months",lineCls:"--ink",h:140});
+  h+=X.sec("By month");
+  h+=X.tbl([{l:"Month",r:r=>`${r.key}${r.running?' <span class="tag --line">running</span>':""}${r.imported?' <span class="tag --line">imported</span>':""}`},...CHS.map(c=>({l:c,num:true,r:r=>`<span class="an-tip" title="${c} revenue ${fmt(r.by[c]*r.aov)}">${X.n(r.by[c])}</span>`})),{l:"Orders",num:true,r:r=>X.n(r.o)},{l:"Revenue",num:true,r:r=>fmt(r.rev)},{l:"avg",num:true,r:r=>fmt(r.aov)},{l:"Season index",num:true,r:r=>(r.rev/avg).toFixed(2)},{l:"YoY",num:true,r:r=>{const p=rows.find(x=>x.i===r.i+12);return p?`<span class="${r.rev>=p.rev?"pos":"neg"}">${r.rev>=p.rev?"+":"−"}${Math.abs(Math.round((r.rev-p.rev)/p.rev*100))}%</span>`:"–"}}],rows.slice().reverse(),{row:r=>r.running||r.imported?"dim":"",h:380});
+  $("#b-"+id).innerHTML=h;
+};
+</script>

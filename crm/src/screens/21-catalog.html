@@ -1,0 +1,503 @@
+<style>
+/* ===== 21 · Catalog (products, product card, photo inbox, categories, parameters, badges, reviews, feed) – scoped .c21 ===== */
+.c21-sub{display:flex;align-items:center;gap:12px;flex-wrap:wrap;width:100%}
+.c21-sub .views{margin:0;border-bottom:0;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.c21-sub .views::-webkit-scrollbar{display:none}
+.c21-sub .views button{height:32px;padding:0 10px}
+.c21-grid{display:grid;gap:16px}
+.c21-grid.--c3{grid-template-columns:repeat(3,minmax(0,1fr))}.c21-grid.--c4{grid-template-columns:repeat(4,minmax(0,1fr))}.c21-grid.--c5{grid-template-columns:repeat(5,minmax(0,1fr))}.c21-grid.--c6{grid-template-columns:repeat(6,minmax(0,1fr))}
+[data-size="ipad"] .c21-grid.--c5,[data-size="ipad"] .c21-grid.--c6{grid-template-columns:repeat(4,minmax(0,1fr))}
+[data-size="phone"] .c21-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px}
+.c21-card{border:1px solid var(--hair);background:var(--paper);display:flex;flex-direction:column;min-width:0;position:relative;transition:border-color var(--m-fast)}
+.c21-card:hover{border-color:var(--grey)}
+.c21-card .photo{cursor:pointer}
+.c21-card.--off .photo img{opacity:.4}
+.c21-card .c21-ci{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.c21-card .c21-nm{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c21-card .c21-tags{position:absolute;top:8px;left:8px;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.c21-card .c21-ltr{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:48px;color:var(--light)}
+.c21-pg{display:flex;align-items:center;gap:4px;justify-content:center;margin-top:20px}
+.c21-pg button{min-width:32px;height:32px;padding:0 8px;border:1px solid var(--hair);font-size:12px;font-variant-numeric:tabular-nums}
+.c21-pg button.on{background:var(--sel);color:var(--on-sel);border-color:var(--sel)}
+.c21-403{max-width:520px;margin:60px auto;text-align:center}
+.c21-flags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+/* product card */
+#s-product .c21-pc{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start}
+[data-size="ipad"] #s-product .c21-pc,[data-size="phone"] #s-product .c21-pc{grid-template-columns:minmax(0,1fr)}
+#s-product .c21-stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+#s-product .panel .p-body{padding:14px;overflow:visible}
+#s-product .c21-f2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#s-product .c21-f3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+[data-size="phone"] #s-product .c21-f3{grid-template-columns:repeat(2,minmax(0,1fr))}
+#s-product .c21-ph{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#s-product .c21-ph .ph{border:1px solid var(--hair);display:flex;flex-direction:column;min-width:0}
+#s-product .c21-ph .ph .photo{cursor:zoom-in}
+#s-product .c21-ph .ph .pa{padding:6px 8px;display:flex;flex-direction:column;gap:4px}
+#s-product .c21-ph .ph .pa .row{gap:2px}
+#s-product .c21-ph .ph .input{height:28px;font-size:12px}
+#s-product .c21-vid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#s-product .c21-vid .v{border:1px solid var(--hair);padding:8px;display:flex;flex-direction:column;gap:6px}
+#s-product .c21-vid .v .photo{display:grid;place-items:center;color:var(--grey)}
+#s-product .c21-var{display:grid;grid-template-columns:minmax(0,1.3fr) 90px 80px 80px 56px 56px 32px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#s-product .c21-var .lbl{font-size:10px}
+#s-product .c21-var .input,#s-product .c21-var .select{height:30px;font-size:13px}
+[data-size="phone"] #s-product .c21-var{grid-template-columns:repeat(3,minmax(0,1fr))}
+#s-product .c21-rs{font-size:12px;color:var(--grey);padding:2px 0 8px}
+#s-product .c21-seo-sc{display:flex;align-items:center;gap:14px}
+#s-product .c21-chk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;font-size:12.5px}
+#s-product .c21-chk span{display:flex;align-items:center;gap:6px}
+#s-product .c21-chk .dot{width:7px;height:7px}
+#s-product .c21-snip{border:1px solid var(--hair);padding:12px 14px;font-family:Arial,sans-serif}
+#s-product .c21-snip .u{font-size:12px;color:var(--graphite)}
+#s-product .c21-snip .t{font-size:17px;color:#1a0dab;margin:2px 0}
+[data-theme="ink"] #s-product .c21-snip .t{color:#8ab4f8}
+#s-product .c21-snip .d{font-size:13px;color:var(--graphite);line-height:1.4}
+#s-product .c21-cls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#s-product .c21-cls .g{border:1px solid var(--hair);padding:8px 10px;max-height:150px;overflow:auto;display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+#s-product .c21-rec{display:grid;grid-template-columns:minmax(0,1fr) 64px 32px;gap:8px;align-items:center;padding:4px 0}
+#s-product .c21-rec .select,#s-product .c21-rec .input{height:30px;font-size:13px}
+#s-product .c21-kv4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+#s-product .c21-kv4 div{border:1px solid var(--hair);padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+#s-product .c21-err{font-size:12px;color:var(--accent)}
+#s-product .c21-ai{border:1px solid var(--hair);background:var(--silver);padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+#s-product .c21-ai .chips .chip{height:24px;font-size:12px;padding:0 8px;cursor:default}
+/* intake */
+#s-catalog-intake .c21-dr{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}
+[data-size="phone"] #s-catalog-intake .c21-dr{grid-template-columns:minmax(0,1fr)}
+#s-catalog-intake .c21-draft{border:1px solid var(--hair);display:flex;gap:12px;padding:12px;min-width:0}
+#s-catalog-intake .c21-draft .photo{width:96px;flex:none;align-self:flex-start}
+#s-catalog-intake .c21-draft .b{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#s-catalog-intake .c21-draft .ds{font-size:12.5px;color:var(--graphite);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#s-catalog-intake .c21-sw{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+[data-size="ipad"] #s-catalog-intake .c21-sw,[data-size="phone"] #s-catalog-intake .c21-sw{grid-template-columns:minmax(0,1fr)}
+#s-catalog-intake .c21-deck{position:relative;height:520px;max-width:420px;margin:0 auto;user-select:none;outline:none}
+#s-catalog-intake .c21-deck .dk{position:absolute;inset:0;border:1px solid var(--hair);background:var(--paper);display:flex;flex-direction:column;transition:transform var(--m-base) var(--m-ease),opacity var(--m-base);will-change:transform}
+#s-catalog-intake .c21-deck .dk.--back{transform:scale(.96) translateY(10px);opacity:.6}
+#s-catalog-intake .c21-deck .dk .photo{flex:1;min-height:0;cursor:grab}
+#s-catalog-intake .c21-deck .dk .photo img{height:100%}
+#s-catalog-intake .c21-deck .dk .cap{padding:10px 12px;display:flex;align-items:center;gap:10px;font-size:13px;border-top:1px solid var(--hair)}
+#s-catalog-intake .c21-deck .dk.--go-r{transform:translateX(120%) rotate(8deg);opacity:0}
+#s-catalog-intake .c21-deck .dk.--go-l{transform:translateX(-120%) rotate(-8deg);opacity:0}
+#s-catalog-intake .c21-deck .dk.--go-u{transform:translateY(-120%);opacity:0}
+#s-catalog-intake .c21-deck .stamp{position:absolute;top:16px;left:16px;padding:4px 10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--paper);border:1px solid var(--ink);opacity:0;transition:opacity var(--m-fast)}
+#s-catalog-intake .c21-deck .stamp.on{opacity:1}
+#s-catalog-intake .c21-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px;max-width:420px;margin-left:auto;margin-right:auto}
+#s-catalog-intake .c21-keys button{border:1px solid var(--hair);padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;text-align:center}
+#s-catalog-intake .c21-keys button:hover{border-color:var(--ink)}
+#s-catalog-intake .c21-keys button .kbd{margin-top:2px}
+#s-catalog-intake .c21-log{display:flex;flex-direction:column}
+#s-catalog-intake .c21-log .li{min-height:40px}
+/* simple tables */
+.c21-tbl .tag+.tag{margin-left:4px}
+.c21-stars{letter-spacing:.08em;white-space:nowrap}
+.c21-rvtxt{white-space:normal;line-height:1.3;font-size:13px}
+.c21-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.c21-kpis .kpi-card{cursor:default;padding:12px 14px;gap:4px}
+.c21-kpis .kpi-card .kpi-s{font-size:26px}
+.c21-kpis .kpi-card.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+[data-size="phone"] .c21-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+.c21-hp{display:table-cell}[data-size="phone"] .c21-hp{display:none!important}
+.c21-bd{display:inline-flex;align-items:center;height:20px;padding:0 7px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.c21-bd.--rose{background:var(--accent-bg);color:var(--accent)}.c21-bd.--amber{background:var(--warn-bg);color:var(--warn)}.c21-bd.--green{background:var(--ok-bg);color:var(--ok)}.c21-bd.--slate{background:var(--silver);color:var(--graphite)}.c21-bd.--violet{background:var(--sel);color:var(--on-sel)}
+</style>
+
+<!-- ids: CTLG-001 CTLG-002 CTLG-003 CTLG-004 CTLG-005 CTLG-006 CTLG-007 CTLG-008 CTLG-009 – catalog sub-navigation (Products · Photo inbox · Categories · Parameters · Badges · Reviews · Feed · Marketplace names · Marketplace menu · Size ladder behind flag), sidebar entries Catalog / Ready now / Bouquet builder (flag) / Shop floor stock (flag) / Bouquet photos, entry points from the dashboard and Inventory, 403 for seasonal / trainee florists -->
+<section class="scr" id="s-catalog" data-nav="Catalog · products" data-group="Catalog & Stock" data-title="Catalog" data-sub="floritta.uk" data-parent="catalog">
+  <!-- ids: CTLG-010 CTLG-011 CTLG-012 CTLG-013 CTLG-014 CTLG-015 CTLG-016 CTLG-017 – subtitle «N products · N categories», + Add product (draft → editor), Sync feed (stub), live search 350 ms, Category filter incl. Uncategorised (N), Recipes filter (inventory.manage), Apply, Columns 3/4/5/6 in localStorage -->
+  <div class="scr-head" id="c21-cat-head"></div>
+  <!-- ids: CTLG-018 CTLG-019 CTLG-020 CTLG-021 CTLG-022 – product cards (thumb or first letter, name, price, category), labels Out of stock / badges / Draft / Archived / recipe ✓ / not reviewed, Edit →, No products, pagination 24 per page (recipes filter kept – bug fixed in the prototype) -->
+  <div class="scr-body" id="c21-cat-body"></div>
+</section>
+
+<section class="scr" id="s-product" data-nav="Product card" data-group="Catalog & Stock" data-title="Product" data-sub="catalog" data-roles="owner manager" data-parent="catalog">
+  <!-- ids: CTLG-023 CTLG-024 CTLG-025 CTLG-026 CTLG-027 CTLG-028 CTLG-029 CTLG-196 CTLG-202 – ← Back to catalog, Save card (top & bottom, one transaction), «Saved», unsaved-changes guard, Publish to site / Update on site with confirm «Publish the live site?» (publishes what is saved, not the form), «On site» label, bot draft opens as Active, no delete – Archive only -->
+  <div class="scr-head" id="c21-pc-head"></div>
+  <div class="scr-body" id="c21-pc-body"></div>
+</section>
+
+<section class="scr" id="s-catalog-intake" data-nav="Photo inbox" data-group="Catalog & Stock" data-title="Photo inbox" data-sub="catalog" data-roles="owner manager" data-parent="catalog">
+  <!-- ids: CTLG-062 CTLG-063 CTLG-064 CTLG-065 CTLG-066 CTLG-067 CTLG-068 CTLG-069 CTLG-070 – Awaiting review KPI, subtitle, draft card (photo, name, source, description, card teaser), Missing copy warning, Open full card, Price + Category, Publish (disabled without price/description; success / info «NOT live» / error), Delete draft confirm, empty state -->
+  <!-- new: florist photos to site, decision 01.11.2026 – source switch «From florists · N / From Telegram bot · N» and swipe mode «Photos for the site»: → gallery of the product, ← skip, ↑ for Instagram, Z undo -->
+  <div class="scr-head" id="c21-in-head"></div>
+  <div class="scr-body" id="c21-in-body"></div>
+</section>
+
+<section class="scr" id="s-catalog-categories" data-nav="Categories" data-group="Catalog & Stock" data-title="Categories" data-sub="catalog" data-roles="owner manager" data-parent="catalog">
+  <!-- ids: CTLG-071 CTLG-072 CTLG-073 CTLG-074 CTLG-075 CTLG-076 CTLG-203 – table Name / Slug / Parent / Status, Add category, modal Name / Parent / Active (no self-nesting, slug fixed at create), Edit, Delete confirm (hides on site first), No categories, dangling products after delete -->
+  <div class="scr-head" id="c21-cg-head"></div>
+  <div class="scr-body" id="c21-cg-body"></div>
+</section>
+
+<section class="scr" id="s-catalog-parameters" data-nav="Parameters" data-group="Catalog & Stock" data-title="Parameters" data-sub="catalog" data-roles="owner manager" data-parent="catalog">
+  <!-- ids: CTLG-077 CTLG-078 CTLG-079 CTLG-080 CTLG-081 CTLG-204 – table Name / Type / Options, Add parameter modal (Name, Type Select/Text/Number/Yes-No, Options for Select, choose one/several – new), Edit, Delete confirm, No parameters, Text/Number/Yes-No are empty blocks on the card -->
+  <div class="scr-head" id="c21-pm-head"></div>
+  <div class="scr-body" id="c21-pm-body"></div>
+</section>
+
+<section class="scr" id="s-catalog-badges" data-nav="Badges" data-group="Catalog & Stock" data-title="Badges" data-sub="catalog" data-roles="owner manager" data-parent="catalog">
+  <!-- ids: CTLG-082 CTLG-083 CTLG-084 CTLG-085 CTLG-086 – table Label EN as badge / Key / Label RU / Colour / Kind, Add badge modal (key → snake_case), Edit (key locked for auto), Delete only manual, No badges -->
+  <div class="scr-head" id="c21-bg-head"></div>
+  <div class="scr-body" id="c21-bg-body"></div>
+</section>
+
+<section class="scr" id="s-catalog-reviews" data-nav="Reviews" data-group="Catalog & Stock" data-title="Reviews" data-sub="catalog" data-roles="owner manager" data-parent="catalog">
+  <!-- ids: CTLG-087 CTLG-088 CTLG-089 CTLG-090 CTLG-091 CTLG-092 CTLG-093 – KPI Pending / Published / Hidden, filters Status / Source / Rating, table Product / Author / Rating / Review / Source / Status, Publish, Hide, Delete (admin, data.delete), No reviews + pagination 30 (added – was missing) -->
+  <div class="scr-head" id="c21-rv-head"></div>
+  <div class="scr-body" id="c21-rv-body"></div>
+</section>
+
+<section class="scr" id="s-catalog-feed" data-nav="Feed" data-group="Catalog & Stock" data-title="Feed" data-sub="catalog" data-roles="owner manager" data-parent="catalog">
+  <!-- ids: CTLG-094 CTLG-095 CTLG-096 CTLG-097 CTLG-098 – KPI Total items / Invalid, note about out-of-stock, table Item / SKU / Price / Status, Sync feed (stub), Feed is empty -->
+  <div class="scr-head" id="c21-fd-head"></div>
+  <div class="scr-body" id="c21-fd-body"></div>
+</section>
+
+<script>
+/* ===== 21 · Catalog – shared helpers (window.C21) + screens of this file. Demo data is fictional. ===== */
+(function(){
+const A=window.App,esc=A.esc,fmt=A.fmt,ic=A.icon,$=A.$;
+/* feature flags & demo states (toggle via «Demo» menu on every screen) */
+const F={storefront:true,ai:true,r2:true,photoroom:true,sizeLadder:true,bouquetBuilder:true,shopFloor:true,paused:false,fresh:false,rnSetup:true,limited:false,quiet:false,picks:true};
+const FL=[["storefront","Site bridge configured (prod)"],["ai","AI assistant enabled"],["r2","Photo & video storage (R2)"],["photoroom","Photoroom key (AI enhance)"],["sizeLadder","Size ladder flag"],["bouquetBuilder","Bouquet builder flag"],["shopFloor","Shop floor flag"],["paused","Builder paused for the peak"],["fresh","Freshness promise (N days)"],["rnSetup","Ready-now category configured"],["picks","Builder picks exist"],["limited","Florist = seasonal / trainee"],["quiet","Empty states (no data)"]];
+const role=()=>A.role();
+const can={manage:()=>role()!=="florist",inv:()=>role()!=="florist",cost:()=>role()==="owner",del:()=>role()==="owner",orders:()=>role()!=="florist",florist:()=>role()==="florist"&&!F.limited};
+const remount=()=>A.remount();
+function demoMenu(ev){A.pop(ev,["Demo states",...FL.map(([k,t])=>({t:(F[k]?"● ":"○ ")+t,ic:F[k]?"check":"minus",fn:()=>{F[k]=!F[k];remount();A.toast(t+" · "+(F[k]?"on":"off"))}}))])}
+const demoBtn=()=>`<button class="btn --ghost --sm" onclick="C21.demoMenu(event)">${ic("columns")} Demo</button>`;
+/* ---- catalog sub-navigation (CTLG-006, CTLG-007) ---- */
+const TABS=[["catalog","Products"],["catalog-intake","Photo inbox"],["catalog-categories","Categories"],["catalog-parameters","Parameters"],["catalog-badges","Badges"],["catalog-reviews","Reviews"],["catalog-feed","Feed"],["catalog-mp-names","Marketplace names"],["catalog-mp-menu","Marketplace menu"],["catalog-size-ladder","Size ladder"]];
+function subnav(cur){return `<div class="c21-sub"><div class="views">${TABS.filter(t=>t[0]!=="catalog-size-ladder"||F.sizeLadder).map(t=>`<button class="${cur===t[0]?"on":""}" onclick="App.go('${t[0]}')">${t[1]}${t[0]==="catalog-intake"&&intakeCount()?`<span class="n">${intakeCount()}</span>`:""}</button>`).join("")}</div></div>`}
+/* 403 for seasonal / trainee (CTLG-009) and for florists on manager-only pages */
+function deny(body,what){body.innerHTML=`<div class="c21-403">${ic("lock")}<div class="h2 mt8">403 · not for your role</div><p class="sm soft">${what||"The catalogue is for managers and admins."} ${F.limited?"Seasonal florists and trainees see none of these items in the sidebar and get 403 on a direct link.":"As a florist you have Ready now, the Bouquet builder and Shop floor stock."}</p><div class="btn-row" style="justify-content:center"><button class="btn --ghost --sm" onclick="App.go('ready-now')">Ready now</button><button class="btn --ghost --sm" onclick="App.go('bouquet-builder')">Bouquet builder</button><button class="btn --ghost --sm" onclick="App.go('shop-floor')">Shop floor</button></div></div>`}
+/* ---- demo catalogue data (fictional) ---- */
+const IM=["red-roses","peony-basket","pink-garden","white-spray","lilac-dream","peach-posy","belgravia","charmingly","daydream-basket","hero-basket","hero-white","pink-manifesto","poem-petals","powdered-rose","veronica"];
+const img=i=>"img/"+IM[((i%IM.length)+IM.length)%IM.length]+".webp";
+const CATS=[{id:1,n:"Roses",slug:"roses",parent:null,active:true},{id:2,n:"Baskets",slug:"baskets",parent:null,active:true},{id:3,n:"Garden",slug:"garden",parent:null,active:true},{id:4,n:"White",slug:"white",parent:null,active:true},{id:5,n:"Seasonal",slug:"seasonal",parent:null,active:true},{id:6,n:"Signature",slug:"signature",parent:null,active:true},{id:7,n:"Bespoke",slug:"bespoke",parent:null,active:true},{id:8,n:"Add-ons",slug:"add-ons",parent:null,active:true},{id:9,n:"Ready now",slug:"ready-now",parent:null,active:true},{id:10,n:"Christmas",slug:"christmas",parent:5,active:false},{id:11,n:"Peonies",slug:"peonies",parent:3,active:true}];
+let catSeq=12;
+const cat=id=>CATS.find(c=>c.id===id);
+const catName=id=>id==null?"Uncategorised":(cat(id)?cat(id).n:"Uncategorised");
+const PARAMS=[{id:1,n:"Colour",type:"Select",opts:["Red","Pink","White","Peach","Lilac","Mixed"],multi:true},{id:2,n:"Occasion",type:"Select",opts:["Birthday","Anniversary","Sympathy","Thank you","Just because"],multi:true},{id:3,n:"Stem count",type:"Number",opts:[],multi:false},{id:4,n:"Vase included",type:"Yes/No",opts:[],multi:false},{id:5,n:"Style",type:"Select",opts:["Hand-tied","Vase arrangement","Basket","Box"],multi:false}];
+let paramSeq=6;
+const BADGES=[{id:1,key:"bestseller",en:"Bestseller",ru:"Хит",colour:"amber",auto:true},{id:2,key:"new",en:"New",ru:"Новинка",colour:"green",auto:true},{id:3,key:"out_of_stock",en:"Out of stock",ru:"Нет в наличии",colour:"slate",auto:true},{id:4,key:"editors_pick",en:"Editor's pick",ru:"Выбор редакции",colour:"violet",auto:false},{id:5,key:"valentines",en:"Valentine's",ru:"Валентинов день",colour:"rose",auto:false}];
+let badgeSeq=6;
+const badge=k=>BADGES.find(b=>b.key===k);
+const badgeHtml=k=>{const b=badge(k);return b?`<span class="c21-bd --${b.colour}">${esc(b.en)}</span>`:""};
+const OCC=["Birthday","Anniversary","Sympathy","New baby","Thank you","Get well","Congratulations","Just because"],TYPE=["Bouquet","Basket","Vase arrangement","Box","Wreath","Plant"],VAR=["Roses","Peonies","Lilies","Hydrangea","Lisianthus","Ranunculus","Tulips","Eucalyptus","Orchids"];
+const COLOURS=["Red","Pink","White","Peach","Lilac","Mixed"];
+const LANGS=[["pl","Polish"],["ru","Russian"],["uk","Ukrainian"]];
+const DESC=n=>`<p>${n} is hand-tied in our Bermondsey studio the morning it leaves. Seasonal stems, conditioned overnight, wrapped in ivory paper.</p><p>Same-day delivery across London SE1 and nearby until 22:00.</p>`;
+function X(p){if(p.c21)return p.c21;const i=p.id,h=k=>(i*31+k*7)%100;const multi=p.sizes&&p.sizes.length>1;
+ const rec=n=>p.bom?{lines:p.bom.map(l=>({item:l[0],qty:l[1]})),reviewed:h(n)<60,by:h(n)<30?"tatiana":"valeria",at:A.T(10,0,-(i%9+1))}:null;
+ const vars=[{id:i*10+1,name:"Classic (as on the photo)",colour:COLOURS[i%6],price:p.price,old:h(1)<30?Math.round(p.price*1.15):null,active:true,soldOut:false,recipe:rec(2),saved:true}];
+ if(multi){vars.push({id:i*10+2,name:"Smaller size for",colour:COLOURS[i%6],price:Math.round(p.price*.7),old:null,active:h(3)<80,soldOut:false,recipe:rec(4),saved:true});vars.push({id:i*10+3,name:"Upgrade size to",colour:COLOURS[i%6],price:Math.round(p.price*1.5),old:null,active:true,soldOut:h(5)<15,recipe:h(6)<50?rec(7):null,saved:true})}
+ const photos=[p.img].concat(h(6)<70?[img(i+3)]:[]).concat(h(7)<40?[img(i+5)]:[]);
+ const alts={};photos.forEach((u,k)=>alts[u]=k?"":p.name+" – hand-tied bouquet, London delivery");
+ const bycat={Roses:1,Baskets:2,Garden:3,White:4,Seasonal:5,Signature:6,Bespoke:7,"Add-ons":8};
+ p.c21={status:p.active?"active":(h(8)<50?"draft":"archived"),soldOut:i===102,alcohol:i===108,pet:null,catId:i===300?null:i===303?99:(bycat[p.cat]??null),desc:h(9)<85?DESC(p.name):"",quantity:/Roses/.test(p.name)?"12 roses":"",photos,alts,videos:h(10)<30?[{id:i*10+9,poster:h(11)<70}]:[],sfId:p.active&&h(12)<75?41000+i:null,intake:null,seo:{kw:p.name.toLowerCase()+" london",title:p.name+" – same-day flower delivery London | Floritta",desc:`Order ${p.name} online – hand-tied in Bermondsey, delivered across London the same day until 22:00.`},params:{1:[COLOURS[i%6]],2:[OCC[i%5]],5:[["Hand-tied","Basket","Vase arrangement","Box"][i%4]]},cls:{o:[OCC[i%8],OCC[(i+3)%8]],t:[TYPE[i%6]],v:[VAR[i%9]]},badges:i%7===0?["editors_pick"]:[],vars,tr:{pl:{status:"machine",name:"",desc:"",st:"",sd:"",reviewed:false},ru:{status:"reviewed",name:p.name,desc:"",st:"",sd:"",reviewed:true},uk:{status:"stale",name:p.name,desc:"",st:"",sd:"",reviewed:false}},related:[]};
+ p.c21.tr.pl.name=p.name;return p.c21}
+/* Telegram-bot drafts (Photo inbox) – separate from App.data.products */
+const DRAFTS=[
+ {id:901,sku:"TG-0901",name:"Autumn garden bouquet",cat:"Seasonal",img:img(2),price:0,sizes:[],active:false,stats:null,c21:null,hint:5,desc:DESC("Autumn garden bouquet"),teaser:"Rust dahlias, garden roses and copper beech – the autumn edit.",at:A.T(9,12,0)},
+ {id:902,sku:"TG-0902",name:"Peach & cream posy",cat:"Garden",img:img(5),price:0,sizes:[],active:false,stats:null,c21:null,hint:3,desc:"",teaser:"",at:A.T(8,40,0)},
+ {id:903,sku:"TG-0903",name:"White hydrangea cloud",cat:"White",img:img(10),price:0,sizes:[],active:false,stats:null,c21:null,hint:4,desc:DESC("White hydrangea cloud"),teaser:"",at:A.T(18,5,-1)},
+ {id:904,sku:"TG-0904",name:"Ready-made bouquet · Tue 20 Oct 09:58",cat:"Ready now",img:img(7),price:0,sizes:[],active:false,stats:null,c21:null,hint:9,desc:"",teaser:"",at:A.T(9,58,0),rn:true}
+];
+DRAFTS.forEach(d=>{X(d);d.c21.status="draft";d.c21.intake="telegram";d.c21.catId=null;d.c21.desc=d.desc;d.c21.seo.desc=d.teaser;d.c21.seo.title="";d.c21.photos=[d.img];d.c21.alts={};d.c21.vars=[];d.c21.sfId=null;d.c21.videos=[]});
+const findP=id=>A.product(id)||DRAFTS.find(d=>d.id===Number(id));
+const allP=()=>A.data.products.concat(DRAFTS.filter(d=>!d.deleted));
+const intakeCount=()=>F.quiet?0:DRAFTS.filter(d=>!d.deleted&&d.c21.status==="draft").length;
+const slug=n=>n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const num=v=>Math.max(0,Math.round(Number(String(v).replace(/[^0-9.]/g,""))||0));
+const recipeOk=p=>{const x=X(p);if(!x.vars.length)return false;return x.vars.every(v=>v.recipe&&v.recipe.reviewed)};
+const outOfStock=p=>{const x=X(p);return x.vars.length&&x.vars.every(v=>v.soldOut)};
+const money=(id,val,ph="£0")=>`<div class="row" style="gap:0"><span class="input" style="width:30px;display:inline-flex;align-items:center;justify-content:center;border-right:0;color:var(--grey)">£</span><input class="input tnum" id="${id}" value="${val||""}" placeholder="${ph}" style="flex:1"></div>`;
+const inv=()=>A.data.inventory;
+
+/* ================= PRODUCTS GRID (s-catalog) ================= */
+const cs={q:"",cat:"all",rec:"all",cols:4,page:1,applied:{q:"",cat:"all",rec:"all"}};
+try{cs.cols=Number(localStorage.getItem("catalog.cols"))||4}catch(e){}
+let qT=null;
+window.mount_catalog=function(params){
+ const body=$("#c21-cat-body"),head=$("#c21-cat-head");
+ if(!can.manage()){head.innerHTML=`<div class="h3">Catalog</div><span class="sp"></span>${demoBtn()}`;deny(body);return}
+ const prods=A.data.products,cats=CATS.filter(c=>c.active&&c.parent===null);
+ const unc=prods.filter(p=>X(p).catId===null).length;
+ head.innerHTML=`${subnav("catalog")}
+  <div class="toolbar" style="margin:0;width:100%">
+   <div class="search">${ic("search")}<input id="c21-cq" placeholder="Search by name · live, 350 ms" value="${esc(cs.q)}"></div>
+   <select class="select" style="width:190px" id="c21-ccat" onchange="C21.catFilter('cat',this.value)"><option value="all">All categories</option><option value="unc" ${cs.cat==="unc"?"selected":""}>Uncategorised (${unc})</option>${cats.map(c=>`<option value="${c.id}" ${String(cs.cat)===String(c.id)?"selected":""}>${esc(c.n)}</option>`).join("")}</select>
+   ${can.inv()?`<select class="select" style="width:170px" title="Recipes · inventory.manage" onchange="C21.catFilter('rec',this.value)"><option value="all">Recipes · all</option><option value="unreviewed" ${cs.rec==="unreviewed"?"selected":""}>Not reviewed</option><option value="reviewed" ${cs.rec==="reviewed"?"selected":""}>Reviewed</option></select>`:""}
+   <button class="btn --ghost --sm" onclick="C21.catApply()">Apply</button>
+   <span class="sp"></span>
+   <span class="xs muted">Columns</span><div class="seg-ctl">${[3,4,5,6].map(n=>`<button class="${cs.cols===n?"on":""}" onclick="C21.catCols(${n})">${n}</button>`).join("")}</div>
+   ${demoBtn()}
+   <button class="btn --ghost --sm" onclick="C21.syncFeed()">${ic("refresh")} Sync feed</button>
+   <button class="btn --sm" onclick="C21.addProduct()">${ic("plus")} Add product</button>
+  </div>
+  <div class="xs muted" style="width:100%">${prods.length} products · ${CATS.length} categories · ${unc} uncategorised will not be published by the bridge</div>`;
+ $("#c21-cq").oninput=e=>{cs.q=e.target.value;clearTimeout(qT);qT=setTimeout(()=>{cs.applied.q=cs.q;cs.page=1;renderCat()},350)};
+ renderCat();
+ A.registerCommands([{g:"Actions",t:"Add a product to the catalogue",ic:"catalog",fn:()=>{A.go("catalog");addProduct()}},{g:"Go to",t:"Catalog · Photo inbox",ic:"photo",fn:()=>A.go("catalog-intake")}]);
+ if(params&&params.new&&!params._o){params._o=1;addProduct()}
+ if(params&&params.open&&!params._o){params._o=1;A.go("product",{id:params.open})}
+};
+function catList(){const a=cs.applied;return A.data.products.filter(p=>{const x=X(p);if(a.q&&!p.name.toLowerCase().includes(a.q.toLowerCase()))return false;if(a.cat==="unc")return x.catId===null;if(a.cat!=="all"&&String(x.catId)!==String(a.cat))return false;if(a.rec==="reviewed"&&!recipeOk(p))return false;if(a.rec==="unreviewed"&&recipeOk(p))return false;return true}).sort((a,b)=>a.name.localeCompare(b.name))}
+function renderCat(){
+ const b=$("#c21-cat-body");const list=F.quiet?[]:catList();const PER=24,pages=Math.max(1,Math.ceil(list.length/PER));if(cs.page>pages)cs.page=pages;const page=list.slice((cs.page-1)*PER,cs.page*PER);
+ if(!list.length){b.innerHTML=`<div class="empty">${ic("catalog")}<div class="h3">No products</div><div class="sm">Nothing matches the search and filters.</div><button class="btn --ghost --sm" onclick="C21.catReset()">Clear filters</button></div>`;return}
+ const card=p=>{const x=X(p);const labels=[];if(outOfStock(p))labels.push(`<span class="c21-bd --slate">Out of stock</span>`);x.badges.forEach(k=>labels.push(badgeHtml(k)));if(x.status!=="active")labels.push(`<span class="tag ${x.status==="draft"?"":"--line"}">${x.status==="draft"?"Draft":"Archived"}</span>`);if(can.inv())labels.push(recipeOk(p)?`<span class="tag --ok">recipe ✓</span>`:`<span class="tag --line">recipe not reviewed</span>`);
+  return `<div class="c21-card ${x.status==="archived"?"--off":""}"><div class="photo --sq" onclick="App.go('product',{id:${p.id}})">${x.photos.length?`<img src="${x.photos[0]}" alt="" loading="lazy">`:`<span class="c21-ltr">${esc(p.name[0])}</span>`}</div><div class="c21-tags">${labels.join("")}</div>
+   <div class="c21-ci"><div class="c21-nm">${esc(p.name)}</div><div class="row" style="gap:8px"><b class="tnum">${fmt(p.price)}</b><span class="xs muted">${esc(catName(x.catId))}</span></div><div class="row"><button class="link" onclick="App.go('product',{id:${p.id}})">Edit →</button></div></div></div>`};
+ b.innerHTML=`<div class="c21-grid --c${cs.cols}">${page.map(card).join("")}</div>${pages>1?`<div class="c21-pg">${Array.from({length:pages},(_,i)=>`<button class="${cs.page===i+1?"on":""}" onclick="C21.catPage(${i+1})">${i+1}</button>`).join("")}<span class="xs muted" style="margin-left:10px">${list.length} products · 24 per page · recipes filter is kept between pages</span></div>`:""}`;
+}
+function addProduct(){const id=Math.max(...A.data.products.map(p=>p.id))+1;const p={id,sku:"FL-"+(1400+A.data.products.length),name:"New product",cat:"",img:"",price:0,sizes:[],active:false,stats:null};A.data.products.push(p);X(p);p.c21.status="draft";p.c21.catId=null;p.c21.photos=[];p.c21.desc="";p.c21.vars=[];p.c21.sfId=null;p.c21.videos=[];p.c21.seo={kw:"",title:"",desc:""};A.toast("Draft created · audit catalog.product.create");A.go("product",{id})}
+function syncFeed(){A.toast("Feed synced · (stub – nothing is sent anywhere yet)")}
+
+/* ================= PRODUCT CARD (s-product) ================= */
+const pc={id:null,dirty:false,saved:false,ai:null,chips:[],aiComment:"",tab:0,lang:"pl",pub:null,errs:{}};
+window.mount_product=function(params){
+ const p=findP(params&&params.id||A.data.products[0].id);if(!p){A.toast("Product not found");A.go("catalog");return}
+ if(pc.id!==p.id){pc.id=p.id;pc.dirty=false;pc.saved=false;pc.chips=[];pc.tab=0;pc.errs={};pc.form=null}
+ const x=X(p);
+ if(!pc.form){pc.form={name:p.name,catId:x.catId,desc:x.desc,price:p.price,old:x.vars[0]&&x.vars[0].old||"",qty:x.quantity,status:x.status==="draft"&&x.intake?"active":x.status,soldOut:x.soldOut,alcohol:x.alcohol,pet:x.pet,seo:Object.assign({},x.seo),alts:Object.assign({},x.alts),vars:x.vars.map(v=>Object.assign({},v)),params:JSON.parse(JSON.stringify(x.params)),cls:JSON.parse(JSON.stringify(x.cls))}}
+ renderPC(p);
+};
+const dirty=()=>{pc.dirty=true;pc.saved=false;const el=$("#c21-pc-dirty");if(el)el.innerHTML=dirtyHtml()};
+const dirtyHtml=()=>pc.dirty?`<span class="xs warn row" style="gap:6px">${ic("alert")} Unsaved – leaving asks first (also on CRM links)</span>`:pc.saved?`<span class="xs ok row" style="gap:6px">${ic("check")} Saved</span>`:"";
+function renderPC(p){
+ const x=X(p),f=pc.form,head=$("#c21-pc-head"),body=$("#c21-pc-body");
+ const onSite=x.sfId!==null;
+ head.innerHTML=`<button class="btn --ghost --sm" onclick="C21.pcBack()">${ic("back")} Back to catalog</button><div style="min-width:0"><div class="h3" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(f.name||"New product")}</div><div class="xs muted">${esc(p.sku)} · floritta.uk/product/${slug(f.name)}${x.intake?" · draft from the Telegram bot – opens as Active":""}</div></div><span id="c21-pc-dirty">${dirtyHtml()}</span><span class="sp"></span>${demoBtn()}
+  ${F.storefront&&can.manage()?`<span class="row" style="gap:8px">${onSite?`<span class="pill --ready">On site</span>`:""}<button class="btn --ghost --sm" onclick="C21.pcPublish()">${ic("globe")} ${onSite?"Update on site":"Publish to site"}</button></span>`:`<span class="xs muted" title="storefrontConfigured = false">Site bridge not configured – no publish button</span>`}
+  <button class="ib" title="More" onclick="C21.pcMenu(event)">${ic("dots")}</button><button class="btn --sm" onclick="C21.pcSave()">${ic("check")} Save card</button>`;
+ const catOpts=`<option value="">Uncategorised</option>${CATS.map(c=>`<option value="${c.id}" ${String(f.catId)===String(c.id)?"selected":""}>${esc(c.parent?cat(c.parent).n+" › ":"")}${esc(c.n)}</option>`).join("")}${f.catId===99?`<option value="99" selected>– deleted category (id 99) –</option>`:""}`;
+ const toxicStems=x.vars[0]&&x.vars[0].recipe?x.vars[0].recipe.lines.map(l=>l.item).filter(n=>/Lil|Tulip|Peony|Hydrangea|Ranunculus/.test(n)):[];
+ const autoPet=!x.vars[0]||!x.vars[0].recipe?"Auto: unknown – no recipe yet":toxicStems.length?"Auto: toxic – "+toxicStems.join(", "):"Auto: no toxic flowers in the recipe";
+ const score=seoScore(p),snip=seoSnippet(p);
+ const left=`
+  <!-- ids: CTLG-034 CTLG-035 CTLG-036 CTLG-037 CTLG-038 CTLG-039 CTLG-197 – Name, Category, Description (sanitised), New / Old price, Quantity, Status, Sold out, Alcohol (audited), Toxic to cats and dogs with auto verdict; validation errors shown under every field (was: name and price only) -->
+  <div class="panel"><div class="p-head"><div class="h4">Card</div><span class="xs muted">saved with «Save card»</span></div><div class="p-body col" style="gap:12px">
+   <div class="c21-f2"><div class="field"><label>Name *</label><input class="input" value="${esc(f.name)}" oninput="C21.pcSet('name',this.value)">${pc.errs.name?`<span class="c21-err">${pc.errs.name}</span>`:""}</div><div class="field"><label>Category</label><select class="select" onchange="C21.pcSet('catId',this.value?Number(this.value):null)">${catOpts}</select>${f.catId===99?`<span class="c21-err">Category was deleted – pick one again or the card will not save</span>`:""}</div></div>
+   <div class="field"><label>Description <span class="muted" style="text-transform:none;letter-spacing:0">· rich text is sanitised on save</span></label><textarea class="textarea" style="min-height:90px" oninput="C21.pcSet('desc',this.value)">${esc(f.desc.replace(/<[^>]+>/g,""))}</textarea></div>
+   <div class="c21-f3"><div class="field"><label>New price</label>${money("c21-f-price",f.price)}${pc.errs.price?`<span class="c21-err">${pc.errs.price}</span>`:""}</div><div class="field"><label>Old price <span class="muted">· struck out</span></label>${money("c21-f-old",f.old,"none")}</div><div class="field"><label>Quantity <span class="muted">· free text</span></label><input class="input" value="${esc(f.qty)}" placeholder="e.g. 100 for 100 roses" oninput="C21.pcSet('qty',this.value)">${pc.errs.qty?`<span class="c21-err">${pc.errs.qty}</span>`:""}</div></div>
+   <div class="c21-f3"><div class="field"><label>Status</label><select class="select" onchange="C21.pcSet('status',this.value)">${["draft","active","archived"].map(s=>`<option value="${s}" ${f.status===s?"selected":""}>${s[0].toUpperCase()+s.slice(1)}</option>`).join("")}</select><span class="xs muted">Active goes to feeds and the site on sync</span></div>
+    <div class="field"><label>Sold out</label><label class="check" style="height:36px"><input type="checkbox" ${f.soldOut?"checked":""} onchange="C21.pcSet('soldOut',this.checked)"> Sold out</label></div>
+    <div class="field"><label>Alcohol</label><label class="check" style="height:36px"><input type="checkbox" ${f.alcohol?"checked":""} onchange="C21.pcSet('alcohol',this.checked)"> Age-restricted</label><span class="xs muted">Blocks making & dispatch outside licence hours, excluded from marketplace feeds, audited</span></div></div>
+   <div class="field"><label>Toxic to cats and dogs</label><div class="chips">${[[null,"Auto (from the recipe)"],[true,"Toxic"],[false,"Not toxic"]].map(([v,l])=>`<button class="chip ${f.pet===v?"on":""}" onclick="C21.pcSet('pet',${v})">${l}</button>`).join("")}</div><span class="xs muted">${f.pet===null?autoPet:"Manual answer – the recipe is ignored"} · goes to the site as a warning under the bouquet and flags orders for recipients with pets</span></div>
+  </div></div>
+  <!-- ids: CTLG-055 CTLG-056 CTLG-057 CTLG-058 CTLG-198 CTLG-199 – Trade offers: Size preset / Colour / New price / Old price / Active / Sold out, recipe summary under saved offers (built from data at open time), ✕ removes (deleted at Save card), + Add variant, No variants yet -->
+  <div class="panel"><div class="p-head"><div class="h4">Trade offers <span class="muted xs">${f.vars.length} row${f.vars.length===1?"":"s"}</span></div><button class="textbtn" onclick="C21.pcAddVar()">+ Add variant</button></div><div class="p-body">
+   ${f.vars.length?`<div class="c21-var" style="border-bottom:0;padding:0"><span class="lbl">Size</span><span class="lbl">Colour</span><span class="lbl">New price</span><span class="lbl">Old price</span><span class="lbl">Active</span><span class="lbl">Sold out</span><span></span></div>`+f.vars.map((v,i)=>`<div class="c21-var"><select class="select" onchange="C21.pcVar(${i},'name',this.value)">${["Classic (as on the photo)","Smaller size for","Upgrade size to"].concat(["Classic (as on the photo)","Smaller size for","Upgrade size to"].includes(v.name)?[]:[v.name]).map(n=>`<option ${v.name===n?"selected":""}>${esc(n)}</option>`).join("")}</select>${F.storefront?`<select class="select" onchange="C21.pcVar(${i},'colour',this.value)"><option value="">–</option>${COLOURS.map(c=>`<option ${v.colour===c?"selected":""}>${c}</option>`).join("")}</select>`:`<span class="xs muted">no colour dictionary</span>`}<input class="input tnum" value="${v.price}" oninput="C21.pcVar(${i},'price',this.value)"><input class="input tnum" value="${v.old||""}" placeholder="–" oninput="C21.pcVar(${i},'old',this.value)"><span class="switch ${v.active?"on":""}" onclick="C21.pcVar(${i},'active',!${v.active})"></span><span class="switch ${v.soldOut?"on":""}" onclick="C21.pcVar(${i},'soldOut',!${v.soldOut})"></span><button class="ib" title="Remove – deleted from the database at Save card" onclick="C21.pcRmVar(${i})">${ic("close")}</button>
+    ${can.inv()&&v.saved?`<div class="c21-rs" style="grid-column:1/-1">${v.recipe?`Recipe: ${v.recipe.lines.length} item${v.recipe.lines.length===1?"":"s"} · ${v.recipe.reviewed?"✓ reviewed":"not reviewed"}`:"No recipe"} <span class="muted">· as at page open – refresh after saving the recipe</span></div>`:v.saved?"":`<div class="c21-rs" style="grid-column:1/-1">New row – gets a SKU and a recipe tab after «Save card»</div>`}</div>`).join(""):`<div class="empty" style="padding:20px">${ic("tag")}<div class="sm">No variants yet</div><button class="btn --ghost --sm" onclick="C21.pcAddVar()">${ic("plus")} Add variant</button></div>`}
+  </div></div>
+  <!-- ids: CTLG-059 CTLG-204 – Parameters: checklist per CRM parameter (choose one / choose several, «N selected»); Text / Number / Yes-No get a real input in the prototype (empty block in the live CRM) -->
+  <div class="panel"><div class="p-head"><div class="h4">Parameters</div><button class="link" onclick="App.go('catalog-parameters')">Manage →</button></div><div class="p-body c21-f2">
+   ${PARAMS.map(pr=>{const sel=f.params[pr.id]||[];return `<div class="field"><label>${esc(pr.n)} <span class="muted" style="text-transform:none;letter-spacing:0">(${pr.type==="Select"?(pr.multi?"choose several":"choose one"):pr.type}) · ${sel.length} selected</span></label>${pr.type==="Select"?`<div class="chips">${pr.opts.map(o=>`<button class="chip ${sel.includes(o)?"on":""}" onclick="C21.pcParam(${pr.id},'${esc(o)}',${pr.multi})">${esc(o)}</button>`).join("")}</div>`:pr.type==="Yes/No"?`<label class="check"><input type="checkbox" ${sel[0]==="yes"?"checked":""} onchange="C21.pcParam(${pr.id},this.checked?'yes':'',false)"> Yes</label>`:`<input class="input" style="width:140px" value="${esc(sel[0]||"")}" placeholder="${pr.type==="Number"?"0":"…"}" oninput="C21.pcParam(${pr.id},this.value,false)">`}</div>`}).join("")}
+  </div></div>
+  <!-- ids: CTLG-043 CTLG-044 CTLG-045 CTLG-033 – SEO block: Focus keyword / SEO title / SEO description, AI «SEO» regenerate, Google preview (60 / 160, breadcrumbs), SEO score 0–100 with checks -->
+  <div class="panel"><div class="p-head"><div class="h4">SEO</div>${F.ai?`<button class="btn --ghost --sm" onclick="C21.pcAi('seo')">${ic("sparkle")} SEO</button>`:""}</div><div class="p-body col" style="gap:12px">
+   <div class="c21-f3"><div class="field"><label>Focus keyword</label><input class="input" value="${esc(f.seo.kw)}" oninput="C21.pcSeo('kw',this.value)"></div><div class="field" style="grid-column:span 2"><label>SEO title <span class="muted">· ${f.seo.title.length}/60</span></label><input class="input" value="${esc(f.seo.title)}" oninput="C21.pcSeo('title',this.value)">${pc.errs.st?`<span class="c21-err">${pc.errs.st}</span>`:""}</div></div>
+   <div class="field"><label>SEO description <span class="muted">· ${f.seo.desc.length}/160</span></label><textarea class="textarea" style="min-height:56px" oninput="C21.pcSeo('desc',this.value)">${esc(f.seo.desc)}</textarea>${pc.errs.sd?`<span class="c21-err">${pc.errs.sd}</span>`:""}</div>
+   <div class="caps">Google preview</div><div class="c21-snip"><div class="u">floritta.uk › ${esc(catName(f.catId).toLowerCase())} › ${esc(slug(f.name))}</div><div class="t">${esc(snip.title)}</div><div class="d">${esc(snip.desc)}</div></div>
+   <div class="c21-seo-sc"><span class="ring" style="--p:${score.score}" data-v="${score.score}"></span><div style="flex:1"><div class="h4">SEO score ${score.score}</div><div class="c21-chk mt8">${score.checks.map(c=>`<span><span class="dot ${c[1]?"--ok":"--accent"}"></span>${c[0]}</span>`).join("")}</div></div></div>
+  </div></div>
+  <!-- ids: CTLG-060 CTLG-061 – Translations: language tabs, Name / Description / SEO title / SEO description, Machine / Reviewed / Stale chip, Reviewed tick (typing sets it), Save translations (separate request; empty cell = falls back to English) -->
+  <div class="panel"><div class="p-head"><div class="h4">Translations</div><span class="xs muted">separate form – saves on its own</span></div><div class="p-body col" style="gap:12px">
+   <div class="views" style="margin:0">${LANGS.map(([k,l])=>`<button class="${pc.lang===k?"on":""}" onclick="C21.pcLang('${k}')">${l} ${trChip(x.tr[k])}</button>`).join("")}</div>
+   ${(()=>{const t=x.tr[pc.lang];return `<div class="c21-f2"><div class="field"><label>Name</label><input class="input" value="${esc(t.name)}" oninput="C21.pcTr('name',this.value)"></div><div class="field"><label>SEO title</label><input class="input" value="${esc(t.st)}" oninput="C21.pcTr('st',this.value)"></div></div><div class="field"><label>Description</label><textarea class="textarea" style="min-height:56px" oninput="C21.pcTr('desc',this.value)">${esc(t.desc)}</textarea></div><div class="field"><label>SEO description</label><input class="input" value="${esc(t.sd)}" oninput="C21.pcTr('sd',this.value)"></div><div class="row"><label class="check"><input type="checkbox" ${t.reviewed?"checked":""} onchange="C21.pcTr('reviewed',this.checked)"> Reviewed</label><span class="xs muted">empty cell deletes the translation – the site falls back to English</span><span class="sp"></span><button class="btn --ghost --sm" onclick="C21.pcSaveTr()">${ic("check")} Save translations</button></div>`})()}
+  </div></div>
+  <div class="row"><span class="sp"></span><button class="btn" onclick="C21.pcSave()">${ic("check")} Save card</button></div>`;
+ const right=`
+  ${F.ai?`<!-- ids: CTLG-030 CTLG-031 CTLG-032 – AI assistant: Analyze photos (first 3 photos → name, description, SEO, alt texts, flower chips, status Active; nothing saved until Save card), What to change comment, Name & description regenerate; 422 no_images / 502 failed -->
+  <div class="c21-ai">${ic("sparkle")}<div class="h4">AI assistant</div><div class="xs soft">One paid generation from the first 3 photos. Fills Name, Description, SEO, alt texts and sets Active – nothing is saved until «Save card».</div>
+   <div class="field"><label>What to change (optional)</label><input class="input" value="${esc(pc.aiComment)}" placeholder="e.g. mention the vase, shorter title" oninput="C21.pcAiComment(this.value)"></div>
+   <div class="btn-row"><button class="btn --sm" onclick="C21.pcAi('all')" ${pc.ai==="busy"?"disabled":""}>${ic("sparkle")} ${pc.ai==="busy"?"Generating…":"Analyze photos"}</button><button class="btn --ghost --sm" onclick="C21.pcAi('copy')">Name & description</button><button class="btn --ghost --sm" onclick="C21.pcAi('seo')">SEO</button></div>
+   ${pc.chips.length?`<div class="chips">${pc.chips.map(c=>`<span class="chip">${ic("check")}${c}</span>`).join("")}</div>`:""}</div>`:`<div class="note-box">${ic("sparkle")} AI assistant is off (aiEnabled = false) – no generation buttons.</div>`}
+  <!-- ids: CTLG-046 CTLG-047 CTLG-048 CTLG-049 CTLG-050 CTLG-201 – + Add photo (JPG/PNG/WebP ≤ 15 MB, saved at once, R2 required), AI enhance (Photoroom) toggle, lightbox (click / Esc), Alt text (SEO) per photo, ✕ delete at once (undo offered in the prototype), order = upload order, first is main (make main / move added in the prototype) -->
+  <div class="panel"><div class="p-head"><div class="h4">Photos <span class="muted xs">${x.photos.length}</span></div>${F.r2?`${F.photoroom?`<label class="check xs"><input type="checkbox" id="c21-enh" ${pc.enh?"checked":""} onchange="C21.pcEnh(this.checked)"> AI enhance (Photoroom)</label>`:""}<button class="btn --ghost --sm" onclick="C21.pcAddPhoto()">${ic("upload")} Add photo</button>`:`<span class="xs muted">storage isn't configured</span>`}</div><div class="p-body">
+   ${x.photos.length?`<div class="c21-ph">${x.photos.map((u,i)=>`<div class="ph"><div class="photo --sq" onclick="C21.lightbox('${u}')"><img src="${u}" alt="">${i===0?`<span class="tag --ink" style="position:absolute;left:6px;top:6px">Main</span>`:""}</div><div class="pa"><input class="input" placeholder="Alt text (SEO)" value="${esc(f.alts[u]||"")}" oninput="C21.pcAlt('${u}',this.value)"><div class="row">${i>0?`<button class="ib" title="Make main" onclick="C21.pcPhotoMove(${i},0)">${ic("star")}</button><button class="ib" title="Move up" onclick="C21.pcPhotoMove(${i},${i-1})">${ic("back")}</button>`:""}<button class="ib" title="Open full size" onclick="C21.lightbox('${u}')">${ic("eye")}</button><span class="sp"></span><button class="ib" title="Delete – at once, removes the R2 object and syncs the site" onclick="C21.pcRmPhoto(${i})">${ic("trash")}</button></div></div></div>`).join("")}</div><div class="xs muted mt8">Saved at once, without «Save card». Photos are saved in upload order; the first is the main photo in the grid and on the site; AI reads the first 3.</div>`:`<div class="empty" style="padding:20px">${ic("photo")}<div class="sm">No photos yet</div>${F.r2?`<button class="btn --ghost --sm" onclick="C21.pcAddPhoto()">${ic("upload")} Add photo</button>`:""}</div>`}
+  </div></div>
+  <!-- ids: CTLG-051 CTLG-052 CTLG-053 – + Add video (MP4 ≤ 5 MB, up to 5, poster frame grabbed in the browser), video tiles muted / loop with «with poster» / «no poster», ✕ delete at once -->
+  <div class="panel"><div class="p-head"><div class="h4">Videos <span class="muted xs">${x.videos.length}/5</span></div>${F.r2?`<button class="btn --ghost --sm" onclick="C21.pcAddVideo()">${ic("play")} Add video</button>`:""}</div><div class="p-body">${x.videos.length?`<div class="c21-vid">${x.videos.map((v,i)=>`<div class="v"><div class="photo --3x2">${v.poster?`<img src="${x.photos[0]||img(p.id)}" alt="" style="opacity:.8">`:""}<span style="position:absolute;inset:0;display:grid;place-items:center">${ic("play")}</span></div><div class="row xs"><span class="tag ${v.poster?"--ok":"--line"}">${v.poster?"with poster":"no poster"}</span><span class="muted">MP4 · muted · loop</span><span class="sp"></span><button class="ib" title="Delete at once" onclick="C21.pcRmVideo(${i})">${ic("trash")}</button></div></div>`).join("")}</div>`:`<div class="xs muted">No videos. MP4 up to 5 MB, up to 5 clips; the poster frame is taken at 0.1 s in the browser.</div>`}</div></div>
+  ${can.inv()?`<!-- ids: CTLG-040 CTLG-041 CTLG-042 CTLG-200 – Recipe & margin: tab per saved variant, Price / Cost / Margin % (inventory.cost) / Buildable now, Reviewed toggle «reviewed by … on …», rows Item (stock dropdown) / Qty / ✕, Add line, Save «Recipe saved» (does not set Reviewed) -->
+  <div class="panel"><div class="p-head"><div class="h4">Recipe & margin</div><span class="xs muted">saves on its own</span></div><div class="p-body">${recipePanel(p)}</div></div>`:""}
+  ${F.storefront?`<!-- ids: CTLG-054 – Storefront classification: Occasion / Type / Variety checklists with counters (dictionaries of the live site, prod only) -->
+  <div class="panel"><div class="p-head"><div class="h4">Storefront classification</div><span class="xs muted">filters on floritta.uk</span></div><div class="p-body"><div class="c21-cls">${[["o","Occasion",OCC],["t","Type",TYPE],["v","Variety",VAR]].map(([k,l,opts])=>`<div><div class="caps mb8">${l} · ${f.cls[k].length}</div><div class="g">${opts.map(o=>`<label class="check xs"><input type="checkbox" ${f.cls[k].includes(o)?"checked":""} onchange="C21.pcCls('${k}','${esc(o)}',this.checked)"> ${esc(o)}</label>`).join("")}</div></div>`).join("")}</div></div></div>`:`<div class="note-box">${ic("globe")} Storefront classification and Colour appear only when the site bridge and its dictionaries are configured (prod).</div>`}`;
+ body.innerHTML=`<div class="c21-pc"><div class="c21-stack">${left}</div><div class="c21-stack">${right}</div></div>`;
+ const pr=$("#c21-f-price"),od=$("#c21-f-old");if(pr)pr.oninput=e=>pcSet("price",num(e.target.value));if(od)od.oninput=e=>pcSet("old",num(e.target.value)||"");
+}
+const trChip=t=>`<span class="tag ${t.status==="reviewed"?"--ok":t.status==="stale"?"--accent":"--line"}" style="margin-left:4px">${t.status}</span>`;
+function seoSnippet(p){const f=pc.form;return{title:(f.seo.title||f.name+" | Floritta").slice(0,60)+((f.seo.title||"").length>60?"…":""),desc:(f.seo.desc||f.desc.replace(/<[^>]+>/g,"")).slice(0,160)}}
+function seoScore(p){const f=pc.form,kw=(f.seo.kw||"").toLowerCase().trim(),t=f.seo.title.toLowerCase(),d=f.desc.replace(/<[^>]+>/g,"").toLowerCase(),first=d.split(".")[0],alts=Object.values(f.alts).join(" ").toLowerCase();const words=d.split(/\s+/).filter(Boolean).length,hits=kw?d.split(kw).length-1:0,dens=words?hits/words*100:0;
+ const checks=[["Keyword in title",!!kw&&t.includes(kw)],["Keyword in slug",!!kw&&slug(f.name).includes(slug(kw).split("-")[0])],["Keyword in meta",!!kw&&f.seo.desc.toLowerCase().includes(kw)],["Keyword in first paragraph",!!kw&&first.includes(kw.split(" ")[0])],["Keyword in alt text",!!kw&&alts.includes(kw.split(" ")[0])],["Keyword density 0.5–3 %",dens>=.5&&dens<=3],["Title ≤ 60",f.seo.title.length>0&&f.seo.title.length<=60],["Meta ≤ 160",f.seo.desc.length>0&&f.seo.desc.length<=160],["Description ≥ 120 chars",d.length>=120]];
+ return{score:Math.round(checks.filter(c=>c[1]).length/checks.length*100),checks}}
+function recipePanel(p){const x=X(p),saved=x.vars.filter(v=>v.saved);if(!saved.length)return `<div class="xs muted">No saved variants – a new variant gets its recipe after «Save card».</div>`;if(pc.tab>=saved.length)pc.tab=0;const v=saved[pc.tab];const lines=v.recipe?v.recipe.lines:[];
+ const cost=lines.reduce((s,l)=>{const it=inv().find(i=>i.name===l.item);return s+(it?it.cost:1)*l.qty},0),ex=v.price/1.2,margin=ex?Math.round((ex-cost)/ex*100):0;const buildable=lines.length?Math.min(...lines.map(l=>{const it=inv().find(i=>i.name===l.item);return it?Math.floor(it.qty/l.qty):99})):0;
+ return `<div class="views" style="margin:0 0 10px">${saved.map((w,i)=>`<button class="${pc.tab===i?"on":""}" onclick="C21.pcTab(${i})">${esc(w.name.split(" (")[0])} · ${fmt(w.price)}</button>`).join("")}</div>
+ <div class="c21-kv4"><div><span class="caps">Price</span><b class="tnum">${fmt(v.price)}</b></div>${can.cost()?`<div><span class="caps">Cost</span><b class="tnum">${fmt(cost)}</b></div><div><span class="caps">Margin</span><b class="tnum ${margin>=60?"ok":margin>=40?"warn":"accent"}">${margin}%</b></div>`:`<div><span class="caps">Cost</span><span class="xs muted">inventory.cost</span></div><div><span class="caps">Margin</span><span class="xs muted">admin only</span></div>`}<div><span class="caps">Buildable now</span><b class="tnum ${buildable?"":"accent"}">${lines.length?buildable:"–"}</b></div></div>
+ <div class="row mt8"><span class="switch ${v.recipe&&v.recipe.reviewed?"on":""}" onclick="C21.pcReview(${v.id})"></span><span class="sm">Reviewed</span><span class="xs muted">${v.recipe&&v.recipe.reviewed?`reviewed by ${esc(A.user(v.recipe.by).n)} on ${A.fmtDate(v.recipe.at)}`:"not reviewed yet"}</span></div>
+ <div class="mt8">${lines.map((l,i)=>`<div class="c21-rec"><select class="select" onchange="C21.pcRecLine(${v.id},${i},'item',this.value)"><option value="">– item –</option>${inv().map(it=>`<option ${it.name===l.item?"selected":""}>${esc(it.name)}</option>`).join("")}</select><input class="input tnum" value="${l.qty}" min="1" oninput="C21.pcRecLine(${v.id},${i},'qty',this.value)"><button class="ib" onclick="C21.pcRecRm(${v.id},${i})">${ic("close")}</button></div>`).join("")}</div>
+ <div class="row mt8"><button class="textbtn" onclick="C21.pcRecAdd(${v.id})">+ Add line</button><span class="sp"></span><button class="btn --ghost --sm" onclick="C21.pcRecSave(${v.id})">${ic("check")} Save</button></div><div class="xs muted mt8">Plain dropdown of the whole stock (no search); rows without an item are dropped on Save; Save does not set Reviewed.</div>`}
+function pcSet(k,v){pc.form[k]=v;dirty();if(["catId","status","pet","soldOut","alcohol"].includes(k))renderPC(findP(pc.id))}
+function pcVar(i,k,v){const w=pc.form.vars[i];w[k]=(k==="price"||k==="old")?(num(v)||(k==="old"?null:0)):v;dirty();if(k==="active"||k==="soldOut")renderPC(findP(pc.id))}
+function pcSave(){const f=pc.form,p=findP(pc.id),x=X(p);pc.errs={};if(!f.name.trim())pc.errs.name="Name is required";if(f.seo.title.length>120)pc.errs.st="SEO title is over 120 characters";if(f.seo.desc.length>300)pc.errs.sd="SEO description is over 300 characters";if(f.qty.length>40)pc.errs.qty="Quantity is over 40 characters";if(f.catId===99)pc.errs.cat=1;
+ if(Object.keys(pc.errs).length){renderPC(p);A.toast("Not saved – fix the highlighted fields");return}
+ const removed=x.vars.filter(v=>!f.vars.find(w=>w.id===v.id)).length;
+ p.name=f.name;p.price=f.price;x.catId=f.catId;x.desc=f.desc;x.quantity=f.qty;x.status=f.status;x.soldOut=f.soldOut;if(x.alcohol!==f.alcohol)A.toast("Alcohol flag changed · audit catalog.product.alcohol_flag");x.alcohol=f.alcohol;x.pet=f.pet;x.seo=Object.assign({},f.seo);x.alts=Object.assign({},f.alts);x.params=JSON.parse(JSON.stringify(f.params));x.cls=JSON.parse(JSON.stringify(f.cls));
+ x.vars=f.vars.map(v=>Object.assign({},v,{saved:true,old:v.old||null}));if(x.vars[0]){x.vars[0].old=f.old||null;p.price=x.vars[0].price||f.price}
+ p.cat=catName(x.catId);if(x.intake)x.intake=null;
+ pc.form.vars=x.vars.map(v=>Object.assign({},v));pc.dirty=false;pc.saved=true;renderPC(p);
+ A.toast(`Saved · one transaction${removed?" · "+removed+" variant"+(removed>1?"s":"")+" deleted":""}${F.storefront&&x.status==="active"?" · synced to the site":""}`);
+}
+function pcBack(){if(pc.dirty){A.confirm("Leave without saving?","You have unsaved changes on this card. In the live CRM only closing the tab warns – internal links lose the changes silently; the prototype asks here too.","Leave",()=>{pc.dirty=false;A.go("catalog")},{danger:true});return}A.go("catalog")}
+function pcPublish(){const p=findP(pc.id),x=X(p);const on=x.sfId!==null;
+ A.modal({title:on?"Update on the live site?":"Publish to the live site?",body:`<p>${esc(p.name)} goes to floritta.uk as it is <b>saved in the database</b>. ${pc.dirty?"<span class='accent'>You have unsaved changes – save the card first, they will not be published.</span>":"Unsaved form changes are not sent."}</p><div class="note-box mt8">Bypasses the global sync flag · audit catalog.publish_to_site</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="C21.pcPublishGo()">Yes, publish</button>`})}
+function pcPublishGo(){const p=findP(pc.id),x=X(p);A.closeModal();
+ if(x.status==="active"&&(!p.price&&!x.vars.some(v=>v.active&&v.price))){A.toast("Not published – an active product needs a price");return}
+ if(x.status==="active"&&!x.desc){A.toast("Not published – add a description first");return}
+ if(x.catId===null||x.catId===99){A.toast("Not published – no category on the site menu");return}
+ const outcome=["done","done","done","not connected","ambiguous URL","missing on site"][p.id%6];
+ if(outcome==="done"){x.sfId=x.sfId||41000+p.id;renderPC(p);A.toast(`Published · live on floritta.uk/product/${slug(p.name)}`)}else A.toast("Site push failed · "+outcome)}
+function pcMenu(ev){const p=findP(pc.id),x=X(p);A.pop(ev,[{t:"Open on floritta.uk",ic:"globe",fn:()=>A.toast(x.sfId?"Opens floritta.uk/product/"+slug(p.name)+" in a new tab":"Not on the site yet")},{t:"Duplicate as draft",ic:"copy",fn:()=>{const n=Object.assign({},p,{id:Math.max(...A.data.products.map(q=>q.id))+1,sku:p.sku+"-C",name:p.name+" · copy",c21:null});A.data.products.push(n);X(n);n.c21.status="draft";n.c21.sfId=null;A.toast("Draft copy created");A.go("product",{id:n.id})}},"-",{t:"Archive (no delete in CRM)",ic:"trash",cls:"--accent",fn:()=>A.confirm("Archive "+p.name+"?","Products cannot be deleted – Archived takes it off the site and feeds; past orders keep it.","Archive",()=>{pc.form.status="archived";pcSave()},{danger:true})}])}
+function pcAi(kind){const p=findP(pc.id),x=X(p);if(!F.ai)return;if(kind==="all"&&!x.photos.length){A.toast("Add a photo first (422 no_images)");return}
+ pc.ai="busy";renderPC(p);setTimeout(()=>{pc.ai=null;if(p.id%11===0){A.toast("AI generation failed (502) – try again");renderPC(p);return}const f=pc.form,base=f.name==="New product"?"Garden rose bouquet":f.name;
+  if(kind==="all"||kind==="copy"){f.name=base;f.desc=DESC(base)+(pc.aiComment?`<p>${pc.aiComment}</p>`:"")}
+  if(kind==="all"||kind==="seo"){f.seo={kw:base.toLowerCase()+" delivery london",title:base+" – same-day delivery London | Floritta",desc:`${base}: hand-tied in Bermondsey, delivered across London today until 22:00. Fresh stems, ivory wrap, card included.`}}
+  if(kind==="all"){x.photos.forEach((u,i)=>f.alts[u]=f.alts[u]||`${base} – ${["front view","detail","wrapped"][i]||"photo"}`);pc.chips=["Garden rose","Eucalyptus","Lisianthus","Ranunculus"];f.status="active"}
+  dirty();renderPC(p);A.toast(kind==="all"?"Filled from photos · audit catalog.ai.all · not saved yet":kind==="copy"?"Name & description regenerated · not saved":"SEO regenerated · not saved")},900)}
+function pcAddPhoto(){const p=findP(pc.id),x=X(p);A.modal({title:"Add photo",body:`<p class="sm">JPG, PNG or WebP up to 15 MB. Saved at once – no «Save card» needed.${pc.enh?" <b>AI enhance (Photoroom)</b> is on for this upload.":""}</p><div class="row" style="gap:8px;flex-wrap:wrap">${IM.slice(0,8).map(n=>`<span class="thumb --l" style="cursor:pointer" onclick="C21.pcPhotoPick('img/${n}.webp')"><img src="img/${n}.webp" alt=""></span>`).join("")}</div><div class="row mt16" style="gap:8px"><button class="btn --ghost --sm" onclick="App.closeModal();App.toast('Upload failed · isn\\'t a valid image')">Try a .gif (error)</button><button class="btn --ghost --sm" onclick="App.closeModal();App.toast('Upload failed · 18 MB is over the 15 MB limit')">Try 18 MB (error)</button></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button>`})}
+function pcPhotoPick(u){const p=findP(pc.id),x=X(p);x.photos.push(u);pc.form.alts[u]="";A.closeModal();renderPC(p);A.toast(`Photo uploaded${pc.enh?" · enhanced by Photoroom":""} · WebP → R2 · synced to the site`)}
+function pcRmPhoto(i){const p=findP(pc.id),x=X(p);const u=x.photos.splice(i,1)[0];renderPC(p);A.toast("Photo deleted · R2 object removed · site synced","Undo",()=>{x.photos.splice(i,0,u);renderPC(p)})}
+function pcPhotoMove(i,to){const p=findP(pc.id),x=X(p);const u=x.photos.splice(i,1)[0];x.photos.splice(to,0,u);renderPC(p);A.toast(to===0?"Main photo changed":"Photo moved")}
+function lightbox(u){A.modal({title:"",wide:true,body:`<div class="photo --4x5" style="max-height:70vh"><img src="${u}" alt=""></div><div class="xs muted mt8">Click outside or press Esc to close</div>`,foot:null})}
+function pcAddVideo(){const p=findP(pc.id),x=X(p);if(x.videos.length>=5){A.toast("This product already has 5 videos");return}A.modal({title:"Add video",body:`<p class="sm">MP4 up to 5 MB. The poster frame is grabbed in the browser at 0.1 s (8 s timeout).</p>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --ghost --sm" onclick="App.closeModal();App.toast('Upload failed · isn\\'t an MP4')">Try .mov (error)</button><button class="btn --sm" onclick="C21.pcVideoGo()">Upload wrap-video.mp4</button>`})}
+function pcVideoGo(){const p=findP(pc.id),x=X(p);x.videos.push({id:Date.now(),poster:true});A.closeModal();renderPC(p);A.toast("Video uploaded · poster grabbed · R2 · site synced")}
+function pcRmVideo(i){const p=findP(pc.id),x=X(p);const v=x.videos.splice(i,1)[0];renderPC(p);A.toast("Video deleted at once · site synced","Undo",()=>{x.videos.splice(i,0,v);renderPC(p)})}
+function pcAddVar(){const f=pc.form;f.vars.push({id:Date.now(),name:"Classic (as on the photo)",colour:"",price:f.price,old:null,active:true,soldOut:false,recipe:null,saved:false});dirty();renderPC(findP(pc.id))}
+function pcRmVar(i){pc.form.vars.splice(i,1);dirty();renderPC(findP(pc.id));A.toast("Row removed – the variant is deleted from the database at «Save card»")}
+function pcParam(id,o,multi){const f=pc.form;const sel=f.params[id]||(f.params[id]=[]);if(multi){const k=sel.indexOf(o);k>=0?sel.splice(k,1):sel.push(o)}else f.params[id]=o?[o]:[];dirty();renderPC(findP(pc.id))}
+function pcCls(k,o,on){const a=pc.form.cls[k];const i=a.indexOf(o);if(on&&i<0)a.push(o);if(!on&&i>=0)a.splice(i,1);dirty();renderPC(findP(pc.id))}
+function pcSeo(k,v){pc.form.seo[k]=v;dirty();const p=findP(pc.id);const s=seoScore(p),sn=seoSnippet(p);const r=$("#s-product .ring");if(r){r.style.setProperty("--p",s.score);r.dataset.v=s.score}const chk=$("#s-product .c21-chk");if(chk)chk.innerHTML=s.checks.map(c=>`<span><span class="dot ${c[1]?"--ok":"--accent"}"></span>${c[0]}</span>`).join("");const h4=$("#s-product .c21-seo-sc .h4");if(h4)h4.textContent="SEO score "+s.score;const t=$("#s-product .c21-snip .t"),d=$("#s-product .c21-snip .d");if(t)t.textContent=sn.title;if(d)d.textContent=sn.desc}
+function pcTr(k,v){const x=X(findP(pc.id)),t=x.tr[pc.lang];t[k]=v;if(k!=="reviewed"){t.reviewed=true;t.status="reviewed";const c=$("#s-product .views button.on .tag");if(c){c.textContent="reviewed";c.className="tag --ok"}const cb=$("#s-product .check input[type=checkbox]:last-of-type");}}
+function pcSaveTr(){const x=X(findP(pc.id));LANGS.forEach(([k])=>{const t=x.tr[k];if(!t.name&&!t.desc)t.status="machine"});A.toast("Translations saved · empty cells removed · site synced");renderPC(findP(pc.id))}
+function pcReview(vid){const x=X(findP(pc.id));const v=x.vars.find(w=>w.id===vid);if(!v.recipe){A.toast("Add recipe lines first");return}v.recipe.reviewed=!v.recipe.reviewed;v.recipe.by=A.me().id;v.recipe.at=A.NOW.toISOString();renderPC(findP(pc.id));A.toast(v.recipe.reviewed?"Recipe reviewed · no page reload":"Review removed")}
+function pcRecLine(vid,i,k,v){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);if(!w.recipe)w.recipe={lines:[],reviewed:false};w.recipe.lines[i][k]=k==="qty"?Math.max(1,num(v)||1):v}
+function pcRecRm(vid,i){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);w.recipe.lines.splice(i,1);renderPC(findP(pc.id))}
+function pcRecAdd(vid){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);if(!w.recipe)w.recipe={lines:[],reviewed:false,by:"valeria",at:A.NOW.toISOString()};w.recipe.lines.push({item:"",qty:1});renderPC(findP(pc.id))}
+function pcRecSave(vid){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);if(!w.recipe)return;w.recipe.lines=w.recipe.lines.filter(l=>l.item);renderPC(findP(pc.id));A.toast("Recipe saved · cost and buildable recalculated")}
+
+/* ================= PHOTO INBOX (s-catalog-intake) ================= */
+const ins={src:"bot",mode:"list",swipe:{i:0,log:[],stamp:""}};
+const florPhotos=()=>A.data.orders.filter(o=>o.photo&&o.florist).slice(0,14).map(o=>({order:o,img:A.product(o.product).img,florist:o.florist,product:o.product,at:o.log.find(l=>/Photo/.test(l.t))?.at||o.placed,kind:o.id%3?"finished":"before"}));
+window.mount_catalog_intake=function(params){
+ const head=$("#c21-in-head"),body=$("#c21-in-body");
+ if(!can.manage()){head.innerHTML=`<div class="h3">Photo inbox</div><span class="sp"></span>${demoBtn()}`;deny(body);return}
+ const drafts=F.quiet?[]:DRAFTS.filter(d=>!d.deleted&&d.c21.status==="draft");const fl=F.quiet?[]:florPhotos().filter(f=>!ins.swipe.log.find(l=>l.key===f.order.id+"-"+f.img));
+ head.innerHTML=`${subnav("catalog-intake")}<div class="row" style="width:100%;flex-wrap:wrap;gap:12px">
+  <div class="seg-ctl"><button class="${ins.src==="florists"?"on":""}" onclick="C21.inSrc('florists')">From florists <span class="n" style="opacity:.8">· ${fl.length}</span></button><button class="${ins.src==="bot"?"on":""}" onclick="C21.inSrc('bot')">From Telegram bot · ${drafts.length}</button></div>
+  ${ins.src==="florists"?`<div class="seg-ctl"><button class="${ins.mode==="list"?"on":""}" onclick="C21.inMode('list')">${ic("list")} List</button><button class="${ins.mode==="swipe"?"on":""}" onclick="C21.inMode('swipe')">${ic("photo")} Photos for the site</button></div>`:""}
+  <span class="sp"></span>${demoBtn()}</div>`;
+ if(ins.src==="bot")renderDrafts(drafts);else if(ins.mode==="swipe")renderSwipe(fl);else renderFlorList(fl);
+ A.registerCommands([{g:"Actions",t:"Sort florist photos for the site (swipe)",ic:"photo",fn:()=>{ins.src="florists";ins.mode="swipe";A.go("catalog-intake")}}]);
+};
+function renderDrafts(drafts){const b=$("#c21-in-body");
+ b.innerHTML=`<div class="c21-kpis" style="grid-template-columns:200px minmax(0,1fr)"><div class="kpi-card ${drafts.length?"--warn":""}"><span class="caps">Awaiting review</span><span class="kpi-s">${drafts.length}</span></div><div class="note-box" style="align-self:stretch;display:flex;align-items:center">Bouquet photos drafted by the Telegram bot and Ready-now bouquets without a configured category land here. Set the price and the category, then publish – or delete the draft.</div></div>
+ ${drafts.length?`<div class="c21-dr">${drafts.map(d=>{const x=d.c21;const miss=[!x.desc&&"description",!x.seo.desc&&"card teaser"].filter(Boolean);const st=ins["d"+d.id]||(ins["d"+d.id]={price:"",cat:d.hint});const ok=num(st.price)>=1&&!!x.desc;
+  return `<div class="c21-draft"><div class="photo --4x5"><img src="${d.img}" alt=""></div><div class="b"><div class="row"><b style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.name)}</b><span class="tag --line">${d.rn?"Ready now":"Telegram bot"}</span></div><div class="xs muted">${A.fmtDay(d.at)} ${A.fmtTime(d.at)} · text only, no HTML</div>
+   <div class="ds">${x.desc?esc(x.desc.replace(/<[^>]+>/g," ")):"<span class='muted'>No description</span>"}</div><div class="xs"><span class="caps" style="font-size:10px">Card teaser:</span> ${x.seo.desc?esc(x.seo.desc):"<span class='muted'>–</span>"}</div>
+   ${miss.length?`<div class="note-box --warn xs">Missing: ${miss.join(", ")} – the card will look empty on the site.</div>`:""}
+   <div class="c21-f2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="field"><label>Price</label><input class="input tnum" placeholder="£ – the bot never prices" value="${esc(st.price)}" oninput="C21.inPrice(${d.id},this.value)"></div><div class="field"><label>Category <span class="muted">· bot hint</span></label><select class="select" onchange="C21.inCat(${d.id},this.value)">${CATS.filter(c=>c.active).map(c=>`<option value="${c.id}" ${String(st.cat)===String(c.id)?"selected":""}>${esc(c.n)}</option>`).join("")}</select></div></div>
+   <div class="row" style="gap:8px;flex-wrap:wrap"><button class="link" onclick="App.go('product',{id:${d.id}})">Open full card</button><span class="sp"></span><button class="btn --ghost --sm" onclick="C21.inDelete(${d.id})">Delete draft</button><button class="btn --sm" ${ok?"":"disabled"} onclick="C21.inPublish(${d.id})">Publish</button></div></div></div>`}).join("")}</div>`
+ :`<div class="empty">${ic("photo")}<div class="h3">No photo drafts waiting</div><div class="sm">New bouquet photos from Telegram land here.</div><button class="btn --ghost --sm" onclick="C21.inSrc('florists')">Sort florist photos instead</button></div>`}`}
+function inPublish(id){const d=DRAFTS.find(x=>x.id===id),st=ins["d"+id];const c=cat(Number(st.cat));if(!d.c21.desc){A.toast("Not published – description is required");return}if(c&&!c.active){A.toast("Not published – the category is not on the site menu");return}
+ d.price=num(st.price);d.c21.catId=Number(st.cat);d.c21.status="active";d.c21.intake=null;if(!d.c21.vars.length)d.c21.vars=[{id:id*10+1,name:"Standard",colour:"",price:d.price,old:null,active:true,soldOut:false,recipe:null,saved:true}];
+ const r=id%3;if(r===0){d.c21.sfId=42000+id;A.toast("Published · live on floritta.uk · translation queued")}else if(r===1){A.toast("Published · active in CRM, NOT live (site sync is off / not in allow-list)")}else{A.toast("Error · site push returned 500 – product stays active in CRM")}
+ A.data.products.push(d);DRAFTS.splice(DRAFTS.indexOf(d),1);A.go("catalog-intake")}
+function inDelete(id){const d=DRAFTS.find(x=>x.id===id);A.confirm("Delete this draft?",`«${esc(d.name)}» – a bot draft in status draft only. Soft delete, audit catalog.intake.reject.`,"Delete",()=>{d.deleted=true;A.go("catalog-intake");A.toast("Draft deleted")},{danger:true})}
+function renderFlorList(fl){const b=$("#c21-in-body");b.innerHTML=fl.length?`<div class="note-box mb16">${ic("photo")} Photos florists took on finished orders. Switch to <b>Photos for the site</b> to sort them one by one: → to the product gallery, ← not for the site, ↑ for Instagram, Z undo.</div><div class="tbl-wrap"><table class="tbl"><thead><tr><th style="width:56px"></th><th>Order</th><th>Product</th><th>Florist</th><th class="c21-hp">Taken</th><th>Type</th><th></th></tr></thead><tbody>${fl.map(f=>`<tr class="r"><td><span class="thumb --s" onclick="C21.lightbox('${f.img}')"><img src="${f.img}" alt=""></span></td><td><button class="link tnum" onclick="App.openOrder(${f.order.id})">#${f.order.id}</button></td><td>${esc(A.product(f.product).name)}</td><td>${A.avatar(f.florist,"--s")} ${esc(A.user(f.florist).n)}</td><td class="c21-hp muted">${A.fmtDay(f.at)} ${A.fmtTime(f.at)}</td><td><span class="tag --line">${f.kind==="finished"?"Finished bouquet":"Before wrapping"}</span></td><td><span class="acts"><button class="ib" title="To the product gallery" onclick="C21.swDecide('r','${f.order.id}-${f.img}')">${ic("catalog")}</button><button class="ib" title="For Instagram" onclick="C21.swDecide('u','${f.order.id}-${f.img}')">${ic("star")}</button><button class="ib" title="Not for the site" onclick="C21.swDecide('l','${f.order.id}-${f.img}')">${ic("close")}</button></span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${ic("check")}<div class="h3">All florist photos sorted</div><button class="btn --ghost --sm" onclick="C21.swUndo()">Undo last</button></div>`}
+function renderSwipe(fl){const b=$("#c21-in-body");const cur=fl[0],nxt=fl[1];const log=ins.swipe.log;const LBL={r:"To gallery",l:"Not for site",u:"Instagram"};
+ b.innerHTML=`<div class="c21-sw"><div>
+  ${cur?`<div class="c21-deck" id="c21-deck" tabindex="0">${nxt?`<div class="dk --back"><div class="photo"><img src="${nxt.img}" alt=""></div><div class="cap">next</div></div>`:""}<div class="dk" id="c21-dk-cur"><div class="photo" id="c21-dk-ph"><img src="${cur.img}" alt="" draggable="false"></div><div class="cap">${A.avatar(cur.florist,"--s")}<div style="flex:1;min-width:0"><b>${esc(A.product(cur.product).name)}</b><div class="xs muted">#${cur.order.id} · ${esc(A.user(cur.florist).n)} · ${A.fmtDay(cur.at)} ${A.fmtTime(cur.at)} · ${cur.kind==="finished"?"finished":"before wrapping"}</div></div><button class="ib" onclick="App.openOrder(${cur.order.id})" title="Open order">${ic("orders")}</button></div><span class="stamp ${ins.swipe.stamp?"on":""}" id="c21-stamp">${LBL[ins.swipe.stamp]||""}</span></div></div>
+  <div class="c21-keys"><button onclick="C21.swDecide('l')">${ic("close")}<b>Not for site</b><span class="kbd">←</span></button><button onclick="C21.swDecide('u')">${ic("star")}<b>For Instagram</b><span class="kbd">↑</span></button><button onclick="C21.swDecide('r')">${ic("catalog")}<b>To gallery</b><span class="kbd">→</span></button><button onclick="C21.swUndo()">${ic("undo")}<b>Undo</b><span class="kbd">Z</span></button></div>
+  <div class="xs muted mt8" style="text-align:center">Drag the photo or use the arrow keys · ${fl.length} left</div>`
+  :`<div class="empty">${ic("check")}<div class="h3">All sorted</div><div class="sm">Every florist photo has a decision.</div><button class="btn --ghost --sm" onclick="C21.swUndo()">Undo last</button></div>`}
+ </div><div class="panel"><div class="p-head"><div class="h4">Decisions <span class="muted xs">${log.length}</span></div>${log.length?`<button class="textbtn" onclick="C21.swUndo()">undo last</button>`:""}</div><div class="p-body c21-log">${log.length?log.slice().reverse().slice(0,12).map(l=>`<div class="li --static" style="cursor:default"><span class="thumb --s"><img src="${l.img}" alt=""></span><div class="t"><b>${esc(l.pname)}</b><small>${l.d==="r"?"→ gallery of "+esc(l.pname):l.d==="u"?"↑ marked for Instagram":"← not for the site"}</small></div><span class="tag ${l.d==="r"?"--ok":l.d==="u"?"--ink":"--line"}">${LBL[l.d]}</span></div>`).join(""):`<div class="empty" style="padding:20px"><div class="sm">Nothing decided yet</div></div>`}</div><div class="p-foot" style="padding:8px 14px;border-top:1px solid var(--hair);font-size:12px;color:var(--grey)">→ adds the photo to the product's gallery and syncs the site · ↑ marks it like ★ on Bouquet photos · ← hides it from the picker</div></div></div>`;
+ const ph=$("#c21-dk-ph");if(ph)attachDrag(ph);const dk=$("#c21-deck");if(dk)setTimeout(()=>dk.focus(),50);
+}
+function attachDrag(el){let sx=0,sy=0,on=false;const card=$("#c21-dk-cur"),stamp=$("#c21-stamp");
+ el.onpointerdown=e=>{on=true;sx=e.clientX;sy=e.clientY;card.style.transition="none";el.setPointerCapture(e.pointerId)};
+ el.onpointermove=e=>{if(!on)return;const dx=e.clientX-sx,dy=e.clientY-sy;card.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/20}deg)`;const d=Math.abs(dx)>60?(dx>0?"r":"l"):dy<-60?"u":"";stamp.textContent={r:"To gallery",l:"Not for site",u:"Instagram"}[d]||"";stamp.classList.toggle("on",!!d)};
+ el.onpointerup=e=>{if(!on)return;on=false;const dx=e.clientX-sx,dy=e.clientY-sy;card.style.transition="";const d=Math.abs(dx)>90?(dx>0?"r":"l"):dy<-90?"u":"";if(d)swDecide(d);else{card.style.transform="";stamp.classList.remove("on")}};
+}
+function swDecide(d,key){const fl=florPhotos().filter(f=>!ins.swipe.log.find(l=>l.key===f.order.id+"-"+f.img));const f=key?fl.find(x=>x.order.id+"-"+x.img===key):fl[0];if(!f){A.toast("Nothing left to sort");return}
+ const go=()=>{ins.swipe.log.push({key:f.order.id+"-"+f.img,d,img:f.img,pname:A.product(f.product).name,pid:f.product});if(d==="r"){const x=X(A.product(f.product));if(!x.photos.includes(f.img))x.photos.push(f.img)}A.toast(d==="r"?"Added to the gallery of "+A.product(f.product).name+" · site synced":d==="u"?"Marked for Instagram":"Not for the site");mount_catalog_intake({})};
+ const card=$("#c21-dk-cur");if(card&&ins.mode==="swipe"&&!key){card.style.transform="";card.classList.add("--go-"+d);setTimeout(go,220)}else go()}
+function swUndo(){const l=ins.swipe.log.pop();if(!l){A.toast("Nothing to undo");return}if(l.d==="r"){const x=X(A.product(l.pid));const i=x.photos.indexOf(l.img);if(i>0)x.photos.splice(i,1)}A.toast("Undone · "+l.pname);mount_catalog_intake({})}
+document.addEventListener("keydown",e=>{if(A.state.current!=="catalog-intake"||ins.src!=="florists"||ins.mode!=="swipe")return;const tag=(e.target.tagName||"").toLowerCase();if(tag==="input"||tag==="textarea"||tag==="select")return;const m={ArrowRight:"r",ArrowLeft:"l",ArrowUp:"u"}[e.key];if(m){e.preventDefault();swDecide(m)}else if(e.key.toLowerCase()==="z"){e.preventDefault();swUndo()}});
+
+/* ================= CATEGORIES ================= */
+window.mount_catalog_categories=function(){const head=$("#c21-cg-head"),body=$("#c21-cg-body");if(!can.manage()){deny(body);head.innerHTML="";return}
+ head.innerHTML=`${subnav("catalog-categories")}<div class="row" style="width:100%"><span class="xs muted">Mirrored to floritta.uk · slug is set once at creation</span><span class="sp"></span>${demoBtn()}<button class="btn --sm" onclick="C21.cgEdit(null)">${ic("plus")} Add category</button></div>`;
+ const list=F.quiet?[]:CATS;const dangling=A.data.products.filter(p=>X(p).catId===99).length;
+ body.innerHTML=list.length?`${dangling?`<div class="note-box --warn mb16">${ic("alert")} ${dangling} product${dangling>1?"s":""} still point to a deleted category: shown as «Uncategorised» in the grid but not counted by the filter; their cards cannot be saved until a category is picked again.</div>`:""}<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th class="c21-hp">Slug</th><th>Parent</th><th>Status</th><th class="num">Products</th><th></th></tr></thead><tbody>${list.map(c=>`<tr class="r" onclick="C21.cgEdit(${c.id})"><td>${c.parent?`<span class="muted">└ </span>`:""}${esc(c.n)}</td><td class="c21-hp muted">${esc(c.slug)}</td><td>${c.parent?(cat(c.parent)?esc(cat(c.parent).n):"–"):"<span class='muted'>–</span>"}</td><td>${c.active?A.pill("ready","Active"):A.pill("queue","Inactive")}</td><td class="num">${A.data.products.filter(p=>X(p).catId===c.id).length}</td><td onclick="event.stopPropagation()"><span class="acts"><button class="ib" title="Edit" onclick="C21.cgEdit(${c.id})">${ic("edit")}</button><button class="ib" title="Delete" onclick="C21.cgDelete(${c.id})">${ic("trash")}</button></span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${ic("tag")}<div class="h3">No categories</div><button class="btn --ghost --sm" onclick="C21.cgEdit(null)">Add category</button></div>`}
+function cgEdit(id){const c=id?cat(id):{n:"",parent:null,active:true};const kids=id?CATS.filter(x=>x.parent===id).map(x=>x.id):[];
+ A.modal({title:id?"Edit category":"Add category",body:`<div class="col" style="gap:12px"><div class="field"><label>Name *</label><input class="input" id="c21-cg-n" value="${esc(c.n)}"></div>${id?`<div class="xs muted">Slug <b>${esc(c.slug)}</b> – set once at creation, not editable</div>`:""}<div class="field"><label>Parent</label><select class="select" id="c21-cg-p"><option value="">No parent (top level)</option>${CATS.filter(x=>x.id!==id&&!kids.includes(x.id)).map(x=>`<option value="${x.id}" ${c.parent===x.id?"selected":""}>${esc(x.n)}</option>`).join("")}</select><span class="xs muted">Cannot nest into itself or its descendants</span></div><label class="check"><input type="checkbox" id="c21-cg-a" ${c.active?"checked":""}> Active</label></div>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="C21.cgSave(${id||"null"})">Save</button>`,onMount:()=>setTimeout(()=>$("#c21-cg-n").focus(),50)})}
+function cgSave(id){const n=$("#c21-cg-n").value.trim();if(!n){A.toast("Name is required");return}const parent=$("#c21-cg-p").value?Number($("#c21-cg-p").value):null,active=$("#c21-cg-a").checked;
+ if(id){const c=cat(id);c.n=n;c.parent=parent;c.active=active;A.toast("Category updated · site category updated")}else{CATS.push({id:catSeq++,n,slug:slug(n),parent,active});A.toast("Category created · root category is created on the site only with the INSERT flag")}
+ A.closeModal();mount_catalog_categories()}
+function cgDelete(id){const c=cat(id);const n=A.data.products.filter(p=>X(p).catId===id).length,k=CATS.filter(x=>x.parent===id).length;
+ A.confirm("Delete this item?",`«${esc(c.n)}» is hidden on the site first (display = 0), then removed from CRM.${n||k?` <span class="accent">${n} product${n===1?"":"s"} and ${k} subcategor${k===1?"y":"ies"} keep a dangling link – nothing checks this.</span>`:""}`,"Delete",()=>{A.data.products.forEach(p=>{if(X(p).catId===id)X(p).catId=99});CATS.forEach(x=>{if(x.parent===id)x.parent=99});CATS.splice(CATS.indexOf(c),1);mount_catalog_categories();A.toast("Category deleted · audit")},{danger:true})}
+
+/* ================= PARAMETERS ================= */
+window.mount_catalog_parameters=function(){const head=$("#c21-pm-head"),body=$("#c21-pm-body");if(!can.manage()){deny(body);head.innerHTML="";return}
+ head.innerHTML=`${subnav("catalog-parameters")}<div class="row" style="width:100%"><span class="xs muted">Ticked on the product card · not sent to the site</span><span class="sp"></span>${demoBtn()}<button class="btn --sm" onclick="C21.pmEdit(null)">${ic("plus")} Add parameter</button></div>`;
+ const list=F.quiet?[]:PARAMS;
+ body.innerHTML=list.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Type</th><th>Options</th><th class="c21-hp">On the card</th><th></th></tr></thead><tbody>${list.map(p=>`<tr class="r" onclick="C21.pmEdit(${p.id})"><td>${esc(p.n)}</td><td>${p.type}</td><td class="wrap">${p.opts.length?esc(p.opts.join(", ")):"<span class='muted'>–</span>"}</td><td class="c21-hp xs muted">${p.type==="Select"?(p.multi?"choose several":"choose one"):p.type+" input (empty block in the live CRM)"}</td><td onclick="event.stopPropagation()"><span class="acts"><button class="ib" onclick="C21.pmEdit(${p.id})">${ic("edit")}</button><button class="ib" onclick="C21.pmDelete(${p.id})">${ic("trash")}</button></span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${ic("list")}<div class="h3">No parameters</div><button class="btn --ghost --sm" onclick="C21.pmEdit(null)">Add parameter</button></div>`}
+function pmEdit(id){const p=id?PARAMS.find(x=>x.id===id):{n:"",type:"Select",opts:[],multi:false};
+ A.modal({title:id?"Edit parameter":"Add parameter",body:`<div class="col" style="gap:12px"><div class="field"><label>Name *</label><input class="input" id="c21-pm-n" value="${esc(p.n)}"></div><div class="field"><label>Type</label><select class="select" id="c21-pm-t" onchange="document.getElementById('c21-pm-o').style.display=this.value==='Select'?'':'none'">${["Select","Text","Number","Yes/No"].map(t=>`<option ${p.type===t?"selected":""}>${t}</option>`).join("")}</select></div><div class="field" id="c21-pm-o" style="${p.type==="Select"?"":"display:none"}"><label>Options <span class="muted">· comma-separated</span></label><input class="input" id="c21-pm-ov" value="${esc(p.opts.join(", "))}"><label class="check mt8"><input type="checkbox" id="c21-pm-m" ${p.multi?"checked":""}> Several options per product <span class="xs muted">(new – the live form always makes «choose one»)</span></label></div></div>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="C21.pmSave(${id||"null"})">Save</button>`})}
+function pmSave(id){const n=$("#c21-pm-n").value.trim();if(!n){A.toast("Name is required");return}const type=$("#c21-pm-t").value,opts=type==="Select"?$("#c21-pm-ov").value.split(",").map(s=>s.trim()).filter(Boolean):[],multi=type==="Select"&&$("#c21-pm-m").checked;
+ if(id){Object.assign(PARAMS.find(x=>x.id===id),{n,type,opts,multi})}else PARAMS.push({id:paramSeq++,n,type,opts,multi});A.closeModal();mount_catalog_parameters();A.toast(id?"Parameter updated · audit":"Parameter created · audit")}
+function pmDelete(id){const p=PARAMS.find(x=>x.id===id);A.confirm("Delete this item?",`«${esc(p.n)}» disappears from every product card.`,"Delete",()=>{PARAMS.splice(PARAMS.indexOf(p),1);mount_catalog_parameters();A.toast("Parameter deleted")},{danger:true})}
+
+/* ================= BADGES ================= */
+window.mount_catalog_badges=function(){const head=$("#c21-bg-head"),body=$("#c21-bg-body");if(!can.manage()){deny(body);head.innerHTML="";return}
+ head.innerHTML=`${subnav("catalog-badges")}<div class="row" style="width:100%"><span class="xs muted">Manual badges first, then automatic</span><span class="sp"></span>${demoBtn()}<button class="btn --sm" onclick="C21.bgEdit(null)">${ic("plus")} Add badge</button></div>`;
+ const list=F.quiet?[]:BADGES.slice().sort((a,b)=>a.auto-b.auto);
+ body.innerHTML=list.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Label (EN)</th><th>Key</th><th class="c21-hp">Label (RU)</th><th>Colour</th><th>Kind</th><th></th></tr></thead><tbody>${list.map(b=>`<tr class="r" onclick="C21.bgEdit(${b.id})"><td>${badgeHtml(b.key)}</td><td class="muted">${esc(b.key)}</td><td class="c21-hp">${esc(b.ru)}</td><td><span class="dot" style="background:var(--${{rose:"accent",amber:"warn",green:"ok",slate:"grey",violet:"sel"}[b.colour]})"></span> ${b.colour}</td><td>${b.auto?`<span class="tag --line">Auto</span>`:`<span class="tag">Manual</span>`}</td><td onclick="event.stopPropagation()"><span class="acts"><button class="ib" onclick="C21.bgEdit(${b.id})">${ic("edit")}</button>${b.auto?"":`<button class="ib" onclick="C21.bgDelete(${b.id})">${ic("trash")}</button>`}</span></td></tr>`).join("")}</tbody></table></div><div class="xs muted mt8">Badges are set per product in the catalogue grid only – the card has no badge picker yet (data field exists).</div>`:`<div class="empty">${ic("award")}<div class="h3">No badges</div><button class="btn --ghost --sm" onclick="C21.bgEdit(null)">Add badge</button></div>`}
+function bgEdit(id){const b=id?BADGES.find(x=>x.id===id):{key:"",en:"",ru:"",colour:"rose",auto:false};
+ A.modal({title:id?"Edit badge":"Add badge",body:`<div class="col" style="gap:12px"><div class="field"><label>Key ${b.auto?"<span class='muted'>· locked for automatic badges</span>":"<span class='muted'>· becomes snake_case</span>"}</label><input class="input" id="c21-bg-k" value="${esc(b.key)}" ${b.auto?"disabled":""}></div><div class="c21-f2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Label (EN)</label><input class="input" id="c21-bg-en" value="${esc(b.en)}"></div><div class="field"><label>Label (RU)</label><input class="input" id="c21-bg-ru" value="${esc(b.ru)}"></div></div><div class="field"><label>Colour</label><div class="chips">${["rose","amber","green","slate","violet"].map(c=>`<button class="chip ${b.colour===c?"on":""}" data-c="${c}" onclick="[...this.parentNode.children].forEach(x=>x.classList.remove('on'));this.classList.add('on')">${c}</button>`).join("")}</div></div></div>`,
+  foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="C21.bgSave(${id||"null"})">Save</button>`})}
+function bgSave(id){const en=$("#c21-bg-en").value.trim();if(!en){A.toast("Label (EN) is required");return}const key=$("#c21-bg-k").value.trim().toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,""),ru=$("#c21-bg-ru").value.trim(),colour=$("#m-box .chip.on")?.dataset.c||"rose";
+ if(id){const b=BADGES.find(x=>x.id===id);Object.assign(b,{en,ru,colour});if(!b.auto)b.key=key||b.key}else BADGES.push({id:badgeSeq++,key:key||slug(en).replace(/-/g,"_"),en,ru,colour,auto:false});A.closeModal();mount_catalog_badges();A.toast(id?"Badge updated":"Badge created · manual")}
+function bgDelete(id){const b=BADGES.find(x=>x.id===id);if(b.auto){A.toast("Automatic badges cannot be deleted");return}A.confirm("Delete this item?",`Badge «${esc(b.en)}» is removed from every product.`,"Delete",()=>{BADGES.splice(BADGES.indexOf(b),1);mount_catalog_badges();A.toast("Badge deleted")},{danger:true})}
+
+/* ================= REVIEWS ================= */
+const RV=[["Hannah W.",5,"Arrived on time and looked exactly like the photo. My mum was thrilled.","floritta.uk","published"],["Oliver B.",4,"Beautiful, fresh and still going strong a week later.","Google","published"],["",3,"Lovely bouquet, slightly smaller than I expected for the price.","floritta.uk","pending"],["James T.",5,"Ordered at 2pm, delivered by 6 – brilliant for a last-minute birthday.","Trustpilot","published"],["Chloe M.",5,"Gorgeous colours. The handwritten card was a nice touch.","floritta.uk","pending"],["Daniel K.",2,"Nice flowers but the courier left them with a neighbour without telling me.","Google","hidden"],["Sophie R.",5,"Second time ordering – consistent quality, will be back.","floritta.uk","published"],["",1,"<b>Click here</b> <a href=x>spam link</a> – HTML must not render.","floritta.uk","hidden"],["Tom H.",4,"Stunning. Office was impressed.","Trustpilot","pending"],["Amelia F.",5,"Peonies were perfect for the wedding table.","floritta.uk","published"],["Lucas P.",3,"Good but delivery slot was missed by 40 minutes.","Google","pending"],["Priya S.",5,"Exactly as pictured, lovely fragrance.","floritta.uk","published"]].map((r,i)=>({id:801+i,product:A.data.products[(i*3)%17].id,who:r[0],rating:r[1],txt:r[2],source:r[3],status:r[4],at:A.T(9+i,10,-(i*2))}));
+const rv={status:"",source:"",rating:"",page:1};
+window.mount_catalog_reviews=function(){const head=$("#c21-rv-head"),body=$("#c21-rv-body");if(!can.manage()){deny(body);head.innerHTML="";return}
+ const all=F.quiet?[]:RV;const srcs=[...new Set(RV.map(r=>r.source))];
+ head.innerHTML=`${subnav("catalog-reviews")}<div class="toolbar" style="margin:0;width:100%"><select class="select" style="width:150px" onchange="C21.rvF('status',this.value)"><option value="">Status · all</option>${["pending","published","hidden"].map(s=>`<option value="${s}" ${rv.status===s?"selected":""}>${s[0].toUpperCase()+s.slice(1)}</option>`).join("")}</select><select class="select" style="width:150px" onchange="C21.rvF('source',this.value)"><option value="">Source · all</option>${srcs.map(s=>`<option ${rv.source===s?"selected":""}>${s}</option>`).join("")}</select><select class="select" style="width:130px" onchange="C21.rvF('rating',this.value)"><option value="">Rating · all</option>${[5,4,3,2,1].map(n=>`<option value="${n}" ${String(rv.rating)===String(n)?"selected":""}>${"★".repeat(n)}</option>`).join("")}</select><span class="xs muted">applied at once</span><span class="sp"></span>${demoBtn()}</div>`;
+ const cnt=s=>all.filter(r=>r.status===s).length;const list=all.filter(r=>(!rv.status||r.status===rv.status)&&(!rv.source||r.source===rv.source)&&(!rv.rating||String(r.rating)===String(rv.rating)));const PER=30,pages=Math.max(1,Math.ceil(list.length/PER));
+ body.innerHTML=`<div class="c21-kpis"><div class="kpi-card ${cnt("pending")?"--warn":""}"><span class="caps">Pending</span><span class="kpi-s">${cnt("pending")}</span></div><div class="kpi-card"><span class="caps">Published</span><span class="kpi-s">${cnt("published")}</span></div><div class="kpi-card"><span class="caps">Hidden</span><span class="kpi-s">${cnt("hidden")}</span></div></div>
+ ${list.length?`<div class="tbl-wrap"><table class="tbl c21-tbl"><thead><tr><th>Product</th><th>Author</th><th>Rating</th><th style="width:40%">Review</th><th class="c21-hp">Source</th><th>Status</th><th></th></tr></thead><tbody>${list.slice((rv.page-1)*PER,rv.page*PER).map(r=>`<tr class="r"><td>${esc(A.product(r.product).name)}</td><td>${r.who?esc(r.who):"<span class='muted'>Anonymous</span>"}</td><td class="c21-stars">${"★".repeat(r.rating)}<span class="muted">${"★".repeat(5-r.rating)}</span></td><td class="wrap c21-rvtxt">${esc(r.txt)}</td><td class="c21-hp muted">${esc(r.source)}</td><td>${A.pill(r.status==="published"?"ready":r.status==="hidden"?"cancelled":"photo",r.status[0].toUpperCase()+r.status.slice(1))}</td><td><span class="acts">${r.status!=="published"?`<button class="btn --sm --ghost" onclick="C21.rvMod(${r.id},'published')">Publish</button>`:""}${r.status!=="hidden"?`<button class="btn --sm --ghost" onclick="C21.rvMod(${r.id},'hidden')">Hide</button>`:""}${can.del()?`<button class="ib" title="Delete (admin)" onclick="C21.rvDel(${r.id})">${ic("trash")}</button>`:""}</span></td></tr>`).join("")}</tbody><tfoot><tr><td colspan="7">${list.length} reviews · 30 per page · text is shown as plain text (no HTML)${!can.del()?" · delete is admin-only (data.delete)":""}</td></tr></tfoot></table></div>${pages>1?`<div class="c21-pg">${Array.from({length:pages},(_,i)=>`<button class="${rv.page===i+1?"on":""}" onclick="C21.rvPage(${i+1})">${i+1}</button>`).join("")}</div>`:""}`:`<div class="empty">${ic("star")}<div class="h3">No reviews</div><button class="btn --ghost --sm" onclick="C21.rvReset()">Clear filters</button></div>`}`}
+function rvMod(id,s){const r=RV.find(x=>x.id===id);r.status=s;mount_catalog_reviews();A.toast(s==="published"?"Review published · CRM status only":"Review hidden")}
+function rvDel(id){const r=RV.find(x=>x.id===id);A.confirm("Delete this item?","The review is removed for good (admin, data.delete).","Delete",()=>{RV.splice(RV.indexOf(r),1);mount_catalog_reviews();A.toast("Review deleted")},{danger:true})}
+
+/* ================= FEED ================= */
+window.mount_catalog_feed=function(){const head=$("#c21-fd-head"),body=$("#c21-fd-body");if(!can.manage()){deny(body);head.innerHTML="";return}
+ head.innerHTML=`${subnav("catalog-feed")}<div class="row" style="width:100%"><span class="xs muted">Snapshot of active products × variants</span><span class="sp"></span>${demoBtn()}<button class="btn --ghost --sm" onclick="C21.syncFeed()">${ic("refresh")} Sync feed</button></div>`;
+ const rows=[];if(!F.quiet)A.data.products.forEach(p=>{const x=X(p);if(x.status!=="active")return;x.vars.forEach(v=>rows.push({p,v,valid:!v.soldOut&&!x.soldOut}))});const inv=rows.filter(r=>!r.valid).length;
+ body.innerHTML=`<div class="c21-kpis" style="grid-template-columns:200px 200px minmax(0,1fr)"><div class="kpi-card"><span class="caps">Total items</span><span class="kpi-s">${rows.length}</span></div><div class="kpi-card ${inv?"--warn":""}"><span class="caps">Invalid</span><span class="kpi-s">${inv}</span></div><div class="note-box" style="display:flex;align-items:center">Out-of-stock items are excluded from the generated feed.</div></div>
+ ${rows.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th class="c21-hp">SKU</th><th class="num">Price</th><th>Status</th></tr></thead><tbody>${rows.map(r=>`<tr class="r" onclick="App.go('product',{id:${r.p.id}})"><td>${esc(r.p.name)} – ${esc(r.v.name)}</td><td class="c21-hp muted">${esc(r.p.sku)}-${r.v.id%10}</td><td class="num">${fmt(r.v.price)}</td><td>${r.valid?A.pill("ready","Valid"):A.pill("cancelled","Invalid · out of stock")}</td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${ic("list")}<div class="h3">Feed is empty</div><div class="sm">No active products with variants.</div></div>`}`}
+
+/* ---- exports ---- */
+window.C21={F,FL,can,X,findP,allP,DRAFTS,CATS,PARAMS,BADGES,OCC,COLOURS,IM,img,cat,catName,badgeHtml,slug,num,subnav,deny,demoMenu,demoBtn,lightbox,intakeCount,
+ catFilter:(k,v)=>{cs[k]=v},catApply:()=>{cs.applied={q:cs.q,cat:cs.cat,rec:cs.rec};cs.page=1;renderCat();A.toast("Filters applied")},catCols:n=>{cs.cols=n;try{localStorage.setItem("catalog.cols",n)}catch(e){}mount_catalog({})},catPage:n=>{cs.page=n;renderCat();$("#c21-cat-body").scrollTop=0},catReset:()=>{cs.q="";cs.cat="all";cs.rec="all";cs.applied={q:"",cat:"all",rec:"all"};cs.page=1;mount_catalog({})},addProduct,syncFeed,
+ pcSet,pcVar,pcSave,pcBack,pcPublish,pcPublishGo,pcMenu,pcAi,pcAiComment:v=>{pc.aiComment=v},pcEnh:v=>{pc.enh=v},pcAddPhoto,pcPhotoPick,pcRmPhoto,pcPhotoMove,pcAddVideo,pcVideoGo,pcRmVideo,pcAddVar,pcRmVar,pcParam,pcCls,pcSeo,pcAlt:(u,v)=>{pc.form.alts[u]=v;dirty()},pcLang:l=>{pc.lang=l;renderPC(findP(pc.id))},pcTr,pcSaveTr,pcTab:i=>{pc.tab=i;renderPC(findP(pc.id))},pcReview,pcRecLine,pcRecRm,pcRecAdd,pcRecSave,
+ inSrc:s=>{ins.src=s;mount_catalog_intake({})},inMode:m=>{ins.mode=m;mount_catalog_intake({})},inPrice:(id,v)=>{ins["d"+id].price=v;const d=DRAFTS.find(x=>x.id===id);const btn=event&&event.target.closest(".c21-draft")?.querySelector(".btn:not(.--ghost)");if(btn)btn.disabled=!(num(v)>=1&&!!d.c21.desc)},inCat:(id,v)=>{ins["d"+id].cat=v},inPublish,inDelete,swDecide,swUndo,
+ cgEdit,cgSave,cgDelete,pmEdit,pmSave,pmDelete,bgEdit,bgSave,bgDelete,rvF:(k,v)=>{rv[k]=v;rv.page=1;mount_catalog_reviews()},rvPage:n=>{rv.page=n;mount_catalog_reviews()},rvReset:()=>{rv.status="";rv.source="";rv.rating="";rv.page=1;mount_catalog_reviews()},rvMod,rvDel};
+document.addEventListener("orders",()=>{if(A.state.current==="catalog")renderCat()});
+})();
+</script>

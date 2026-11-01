@@ -1,0 +1,449 @@
+<style>
+/* ===== 19 · Learning, Development, Glossary – part 1 (staff side). Scoped to .scr.l19 ===== */
+.scr.l19 .l-nav{display:flex;align-items:center;gap:2px;flex-wrap:wrap;width:100%}
+.scr.l19 .l-nav button{height:32px;padding:0 10px;font-size:12.5px;color:var(--graphite);border-bottom:2px solid transparent;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.scr.l19 .l-nav button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.scr.l19 .l-nav button:hover:not(.on){color:var(--ink)}
+.scr.l19 .l-nav .sep{width:1px;height:18px;background:var(--hair);margin:0 8px}
+.scr.l19 .l-nav .cnt{min-width:18px;height:18px;padding:0 5px;background:var(--accent);color:#fff;font-size:10.5px;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.scr.l19 .l-cols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start}
+.scr.l19 .l-stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.scr.l19 .panel .p-body{overflow:visible}
+.scr.l19 .li.--static{cursor:default}.scr.l19 .li.--static:hover{background:transparent}
+.scr.l19 .li .ic{width:32px;height:32px;display:grid;place-items:center;background:var(--silver);color:var(--graphite);flex:none}
+.scr.l19 .li .ic.--accent{background:var(--accent-bg);color:var(--accent)}
+.scr.l19 .li .ic.--warn{background:var(--warn-bg);color:var(--warn)}
+.scr.l19 .li .ic.--ok{background:var(--ok-bg);color:var(--ok)}
+.scr.l19 .li.--sign{box-shadow:inset 3px 0 0 var(--warn)}
+.scr.l19 .l-dash{border:1px dashed var(--light);padding:14px;text-align:center;color:var(--grey);font-size:13px}
+.scr.l19 .l-q{border:1px solid var(--hair);padding:12px 14px;margin-bottom:10px}
+.scr.l19 .l-q.--wrong{border-color:var(--accent)}
+.scr.l19 .l-q .qt{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.scr.l19 .l-q .qt b{flex:1;font-weight:400}
+.scr.l19 .l-opt{display:flex;align-items:center;gap:10px;min-height:32px;cursor:pointer;font-size:13.5px}
+.scr.l19 .l-opt input{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1px solid var(--light);border-radius:50%;margin:0;flex:none;display:grid;place-items:center}
+.scr.l19 .l-opt input:checked{border-color:var(--sel)}
+.scr.l19 .l-opt input:checked::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--sel)}
+.scr.l19 .l-opt.--struck span{text-decoration:line-through;color:var(--grey)}
+.scr.l19 .l-verdict{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:16px;font-size:13.5px}
+.scr.l19 .l-verdict.--pass{background:var(--ok-bg);color:var(--ok)}
+.scr.l19 .l-verdict.--fail{background:var(--accent-bg);color:var(--accent)}
+.scr.l19 .l-verdict.--wait{background:var(--warn-bg);color:var(--warn)}
+.scr.l19 .l-verdict .h4{flex:1}
+.scr.l19 .l-body p{margin:0 0 10px;font-size:14px;line-height:1.55}
+.scr.l19 .l-body h5{font-family:var(--f-body);font-weight:500;font-size:14px;margin:14px 0 6px}
+.scr.l19 .l-body ul{margin:0 0 10px;padding-left:18px;font-size:14px}
+.scr.l19 .l-body li{margin:2px 0}
+.scr.l19 .l-media{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.scr.l19 .l-media .m{border:1px solid var(--hair);min-width:0}
+.scr.l19 .l-media .m .photo{position:relative}
+.scr.l19 .l-media .m .cap{padding:6px 8px;font-size:12px;color:var(--graphite)}
+.scr.l19 .l-media .m .play{position:absolute;inset:0;display:grid;place-items:center}
+.scr.l19 .l-decl{max-height:140px;overflow:auto;border:1px solid var(--hair);padding:10px 12px;font-size:13px;line-height:1.5;background:var(--silver);color:var(--graphite)}
+.scr.l19 .l-sig{border:1px solid var(--light);height:120px;position:relative;background:var(--paper);touch-action:none}
+.scr.l19 .l-sig canvas{display:block;width:100%;height:100%}
+.scr.l19 .l-sig .hint{position:absolute;left:10px;bottom:6px;font-size:11px;color:var(--grey);pointer-events:none}
+.scr.l19 .l-lesson{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.scr.l19 .l-side{position:sticky;top:0;display:flex;flex-direction:column;gap:12px}
+.scr.l19 .l-yn{display:inline-flex;border:1px solid var(--light);height:30px}
+.scr.l19 .l-yn button{padding:0 12px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border-right:1px solid var(--light)}
+.scr.l19 .l-yn button:last-child{border-right:0}
+.scr.l19 .l-yn button.on{background:var(--sel);color:var(--on-sel)}
+.scr.l19 .l-quiz{max-width:640px;margin:0 auto}
+.scr.l19 .l-qcard{border:1px solid var(--hair);padding:20px 22px}
+.scr.l19 .l-qcard .l-opt{border:1px solid var(--hair);padding:0 12px;min-height:40px;margin-bottom:6px}
+.scr.l19 .l-qcard .l-opt:hover{border-color:var(--grey)}
+.scr.l19 .l-qcard .l-opt.--ok{border-color:var(--ok);background:var(--ok-bg)}
+.scr.l19 .l-qcard .l-opt.--bad{border-color:var(--accent);background:var(--accent-bg)}
+.scr.l19 .l-steps{display:flex;gap:4px}
+.scr.l19 .l-steps i{flex:1;height:3px;background:var(--hair)}
+.scr.l19 .l-steps i.on{background:var(--sel)}.scr.l19 .l-steps i.ok{background:var(--ok)}.scr.l19 .l-steps i.bad{background:var(--accent)}
+.scr.l19 .l-rate{display:inline-flex;border:1px solid var(--light)}
+.scr.l19 .l-rate button{width:34px;height:30px;font-size:13px;color:var(--graphite);border-right:1px solid var(--light);font-variant-numeric:tabular-nums}
+.scr.l19 .l-rate button:last-child{border-right:0}
+.scr.l19 .l-rate button.on{background:var(--sel);color:var(--on-sel)}
+.scr.l19 .l-bar{display:flex;align-items:center;gap:10px;font-size:12.5px}
+.scr.l19 .l-bar .progress{flex:1}
+.scr.l19 .l-bar .v{width:40px;text-align:right;font-variant-numeric:tabular-nums}
+.scr.l19 .l-goal{border:1px solid var(--hair);padding:14px;display:flex;flex-direction:column;gap:10px}
+.scr.l19 .l-goal .g-head{display:flex;align-items:center;gap:10px}
+.scr.l19 .l-sig-row{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13.5px}
+.scr.l19 .l-sig-row .s{width:18px;text-align:center;flex:none;font-weight:500}
+.scr.l19 .l-sig-row .s.--ok{color:var(--ok)}
+.scr.l19 .l-chk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.scr.l19 .l-chk .d{border:1px solid var(--hair);padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+.scr.l19 .l-chk .d.--done{border-color:var(--ok)}.scr.l19 .l-chk .d.--miss{border-color:var(--accent)}.scr.l19 .l-chk .d.--next{border-color:var(--sel)}
+.scr.l19 .l-stat{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.scr.l19 .l-stat>div{padding:12px 14px;border-right:1px solid var(--hair)}
+.scr.l19 .l-stat>div:last-child{border-right:0}
+.scr.l19 .l-err{border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);padding:10px 12px;font-size:13px}
+.scr.l19 .l-err ul{margin:4px 0 0;padding-left:18px}
+.scr.l19 .l-count{font-size:11px;color:var(--grey);text-align:right;font-variant-numeric:tabular-nums}
+.scr.l19 .l-count.--bad{color:var(--accent)}
+.scr.l19 .l-limited{border:1px solid var(--warn);background:var(--warn-bg);color:var(--warn);padding:10px 14px;font-size:13px;display:flex;gap:10px;align-items:center;margin-bottom:16px}
+[data-size="ipad"] .scr.l19 .l-cols{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+[data-size="ipad"] .scr.l19 .l-lesson{grid-template-columns:minmax(0,1fr) 260px}
+[data-size="ipad"] .scr.l19 .l-media{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .scr.l19 .l-cols,[data-size="phone"] .scr.l19 .l-lesson{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .scr.l19 .l-side{position:static}
+[data-size="phone"] .scr.l19 .l-chk{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .scr.l19 .l-stat{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .scr.l19 .l-nav .sep{display:none}
+[data-size="phone"] .scr.l19 .l-media{grid-template-columns:repeat(2,minmax(0,1fr))}
+</style>
+
+<!-- ids: LRNG-001 LRNG-002 LRNG-003 LRNG-004 LRNG-005 LRNG-006 LRNG-007 LRNG-008 LRNG-009 LRNG-010 LRNG-011 LRNG-012 LRNG-013 LRNG-014 LRNG-015 LRNG-016 · section nav: five staff tabs (My lessons / Buddy / Development / Skill check / Quiz of the day) + mentor tabs (Drafts · To review · Training register · Consents · Skills matrix · Glossary · Additions with red count · Seasons) + the three screens that had no entry (Assign, Buddies, Development plans); red count on the Learning sidebar item = pending glossary additions (manager only); limited-access demo for seasonal / trainee florists -->
+<section class="scr l19" id="s-learning-home" data-nav="Learning · My lessons" data-group="Learning" data-title="Learning" data-sub="My lessons" data-parent="learning">
+  <div class="scr-head" id="l19-home-head"></div>
+  <div class="scr-body">
+    <!-- ids: LRNG-006 limited roles banner (demo) · LRNG-007 red count on sidebar item (manager only) -->
+    <div id="l19-home-limited"></div>
+    <div class="l-cols">
+      <div class="l-stack">
+        <!-- ids: LRNG-017 Due (countersign lessons first) · LRNG-018 In the queue · LRNG-019 Done · LRNG-020 row = one big link, Overdue badge / due date / finished date · LRNG-021 Nothing here yet · LRNG-236 due / expiry now visible -->
+        <div class="panel" id="l19-home-due"></div>
+        <div class="panel" id="l19-home-queue"></div>
+        <div class="panel" id="l19-home-done"></div>
+      </div>
+      <div class="l-stack">
+        <!-- ids: LRNG-022 What changed (30 days, role-targeted) · LRNG-023 change card with Got it badge · LRNG-024 Got it opens one control question inline · LRNG-025 Submit answer → passed, minutes to timesheet, quiz repeats · LRNG-026 Not quite + Open the lesson · LRNG-235 change without a question: Got it still works (acknowledge without a question) -->
+        <div class="panel" id="l19-home-changes"></div>
+        <!-- summary KPIs the server already sends (month: passed / total / overdue / minutes) – shown here, was phone-only -->
+        <div class="panel" id="l19-home-summary"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ids: LRNG-027 LRNG-028 LRNG-029 LRNG-030 LRNG-031 LRNG-032 LRNG-033 LRNG-034 LRNG-035 LRNG-036 LRNG-037 LRNG-038 LRNG-039 LRNG-040 LRNG-041 LRNG-042 LRNG-043 LRNG-044 LRNG-045 LRNG-046 LRNG-047 LRNG-048 LRNG-236 · lesson page: verdict banner, EN/RU switch, body, media, main-idea reference, checklist, station plaque, awaiting-countersign plaque, signed summary, quiz with wrong/correct marks, link field, main idea ≥ 5 words, consent Yes/No, declaration + checkbox, full name, drawn signature with Clear, server errors, Submit, hidden timer (shown as an indicator), form hidden when passed / station / awaiting -->
+<section class="scr l19" id="s-lesson" data-nav="Learning · Lesson" data-group="Learning" data-title="Lesson" data-parent="learning">
+  <div class="scr-head" id="l19-lesson-head"></div>
+  <div class="scr-body" id="l19-lesson-body"></div>
+</section>
+
+<!-- ids: LRNG-049 LRNG-050 LRNG-051 LRNG-052 LRNG-053 LRNG-054 LRNG-055 · quiz of the day: last 30 days by category, no quiz today, one card at a time with kind label, tap = answer, explanation with Open the lesson, Done for today with streak, team block (manager) -->
+<section class="scr l19" id="s-quiz-day" data-nav="Learning · Quiz of the day" data-group="Learning" data-title="Quiz of the day" data-parent="learning">
+  <div class="scr-head" id="l19-quiz-head"></div>
+  <div class="scr-body" id="l19-quiz-body"></div>
+</section>
+
+<!-- ids: LRNG-056 LRNG-057 LRNG-058 LRNG-059 LRNG-060 LRNG-061 LRNG-062 LRNG-237 · skill check: points since first check, intro, Take the check, self-rating 1–5 per category (named, not slugs), questions, Finish, results history with bars and delta -->
+<section class="scr l19" id="s-skill-check" data-nav="Learning · Skill check" data-group="Learning" data-title="Skill check" data-parent="learning">
+  <div class="scr-head" id="l19-skill-head"></div>
+  <div class="scr-body" id="l19-skill-body"></div>
+</section>
+
+<!-- ids: LRNG-063 LRNG-064 LRNG-065 LRNG-066 LRNG-238 · buddy: Your buddy is…, You are X's buddy cards with next check-day and topic, note + Mark done (one toast), No active pairing -->
+<section class="scr l19" id="s-buddy" data-nav="Learning · Buddy" data-group="Learning" data-title="Buddy" data-parent="learning">
+  <div class="scr-head" id="l19-buddy-head"></div>
+  <div class="scr-body" id="l19-buddy-body"></div>
+</section>
+
+<!-- ids: LRNG-067 LRNG-068 LRNG-069 LRNG-070 LRNG-071 LRNG-072 LRNG-073 LRNG-074 LRNG-075 LRNG-076 LRNG-077 LRNG-078 LRNG-239 LRNG-240 · my development plan: period, Plan agreed plaque, system's plan with Take into my plan (form updates at once), signals, strengths / growth, goals N/3 with status, + / × goal, next conversation, mentor note, conversations, Save (agreed plan → asks to re-agree) -->
+<section class="scr l19" id="s-development" data-nav="Learning · Development" data-group="Learning" data-title="Development" data-sub="My plan" data-parent="learning">
+  <div class="scr-head" id="l19-dev-head"></div>
+  <div class="scr-body" id="l19-dev-body"></div>
+</section>
+
+<script>
+/* ===== 19 · Learning – shared demo data (fictional) and helpers ===== */
+const L19={limited:false,lang:"en",lessonId:1,lessonDemo:"fresh",answers:{},link:"",idea:"",consent:{},decl:false,sigName:"",sigDrawn:false,srvErr:false,timerStart:0,timerT:null,
+  quiz:{answered:{},noQuiz:false},skill:{open:null,ratings:{},answers:{}},buddyNote:{},
+  dev:{form:null,agreed:false,dirty:false}};
+const L19_CATS=[{slug:"till-licensing",en:"Till & licensing",ru:"Касса и лицензия"},{slug:"floristry",en:"Floristry",ru:"Флористика"},{slug:"delivery",en:"Delivery",ru:"Доставка"},{slug:"shop-floor",en:"Shop floor",ru:"Торговый зал"},{slug:"content",en:"Content & photos",ru:"Контент и фото"},{slug:"balloons",en:"Balloons & helium",ru:"Шары и гелий"}];
+const L19_CAT=s=>L19_CATS.find(c=>c.slug===s)||{en:s,ru:s};
+const L19_LESSONS=[
+ {id:1,slug:"selling-alcohol",cat:"till-licensing",type:"quiz",min:12,dueDays:7,countersign:true,roles:["florist","manager","courier"],status:"published",
+  texts:{en:{title:"Selling alcohol responsibly",body:"<p>Floritta sells wine and champagne as part of gift sets under Premises Licence 889934. Every sale must be made by a person who has passed this lesson and been countersigned by the DPS.</p><h5>Challenge 25</h5><p>If the customer looks under 25, ask for photo ID: passport, driving licence or PASS card. No ID – no sale, however friendly the customer is.</p><h5>When to refuse</h5><ul><li>No acceptable ID</li><li>The customer appears drunk</li><li>Buying for someone who has already been refused</li><li>Outside licensed hours (10:00–22:00)</li></ul><p>Write every refusal in the refusals log at the till.</p>",idea:"Alcohol is sold only by countersigned staff, with Challenge 25 and a written refusals log.",decl:"I confirm that I have read and understood the conditions of Premises Licence 889934 as they apply to the sale of alcohol by retail at 80 Willow Walk, that I will apply Challenge 25 on every sale, refuse a sale whenever I am in doubt and record every refusal in the refusals log, and that I understand that selling alcohol to a person under 18 is a criminal offence for which I may be personally liable."},
+    ru:{title:"Продажа алкоголя ответственно",body:"<p>Floritta продаёт вино и шампанское в составе подарочных наборов по лицензии помещения 889934. Каждую продажу делает человек, прошедший этот урок и подписанный DPS.</p><h5>Challenge 25</h5><p>Если покупатель выглядит моложе 25, попросите документ с фото: паспорт, права или карту PASS. Нет документа – нет продажи.</p><h5>Когда отказать</h5><ul><li>Нет подходящего документа</li><li>Покупатель пьян</li><li>Покупает для того, кому уже отказали</li><li>Вне лицензированных часов (10:00–22:00)</li></ul><p>Каждый отказ записывайте в журнал отказов у кассы.</p>",idea:"Алкоголь продают только подписанные сотрудники, с Challenge 25 и письменным журналом отказов.",decl:"Я подтверждаю, что прочитал(а) и понял(а) условия лицензии помещения 889934 применительно к розничной продаже алкоголя по адресу 80 Willow Walk, что буду применять Challenge 25 при каждой продаже, отказывать при любом сомнении и записывать каждый отказ в журнал, и что понимаю: продажа алкоголя лицу младше 18 лет – уголовное преступление, за которое могу отвечать лично."}},
+  pass:80,questions:[
+   {q:{en:"A customer looks about 22 and has no ID. What do you do?",ru:"Покупателю на вид 22, документа нет. Что делаете?"},opts:{en:["Sell – they are clearly over 18","Refuse the sale and write it in the refusals log","Ask a colleague to sell instead"],ru:["Продать – явно старше 18","Отказать и записать в журнал отказов","Попросить продать коллегу"]},a:1,critical:true},
+   {q:{en:"Which document is NOT acceptable ID?",ru:"Какой документ НЕ подходит?"},opts:{en:["Passport","Student card","PASS card"],ru:["Паспорт","Студенческий","Карта PASS"]},a:1},
+   {q:{en:"Licensed hours for alcohol sales are…",ru:"Лицензированные часы продажи алкоголя…"},opts:{en:["08:00–22:00","10:00–22:00","10:00–23:00"],ru:["08:00–22:00","10:00–22:00","10:00–23:00"]},a:1}],
+  media:[{kind:"photo",img:"img/addon-choc.webp",cap:"Gift set with wine – the label with the licence number"},{kind:"video",img:"img/hero-white.webp",cap:"Challenge 25 in 90 seconds",url:"youtube.com/watch?v=demo"}]},
+ {id:2,slug:"hand-tied-station",cat:"floristry",type:"observation",min:30,base:true,expiresMonths:6,roles:["florist"],status:"published",
+  texts:{en:{title:"Hand-tied bouquet · station",body:"<p>The hand-tied station is where every Website bouquet starts. Admission is given by an observer on shift, not by a test.</p><h5>Steps</h5><ul><li>Condition stems: strip below the binding point</li><li>Spiral: every stem at the same angle, turning one way</li><li>Binding point at a hand's width above the shortest stem</li><li>Cut all stems at 45°, same length</li><li>Wrap and ribbon per the brand guide</li></ul>",idea:"Spiral every stem one way around one binding point, then cut and wrap to the guide."},ru:{title:"Ручная сборка · станция",body:"<p>Станция ручной сборки – с неё начинается каждый букет с сайта. Допуск даёт наблюдатель на смене, не тест.</p>",idea:"Спираль в одну сторону вокруг одной точки связки, затем срез и упаковка по гайду."}},
+  checklist:["Stems conditioned below the binding point","Spiral turns one way, same angle","Binding point at hand's width","Stems cut at 45°, same length","Wrap and ribbon per brand guide","Workstation cleared after"],
+  media:[{kind:"photo",img:"img/pink-garden.webp",cap:"Spiral seen from above"},{kind:"photo",img:"img/peach-posy.webp",cap:"Binding point"}]},
+ {id:3,slug:"wrapping-photo",cat:"floristry",type:"photo",min:15,dueDays:5,roles:["florist"],status:"published",
+  texts:{en:{title:"Wrapping · photo check",body:"<p>Wrap one bouquet in ivory paper per the brand guide and send a link to the photo. A manager looks at it against the checklist below.</p>",idea:"Ivory wrap, two folds, ribbon tied at the binding point, label straight."},ru:{title:"Упаковка · проверка по фото",body:"<p>Упакуйте один букет в бумагу ivory по гайду и пришлите ссылку на фото.</p>",idea:"Бумага ivory, два сгиба, лента на точке связки, этикетка ровно."}},
+  checklist:["Ivory paper, two folds","Ribbon at the binding point","Floritta label straight","No price tag visible","Photo on the white backdrop"],media:[{kind:"photo",img:"img/powdered-rose.webp",cap:"Reference wrap"}]},
+ {id:4,slug:"peony-basket-price",cat:"shop-floor",type:"quiz",min:3,dueDays:3,roles:["florist","manager"],status:"published",change:"rule",published:"2026-10-18",
+  texts:{en:{title:"Price change · Peony Basket from Monday",body:"<p>From Monday 19 Oct the Peony Basket is £85 (was £75) in all sizes. The till and the site are updated; tell walk-in customers the new price.</p>",idea:"Peony Basket is £85 from Monday 19 October."},ru:{title:"Новая цена · Peony Basket с понедельника",body:"<p>С понедельника 19 октября Peony Basket стоит £85 (было £75).</p>",idea:"Peony Basket – £85 с понедельника 19 октября."}},
+  pass:100,questions:[{q:{en:"What is the Peony Basket price from Monday?",ru:"Сколько стоит Peony Basket с понедельника?"},opts:{en:["£75","£85","£95"],ru:["£75","£85","£95"]},a:1}]},
+ {id:5,slug:"fridge-log",cat:"shop-floor",type:"quiz",min:5,base:true,roles:["florist","manager","courier"],status:"published",
+  texts:{en:{title:"Fridge temperature log",body:"<p>The flower fridge is checked twice a day, 09:00 and 17:00. The reading goes in the log on the fridge door; anything above 6 °C goes to the manager at once.</p>",idea:"Check the fridge twice a day, write it down, above 6 °C tell the manager."},ru:{title:"Журнал температуры холодильника",body:"<p>Холодильник проверяют дважды в день, 09:00 и 17:00.</p>",idea:"Проверять дважды в день, записывать, выше 6 °C – менеджеру."}},
+  pass:100,questions:[{q:{en:"Above which temperature do you tell the manager?",ru:"Выше какой температуры – менеджеру?"},opts:{en:["4 °C","6 °C","8 °C"],ru:["4 °C","6 °C","8 °C"]},a:1}]},
+ {id:6,slug:"cutoff-19",cat:"delivery",type:"quiz",min:2,dueDays:3,roles:["florist","manager","courier"],status:"published",change:"release",published:"2026-10-19",noQuestion:true,
+  texts:{en:{title:"Same-day cut-off moved to 19:00",body:"<p>Same-day delivery can now be ordered until 19:00 for the 20:00–22:00 slot. The site and the phone script are updated.</p>",idea:"Same-day orders are accepted until 19:00 for the last slot."},ru:{title:"Cut-off same-day перенесён на 19:00",body:"<p>Same-day теперь можно заказать до 19:00 на слот 20:00–22:00.</p>",idea:"Same-day принимаем до 19:00 на последний слот."}},questions:[]},
+ {id:7,slug:"helium-link",cat:"balloons",type:"link_proof",min:10,dueDays:7,roles:["florist"],status:"published",hosts:["drive.google.com","photos.app.goo.gl"],
+  texts:{en:{title:"Helium balloons · inflate and weight",body:"<p>Inflate a 12&quot; latex balloon to the size of the gauge, tie with ribbon and a weight. Send a link to a short clip in Drive.</p>",idea:"Inflate to the gauge, tie, ribbon, weight – every balloon."},ru:{title:"Гелиевые шары · надуть и утяжелить",body:"<p>Надуйте латексный шар 12&quot; по калибру, завяжите лентой и грузиком. Пришлите ссылку на короткий клип в Drive.</p>",idea:"По калибру, завязать, лента, грузик – каждый шар."}}},
+ {id:8,slug:"flashcards-a-f",cat:"floristry",type:"flashcards",min:8,base:true,roles:["florist"],status:"published",
+  texts:{en:{title:"Flashcards · cut flowers A–F",body:"<p>Ten flashcards from the Florist ABC: name, Latin name, vase life.</p>",idea:"Know the name, Latin name and vase life of the A–F flowers."},ru:{title:"Карточки · срезка A–F",body:"<p>Десять карточек из Азбуки флориста.</p>",idea:"Знать имя, латынь и стойкость цветов A–F."}},pass:70,questions:[{q:{en:"Latin name of the peony?",ru:"Латинское имя пиона?"},opts:{en:["Paeonia","Ranunculus","Dianthus"],ru:["Paeonia","Ranunculus","Dianthus"]},a:0}]},
+ {id:9,slug:"faces-in-content",cat:"content",type:"quiz",min:4,dueDays:14,roles:["florist","manager","courier"],status:"published",consentOnly:true,
+  texts:{en:{title:"Faces and voice in content",body:"<p>We film in the shop for Instagram and TikTok. Tell us what you are happy with – you can change your answers any time by asking a manager.</p>",idea:"",decl:"I have read how Floritta uses photos and video of the team in its social media and on floritta.uk, and I give the choices below freely. I can withdraw any choice by telling a manager; content already published may stay online."},ru:{title:"Лицо и голос в контенте",body:"<p>Мы снимаем в магазине для Instagram и TikTok. Скажите, с чем вы согласны.</p>",idea:"",decl:"Я прочитал(а), как Floritta использует фото и видео команды в соцсетях и на floritta.uk, и даю выбор ниже добровольно. Могу отозвать выбор, сказав менеджеру; уже опубликованное может остаться."}},
+  choices:[{key:"face_photo",en:"My face may appear in photos",ru:"Моё лицо может быть на фото"},{key:"face_video",en:"My face may appear in video",ru:"Моё лицо может быть в видео"},{key:"voice",en:"My voice may be used",ru:"Мой голос можно использовать"},{key:"first_name",en:"My first name may be shown",ru:"Можно показывать моё имя"}]},
+ {id:10,slug:"condolence-talk",cat:"shop-floor",type:"quiz",min:6,dueDays:7,roles:["florist","manager"],status:"published",
+  texts:{en:{title:"Condolence orders · how we talk",body:"<p>Sympathy orders are taken slowly and quietly. Never ask “what happened”; do ask the name for the card and the service time.</p>",idea:"Slow, quiet, no questions about the loss; confirm card name and service time."},ru:{title:"Траурные заказы · как говорить",body:"<p>Заказы на похороны принимаем медленно и тихо.</p>",idea:"Медленно, тихо, без вопросов о случившемся; имя на карточке и время церемонии."}},pass:100,questions:[{q:{en:"What do you never ask on a sympathy order?",ru:"Что никогда не спрашивают при траурном заказе?"},opts:{en:["The card wording","What happened","The service time"],ru:["Текст карточки","Что случилось","Время церемонии"]},a:1,critical:true}]},
+ {id:11,slug:"till-open-station",cat:"till-licensing",type:"observation",min:20,base:true,expiresMonths:12,roles:["florist","manager"],status:"published",texts:{en:{title:"Till · open and close",body:"<p>Opening float, Z-report, cash drop to the safe.</p>",idea:"Float in, Z-report out, cash to the safe, every shift."},ru:{title:"Касса · открыть и закрыть",body:"",idea:""}},checklist:["Float counted and logged","Card terminal paired","Z-report printed and signed","Cash drop to the safe","Drawer left open overnight"]},
+ {id:12,slug:"van-loading-station",cat:"delivery",type:"observation",min:20,base:true,expiresMonths:6,roles:["courier","florist"],status:"published",texts:{en:{title:"Van loading · station",body:"<p>Boxes by slot, heaviest low, water tubes capped.</p>",idea:"Load by slot, heavy low, tubes capped, strapped before moving."},ru:{title:"Загрузка фургона · станция",body:"",idea:""}},checklist:["Boxes ordered by slot","Heavy items low and strapped","Water tubes capped","Nothing loose on the floor"]},
+ {id:13,slug:"sympathy-spray-station",cat:"floristry",type:"observation",min:40,base:true,expiresMonths:6,roles:["florist"],status:"published",texts:{en:{title:"Sympathy spray · station",body:"<p>Oasis soaked, frame built, focal flowers first.</p>",idea:"Soak the base, build the outline, focal flowers, fill, no mechanics showing."},ru:{title:"Траурный спрей · станция",body:"",idea:""}},checklist:["Oasis soaked for 60 s, not pushed","Outline set before focal flowers","No mechanics visible","Ribbon lettering straight"]},
+ /* drafts */
+ {id:21,slug:"xmas-wreath-cutoff",cat:"shop-floor",type:"quiz",min:4,dueDays:5,roles:["florist","manager"],status:"draft",source:"agent",sourceRef:"lv-floritta PR #412 · Christmas cut-off",texts:{en:{title:"Christmas wreaths · last orders 18 Dec",body:"<p>Wreath orders close 18 Dec 22:00; same-day bouquets run to 24 Dec 14:00.</p>",idea:"Wreaths until 18 Dec, same-day bouquets until 24 Dec 14:00."},ru:{title:"Рождественские венки · последние заказы 18 декабря",body:"<p>Заказы на венки закрываются 18 декабря в 22:00; same-day букеты – до 24 декабря 14:00.</p>",idea:"Венки до 18 декабря, same-day до 24 декабря 14:00."}},pass:100,questions:[{q:{en:"Last day for wreath orders?",ru:"Последний день заказов на венки?"},opts:{en:["18 Dec","22 Dec","24 Dec"],ru:["18 Dec","22 Dec","24 Dec"]},a:0}]},
+ {id:22,slug:"uber-direct-handover",cat:"delivery",type:"quiz",min:5,dueDays:3,roles:["florist","manager","courier"],status:"draft",source:"agent",sourceRef:"floritta-crm PR #1402 · Uber Direct",peak:true,texts:{en:{title:"Uber Direct handover",body:"<p>When the CRM calls an Uber Direct courier, the bouquet waits on the handover shelf with the order label facing out.</p>",idea:""},ru:{title:"",body:"",idea:""}},pass:100,questions:[]},
+ {id:23,slug:"lily-allergy",cat:"floristry",type:"quiz",min:3,dueDays:7,roles:["florist"],status:"draft",source:"manual",texts:{en:{title:"“No lilies” notes · what it means",body:"<p>A “no lilies” note means no Lilium at all – including in foliage mixes.</p>",idea:"No lilies means no Lilium anywhere in the order."},ru:{title:"Пометка «без лилий» · что это значит",body:"<p>«Без лилий» – никаких Lilium вообще, в том числе в зелени.</p>",idea:"Без лилий = никаких Lilium нигде в заказе."}},pass:100,questions:[{q:{en:"“No lilies” on an order means…",ru:"«Без лилий» в заказе значит…"},opts:{en:["No oriental lilies only","No Lilium at all","No strong-scented flowers"],ru:["Только без восточных","Никаких Lilium","Без сильно пахнущих"]},a:1}]}
+];
+const L19_LESSON=id=>L19_LESSONS.find(l=>l.id===Number(id));
+/* assignments of the current person (same demo set for every role; buddy / plan differ by role) */
+const L19_ASSIGN=[
+ {id:901,lesson:1,status:"assigned",due:"2026-10-24",reason:"publish"},
+ {id:902,lesson:3,status:"assigned",due:"2026-10-18",overdue:true,reason:"publish"},
+ {id:903,lesson:4,status:"assigned",due:"2026-10-22",reason:"publish"},
+ {id:904,lesson:9,status:"assigned",due:"2026-11-02",reason:"publish"},
+ {id:905,lesson:5,status:"assigned",due:null,reason:"base"},
+ {id:906,lesson:7,status:"assigned",due:null,reason:"base"},
+ {id:907,lesson:2,status:"assigned",due:null,reason:"base",expires:null},
+ {id:908,lesson:8,status:"passed",due:null,finished:"2026-10-12",reason:"base"},
+ {id:909,lesson:10,status:"passed",due:"2026-10-10",finished:"2026-10-08",reason:"publish"},
+ {id:910,lesson:11,status:"passed",due:null,finished:"2026-06-02",expires:"2027-06-02",reason:"observation"}
+];
+const L19_CHANGES=[{lesson:4,acked:false},{lesson:6,acked:false},{lesson:10,acked:true}];
+const L19_QUIZ=[
+ {id:1,kind:"Repeat",lesson:10,q:"What do you never ask on a sympathy order?",opts:["The card wording","What happened","The service time"],a:1},
+ {id:2,kind:"What's new",lesson:4,q:"Peony Basket price from Monday 19 Oct?",opts:["£75","£85","£95"],a:1},
+ {id:3,kind:"Your weak spot",lesson:8,q:"Vase life of a garden rose at 4 °C?",opts:["2–3 days","5–7 days","12–14 days"],a:1}
+];
+const L19_QUIZ_STATS=[["Floristry",14,18],["Shop floor",9,10],["Till & licensing",4,7],["Delivery",6,6]];
+const L19_QUIZ_TEAM=[["svetlana",41,36,"Till & licensing"],["marina",38,30,"Delivery"],["olesya",22,19,"Floristry"],["anna",17,11,"Till & licensing"],["lina",30,21,"Floristry"],["daniel",12,12,"—"]];
+const L19_SKILL_HISTORY=[{kind:"Check",date:"2026-10-05",pct:78,sure:70,prev:64,cats:[["Floristry",4,5],["Shop floor",3,3],["Till & licensing",1,2]]},{kind:"Starting point",date:"2026-07-14",pct:64,sure:85,prev:null,cats:[["Floristry",3,5],["Shop floor",2,3],["Till & licensing",1,3]]}];
+const L19_SKILL_QS=[{q:"How often is the fridge checked?",opts:["Once a day","Twice a day","Every hour"],a:1,cat:"Shop floor"},{q:"Binding point of a hand-tied bouquet sits…",opts:["At the base","A hand's width above the shortest stem","Wherever the ribbon looks best"],a:1,cat:"Floristry"},{q:"Challenge 25 means…",opts:["Refuse everyone under 25","Ask for ID if the customer looks under 25","Only sell after 25 orders"],a:1,cat:"Till & licensing"},{q:"Latin name of the peony?",opts:["Paeonia","Ranunculus","Dianthus"],a:0,cat:"Floristry"},{q:"Last same-day order time?",opts:["17:00","19:00","21:00"],a:1,cat:"Delivery"}];
+const L19_PAIRS=[
+ {id:1,newcomer:"lina",buddy:"svetlana",started:"2026-10-12",days:[{d:1,t:"Workplace, keys, where everything is",due:"2026-10-13",done:"2026-10-13",by:"svetlana",note:"All good, knows the fridge log"},{d:3,t:"First station · hand-tied",due:"2026-10-15",done:"2026-10-15",by:"svetlana",note:""},{d:7,t:"First solo shift",due:"2026-10-19",done:null},{d:14,t:"A conversation: how is it going",due:"2026-10-26",done:null}]},
+ {id:2,newcomer:"anna",buddy:"valeria",started:"2026-10-14",days:[{d:1,t:"Workplace, keys, where everything is",due:"2026-10-15",done:"2026-10-15",by:"valeria",note:""},{d:3,t:"First station · wrapping",due:"2026-10-17",done:"2026-10-17",by:"valeria",note:"Quick learner"},{d:7,t:"First solo shift",due:"2026-10-21",done:null},{d:14,t:"A conversation: how is it going",due:"2026-10-28",done:null}]},
+ {id:3,newcomer:"omar",buddy:"daniel",started:"2026-09-01",days:[{d:1,t:"Van, keys, route app",due:"2026-09-02",done:"2026-09-02",by:"daniel"},{d:3,t:"First run with Daniel",due:"2026-09-04",done:"2026-09-04",by:"daniel"},{d:7,t:"First solo run",due:"2026-09-08",done:"2026-09-09",by:"daniel"},{d:14,t:"A conversation",due:"2026-09-15",done:"2026-09-15",by:"valeria"}],closed:true}
+];
+const L19_PLANS=[
+ {id:1,user:"svetlana",period:"2026-Q4",status:"agreed",agreedBy:"valeria",agreedAt:"2026-10-06",next:"2026-11-10",strengths:"Fast, clean spirals; customers ask for me by name on Instagram.",growth:"Pricing big bespoke orders without asking a manager.",goals:[{t:"Quote three bespoke orders over £300 on my own",how:"Three quotes accepted without a manager correcting the price",give:"One hour with Tatiana on the costing sheet",by:"2026-12-15",status:"In progress"},{t:"Teach the hand-tied station to Lina",how:"Lina certified at the station by December",give:"Trainer status in the matrix",by:"2026-12-20",status:"In progress"}],mentorNote:"Agreed – the costing sheet session is booked for 3 Nov.",checkIns:[{at:"2026-10-06",by:"valeria",note:"First conversation of the quarter. Two goals, both measurable."}]},
+ {id:2,user:"valeria",period:"2026-Q4",status:"draft",next:"2026-11-04",strengths:"Keep the day calm even on 60-order mornings.",growth:"Delegating photo checks instead of doing them myself.",goals:[{t:"Hand photo checks to Svetlana on my shifts",how:"Svetlana approves 80% of photos in November",give:"Time for the Deliveroo menu rebuild",by:"2026-11-30",status:"In progress"}],mentorNote:"",checkIns:[]},
+ {id:3,user:"marina",period:"2026-Q4",status:"draft",next:"2026-10-15",strengths:"Sympathy work.",growth:"Speed on Website orders.",goals:[{t:"Average 25 min per Website bouquet",how:"Production board timer under 25 min for a week",give:"",by:"2026-11-20",status:"In progress"}],mentorNote:"",checkIns:[]},
+ {id:4,user:"lina",period:"2026-Q4",status:"closed",next:null,strengths:"",growth:"Everything – first month.",goals:[{t:"Pass all base-library lessons",how:"Learning page shows nothing in the queue",give:"",by:"2026-10-31",status:"Done"}],mentorNote:"",checkIns:[{at:"2026-10-20",by:"valeria",note:"Closed early – moved to the Q1 plan."}]},
+ {id:5,user:"marina",period:"2026-Q3",status:"closed",next:null,strengths:"",growth:"",goals:[{t:"Sympathy spray station",how:"Certified",give:"",by:"2026-09-30",status:"Done"}],mentorNote:"",checkIns:[]}
+];
+const L19_SUGGESTION={period:"2026-Q4",items:[{goal:"Get certified at the sympathy spray station",why:"Two sympathy orders a week go to Marina only; the shop has one person admitted.",proof:[["2026-10-02","Skills matrix: only Marina admitted at Sympathy spray"],["2026-09-28","Order #118431 waited 40 min for Marina"]]},{goal:"Answer the quiz of the day five days a week",why:"Weakest topic Till & licensing: 4 of 7 in 30 days.",proof:[["2026-10-15","Quiz of the day: 4/7 in Till & licensing"]]}]};
+const L19_SIGNALS=[["+","Photo approved first time 18 of 20 this month","2026-10-19"],["·","Two late Website bouquets on Sat 17 Oct","2026-10-17"],["+","Customer review names you: “Svetlana made my mum cry (happy)”","2026-10-14"],["·","Quiz of the day skipped 4 days in a row","2026-10-09"],["+","Lina's Day 3 check-day done on time","2026-10-15"]];
+const L19_PLAN_FOR=uid=>L19_PLANS.find(p=>p.user===uid&&p.period==="2026-Q4");
+
+L19.pending=()=>(window.L19_SUGG||[]).filter(s=>s.status==="pending").length;
+L19.fmtD=s=>s?new Date(s+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"}):"";
+L19.fmtDY=s=>s?new Date(s+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}):"";
+L19.NAV_MY=[["learning-home","My lessons"],["buddy","Buddy"],["development","Development"],["skill-check","Skill check"],["quiz-day","Quiz of the day"]];
+L19.NAV_MENTOR=[["lesson-drafts","Drafts",["lesson-edit"]],["lesson-review","To review"],["training-register","Training register",["signed-document"]],["consents","Consents"],["skills-matrix","Skills matrix"],["glossary","Glossary",["glossary-edit"]],["glossary-additions","Additions"],["glossary-seasons","Seasons"],["buddies","Buddies"],["development-plans","Development plans",["development-plan"]]];
+L19.nav=function(active,extra){
+  const A=App;const my=L19.NAV_MY.map(n=>`<button class="${active===n[0]?"on":""}" onclick="App.go('${n[0]}')">${n[1]}</button>`).join("");
+  const men=A.isMgr()?`<span class="sep"></span>`+L19.NAV_MENTOR.map(n=>{const on=active===n[0]||(n[2]||[]).includes(active);const cnt=n[0]==="glossary-additions"&&L19.pending()?`<span class="cnt">${L19.pending()}</span>`:"";return `<button class="${on?"on":""}" onclick="App.go('${n[0]}')">${n[1]}${cnt}</button>`}).join(""):"";
+  return `<div class="l-nav">${my}${men}</div>${extra||""}`;
+};
+L19.panelEmpty=(t,ic,btn)=>`<div class="empty" style="padding:24px">${App.icon(ic||"book")}<div class="h3">${t}</div>${btn||""}</div>`;
+
+/* ---------- Learning home ---------- */
+window.mount_learning_home=function(params){
+  const A=App,$=A.$,esc=A.esc,ic=A.icon,me=A.me();
+  const mgr=A.isMgr();
+  $("#l19-home-head").innerHTML=L19.nav("learning-home",`<div class="sp"></div><button class="btn --ghost --sm" onclick="L19X.homeDemo(event)">${ic("columns")} Demo data</button>${mgr?`<button class="btn --sm" onclick="App.go('lesson-edit',{new:true})">${ic("plus")} New lesson</button>`:""}`);
+  $("#l19-home-limited").innerHTML=L19.limited?`<div class="l-limited">${ic("lock")}<div style="flex:1"><b>Limited access · ${me.staff_type==="trainee"?"trainee":"seasonal florist"}</b> – the sidebar shows only Orders, Team and the five Learning tabs. Everything else is hidden by the role, not by a setting.</div><button class="textbtn" onclick="L19.limited=false;L19X.home()">Show full access</button></div>`:"";
+  const rows=L19_ASSIGN.map(a=>({a,l:L19_LESSON(a.lesson)}));
+  const due=rows.filter(r=>r.a.status==="assigned"&&r.a.due).sort((x,y)=>(y.l.countersign?1:0)-(x.l.countersign?1:0)||x.a.due.localeCompare(y.a.due));
+  const queue=rows.filter(r=>r.a.status==="assigned"&&!r.a.due);
+  const done=rows.filter(r=>r.a.status!=="assigned");
+  const row=r=>{const l=r.l,a=r.a;const right=a.status==="assigned"?(a.overdue?`<span class="pill --overdue">Overdue</span>`:a.due?`<span class="xs muted tnum">Due ${L19.fmtD(a.due)}</span>`:"")
+      :(a.expires?`<span class="xs muted tnum">Admitted until ${L19.fmtD(a.expires)}</span>`:a.due?`<span class="xs muted tnum">Due ${L19.fmtD(a.due)}</span>`:`<span class="xs muted tnum">Done ${L19.fmtD(a.finished)}</span>`);
+    return `<div class="li ${l.countersign&&a.status==="assigned"?"--sign":""}" onclick="App.go('lesson',{id:${l.id},assignment:${a.id}})"><span class="ic ${a.overdue?"--accent":l.countersign?"--warn":a.status==="passed"?"--ok":""}">${ic(l.type==="observation"?"production":l.type==="photo"?"photo":l.type==="link_proof"?"link":l.countersign?"lock":"book")}</span><div class="t"><b>${esc(l.texts.en.title)}</b><small>${esc(L19_CAT(l.cat).en)} · ${l.min} min${l.countersign?" · signed lesson, first in the list":""}${l.type==="observation"?" · station, admission by an observer":""}</small></div>${right}${ic("chev")}</div>`};
+  const section=(id,title,list,emptyT)=>{$(id).innerHTML=`<div class="p-head"><div class="h4">${title} <span class="muted xs">${list.length}</span></div></div><div class="p-body">${list.length?`<div class="list">${list.map(row).join("")}</div>`:`<div style="padding:14px"><div class="l-dash">${emptyT}</div></div>`}</div>`};
+  section("#l19-home-due","Due",due,"Nothing here yet.");
+  section("#l19-home-queue","In the queue",queue,"Nothing here yet.");
+  section("#l19-home-done","Done",done,"Nothing here yet.");
+  /* What changed */
+  const ch=L19_CHANGES.map(c=>({c,l:L19_LESSON(c.lesson)})).filter(x=>x.l.roles.includes(me.role==="owner"?"manager":me.role));
+  $("#l19-home-changes").innerHTML=ch.length?`<div class="p-head"><div class="h4">What changed <span class="muted xs">${ch.length}</span></div><span class="xs muted">last 30 days · for ${esc(me.title.toLowerCase())}s</span></div><div class="p-body">${ch.map(x=>{const l=x.l,c=x.c;const open=L19.changeOpen===l.id;const q=l.questions&&l.questions[0];
+      return `<div style="padding:12px 14px;border-bottom:1px solid var(--hair)"><div class="row" style="align-items:flex-start"><div style="flex:1;min-width:0"><b style="font-weight:400">${esc(l.texts.en.title)}</b><div class="sm soft" style="margin-top:2px">${esc(l.texts.en.idea)}</div><div class="xs muted mt8">${esc(L19_CAT(l.cat).en)} · ${l.change==="rule"?"Rule":l.change==="release"?"Release":"Incident"} · published ${L19.fmtD(l.published)}</div></div>${c.acked?`<span class="pill --done">Got it</span>`:open?"":`<button class="btn --sm --ghost" onclick="L19.changeOpen=${l.id};L19X.home()">Got it</button>`}</div>
+        ${open&&!c.acked?(q?`<div class="mt8" style="border-top:1px solid var(--hair);padding-top:10px"><div class="sm" style="margin-bottom:6px">${esc(q.q.en)}</div>${q.opts.en.map((o,i)=>`<label class="l-opt"><input type="radio" name="ch${l.id}" onchange="L19.chAns=${i}"><span>${esc(o)}</span></label>`).join("")}<div class="row mt8"><button class="btn --sm" onclick="L19X.ackChange(${l.id})">Submit</button><button class="textbtn" onclick="L19.changeOpen=null;L19X.home()">cancel</button></div>${L19.chErr===l.id?`<div class="note-box --accent mt8">Not quite – open the lesson to see why. <button class="textbtn --accent" onclick="App.go('lesson',{id:${l.id}})">Open the lesson</button><div class="xs" style="margin-top:4px">The lesson is already in your queue.</div></div>`:""}</div>`
+          :`<div class="mt8" style="border-top:1px solid var(--hair);padding-top:10px"><div class="sm soft">This change has no control question – confirm that you have read it.</div><div class="row mt8"><button class="btn --sm" onclick="L19X.ackChange(${l.id},true)">I have read it</button><button class="textbtn" onclick="App.go('lesson',{id:${l.id}})">open the lesson</button></div></div>`):""}</div>`}).join("")}</div>`
+    :`<div class="p-head"><div class="h4">What changed</div></div>${L19.panelEmpty("Nothing changed for your role in 30 days","sparkle")}`;
+  /* summary */
+  const passed=done.length,total=rows.length,over=due.filter(r=>r.a.overdue).length,mins=done.reduce((s,r)=>s+r.l.min,0);
+  $("#l19-home-summary").innerHTML=`<div class="p-head"><div class="h4">This month</div><span class="xs muted">goes to the timesheet</span></div><div class="l-stat" style="grid-template-columns:repeat(4,minmax(0,1fr))"><div><span class="caps">Passed</span><div class="kpi-s">${passed}<span class="xs muted">/${total}</span></div></div><div><span class="caps">Overdue</span><div class="kpi-s ${over?"accent":""}">${over}</div></div><div><span class="caps">Minutes</span><div class="kpi-s">${mins}</div></div><div><span class="caps">Streak</span><div class="kpi-s">6<span class="xs muted"> d</span></div></div></div>`;
+  App.registerCommands([{g:"Go to",t:"Learning · my lessons",ic:"book",fn:()=>App.go("learning-home")},{g:"Go to",t:"Quiz of the day",ic:"sparkle",fn:()=>App.go("quiz-day")},{g:"Go to",t:"Skills matrix",ic:"columns",fn:()=>App.go("skills-matrix")},{g:"Go to",t:"Florist ABC (glossary)",ic:"book",fn:()=>App.go("glossary")},{g:"Actions",t:"New lesson",ic:"plus",fn:()=>App.go("lesson-edit",{new:true})}]);
+};
+
+/* ---------- Lesson ---------- */
+window.mount_lesson=function(params){
+  const A=App,$=A.$,esc=A.esc,ic=A.icon;
+  if(params&&params.id&&params.id!==L19.lessonId){L19.lessonId=Number(params.id);L19X.resetLesson()}
+  const l=L19_LESSON(L19.lessonId)||L19_LESSONS[0];const lang=L19.lang,t=l.texts[lang]&&l.texts[lang].title?l.texts[lang]:l.texts.en;
+  const asg=L19_ASSIGN.find(a=>a.lesson===l.id)||{status:"assigned",due:null};
+  const st=L19.lessonDemo; // fresh | failed | passed | awaiting | review
+  const hasDecl=!!(l.texts.en.decl);const multi=!!(l.texts.ru&&l.texts.ru.title);
+  const isStation=l.type==="observation";const isConsentOnly=!!l.consentOnly;
+  const passed=st==="passed"||asg.status==="passed"&&st==="fresh";
+  const awaiting=st==="awaiting";
+  const hideForm=isStation||passed||awaiting||st==="review";
+  const attempt=st!=="fresh";
+  const wrong=st==="failed"?L19.lastWrong||[0]:[];
+  $("#l19-lesson-head").innerHTML=`<button class="textbtn" onclick="App.go('learning-home')">← Back to my learning</button><div class="sp"></div>
+    ${multi?`<div class="seg-ctl"><button class="${lang==="en"?"on":""}" onclick="L19.lang='en';L19X.lesson()">English</button><button class="${lang==="ru"?"on":""}" onclick="L19.lang='ru';L19X.lesson()">Русский</button></div>`:""}
+    <button class="btn --ghost --sm" onclick="L19X.lessonDemo(event)">${ic("columns")} Demo state</button>`;
+  const verdict=st==="passed"?`<div class="l-verdict --pass">${ic("check")}<div class="h4">Passed</div><span class="tnum">${l.questions?l.questions.length+" of "+l.questions.length+" correct":""}</span></div>`
+    :st==="failed"?`<div class="l-verdict --fail">${ic("close")}<div class="h4">Not passed</div><span class="tnum">${l.questions?(l.questions.length-wrong.length)+" of "+l.questions.length+" correct":""}</span></div>
+      <div class="note-box --accent mb16"><ul style="margin:0;padding-left:18px">${wrong.some(i=>l.questions[i]&&l.questions[i].critical)?`<li>${wrong.filter(i=>l.questions[i]&&l.questions[i].critical).length} critical question(s) wrong</li>`:""}${L19.ideaShort?`<li>The main idea is too short: ${L19.ideaShort} of at least 5 words</li>`:""}<li>Questions you got wrong are marked red below</li></ul></div>`
+    :st==="review"?`<div class="l-verdict --wait">${ic("clock")}<div class="h4">Waiting for a person to look</div><span class="xs">A manager checks it in “To review”</span></div>`
+    :st==="awaiting"?`<div class="l-verdict --wait">${ic("lock")}<div class="h4">Test passed and declaration signed. Waiting for the DPS to countersign…</div></div><div class="note-box mb16">Signed as <b>${esc(L19.sigName||A.me().n+" Demo")}</b> on ${A.NOW.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})} 10:41</div>`:"";
+  const idea=attempt&&t.idea?`<div class="card mt16"><span class="caps">How we would put it</span><div class="sm">${esc(t.idea)}</div><span class="caps mt8">How you put it</span><div class="sm soft">${esc(L19.idea||"Only sell to people with ID and log refusals.")}</div></div>`:"";
+  const checklist=l.checklist&&(l.type==="photo"||isStation)?`<div class="sec-head"><div class="h3">What we will be looking at</div></div><div class="list" style="border:1px solid var(--hair)">${l.checklist.map(c=>`<div class="li --static" style="min-height:36px"><span class="dot --ink"></span><div class="t"><b>${esc(c)}</b></div></div>`).join("")}</div>`:"";
+  const media=l.media&&l.media.length?`<div class="sec-head"><div class="h3">Photos and video</div></div><div class="l-media">${l.media.map(m=>`<div class="m"><div class="photo --4x5"><img src="${m.img}" alt="">${m.kind==="video"?`<div class="play"><button class="btn --sm" onclick="App.toast('Opens ${m.url} in a new tab')">${ic("play")} Watch</button></div>`:""}</div><div class="cap">${esc(m.cap)}</div></div>`).join("")}</div>`:"";
+  const signedSummary=passed&&hasDecl?`<div class="card mt16"><span class="caps">Signed</span><div class="sm">Signed as <b>${esc(L19.sigName||A.me().n+" Demo")}</b> on ${L19.fmtDY(asg.finished||"2026-10-20")}</div>${l.choices?`<dl class="kv mt8">${l.choices.map(c=>`<dt>${esc(c[lang]||c.en)}</dt><dd>${L19.consent[c.key]===false?"No":"Yes"}</dd>`).join("")}</dl>`:""}</div>`:"";
+  const qs=l.questions&&l.questions.length&&!isConsentOnly?`<div class="sec-head"><div class="h3">${l.type==="flashcards"?"Flashcards":"Test"}</div><span class="xs muted">pass mark ${l.pass||80}%</span></div>${l.questions.map((q,i)=>{const w=wrong.includes(i);const prev=L19.answers[i];
+      return `<div class="l-q ${w?"--wrong":""}"><div class="qt"><b>${i+1}. ${esc(q.q[lang]||q.q.en)}</b>${w?`<span class="pill --late">Wrong</span>`:attempt&&prev!==undefined?`<span class="pill --done">Correct</span>`:""}</div>${(q.opts[lang]||q.opts.en).map((o,k)=>`<label class="l-opt ${w&&prev===k?"--struck":""}"><input type="radio" name="q${i}" ${prev===k?"checked":""} onchange="L19.answers[${i}]=${k};L19X.lessonCheck()"><span>${esc(o)}</span></label>`).join("")}</div>`}).join("")}`:"";
+  const link=l.type==="photo"||l.type==="link_proof"?`<div class="field mt16"><label>${l.type==="photo"?"Link to your photo":"Link to your work"}</label><input class="input" placeholder="https://…" value="${esc(L19.link)}" oninput="L19.link=this.value;L19X.lessonCheck()"><div class="xs muted">${l.hosts?"Allowed hosts: "+l.hosts.join(", ")+" · ":""}Only a link – no file upload on the web.</div></div>`:"";
+  const words=(L19.idea||"").trim().split(/\s+/).filter(Boolean).length;
+  const ideaField=!isConsentOnly?`<div class="field mt16"><label>In your own words: what is the main idea of this lesson?</label><textarea class="textarea" oninput="L19.idea=this.value;L19X.lessonCheck()" placeholder="At least five words">${esc(L19.idea)}</textarea><div class="l-count ${words<5?"--bad":""}" id="l19-words">${words} of at least 5 words</div></div>`:"";
+  const choices=l.choices?`<div class="sec-head"><div class="h3">Your choices</div></div>${l.choices.map(c=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--hair)"><span class="sm" style="flex:1">${esc(c[lang]||c.en)}</span><div class="l-yn"><button class="${L19.consent[c.key]===true?"on":""}" onclick="L19.consent['${c.key}']=true;L19X.lesson()">Yes</button><button class="${L19.consent[c.key]===false?"on":""}" onclick="L19.consent['${c.key}']=false;L19X.lesson()">No</button></div></div>`).join("")}`:"";
+  const decl=hasDecl?`<div class="sec-head"><div class="h3">Declaration</div></div><div class="l-decl">${esc(t.decl||l.texts.en.decl)}</div><label class="check mt8"><input type="checkbox" ${L19.decl?"checked":""} onchange="L19.decl=this.checked;L19X.lessonCheck()"> ${l.choices?"I confirm my choices above and have read the declaration":"I have read the declaration above and agree to it"}</label>
+    <div class="grid g2 mt16"><div class="field"><label>Your full name (electronic signature)</label><input class="input" placeholder="First and last name" value="${esc(L19.sigName)}" oninput="L19.sigName=this.value;L19X.lessonCheck()"><div class="xs muted">At least two words</div></div><div class="field"><label>Your signature (draw it)</label><div class="l-sig" id="l19-sig"><canvas id="l19-sigc"></canvas><span class="hint">Draw with your finger or mouse</span></div><div class="row"><button class="textbtn" onclick="L19X.sigClear()">Clear</button><span class="xs accent" id="l19-sig-err" style="display:${L19.sigErr?"":"none"}">Too short – draw your signature again.</span></div></div></div>
+    <div class="xs muted mt8">${ic("info")} Saved with your name, the time, your IP address and browser.${l.countersign?" The DPS then countersigns.":""}</div>`:"";
+  const errs=L19.srvErr?`<div class="l-err mt16" role="alert"><b>Could not submit</b><ul><li>The main idea must be at least 5 words.</li><li>The signature is too short.</li></ul></div>`:"";
+  const form=hideForm?"":`<div class="card mt16" id="l19-form">${qs}${link}${ideaField}${choices}${decl}${errs}<div class="row mt16"><button class="btn" id="l19-submit" onclick="L19X.lessonSubmit()">Submit</button><span class="xs muted" id="l19-submit-hint"></span></div></div>`;
+  const station=isStation?`<div class="note-box mt16" style="display:flex;gap:10px;align-items:flex-start">${ic("production")}<div><b>This is a station.</b> Admission is given by an observer on shift who ticks every step. Ask a manager to watch you – there is nothing to submit here.</div></div>`:"";
+  const passedNote=passed&&!isStation?`<div class="note-box --ok mt16">Lesson passed${asg.finished?" on "+L19.fmtDY(asg.finished):""}. ${l.choices?"To change your choices, ask a manager.":""}</div>`:"";
+  $("#l19-lesson-body").innerHTML=`<div class="l-lesson"><div style="min-width:0">${verdict}<div class="h1">${esc(t.title)}</div><div class="sm muted" style="margin-top:4px">${esc(L19_CAT(l.cat)[lang]||L19_CAT(l.cat).en)} · ${l.min} min</div>
+      <div class="l-body mt16">${t.body||l.texts.en.body}</div>${media}${idea}${checklist}${station}${passedNote}${form}</div>
+    <div class="l-side"><div class="card"><span class="caps">Status</span><div class="row" style="flex-wrap:wrap;gap:6px">${passed?A.pill("done","Passed"):awaiting?A.pill("review","Awaiting countersign"):st==="review"?A.pill("review","To review"):asg.overdue?A.pill("overdue"):A.pill("todo","Assigned")}${l.countersign?`<span class="tag --line">Licence 889934</span>`:""}</div>
+      <dl class="kv mt16" style="grid-template-columns:90px 1fr">${asg.due?`<dt>Due</dt><dd class="${asg.overdue?"accent":""}">${L19.fmtDY(asg.due)}${asg.overdue?" · overdue":""}</dd>`:`<dt>Due</dt><dd class="muted">No deadline · base library</dd>`}${l.expiresMonths?`<dt>Admission</dt><dd>${l.expiresMonths} months${asg.expires?" · until "+L19.fmtDY(asg.expires):""}</dd>`:""}<dt>Checked by</dt><dd>${{quiz:"Quiz",photo:"Photo of work",link_proof:"Link to work done",flashcards:"Flashcards",observation:"Station · observed on shift"}[l.type]}</dd><dt>Minutes</dt><dd>${l.min} to the timesheet on pass</dd></dl></div>
+      ${!hideForm?`<div class="card --flat"><span class="caps">Timer</span><div class="row"><span class="kpi-s tnum" id="l19-timer">0:00</span><span class="xs muted">since you opened the page · sent with your attempt, not to the timesheet</span></div></div>`:""}
+      ${A.isMgr()?`<div class="card --flat"><span class="caps">Mentor</span><div class="btn-row"><button class="btn --ghost --sm" onclick="App.go('lesson-edit',{id:${l.id}})">${ic("edit")} Edit lesson</button>${l.countersign?`<button class="btn --ghost --sm" onclick="App.go('training-register',{lesson:${l.id}})">Register</button>`:""}</div></div>`:""}</div></div>`;
+  if(!hideForm){L19X.sigInit();L19X.lessonCheck();if(!L19.timerStart)L19.timerStart=Date.now();clearInterval(L19.timerT);L19.timerT=setInterval(()=>{if(App.state.current!=="lesson"){clearInterval(L19.timerT);return}const s=Math.min(4*3600,Math.floor((Date.now()-L19.timerStart)/1000));const el=document.getElementById("l19-timer");if(el)el.textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0")},1000)}
+};
+
+/* ---------- Quiz of the day ---------- */
+window.mount_quiz_day=function(){
+  const A=App,$=A.$,esc=A.esc,ic=A.icon;
+  $("#l19-quiz-head").innerHTML=L19.nav("quiz-day",`<div class="sp"></div><button class="btn --ghost --sm" onclick="L19.quiz.noQuiz=!L19.quiz.noQuiz;L19X.quiz()">${ic("columns")} ${L19.quiz.noQuiz?"Demo: quiz ready":"Demo: no quiz today"}</button>`);
+  const items=L19.quiz.noQuiz?[]:L19_QUIZ;const ans=L19.quiz.answered;const cur=items.find(q=>ans[q.id]===undefined);
+  const nAns=items.filter(q=>ans[q.id]!==undefined).length,nOk=items.filter(q=>ans[q.id]===q.a).length;
+  const stats=`<div class="panel"><div class="p-head"><div class="h4">Your last 30 days</div></div><div class="p-body">${L19_QUIZ_STATS.length?`<div class="list">${L19_QUIZ_STATS.map(s=>`<div class="li --static"><div class="t"><b>${s[0]}</b></div><div class="l-bar" style="width:180px"><div class="progress ${s[1]/s[2]<.7?"--accent":""}"><i style="width:${Math.round(s[1]/s[2]*100)}%"></i></div><span class="v">${Math.round(s[1]/s[2]*100)}%</span></div><span class="xs muted tnum" style="width:44px;text-align:right">${s[1]}/${s[2]}</span></div>`).join("")}</div>`:`<div class="l-dash" style="margin:14px">Answer a few questions to see this.</div>`}</div></div>`;
+  let card;
+  if(!items.length)card=`<div class="l-qcard">${L19.panelEmpty("No quiz today – check back tomorrow.","moon")}<div class="xs muted" style="text-align:center">The daily set is built at 10:00 by the scheduler, not by this page.</div></div>`;
+  else if(cur){const l=L19_LESSON(cur.lesson);card=`<div class="l-qcard"><div class="row mb16"><span class="tag ${cur.kind==="Your weak spot"?"--accent":cur.kind==="What's new"?"--ink":""}">${cur.kind}</span><span class="sp"></span><span class="xs muted tnum">${nAns+1} of ${items.length}</span></div><div class="l-steps mb16">${items.map(q=>`<i class="${ans[q.id]===undefined?(q===cur?"on":""):ans[q.id]===q.a?"ok":"bad"}"></i>`).join("")}</div><div class="h3" style="margin-bottom:14px">${esc(cur.q)}</div>${cur.opts.map((o,i)=>`<label class="l-opt" onclick="L19X.quizAnswer(${cur.id},${i})"><input type="radio" name="qz"><span>${esc(o)}</span></label>`).join("")}<div class="xs muted mt8">Tap an answer – it counts at once, no confirm button. A wrong answer brings the question back tomorrow.</div></div>`}
+  else{const last=items[items.length-1];card=`<div class="l-qcard"><div class="h2">Done for today</div><div class="row mt8" style="gap:16px"><span class="kpi-s tnum">${nOk}<span class="xs muted"> of ${items.length} correct</span></span><span class="pill --done">6-day streak</span></div><div class="hr"></div>${L19X.quizReview(last)}</div>`}
+  const lastAns=items.filter(q=>ans[q.id]!==undefined).slice(-1)[0];
+  const review=cur&&lastAns?`<div class="card --flat mt16">${L19X.quizReview(lastAns)}</div>`:"";
+  const team=A.isMgr()?`<div class="panel mt16"><div class="p-head"><div class="h4">Team, last 30 days</div><span class="xs muted">no ranking on purpose</span></div><div class="p-body"><table class="tbl"><thead><tr><th>Person</th><th class="num">Answered</th><th class="num">Correct</th><th>Weakest topic</th></tr></thead><tbody>${L19_QUIZ_TEAM.map(r=>`<tr class="r" onclick="App.toast('${esc(A.user(r[0]).n)} · opens their learning')"><td>${A.avatar(r[0],"--s")} ${esc(A.user(r[0]).n)}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td><td>${r[3]==="—"?"<span class='muted'>—</span>":esc(r[3])}</td></tr>`).join("")}</tbody></table></div></div>`:"";
+  $("#l19-quiz-body").innerHTML=`<div class="l-cols"><div class="l-stack"><div class="l-quiz" style="max-width:none">${card}${review}</div>${team}</div><div class="l-stack">${stats}</div></div>`;
+};
+
+/* ---------- Skill check ---------- */
+window.mount_skill_check=function(){
+  const A=App,$=A.$,esc=A.esc,ic=A.icon;const S=L19.skill;const hist=S.history||(S.history=L19_SKILL_HISTORY.slice());
+  $("#l19-skill-head").innerHTML=L19.nav("skill-check",`<div class="sp"></div><button class="btn --ghost --sm" onclick="L19X.skillDemo(event)">${ic("columns")} Demo data</button>`);
+  const first=hist[hist.length-1],last=hist[0];const delta=hist.length>1?last.pct-first.pct:null;
+  const cats=[...new Set(L19_SKILL_QS.map(q=>q.cat))];
+  let main;
+  if(S.open){const allQ=L19_SKILL_QS.every((q,i)=>S.answers[i]!==undefined),allR=cats.every(c=>S.ratings[c]);
+    main=`<div class="card"><div class="h3">First, how sure do you feel?</div><div class="sm muted" style="margin:4px 0 12px">Before the questions – 1 = not at all, 5 = very sure.</div>${cats.map(c=>`<div class="row" style="padding:6px 0"><span class="sm" style="flex:1">${esc(c)}</span><div class="l-rate">${[1,2,3,4,5].map(n=>`<button class="${S.ratings[c]===n?"on":""}" onclick="L19.skill.ratings['${c}']=${n};L19X.skill()">${n}</button>`).join("")}</div></div>`).join("")}</div>
+      <div class="card mt16"><div class="h3" style="margin-bottom:12px">Questions · ${L19_SKILL_QS.length}</div>${L19_SKILL_QS.map((q,i)=>`<div class="l-q"><div class="qt"><b>${i+1}. ${esc(q.q)}</b><span class="xs muted">${esc(q.cat)}</span></div>${q.opts.map((o,k)=>`<label class="l-opt"><input type="radio" name="sk${i}" ${S.answers[i]===k?"checked":""} onchange="L19.skill.answers[${i}]=${k};L19X.skill()"><span>${esc(o)}</span></label>`).join("")}</div>`).join("")}
+      <div class="row mt8"><button class="btn" ${allQ&&allR?"":"disabled"} onclick="L19X.skillFinish()">Finish</button><span class="xs muted">${allQ&&allR?"Scores and the breakdown by category are counted on Finish.":"Answer every question and rate every category first."}</span></div></div>`;
+  }else main=`<div class="card">${delta!==null?`<div class="note-box ${delta>=0?"--ok":"--accent"} mb16">Since your first check: ${delta>=0?"+":""}${delta} points.</div>`:""}<div class="h3">${hist.length?"Repeat check":"Starting check"}</div><div class="sm soft" style="margin:6px 0 14px">${hist.length?"About ten questions from the lessons for your role, plus how sure you feel before you answer. Compare with your last result below.":"About ten questions from the lessons for your role. First you rate how sure you feel in each topic, then you answer – the gap between the two is the interesting part."}</div><button class="btn" onclick="L19X.skillStart()">${hist.length?"Take the check":"Take the starting check"}</button>${L19.skillNoLessons?`<div class="l-err mt16" role="alert">No lessons are published for your role yet – nothing to build a check from.</div>`:""}</div>`;
+  const results=`<div class="panel"><div class="p-head"><div class="h4">Your results</div></div><div class="p-body">${hist.length?hist.map(h=>`<div style="padding:12px 14px;border-bottom:1px solid var(--hair)"><div class="row"><b style="font-weight:400">${h.kind}</b><span class="xs muted tnum">${L19.fmtDY(h.date)}</span><span class="sp"></span>${h.prev!==null?`<span class="xs ${h.pct-h.prev>=0?"ok":"accent"} tnum">${h.pct-h.prev>=0?"+":""}${h.pct-h.prev}</span>`:""}</div><div class="l-bar mt8"><span style="width:130px" class="xs muted">Answered correctly</span><div class="progress"><i style="width:${h.pct}%"></i></div><span class="v">${h.pct}%</span></div><div class="l-bar mt8"><span style="width:130px" class="xs muted">How sure you felt</span><div class="progress --warn"><i style="width:${h.sure}%"></i></div><span class="v">${h.sure}%</span></div><div class="xs muted mt8">${h.cats.map(c=>`${esc(c[0])} ${c[1]}/${c[2]}`).join(" · ")}</div></div>`).join(""):L19.panelEmpty("No checks yet","growth")}</div></div>`;
+  $("#l19-skill-body").innerHTML=`<div class="l-cols"><div class="l-stack">${main}</div><div class="l-stack">${results}</div></div>`;
+};
+
+/* ---------- Buddy ---------- */
+window.mount_buddy=function(){
+  const A=App,$=A.$,esc=A.esc,ic=A.icon,me=A.me().id;
+  $("#l19-buddy-head").innerHTML=L19.nav("buddy",`<div class="sp"></div>${A.isMgr()?`<button class="btn --ghost --sm" onclick="App.go('buddies')">${ic("customers")} All pairings</button>`:""}`);
+  const mine=L19_PAIRS.find(p=>p.newcomer===me&&!p.closed);const asBuddy=L19_PAIRS.filter(p=>p.buddy===me&&!p.closed);
+  const nextDay=p=>p.days.find(d=>!d.done);
+  const chips=p=>`<div class="l-chk">${p.days.map(d=>{const n=nextDay(p);const miss=!d.done&&d.due<"2026-10-20";const cls=d.done?"--done":miss?"--miss":d===n?"--next":"";return `<div class="d ${cls}"><span class="caps" style="margin:0">Day ${d.d}</span><b style="font-weight:400">${esc(d.t)}</b><span class="xs ${d.done?"ok":miss?"accent":"muted"}">${d.done?"Done "+L19.fmtD(d.done)+(d.by?" · "+esc(A.user(d.by).n):""):miss?"Missed · was due "+L19.fmtD(d.due):"Due "+L19.fmtD(d.due)}</span></div>`}).join("")}</div>`;
+  let h="";
+  if(mine){const n=nextDay(mine);h+=`<div class="card mb16"><span class="caps">Your buddy</span><div class="row"><span class="avatar --l">${A.user(mine.buddy).av}</span><div><div class="h3">Your buddy is ${esc(A.user(mine.buddy).n)}</div><div class="sm muted">${n?`Next check-day – ${L19.fmtDY(n.due)} · ${esc(n.t)}`:"All check-days done"}</div></div><span class="sp"></span><button class="btn --ghost --sm" onclick="App.go('inbox')">${ic("chat")} Message</button></div><div class="mt16">${chips(mine)}</div></div>`}
+  asBuddy.forEach(p=>{const n=nextDay(p);h+=`<div class="card mb16"><span class="caps">You are ${esc(A.user(p.newcomer).n)}'s buddy</span><div class="row"><span class="avatar --l">${A.user(p.newcomer).av}</span><div><div class="h3">${esc(A.user(p.newcomer).n)} · ${esc(A.user(p.newcomer).title)}</div><div class="sm muted">Started ${L19.fmtDY(p.started)} · ${n?`next check-day – ${L19.fmtDY(n.due)}: ${esc(n.t)}`:"All check-days done"}</div></div></div><div class="mt16">${chips(p)}</div>
+    ${n?`<div class="row mt16" style="align-items:flex-end;gap:12px"><div class="field" style="flex:1"><label>Note (optional)</label><input class="input" placeholder="How did Day ${n.d} go?" value="${esc(L19.buddyNote[p.id]||"")}" oninput="L19.buddyNote[${p.id}]=this.value"></div><button class="btn --sm" onclick="L19X.buddyDone(${p.id})">${ic("check")} Mark done · Day ${n.d}</button></div>`:""}</div>`});
+  if(!h)h=`<div class="card">${L19.panelEmpty("No active buddy pairing right now.","customers",A.isMgr()?`<button class="btn --ghost --sm" onclick="App.go('buddies')">Assign a buddy</button>`:"")}</div>`;
+  $("#l19-buddy-body").innerHTML=`<div style="max-width:860px">${h}<div class="xs muted">A buddy walks a newcomer through four check-days: Day 1 workplace, Day 3 first station, Day 7 first shift, Day 14 a conversation. The buddy or a manager marks each one.</div></div>`;
+};
+
+/* ---------- My development plan ---------- */
+window.mount_development=function(){
+  const A=App,$=A.$,esc=A.esc,ic=A.icon,me=A.me().id;const D=L19.dev;
+  const plan=L19_PLAN_FOR(me);
+  if(!D.form||D.formFor!==me){D.formFor=me;D.form=plan?JSON.parse(JSON.stringify({strengths:plan.strengths,growth:plan.growth,goals:plan.goals,next:plan.next})):{strengths:"",growth:"",goals:[{t:"",how:"",give:"",by:"",status:"In progress"}],next:""};D.dirty=false;D.exists=!!plan;D.agreed=plan&&plan.status==="agreed"}
+  const f=D.form;
+  $("#l19-dev-head").innerHTML=L19.nav("development",`<div class="sp"></div><button class="btn --ghost --sm" onclick="L19X.devDemo(event)">${ic("columns")} Demo data</button>${A.isMgr()?`<button class="btn --ghost --sm" onclick="App.go('development-plans')">${ic("customers")} Team plans</button>`:""}`);
+  const sugg=L19.devNoSugg?null:L19_SUGGESTION;
+  const canTake=f.goals.length<3;
+  const left=`${D.agreed?`<div class="note-box --ok mb16">${ic("check")} Plan agreed · Next conversation: ${L19.fmtDY(f.next)}${plan&&plan.agreedBy?` · by ${esc(A.user(plan.agreedBy).n)}`:""}</div>`:""}
+    ${plan&&plan.mentorNote?`<div class="card --flat mb16"><span class="caps">Note from your mentor</span><div class="sm">${esc(plan.mentorNote)}</div></div>`:""}
+    <div class="card"><div class="field"><label>What I am good at</label><textarea class="textarea" oninput="L19.dev.form.strengths=this.value;L19X.devDirty()">${esc(f.strengths)}</textarea></div><div class="field mt16"><label>What I want to get better at</label><textarea class="textarea" oninput="L19.dev.form.growth=this.value;L19X.devDirty()">${esc(f.growth)}</textarea></div></div>
+    <div class="sec-head"><div class="h3">Goals ${f.goals.length}/3</div>${f.goals.length<3?`<button class="textbtn" onclick="L19X.devAddGoal()">+ Goal</button>`:`<span class="xs muted">Three is the limit on purpose – fewer goals, more done.</span>`}</div>
+    <div class="col" style="gap:12px">${f.goals.map((g,i)=>`<div class="l-goal"><div class="g-head"><span class="caps" style="margin:0">Goal ${i+1}</span><span class="sp"></span><div class="seg-ctl">${["In progress","Done","Dropped"].map(s=>`<button class="${g.status===s?"on":""}" onclick="L19.dev.form.goals[${i}].status='${s}';L19X.devDirty();L19X.dev()">${s}</button>`).join("")}</div>${f.goals.length>1?`<button class="ib" title="Remove goal" onclick="L19X.devRemoveGoal(${i})">${ic("close")}</button>`:""}</div>
+      <div class="field"><label>Goal</label><input class="input" value="${esc(g.t)}" oninput="L19.dev.form.goals[${i}].t=this.value;L19X.devDirty()"></div><div class="field"><label>How we will both know it happened</label><input class="input" value="${esc(g.how)}" oninput="L19.dev.form.goals[${i}].how=this.value;L19X.devDirty()"></div><div class="grid g2"><div class="field"><label>What the company gives for this</label><input class="input" value="${esc(g.give)}" oninput="L19.dev.form.goals[${i}].give=this.value;L19X.devDirty()"></div><div class="field"><label>By when</label><input class="input" type="date" value="${esc(g.by)}" oninput="L19.dev.form.goals[${i}].by=this.value;L19X.devDirty()"></div></div></div>`).join("")}</div>
+    <div class="card mt16"><div class="field"><label>Next conversation</label><input class="input" type="date" value="${esc(f.next||"")}" style="max-width:220px" oninput="L19.dev.form.next=this.value;L19X.devDirty()"><div class="xs muted">When you and your mentor sit down next – the plan is agreed in that conversation.</div></div></div>
+    ${L19.devErr?`<div class="l-err mt16" role="alert">${esc(L19.devErr)}</div>`:""}
+    <div class="sticky-foot mt16"><span class="xs muted">${D.dirty?"Unsaved changes":D.exists?"Saved · "+plan.period:"Not created yet – Save makes the "+L19_SUGGESTION.period+" draft"}</span><span class="sp"></span>${D.agreed&&D.dirty?`<span class="xs warn">Saving an agreed plan sends it back to your mentor to re-agree</span>`:""}<button class="btn --sm" onclick="L19X.devSave()">${ic("check")} Save</button></div>`;
+  const right=`${sugg?`<div class="panel"><div class="p-head"><div class="h4">The system's plan for you</div><span class="xs muted">${sugg.period}</span></div><div class="p-body">${sugg.items.map((s,i)=>`<div style="padding:12px 14px;border-bottom:1px solid var(--hair)"><b style="font-weight:400">${esc(s.goal)}</b><div class="sm soft" style="margin-top:2px">${esc(s.why)}</div><div class="xs muted mt8">${s.proof.map(p=>`${L19.fmtD(p[0])} · ${esc(p[1])}`).join("<br>")}</div><div class="mt8">${f.goals.some(g=>g.t===s.goal)?`<span class="pill --done">In my plan</span>`:`<button class="btn --sm --ghost" ${canTake?"":"disabled"} onclick="L19X.devTake(${i})">Take into my plan</button>${canTake?"":`<span class="xs accent" style="margin-left:8px">Three goals is the limit</span>`}`}</div></div>`).join("")}</div></div>`:""}
+    <div class="panel"><div class="p-head"><div class="h4">What we have noticed</div><span class="xs muted">up to 20 signals</span></div><div class="p-body">${L19_SIGNALS.map(s=>`<div class="l-sig-row" style="padding:8px 14px"><span class="s ${s[0]==="+"?"--ok":""}">${s[0]}</span><span style="flex:1">${esc(s[1])}</span><span class="xs muted tnum">${L19.fmtD(s[2])}</span></div>`).join("")}</div></div>
+    <div class="panel"><div class="p-head"><div class="h4">Conversations</div></div><div class="p-body">${plan&&plan.checkIns.length?plan.checkIns.map(c=>`<div style="padding:10px 14px;border-bottom:1px solid var(--hair)"><div class="xs muted">${L19.fmtDY(c.at)} · ${esc(A.user(c.by).n)}</div><div class="sm">${esc(c.note)}</div></div>`).join(""):`<div class="l-dash" style="margin:14px">No conversations yet.</div>`}</div></div>`;
+  $("#l19-dev-body").innerHTML=`<div class="row mb16" style="align-items:baseline"><div class="h2">My development plan</div><span class="muted sm">${plan?plan.period:L19_SUGGESTION.period}</span>${plan?A.pill(plan.status==="agreed"?"done":plan.status==="closed"?"todo":"doing",plan.status==="agreed"?"Agreed":plan.status==="closed"?"Closed":"Draft"):""}</div><div class="l-cols"><div class="l-stack">${left}</div><div class="l-stack">${right}</div></div>`;
+};
+
+/* ---------- actions ---------- */
+window.L19X={
+  home(){if(App.state.current==="learning-home")window.mount_learning_home(App.state.params)},
+  lesson(){if(App.state.current==="lesson")window.mount_lesson(App.state.params)},
+  quiz(){if(App.state.current==="quiz-day")window.mount_quiz_day()},
+  skill(){if(App.state.current==="skill-check")window.mount_skill_check()},
+  dev(){if(App.state.current==="development")window.mount_development()},
+  homeDemo(ev){App.pop(ev,["Demo data",{t:(L19.limited?"· ":"")+"Limited role (seasonal / trainee)",ic:"lock",fn:()=>{L19.limited=!L19.limited;this.home()}},{t:"Reset Got it answers",ic:"refresh",fn:()=>{L19_CHANGES.forEach(c=>c.acked=false);L19.changeOpen=null;L19.chErr=null;this.home()}},"-",{t:"Open the alcohol lesson",ic:"lock",fn:()=>App.go("lesson",{id:1})},{t:"Open a station lesson",ic:"production",fn:()=>App.go("lesson",{id:2})},{t:"Open a photo lesson",ic:"photo",fn:()=>App.go("lesson",{id:3})}])},
+  ackChange(id,noQ){const c=L19_CHANGES.find(x=>x.lesson===id),l=L19_LESSON(id);
+    if(noQ||L19.chAns===(l.questions[0]||{}).a){c.acked=true;L19.changeOpen=null;L19.chErr=null;this.home();App.toast(`Got it · ${l.min} min to your timesheet · repeats in the quiz of the day`)}
+    else{L19.chErr=id;this.home();if(!L19_ASSIGN.find(a=>a.lesson===id))L19_ASSIGN.push({id:950+id,lesson:id,status:"assigned",due:null,reason:"feed"})}
+    L19.chAns=undefined},
+  resetLesson(){Object.assign(L19,{lessonDemo:"fresh",answers:{},link:"",idea:"",consent:{},decl:false,sigName:"",sigDrawn:false,sigErr:false,srvErr:false,timerStart:0,lastWrong:null,ideaShort:0})},
+  lessonDemo(ev){const l=L19_LESSON(L19.lessonId);App.pop(ev,["Lesson",{t:"Alcohol · signed, countersign",ic:"lock",fn:()=>App.go("lesson",{id:1})},{t:"Station (observed)",ic:"production",fn:()=>App.go("lesson",{id:2})},{t:"Photo of work",ic:"photo",fn:()=>App.go("lesson",{id:3})},{t:"Link to work",ic:"link",fn:()=>App.go("lesson",{id:7})},{t:"Consent choices only",ic:"check",fn:()=>App.go("lesson",{id:9})},{t:"Plain quiz (base library)",ic:"book",fn:()=>App.go("lesson",{id:5})},"-","Attempt state",{t:(L19.lessonDemo==="fresh"?"· ":"")+"No attempt yet",fn:()=>{this.resetLesson();this.lesson()}},{t:(L19.lessonDemo==="failed"?"· ":"")+"Last attempt failed",fn:()=>{L19.lessonDemo="failed";L19.lastWrong=[0];L19.answers={0:0,1:1,2:1};L19.idea="Only sell with ID";L19.ideaShort=4;this.lesson()}},{t:(L19.lessonDemo==="passed"?"· ":"")+"Passed",fn:()=>{L19.lessonDemo="passed";this.lesson()}},{t:(L19.lessonDemo==="review"?"· ":"")+"Waiting for a person to look",fn:()=>{L19.lessonDemo="review";this.lesson()}},{t:(L19.lessonDemo==="awaiting"?"· ":"")+"Awaiting DPS countersign",fn:()=>{L19.lessonDemo="awaiting";this.lesson()}},"-",{t:(L19.srvErr?"· ":"")+"Show server errors",ic:"alert",fn:()=>{L19.srvErr=!L19.srvErr;this.lesson()}}])},
+  lessonCheck(){const l=L19_LESSON(L19.lessonId);const b=document.getElementById("l19-submit"),h=document.getElementById("l19-submit-hint"),w=document.getElementById("l19-words");if(!b)return;
+    const words=(L19.idea||"").trim().split(/\s+/).filter(Boolean).length;if(w){w.textContent=words+" of at least 5 words";w.classList.toggle("--bad",words<5)}
+    const miss=[];if(l.questions&&l.questions.length&&!l.consentOnly&&l.questions.some((q,i)=>L19.answers[i]===undefined))miss.push("answer every question");
+    if((l.type==="photo"||l.type==="link_proof")&&!/^https?:\/\/.+/.test(L19.link))miss.push("paste a link");
+    if(!l.consentOnly&&words<5)miss.push("main idea · 5 words");
+    if(l.choices&&l.choices.some(c=>L19.consent[c.key]===undefined))miss.push("answer every choice");
+    if(l.texts.en.decl){if(!L19.decl)miss.push("tick the declaration");if((L19.sigName||"").trim().split(/\s+/).filter(Boolean).length<2)miss.push("full name");if(!L19.sigDrawn)miss.push("draw your signature")}
+    b.disabled=!!miss.length;h.textContent=miss.length?"Still needed: "+miss.join(", "):"Everything is filled in."},
+  sigInit(){const c=document.getElementById("l19-sigc");if(!c)return;const box=c.parentElement;c.width=box.clientWidth*2;c.height=box.clientHeight*2;const ctx=c.getContext("2d");ctx.lineWidth=3;ctx.lineCap="round";ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--ink")||"#1e1a17";let on=false,pts=0;const P=e=>{const r=c.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return [(t.clientX-r.left)/r.width*c.width,(t.clientY-r.top)/r.height*c.height]};
+    const dn=e=>{on=true;const [x,y]=P(e);ctx.beginPath();ctx.moveTo(x,y);e.preventDefault()},mv=e=>{if(!on)return;const [x,y]=P(e);ctx.lineTo(x,y);ctx.stroke();pts++;e.preventDefault()},up=()=>{if(!on)return;on=false;L19.sigPts=(L19.sigPts||0)+pts;pts=0;L19.sigDrawn=L19.sigPts>=12;L19.sigErr=!L19.sigDrawn;const er=document.getElementById("l19-sig-err");if(er)er.style.display=L19.sigDrawn?"none":"";L19X.lessonCheck()};
+    c.onmousedown=dn;c.onmousemove=mv;c.onmouseup=up;c.onmouseleave=up;c.ontouchstart=dn;c.ontouchmove=mv;c.ontouchend=up;L19.sigPts=0},
+  sigClear(){const c=document.getElementById("l19-sigc");if(c)c.getContext("2d").clearRect(0,0,c.width,c.height);L19.sigDrawn=false;L19.sigPts=0;L19.sigErr=false;const er=document.getElementById("l19-sig-err");if(er)er.style.display="none";this.lessonCheck()},
+  lessonSubmit(){const l=L19_LESSON(L19.lessonId);const words=(L19.idea||"").trim().split(/\s+/).filter(Boolean).length;
+    const wrong=(l.questions||[]).map((q,i)=>L19.answers[i]!==q.a?i:-1).filter(i=>i>=0);const pct=l.questions&&l.questions.length?Math.round((l.questions.length-wrong.length)/l.questions.length*100):100;
+    const fail=!l.consentOnly&&(wrong.some(i=>l.questions[i].critical)||pct<(l.pass||80)||words<5);
+    const asg=L19_ASSIGN.find(a=>a.lesson===l.id);const sec=Math.floor((Date.now()-L19.timerStart)/1000);
+    if(fail){L19.lessonDemo="failed";L19.lastWrong=wrong;L19.ideaShort=words<5?words:0;this.lesson();App.toast("Not passed – the lesson is back in your queue");return}
+    if(l.type==="photo"||l.type==="link_proof"){L19.lessonDemo="review";if(window.L19_REVIEW)L19_REVIEW.unshift({id:Date.now(),user:App.me().id,lesson:l.id,type:l.type,auto:"needs a person",link:L19.link,idea:L19.idea,at:"2026-10-20 10:4"+(sec%10),checklist:l.checklist});this.lesson();App.toast("Sent to “To review” · a manager will look");return}
+    if(l.countersign){L19.lessonDemo="awaiting";if(window.L19_REVIEW)L19_REVIEW.unshift({id:Date.now(),user:App.me().id,lesson:l.id,type:"quiz",auto:"passed "+pct+"%",countersign:true,sigName:L19.sigName,consent:{},idea:L19.idea,at:"2026-10-20 10:41",score:pct});this.lesson();App.toast("Signed · waiting for the DPS to countersign");return}
+    L19.lessonDemo="passed";if(asg){asg.status="passed";asg.finished="2026-10-20";if(l.expiresMonths)asg.expires="2027-04-20"}this.lesson();App.toast(`Passed · ${l.min} min to your timesheet · questions will repeat in the quiz of the day`)},
+  quizAnswer(id,i){const q=L19_QUIZ.find(x=>x.id===id);L19.quiz.answered[id]=i;this.quiz();App.toast(i===q.a?"Correct!":"Not quite – it comes back tomorrow")},
+  quizReview(q){const a=L19.quiz.answered[q.id],ok=a===q.a,l=L19_LESSON(q.lesson),has=L19_ASSIGN.some(x=>x.lesson===q.lesson);return `<div class="row"><span class="h4 ${ok?"ok":"accent"}">${ok?"Correct!":"Not quite."}</span><span class="sp"></span><span class="tag">${q.kind}</span></div><div class="sm mt8">${ok?"":`<b>Correct answer:</b> ${App.esc(q.opts[q.a])}<br>`}<span class="soft">${App.esc(l.texts.en.idea)}</span></div>${has?`<button class="textbtn mt8" style="display:inline-block;margin-top:8px" onclick="App.go('lesson',{id:${l.id}})">Open the lesson</button>`:""}`},
+  skillDemo(ev){App.pop(ev,["Demo data",{t:"No history (first check)",fn:()=>{L19.skill.history=[];L19.skill.open=null;this.skill()}},{t:"Two checks in history",fn:()=>{L19.skill.history=L19_SKILL_HISTORY.slice();this.skill()}},{t:(L19.skillNoLessons?"· ":"")+"No lessons for the role (server error)",ic:"alert",fn:()=>{L19.skillNoLessons=!L19.skillNoLessons;this.skill()}}])},
+  skillStart(){if(L19.skillNoLessons){App.toast("Cannot start – no lessons for your role");this.skill();return}L19.skill.open={kind:(L19.skill.history||[]).length?"Check":"Starting point"};L19.skill.ratings={};L19.skill.answers={};this.skill();App.toast(L19.skill.open.kind==="Check"?"Check started · 5 questions":"Starting check · 5 questions")},
+  skillFinish(){const S=L19.skill;const cats={};L19_SKILL_QS.forEach((q,i)=>{cats[q.cat]=cats[q.cat]||[0,0];cats[q.cat][1]++;if(S.answers[i]===q.a)cats[q.cat][0]++});const ok=Object.values(cats).reduce((s,c)=>s+c[0],0),pct=Math.round(ok/L19_SKILL_QS.length*100);const rs=Object.values(S.ratings);const sure=Math.round(rs.reduce((s,v)=>s+v,0)/rs.length/5*100);const prev=S.history[0]?S.history[0].pct:null;
+    S.history.unshift({kind:S.open.kind,date:"2026-10-20",pct,sure,prev,cats:Object.entries(cats).map(([k,v])=>[k,v[0],v[1]])});S.open=null;this.skill();App.toast(`Check finished · ${pct}% correct, ${sure}% sure`)},
+  buddyDone(pid){const p=L19_PAIRS.find(x=>x.id===pid);const d=p.days.find(x=>!x.done);if(!d)return;d.done="2026-10-20";d.by=App.me().id;d.note=L19.buddyNote[pid]||"";L19.buddyNote[pid]="";if(!p.days.some(x=>!x.done))p.closed=true;if(App.state.current==="buddy")window.mount_buddy();App.toast(p.closed?"Check-day marked · all four done, pairing closed":"Check-day marked.")},
+  devDirty(){L19.dev.dirty=true;const el=document.querySelector("#s-development .sticky-foot .xs");if(el)el.textContent="Unsaved changes"},
+  devAddGoal(){if(L19.dev.form.goals.length>=3)return;L19.dev.form.goals.push({t:"",how:"",give:"",by:"",status:"In progress"});this.devDirty();this.dev()},
+  devRemoveGoal(i){L19.dev.form.goals.splice(i,1);this.devDirty();this.dev()},
+  devTake(i){const s=L19_SUGGESTION.items[i];if(L19.dev.form.goals.length>=3){App.toast("Three goals is the limit");return}if(L19.dev.form.goals.length===1&&!L19.dev.form.goals[0].t)L19.dev.form.goals=[];L19.dev.form.goals.push({t:s.goal,how:"",give:"",by:"",status:"In progress"});L19.dev.dirty=true;this.dev();App.toast("Added to your goals – write how we will know it happened, then Save")},
+  devSave(){const f=L19.dev.form;if(f.goals.some(g=>!g.t.trim())){L19.devErr="Every goal needs a title – empty goals are not saved.";this.dev();return}L19.devErr=null;const me=App.me().id;let p=L19_PLAN_FOR(me);
+    if(!p){p={id:Date.now(),user:me,period:L19_SUGGESTION.period,status:"draft",next:f.next,strengths:f.strengths,growth:f.growth,goals:f.goals,mentorNote:"",checkIns:[]};L19_PLANS.unshift(p)}else{Object.assign(p,{strengths:f.strengths,growth:f.growth,goals:JSON.parse(JSON.stringify(f.goals)),next:f.next});if(p.status==="agreed"&&L19.dev.dirty){p.status="draft";p.reagree=true;L19.dev.agreed=false}}
+    L19.dev.dirty=false;L19.dev.exists=true;this.dev();App.toast(p.reagree?"Saved · sent back to your mentor to re-agree":"Plan saved · "+p.period)},
+  devDemo(ev){App.pop(ev,["Demo data",{t:(L19.devNoSugg?"":"· ")+"System plan present",fn:()=>{L19.devNoSugg=false;this.dev()}},{t:(L19.devNoSugg?"· ":"")+"No system plan this quarter",fn:()=>{L19.devNoSugg=true;this.dev()}},"-",{t:"Reset my plan from demo data",ic:"refresh",fn:()=>{L19.dev.form=null;L19.devErr=null;this.dev()}}])}
+};
+document.addEventListener('orders',()=>{});
+</script>
