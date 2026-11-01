@@ -1,0 +1,537 @@
+<style>
+/* ===== 12 · Inbox (Comms) – scoped #s-inbox ===== */
+#s-inbox .scr-head{gap:8px}
+#s-inbox .cnav{display:flex;gap:0;flex-wrap:wrap;align-items:center;min-width:0}
+#s-inbox .cnav button{height:32px;padding:0 10px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);border-bottom:2px solid transparent;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+#s-inbox .cnav button.on{color:var(--ink);border-bottom-color:var(--sel)}
+#s-inbox .cnav button:hover:not(.on){color:var(--ink)}
+#s-inbox .cnav button .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+#s-inbox .live{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--grey);letter-spacing:.04em;white-space:nowrap}
+#s-inbox .live .dot{width:6px;height:6px}
+#s-inbox .scr-body{display:flex;flex-direction:column}
+#s-inbox .banners{flex:none}
+#s-inbox .bn{display:flex;align-items:center;gap:12px;padding:8px var(--pad);border-bottom:1px solid var(--hair);font-size:13px}
+#s-inbox .bn.--accent{background:var(--accent-bg);color:var(--accent)}
+#s-inbox .bn.--warn{background:var(--warn-bg);color:var(--warn)}
+#s-inbox .bn.--imp{background:var(--sel);color:var(--on-sel)}
+#s-inbox .bn .textbtn{color:inherit;border-color:currentColor}
+#s-inbox .bn-list{border-bottom:1px solid var(--hair);background:var(--paper);max-height:220px;overflow:auto}
+#s-inbox .split{flex:1;height:auto;min-height:0}
+#s-inbox .split>*{overflow:hidden;display:flex;flex-direction:column}
+#s-inbox .lanes{display:flex;border-bottom:1px solid var(--hair);flex:none}
+#s-inbox .lanes button{flex:1;height:40px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:center;border-bottom:2px solid transparent;margin-bottom:-1px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+#s-inbox .lanes button.on{color:var(--ink);border-bottom-color:var(--sel)}
+#s-inbox .lanes .n{font-size:11px;font-variant-numeric:tabular-nums;color:var(--grey)}
+#s-inbox .lanes .n.hot{color:var(--accent)}
+#s-inbox .ib-top{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid var(--hair);flex:none}
+#s-inbox .ib-search{display:flex;align-items:center;gap:8px;height:var(--btn-h-s);padding:0 10px;border:1px solid var(--light);flex:1;font-size:13px;background:var(--paper);min-width:0}
+#s-inbox .ib-search input{border:0;background:none;outline:none;width:100%;font-size:13px;min-width:0}
+#s-inbox .ib-search svg{width:15px;height:15px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+#s-inbox .chiprow{display:flex;gap:6px;padding:8px 10px;border-bottom:1px solid var(--hair);flex:none;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap}
+#s-inbox .chiprow .chip{height:26px;padding:0 9px;font-size:12px}
+#s-inbox .chiprow .chip.--sm{padding:0 7px;font-size:11px;letter-spacing:.04em}
+#s-inbox .ib-list{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin}
+#s-inbox .cv{display:flex;gap:10px;padding:10px 12px;border-bottom:1px solid var(--hair);cursor:pointer;min-height:66px;align-items:flex-start;transition:background var(--m-fast);position:relative}
+#s-inbox .cv:hover{background:var(--silver)}
+#s-inbox .cv.on{background:var(--sel-bg);box-shadow:inset 3px 0 0 var(--sel)}
+#s-inbox .cv.--waiting{box-shadow:inset 3px 0 0 var(--accent)}
+#s-inbox .cv.--unresolved{box-shadow:inset 3px 0 0 var(--warn);background-image:repeating-linear-gradient(135deg,transparent 0 10px,var(--silver) 10px 11px)}
+#s-inbox .cv.--draft{outline:1px dashed var(--grey);outline-offset:-4px}
+#s-inbox .cv.--answered{opacity:.72}
+#s-inbox .cv.on{opacity:1}
+#s-inbox .cv .av{position:relative;flex:none;margin-top:1px}
+#s-inbox .cv .av .ch{position:absolute;right:-5px;bottom:-5px;width:16px;height:16px;background:var(--paper);border:1px solid var(--hair);display:grid;place-items:center}
+#s-inbox .cv .av .ch svg{width:10px;height:10px}
+#s-inbox .cv .t{flex:1;min-width:0}
+#s-inbox .cv .l1{display:flex;align-items:center;gap:6px}
+#s-inbox .cv .l1 b{flex:1;font-weight:400;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-inbox .cv.--waiting .l1 b{font-weight:500}
+#s-inbox .cv .l1 small{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums;flex:none}
+#s-inbox .cv .l1 small.hot{color:var(--accent)}
+#s-inbox .cv .l2{font-size:12.5px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+#s-inbox .cv.--waiting .l2{color:var(--ink);font-weight:400}
+#s-inbox .cv .l3{display:flex;align-items:center;gap:5px;margin-top:5px;min-height:18px;flex-wrap:wrap}
+#s-inbox .cv .cnt{min-width:18px;height:18px;padding:0 5px;background:var(--accent);color:#fff;font-size:10.5px;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+#s-inbox .cv .cdot{width:8px;height:8px;border-radius:50%;flex:none}
+#s-inbox .cdot.--upsell{background:var(--ok)}#s-inbox .cdot.--sale{background:var(--sel)}#s-inbox .cdot.--nosale{background:var(--accent)}
+#s-inbox .ib-head{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--hair);flex:none;min-height:56px;flex-wrap:wrap}
+#s-inbox .ib-head .who{flex:1;min-width:140px}
+#s-inbox .ib-head .who b{display:block;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-inbox .ib-head .who small{display:block;font-size:12px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-inbox .ib-back,#s-inbox .ib-info{display:none}
+#s-inbox .cdots{display:inline-flex;gap:4px;padding:0 4px}
+#s-inbox .cdots button{width:16px;height:16px;border-radius:50%;border:1px solid var(--light);display:grid;place-items:center}
+#s-inbox .cdots button i{width:8px;height:8px;border-radius:50%;display:block}
+#s-inbox .cdots button.on{border-color:var(--ink)}
+#s-inbox .ib-msgs{flex:1;overflow-y:auto;min-height:0;padding:14px 16px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin}
+#s-inbox .ib-day{align-self:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin:6px 0 2px}
+#s-inbox .msg{max-width:72%;align-self:flex-start;background:var(--silver);padding:8px 12px;font-size:13.5px;line-height:1.4;position:relative;min-width:0}
+#s-inbox .msg.me{align-self:flex-end;background:var(--sel-bg);box-shadow:inset 0 0 0 1px var(--hair)}
+#s-inbox .msg.--draft{align-self:flex-end;background:transparent;border:1px dashed var(--grey)}
+#s-inbox .msg.--del{color:var(--grey);text-decoration:line-through}
+#s-inbox .msg .cap{font-size:11px;color:var(--grey);letter-spacing:.04em;margin-bottom:3px;display:flex;gap:6px;align-items:center}
+#s-inbox .msg .at{display:block;font-size:11px;color:var(--grey);margin-top:4px;display:flex;gap:6px;align-items:center}
+#s-inbox .msg .ticks{font-size:11px;letter-spacing:-.1em}
+#s-inbox .msg .ticks.--read{font-weight:600;color:var(--ink)}
+#s-inbox .msg .ph{width:180px;margin-bottom:6px;cursor:zoom-in}
+#s-inbox .msg .quote{border-left:2px solid var(--grey);padding:4px 8px;margin-bottom:6px;font-size:12px;color:var(--graphite);background:var(--paper)}
+#s-inbox .msg .react{position:absolute;right:6px;bottom:-9px;background:var(--paper);border:1px solid var(--hair);font-size:11px;padding:0 5px;height:18px;line-height:16px}
+#s-inbox .msg .mact{display:none;gap:2px;position:absolute;top:-14px;right:0;background:var(--paper);border:1px solid var(--hair)}
+#s-inbox .msg:hover .mact{display:inline-flex}
+#s-inbox .msg .mact button{height:24px;padding:0 7px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--graphite)}
+#s-inbox .msg .mact button:hover{background:var(--silver);color:var(--ink)}
+#s-inbox .audio{display:flex;align-items:center;gap:8px;min-width:220px}
+#s-inbox .audio .progress{flex:1}
+#s-inbox .fact{align-self:flex-start;font-size:12px;color:var(--grey);margin:-4px 0 0 4px;display:flex;gap:6px;align-items:center}
+#s-inbox .sysrow{align-self:stretch;display:flex;justify-content:center}
+#s-inbox .composer{border-top:1px solid var(--hair);padding:10px 14px 12px;flex:none;display:flex;flex-direction:column;gap:8px;position:relative}
+#s-inbox .composer .textarea{min-height:64px;max-height:45vh}
+#s-inbox .fframe{border:1px solid var(--grey);padding:8px;display:flex;flex-direction:column;gap:6px}
+#s-inbox .fframe .fh{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--graphite);flex-wrap:wrap}
+#s-inbox .fframe .fh .sp{flex:1}
+#s-inbox .fframe .textarea{border-color:transparent}
+#s-inbox .c-row{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+#s-inbox .c-row .ib{width:32px;height:32px}
+#s-inbox .c-row .hint{font-size:11px;color:var(--grey);margin-left:6px}
+#s-inbox .c-row .hint .kbd{height:16px;line-height:14px}
+#s-inbox .bar-strip{display:flex;align-items:center;gap:10px;padding:6px 10px;font-size:12.5px;background:var(--silver)}
+#s-inbox .bar-strip.--accent{background:var(--accent-bg);color:var(--accent)}
+#s-inbox .bar-strip.--warn{background:var(--warn-bg);color:var(--warn)}
+#s-inbox .bar-strip .cd{font-variant-numeric:tabular-nums;font-weight:500}
+#s-inbox .files{display:flex;gap:6px;flex-wrap:wrap}
+#s-inbox .files .f{display:flex;align-items:center;gap:6px;border:1px solid var(--hair);padding:3px 6px 3px 3px;font-size:12px}
+#s-inbox .files .f .thumb{width:28px;height:28px}
+#s-inbox .fo{border:1px solid var(--hair);padding:8px 10px;font-size:13px}
+#s-inbox .fo .foh{display:flex;align-items:center;gap:8px;cursor:pointer}
+#s-inbox .fo .kv{margin-top:8px;grid-template-columns:90px minmax(0,1fr)}
+#s-inbox .ctx{padding:14px 16px;display:flex;flex-direction:column;gap:0;overflow-y:auto}
+#s-inbox .ctx .sec-head{margin:18px 0 8px}
+#s-inbox .ctx .sec-head:first-child{margin-top:0}
+#s-inbox .ctx .kv{grid-template-columns:84px minmax(0,1fr);font-size:13px}
+#s-inbox .ctx .card{padding:12px}
+#s-inbox .ctx .seg-ctl{height:28px}
+#s-inbox .ctx .seg-ctl button{padding:0 10px;font-size:11px}
+#s-inbox .consent{display:grid;grid-template-columns:70px 1fr 1fr;gap:4px 8px;align-items:center;font-size:12.5px}
+#s-inbox .consent .btn{height:26px;font-size:10.5px;padding:0 8px;letter-spacing:.06em}
+#s-inbox .consent .btn.--on{background:var(--ok);border-color:var(--ok);color:#fff}
+#s-inbox .consent .btn.--off{background:var(--accent);border-color:var(--accent);color:#fff}
+#s-inbox .ocard{border:1px solid var(--hair);padding:10px;cursor:pointer}
+#s-inbox .ocard:hover{border-color:var(--grey)}
+#s-inbox .ask{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--grey)}
+#s-inbox .ask .chip{height:24px;font-size:12px;padding:0 8px}
+#s-inbox .emoji{display:grid;grid-template-columns:repeat(8,28px);gap:2px;padding:6px}
+#s-inbox .emoji button{width:28px;height:28px;display:grid;place-items:center;font-size:16px}
+#s-inbox .emoji button:hover{background:var(--silver)}
+#s-inbox .stub{max-width:520px;margin:60px auto;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+#s-inbox .skel{height:66px;border-bottom:1px solid var(--hair);background:linear-gradient(90deg,var(--paper),var(--silver),var(--paper));background-size:200% 100%;animation:ib-sk 1.2s linear infinite}
+@keyframes ib-sk{from{background-position:200% 0}to{background-position:-200% 0}}
+/* email */
+#s-inbox .mail-list .cv{min-height:58px}
+#s-inbox .mail-body{flex:1;overflow:auto;padding:16px}
+#s-inbox .mail-frame{border:1px solid var(--hair);padding:14px;font-size:13.5px;line-height:1.5;background:var(--paper)}
+#s-inbox .mail-frame .cap{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+#s-inbox .att{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--hair);padding:4px 8px;font-size:12px;margin:4px 6px 0 0}
+/* responsive */
+[data-size="ipad"] #s-inbox .split.--3{grid-template-columns:250px minmax(0,1fr)}
+[data-size="ipad"] #s-inbox .ctx-col{display:none}
+[data-size="ipad"] #s-inbox .ib-info{display:inline-flex}
+[data-size="ipad"] #s-inbox .msg{max-width:84%}
+[data-size="phone"] #s-inbox .ib-back,[data-size="phone"] #s-inbox .ib-info{display:inline-flex}
+[data-size="phone"] #s-inbox .ctx-col{display:none}
+[data-size="phone"] #s-inbox .msg{max-width:92%}
+[data-size="phone"] #s-inbox .cnav button{padding:0 7px}
+[data-size="phone"] #s-inbox .ib-head .who{min-width:0}
+[data-size="phone"] #s-inbox .scr-head .live{display:none}
+</style>
+
+<section class="scr" id="s-inbox" data-nav="Inbox" data-group="Inbox &amp; Customers" data-title="Inbox" data-sub="Customers &amp; comms" data-roles="owner manager">
+  <!-- ids: CMIN-001 CMIN-002 CMIN-003 CMIN-004 CMIN-005 CMIN-006 CMIN-007 CMIN-008 -->
+  <!-- Comms sub-navigation (Inbox · Customers · Due to reorder · Scripts · Flora facts · Flora autonomy (owner only) · Facts review · More…), active tab highlighting, screen actions on the right.
+       CMIN-006: on Phone the global ☰ in the topbar opens the drawer (shell). CMIN-007: in the new design the global chrome (search ⌘K, bell, avatar) is kept on Comms screens – decided to keep it, height is saved by a one-line sub-nav.
+       CMIN-008: global layers – impersonation banner (demo state), toasts (App.toast), alcohol-hours modal (demo state). -->
+  <div class="scr-head" id="ib-head"></div>
+  <div class="scr-body flush">
+    <!-- ids: CMIN-009 CMIN-010 -->
+    <!-- Native module off: stub with "Open Floritta Comms ↗" / "not configured yet" + red "Unpaid orders: N" link → orders (demo state «Native module off») -->
+    <div id="ib-stub" style="display:none"></div>
+    <!-- ids: CMIN-011 CMIN-012 CMIN-013 CMIN-014 CMIN-015 CMIN-224 CMIN-226 -->
+    <!-- Banners: Flora switched off (who/when/why, Details → Flora autonomy), impersonation banner, unpaid alert with expandable list (code · customer · amount · Nd red from 2 days, Chat → opens the chat, Order → order sheet), hidden in e-mail mode; tab-title counter "(N) Inbox" is reset when leaving the screen -->
+    <div class="banners" id="ib-banners"></div>
+    <div class="split --3" id="ib-split">
+      <!-- ids: CMIN-016 CMIN-017 CMIN-018 CMIN-019 CMIN-020 CMIN-021 CMIN-022 CMIN-023 CMIN-024 CMIN-025 CMIN-026 CMIN-027 CMIN-028 CMIN-029 CMIN-030 CMIN-031 CMIN-032 CMIN-033 CMIN-034 CMIN-035 CMIN-036 CMIN-037 CMIN-038 CMIN-039 CMIN-040 CMIN-041 CMIN-042 CMIN-043 CMIN-044 CMIN-045 CMIN-225 -->
+      <!-- Left column: lane tabs Managers / Support with waiting counters (remembered per user), status chips Needs action · Waiting · Unresolved · Draft ready · Follow up · All (+ All manager chats on the Managers lane; owner/manager outside Support sees every chat), Mine / Needs attention chips, channel chips WA IG TG MSG APP SMS @, search, params on entry (filter/q/open/compose), live refresh indicator, sound + mute, desktop notification, tab title counter, New chat modal, rows with avatar/channel/colour dot/pin/wait timer (red after 3 min)/chips, server order, click → read, Load more (50, cap 200), empty/skeleton/error states, Back on phone, "Select a conversation" -->
+      <div id="ib-list-col"></div>
+      <!-- ids: CMIN-046 CMIN-047 CMIN-048 CMIN-049 CMIN-050 CMIN-051 CMIN-052 CMIN-053 CMIN-054 CMIN-055 CMIN-056 CMIN-057 CMIN-058 CMIN-059 CMIN-060 CMIN-061 CMIN-062 CMIN-063 CMIN-064 CMIN-065 CMIN-066 CMIN-067 CMIN-068 CMIN-069 CMIN-070 CMIN-071 CMIN-072 CMIN-073 CMIN-074 CMIN-075 CMIN-076 CMIN-077 CMIN-078 CMIN-079 CMIN-080 CMIN-081 CMIN-082 CMIN-083 CMIN-084 CMIN-085 CMIN-086 CMIN-227 CMIN-228 CMIN-229 -->
+      <!-- Centre: thread header (avatar, name, channel, @username · phone, follow-up pill, unresolved chip, ✓ Resolved, colour dots, Call, Create order, No follow-up, Remind later popover, ⋯ menu: Pin, status Open/Pending/Closed, Mark unread, Hand over, Take it/Release, Export transcript, Delete conversation with confirm → thread closes), message feed (8 s refresh, AI suggestion queued on open, linked order re-synced, Show earlier messages (60, cap 500), stick-to-bottom, day separators, author captions, Flora · AI badge, ticks, edited/deleted/forwarded/quote, reaction, story reply, media types, lightbox, voice player + transcript, Reply, React (Meta only), To approval, Use this draft, Flora got it wrong modal, saved-facts line with edit → customer card, drag-and-drop files, empty thread state, every action confirms with a toast) -->
+      <div id="ib-chat-col"></div>
+      <!-- ids: CMIN-112 CMIN-113 CMIN-114 CMIN-115 CMIN-116 CMIN-117 CMIN-118 CMIN-119 CMIN-120 CMIN-121 CMIN-122 CMIN-123 CMIN-124 CMIN-125 CMIN-126 CMIN-127 CMIN-128 CMIN-129 CMIN-232 -->
+      <!-- Right column (on iPad/phone the same content opens as a sheet from the ⓘ button – money actions are no longer lost on tablets): Follow up card, Flora's note / escalation, customer card block (recipients, occasions, missing, Open the card), contact, linked order (Link/Change via picker, re-synced on refresh), Payment link Order/Tip with amount recomputed per chat, links without a filled-in order + Fill in the order, Occasion form, Copy tagged link, Marketing consent WA/SMS/Email, Recent calls (Ringover), AI block -->
+      <div id="ib-ctx-col" class="ctx-col"></div>
+    </div>
+    <!-- ids: CMIN-130 CMIN-131 CMIN-132 CMIN-133 CMIN-134 CMIN-135 CMIN-136 CMIN-137 CMIN-138 CMIN-139 CMIN-140 CMIN-141 CMIN-142 CMIN-143 CMIN-144 CMIN-145 CMIN-233 CMIN-234 CMIN-235 -->
+    <!-- E-mail mode (chip @): Connect Gmail (OAuth, result shown as a toast), mailbox address, Gmail search on Enter, Refresh (no auto-refresh), Inbox / Sent, Unread filter, list of 25, open marks read (+ reconnect notice when scope is missing), AI note, sandboxed HTML body, attachments, Flora's draft – email frame, Send reply (errors shown), New email modal with labelled fields, reading pane works on phone via Back, Select a message / error / retry, reply draft kept per message -->
+    <div id="ib-mail" style="display:none"></div>
+  </div>
+</section>
+
+<script>
+window.T12=(()=>{
+const A=()=>window.App;
+const esc=s=>A().esc(s);
+const ic=n=>A().icon(n);
+const st={lane:"managers",status:"action",extra:null,chan:null,q:"",cur:null,ph:"list",ids:[],limit:50,tick:0,timer:null,muted:false,drafts:{},applied:{},files:{},replyTo:null,tone:null,wish:"",floraFrame:{},payMode:"order",payAmt:{},payInserted:{},orderOpen:{},mail:{folder:"inbox",unread:false,q:"",open:null,reply:{}},
+ demo:{floraOff:false,nativeOff:false,imp:false,gmail:true,gmailScope:true,pending:false,stripe:true,listState:"ok",meta:false,alcohol:false},
+ lastRefresh:0,earlier:{},notif:true};
+const CH_IC={"WhatsApp":"chat","Instagram":"photo","Email":"mail","Website chat":"globe","Telegram":"send","Messenger":"chat","App":"zap","SMS":"phone"};
+const CH_SHORT={"WhatsApp":"WA","Instagram":"IG","Telegram":"TG","Messenger":"MSG","App":"APP","SMS":"SMS","Email":"@","Website chat":"WEB"};
+const QUICK=[["Greeting","Hello {first}! Floritta here – how can we help today?"],["In production","Your bouquet is being made right now – I'll send a photo before it leaves."],["On the way","Your flowers are on the way and will arrive within the slot."],["Payment link","Here is the secure payment link – card, Apple Pay or Google Pay: pay.floritta.uk/…"],["Thank you","Thank you so much, {first} – it was a pleasure."],["How did you hear","May I ask how you heard about Floritta?"]];
+const EMOJIS=["🌸","🌹","💐","🙂","😊","🙏","👍","❤️","✨","🎉","🎂","🕯","☀️","🚚","📸","✅"];
+const FU_REASONS={quote:"No reply after a quote",photo:"Asked for a photo – not sent yet",deposit:"Deposit paid, balance due"};
+const INTENTS={cancellation:"cancellation",address:"address change",refund:"refund",late:"late delivery",complaint:"complaint"};
+const convos=()=>A().data.convos;
+const cv=id=>convos().find(c=>c.id===Number(id));
+const cu=c=>A().customer(c.customer);
+const last=c=>c.msgs[c.msgs.length-1];
+const isWaiting=c=>{const m=last(c);return !!m&&!m.me&&!m.draft&&!c.x.answered&&c.x.status!=="closed"};
+const waitMin=c=>{const m=last(c);if(!m)return 0;return Math.max(0,Math.round((A().NOW-new Date(m.at))/6e4))+st.tick*0.5};
+const fmtWait=m=>m<60?Math.round(m)+" min":m<1440?Math.round(m/60)+" h":Math.round(m/1440)+" d";
+const managers=()=>A().data.staff.filter(s=>s.role==="owner"||s.role==="manager");
+const initials=u=>u.first[0]+(u.n.split(" ")[1]||"")[0];
+const MAIL=[
+ {id:"m1",from:"Priya Mehta",to:"info@floritta.uk",addr:"priya.mehta@example.com",subj:"Invoice for October – PO 4471",at:A().T(9,12),unread:true,body:"Hi team,\n\nCould you send the October invoice for PO 4471? Finance closes the month on Friday.\n\nThanks,\nPriya",att:[["October-PO4471.pdf","84 KB"]],ai:{p:"attention",t:"Corporate invoice request – PO 4471. Finance deadline Friday."},draft:"Hi Priya, thank you – the October invoice for PO 4471 is attached. Let me know if finance needs anything else."},
+ {id:"m2",from:"Edward Sato",addr:"edward.sato@example.com",subj:"Wedding flowers – 14 March",at:A().T(8,40),unread:true,body:"Hello, we're getting married on 14 March in Bermondsey and would love a quote for bridal bouquet + 6 table centrepieces. Budget around £900.",att:[],ai:{p:"urgent",t:"Wedding enquiry, budget £900, 14 March. Worth a call."},draft:"Hello Edward, congratulations! We'd love to help – may I suggest a quick call this week to go through colours and the venue?"},
+ {id:"m3",from:"Google Business",addr:"noreply@example.com",subj:"You have a new review",at:A().T(7,55),unread:false,body:"A customer left a 5-star review: “Gorgeous peonies, delivered on time.”",att:[],ai:null,draft:null},
+ {id:"m4",from:"Zara Marchetti",addr:"zara.marchetti@example.com",subj:"Re: Your bouquet photo",at:A().T(18,20,-1),unread:false,body:"Thank you – it was beautiful, mum cried!",att:[],ai:null,draft:"So happy to hear it, Zara – thank you for letting us know."},
+ {id:"m5",from:"Rosie Abernathy",addr:"rosie.abernathy@example.com",subj:"Subscription pause",at:A().T(16,5,-1),unread:false,body:"Could we pause the weekly desk flowers for two weeks from 3 Nov? We're away.",att:[],ai:{p:"normal",t:"Subscription pause request 3–17 Nov."},draft:"Of course, Rosie – paused from 3 Nov, resuming 17 Nov. Enjoy the trip!"},
+ {id:"s1",from:"Floritta",to:"hannah.rossi@example.com",addr:"info@floritta.uk",subj:"Your order #118432 – photo before delivery",at:A().T(10,2),unread:false,sent:true,body:"Hi Hannah, here is your bouquet before it leaves the studio.",att:[["bouquet.jpg","1.2 MB"]],ai:null,draft:null},
+ {id:"s2",from:"Floritta",to:"james.patel@example.com",addr:"info@floritta.uk",subj:"Re: Office reception flowers",at:A().T(17,30,-1),unread:false,sent:true,body:"Thanks James – Monday 08:00 works. Confirmed.",att:[],ai:null,draft:null}
+];
+const CALLS={7001:[["in","3:12",A().T(9,30,-1)],["missed","–",A().T(14,5,-3)]],7003:[["out","1:48",A().T(10,10)],["voicemail","0:22",A().T(11,0,-2)],["in","6:05",A().T(16,40,-6)]]};
+
+/* ---- augment shell convos with comms state (fictional) ---- */
+function seed(){
+ convos().forEach((c,i)=>{if(c.x)return;const u=cu(c);
+  c.x={lane:i===4||i===6?"support":"managers",status:"open",pinned:i===0,colour:i===1?"upsell":i===5?"nosale":null,unresolved:i===7?"cancellation":i===5?"address":null,followUp:i===3?{reason:"quote",at:A().T(9,0,-1),remind:null}:null,draft:i===1?c.flora:null,answered:false,username:c.chan==="Instagram"?"@"+u.first.toLowerCase()+".blooms":null,note:i===2?"Prefers WhatsApp after 18:00":"",order:c.order||null,hidden:false,orderDraft:i===1?{status:"collecting",items:[["Garden Rose Basket · Deluxe",1,"£110"]],when:"Fri 24 Oct · 10:00–12:00",where:"",recipient:"Mum – Mrs "+u.n.split(" ")[1],card:"",buyer:u.n,notes:"",missing:["delivery address","card message"],paySent:false}:null,payLinks:i===0?[{amt:92,at:A().T(9,50),paid:true}]:[],consent:{wa:true,sms:null,email:i%2?false:true},suggestedNote:i===5?{kind:"escalation",p:"urgent",t:"Customer changed the address after dispatch – courier is already out. Call Daniel."}:i===3?{kind:"flora",p:"attention",t:"Office flowers lead – £65/week, Mondays. Worth a proper quote."}:null,noReply:false,mu:false};
+  c.msgs.forEach((m,k)=>{m.origin=m.me?(k===1&&i===0?"flora_auto":i===2?"flora_sent":"manual"):null;m.who=m.me?(i===1?"eliza":"valeria"):null;m.tick=m.me?(k===c.msgs.length-1?"delivered":"read"):null;m.id=c.id*10+k});
+  if(i===0){c.msgs.splice(1,0,{id:c.id*10+9,at:A().T(8,52),me:false,t:"Here's the card she liked last year",type:"image",img:A().product(101).img});c.msgs.push({id:c.id*10+8,at:A().T(10,12),me:false,t:"",type:"audio",dur:"0:14",transcript:"And please no lilies, she is allergic. Thank you!"},{id:c.id*10+7,at:A().T(10,14),me:false,t:"",type:"location",loc:"Flat 4, 12 Long Lane, SE1"});c.msgs[2].reaction="🙏"}
+  if(i===3){c.msgs.unshift({id:c.id*10+9,at:A().T(8,10),me:false,t:"",type:"story_reply",story:"Peony Monday"})}
+  if(i===1){c.msgs[0].forwarded="Oliver Barrington";c.msgs[1].quoteOf="Hello, I'd like to order the Peony Basket…";c.msgs[1].edited=true;c.msgs.push({id:c.id*10+8,at:A().T(9,41),me:false,t:"Ok, let me think about it",deleted:true})}
+  if(i===5){c.msgs.push({id:c.id*10+8,at:A().T(10,30),me:true,t:"Updated to Flat 12 – the courier has been told.",origin:"flora_edited",who:"valeria",tick:"sent",decision:"d-77"})}
+  if(i===2){c.msgs[1].decision="d-42";c.msgs[1].origin="flora_sent"}
+  c.msgs.sort((a,b)=>new Date(a.at)-new Date(b.at));
+ });
+}
+const lanesOf=()=>{const all=convos().filter(c=>!c.x.hidden);return{managers:all.filter(c=>c.x.lane==="managers"),support:all.filter(c=>c.x.lane==="support")}};
+const seesAll=()=>A().role()==="owner"||A().me().id!=="kamila"; // CMIN-021: manager/owner outside a pure Support group sees every chat on Managers → All
+function statusOf(c){return{waiting:isWaiting(c),unresolved:!!c.x.unresolved,draft:!!c.x.draft&&isWaiting(c),follow:!!c.x.followUp}}
+function filtered(){
+ const me=A().me();let list=convos().filter(c=>!c.x.hidden);
+ if(st.status==="lane_all"){list=list.filter(c=>c.x.lane==="managers"||seesAll())}else list=list.filter(c=>c.x.lane===st.lane);
+ list=list.filter(c=>{const s=statusOf(c);switch(st.status){case"action":return s.waiting||s.unresolved||s.draft||s.follow;case"waiting":return s.waiting;case"unresolved":return s.unresolved;case"draft":return s.draft;case"follow_up":return s.follow;default:return true}});
+ if(st.extra==="mine")list=list.filter(c=>c.assigned===me.id);
+ if(st.extra==="attention")list=list.filter(c=>isWaiting(c)&&waitMin(c)>3||!!c.x.unresolved);
+ if(st.chan)list=list.filter(c=>CH_SHORT[c.chan]===st.chan);
+ if(st.q){const q=st.q.toLowerCase();list=list.filter(c=>{const u=cu(c);return u.n.toLowerCase().includes(q)||u.phone.replace(/\s/g,"").includes(q.replace(/\s/g,""))||c.msgs.some(m=>(m.t||"").toLowerCase().includes(q))||String(c.id).includes(q)})}
+ list.sort((a,b)=>{if(a.x.pinned!==b.x.pinned)return a.x.pinned?-1:1;if(st.status==="follow_up")return new Date(a.x.followUp?.at||0)-new Date(b.x.followUp?.at||0);const wa=isWaiting(a),wb=isWaiting(b);if(wa!==wb)return wa?-1:1;if(wa&&wb)return waitMin(b)-waitMin(a);return new Date(b.last)-new Date(a.last)});
+ return list;
+}
+const counts=()=>{const all=convos().filter(c=>!c.x.hidden);const lane=all.filter(c=>c.x.lane===st.lane);const s=lane.map(statusOf);return{managers:all.filter(c=>c.x.lane==="managers"&&isWaiting(c)).length,support:all.filter(c=>c.x.lane==="support"&&isWaiting(c)).length,action:s.filter(x=>x.waiting||x.unresolved||x.draft||x.follow).length,waiting:s.filter(x=>x.waiting).length,unresolved:s.filter(x=>x.unresolved).length,draft:s.filter(x=>x.draft).length,follow_up:s.filter(x=>x.follow).length,all:lane.length,lane_all:all.filter(c=>c.x.lane==="managers"||seesAll()).length,attention:all.filter(c=>isWaiting(c)&&waitMin(c)>3||!!c.x.unresolved).length,unread:all.filter(c=>c.unread).length}};
+
+/* ---- head: comms nav + actions ---- */
+function nav(active){
+ const owner=A().role()==="owner";
+ const items=[["inbox","Inbox",counts().unread],["customers","Customers"],["customers-due","Due to reorder"],["scripts","Scripts"],["flora-facts","Flora facts"]].concat(owner?[["flora-autonomy","Flora autonomy"]]:[]).concat([["facts-review","Facts review"]]);
+ return `<div class="cnav">${items.map(([id,n,c])=>`<button class="${active===id||(active==="customers"&&id==="customers")?"on":""}" onclick="T12.navGo('${id}')">${n}${c?`<span class="n">${c}</span>`:""}</button>`).join("")}<button onclick="T12.navMore(event)">More ${ic("down")}</button></div>`;
+}
+function renderHead(){
+ const h=document.getElementById("ib-head");const email=st.chan==="@";
+ h.innerHTML=`${nav("inbox")}<span class="sp"></span>
+  <span class="live" title="List refreshes every 10 s, the open thread every 8 s"><span class="dot --ok"></span>Live · <span id="ib-live">just now</span></span>
+  <button class="btn --ghost --sm" onclick="T12.demoMenu(event)">${ic("columns")} Demo state</button>
+  ${email?"":`<button class="ib" title="${st.muted?"Unmute notifications (sound only)":"Mute notifications (sound only)"}" onclick="T12.mute()">${ic(st.muted?"pause":"bell")}</button><button class="btn --sm" onclick="T12.compose()">${ic("plus")} New chat</button>`}`;
+}
+function renderStub(){
+ const s=document.getElementById("ib-stub");const sp=document.getElementById("ib-split"),bn=document.getElementById("ib-banners");
+ if(!st.demo.nativeOff){s.style.display="none";return}
+ s.style.display="block";sp.style.display="none";bn.innerHTML="";document.getElementById("ib-mail").style.display="none";
+ const unpaid=A().data.orders.filter(o=>o.paid!=="paid"&&o.status!=="cancelled"&&o.status!=="delivered");
+ s.innerHTML=`<div class="stub">${ic("inbox")}<div class="h2">Inbox</div><div class="sm soft">The native inbox is switched off for this shop. Conversations live in the external Floritta Comms app.</div><button class="btn" onclick="App.toast('Opens Floritta Comms in a new tab (demo)')">Open Floritta Comms ${ic("link")}</button><div class="xs muted">Without a configured URL this reads “Floritta Comms is not configured yet”.</div>
+ ${unpaid.length?`<button class="note-box --accent" style="width:100%;text-align:left" onclick="App.go('orders',{view:'unpaid'})">${ic("alert")} Unpaid orders: ${unpaid.length} – open Orders</button>`:""}<button class="textbtn" onclick="T12.demoSet('nativeOff',false)">Switch the native inbox back on</button></div>`;
+}
+function renderBanners(){
+ const b=document.getElementById("ib-banners");if(st.chan==="@"){b.innerHTML="";return}
+ const unpaid=A().data.orders.filter(o=>o.paid!=="paid"&&o.status!=="cancelled").sort((x,y)=>new Date(x.placed)-new Date(y.placed)).slice(0,50);
+ const total=unpaid.reduce((s,o)=>s+o.total,0);
+ let h="";
+ if(st.demo.imp)h+=`<div class="bn --imp">${ic("eye")} You are viewing the CRM as Valeria (impersonation) <span class="sp"></span><button class="textbtn" onclick="T12.demoSet('imp',false)">Stop</button></div>`;
+ if(st.demo.floraOff)h+=`<div class="bn --warn">${ic("pause")} <b>Flora is switched off</b> · by Tatiana, today 08:15 · “Peak week – managers answer by hand” <span class="sp"></span><button class="textbtn" onclick="App.go('flora-autonomy')">Details</button></div>`;
+ if(unpaid.length)h+=`<div class="bn --accent" style="cursor:pointer" onclick="T12.toggleUnpaid()">${ic("pound")} <b>Unpaid orders: ${unpaid.length}</b> · ${A().fmt(total)} <span class="xs" style="opacity:.8">counted on page load · the list below is live</span><span class="sp"></span>${ic(st.unpaidOpen?"minus":"down")}</div>`;
+ if(st.unpaidOpen&&unpaid.length)h+=`<div class="bn-list"><table class="tbl"><thead><tr><th>Order</th><th>Customer</th><th class="num">Amount</th><th>Age</th><th></th></tr></thead><tbody>${unpaid.map(o=>{const d=Math.round((A().NOW-new Date(o.placed))/864e5);const chat=convos().find(c=>c.customer===o.customer);return`<tr><td><button class="link" onclick="App.openOrder(${o.id})">#${o.id}</button></td><td>${esc(A().customer(o.customer).n)}</td><td class="num">${A().fmt(o.total)}</td><td class="${d>=2?"accent":""}">${d}d</td><td>${chat?`<button class="textbtn" onclick="T12.open(${chat.id})">${ic("chat")} Chat</button>`:`<span class="xs muted">no chat found</span>`} <button class="textbtn" style="margin-left:8px" onclick="App.openOrder(${o.id})">Order</button></td></tr>`}).join("")}</tbody></table></div>`;
+ if(!unpaid.length&&st.unpaidOpen)h+=`<div class="bn">${ic("check")} All orders are paid</div>`;
+ b.innerHTML=h;
+}
+/* ---- left column ---- */
+function renderList(){
+ const col=document.getElementById("ib-list-col");const c=counts();const list=filtered();st.ids=list.map(x=>x.id);
+ const chip=(k,l,n,on,fn,cls="")=>`<button class="chip ${cls} ${on?"on":""}" onclick="${fn}">${l}${n!=null&&n!==""?`<span class="n">${n}</span>`:""}</button>`;
+ let rows="";
+ if(st.demo.listState==="loading")rows=`<div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
+ else if(st.demo.listState==="error")rows=`<div class="empty">${ic("alert")}<div class="h3">Could not load chats</div><button class="btn --ghost --sm" onclick="T12.demoSet('listState','ok')">Retry</button></div>`;
+ else if(st.demo.listState==="empty"||!list.length)rows=`<div class="empty">${ic("inbox")}<div class="h3">No conversations</div><div class="sm">${st.q?"Nothing matches your search.":"Nothing in this view right now."}</div><button class="textbtn" onclick="T12.reset()">Show all</button></div>`;
+ else rows=list.slice(0,st.limit).map(x=>{const u=cu(x),m=last(x),s=statusOf(x),w=waitMin(x);const cls=s.waiting?"--waiting":s.unresolved?"--unresolved":s.draft?"--draft":"--answered";
+  return`<div class="cv ${cls} ${st.cur===x.id?"on":""}" onclick="T12.open(${x.id})"><span class="av"><span class="avatar">${esc(initials(u))}</span><span class="ch" title="${esc(x.chan)}">${ic(CH_IC[x.chan]||"chat")}</span></span><div class="t"><div class="l1">${x.x.colour?`<span class="cdot --${x.x.colour}" title="${x.x.colour==="upsell"?"Sale + upsell":x.x.colour==="sale"?"Sale":"No sale"}"></span>`:""}${x.x.pinned?ic("pin"):""}<b>${esc(u.n)}</b>${s.waiting?`<small class="${w>3?"hot":""}" title="Team rule: answer within 3 minutes">${fmtWait(w)}</small>`:`<small>${A().timeAgo(x.last)}</small>`}</div><div class="l2">${m?(m.me?"You: ":"")+esc(m.t||(m.type==="audio"?"Voice note":m.type==="image"?"Photo":m.type==="location"?"Location":m.type==="story_reply"?"Replied to your story":"…")):'<span class="muted">No messages yet</span>'}</div><div class="l3">${s.draft?`<span class="tag">${ic("sparkle")} draft ready</span>`:""}${s.unresolved?`<span class="tag" style="background:var(--warn-bg);color:var(--warn)">unresolved: ${INTENTS[x.x.unresolved]}</span>`:""}${s.follow?`<span class="tag --line" title="${FU_REASONS[x.x.followUp.reason]}">${ic("clock")} ${FU_REASONS[x.x.followUp.reason]}</span>`:""}<span class="sp"></span>${x.assigned?A().avatar(x.assigned,"--s"):""}${x.unread?`<span class="cnt">${x.unread===true?1:x.unread}</span>`:s.unresolved?`<span class="dot --warn"></span>`:""}</div></div></div>`}).join("");
+ const more=list.length>st.limit;
+ col.innerHTML=`<div class="lanes"><button class="${st.lane==="managers"?"on":""}" title="The customer wrote first – sales" onclick="T12.lane('managers')">Managers <span class="n ${c.managers?"hot":""}">${c.managers||""}</span></button><button class="${st.lane==="support"?"on":""}" title="A chat where our script already ran – after-sales" onclick="T12.lane('support')">Support <span class="n ${c.support?"hot":""}">${c.support||""}</span></button></div>
+ <div class="ib-top"><div class="ib-search">${ic("search")}<input placeholder="Search name, phone, text or id" value="${esc(st.q)}" oninput="T12.search(this.value)"></div></div>
+ <div class="chiprow">${[["action","Needs action"],["waiting","Waiting"],["unresolved","Unresolved"],["draft","Draft ready"],["follow_up","Follow up"],["all","All"]].map(([k,l])=>chip(k,l,c[k],st.status===k,`T12.status('${k}')`)).join("")}${st.lane==="managers"?chip("lane_all","All manager chats",c.lane_all,st.status==="lane_all",`T12.status('lane_all')`):""}</div>
+ <div class="chiprow">${chip("mine","Mine","",st.extra==="mine",`T12.extra('mine')`,"--sm")}${chip("attention","Needs attention",c.attention,st.extra==="attention",`T12.extra('attention')`,"--sm")}<span style="width:6px"></span>${["WA","IG","TG","MSG","APP","SMS","@"].map(k=>chip(k,k,"",st.chan===k,`T12.chan('${k}')`,"--sm")).join("")}</div>
+ <div class="ib-list">${rows}${more?`<div style="padding:10px;text-align:center"><button class="btn --ghost --sm" onclick="T12.more()">Load more</button><div class="xs muted mt8">50 at a time, up to 200 – narrow with search beyond that</div></div>`:""}</div>
+ <div class="xs muted" style="padding:6px 10px;border-top:1px solid var(--hair);display:flex;gap:10px;align-items:center">View remembered for ${esc(A().me().n)}<span class="sp"></span><span class="kbd">j</span><span class="kbd">k</span> next / previous</div>`;
+}
+/* ---- thread ---- */
+function caption(m){const n=A().user(m.who)?.n||"Floritta";return{manual:n+" · manual",flora_sent:"Flora · sent by "+n,flora_edited:"Flora, edited by "+n,flora_auto:"Flora · auto",script:"Auto script"}[m.origin]||n}
+function bubble(c,m){
+ const u=cu(c);const meta=A().role()==="owner"||st.demo.meta;const chan=c.chan;
+ if(m.draft)return`<div class="msg --draft"><div class="cap">${ic("sparkle")} AI draft · ${esc(m.kind||"draft")} – not sent</div>${esc(m.t)}<span class="at"><button class="textbtn" onclick="T12.useDraft(${m.id})">Use this draft</button></span></div>`;
+ let body="";
+ if(m.type==="image")body=`<div class="ph photo --4x5" style="width:160px" onclick="T12.lightbox('${m.img}')"><img src="${m.img}" alt=""></div>${esc(m.t)}`;
+ else if(m.type==="audio")body=`<div class="audio"><button class="ib" onclick="App.toast('Playing voice note (demo)')">${ic("play")}</button><div class="progress"><i style="width:35%"></i></div><span class="xs tnum">0:05 / ${m.dur}</span><button class="textbtn" onclick="App.toast('Downloading voice note')">Download</button></div>${m.transcript?`<div class="xs muted" style="margin-top:6px"><span class="caps" style="font-size:10px">Transcript, may contain errors</span><br>${esc(m.transcript)}</div>`:""}`;
+ else if(m.type==="location")body=`${ic("pin")} Location · ${esc(m.loc)} <button class="textbtn" onclick="App.toast('Opens the map (demo)')">open</button>`;
+ else if(m.type==="story_reply")body=`<div class="row" style="gap:8px"><span class="thumb"><img src="${A().product(104).img}" alt=""></span><div><div class="xs muted">Replied to your story · ${esc(m.story)}</div><button class="textbtn" onclick="App.toast('Opens the story on Instagram')">Open story ${ic("link")}</button></div></div>`;
+ else body=esc(m.t);
+ const acts=[];
+ if(!m.me&&!m.deleted){if(chan==="WhatsApp"||chan==="Telegram")acts.push(`<button onclick="T12.reply(${m.id})">Reply</button>`);if((chan==="Instagram"||chan==="Messenger")&&meta)acts.push(`<button onclick="T12.react(event,${m.id})">React</button>`);acts.push(`<button onclick="T12.approval(${m.id})">To approval</button>`)}
+ if(m.decision)acts.push(`<button onclick="T12.floraWrong('${m.decision}',${m.id})">Flora got it wrong</button>`);
+ return`<div class="msg ${m.me?"me":""} ${m.deleted?"--del":""}">${acts.length?`<span class="mact">${acts.join("")}</span>`:""}${m.me&&!m.deleted?`<div class="cap">${esc(caption(m))}${m.decision||m.origin?.startsWith("flora")?` <span class="tag">${ic("sparkle")} Flora · AI</span>`:""}</div>`:""}${m.forwarded?`<div class="cap">${ic("send")} Forwarded from ${esc(m.forwarded)}</div>`:""}${m.quoteOf?`<div class="quote">${esc(u.first)}: ${esc(m.quoteOf)}</div>`:""}${body}<span class="at">${A().fmtTime(m.at)}${m.edited?" · edited":""}${m.deleted?" · deleted":""}${m.me&&m.tick?`<span class="ticks ${m.tick==="read"?"--read":""}" title="${m.tick}">${m.tick==="sent"?"✓":"✓✓"}</span>`:""}</span>${m.reaction?`<span class="react">${m.reaction}</span>`:""}</div>${m.fact?`<div class="fact">${ic("user")} ${esc(m.fact)} <button class="textbtn" onclick="App.go('customer-card',{id:${u.id},anchor:'recipient'})">edit</button></div>`:""}`;
+}
+function renderChat(){
+ const col=document.getElementById("ib-chat-col");const c=cv(st.cur);
+ if(!c){col.innerHTML=`<div class="empty" style="margin:auto">${ic("chat")}<div class="h3">Select a conversation</div><div class="sm">Pinned first, then whoever has waited longest.</div></div>`;return}
+ const u=cu(c);const s=statusOf(c);const me=A().me();
+ const fu=c.x.followUp;
+ let day=null;const shown=st.earlier[c.id]?c.msgs:c.msgs.slice(-60);
+ let msgs=shown.length?shown.map(m=>{let h="";const d=A().fmtDay(m.at);if(d!==day){day=d;h+=`<div class="ib-day">${d}</div>`}return h+bubble(c,m)}).join(""):`<div class="empty">${ic("chat")}<div class="h3">No messages yet</div><div class="sm">Say hello to ${esc(u.first)} – the first message opens the chat.</div></div>`;
+ if(c.msgs.length>60&&!st.earlier[c.id])msgs=`<div class="sysrow"><button class="btn --ghost --sm" onclick="T12.earlier()">Show earlier messages</button></div>`+msgs;
+ if(c.msgs[1]&&c.msgs[1].t&&!c.msgs[1].me&&c.id===7001)c.msgs[1].fact="Saved to Mum's card: no lilies (allergy) · likes garden roses?";
+ const draft=st.drafts[c.id]||"";const frame=st.floraFrame[c.id];const files=st.files[c.id]||[];
+ const sugg=c.flora&&s.waiting&&!st.applied[c.id];
+ col.innerHTML=`<div class="ib-head">
+  <button class="ib ib-back" onclick="T12.phone('list')">${ic("back")}</button><span class="avatar">${esc(initials(u))}</span>
+  <div class="who"><b>${esc(u.n)} <span class="tag --line">${esc(CH_SHORT[c.chan]||c.chan)}</span></b><small>${c.x.username?esc(c.x.username)+" · ":""}<span class="tnum">${esc(u.phone)}</span> · <span class="pill --plain --${c.x.status==="closed"?"done":c.x.status==="pending"?"review":"doing"}">${c.x.status}</span>${c.assigned?" · "+esc(A().user(c.assigned).n):" · unassigned"}</small></div>
+  ${fu?`<span class="tag --line" title="${esc(FU_REASONS[fu.reason])}">${ic("clock")} ${esc(FU_REASONS[fu.reason])}</span>`:""}
+  ${c.x.unresolved?`<span class="tag" style="background:var(--warn-bg);color:var(--warn)">unresolved: ${INTENTS[c.x.unresolved]}</span><button class="btn --ghost --sm" onclick="T12.resolved()">${ic("check")} Resolved</button>`:""}
+  <span class="cdots" title="Chat tag">${[["upsell","Sale + upsell","var(--ok)"],["sale","Sale","var(--sel)"],["nosale","No sale","var(--accent)"]].map(([k,l,col])=>`<button class="${c.x.colour===k?"on":""}" title="${l}" onclick="T12.colour('${k}')"><i style="background:${col}"></i></button>`).join("")}</span>
+  <button class="ib" title="Call ${esc(u.phone)} · Ringover" onclick="T12.call()">${ic("phone")}</button>
+  <button class="ib" title="Create order from this chat" onclick="App.go('order-new',{customer:${u.id},conversation:${c.id}})">${ic("plus")}</button>
+  <button class="ib" title="No follow-up" ${c.x.noReply?"disabled style='opacity:.4'":""} onclick="T12.noFollow()">${ic("flag")}</button>
+  <button class="ib" title="${fu&&fu.remind?"Reminder · "+fu.remind:"Remind later"}" onclick="T12.remind(event)">${ic("clock")}</button>
+  <button class="ib ib-info" title="Customer and context" onclick="T12.ctxSheet()">${ic("info")}</button>
+  <button class="ib" title="More actions" onclick="T12.menu(event)">${ic("dots")}</button></div>
+ <div class="ib-msgs" id="ib-msgs" ondragover="event.preventDefault();this.dataset.drop=1" ondragleave="this.dataset.drop=''" ondrop="event.preventDefault();this.dataset.drop='';T12.addFiles(['dropped-photo.jpg'])">${msgs}</div>
+ ${st.demo.pending&&c.id===st.cur?`<div class="bar-strip --warn">${ic("clock")} Flora sends this answer in <span class="cd" id="ib-cd">0:${String(st.cd).padStart(2,"0")}</span> · “${esc(c.flora)}”<span class="sp"></span><button class="btn --sm --secondary" onclick="T12.cancelSend()">Cancel</button></div>`:""}
+ ${c.x.orderDraft?orderCard(c):""}
+ <div class="composer">
+  ${st.replyTo?`<div class="bar-strip">${ic("back")} Replying to ${esc(st.replyTo.me?"you":u.first)}: <span class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0">${esc(st.replyTo.t||"media")}</span><span class="sp"></span><button class="ib" onclick="T12.reply(null)">${ic("close")}</button></div>`:""}
+  ${st.tone?`<div class="bar-strip">${ic("sparkle")} Tone hint: ${esc(st.tone)}<span class="sp"></span><button class="ib" onclick="T12.tone(null)">${ic("close")}</button></div>`:""}
+  ${frame?`<div class="fframe"><div class="fh">${ic("sparkle")} Flora's draft – ${frame.edited?"edited":"check and send"} <span class="chip --sm ${frame.p==="urgent"?"on":""}" style="height:22px">${frame.p}</span><span class="sp"></span><button class="textbtn" onclick="T12.rewrite(event)">Rewrite</button><button class="textbtn" onclick="T12.clearDraft()">Clear</button>${frame.decision?`<button class="textbtn" onclick="T12.floraWrong('${frame.decision}')">Flora got it wrong</button>`:""}</div>`:""}
+  <textarea class="textarea" id="ib-in" placeholder="Type a message… Enter to send, Shift+Enter for a new line" oninput="T12.draft(this.value)" onkeydown="T12.key(event)">${esc(draft)}</textarea>
+  ${frame?`</div>`:""}
+  ${files.length?`<div class="files">${files.map((f,i)=>`<span class="f"><span class="thumb --s"></span>${esc(f)}<button class="ib" style="width:22px;height:22px" title="Remove file" onclick="T12.rmFile(${i})">${ic("close")}</button></span>`).join("")}<span class="xs muted">up to 10 · photo, video, audio, pdf · 16 MB</span></div>`:""}
+  ${askChips(c)}
+  <div class="c-row">
+   <button class="ib" title="Attach file" onclick="T12.attach()">${ic("upload")}</button>
+   <button class="ib" title="Emoji" onclick="T12.emoji(event)">${ic("sun")}</button>
+   <button class="ib" title="Quick replies" onclick="T12.quick(event)">${ic("zap")}</button>
+   <button class="ib" title="Tone check" onclick="T12.toneCheck()">${ic("sparkle")}</button>
+   ${frame?"":`<button class="ib" title="Rewrite with Flora" onclick="T12.rewrite(event)">${ic("refresh")}</button>`}
+   ${s.waiting?`<button class="btn --ghost --sm" onclick="T12.answered()">${ic("check")} Reply not needed</button>`:""}
+   <span class="hint">${sugg||frame?`${ic("sparkle")} AI suggestion – review and edit before sending`:`AI produces drafts only – a person sends`}</span>
+   <span class="sp"></span><span class="hint"><span class="kbd">↵</span> send · <span class="kbd">⇧↵</span> line</span>
+   <button class="btn --sm" onclick="T12.send()">${ic("send")} Send</button>
+  </div>
+ </div>`;
+ const ms=document.getElementById("ib-msgs");ms.scrollTop=ms.scrollHeight;
+ if(sugg&&!draft){st.drafts[c.id]=c.flora;st.applied[c.id]=true;st.floraFrame[c.id]={p:c.id===7006?"urgent":c.id===7004?"attention":"normal",decision:c.id===7002?"d-draft-2":null,edited:false};renderChat()}
+}
+function orderCard(c){const d=c.x.orderDraft;const open=st.orderOpen[c.id]||d.paySent;
+ return`<div class="fo" style="margin:0 14px"><div class="foh" onclick="T12.toggleOrder()">${ic("orders")} <b>Order from Flora</b> · ${d.missing.length?d.missing.length+" to collect":"ready to check"} <span class="pill --${d.missing.length?"review":"ready"}">${d.missing.length?"collecting":"ready to check"}</span><span class="sp"></span>${ic(open?"minus":"down")}</div>
+ ${open?`<dl class="kv"><dt>Goods</dt><dd>${d.items.map(i=>esc(i[0])+" × "+i[1]+" · "+i[2]).join("<br>")}</dd><dt>When</dt><dd>${esc(d.when)}</dd><dt>Where</dt><dd>${d.where?esc(d.where):'<span class="warn">missing</span>'}</dd><dt>Recipient</dt><dd>${esc(d.recipient)}</dd><dt>Card</dt><dd>${d.card?esc(d.card):'<span class="warn">missing</span>'}</dd><dt>Buyer</dt><dd>${esc(d.buyer)}</dd><dt>Notes</dt><dd>${esc(d.notes||"–")}</dd></dl>${d.missing.length?`<div class="xs warn mt8">Missing: ${d.missing.join(", ")}</div>`:""}<div class="btn-row mt8"><button class="btn --sm" onclick="App.go('order-new',{customer:${c.customer},flora_draft:1})">Open the order form</button><button class="btn --ghost --sm" onclick="T12.rejectDraft()">Reject</button><span class="sp"></span><button class="textbtn" onclick="T12.toggleOrder()">Collapse</button></div>`:""}</div>`}
+function askChips(c){const gaps=c.id===7001?["Who are the flowers for – may I note their name?","Any flowers to avoid?"]:c.id===7004?["Which day works best for the office delivery?"]:[];if(!gaps.length)return"";return`<div class="ask">Ask when it fits: ${gaps.map(g=>`<button class="chip" onclick="T12.append('${esc(g)}')">${esc(g)}</button>`).join("")}</div>`}
+/* ---- right column ---- */
+function ctxHtml(){
+ const c=cv(st.cur);if(!c)return`<div class="empty">${ic("user")}<div class="sm">Customer context appears here.</div></div>`;
+ const u=cu(c);const o=c.x.order?A().order(c.x.order):null;const fu=c.x.followUp;const n=c.x.suggestedNote;const calls=CALLS[c.id]||[];
+ const stripe=st.demo.stripe;const amt=st.payAmt[c.id]??(o&&o.paid!=="paid"?o.total:0);const ins=st.payInserted[c.id];
+ return`${fu?`<div class="card mb16" style="border-color:var(--grey)"><span class="caps">${ic("bell")} Follow up</span><b>${esc(FU_REASONS[fu.reason])}</b><div class="xs muted mt8">Flagged ${A().fmtDay(fu.at)} · the customer went quiet after our last message.</div><div class="btn-row mt8"><button class="btn --ghost --sm" onclick="T12.noFollow()">${ic("check")} Not needed</button></div></div>`:""}
+ ${n?`<div class="note-box ${n.p==="urgent"?"--accent":n.p==="attention"?"--warn":""} mb16">${ic("sparkle")} <b>${n.kind==="flora"?"Flora's note":n.p==="urgent"?"Escalation – urgent":n.p==="attention"?"Worth a look":"Note for the manager"}</b> · ${n.p}<br>${esc(n.t)}<div class="xs" style="opacity:.7;margin-top:4px">Not sent to the customer</div></div>`:""}
+ <div class="sec-head"><div class="h3">Customer card</div><button class="textbtn" onclick="App.go('customer-card',{id:${u.id}})">Open the card</button></div>
+ <div class="sm"><b>Recipients</b> · Mum – Mrs ${esc(u.n.split(" ")[1])}, SE1 · likes garden roses · no lilies · next: ${esc(u.occasion)}</div>
+ <div class="sm mt8"><b>Upcoming occasions</b> · ${esc(u.occasion)}</div>
+ <div class="sm mt8 warn"><b>Missing</b> · recipient phone, card wording</div>
+ <div class="sec-head"><div class="h3">Contact</div></div>
+ <div class="row" style="gap:10px;align-items:flex-start"><span class="avatar --l --ink">${esc(initials(u))}</span><dl class="kv" style="flex:1"><dt>Phone</dt><dd class="tnum">${esc(u.phone)}</dd><dt>Email</dt><dd style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(u.email)}</dd>${c.x.username?`<dt>Username</dt><dd>${esc(c.x.username)}</dd>`:""}<dt>Note</dt><dd><input class="input --inline" placeholder="Operator note…" value="${esc(c.x.note)}" onchange="T12.cv().x.note=this.value;App.toast('Note saved')"></dd></dl></div>
+ <div class="sec-head"><div class="h3">Linked order</div><button class="textbtn" onclick="T12.linkOrder(event)">${o?"Change":"Link order"}</button></div>
+ ${o?`<div class="ocard" onclick="App.openOrder(${o.id})"><div class="sm"><b>#${o.id}</b> · ${A().orderPill(o)} · ${A().fmtDay(o.date)} · ${esc(o.recipient)}${o.status==="delivered"?' <span class="muted">(finished)</span>':""}</div><div class="xs muted mt8">Re-synced to the customer's current order on every refresh</div></div>`:`<div class="muted sm">Order not found</div>`}
+ ${stripe?`<div class="sec-head"><div class="h3">Payment link</div><span class="seg-ctl" role="tablist"><button class="${st.payMode==="order"?"on":""}" onclick="T12.payMode('order')">Order</button><button class="${st.payMode==="tip"?"on":""}" ${o?"":'disabled style="opacity:.4"'} title="${o?"":"Link an order first – a tip is added on top of its total."}" onclick="T12.payMode('tip')">Tip</button></span></div>
+ ${st.payMode==="order"?`<div class="row"><div class="field" style="flex:1"><label>Amount</label><input class="input tnum" id="ib-amt" value="${amt||""}" placeholder="£ · min 0.50" onchange="T12.setAmt(this.value)"></div><button class="btn --sm" style="margin-top:20px" onclick="T12.payLink()">Create payment link</button></div>${ins?`<div class="xs ok mt8">Link added to draft ✓${o&&o.paid!=="paid"?"":" · Its order is not filled in yet – open the form with the button below once the message has gone."}</div>`:""}`:`<div class="row"><div class="field" style="flex:1"><label>Tip amount</label><input class="input tnum" id="ib-tip" placeholder="£ · up to 500"></div><button class="btn --sm" style="margin-top:20px" onclick="T12.tipLink()">Create tip link</button></div>`}
+ ${c.x.payLinks.length?`<div class="mt8"><span class="caps">Links without a filled-in order</span>${c.x.payLinks.map(l=>`<div class="sm">${A().fmt(l.amt)} · ${A().fmtTime(l.at)} · ${l.paid?`<span class="ok">✓ The customer paid ${A().fmt(l.amt)} – fill in the order</span>`:"Waiting for payment"}</div>`).join("")}<button class="textbtn mt8" onclick="App.go('order-new',{customer:${u.id},from_chat:${c.id}})">Fill in the order ${ic("link")}</button></div>`:""}`:`<div class="note-box xs">Payment link is available with Stripe switched on and the Orders · manage right.</div>`}
+ <div class="sec-head"><div class="h3">Occasion</div></div>
+ <div class="xs muted mb8">Saved: ${esc(u.occasion)}</div>
+ <div class="col" style="gap:6px"><select class="select" id="ib-occ"><option>Birthday</option><option>Anniversary</option><option>Mother's day</option><option>Other</option></select><input class="input" id="ib-occ-d" value="${o?A().fmtDate(o.date)+" 2027":""}" placeholder="Date"><input class="input" id="ib-occ-n" placeholder="Note (who, what)"><button class="btn --ghost --sm" onclick="T12.saveOccasion()">Save occasion</button></div>
+ <div class="sec-head"><div class="h3">Site link with a tag</div></div>
+ <button class="btn --ghost --sm" onclick="App.toast('Copied floritta.uk/?ref=chat-${c.id} – paste it in your reply')">${ic("copy")} Copy tagged link</button>
+ <div class="sec-head"><div class="h3">Marketing consent</div></div>
+ <div class="consent">${[["wa","WhatsApp"],["sms","SMS"],["email","Email"]].map(([k,l])=>`<span>${l}</span><button class="btn --ghost ${c.x.consent[k]===true?"--on":""}" onclick="T12.consent('${k}',true)">Opt-in</button><button class="btn --ghost ${c.x.consent[k]===false?"--off":""}" onclick="T12.consent('${k}',false)">Opt-out</button>`).join("")}</div>
+ <div class="xs muted mt8">Recorded in the consent log (UK GDPR / PECR)</div>
+ ${calls.length?`<div class="sec-head"><div class="h3">Recent calls</div></div><div class="list" style="border:1px solid var(--hair)">${calls.map(([k,d,at])=>`<div class="li" style="cursor:default"><span class="dot ${k==="missed"?"--accent":k==="voicemail"?"--warn":"--ok"}"></span><div class="t"><b>${k==="in"?"Incoming":k==="out"?"Outgoing":k==="missed"?"Missed":"Voicemail"} · ${d}</b><small>${A().fmtDay(at)} ${A().fmtTime(at)} · Ringover</small></div></div>`).join("")}</div>`:""}
+ <div class="sec-head"><div class="h3">AI</div></div>
+ <div class="btn-row">${["Summary","Draft reply","Translate","Extract order","Make it better"].map(k=>`<button class="btn --ghost --sm" onclick="T12.ai('${k}')">${k}</button>`).join("")}</div><div class="xs muted mt8">Creates a draft bubble in the thread – nothing is sent.</div>`;
+}
+function renderCtx(){document.getElementById("ib-ctx-col").innerHTML=`<div class="ctx">${ctxHtml()}</div>`}
+function applyPhone(){const l=document.getElementById("ib-list-col"),c=document.getElementById("ib-chat-col");l.classList.toggle("ph-on",st.ph==="list");c.classList.toggle("ph-on",st.ph==="chat")}
+function title(){const n=counts().unread;const el=document.getElementById("tb-title");if(el&&A().state.current==="inbox")el.innerHTML=(n?`(${n}) `:"")+"Inbox<small>Customers &amp; comms</small>"}
+function renderAll(){if(st.demo.nativeOff){renderHead();renderStub();return}document.getElementById("ib-stub").style.display="none";document.getElementById("ib-split").style.display=st.chan==="@"?"none":"";document.getElementById("ib-mail").style.display=st.chan==="@"?"flex":"none";renderHead();renderBanners();if(st.chan==="@"){renderMail();return}renderList();renderChat();renderCtx();applyPhone();title()}
+function touch(c){c.last=A().NOW.toISOString()}
+function pushMsg(c,t,extra={}){c.msgs.push(Object.assign({id:Date.now()+Math.random(),at:A().NOW.toISOString(),me:true,who:A().me().id,t,origin:"manual",tick:"sent"},extra));touch(c);c.unread=false;c.x.answered=false}
+
+/* ---- e-mail panel ---- */
+function renderMail(){
+ const m=document.getElementById("ib-mail");const g=st.mail;
+ if(!st.demo.gmail){m.innerHTML=`<div class="stub">${ic("mail")}<div class="h2">E-mail</div><div class="sm soft">Connect the shop's Gmail once – replies go out from info@floritta.uk in the same thread.</div><button class="btn" onclick="T12.gmailConnect()">Connect Gmail</button><button class="textbtn" onclick="T12.chan('@')">Back to chats</button></div>`;return}
+ let list=MAIL.filter(x=>g.folder==="sent"?x.sent:!x.sent);if(g.unread&&g.folder==="inbox")list=list.filter(x=>x.unread);if(g.q){const q=g.q.toLowerCase();list=list.filter(x=>(x.subj+x.from+x.body).toLowerCase().includes(q))}
+ const open=MAIL.find(x=>x.id===g.open);
+ const rows=list.map(x=>`<div class="cv ${x.unread?"--waiting":"--answered"} ${g.open===x.id?"on":""}" onclick="T12.mailOpen('${x.id}')"><div class="t"><div class="l1"><b>${x.sent?"To: "+esc(x.to):esc(x.from)}</b><small>${A().fmtDay(x.at)} ${A().fmtTime(x.at)}</small></div><div class="l2" style="color:var(--ink)">${esc(x.subj)}</div><div class="l2">${esc(x.body.split("\n")[0])}</div></div></div>`).join("")||`<div class="empty">${ic("mail")}<div class="h3">No messages</div></div>`;
+ const rep=open?(g.reply[open.id]??open.draft??""):"";
+ m.innerHTML=`<div class="split" style="flex:1;min-height:0;grid-template-columns:360px minmax(0,1fr)"><div id="ib-mail-list" class="${st.ph==="list"?"ph-on":""}" style="display:flex;flex-direction:column;overflow:hidden">
+  <div class="ib-top"><div class="ib-search">${ic("search")}<input placeholder="Search mail (Gmail syntax) · Enter" value="${esc(g.q)}" onkeydown="if(event.key==='Enter')T12.mailSearch(this.value)"></div><button class="ib" title="Refresh – mail has no auto-refresh" onclick="T12.mailRefresh()">${ic("refresh")}</button><button class="ib" title="New email" onclick="T12.mailCompose()">${ic("edit")}</button></div>
+  <div class="chiprow"><span class="xs muted" style="align-self:center">info@floritta.uk</span><span class="sp"></span><button class="chip --sm ${g.folder==="inbox"?"on":""}" onclick="T12.mailFolder('inbox')">Inbox</button><button class="chip --sm ${g.folder==="sent"?"on":""}" onclick="T12.mailFolder('sent')">Sent</button>${g.folder==="inbox"?`<button class="chip --sm ${g.unread?"on":""}" onclick="T12.mailUnread()">Unread</button>`:""}<button class="chip --sm" onclick="T12.chan('@')">${ic("close")} Chats</button></div>
+  <div class="ib-list mail-list">${rows}<div class="xs muted" style="padding:8px 12px">Latest 25 · Gmail API, no local copy</div></div></div>
+  <div id="ib-mail-read" class="${st.ph==="chat"?"ph-on":""}" style="display:flex;flex-direction:column;overflow:hidden">${open?`<div class="ib-head"><button class="ib ib-back" onclick="T12.phone('list')">${ic("back")}</button><div class="who"><b>${esc(open.subj)}</b><small>${esc(open.from)} &lt;${esc(open.addr)}&gt; · ${A().fmtDay(open.at)} ${A().fmtTime(open.at)}</small></div>${open.unread?`<span class="tag">unread</span>`:""}</div>
+   ${!st.demo.gmailScope?`<div class="bn --warn">${ic("alert")} Reconnect Gmail to mark messages as read.<span class="sp"></span><button class="textbtn" onclick="T12.gmailConnect()">Reconnect</button></div>`:""}
+   <div class="mail-body">${open.ai?`<div class="note-box ${open.ai.p==="urgent"?"--accent":open.ai.p==="attention"?"--warn":""} mb16">${ic("sparkle")} <b>${open.ai.p==="urgent"?"Escalation – urgent":open.ai.p==="attention"?"Worth a look":"Note"}</b> · ${esc(open.ai.t)}</div>`:""}
+   <div class="mail-frame"><div class="cap">Sandboxed HTML · scripts stripped · inline images shown</div>${esc(open.body).replace(/\n/g,"<br>")}</div>
+   ${open.att.length?`<div class="mt8">${open.att.map(a=>`<button class="att" onclick="App.toast('Downloading ${esc(a[0])}')">${ic("download")} ${esc(a[0])} <span class="muted">${a[1]}</span></button>`).join("")}</div>`:""}
+   ${open.sent?"":`<div class="composer" style="padding:14px 0 0;border-top:0">${open.draft?`<div class="fframe"><div class="fh">${ic("sparkle")} Flora's draft – email${g.reply[open.id]!==undefined&&g.reply[open.id]!==open.draft?", edited":""}<span class="sp"></span><button class="textbtn" onclick="T12.mailReply('')">Clear</button></div>`:""}<textarea class="textarea" placeholder="Reply in the same thread…" oninput="T12.mailReply(this.value,true)">${esc(rep)}</textarea>${open.draft?"</div>":""}<div class="c-row"><span class="hint">Sends from info@floritta.uk in the same Gmail thread</span><span class="sp"></span><button class="btn --sm" onclick="T12.mailSend()">${ic("send")} Send</button></div></div>`}
+   </div>`:`<div class="empty" style="margin:auto">${ic("mail")}<div class="h3">Select a message</div></div>`}</div></div>`;
+}
+
+/* ---- public api ---- */
+const api={
+ cv:()=>cv(st.cur),
+ navGo(id){if(id==="inbox"){A().go("inbox");return}if(["customers","customers-due"].includes(id)){A().go(id);return}A().go(id)},
+ navMore(ev){A().pop(ev,["Comms",...["Occasions","Subscriptions","Subscribers","Images","Email templates","Email log","Broadcasts","Forms","Submissions","Feedback","NPS"].map(t=>({t,ic:"chev",fn:()=>A().go(t.toLowerCase().replace(/ /g,"-"))}))])},
+ demoMenu(ev){const d=st.demo;const tg=(k,l)=>({t:(d[k]?"✓ ":"   ")+l,ic:d[k]?"check":"minus",fn:()=>api.demoSet(k,!d[k])});
+  A().pop(ev,["Demo state",tg("floraOff","Flora switched off banner"),tg("imp","Impersonation banner"),tg("alcohol","Alcohol-hours modal"),tg("nativeOff","Native inbox module off"),tg("pending","Flora L2 countdown in open chat"),tg("stripe","Stripe + orders.manage (payment panel)"),tg("meta","Meta reactions available"),"-","List state",{t:"Loaded",ic:"check",fn:()=>api.demoSet("listState","ok")},{t:"Loading skeleton",ic:"clock",fn:()=>api.demoSet("listState","loading")},{t:"Error with retry",ic:"alert",fn:()=>api.demoSet("listState","error")},{t:"Empty",ic:"inbox",fn:()=>api.demoSet("listState","empty")},"-","E-mail",tg("gmail","Gmail connected"),tg("gmailScope","Gmail has modify scope"),"-",{t:"Simulate a new message",ic:"chat",fn:()=>api.incoming()}])},
+ demoSet(k,v){st.demo[k]=v;if(k==="pending"&&v){st.cd=29;clearInterval(st.cdT);st.cdT=setInterval(()=>{st.cd--;const e=document.getElementById("ib-cd");if(e)e.textContent="0:"+String(Math.max(0,st.cd)).padStart(2,"0");if(st.cd<=0){clearInterval(st.cdT);st.demo.pending=false;const c=cv(st.cur);if(c){pushMsg(c,c.flora,{origin:"flora_auto",decision:"d-l2"});A().toast("Flora is sending this answer…")}renderAll()}},1000)}
+  if(k==="alcohol"&&v){A().modal({title:"Alcohol sales hours",body:"Alcohol add-ons can be sold 10:00–22:00 under licence SE1 889934. Outside these hours the till and the website hide them.",foot:`<button class="btn --sm" onclick="App.closeModal();T12.demoSet('alcohol',false)">Understood</button>`});return}
+  renderAll()},
+ incoming(){const c=convos().find(x=>!x.x.hidden&&x.id!==st.cur)||convos()[0];c.msgs.push({id:Date.now(),at:A().NOW.toISOString(),me:false,t:"Hi, is it too late to add a balloon?"});c.unread=(c.unread===true?1:c.unread||0)+1;c.x.answered=false;touch(c);
+  if(!st.muted)A().toast("♪ beep · new unread message");if(st.notif)A().push(cu(c).n+" · "+c.chan,"Hi, is it too late to add a balloon?",{icon:"chat",go:["inbox",{id:c.id}],type:"inbox"});A().renderSidebar();renderAll()},
+ mute(){st.muted=!st.muted;A().toast(st.muted?"Sound muted – desktop notifications and the tab counter stay on":"Sound on");renderHead()},
+ toggleUnpaid(){st.unpaidOpen=!st.unpaidOpen;renderBanners()},
+ lane(l){st.lane=l;if(l!=="managers"&&st.status==="lane_all")st.status="all";st.limit=50;renderList()},
+ status(s){st.status=s;st.limit=50;renderList()},
+ extra(k){st.extra=st.extra===k?null:k;renderList()},
+ chan(k){st.chan=st.chan===k?null:k;st.limit=50;renderAll()},
+ search(q){st.q=q;st.limit=50;renderList()},
+ reset(){st.status="all";st.extra=null;st.chan=null;st.q="";st.demo.listState="ok";renderAll()},
+ more(){if(st.limit>=200){A().toast("200 is the ceiling – narrow the list with search or a chip");return}st.limit+=50;renderList()},
+ open(id){const c=cv(id);if(!c)return;st.cur=c.id;st.ph="chat";c.unread=false;st.replyTo=null;st.tone=null;A().renderSidebar();renderAll();st.lastRefresh=0},
+ phone(v){st.ph=v;applyPhone();const l=document.getElementById("ib-mail-list"),r=document.getElementById("ib-mail-read");if(l){l.classList.toggle("ph-on",v==="list");r.classList.toggle("ph-on",v==="chat")}},
+ move(d){if(!st.ids.length)return;let i=st.ids.indexOf(st.cur);i=Math.max(0,Math.min(st.ids.length-1,i+d));api.open(st.ids[i])},
+ compose(phone="",name=""){A().modal({title:"New WhatsApp chat",body:`<div class="xs muted mb8">Starts a new WhatsApp conversation by phone number. The first message goes out right away.</div><div class="col" style="gap:10px"><div class="field"><label>Phone number</label><input class="input tnum" id="ib-cp" value="${esc(phone)}" placeholder="+44 7700 900…" oninput="T12.composeCheck()"></div><div class="field"><label>Name (optional)</label><input class="input" id="ib-cn" value="${esc(name)}"></div><div class="field"><label>First message</label><textarea class="textarea" id="ib-cm" oninput="T12.composeCheck()"></textarea></div><div class="xs accent" id="ib-cerr"></div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm is-disabled" id="ib-csend" onclick="T12.composeSend()">Send</button>`,onMount:()=>setTimeout(()=>document.getElementById("ib-cp")?.focus(),40)})},
+ composeCheck(){const p=document.getElementById("ib-cp").value.trim(),m=document.getElementById("ib-cm").value.trim();document.getElementById("ib-csend").classList.toggle("is-disabled",!(p&&m))},
+ composeSend(){const p=document.getElementById("ib-cp").value.trim(),n=document.getElementById("ib-cn").value.trim(),m=document.getElementById("ib-cm").value.trim();
+  if(!/^\+44 ?7\d{3} ?\d{6}$/.test(p)){document.getElementById("ib-cerr").textContent="Enter the number in international format, e.g. +44 7700 900123";return}
+  let u=A().data.customers.find(x=>x.phone.replace(/\s/g,"")===p.replace(/\s/g,""));if(!u){u={id:5200+A().data.customers.length,n:n||p,first:(n||"Customer").split(" ")[0],phone:p,email:"",addr:"",tags:[],occasion:"—",orders:0,spent:0,since:"2026",channel:"WhatsApp",note:""};A().data.customers.push(u)}
+  const c={id:7100+convos().length,customer:u.id,chan:"WhatsApp",unread:false,order:null,assigned:A().me().id,msgs:[],last:A().NOW.toISOString(),flora:null};convos().push(c);seed();pushMsg(c,m);A().closeModal();A().toast("Sent · WhatsApp");api.open(c.id)},
+ draft(v){const c=cv(st.cur);if(!c)return;st.drafts[c.id]=v;const f=st.floraFrame[c.id];if(f&&!f.edited&&v!==c.flora){f.edited=true;const h=document.querySelector("#s-inbox .fframe .fh");if(h)h.childNodes[1].textContent=" Flora's draft – edited "}},
+ key(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();api.send()}},
+ send(text){const c=cv(st.cur);if(!c)return;const t=(text!==undefined?text:(st.drafts[c.id]||"")).trim();const files=st.files[c.id]||[];
+  if(!t&&!files.length){A().toast("Nothing to send");return}
+  if(c.chan==="Email"&&files.length){A().toast("Attachments go through messengers only – the e-mail went without them")}
+  const f=st.floraFrame[c.id];const origin=f?(f.edited?"flora_edited":"flora_sent"):"manual";
+  if(t)pushMsg(c,t,{origin,quoteOf:st.replyTo?st.replyTo.t:null,decision:f?.decision||null});
+  files.forEach(n=>pushMsg(c,"",{type:"image",img:A().product(102).img,t:n}));
+  if(c.x.followUp)c.x.followUp=null;
+  st.drafts[c.id]="";st.files[c.id]=[];st.replyTo=null;st.tone=null;delete st.floraFrame[c.id];c.x.draft=null;
+  A().toast("Sent · "+c.chan+(origin!=="manual"?" · "+(origin==="flora_sent"?"Flora, as is":"Flora, edited"):""));A().renderSidebar();renderAll()},
+ append(t){const c=cv(st.cur);if(!c)return;st.drafts[c.id]=((st.drafts[c.id]||"")+" "+t).trim();renderChat();document.getElementById("ib-in")?.focus()},
+ useDraft(id){const c=cv(st.cur);const m=c.msgs.find(x=>x.id===id);st.drafts[c.id]=m.t;st.floraFrame[c.id]={p:"normal",edited:false,decision:null};renderChat()},
+ clearDraft(){const c=cv(st.cur);st.drafts[c.id]="";delete st.floraFrame[c.id];st.applied[c.id]=true;renderChat()},
+ rewrite(ev){const c=cv(st.cur);A().pop(ev,["Rewrite with Flora",{t:"Shorter",ic:"minus",fn:()=>api.rewriteGo("shorter")},{t:"Warmer",ic:"sun",fn:()=>api.rewriteGo("warmer")},{t:"In Russian",ic:"globe",fn:()=>api.rewriteGo("in Russian")},{t:"Custom wish…",ic:"edit",fn:()=>A().modal({title:"Rewrite",body:`<div class="field"><label>What to change</label><input class="input" id="ib-wish" placeholder="e.g. shorter, warmer, in Russian" onkeydown="if(event.key==='Enter')T12.rewriteGo(this.value)"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T12.rewriteGo(document.getElementById('ib-wish').value)">Rewrite</button>`})}])},
+ rewriteGo(w){const c=cv(st.cur);A().closeModal();if(st.demo.floraOff){A().toast("Flora is unavailable (503) – nothing changed");return}const base=st.drafts[c.id]||c.flora||"";st.drafts[c.id]=w==="shorter"?base.split(" – ")[0]+".":w==="in Russian"?"Спасибо за сообщение! Да, мы можем это сделать – подтвержу через пару минут.":base+" Warm regards from the studio!";st.floraFrame[c.id]={p:"normal",edited:false,decision:"d-re"};renderChat();A().toast("Rewritten · "+w+" – nothing sent")},
+ floraWrong(decision,msgId){A().modal({title:"Flora got it wrong",body:`<div class="col" style="gap:10px"><div class="field"><label>How it should have been answered (optional)</label><textarea class="textarea" id="ib-fw" oninput="document.getElementById('ib-fwt').style.display=this.value.trim()?'':'none'"></textarea></div><div class="field" id="ib-fwt" style="display:none"><label>Topic</label><select class="select"><option>Delivery</option><option>Prices</option><option>Tone</option><option>Facts about the customer</option></select></div><div class="xs muted">One rating per person · a text becomes a suggested fact in Flora facts · ratings feed the autonomy rollback.</div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm --accent" onclick="App.closeModal();App.toast('Marked as a mistake · ${esc(decision)}')">Mark as a mistake</button>`})},
+ cancelSend(){clearInterval(st.cdT);const c=cv(st.cur);st.demo.pending=false;st.drafts[c.id]=c.flora;st.floraFrame[c.id]={p:"normal",edited:false,decision:"d-l2"};A().toast("Send cancelled – the text is in the draft");renderAll()},
+ toggleOrder(){st.orderOpen[st.cur]=!st.orderOpen[st.cur];renderChat()},
+ rejectDraft(){const c=cv(st.cur);A().confirm("Reject Flora's order draft?","Flora will start a new one if the customer carries on.","Reject",()=>{c.x.orderDraft=null;renderChat();A().toast("Draft discarded")})},
+ attach(){A().modal({title:"Attach files",body:`<div class="xs muted mb8">Up to 10 files · photo, video, audio, pdf · 16 MB each. Word and Excel are not accepted by the server.</div><div class="grid g3">${A().data.products.filter(p=>!p.addon).slice(0,3).map(p=>`<div class="photo --4x5" style="cursor:pointer" onclick="App.closeModal();T12.addFiles(['${esc(p.name)}.jpg'])"><img src="${p.img}" alt=""></div>`).join("")}</div><div class="btn-row mt16"><button class="btn --ghost --sm" onclick="App.closeModal();T12.addFiles(['invoice-4471.pdf'])">${ic("upload")} invoice-4471.pdf</button><button class="btn --ghost --sm" onclick="App.closeModal();T12.addFiles(['voice-note.m4a'])">${ic("upload")} voice-note.m4a</button></div>`})},
+ addFiles(names){const c=cv(st.cur);if(!c)return;const f=st.files[c.id]||[];names.forEach(n=>{if(f.length>=10){A().toast("10 files maximum");return}if(!f.includes(n))f.push(n)});st.files[c.id]=f;renderChat()},
+ rmFile(i){const c=cv(st.cur);st.files[c.id].splice(i,1);renderChat()},
+ emoji(ev){const p=document.getElementById("pop");A().pop(ev,["Emoji"]);p.innerHTML+=`<div class="emoji" id="ib-emoji">${EMOJIS.map(e=>`<button onclick="T12.append('${e}');App.closePop()">${e}</button>`).join("")}</div>`;const w=document.querySelector("#s-inbox");const em=p.querySelector(".emoji");if(em)em.closest("#pop").classList.add("on")},
+ quick(ev){const c=cv(st.cur);const u=cu(c);A().pop(ev,["Quick replies",...QUICK.map(([t,m])=>({t,ic:"zap",fn:()=>api.append(m.replace("{first}",u.first))}))])},
+ toneCheck(){const c=cv(st.cur);const t=(st.drafts[c.id]||"").trim();if(!t){A().toast("Type something first");return}if(/cancel|sorry/i.test(t)){st.tone="Softer opening would help – acknowledge first, then explain.";renderChat()}else A().toast("Tone looks good – ready to send")},
+ tone(v){st.tone=v;renderChat()},
+ reply(id){const c=cv(st.cur);st.replyTo=id?c.msgs.find(m=>m.id===id):null;renderChat();document.getElementById("ib-in")?.focus()},
+ react(ev,id){const c=cv(st.cur);A().pop(ev,["React",...["❤️","🌸","👍","🙏","😊","🎉","😢","🔥"].map(e=>({t:e,fn:()=>{c.msgs.find(m=>m.id===id).reaction=e;renderChat();A().toast("Reaction sent · Meta")}})),"-",{t:"Remove reaction",ic:"close",fn:()=>{delete c.msgs.find(m=>m.id===id).reaction;renderChat()}}])},
+ approval(id){const c=cv(st.cur);const o=c.x.order;if(o){A().toast("Attached to Client approval · #"+o);return}const u=cu(c);const os=A().data.orders.filter(x=>x.customer===u.id);A().modal({title:"Attach to Client approval",body:`<div class="field"><label>Order to attach this message to</label><select class="select" id="ib-apo">${os.map(x=>`<option value="${x.id}">#${x.id} · ${esc(A().product(x.product).name)} · ${A().fmtDay(x.date)}</option>`).join("")}</select></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('Attached to Client approval · #'+document.getElementById('ib-apo').value)">Attach</button>`})},
+ lightbox(src){A().modal({title:"",body:`<div class="photo --4x5" style="cursor:zoom-out" onclick="App.closeModal()"><img src="${src}" alt=""></div><div class="xs muted mt8">Click or Esc to close</div>`,foot:null})},
+ earlier(){st.earlier[st.cur]=true;renderChat();A().toast("Earlier messages loaded · 60 more, up to 500")},
+ resolved(){const c=cv(st.cur);c.x.unresolved=null;renderAll();A().toast("Marked resolved")},
+ colour(k){const c=cv(st.cur);c.x.colour=c.x.colour===k?null:k;renderAll();A().toast(c.x.colour?"Tag · "+{upsell:"Sale + upsell",sale:"Sale",nosale:"No sale"}[k]:"Tag removed")},
+ call(){const c=cv(st.cur);const u=cu(c);A().toast("Calling "+u.phone+" · Ringover rings you first · call-recording notice logged (PECR)")},
+ noFollow(){const c=cv(st.cur);c.x.followUp=null;c.x.noReply=true;renderAll();A().toast("No follow-up until the customer writes again")},
+ remind(ev){const c=cv(st.cur);A().pop(ev,["Remind later",{t:"Today – on the next scan",ic:"clock",fn:()=>api.remindSet("today")},{t:"Another day…",ic:"calendar",fn:()=>A().modal({title:"Set reminder",body:`<div class="field"><label>Date (not earlier than today)</label><input class="input" id="ib-rd" type="date" value="2026-10-23" min="2026-10-20"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="T12.remindSet(document.getElementById('ib-rd').value)">Set reminder</button>`})},...(c.x.followUp?.remind?["-",{t:"Cancel reminder",ic:"close",cls:"--accent",fn:()=>api.remindSet(null)}]:[])])},
+ remindSet(v){const c=cv(st.cur);A().closeModal();if(v&&v!=="today"&&v<"2026-10-20"){A().toast("The date is in the past (London time)");return}if(!c.x.followUp)c.x.followUp={reason:"quote",at:A().NOW.toISOString(),remind:null};c.x.followUp.remind=v;if(!v){c.x.followUp.remind=null}renderAll();A().toast(v?"Reminder · "+(v==="today"?"today":v):"Reminder cancelled")},
+ menu(ev){const c=cv(st.cur);const me=A().me();
+  A().pop(ev,[{t:c.x.pinned?"Unpin":"Pin to top",ic:"pin",fn:()=>{c.x.pinned=!c.x.pinned;renderAll();A().toast(c.x.pinned?"Pinned":"Unpinned")}},"Status",...["open","pending","closed"].map(s=>({t:(c.x.status===s?"● ":"   ")+s[0].toUpperCase()+s.slice(1),fn:()=>{c.x.status=s;renderAll();A().toast("Status · "+s)}})),"-",{t:"Mark unread",ic:"eye",fn:()=>{c.unread=1;c.x.answered=false;A().renderSidebar();renderAll();A().toast("Back in Waiting")}},{t:c.x.lane==="managers"?"Hand over to support":"Hand over to managers",ic:"route",fn:()=>{c.x.lane=c.x.lane==="managers"?"support":"managers";renderAll();A().toast("Handed over · scripts will not move it back")}},{t:c.assigned?"Release ("+A().user(c.assigned).n+")":"Take it",ic:"user",fn:()=>{c.assigned=c.assigned?null:me.id;renderAll();A().toast(c.assigned?"Taken":"Released")}},{t:"Assign to…",ic:"customers",fn:()=>api.assign(ev)},"-",{t:"Export transcript (.txt)",ic:"download",fn:()=>A().toast("Transcript downloaded · logged in the audit")},{t:"Delete conversation",ic:"trash",cls:"--accent",fn:()=>A().confirm("Delete this conversation?","History is kept – the chat is hidden from the inbox.","Delete",()=>{c.x.hidden=true;st.cur=null;st.ph="list";renderAll();A().toast("Conversation hidden")},{danger:true})}])},
+ assign(ev){const c=cv(st.cur);A().pop(ev,["Assign to",...managers().map(s=>({t:s.n+" · "+s.title,ic:"user",fn:()=>{c.assigned=s.id;renderAll();A().toast("Assigned to "+s.n)}}))])},
+ answered(){const c=cv(st.cur);c.x.answered=true;c.unread=false;A().renderSidebar();renderAll();A().toast("Reply not needed – a new message from the customer reopens it")},
+ ctxSheet(){const c=cv(st.cur);if(!c)return;A().sheet({eyebrow:"Context · "+c.chan,title:esc(cu(c).n),body:`<div class="ctx" style="padding:0">${ctxHtml()}</div>`})},
+ linkOrder(ev){const c=cv(st.cur);const u=cu(c);const os=A().data.orders.filter(x=>x.customer===u.id);A().pop(ev,["Link order",...os.slice(0,6).map(x=>({t:`#${x.id} · ${A().product(x.product).name} · ${A().fmtDay(x.date)}`,ic:"orders",fn:()=>{c.x.order=x.id;renderCtx();A().toast("Linked #"+x.id+" · stays while it is the customer's current order")}})),...(os.length?[]:[{t:"No orders yet – create one",ic:"plus",fn:()=>A().go("order-new",{customer:u.id})}])])},
+ payMode(m){st.payMode=m;renderCtx()},
+ setAmt(v){st.payAmt[st.cur]=parseFloat(v)||0},
+ payLink(){const c=cv(st.cur);const amt=parseFloat(document.getElementById("ib-amt")?.value)||0;if(amt<0.5){A().toast("Minimum is £0.50");return}const o=c.x.order?A().order(c.x.order):null;const onOrder=o&&o.paid!=="paid";
+  st.drafts[c.id]=((st.drafts[c.id]||"")+"\nPay securely here: pay.floritta.uk/"+(onOrder?o.id:"c"+c.id)+" · "+A().fmt(amt)).trim();st.payInserted[c.id]=true;if(!onOrder)c.x.payLinks.push({amt,at:A().NOW.toISOString(),paid:false});renderChat();renderCtx();A().toast("Link added to draft ✓")},
+ tipLink(){const c=cv(st.cur);const v=parseFloat(document.getElementById("ib-tip")?.value)||0;if(!c.x.order){A().toast("Link an order first (422)");return}if(v>500){A().toast("Up to £500");return}st.drafts[c.id]=((st.drafts[c.id]||"")+"\nYou can leave a tip here: pay.floritta.uk/tip/"+c.x.order).trim();renderChat();A().toast("Tip link added to draft")},
+ saveOccasion(){const c=cv(st.cur);const u=cu(c);const d=document.getElementById("ib-occ-d").value;if(!d){A().toast("Add a date");return}u.occasion=document.getElementById("ib-occ").value+" · "+d;renderCtx();A().toast("Occasion saved · reminder 5 days before")},
+ consent(k,v){const c=cv(st.cur);if(c.x.consent[k]===v){A().toast("No change");return}c.x.consent[k]=v;renderCtx();A().toast((v?"Opt-in":"Opt-out")+" recorded · "+k.toUpperCase())},
+ ai(kind){const c=cv(st.cur);const u=cu(c);const t={Summary:"Summary: "+u.first+" asks about delivery timing for a birthday; prefers a morning slot and a card.","Draft reply":"Hi "+u.first+", yes – we can do that. Shall I book the 10:00–12:00 slot and add a card?",Translate:"Перевод: Можно ли доставить до 12 завтра? Это на день рождения мамы.","Extract order":"Order: Peony Basket · Deluxe · tomorrow 10:00–12:00 · recipient: Mum · card: yes","Make it better":"Of course, "+u.first+" – the 10:00–12:00 slot is yours. I'll add a handwritten card; just send me the words."}[kind];
+  c.msgs.push({id:Date.now(),at:A().NOW.toISOString(),me:true,draft:true,kind,t});renderChat();A().toast(kind+" · draft added, nothing sent")},
+ /* mail */
+ gmailConnect(){A().confirm("Connect Gmail?","You will be taken to Google to allow Floritta CRM to read and reply to info@floritta.uk.","Continue to Google",()=>{st.demo.gmail=true;st.demo.gmailScope=true;renderAll();A().toast("Gmail connected · info@floritta.uk")})},
+ mailSearch(q){st.mail.q=q;renderMail()},
+ mailRefresh(){A().toast("Mail refreshed");renderMail()},
+ mailFolder(f){st.mail.folder=f;st.mail.open=null;renderMail()},
+ mailUnread(){st.mail.unread=!st.mail.unread;renderMail()},
+ mailOpen(id){const m=MAIL.find(x=>x.id===id);st.mail.open=id;st.ph="chat";if(m.unread){if(st.demo.gmailScope)m.unread=false;else A().toast("Reconnect Gmail to mark messages as read")}renderMail()},
+ mailReply(v){st.mail.reply[st.mail.open]=v;if(v==="")renderMail()},
+ mailSend(){const m=MAIL.find(x=>x.id===st.mail.open);const t=(st.mail.reply[m.id]??m.draft??"").trim();if(!t){A().toast("Nothing to send");return}MAIL.push({id:"s"+Date.now(),from:"Floritta",to:m.addr,addr:"info@floritta.uk",subj:"Re: "+m.subj,at:A().NOW.toISOString(),unread:false,sent:true,body:t,att:[],ai:null,draft:null});st.mail.reply[m.id]="";m.draft=null;A().toast("Sent · same Gmail thread · "+m.addr);renderMail()},
+ mailCompose(){A().modal({title:"New email",body:`<div class="col" style="gap:10px"><div class="field"><label>Recipient email</label><input class="input" id="ib-me" placeholder="name@example.com" oninput="document.getElementById('ib-ms').classList.toggle('is-disabled',!this.value.includes('@'))"></div><div class="field"><label>Subject</label><input class="input" id="ib-msj"></div><div class="field"><label>Message</label><textarea class="textarea" id="ib-mb"></textarea></div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm is-disabled" id="ib-ms" onclick="T12.mailComposeSend()">Send</button>`})},
+ mailComposeSend(){const to=document.getElementById("ib-me").value.trim();MAIL.push({id:"s"+Date.now(),from:"Floritta",to,addr:"info@floritta.uk",subj:document.getElementById("ib-msj").value||"(no subject)",at:A().NOW.toISOString(),unread:false,sent:true,body:document.getElementById("ib-mb").value,att:[],ai:null,draft:null});A().closeModal();A().toast("Sent from info@floritta.uk · "+to);renderMail()},
+ renderAll
+};
+
+window.mount_inbox=function(p){
+ p=p||{};seed();
+ if(p.filter==="unread"||p.view==="unread")st.status="waiting";
+ if(p.view==="lost"){st.status="all";st.chan=null}
+ if(p.filter==="email"){st.chan="@"}else if(p.filter&&["mine","attention"].includes(p.filter))st.extra=p.filter;
+ if(p.filter==="follow_up")st.status="follow_up";
+ if(p.chan)st.chan=CH_SHORT[p.chan]||null;
+ if(p.assigned){st.extra=null;st.status="all"}
+ if(p.q!==undefined)st.q=p.q;
+ if(p.compose){api.compose(p.compose,p.name||"")}
+ let open=null;if(p.id)open=cv(p.id);if(p.customer)open=convos().find(c=>c.customer===Number(p.customer));
+ if(p.customer&&!open){const u=A().customer(p.customer);if(u){open={id:7100+convos().length,customer:u.id,chan:"WhatsApp",unread:false,order:null,assigned:A().me().id,msgs:[],last:A().NOW.toISOString(),flora:null};convos().push(open);seed();if(p.draft){st.drafts[open.id]=p.draft}}}
+ if(open){if(st.status!=="all"&&!filtered().includes(open))st.status="all";st.cur=open.id;open.unread=false;st.ph="chat";if(p.draft)st.drafts[open.id]=p.draft}
+ else if(!st.cur)st.ph="list";
+ renderAll();
+ clearInterval(st.timer);st.timer=setInterval(()=>{if(A().state.current!=="inbox"){clearInterval(st.timer);const t=document.getElementById("tb-title");return}st.tick++;const e=document.getElementById("ib-live");if(e)e.textContent=(st.tick*10)%60+" s ago";if(st.tick%3===0)renderList()},10000);
+ A().registerCommands([{g:"Actions",t:"New WhatsApp chat",ic:"chat",fn:()=>api.compose()},{g:"Actions",t:"Open e-mail (Gmail)",ic:"mail",fn:()=>{A().go("inbox",{filter:"email"})}},{g:"Go to",t:"Customers · Due to reorder",ic:"customers",fn:()=>A().go("customers-due")}]);
+};
+document.addEventListener("orders",()=>{if(A().state.current==="inbox")renderCtx()});
+document.addEventListener("keydown",e=>{if(A().state.current!=="inbox")return;const tag=(e.target.tagName||"").toLowerCase();if(tag==="input"||tag==="textarea")return;if(e.key==="j")api.move(1);if(e.key==="k")api.move(-1)});
+return Object.assign(api,{nav,st});
+})();
+</script>
