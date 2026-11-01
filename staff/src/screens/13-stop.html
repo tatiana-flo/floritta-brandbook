@@ -1,5 +1,243 @@
-<section class="scr" id="s-stop" data-nav="Stop" data-group="Work">
+<style>
+#s-stop .cr-hero{padding:0 var(--gutter)}
+#s-stop .cr-alc{margin:12px var(--gutter) 0;padding:14px 16px;background:var(--accent-bg)}
+#s-stop .cr-alc .t{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--accent)}
+#s-stop .cr-alc .r{font-size:13px;line-height:1.45;margin-top:6px;color:var(--ink)}
+#s-stop .cr-alc .v{font-size:13px;color:var(--ok);margin-top:8px}
+#s-stop .cr-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px var(--gutter) 0}
+#s-stop .cr-3 .btn{padding:0 8px;gap:6px;min-width:0}
+#s-stop .cr-rec{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair)}
+#s-stop .cr-rec .xs{display:block;color:var(--grey)}
+#s-stop .cr-instr{padding:14px 16px;background:var(--warn-bg);margin-top:12px}
+#s-stop .cr-instr .caps{color:var(--warn)}
+#s-stop .cr-an{border:1px solid var(--light);padding:14px 16px;margin-top:4px}
+#s-stop .cr-an .nt{padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px;line-height:1.4}
+#s-stop .cr-an .nt:last-of-type{border-bottom:0}
+#s-stop .cr-an .nt .m{font-size:12px;color:var(--grey);margin-top:3px;display:flex;gap:10px;align-items:center}
+#s-stop .cr-an .nt .m button{color:var(--accent);text-transform:uppercase;letter-spacing:var(--ls-caps);font-size:11px}
+#s-stop .cr-an .nt.--here{border-left:2px solid var(--accent);padding-left:10px}
+#s-stop .cr-an .nt .o{font-size:12px;color:var(--grey);margin-top:2px}
+#s-stop .cr-an .row2{display:flex;gap:8px;margin-top:10px}
+#s-stop .cr-an .row2 .btn{flex:1}
+#s-stop .cr-ta{width:100%;min-height:72px;border:1px solid var(--light);background:var(--paper);padding:12px;font-size:15px;resize:none;outline:none;font-family:var(--f-body);font-weight:300}
+#s-stop .cr-ta:focus{border-color:var(--ink)}
+#s-stop .cr-step{margin:0 var(--gutter);padding:14px 0;border-bottom:1px solid var(--hair)}
+#s-stop .cr-step .n{font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+#s-stop .cr-step .hint{font-size:12px;color:var(--grey);margin-top:8px}
+#s-stop .cr-step .btn{width:100%}
+#s-stop .cr-done{margin:12px var(--gutter) 0;padding:16px;background:var(--ok-bg)}
+#s-stop .cr-done .h3{color:var(--ok)}
+#s-stop .cr-done .l{font-size:14px;margin-top:6px}
+#s-stop .cr-done .m{font-size:12px;color:var(--graphite);margin-top:4px}
+#s-stop .cr-fail{margin:12px var(--gutter) 0;padding:16px;background:var(--accent-bg)}
+#s-stop .cr-fail .h3{color:var(--accent)}
+#s-stop .cr-pend{margin:12px var(--gutter) 0;padding:16px;border:1px solid var(--warn);background:var(--warn-bg)}
+#s-stop .cr-pend.--rej{border-color:var(--accent);background:var(--accent-bg)}
+#s-stop .cr-pend .t{display:flex;gap:10px;align-items:center;font-size:14px}
+#s-stop .cr-pend .t svg{width:18px;height:18px;stroke:var(--warn);fill:none;stroke-width:1.5;flex:none}
+#s-stop .cr-pend.--rej .t svg{stroke:var(--accent)}
+#s-stop .cr-pend .d{font-size:12px;color:var(--graphite);margin-top:6px}
+#s-stop .cr-pend .bt{display:flex;gap:8px;margin-top:12px}
+#s-stop .cr-pend .bt .btn{flex:1}
+#s-stop .cr-photo{width:100%;aspect-ratio:16/10;background:var(--silver);position:relative;overflow:hidden;margin-top:12px}
+#s-stop .cr-photo img{width:100%;height:100%;object-fit:cover;display:block}
+#s-stop .cr-photo .tg{position:absolute;left:10px;bottom:10px;display:flex;gap:6px}
+#s-stop .cr-demo-row{padding:16px var(--gutter) 0}
+.cr-idrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left;font-size:15px}
+.cr-idrow .rd{width:20px;height:20px;border:1px solid var(--light);flex:none;display:grid;place-items:center}
+.cr-idrow .rd::after{content:"";width:10px;height:10px;background:var(--ink);transform:scale(0);transition:transform var(--m-fast)}
+.cr-idrow.on .rd{border-color:var(--ink)}
+.cr-idrow.on .rd::after{transform:scale(1)}
+.cr-idrow .d{font-size:12px;color:var(--grey);display:block}
+.cr-cam{position:relative;aspect-ratio:3/4;max-height:300px;background:var(--ink);overflow:hidden;display:grid;place-items:center}
+.cr-cam img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85}
+.cr-cam .hint{position:absolute;left:12px;right:12px;bottom:12px;text-align:center;color:var(--paper);font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;background:rgba(30,26,23,.55);padding:6px}
+.cr-cam .fr{position:absolute;inset:18px;border:1px solid rgba(253,253,253,.6)}
+.cr-cam.snap::after{content:"";position:absolute;inset:0;background:var(--paper);animation:cr-flash .22s}
+@keyframes cr-flash{from{opacity:1}to{opacity:0}}
+.cr-shutter{width:64px;height:64px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;margin:14px auto 0}
+.cr-shutter i{width:50px;height:50px;background:var(--ink);border-radius:50%;display:block}
+.cr-rec-dot{display:inline-block;width:10px;height:10px;background:var(--accent);border-radius:50%;margin-right:8px;animation:cr-blink 1s infinite}
+@keyframes cr-blink{50%{opacity:.2}}
+</style>
+
+<!-- Courier · Stop (/delivery/[id]) – address, contact, navigation, postcode notes, the POD flow and the failure path. -->
+<!-- ids: TM-COURIER-043 TM-COURIER-044 -->
+<section class="scr" id="s-stop" data-nav="Stop · courier" data-group="Deliveries">
   <div class="appbar" id="sp-bar"></div>
-  <div class="scr-body" id="sp-body"></div>
+  <div class="scr-body" id="sp-body">
+    <!-- rendered by mount_stop:
+         ids: TM-COURIER-045 – Alcohol / 18+ banner with the rules and "ID checked ✓ HH:MM"
+         ids: TM-COURIER-046 TM-COURIER-047 TM-COURIER-048 TM-COURIER-049 – Call (sanitised number, hidden under 3 digits), Navigate (only with an address), address + window, delivery instructions
+         ids: TM-COURIER-050 TM-COURIER-051 TM-COURIER-052 – notes on this postcode (this address / neighbour, original text), delete own note, note for the next courier, Dictate (voice → text)
+         ids: TM-COURIER-053 TM-COURIER-054 – trip mode: step 1 Picked up order / Taken + undo, step 2 Confirm delivery
+         ids: TM-COURIER-055 TM-COURIER-056 TM-COURIER-057 – without runs: Picked up — leaving the shop (409 not_ready explained), Mark delivered
+         ids: TM-COURIER-058 TM-COURIER-059 – Couldn't deliver → reasons sheet with optional note
+         ids: TM-COURIER-060 TM-COURIER-061 TM-COURIER-062 – delivered card (handed to · photo time · POD badge), waiting-to-send card (Send now / Discard), not-delivered card
+         ids: TM-COURIER-063 TM-COURIER-064 TM-COURIER-065 – Message the manager sheet, "note waiting to send", errors as one alert
+         POD flow sheets (CR.flow):
+         ids: TM-COURIER-066 TM-COURIER-067 – Who did you hand it to? (unattended kinds hidden for alcohol / 18+)
+         ids: TM-COURIER-068 TM-COURIER-069 – Challenge 25 sheet (ID type, year of birth, refusal reasons → refusals register)
+         ids: TM-COURIER-070 TM-COURIER-071 TM-COURIER-072 TM-COURIER-073 TM-COURIER-074 TM-COURIER-075 TM-COURIER-076 – live camera only, one GPS fix, outbox first, outcomes, 422 age_check_required, 422 pickup_required, admin view-as guard -->
+  </div>
   <div class="cta-bar" id="sp-cta" style="display:none"></div>
 </section>
+
+<script>
+(function(){
+'use strict';
+const A=window.App, I=n=>A.icon(n), $=id=>document.getElementById(id), C=window.CR;
+const ic=C.ic, sh=C.sh, alert=C.alert, stamp=C.stamp;
+const KINDS=[['recipient','The recipient'],['neighbour','A neighbour'],['concierge','Concierge / reception'],['door','Left at the door'],['safe_place','Safe place'],['other','Someone else']];
+const UNATTENDED=['door','safe_place'], NEEDS_NAME=['neighbour','concierge','other'];
+const IDS=[['passport','Passport'],['driving_licence','Photo driving licence'],['armed_services_id','UK armed forces photo ID'],['pass_card','PASS card (hologram)']];
+const REFUSE=[['no_id','No valid ID shown'],['underage','Under 18'],['intoxicated','Person intoxicated'],['other','Other']];
+const FAIL=[['not_home','Nobody home'],['refused','Recipient refused'],['address_issue','Wrong / unclear address'],['damaged','Flowers damaged'],['other','Other']];
+const telDigits=t=>{const m=String(t||'').replace(/[^\d+]/g,'');const lead=m.startsWith('+')?'+':'';return lead+m.replace(/\+/g,'')};
+const S={code:null,anText:''};
+
+/* ================= stop screen ================= */
+window.mount_stop=function(p){
+  const code=p&&p.code||S.code||'715619';S.code=code;const s=C.stop(code);const cour=C.rk()==='courier';
+  const bar=$('sp-bar'),body=$('sp-body'),cta=$('sp-cta');
+  if(!s){bar.innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('route')">${I('back')}</button><div class="ttl">Stop</div>`;body.innerHTML=`<div class="cr-empty --err" style="margin-top:32px"><b>Stop not found</b>#${code} is not on today's list. A broken link (/delivery/abc) ends here, not in a request for /NaN.<div class="mt12"><button class="btn --sm --ghost" onclick="App.go('route')">My deliveries</button></div></div>`;cta.style.display='none';body.classList.remove('has-cta');return}
+  bar.innerHTML=`<button class="ib" aria-label="Back to Deliveries" onclick="App.back('route')">${I('back')}</button><div class="ttl">#${s.code} <span class="muted" style="font-size:16px">· CRM ${s.crm}</span></div><button class="ib" aria-label="Message the manager" onclick="CR.stopActions.managerNote('${s.code}')">${I('chat')}</button>`;
+  const done=s.hasPod||s.failure, pend=C.waiting(s.code), trip=C.demo.tripMode, confirmed=C.trip&&C.trip.status==='confirmed';
+  const alc=s.isAlcohol?`<div class="cr-alc"><div class="t">Alcohol — Challenge 25</div><div class="r">If the person looks under 25, check photo ID before handing over. Sealed container. Hand to an adult only — never leave it at the door or in a safe place; if nobody of age is in, bring it back.</div>${s.ageVerifiedAt?`<div class="v">${ic('check',14)} ID checked ✓ ${s.ageVerifiedAt}</div>`:''}</div>`:s.ageRestricted?`<div class="cr-alc"><div class="t">18+</div><div class="r">Age-restricted — check ID on handover.</div>${s.ageVerifiedAt?`<div class="v">ID checked ✓ ${s.ageVerifiedAt}</div>`:''}</div>`:'';
+  const tel=telDigits(s.tel), canCall=tel.replace(/\D/g,'').length>=3, hasAddr=!!s.line1;
+  const acts=`<div class="cr-3">${canCall?`<button class="btn --sm --ghost" onclick="CR.stopActions.call('${s.code}')">${I('phone')} Call</button>`:`<button class="btn --sm --ghost" disabled>${I('phone')} No number</button>`}${hasAddr?`<button class="btn --sm --secondary" onclick="App.toast('Google Maps navigation · ${s.pc}')">${I('route')} Navigate</button>`:`<button class="btn --sm --secondary" disabled>${I('route')} No address</button>`}<button class="btn --sm --ghost" onclick="App.go('cr-order',{code:'${s.code}'})">${I('box')} Order</button></div>`;
+  const addr=`<div class="cr-hero mt16"><div class="flex ai-c jc-sb"><span class="caps muted">${s.area}</span>${done?(s.hasPod?'<span class="pill --done">Delivered</span>':'<span class="pill cr-pill-acc">Not delivered</span>'):pend?'<span class="pill cr-pill-warn">Waiting to send</span>':s.nextRun?'<span class="pill --todo">Next run</span>':C.gateOpen()&&s.position?`<span class="pill --doing">Stop ${s.position}</span>`:''}</div><h1 class="h1 mt8">${hasAddr?s.line1:'No address on this order.'}</h1><div class="sm soft mt8">${[s.line2,s.city,s.pc].filter(Boolean).join(', ')}</div><div class="sm soft mt4">Window ${s.slot}${C.gateOpen()&&s.eta&&!done?' · ETA '+s.eta:''}</div></div>`;
+  const instr=s.instructions?`<div class="pad"><div class="cr-instr"><div class="caps">Delivery instructions</div><div class="sm mt4">${s.instructions}</div></div></div>`:'';
+  const rec=`<div class="sec-head"><h2 class="h3 f1">Recipient</h2></div><div class="pad"><div class="cr-rec"><span class="avatar">${s.who.split(' ').map(x=>x[0]).join('').slice(0,2)}</span><span class="f1"><b style="font-weight:400">${s.who}</b><span class="xs">${s.tel}${s.telRaw?` · shown as ${tel}`:''}</span></span>${canCall?`<button class="ib" aria-label="Call" onclick="CR.stopActions.call('${s.code}')">${I('phone')}</button>`:''}</div>${s.items.map(i=>`<div class="cr-rec"><img class="wk-th" style="width:48px;height:60px" src="${i.img}" alt=""><span class="f1"><b class="sm" style="font-weight:400">${i.n}</b><span class="xs">${i.q>1?'×'+i.q:'1 item'}</span></span></div>`).join('')}</div>`;
+  const notes=done?'':addrNotes(s);
+  let steps='';
+  if(cour&&!done&&!pend){
+    if(trip){
+      const st1=s.taken?`<div class="flex ai-c g8" style="font-size:14px;color:var(--ok)">${ic('check',16)} Taken ${s.taken}${confirmed?'':` <button class="textbtn" style="margin-left:6px;color:var(--grey)" onclick="CR.tripActions.untake('${s.code}')">undo</button>`}</div>`:`<button class="btn ${s.readyState==='ready'?'':'--ghost'}" onclick="CR.tripActions.take('${s.code}',{via:'button'})">${I('box')} Picked up order</button>`;
+      steps=`<div class="sec-head"><h2 class="h3 f1">Hand over</h2></div>
+        <div class="cr-step"><div class="n">Step 1 · at the shop</div>${st1}<div class="hint">${s.taken?'Take a photo of the delivered flowers as proof.':'Tap when the parcel is in your hands. The order goes out once a manager confirms the route.'}</div></div>
+        <div class="cr-step"><div class="n">Step 2 · at the door</div><button class="btn ${s.taken?'':'--secondary'}" ${s.nextRun?'disabled':''} onclick="CR.flow.start('${s.code}')">${I('camera')} Confirm delivery</button>${!confirmed&&s.taken?'<div class="hint">The route opens once a manager has confirmed it – you can still record a handover if you are already at the door.</div>':''}</div>`;
+    }else{
+      const left=!!s.pickedUpAt;
+      steps=`<div class="sec-head"><h2 class="h3 f1">Hand over</h2></div>
+        <div class="cr-step"><div class="n">Leaving the shop</div>${left?`<div class="flex ai-c g8" style="font-size:14px;color:var(--ok)">${ic('check',16)} Picked up ${s.pickedUpAt}</div>`:`<button class="btn" onclick="CR.stopActions.pickup('${s.code}')">${I('truck')} Picked up — leaving the shop</button>`}<div class="hint">Tap when you have the parcel and are leaving. Alcohol cannot be handed over without it.</div></div>
+        <div class="cr-step"><div class="n">At the door</div><button class="btn ${left?'':'--secondary'}" onclick="CR.flow.start('${s.code}')">${I('camera')} Mark delivered</button></div>`;
+    }
+    steps+=`<div class="cr-step" style="border-bottom:0"><button class="btn --ghost" onclick="CR.stopActions.fail('${s.code}')">${I('flag')} Couldn't deliver</button></div>`;
+  }
+  let result='';
+  if(s.hasPod){const h=s.handover||{};const kl=(KINDS.find(k=>k[0]===h.kind)||['','Delivered'])[1];
+    result=`<div class="cr-done"><div class="h3">Delivered</div><div class="l">Handed to: ${kl}${h.name?' · '+h.name:''}</div><div class="m">Photo at ${s.photoAt||s.deliveredAt}${s.podLocal?' · <span class="pill --done" style="margin-left:4px">Photo ✓ from this phone</span>':' · recorded on another device'}</div>${s.podLocal?`<div class="cr-photo"><img src="${s.img}" alt="Proof of delivery"><div class="tg"><span class="tag --ink">POD</span><span class="tag --soft">${s.photoAt||s.deliveredAt}</span></div></div>`:''}</div>`}
+  else if(s.failure){result=`<div class="cr-fail"><div class="h3">Not delivered</div><div class="l sm mt8">${s.failure.label} · ${s.failure.at}</div>${s.failure.note?`<div class="xs soft mt4">“${s.failure.note}”</div>`:''}<div class="xs soft mt8">The manager will arrange the next step. No more handover buttons on this stop.</div></div>`}
+  else if(pend){const rej=pend.status==='rejected';
+    result=`<div class="cr-pend ${rej?'--rej':''}"><div class="t">${ic(rej?'flag':'send',18)}<span>${rej?`The CRM did not accept it: ${pend.reason}`:'Delivered – saved on the phone, waiting for a connection to reach the CRM. It will be sent automatically.'}</span></div><div class="d">Saved on device · ${pend.at} · ${pend.kind==='deliver'?'photo + who took it + GPS':''}</div><div class="bt"><button class="btn --sm" onclick="CR.stopActions.resend('${s.code}')">Send now</button><button class="btn --sm --ghost" onclick="CR.stopActions.discard('${s.code}')">Discard</button></div></div>`}
+  const noteWait=C.outbox.some(o=>o.code===s.code&&o.kind==='note')?`<div class="pad mt12"><div class="xs" style="color:var(--warn)">${ic('clock',12)} Note to the manager waiting to send</div></div>`:'';
+  const demo=cour?`<div class="cr-demo-row"><div class="cr-note" style="margin-bottom:8px">Demo · CRM answers</div><div class="cr-chipw"><button class="chip" onclick="CR.stopActions.demo('full')">Outbox full</button><button class="chip" onclick="CR.stopActions.demo('age')">422 age_check_required</button><button class="chip" onclick="CR.stopActions.demo('pickup')">422 pickup_required</button><button class="chip" onclick="CR.stopActions.demo('reject')">Rejected by CRM</button><button class="chip" onclick="CR.stopActions.demo('otherDevice')">POD from another device</button><button class="chip" onclick="App.go('stop',{code:'abc'})">Broken link</button></div></div>`:'';
+  body.innerHTML=`${alc}${addr}${acts}${instr}${result}${noteWait}${rec}${notes}${steps}${demo}<div style="height:24px"></div>`;
+  let c='';
+  if(!cour)c=`<button class="btn --secondary" onclick="App.setUser('andrii')">View as Andrii</button>`;
+  else c=`<button class="btn --ghost" onclick="CR.stopActions.managerNote('${s.code}')">${I('chat')} Message the manager</button>`;
+  cta.innerHTML=c;cta.style.display=c?'':'none';body.classList.toggle('has-cta',!!c);
+};
+
+function addrNotes(s){
+  if(C.demo.featureOff)return '';
+  const list=C.addrNotes[s.code]||[];
+  const rows=list.map(n=>`<div class="nt ${n.thisHouse?'--here':''}">${n.thisHouse?'<span class="caps" style="color:var(--accent)">This address</span><br>':n.house?`<span class="caps muted">Neighbour on this postcode: ${n.house}</span><br>`:''}${n.text}${n.original?`<div class="o">Original: ${n.original}</div>`:''}<div class="m"><span>${n.by} · ${n.at}</span>${n.canDelete?`<button onclick="CR.stopActions.delNote('${s.code}',${n.id})">Delete</button>`:''}</div></div>`).join('')||`<div class="nt muted">No notes yet. If the door was hard to find, leave one for the next courier.</div>`;
+  return `<div class="sec-head"><h2 class="h3 f1">Notes on this postcode</h2><span class="xs muted">${s.pc}</span></div><div class="pad"><div class="cr-an">${rows}<div class="field" style="margin:14px 0 0"><label>Note for the next courier</label><textarea class="cr-ta" id="sp-an" placeholder="Entrance, gate code, where to leave it…" oninput="CR.stopActions.anInput(this.value)">${S.anText}</textarea></div><div class="row2"><button class="btn --sm --ghost" onclick="CR.stopActions.dictate('${s.code}')">${I('mic')} Dictate</button><button class="btn --sm" onclick="CR.stopActions.saveNote('${s.code}')">Save note</button></div><div class="xs muted mt8">Tap «Dictate» and say it – Russian, English or Ukrainian. The note is saved as text.</div></div></div>`;
+}
+
+/* ================= stop actions ================= */
+C.stopActions={
+  call(code){const s=C.stop(code);A.haptic();A.toast(`Calling ${s.who} · ${telDigits(s.tel)}`)},
+  anInput(v){S.anText=v},
+  saveNote(code){const t=S.anText.trim();if(!t){A.toast('Write or dictate the note first');return}
+    const l=C.addrNotes[code]=C.addrNotes[code]||[];if(l.some(n=>n.text===t&&n.by==='Andrii')){A.toast('Already saved today');S.anText='';C.remount();return}
+    l.push({id:Date.now(),by:'Andrii',at:'Today '+stamp(),text:t,thisHouse:true,canDelete:true});S.anText='';A.toast('Note saved – the next courier will see it.');C.remount()},
+  delNote(code,id){A.confirm('Delete this note?','Nobody will see it again.','Delete',()=>{C.addrNotes[code]=(C.addrNotes[code]||[]).filter(n=>n.id!==id);A.toast('Note deleted');C.remount()})},
+  dictate(code){let sec=0;
+    A.sheet(sh('Dictate',`<div class="cr-alert"><div class="h3"><span class="cr-rec-dot"></span>Recording</div><p>Say it – Russian, English or Ukrainian. Up to 60 seconds, it stops by itself.</p><div class="h1 mt16" id="sp-rec">0:00</div></div>`,`<button class="btn --secondary" onclick="clearInterval(CR._rec);App.closeSheet()">Cancel</button><button class="btn" onclick="CR.stopActions.dictateStop('${code}')">Stop and save</button>`));
+    clearInterval(C._rec);C._rec=setInterval(()=>{sec++;const e=$('sp-rec');if(e)e.textContent='0:'+String(sec).padStart(2,'0');if(sec>=60)C.stopActions.dictateStop(code)},1000)},
+  dictateStop(code){clearInterval(C._rec);A.sheet(`<div class="sh-body cr-alert"><span class="cr-spin"></span><p class="mt8">Turning speech into text…</p></div>`);
+    setTimeout(()=>{A.closeSheet();S.anText='Gate code 4471, the bell is on the left pillar.';A.toast('Transcribed – check and save');C.remount()},900)},
+  pickup(code){const s=C.stop(code);
+    if(C.demo.viewAs){A.confirm('You are viewing as Andrii','“Picked up” sends the customer a message. Continue?','Continue',()=>{C.demo.viewAs=false;C.stopActions.pickup(code);C.demo.viewAs=true});return}
+    if(s.readyState!=='ready'){alert('Order not ready for pickup',`${s.readyState==='not_started'?'The florist has not marked it Ready yet.':'There is no finished-bouquet photo yet.'} Ask the florist, then tap “Picked up” again.`);return}
+    s.pickedUpAt=stamp();A.haptic();A.toast('Picked up · '+s.pickedUpAt+' on record');C.remount()},
+  fail(code){const s=C.stop(code);S.failReason=null;S.failNote='';
+    const html=()=>sh("Couldn't deliver",`<div class="caps muted" style="margin-bottom:4px">Why not?</div>${FAIL.map(f=>`<button class="cr-idrow ${S.failReason===f[0]?'on':''}" onclick="CR.stopActions.failPick('${f[0]}')"><span class="rd"></span>${f[1]}</button>`).join('')}<div class="field" style="margin:14px 0 0"><label>Add a note for the manager (optional)</label><textarea class="cr-ta" maxlength="500" placeholder="e.g. rang twice, no answer" oninput="CR.stopActions.failNoteInput(this.value)">${S.failNote}</textarea><div class="xs muted">${S.failNote.length}/500${S.failReason==='not_home'?' · the recipient gets a link to pick a new time':''}</div></div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" ${S.failReason?'':'disabled'} onclick="CR.stopActions.failSave('${code}')">Save outcome</button>`);
+    C._failHtml=html;A.sheet(html(),{full:true})},
+  failPick(r){S.failReason=r;$('sheet-inner').innerHTML=C._failHtml()},
+  failNoteInput(v){S.failNote=v.slice(0,500)},
+  failSave(code){const s=C.stop(code);A.closeSheet();s.failure={reason:S.failReason,label:FAIL.find(f=>f[0]===S.failReason)[1],note:S.failNote.trim(),at:stamp()};A.haptic();
+    alert('Saved','Saved. The manager will arrange the next step.','OK',"App.back('route')");setTimeout(()=>A.push('Not delivered · #'+code,s.failure.label+(s.failure.note?' · “'+s.failure.note+'”':''),{icon:'flag',to:'Valeria'}),900);C.remount()},
+  managerNote(code){S.mgrText='';
+    A.sheet(sh('Message the manager',`<div class="field"><label>Message</label><textarea class="cr-ta" maxlength="500" placeholder="e.g. the gate code does not work, asked to come after 6" oninput="CR.stopActions.mgrInput(this.value)"></textarea></div><p class="xs muted" style="margin:0">Sends a push to the managers. The same text twice in a day is not repeated.</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="CR.stopActions.mgrSend('${code}')">Send</button>`))},
+  mgrInput(v){S.mgrText=v.slice(0,500)},
+  mgrSend(code){const t=(S.mgrText||'').trim();if(!t){A.toast('Write the message first');return}A.closeSheet();
+    if(C.demo.offline){C.outbox.push({code,kind:'note',status:'queued',text:t,at:stamp(),ownerId:A.state.me});alert('Saved on the phone','No connection. The message is saved and will be sent as soon as the CRM is reachable.');C.remount();return}
+    A.toast('Sent to the manager.');setTimeout(()=>A.push('Andrii · #'+code,t,{icon:'chat',to:'Valeria'}),700)},
+  resend(code){const o=C.waiting(code);if(!o)return;
+    if(C.demo.offline){alert('Still no connection','The delivery stays saved on the phone and goes by itself when the CRM is reachable.');return}
+    C.outbox=C.outbox.filter(x=>x!==o);finishDeliver(code,o.payload,true)},
+  discard(code){A.confirm('Discard the saved delivery?','You will have to take the photo again.','Discard',()=>{C.outbox=C.outbox.filter(x=>!(x.code===code&&x.kind==='deliver'));A.toast('Discarded');C.remount()})},
+  demo(k){const code=S.code,s=C.stop(code);
+    if(k==='full')alert('Queue is full','Too many deliveries are waiting to be sent. Get a connection first, then try again.');
+    if(k==='age'){s.ageVerifiedAt=null;alert('CRM needs the ID check','The CRM requires a Challenge 25 record for this order. The saved attempt is kept – add the ID you checked and it goes again with the same photo.','Add the ID check',`CR.flow.ageCheck('${code}',{amend:true})`)}
+    if(k==='pickup')alert('Pickup not on record',C.demo.tripMode?'Alcohol cannot be handed over before departure – wait for a manager to confirm the route.':'Tap "Picked up" first — for alcohol the time it left the shop must be on record.');
+    if(k==='reject'){const o=C.waiting(code);if(o){o.status='rejected';o.reason='order already delivered by another courier'}else{C.outbox.push({code,kind:'deliver',status:'rejected',reason:'order already delivered by another courier',at:stamp(),ownerId:A.state.me,payload:{}})}C.remount()}
+    if(k==='otherDevice'){s.hasPod=true;s.podLocal=false;s.deliveredAt=stamp();s.handover=null;C.remount()}}
+};
+
+/* ================= POD flow ================= */
+const F={code:null,age:null,handover:null,amend:false};
+C.flow={
+  start(code){const s=C.stop(code);F.code=code;F.age=null;F.handover=null;F.amend=false;
+    if(C.demo.viewAs&&!F.guarded){A.confirm('You are viewing as Andrii','“Delivered” sends the customer a message. Continue?','Continue',()=>{F.guarded=true;C.flow.start(code)});return}
+    F.guarded=false;
+    if((s.isAlcohol||s.ageRestricted)&&!s.ageVerifiedAt)C.flow.ageCheck(code);else C.flow.handover(code)},
+  ageCheck(code,opts={}){F.code=code;F.amend=!!opts.amend;F.age={id:null,year:''};F.refuse=null;
+    const html=()=>sh('Challenge 25 — which ID did you check?',`<p class="xs muted" style="margin:0 0 4px">Only these documents count. A photo of a document on a phone, a student card or a bank card is a refusal.</p>${IDS.map(d=>`<button class="cr-idrow ${F.age.id===d[0]?'on':''}" onclick="CR.flow.agePick('${d[0]}')"><span class="rd"></span>${d[1]}</button>`).join('')}<div class="field" style="margin:14px 0 0"><label>Year of birth on the document (optional)</label><input class="input" inputmode="numeric" maxlength="4" placeholder="e.g. 1994" value="${F.age.year}" oninput="CR.flow.ageYear(this.value)"></div>${F.age.yearErr?'<div class="cr-err">Enter a four-digit year.</div>':''}<button class="textbtn mt12" style="color:var(--accent)" onclick="CR.flow.refuseSheet('${code}')">Could not hand over (no ID / under 18)</button>`,`<button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" ${F.age.id?'':'disabled'} onclick="CR.flow.ageDone('${code}')">ID checked — take the photo</button>`);
+    C._ageHtml=html;A.sheet(html(),{full:true})},
+  agePick(id){F.age.id=id;$('sheet-inner').innerHTML=C._ageHtml()},
+  ageYear(v){F.age.year=v.replace(/\D/g,'').slice(0,4)},
+  ageDone(code){if(F.age.year&&F.age.year.length!==4){F.age.yearErr=true;$('sheet-inner').innerHTML=C._ageHtml();return}
+    const s=C.stop(code);s.ageVerifiedAt=stamp();s.ageCheck={id_type:F.age.id,birth_year:F.age.year||null};
+    if(F.amend){A.closeSheet();alert('Sent again','The saved attempt now carries the ID check and went to the CRM with the same photo.','OK');const o=C.waiting(code);if(o){C.outbox=C.outbox.filter(x=>x!==o);finishDeliver(code,o.payload,true)}C.remount();return}
+    C.flow.handover(code)},
+  refuseSheet(code){F.refuse=null;
+    const html=()=>sh('Why was the alcohol not handed over?',`<p class="xs muted" style="margin:0 0 4px">Keep the order and bring it back to the shop. This goes into the refusals register.</p>${REFUSE.map(r=>`<button class="cr-idrow ${F.refuse===r[0]?'on':''}" onclick="CR.flow.refusePick('${r[0]}')"><span class="rd"></span>${r[1]}</button>`).join('')}`,`<button class="btn --secondary" onclick="CR.flow.ageCheck('${code}')">Back</button><button class="btn --accent" ${F.refuse?'':'disabled'} onclick="CR.flow.refuseSave('${code}')">Record refusal</button>`);
+    C._refHtml=html;A.sheet(html(),{full:true})},
+  refusePick(r){F.refuse=r;$('sheet-inner').innerHTML=C._refHtml()},
+  refuseSave(code){const s=C.stop(code);A.closeSheet();s.failure={reason:'refused',label:'Recipient refused · age refusal',note:REFUSE.find(r=>r[0]===F.refuse)[1],at:stamp(),ageRefusal:F.refuse};A.haptic();
+    alert('Refusal recorded','Refusal recorded. Bring the order back to the shop.','OK',"App.back('route')");setTimeout(()=>A.push('Alcohol refusal · #'+code,s.failure.note+' · goes into the refusals register',{icon:'flag',to:'Valeria'}),900);C.remount()},
+  handover(code){const s=C.stop(code);F.handover={kind:'recipient',name:'',note:''};const restricted=s.isAlcohol||s.ageRestricted;
+    const html=()=>{const h=F.handover;const kinds=KINDS.filter(k=>!(restricted&&UNATTENDED.includes(k[0])));
+      return sh('Who did you hand it to?',`${restricted?`<div class="panel --accent" style="padding:10px 12px;margin-bottom:8px"><div class="xs" style="color:var(--accent)">Alcohol / 18+: hand to an adult only – no door or safe-place drop.</div></div>`:''}${kinds.map(k=>`<button class="cr-idrow ${h.kind===k[0]?'on':''}" onclick="CR.flow.hoPick('${k[0]}')"><span class="rd"></span>${k[1]}</button>`).join('')}${NEEDS_NAME.includes(h.kind)?`<div class="field" style="margin:14px 0 0"><label>Name of the person who took it (optional)</label><input class="input" maxlength="120" placeholder="e.g. Mrs Smith, flat 3" value="${h.name}" oninput="CR.flow.hoName(this.value)"></div>`:''}<div class="field" style="margin:14px 0 0"><label>Note for the manager (optional)</label><input class="input" maxlength="300" placeholder="e.g. left behind the planter" value="${h.note}" oninput="CR.flow.hoNote(this.value)"></div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="CR.flow.camera('${code}')">${I('camera')} Take the photo</button>`)};
+    C._hoHtml=html;A.sheet(html(),{full:true})},
+  hoPick(k){F.handover.kind=k;$('sheet-inner').innerHTML=C._hoHtml()},
+  hoName(v){F.handover.name=v.slice(0,120)},
+  hoNote(v){F.handover.note=v.slice(0,300)},
+  camera(code){const s=C.stop(code);F.shot=false;
+    const html=()=>sh('Proof of delivery',`<div class="cr-cam ${F.shot?'':''}" id="sp-cam"><img src="${s.img}" alt=""><span class="fr"></span><div class="hint">${F.shot?'Photo taken · 1280 px, compressed':'Live camera only · bouquet and door in frame'}</div></div>${F.shot?'':`<button class="cr-shutter" aria-label="Take photo" onclick="CR.flow.shot()"><i></i></button>`}<p class="xs muted" style="margin:10px 0 0">No gallery: the photo is taken now, with the time and one GPS fix (up to 6 s – a slow fix never blocks the handover). Camera access off → “Camera access is off. Enable it in Settings to add a delivery photo.”</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" ${F.shot?'':'disabled'} onclick="CR.flow.send('${code}')">Delivered</button>`);
+    C._camHtml=html;A.sheet(html(),{full:true})},
+  shot(){const e=$('sp-cam');if(e){e.classList.add('snap');A.haptic()}setTimeout(()=>{F.shot=true;$('sheet-inner').innerHTML=C._camHtml()},240)},
+  send(code){A.closeSheet();const payload={handover:F.handover,photoAt:stamp(),geo:'51.47, -0.16 (±12 m)'};
+    A.toast('Location fixed · '+payload.geo);
+    // the outbox entry is written first, then sent from there
+    const item={code,kind:'deliver',status:'queued',at:payload.photoAt,ownerId:A.state.me,payload};
+    C.outbox=C.outbox.filter(x=>!(x.code===code&&x.kind==='deliver'));
+    if(C.outbox.length>=30){alert('Queue is full','Too many deliveries are waiting to be sent. Get a connection first, then try again.');return}
+    C.outbox.push(item);
+    if(C.demo.offline){alert('Saved on the phone','No connection. The delivery is saved on the phone and will be sent as soon as the CRM is reachable.','OK',"App.back('route')");C.remount();return}
+    setTimeout(()=>{C.outbox=C.outbox.filter(x=>x!==item);finishDeliver(code,payload)},500)}
+};
+function finishDeliver(code,payload,resent){const s=C.stop(code);const p=payload||{};
+  s.hasPod=true;s.podLocal=true;s.deliveredAt=p.photoAt||stamp();s.photoAt=p.photoAt||s.deliveredAt;s.handover=p.handover||{kind:'recipient',name:''};
+  C.receipts[code]={kind:s.handover.kind,name:s.handover.name,at:s.deliveredAt};
+  A.haptic();A.toast(resent?'Sent · delivered':'Delivered. Thank you!',{img:s.img});
+  setTimeout(()=>A.push('Delivered · #'+code,s.area+' · '+(KINDS.find(k=>k[0]===s.handover.kind)||['','Delivered'])[1]+(s.handover.name?' · '+s.handover.name:''),{icon:'check',to:'Shop'}),800);
+  if(A.state.current==='stop')A.back('route');else C.remount();
+}
+})();
+</script>
