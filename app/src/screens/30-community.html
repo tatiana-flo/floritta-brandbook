@@ -165,6 +165,19 @@
 .cmz .post .rep .r b{font-weight:500}
 .cmz .post .vc{padding:8px var(--gutter) 0;font-size:13px;color:var(--grey)}
 #s-community .more{margin:32px var(--gutter) 0}
+#s-community .ptr{height:0;overflow:hidden;display:flex;justify-content:center;align-items:center;transition:height .25s var(--m-ease)}
+#s-community .ptr.on{height:44px}
+#s-community .ptr i{width:18px;height:18px;border:1.5px solid var(--light);border-top-color:var(--ink);border-radius:50%;animation:cmspin .8s linear infinite}
+@keyframes cmspin{to{transform:rotate(360deg)}}
+.cmz .exbanner{margin:4px var(--gutter) 14px;padding:12px 14px;background:var(--silver);font-size:13px;line-height:1.45;color:var(--graphite)}
+.cmz .exbanner b{display:block;font-weight:400;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+.cmz .extag{padding:12px var(--gutter) 0}
+.cmz .post .hd .ib.dots{width:36px;height:36px;margin-right:-8px}
+.cmz .post .hd .ib.dots svg{width:18px;height:18px;fill:var(--ink);stroke:none}
+.cmz .skel .ln{height:12px;margin:12px var(--gutter) 0;width:60%}
+.cmz .skel .ph{aspect-ratio:4/5;margin:0 var(--gutter)}
+.cmz .empty .btn{margin-top:18px}
+.cmz .empty svg{display:block;width:28px;height:28px;stroke:var(--grey);fill:none;stroke-width:1.3;margin:0 auto 10px}
 #s-community .fend{padding:24px var(--gutter) 8px;text-align:center;color:var(--grey);font-size:13px}
 
 /* ---- post view ---- */
@@ -230,17 +243,30 @@
 #s-hashtag .hh .btn.on{background:transparent;color:var(--ink)}
 #s-hashtag .g3{margin-top:24px}
 </style>
+<!-- Community – лента. Логика всех 5 экранов сообщества: window.Comm, переопределён в 40-community-extra.html (шелльная версия без листа безопасности). -->
+<!-- ids: APP-COMM-001 – таб «Community» в нижней панели (data-tab="community"); APP-COMM-002 – флаг выключен: таб скрыт, экраны уводят на Home (демо-переключатель на экране «Community – safety & demo») -->
 <section class="scr cmz" id="s-community" data-tab="community" data-nav="Community – feed" data-group="Social">
+  <!-- ids: APP-COMM-003 APP-COMM-004 -->
   <div class="appbar">
     <div class="ttl">Community</div>
-    <button class="petals" onclick="App.go('petals')" aria-label="Petals"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="6" rx="2.6" ry="3.4"/><ellipse cx="12" cy="18" rx="2.6" ry="3.4"/><ellipse cx="6" cy="12" rx="3.4" ry="2.6"/><ellipse cx="18" cy="12" rx="3.4" ry="2.6"/></svg><span data-petals>1,240</span></button>
+    <span class="tag --soft" style="margin-right:6px">Examples</span>
     <button class="ib" onclick="App.go('compose')" aria-label="Post a bouquet" style="border:1px solid var(--ink)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
   </div>
-  <div class="scr-body has-tab">
+  <div class="scr-body has-tab" id="cm-body">
+    <!-- ids: APP-COMM-010 – pull-to-refresh: потянуть ленту вниз (палец/мышь), крутилка 0,7 с, данные не меняются -->
+    <div class="ptr" id="cm-ptr"><i></i></div>
+    <!-- ids: APP-COMM-006 – баннер «Examples» -->
+    <div class="exbanner" id="cm-banner"><b>Examples</b>Example posts that show how Community will work. These members are samples, not real customers.</div>
+    <!-- ids: APP-COMM-007 – ряд из 21 участника, флористы чёрные, новый пост – обводка; тап → профиль -->
     <div class="members" id="cm-members"></div>
+    <!-- ids: APP-COMM-008 – сегменты For you / Following / Nearby · SE1 -->
     <div class="seg" id="cm-seg"><button class="on" onclick="Comm.filter('for',this)">For you</button><button onclick="Comm.filter('fol',this)">Following</button><button onclick="Comm.filter('near',this)">Nearby · SE1</button></div>
+    <!-- ids: APP-COMM-005 – скелетон ленты (2 заглушки) до чтения стора; APP-COMM-009 – лента без скрытых, пожалованных и постов заблокированных; APP-COMM-013 – пустые состояния Following / Nearby -->
+    <!-- Карточка поста (Comm.postHtml): ids: APP-COMM-020 APP-COMM-021 APP-COMM-022 APP-COMM-023 APP-COMM-024 APP-COMM-025 APP-COMM-026 APP-COMM-027 APP-COMM-028 APP-COMM-029 APP-COMM-030 APP-COMM-031 APP-COMM-032 APP-COMM-033 APP-COMM-034 APP-COMM-035 APP-COMM-014 -->
     <div class="feed" id="cm-feed"></div>
+    <!-- ids: APP-COMM-011 – Load more: только For you, один раз, через 0,6 с + тост «6 more bouquets» -->
     <div class="more"><button class="btn --ghost --block" id="cm-more" onclick="Comm.more()">Load more</button></div>
-    <div class="fend" id="cm-fend">Bouquets at home, across London. Post yours for 20 Petals.</div>
+    <!-- ids: APP-COMM-012 – подвал ленты -->
+    <div class="fend" id="cm-fend">Bouquets at home, across London.</div>
   </div>
 </section>
