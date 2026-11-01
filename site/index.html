@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Floritta – брендбук сайта</title>
+<meta name="description" content="Брендбук floritta.uk, снятый с живого сайта 01.11.2026: цвета, шрифты, кнопки, чипы, поля, карточка товара.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* Токены = живой floritta.uk, вариант B (основной у всех с 22.10.2026).
+   Источник: tatiana-flo/lv-floritta, resources/css/app-v2.scss. Снято 01.11.2026. */
+:root{
+  --paper:#fdfdfd; --silver:#f2f2f4; --hair:#e6e6e6; --light:#cecece;
+  --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378;
+  --accent:#b4595f; --accent-dark:#9a474c; --accent-soft:#d4959a; --accent-bg:#f3e1e1; --accent-tint:#faf1f1;
+  --ok:#7a8a6b; --error:#d84f4f; --warning:#9a6a0a; --warning-bg:#fbf1d4; --pet:#2f6b3a; --pet-bg:#e8f3ea;
+  --f-display:"Cormorant Infant","Cormorant Fallback",Georgia,serif;
+  --f-body:"Jost","Jost Fallback",Arial,Helvetica,sans-serif;
+  --fs-display:clamp(44px,7vw,96px); --fs-h1:clamp(40px,5vw,72px); --fs-h2:clamp(32px,3.6vw,48px); --fs-h3:clamp(24px,2.4vw,32px); --fs-h4:clamp(20px,1.8vw,24px);
+  --lh-display:1.02; --ls-caps:.04em; --ls-eyebrow:.14em; --ls-btn:.12em;
+  --r-btn:0px; --r-card:0px; --btn-h:52px; --btn-h-m:48px; --btn-h-sm:40px;
+  --section:96px; --section-m:56px;
+  --m-fast:.2s; --m-base:.35s; --m-ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-weight:300;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{display:block;max-width:100%}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+@media(max-width:575px){.wrap{padding:0 16px}}
+h1,h2,h3,h4,.display{font-family:var(--f-display);font-weight:300;line-height:var(--lh-display);letter-spacing:var(--ls-caps);text-transform:uppercase;margin:0}
+.eyebrow{display:block;font-size:12px;font-weight:400;line-height:1.3;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.lead{color:var(--graphite);max-width:70ch}
+code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:var(--silver);padding:1px 5px}
+
+/* разделы */
+.sec{padding:var(--section) 0;border-top:1px solid var(--hair)}
+@media(max-width:575px){.sec{padding:var(--section-m) 0}}
+.sec-h{display:grid;grid-template-columns:220px 1fr;gap:24px;margin-bottom:40px}
+.sec-h h2{font-size:var(--fs-h3)}
+@media(max-width:800px){.sec-h{grid-template-columns:1fr;gap:8px}}
+.num{font-size:12px;letter-spacing:var(--ls-eyebrow);color:var(--grey);padding-top:10px}
+
+/* шапка документа */
+.ticker{height:36px;display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--paper);font-size:12px;font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px;border-bottom:1px solid var(--hair)}
+.brand{font-family:var(--f-display);font-size:28px;letter-spacing:.12em;text-transform:uppercase;font-weight:300}
+.top nav{display:flex;gap:24px;font-size:13px;font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+.top nav a{text-decoration:none;padding:6px 0;border-bottom:1px solid transparent}
+.top nav a:hover{border-color:var(--ink)}
+@media(max-width:1000px){.top{grid-template-columns:1fr auto}.top nav{display:none}}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;min-height:560px;background:var(--silver)}
+.hero .txt{padding:72px 48px;display:flex;flex-direction:column;justify-content:center;gap:20px}
+.hero h1{font-size:var(--fs-h1)}
+.hero .ph{background:url(../crm/img/hero-white.webp) center/cover}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.hero .ph{min-height:360px}.hero .txt{padding:48px 16px}}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--hair);margin-top:8px}
+.facts div{padding:14px 16px;font-size:13px;color:var(--graphite)}
+.facts div+div{border-left:1px solid var(--hair)}
+.facts b{display:block;font-weight:400;color:var(--ink)}
+@media(max-width:800px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--hair)}}
+
+/* цвета */
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:0;border-top:1px solid var(--hair);border-left:1px solid var(--hair)}
+.sw{border-right:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.sw .c{height:110px}
+.sw .t{padding:12px 14px 14px;font-size:13px;color:var(--graphite);line-height:1.4}
+.sw .t b{display:block;color:var(--ink);font-weight:400;font-size:14px}
+.sw .t span{display:block;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ink);margin:2px 0 4px}
+.sub{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);font-weight:400;margin:40px 0 12px}
+.ratio{display:flex;height:28px;border:1px solid var(--hair);margin-top:12px}
+.ratio div{height:100%}
+
+/* типографика */
+.type-row{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--hair);align-items:baseline}
+.type-row:first-child{border-top:1px solid var(--hair)}
+.type-row .meta{font-size:12.5px;color:var(--grey);line-height:1.45}
+@media(max-width:700px){.type-row{grid-template-columns:1fr;gap:6px}}
+
+/* кнопки */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:var(--btn-h);padding:0 32px;border:1px solid var(--ink);border-radius:var(--r-btn);background:transparent;color:var(--ink);font-family:var(--f-body);font-size:13px;font-weight:400;line-height:1;letter-spacing:var(--ls-btn);text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color var(--m-fast) var(--m-ease),color var(--m-fast) var(--m-ease),border-color var(--m-fast) var(--m-ease)}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.--primary{background:var(--ink);color:var(--paper)}
+.btn.--primary:hover{background:var(--graphite);border-color:var(--graphite)}
+.btn.--sm{height:var(--btn-h-sm);padding:0 20px;font-size:12px}
+.btn.--paper{background:var(--paper);border-color:var(--paper)}
+.btn.--onphoto{border-color:var(--paper);color:var(--paper)}
+.btn:disabled{color:var(--grey);border-color:var(--light);background:transparent;cursor:default}
+.btn.--primary:disabled{background:var(--light);border-color:var(--light);color:var(--paper)}
+.link{display:inline-flex;font-size:13px;font-weight:400;letter-spacing:var(--ls-btn);text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--ink);text-decoration:none;transition:color var(--m-fast),border-color var(--m-fast)}
+.link:hover{color:var(--graphite);border-color:var(--light)}
+@media(max-width:767px){.btn{height:var(--btn-h-m)}}
+.demo{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:28px;border:1px solid var(--hair)}
+.demo.--silver{background:var(--silver);border-color:var(--silver)}
+.demo.--photo{background:url(../crm/img/pink-manifesto.webp) center/cover;min-height:180px;border:0}
+.spec{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--hair);border-top:0}
+.spec div{padding:14px 16px;font-size:13px;color:var(--graphite)}
+.spec div+div{border-left:1px solid var(--hair)}
+.spec b{display:block;font-weight:400;color:var(--ink);margin-bottom:2px}
+@media(max-width:800px){.spec{grid-template-columns:1fr}.spec div+div{border-left:0;border-top:1px solid var(--hair)}}
+
+/* чипы */
+.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border:1px solid var(--light);background:var(--paper);color:var(--graphite);font-size:11px;font-weight:400;line-height:1;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.chip.--ok::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.chip.--sale{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.chip.--on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* поля */
+.field{max-width:360px}
+.field input{width:100%;height:44px;border:0;border-bottom:1px solid var(--light);background:transparent;font:inherit;color:var(--ink);padding:0;outline:0}
+.field input:focus{border-color:var(--ink)}
+.field input::placeholder{color:var(--grey)}
+.field .eyebrow{margin-bottom:6px}
+.field.--err input{border-color:var(--error)}
+.field .err{font-size:12.5px;color:var(--accent);margin-top:6px}
+.forms{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+@media(max-width:800px){.forms{grid-template-columns:1fr}}
+
+/* аккордеон */
+.acc{border-top:1px solid var(--hair);max-width:820px}
+.acc details{border-bottom:1px solid var(--hair)}
+.acc summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:20px 0;font-weight:400;font-size:16px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";font-weight:300;font-size:22px;line-height:1;transition:transform var(--m-fast)}
+.acc details[open] summary::after{transform:rotate(45deg)}
+.acc p{margin:0 0 20px;font-size:15px;color:var(--graphite);max-width:70ch}
+
+/* карточки */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr);gap:16px}}
+.card .media{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--silver)}
+.card .media img{width:100%;height:100%;object-fit:cover;transition:transform var(--m-base) var(--m-ease)}
+.card:hover .media img{transform:scale(1.03)}
+.card .tags{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.card .fav{position:absolute;top:12px;right:12px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(253,253,253,.92)}
+.card .fav svg{width:16px;height:16px;stroke:var(--ink);fill:none;stroke-width:1.5}
+.card .name{font-size:15px;font-weight:400;margin:12px 0 2px}
+.card .price{font-size:15px;font-weight:400}
+.card .price s{color:var(--grey);font-weight:300;margin-left:6px}
+.card .btn{width:100%;margin-top:12px}
+
+/* шапка и подвал */
+.mock{border:1px solid var(--hair)}
+.mock .util{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:12px;font-weight:400;color:var(--graphite);border-bottom:1px solid var(--hair)}
+.mock .row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px;padding:0 20px;border-bottom:1px solid var(--hair)}
+.mock .row .ic{justify-self:end;display:flex;gap:22px;font-size:13px}
+.mock .row nav{display:flex;gap:24px;font-size:13px;font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+@media(max-width:900px){.mock .row nav{display:none}.mock .row{grid-template-columns:1fr auto}}
+.foot{background:var(--silver);color:var(--graphite);font-size:14px;padding:56px 32px 32px}
+.foot .cols{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px}
+.foot h6{font-family:var(--f-body);font-size:12px;font-weight:400;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);margin:0 0 12px}
+.foot ul{list-style:none;padding:0;margin:0;line-height:2}
+.foot .legal{border-top:1px solid var(--hair);margin-top:40px;padding-top:16px;font-size:12px;display:flex;justify-content:space-between}
+@media(max-width:800px){.foot .cols{grid-template-columns:1fr 1fr}}
+
+/* правила */
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--hair)}
+.rules>div{padding:24px}
+.rules>div+div{border-left:1px solid var(--hair)}
+.rules h3{font-family:var(--f-body);font-size:12px;font-weight:400;letter-spacing:var(--ls-eyebrow);margin-bottom:12px}
+.rules ul{margin:0;padding-left:18px;color:var(--graphite);font-size:14.5px}
+.rules li{margin-bottom:8px}
+@media(max-width:800px){.rules{grid-template-columns:1fr}.rules>div+div{border-left:0;border-top:1px solid var(--hair)}}
+.diff{width:100%;border-collapse:collapse;font-size:14px}
+.diff th,.diff td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--hair);vertical-align:top}
+.diff th{font-size:12px;font-weight:400;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.diff td:first-child{color:var(--ink);font-weight:400}
+.diff td{color:var(--graphite)}
+.dot{display:inline-block;width:12px;height:12px;border:1px solid var(--hair);vertical-align:-1px;margin-right:6px}
+.tblw{overflow-x:auto}
+footer.doc{padding:40px 0 64px;font-size:13px;color:var(--grey);border-top:1px solid var(--hair)}
+</style>
+</head>
+<body>
+
+<div class="ticker">Брендбук сайта · снят с живого floritta.uk · 01.11.2026</div>
+<header class="wrap top">
+  <span class="eyebrow">Floritta · Website</span>
+  <span class="brand">Floritta</span>
+  <nav style="justify-self:end"><a href="#colors">Цвета</a><a href="#type">Шрифты</a><a href="#buttons">Кнопки</a><a href="#cards">Карточка</a><a href="#rules">Правила</a></nav>
+</header>
+
+<section class="hero">
+  <div class="txt">
+    <span class="eyebrow">Брендбук сайта · версия 2</span>
+    <h1>Белое,<br>серое, чернила</h1>
+    <p class="lead">Так floritta.uk выглядит сейчас, у всех посетителей с 22.10.2026 (вариант B). Почти белый фон, холодная серая подложка, тёплый тёмный текст, квадратные углы. Розовый только для скидок и акций.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn --primary" href="#colors">Палитра</a><a class="btn" href="#rules">Правила</a></div>
+    <div class="facts">
+      <div><b>#FDFDFD</b>фон</div>
+      <div><b>#F2F2F4</b>подложка</div>
+      <div><b>#1E1A17</b>текст, кнопки</div>
+      <div><b>0 px</b>радиус везде</div>
+    </div>
+  </div>
+  <div class="ph" role="img" aria-label="Букет Floritta"></div>
+</section>
+
+<main class="wrap">
+
+<!-- 01 Цвета -->
+<section class="sec" id="colors" style="border-top:0">
+  <div class="sec-h"><div class="num">01</div><div><h2>Цвета</h2><p class="lead">Значения из кода сайта: <code>lv-floritta/resources/css/app-v2.scss</code>, переменные <code>:root</code>. Новых цветов не вводим: всё на странице собирается из этих токенов.</p></div></div>
+
+  <div class="sub">Основа – 95% экрана</div>
+  <div class="sw-grid">
+    <div class="sw"><div class="c" style="background:#fdfdfd"></div><div class="t"><b>Paper</b><span>#FDFDFD · --paper</span>Фон страницы, шапки, карточек. Почти белый, не кремовый.</div></div>
+    <div class="sw"><div class="c" style="background:#f2f2f4"></div><div class="t"><b>Silver</b><span>#F2F2F4 · --silver</span>Подложка: первый экран, полосы-промо, отзывы, подвал. Холодный серый.</div></div>
+    <div class="sw"><div class="c" style="background:#e6e6e6"></div><div class="t"><b>Hair</b><span>#E6E6E6 · --hair</span>Волосяные линии: под шапкой, строки аккордеона, разделы.</div></div>
+    <div class="sw"><div class="c" style="background:#cecece"></div><div class="t"><b>Light</b><span>#CECECE · --light</span>Обводка чипов и полей, неактивные кнопки.</div></div>
+    <div class="sw"><div class="c" style="background:#8b8378"></div><div class="t"><b>Grey</b><span>#8B8378 · --grey</span>Надзаголовки, плейсхолдеры, старая цена. Не для основного текста.</div></div>
+    <div class="sw"><div class="c" style="background:#5c5450"></div><div class="t"><b>Graphite</b><span>#5C5450 · --graphite</span>Второстепенный текст, подвал, наведение на чёрную кнопку.</div></div>
+    <div class="sw"><div class="c" style="background:#1e1a17"></div><div class="t"><b>Ink</b><span>#1E1A17 · --ink</span>Текст, основная кнопка, обводки, бегущая строка. Тёплый почти чёрный.</div></div>
+  </div>
+  <div class="ratio" aria-label="Пропорция цветов">
+    <div style="flex:62;background:#fdfdfd"></div><div style="flex:20;background:#f2f2f4"></div><div style="flex:3;background:#e6e6e6"></div><div style="flex:12;background:#1e1a17"></div><div style="flex:2;background:#5c5450"></div><div style="flex:1;background:#b4595f"></div>
+  </div>
+  <p style="font-size:12.5px;color:var(--grey);margin:6px 0 0">Примерная пропорция на главной: фон · подложка · линии · текст · графит · акцент.</p>
+
+  <div class="sub">Акцент – только скидки и акции</div>
+  <div class="sw-grid">
+    <div class="sw"><div class="c" style="background:#b4595f"></div><div class="t"><b>Accent</b><span>#B4595F · --accent</span>Чип «−N%», цена со скидкой, ошибка поля.</div></div>
+    <div class="sw"><div class="c" style="background:#9a474c"></div><div class="t"><b>Accent dark</b><span>#9A474C</span>Наведение на полосу скидки.</div></div>
+    <div class="sw"><div class="c" style="background:#d4959a"></div><div class="t"><b>Accent soft</b><span>#D4959A</span>Светлый конец шкалы «до бесплатной доставки».</div></div>
+    <div class="sw"><div class="c" style="background:#f3e1e1"></div><div class="t"><b>Accent bg</b><span>#F3E1E1 · --accent-bg</span>Фон чипа «−N%», дорожка шкалы доставки.</div></div>
+    <div class="sw"><div class="c" style="background:#faf1f1"></div><div class="t"><b>Accent tint</b><span>#FAF1F1</span>Линия под шкалой доставки.</div></div>
+  </div>
+
+  <div class="sub">Служебные – по одному месту на сайте</div>
+  <div class="sw-grid">
+    <div class="sw"><div class="c" style="background:#7a8a6b"></div><div class="t"><b>Ok · sage</b><span>#7A8A6B · --ok</span>Только точка 6 px в чипе «Ready now».</div></div>
+    <div class="sw"><div class="c" style="background:#d84f4f"></div><div class="t"><b>Error</b><span>#D84F4F</span>Состояние ошибки.</div></div>
+    <div class="sw"><div class="c" style="background:#fbf1d4;box-shadow:inset 0 0 0 28px #fbf1d4,inset 0 -6px 0 #9a6a0a"></div><div class="t"><b>Warning</b><span>#9A6A0A / #FBF1D4</span>Только подсказка про питомцев в чекауте.</div></div>
+    <div class="sw"><div class="c" style="background:#e8f3ea;box-shadow:inset 0 -6px 0 #2f6b3a"></div><div class="t"><b>Pet safe</b><span>#2F6B3A / #E8F3EA</span>Только строка «безопасно для питомцев» на товаре.</div></div>
+  </div>
+</section>
+
+<!-- 02 Шрифты -->
+<section class="sec" id="type">
+  <div class="sec-h"><div class="num">02</div><div><h2>Шрифты</h2><p class="lead">Две гарнитуры. Cormorant Infant Light 300 – все заголовки, заглавными с разрядкой .04em. Jost – всё остальное: текст 300, кнопки и подписи 400. Курсива на сайте нет.</p></div></div>
+  <div>
+    <div class="type-row"><div class="meta">Display<br>Cormorant 300 · 44–96 px · caps · .04em</div><div class="display" style="font-size:var(--fs-display)">Same-day</div></div>
+    <div class="type-row"><div class="meta">H1<br>Cormorant 300 · 40–72 px · caps</div><h1 style="font-size:var(--fs-h1)">Flowers delivered</h1></div>
+    <div class="type-row"><div class="meta">H2<br>Cormorant 300 · 32–48 px · caps</div><h2 style="font-size:var(--fs-h2)">Bestsellers</h2></div>
+    <div class="type-row"><div class="meta">H3<br>Cormorant 300 · 24–32 px · caps</div><h3 style="font-size:var(--fs-h3)">Build your own bouquet</h3></div>
+    <div class="type-row"><div class="meta">H4 / H5<br>Cormorant 300 · 20–24 px · .02em</div><h4 style="font-size:var(--fs-h4);letter-spacing:.02em">Flowers on subscription</h4></div>
+    <div class="type-row"><div class="meta">Eyebrow – надзаголовок<br>Jost 400 · 12 px · caps · .14em · grey</div><span class="eyebrow">Most ordered</span></div>
+    <div class="type-row"><div class="meta">Текст<br>Jost 300 · 16 px · 1.5 · ink</div><p style="margin:0;max-width:62ch">Hand-tied in our Bermondsey studio and delivered across London the same day. Order by 10 pm.</p></div>
+    <div class="type-row"><div class="meta">Второстепенный<br>Jost 300 · 14–15 px · graphite</div><p style="margin:0;color:var(--graphite);font-size:15px;max-width:62ch">Every bouquet is photographed before it leaves the studio.</p></div>
+    <div class="type-row"><div class="meta">Название и цена в карточке<br>Jost 400 · 15 px</div><div style="font-size:15px;font-weight:400">Peach garden posy · £59 <s style="color:var(--grey);font-weight:300">£65</s></div></div>
+    <div class="type-row"><div class="meta">Меню<br>Jost 400 · 13 px · caps · .08em</div><div style="font-size:13px;font-weight:400;letter-spacing:.08em;text-transform:uppercase">Bouquets &nbsp; Occasions &nbsp; Plants &nbsp; Gifts</div></div>
+  </div>
+</section>
+
+<!-- 03 Кнопки -->
+<section class="sec" id="buttons">
+  <div class="sec-h"><div class="num">03</div><div><h2>Кнопки</h2><p class="lead">Одна система, три уровня. Квадратные, Jost 400 13 px заглавными .12em, высота 52 px (48 на телефоне), маленькая 40 px. Основная кнопка – чернильная, не розовая.</p></div></div>
+  <div class="demo">
+    <button class="btn --primary">Add to bag</button>
+    <button class="btn">Build your own</button>
+    <a class="link" href="#buttons">View all</a>
+    <button class="btn --primary --sm">Add to bag</button>
+    <button class="btn --sm">Learn more</button>
+    <button class="btn --primary" disabled>Sold out</button>
+    <button class="btn" disabled>Unavailable</button>
+  </div>
+  <div class="spec">
+    <div><b>Primary</b>Заливка ink, текст paper. Наведение – graphite. Одна на экран: «Add to bag», «Checkout».</div>
+    <div><b>Secondary</b>Обводка 1 px ink, прозрачная. Наведение – заливка ink. Всё остальное.</div>
+    <div><b>Link</b>13 px заглавными, линия 1 px в 6 px под текстом. «View all», «Read more».</div>
+  </div>
+  <div class="sub">На фото и на подложке</div>
+  <div class="demo --photo"><button class="btn --paper">Shop bouquets</button><button class="btn --onphoto">Build your own</button></div>
+  <div class="demo --silver" style="margin-top:12px"><button class="btn --primary">Subscribe</button><button class="btn">Learn more</button></div>
+</section>
+
+<!-- 04 Чипы -->
+<section class="sec" id="chips">
+  <div class="sec-h"><div class="num">04</div><div><h2>Чипы и бейджи</h2><p class="lead">26 px, Jost 400 11 px заглавными .08em, обводка light на белом. Цветной только чип скидки. Выбранный фильтр – заливка ink.</p></div></div>
+  <div class="demo">
+    <span class="chip --ok">Ready now</span>
+    <span class="chip">Best selling</span>
+    <span class="chip">Pet safe</span>
+    <span class="chip --sale">−10%</span>
+    <span class="chip --on">Roses</span>
+    <span class="chip">Peonies</span>
+    <span class="chip">Under £60</span>
+  </div>
+</section>
+
+<!-- 05 Поля -->
+<section class="sec" id="fields">
+  <div class="sec-h"><div class="num">05</div><div><h2>Поля и аккордеон</h2><p class="lead">Поле – только нижняя линия, высота 44 px, подпись сверху надзаголовком. Аккордеон – волосяные линии, «+» поворачивается в «×».</p></div></div>
+  <div class="forms">
+    <label class="field"><span class="eyebrow">Your e-mail</span><input type="email" placeholder="name@example.com"></label>
+    <label class="field"><span class="eyebrow">Postcode</span><input value="SE1 5SY"></label>
+    <label class="field --err"><span class="eyebrow">Phone</span><input value="07"><div class="err">Enter a full UK number</div></label>
+  </div>
+  <div class="acc" style="margin-top:48px">
+    <details open><summary>How late can I order for same-day delivery?</summary><p>Until 10 pm for London. We send a photo of your bouquet before it leaves the studio.</p></details>
+    <details><summary>Can I add a card message?</summary><p>Yes, free of charge. Write it at checkout.</p></details>
+    <details><summary>Can I choose a delivery slot?</summary><p>Yes, pick a time slot at checkout.</p></details>
+  </div>
+</section>
+
+<!-- 06 Карточка товара -->
+<section class="sec" id="cards">
+  <div class="sec-h"><div class="num">06</div><div><h2>Карточка товара</h2><p class="lead">Фото 4:5 без скругления и без рамки, бейджи в левом углу столбиком, «избранное» справа на белой полупрозрачной плашке 32 px. Под фото название и цена Jost 400 15 px, старая цена серым зачёркнутым.</p></div></div>
+  <div class="cards">
+    <article class="card"><div class="media"><img src="../crm/img/peach-posy.webp" alt="Peach posy"><div class="tags"><span class="chip --ok">Ready now</span><span class="chip">Best selling</span></div><span class="fav"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span></div><div class="name">Peach garden posy</div><div class="price">£59<s>£65</s></div><button class="btn --primary --sm">Add to bag</button></article>
+    <article class="card"><div class="media"><img src="../crm/img/pink-manifesto-2.webp" alt="Pink Manifesto"><div class="tags"><span class="chip --sale">−15%</span></div><span class="fav"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span></div><div class="name">Pink Manifesto</div><div class="price">£85</div><button class="btn --primary --sm">Add to bag</button></article>
+    <article class="card"><div class="media"><img src="../crm/img/white-spray.webp" alt="White spray"><span class="fav"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span></div><div class="name">White spray roses</div><div class="price">£120</div><button class="btn --primary --sm">Add to bag</button></article>
+    <article class="card"><div class="media"><img src="../crm/img/lilac-dream.webp" alt="Lilac dream"><div class="tags"><span class="chip">Pet safe</span></div><span class="fav"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span></div><div class="name">Lilac dream</div><div class="price">£79</div><button class="btn --sm">Learn more</button></article>
+  </div>
+</section>
+
+<!-- 07 Шапка и подвал -->
+<section class="sec" id="chrome">
+  <div class="sec-h"><div class="num">07</div><div><h2>Шапка и подвал</h2><p class="lead">Сверху бегущая строка 36 px (ink, белые заглавные 12 px), служебная полоса 36 px (часы работы, «Bespoke order», WhatsApp), строка шапки 72 px: логотип по центру, меню, иконки. Под шапкой волосяная линия, без тени. Подвал на подложке silver, текст 14 px graphite.</p></div></div>
+  <div class="mock">
+    <div class="ticker">Order by 10 pm · same-day across London ✿ Welcome offer on your first order</div>
+    <div class="util"><span>Open today 8:00–22:00</span><span>Bespoke order &nbsp;·&nbsp; WhatsApp</span></div>
+    <div class="row"><nav><span>Bouquets</span><span>Occasions</span><span>Gifts</span></nav><span class="brand" style="font-size:24px">Floritta</span><span class="ic"><span>Search</span><span>Bag (2)</span></span></div>
+    <div class="foot">
+      <div class="cols">
+        <div><span class="brand" style="font-size:22px;color:var(--ink)">Floritta</span><p style="margin:10px 0 0;max-width:28ch">80 Willow Walk, Bermondsey, London SE1 5SY</p></div>
+        <div><h6>Shop</h6><ul><li>Bouquets</li><li>Ready now</li><li>Subscription</li></ul></div>
+        <div><h6>Help</h6><ul><li>Delivery</li><li>FAQ</li><li>Contact</li></ul></div>
+        <div><h6>Company</h6><ul><li>About</li><li>Blog</li><li>Corporate</li></ul></div>
+      </div>
+      <div class="legal"><span>© Floritta Ltd</span><span>Visa · Mastercard · Apple Pay</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 Сетка, отступы, движение -->
+<section class="sec" id="layout">
+  <div class="sec-h"><div class="num">08</div><div><h2>Ритм и движение</h2></div></div>
+  <div class="spec" style="border-top:1px solid var(--hair)">
+    <div><b>Отступ раздела</b>96 px на компьютере, 56 px на телефоне (<code>--section</code>, <code>--section-m</code>).</div>
+    <div><b>Заголовки разделов</b>Слева, не по центру (F-паттерн). Над заголовком – надзаголовок.</div>
+    <div><b>Радиус</b>0 у всего: кнопки, чипы, поля, карточки, фото, окна. Круглые только аватары, радио-кнопки и точка «Ready now».</div>
+  </div>
+  <div class="spec">
+    <div><b>Тени</b>Нет. Слои разделяют линии hair и подложка silver.</div>
+    <div><b>Анимация</b>0,2 с наведение, 0,35 с появление, кривая cubic-bezier(.22,1,.36,1). Фото в карточке при наведении – масштаб 1.03.</div>
+    <div><b>Фото</b>Товар 4:5. Через Cloudflare Images, WebP, ширина под экран.</div>
+  </div>
+</section>
+
+<!-- 09 Правила -->
+<section class="sec" id="rules">
+  <div class="sec-h"><div class="num">09</div><div><h2>Правила</h2></div></div>
+  <div class="rules">
+    <div>
+      <h3>Делаем</h3>
+      <ul>
+        <li>Фон белый #FDFDFD, блоки-акценты – серая подложка #F2F2F4.</li>
+        <li>Основная кнопка чернильная #1E1A17, одна на экран.</li>
+        <li>Заголовки Cormorant 300 заглавными, текст Jost 300.</li>
+        <li>Углы квадратные, линии вместо теней.</li>
+        <li>Розовый #B4595F – только скидка, акция, ошибка.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Не делаем</h3>
+      <ul>
+        <li>Кремовый или бежевый фон (#FAF7F2 и похожие) – 21.10 решили: «выглядит грязно».</li>
+        <li>Скругления, «таблетки», тени у карточек.</li>
+        <li>Розовые основные кнопки, розовые заголовки.</li>
+        <li>Курсив, жирный текст, третий шрифт.</li>
+        <li>Новые цвета мимо токенов (тест <code>StylesheetPaletteTest</code> это ловит).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 10 Отличия -->
+<section class="sec" id="diff">
+  <div class="sec-h"><div class="num">10</div><div><h2>Что изменилось</h2><p class="lead">Сравнение с первым брендбуком сайта (19.10.2026, главная страница этого репозитория) и с брендбуками приложения и CRM. Они пока на кремовом фоне Ivory и с розовой основной кнопкой – это другая система, сайт её не берёт.</p></div></div>
+  <div class="tblw">
+  <table class="diff">
+    <thead><tr><th>Токен</th><th>Сайт сейчас (v2)</th><th>Брендбук сайта v1, 19.10</th><th>Приложение и CRM (Ivory)</th></tr></thead>
+    <tbody>
+      <tr><td>Фон</td><td><span class="dot" style="background:#fdfdfd"></span>#FDFDFD</td><td>#FDFDFD</td><td><span class="dot" style="background:#faf7f2"></span>#FAF7F2 кремовый</td></tr>
+      <tr><td>Подложка</td><td><span class="dot" style="background:#f2f2f4"></span>#F2F2F4</td><td>#F2F2F4</td><td><span class="dot" style="background:#f1ece4"></span>#F1ECE4 бежевая</td></tr>
+      <tr><td>Линии</td><td>#E6E6E6</td><td>#E6E6E6</td><td>#E4DDD3</td></tr>
+      <tr><td>Текст</td><td><span class="dot" style="background:#1e1a17"></span>#1E1A17 тёплый</td><td><span class="dot" style="background:#131313"></span>#131313</td><td>#1E1A17</td></tr>
+      <tr><td>Графит</td><td>#5C5450</td><td>#585858</td><td>#5C5450</td></tr>
+      <tr><td>Серый</td><td>#8B8378</td><td>#878787</td><td>#8B8378</td></tr>
+      <tr><td>Акцент</td><td><span class="dot" style="background:#b4595f"></span>#B4595F, только скидки</td><td><span class="dot" style="background:#b3403f"></span>#B3403F</td><td>#B4595F «поздно/срочно»</td></tr>
+      <tr><td>Фон акцента</td><td>#F3E1E1</td><td>#F7DEE3</td><td>#F7DEE3</td></tr>
+      <tr><td>Основная кнопка</td><td>Ink #1E1A17</td><td>Ink #131313</td><td><span class="dot" style="background:#c98c91"></span>Petal #C98C91</td></tr>
+      <tr><td>Радиус</td><td>0</td><td>0 (тумблер 0 / pill)</td><td>0</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+</main>
+
+<footer class="doc">
+  <div class="wrap">Снято с живого floritta.uk 01.11.2026 (вариант B, основной у всех с 22.10.2026). Источник токенов: <code>tatiana-flo/lv-floritta</code> → <code>resources/css/app-v2.scss</code>. Меняется сайт – обновляем этот файл. Фото букетов – Floritta.</div>
+</footer>
+
+</body>
+</html>
