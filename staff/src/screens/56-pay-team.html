@@ -1,0 +1,390 @@
+<!-- 56-pay-team.html – B: Pay, Pay → week, Statements, Business profile, Tax & status, My agreement, Shift offers.
+     Static replacements for the dynamic screens the shell builds with mk() (pay / statements / bizprofile / taxstatus / agreement).
+     Shared helpers: window.PT (used by 56-pay-team-2.html at mount time). -->
+<style>
+.pt .demo{display:flex;gap:6px;padding:8px var(--gutter) 4px;overflow-x:auto;scrollbar-width:none;align-items:center}
+.pt .demo::-webkit-scrollbar{display:none}
+.pt .demo small{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);flex:none;margin-right:4px}
+.pt .demo .chip{height:26px;font-size:11px;padding:0 10px;flex:none}
+.pt .ptr{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:center;padding:6px 0 0}
+.pt .ptr.busy{color:var(--ink)}
+.pt .stt{padding:40px var(--gutter);text-align:center;color:var(--graphite);font-size:14px;line-height:1.5}
+.pt .stt .sp{width:22px;height:22px;border:1.5px solid var(--light);border-top-color:var(--ink);border-radius:50%;margin:0 auto 14px;animation:ptspin .9s linear infinite}
+@keyframes ptspin{to{transform:rotate(360deg)}}
+.pt .stt.err{color:var(--accent)}
+.pt .wrow{display:flex;align-items:center;gap:12px;padding:14px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.pt .wrow .l{font-size:15px}.pt .wrow .d{font-size:13px;color:var(--grey);margin-top:2px}
+.pt .wrow .amt{font-size:15px;white-space:nowrap;text-align:right}.pt .wrow .amt .pill{margin-top:4px}
+.pt .display{font-family:var(--f-display);font-size:44px;font-weight:300;line-height:1}
+.pt .line{display:flex;justify-content:space-between;gap:12px;padding:11px var(--gutter);border-bottom:1px solid var(--hair);font-size:14px}
+.pt .line.t{font-weight:500}
+.pt .line .sub{font-size:12px;color:var(--grey);display:block;margin-top:2px}
+.pt .chips.wrap{flex-wrap:wrap;overflow:visible}
+.pt .input.bad{border-color:var(--accent)}
+.pt .errt{font-size:12px;color:var(--accent);margin-top:-8px;margin-bottom:12px}
+.pt .signed{margin:0 var(--gutter);padding:16px;background:var(--ok-bg)}
+.pt .signed.exp{background:var(--accent-bg)}
+.pt .body{margin:0 var(--gutter);padding:14px 16px;border:1px solid var(--hair);font-size:13.5px;line-height:1.55;color:var(--graphite);user-select:text;-webkit-user-select:text;white-space:pre-line}
+.pt .ag-sig{position:relative;margin:0 var(--gutter);border:1px solid var(--ink);background:#fff;height:160px}
+.pt .ag-sig canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.pt .ag-sig .ph{position:absolute;left:16px;bottom:12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);pointer-events:none}
+.pt .ag-check{display:flex;gap:12px;align-items:flex-start;margin:0 var(--gutter);text-align:left;font-size:14px;color:var(--graphite);width:calc(100% - 2*var(--gutter))}
+.pt .ag-check i{flex:none;width:20px;height:20px;border:1px solid var(--ink);margin-top:1px}
+.pt .ag-check.on i{background:var(--ink)}
+.pt .offer{border:1px solid var(--hair);padding:14px var(--gutter);margin:0 var(--gutter) 10px;background:var(--paper)}
+.pt .offer.mine{border-color:var(--ink)}.pt .offer.gone{opacity:.55}
+.pt .offer .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pt .offer .hrs{font-family:var(--f-display);font-size:26px;font-weight:300;line-height:1.05;margin-top:4px}
+.pt .offer .meta{font-size:13px;color:var(--graphite);margin-top:6px}
+.pt .offer .btns{display:flex;gap:8px;margin-top:14px}.pt .offer .btns .btn{flex:1}
+.pt .alerts{margin:0 var(--gutter);border:1px solid var(--hair);padding:14px 16px}
+.pt .alerts .r{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0}
+.pt .jobrow{display:flex;justify-content:space-between;gap:12px;padding:10px var(--gutter) 10px calc(var(--gutter) + 16px);font-size:13px;border-bottom:1px solid var(--hair);background:var(--silver)}
+.pt .jobrow .d{color:var(--grey);font-size:12px;margin-top:2px}
+.pt .lensnote{margin:0 var(--gutter) 10px;padding:10px 12px;background:var(--warn-bg);font-size:12px;color:var(--graphite)}
+</style>
+
+<!-- ====================================================== PAY (worker) ====================================================== -->
+<!-- ids: TM-PAY-001 TM-PAY-002 TM-PAY-003 TM-PAY-004 TM-PAY-005 TM-PAY-006 TM-PAY-007 -->
+<section class="scr me5 pt" id="s-pay-w" data-nav="Pay · casual worker" data-group="B · Pay &amp; contours">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Pay</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('pay_w')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="pay-w-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ids: TM-PAY-020 TM-PAY-021 TM-PAY-022 TM-PAY-023 TM-PAY-024 -->
+<section class="scr me5 pt" id="s-pay-wk" data-nav="Pay → week" data-group="B · Pay &amp; contours">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('pay-w')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Week</div></div>
+  <div class="scr-body" id="pay-wk-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== STATEMENTS (self-employed) ====================================================== -->
+<!-- ids: TM-PAY-040 TM-PAY-041 TM-PAY-042 TM-PAY-043 TM-PAY-044 TM-PAY-045 -->
+<section class="scr me5 pt" id="s-se-statements" data-nav="Statements · self-employed" data-group="B · Pay &amp; contours">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Statements</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('se_statements')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="se-st-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== BUSINESS PROFILE (self-employed) ====================================================== -->
+<!-- ids: TM-BPAGE-001 TM-BPAGE-002 TM-BPAGE-003 TM-BPAGE-004 TM-BPAGE-005 TM-BPAGE-006 TM-BPAGE-007 TM-BPAGE-008 TM-BPAGE-009 TM-BPAGE-010 -->
+<section class="scr me5 pt" id="s-se-bizprofile" data-nav="Business profile" data-group="B · Pay &amp; contours">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Business profile</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('se_bizprofile')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body has-cta" id="se-bp-body"></div>
+  <div class="cta-bar" id="se-bp-cta"></div>
+</section>
+
+<!-- ====================================================== TAX & STATUS ====================================================== -->
+<!-- ids: TM-BPAGE-020 TM-BPAGE-021 TM-BPAGE-022 -->
+<section class="scr me5 pt" id="s-se-taxstatus" data-nav="Tax &amp; status" data-group="B · Pay &amp; contours">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Tax &amp; status</div></div>
+  <div class="scr-body" id="se-tx-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== MY AGREEMENT ====================================================== -->
+<!-- ids: TM-BPAGE-040 TM-BPAGE-041 TM-BPAGE-042 TM-BPAGE-043 TM-BPAGE-044 TM-BPAGE-045 TM-BPAGE-046 TM-BPAGE-047 TM-BPAGE-048 TM-BPAGE-049 TM-BPAGE-050 -->
+<section class="scr me5 pt" id="s-pay-agreement" data-nav="My agreement (B)" data-group="B · Pay &amp; contours">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My agreement</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('pay_agreement')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body has-cta" id="pay-ag-body"></div>
+  <div class="cta-bar" id="pay-ag-cta"></div>
+</section>
+
+<!-- ====================================================== SHIFT OFFERS ====================================================== -->
+<!-- ids: TM-BPAGE-060 TM-BPAGE-061 TM-BPAGE-062 TM-BPAGE-063 TM-BPAGE-064 TM-BPAGE-065 TM-BPAGE-066 TM-BPAGE-067 TM-BPAGE-068 TM-BPAGE-069 -->
+<section class="scr me5 pt" id="s-pay-offers" data-nav="Shift offers (B)" data-group="B · Pay &amp; contours">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Shift offers</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('pay_offers')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="pay-of-body" style="padding-bottom:32px"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App;const P=window.PT=window.PT||{};
+/* ---------- shared helpers (also used by 56-pay-team-2.html) ---------- */
+P.st=P.st||{};
+P.$=(s,r)=>(r||document).querySelector(s);
+P.contour=u=>{u=u||A.me();return u.engagement==='contractor'?'self_employed':(u.engagement||'employee')};
+P.isAdmin=u=>(u||A.me()).role==='owner';
+P.isMgr=u=>{const r=(u||A.me()).role;return r==='manager'||r==='owner'};
+P.limited=u=>{u=u||A.me();return u.staff_type==='seasonal'||u.staff_type==='trainee'};
+P.gbp=p=>'£'+(p/100).toFixed(2);
+P.ic=(n,c)=>A.icon(n).replace('<svg','<svg class="'+(c||'ic')+'"');
+P.esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+P.mountOf=key=>window['mount_'+key];
+P.demo=(key,states)=>{const cur=P.st[key]||states[0][0];return `<div class="demo"><small>Demo</small>${states.map(s=>`<button class="chip ${cur===s[0]?'on':''}" onclick="PT.setDemo('${key}','${s[0]}')">${s[1]}</button>`).join('')}</div>`};
+P.setDemo=(key,v)=>{P.st[key]=v;A.haptic();const f=P.mountOf(key);if(f)f(A.state.params)};
+P.d=key=>P.st[key]||'ok';
+P.stt=(kind,msg)=>kind==='loading'?`<div class="stt"><div class="sp"></div>Loading…</div>`:kind==='error'?`<div class="stt err">${msg}</div>`:`<div class="stt">${msg}</div>`;
+P.refresh=key=>{const body=P.$('#s-'+key.replace(/_/g,'-')+' .scr-body');const h=body&&body.querySelector('.ptr');if(h){h.textContent='Refreshing…';h.classList.add('busy')}setTimeout(()=>{const f=P.mountOf(key);if(f)f(A.state.params);A.toast('Refreshed')},600)};
+P.ptrHint=key=>`<div class="ptr" data-ptr="${key}">Pull down to refresh</div>`;
+P.ptr=(el,key)=>{if(el.dataset.ptr)return;el.dataset.ptr=key;let y0=null,armed=false;
+  el.addEventListener('pointerdown',e=>{if(el.scrollTop<=0){y0=e.clientY;armed=false}else y0=null});
+  el.addEventListener('pointermove',e=>{if(y0===null)return;const dy=e.clientY-y0;const h=el.querySelector('.ptr');if(dy>70&&!armed){armed=true;if(h){h.textContent='Release to refresh';h.classList.add('busy')}}});
+  const up=()=>{if(y0!==null&&armed){P.refresh(key)}y0=null;armed=false};
+  el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)};
+P.alert=(title,text,btns)=>{A.sheet(`<div class="sh-head"><div class="h3">${title}</div></div><div class="sh-body"><p class="soft" style="margin:0">${text}</p></div><div class="sh-foot">${btns.map((b,i)=>`<button class="btn ${b.primary?'':'--secondary'} ${b.danger?'--accent':''}" id="pt-al-${i}">${b.l}</button>`).join('')}</div>`);btns.forEach((b,i)=>{P.$('#pt-al-'+i).onclick=()=>{A.closeSheet();b.fn&&b.fn()}})};
+P.lens=(allowed,why)=>`<div class="lensnote">${why}</div>`;
+P.pill=s=>({Draft:'--todo',Approved:'--doing',Paid:'--done',Issued:'--done',open:'--todo',taken:'--doing',done:'--done',cancelled:'--late'}[s]||'--plain');
+
+/* ---------- data ---------- */
+const RATE=1321,HOL=0.1207;
+P.weeks=[
+  {ws:'2026-10-19',label:'19–25 Oct',h:21.5,learn:30,bonus:510,status:'Draft',shifts:[['Mon 19',7,7.5],['Thu 22',8,7],['Sat 24',7,7]]},
+  {ws:'2026-10-12',label:'12–18 Oct',h:14,learn:0,bonus:250,status:'Approved',shifts:[['Tue 13',7,7],['Fri 16',7,7]]},
+  {ws:'2026-10-05',label:'5–11 Oct',h:21,learn:45,bonus:0,status:'Paid',shifts:[['Mon 5',7,7],['Wed 7',7,7],['Sat 10',7,7]]},
+  {ws:'2026-09-28',label:'28 Sep – 4 Oct',h:7,learn:0,bonus:120,status:'Paid',shifts:[['Sat 3',7,7]]}
+];
+P.wk=w=>{const hrs=Math.round(w.h*RATE);const hol=Math.round(hrs*HOL);return {hrs,hol,total:hrs+w.bonus+hol}};
+
+/* ======================================================= PAY ======================================================= */
+window.mount_pay_w=function(){
+  const el=P.$('#pay-w-body'),u=A.me(),c=P.contour(u),d=P.d('pay_w');
+  P.ptr(el,'pay_w');
+  const demo=P.demo('pay_w',[['ok','Normal'],['loading','Loading'],['error','Error'],['empty','No shifts yet']]);
+  if(c!=='worker'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`You are <b>${u.n}</b> · ${c.replace('_',' ')}. CRM answers 403 for this contour – in Me the Pay link is hidden; opened by link you see the load error below.`)+P.stt('error','Could not load your pay. Pull to try again.');return}
+  if(d==='loading'){el.innerHTML=demo+P.ptrHint()+P.stt('loading');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load your pay. Pull to try again.');return}
+  const latest=P.weeks[0],L=P.wk(latest);
+  const rows=d==='empty'?P.stt('empty','No shifts worked yet – your first week appears here after it.'):P.weeks.map(w=>{const x=P.wk(w);return `<button class="wrow" onclick="App.go('pay-wk',{week:'${w.ws}'})"><span class="f1"><div class="l">${w.label}</div><div class="d">${w.h} h${w.learn?` · learning ${w.learn} min`:''}${w.bonus?` · bonus ${P.gbp(w.bonus)}`:''}</div></span><span class="amt">${P.gbp(x.total)}<br><span class="pill ${P.pill(w.status)}">${w.status}</span></span></button>`}).join('');
+  el.innerHTML=demo+P.ptrHint()+`
+    <div class="pad" style="padding-top:8px"><p class="sm soft" style="margin:0">Paid by the hour for the shifts you took. Learning inside a shift is paid time, the bouquet bonus comes on top, and holiday is accrued on top of that.</p></div>
+    <div class="stats" style="margin-top:18px"><div><b>£${(RATE/100).toFixed(2)}</b><span>Rate /h</span></div><div><b>${d==='empty'?'0':latest.h} h</b><span>This week</span></div><div><b>${d==='empty'?'£0':P.gbp(L.total)}</b><span>${d==='empty'?'Nothing yet':latest.status}</span></div></div>
+    <div class="note">“This week” is the newest week in the list, not always the calendar week.</div>
+    <div class="sec-head"><div class="h2">Weeks</div><span class="xs muted">${d==='empty'?0:P.weeks.length}</span></div>
+    <div class="rows">${rows}</div>
+    <div class="grp">How pay works</div>
+    <div class="wk-kv --info">
+      <span>Hours</span><span>Counted inside the shift you took, ±30 minutes around it</span>
+      <span>Rate</span><span>Never below the National Living Wage</span>
+      <span>Holiday</span><span>12.07 % of the hours you work, accrued on top</span>
+      <span>Status</span><span>Draft → Approved by the manager → Paid</span>
+    </div>`;
+};
+
+window.mount_pay_wk=function(p){
+  const el=P.$('#pay-wk-body'),w=P.weeks.find(x=>x.ws===(p&&p.week));
+  const demo=P.demo('pay_wk',[['ok','Normal'],['unknown','Unknown week (404)']]);
+  if(!w||P.d('pay_wk')==='unknown'){el.innerHTML=demo+P.stt('error','Could not load your pay. Pull to try again.')+`<div class="note">Old link or a week the CRM no longer has. The app shows the generic line; a clearer “There is no such week” is proposed for the redesign.</div>`;return}
+  const x=P.wk(w);
+  el.innerHTML=demo+`
+    <div class="pad" style="padding-top:8px"><div class="caps muted">${w.label}</div><div class="display mt8">${P.gbp(x.total)}</div><div class="mt8"><span class="pill ${P.pill(w.status)}">${w.status}</span></div></div>
+    <div class="stats" style="margin-top:18px"><div><b>${w.h} h</b><span>Hours</span></div><div><b>£${(RATE/100).toFixed(2)}</b><span>Rate /h</span></div><div><b>${w.shifts.length}</b><span>Shifts</span></div></div>
+    <div class="sec-head"><div class="h2">Shifts</div></div>
+    <div class="rows">${w.shifts.map(s=>`<div class="line"><span>${s[0]}<span class="sub">booked ${s[1]} h · clocked ${s[2]} h</span></span><span>${s[2]} h</span></div>`).join('')}</div>
+    <div class="sec-head"><div class="h2">Breakdown</div></div>
+    <div class="rows">
+      <div class="line"><span>Hours · ${w.h} h × £${(RATE/100).toFixed(2)}</span><span>${P.gbp(x.hrs)}</span></div>
+      ${w.learn?`<div class="line"><span>Learning · ${w.learn} min, paid time<span class="sub">already inside the hours above</span></span><span>–</span></div>`:''}
+      ${w.bonus?`<div class="line"><span>Bouquet bonus</span><span>${P.gbp(w.bonus)}</span></div>`:''}
+      <div class="line"><span>Holiday · 12.07 %<span class="sub">value comes from the CRM</span></span><span>${P.gbp(x.hol)}</span></div>
+      <div class="line t"><span>Total</span><span>${P.gbp(x.total)}</span></div>
+    </div>
+    <div class="note">Rows are not tappable. Questions about a shift – ask Valeria.</div>`;
+};
+
+/* ======================================================= STATEMENTS ======================================================= */
+P.months=[
+  {m:'2026-10',label:'October 2026',status:'Draft',jobs:[{t:'Wedding table flowers · Bermondsey',d:'Sat 24 Oct',s:'taken',fee:9000},{t:'Shop cover · SE1 studio',d:'Tue 13 Oct',s:'done',fee:6500},{t:'Autumn window · SW6',d:'date to agree',s:'open',fee:3000}]},
+  {m:'2026-09',label:'September 2026',status:'Issued',jobs:[{t:'Corporate reception · EC2',d:'Fri 25 Sep',s:'done',fee:12000},{t:'Shop cover · SE1 studio',d:'Mon 14 Sep',s:'done',fee:6500},{t:'Shop cover · SE1 studio',d:'Tue 8 Sep',s:'done',fee:6500},{t:'Funeral tribute · SE16',d:'Thu 3 Sep',s:'cancelled',fee:0}]},
+  {m:'2026-08',label:'August 2026',status:'Issued',jobs:[]}
+];
+let stOpen=null;
+window.mount_se_statements=function(){
+  const el=P.$('#se-st-body'),u=A.me(),c=P.contour(u),d=P.d('se_statements');P.ptr(el,'se_statements');
+  const demo=P.demo('se_statements',[['ok','Normal'],['loading','Loading'],['error','Error'],['empty','No jobs yet']]);
+  if(c!=='self_employed'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`You are <b>${u.n}</b> · ${c.replace('_',' ')}. The statements query runs only on the self-employed contour – the Me link is hidden; by link you get the error line.`)+P.stt('error','Could not load the statements. Pull to try again.');return}
+  if(d==='loading'){el.innerHTML=demo+P.ptrHint()+P.stt('loading');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load the statements. Pull to try again.');return}
+  const list=d==='empty'?P.stt('empty','No jobs yet – your first statement appears after the first job is done.'):P.months.map(mo=>{const sum=mo.jobs.filter(j=>j.s!=='cancelled').reduce((s,j)=>s+j.fee,0);const open=stOpen===mo.m;
+    return `<div class="wrow"><span class="f1"><div class="l">${mo.label}</div><div class="d">${mo.jobs.length} job${mo.jobs.length===1?'':'s'}${mo.jobs.length?` · <button class="textbtn" onclick="PT.stToggle('${mo.m}')">${open?'Hide jobs':'Jobs'}</button>`:''}</div></span><span class="amt">${P.gbp(sum)}<br><span class="pill ${P.pill(mo.status)}">${mo.status}</span></span></div>
+      ${open?mo.jobs.map(j=>`<div class="jobrow"><span><div>${j.t}</div><div class="d">${j.d} · ${j.s}</div></span><span>${P.gbp(j.fee)}</span></div>`).join(''):''}`}).join('');
+  el.innerHTML=demo+P.ptrHint()+`
+    <div class="sec-head" style="margin-top:12px"><div class="h2">Months</div><span class="xs muted">${d==='empty'?0:P.months.length}</span></div>
+    <div class="rows">${list}</div>
+    <div class="grp">How it works</div>
+    <div class="blk"><div class="panel"><p class="sm soft" style="margin:0">You either invoice Floritta yourself or Floritta self-bills for you – choose in your <button class="textbtn" onclick="App.go('se-bizprofile')">business profile</button>. A job marked “Done” waits for the statement; the draft becomes “Issued” at the end of the month.</p></div></div>
+    <div class="grp">Linked to Work → Jobs</div>
+    <div class="blk"><div class="panel"><div class="sm"><b>Mark as done</b> on a job refreshes this list straight away.</div><div class="xs soft mt4">Demo: pretend the Bermondsey wedding was just marked done.</div><button class="btn --sm --secondary mt16" onclick="PT.stJobDone()">${A.icon('check')} Simulate “Mark as done”</button></div></div>`;
+};
+P.stToggle=m=>{stOpen=stOpen===m?null:m;A.haptic();window.mount_se_statements()};
+P.stJobDone=()=>{const j=P.months[0].jobs[0];if(j.s!=='done'){j.s='done';stOpen='2026-10';A.toast('Statement updated · October draft');window.mount_se_statements()}else A.toast('Already done')};
+
+/* ======================================================= BUSINESS PROFILE ======================================================= */
+P.prof={utr:'',platforms:['Deliveroo','Floom'],insurance:'public',validTo:'2027-03-31',vehicle:'Public transport',invoicing:'self_billing',alerts:{mode:'all',quiet:true},saving:false};
+const PLATFORMS=['Deliveroo','Uber Eats','Just Eat','Stuart','Amazon Flex','Other florists','Own clients'];
+const INS=[['none','None'],['public','Public liability'],['hire','Hire & reward'],['both','Both']];
+const VEH=['None','Own car','Van','Bike','Scooter','Public transport'];
+const utrOk=v=>v===''||/^\d{10}$/.test(v);
+const dateOk=v=>/^\d{4}-\d{2}-\d{2}$/.test(v)&&!isNaN(new Date(v));
+window.mount_se_bizprofile=function(){
+  const el=P.$('#se-bp-body'),cta=P.$('#se-bp-cta'),u=A.me(),c=P.contour(u),d=P.d('se_bizprofile'),p=P.prof;P.ptr(el,'se_bizprofile');
+  const demo=P.demo('se_bizprofile',[['ok','Normal'],['loading','Loading'],['error','Load error'],['saveerr','Save fails']]);
+  cta.innerHTML='';
+  if(c!=='self_employed'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`You are <b>${u.n}</b> · ${c.replace('_',' ')}. The profile is loaded only on the self-employed contour.`)+P.stt('error','Could not load your profile. Pull to try again.');return}
+  if(d==='loading'){el.innerHTML=demo+P.ptrHint()+P.stt('loading');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load your profile. Pull to try again.');return}
+  const extra=p.platforms.filter(x=>!PLATFORMS.includes(x));
+  const chips=(list,sel,fn,multi)=>`<div class="chips wrap">${list.map(x=>{const k=Array.isArray(x)?x[0]:x,l=Array.isArray(x)?x[1]:x;const on=multi?sel.includes(k):sel===k;return `<button class="chip ${on?'on':''}" onclick="${fn}('${k}')">${l}</button>`}).join('')}</div>`;
+  el.innerHTML=demo+P.ptrHint()+`
+    <div class="note" style="padding-top:8px">What the studio needs to work with you as a business. Form reloads with every new answer from the CRM (key = JSON).</div>
+    <div class="grp">HMRC</div>
+    <div class="blk"><div class="field"><label>UTR (Unique Taxpayer Reference)</label><input class="input ${utrOk(p.utr)?'':'bad'}" id="bp-utr" inputmode="numeric" placeholder="10 digits, or leave empty" value="${p.utr}" oninput="PT.bpUtr(this)"></div>${utrOk(p.utr)?'':'<div class="errt">A UTR is exactly 10 digits.</div>'}</div>
+    <div class="grp">Other platforms you work with</div>
+    ${chips(PLATFORMS.concat(extra),p.platforms,'PT.bpPlat',true)}
+    <div class="note">“Floom” came from the CRM and stays as its own chip.</div>
+    <div class="grp">Insurance</div>
+    ${chips(INS,p.insurance,'PT.bpIns')}
+    ${p.insurance!=='none'?`<div class="blk" style="margin-top:14px"><div class="field"><label>Valid to</label><input class="input ${dateOk(p.validTo)?'':'bad'}" id="bp-vt" placeholder="YYYY-MM-DD" value="${p.validTo}" oninput="PT.bpVt(this)"></div>${dateOk(p.validTo)?'':'<div class="errt">Use the format YYYY-MM-DD.</div>'}</div>`:''}
+    <div class="grp">Transport</div>
+    ${chips(VEH,p.vehicle,'PT.bpVeh')}
+    <div class="grp">Who invoices</div>
+    ${chips([['own','I invoice Floritta'],['self_billing','Floritta self-bills for me']],p.invoicing,'PT.bpInv')}
+    <div class="note">${p.invoicing==='self_billing'?'Floritta raises a monthly invoice in your name – you only check it.':'You send your own invoice against each monthly statement.'}</div>
+    <div class="grp">Job alerts · lives in Me</div>
+    <div class="alerts">
+      <div class="r"><span class="sm">New jobs</span><div class="seg" style="height:34px;width:150px"><button class="${p.alerts.mode==='all'?'on':''}" onclick="PT.bpAlert('all')">All jobs</button><button class="${p.alerts.mode==='off'?'on':''}" onclick="PT.bpAlert('off')">Off</button></div></div>
+      <div class="r"><span class="sm">Quiet hours 21:00–08:00<span class="xs muted" style="display:block">Pushes wait until morning</span></span><button class="switch ${p.alerts.quiet?'on':''}" role="switch" aria-checked="${p.alerts.quiet}" ${p.alerts.mode==='off'?'disabled style="opacity:.4"':''} onclick="PT.bpQuiet()"></button></div>
+      <div class="xs muted">Saved as soon as you tap · PATCH /me/business-profile {alerts}. <button class="textbtn" onclick="PT.bpAlertErr()">Demo: alert save fails</button></div>
+    </div>
+    <div style="height:16px"></div>`;
+  const ok=utrOk(p.utr)&&(p.insurance==='none'||dateOk(p.validTo))&&!p.saving;
+  cta.innerHTML=`<button class="btn --block" ${ok?'':'disabled'} onclick="PT.bpSave()">${p.saving?'Saving…':'Save'}</button>`;
+};
+P.bpUtr=i=>{P.prof.utr=i.value.replace(/\D/g,'').slice(0,10);if(i.value!==P.prof.utr)i.value=P.prof.utr;window.mount_se_bizprofile();const n=P.$('#bp-utr');if(n){n.focus();n.setSelectionRange(99,99)}};
+P.bpVt=i=>{P.prof.validTo=i.value;const ok=dateOk(i.value);i.classList.toggle('bad',!ok);const c=P.$('#se-bp-cta .btn');if(c)c.disabled=!(ok&&utrOk(P.prof.utr))};
+P.bpPlat=k=>{const a=P.prof.platforms;const i=a.indexOf(k);i<0?a.push(k):a.splice(i,1);A.haptic();window.mount_se_bizprofile()};
+P.bpIns=k=>{P.prof.insurance=k;A.haptic();window.mount_se_bizprofile()};
+P.bpVeh=k=>{P.prof.vehicle=k;A.haptic();window.mount_se_bizprofile()};
+P.bpInv=k=>{P.prof.invoicing=k;A.haptic();window.mount_se_bizprofile()};
+P.bpAlert=m=>{P.prof.alerts.mode=m;A.haptic();A.toast(m==='off'?'Job alerts off':'Alerts for all jobs');window.mount_se_bizprofile()};
+P.bpQuiet=()=>{P.prof.alerts.quiet=!P.prof.alerts.quiet;A.haptic();A.toast(P.prof.alerts.quiet?'Quiet hours on':'Quiet hours off');window.mount_se_bizprofile()};
+P.bpAlertErr=()=>P.alert('Could not change the alerts','The CRM did not accept the change. Nothing was saved – try again.',[{l:'OK',primary:true}]);
+P.bpSave=()=>{const p=P.prof;p.saving=true;window.mount_se_bizprofile();
+  setTimeout(()=>{p.saving=false;if(P.d('se_bizprofile')==='saveerr'){window.mount_se_bizprofile();P.alert('Could not save','The CRM answered: insurance valid-to date is in the past. Check the form and try again.',[{l:'OK',primary:true}]);return}
+    window.mount_se_bizprofile();P.alert('Saved.','UTR, platforms, insurance, transport and invoicing are in your profile now.',[{l:'OK',primary:true,fn:()=>A.back('me')}])},700)};
+
+/* ======================================================= TAX & STATUS ======================================================= */
+window.mount_se_taxstatus=function(){
+  const el=P.$('#se-tx-body'),u=A.me(),c=P.contour(u);
+  el.innerHTML=`${c!=='self_employed'?P.lens(0,`No contour guard on this screen: <b>${u.n}</b> (${c.replace('_',' ')}) opened it by link and reads the self-employed text. In Me the row exists only for the self-employed.`):''}
+    <div class="pad" style="padding-top:8px"><h1 class="h2">You work for yourself</h1><p class="soft" style="margin:12px 0 0">You are self-employed – not an employee or worker of Floritta. You choose which jobs to take, you may send a substitute, and you may work for anyone else at any time. Nothing on this page goes to or comes from the CRM.</p></div>
+    <div class="grp">Tax</div>
+    <div class="wk-kv --info"><span>Self Assessment</span><span>Income tax and National Insurance are yours to declare</span><span>Trading allowance</span><span>The first £1,000 a year is tax-free</span><span>Statements</span><span>A monthly statement or your own invoice, paid gross</span></div>
+    <div class="grp">Not included</div>
+    <div class="wk-kv --info"><span>Holiday pay</span><span>No</span><span>Sick pay</span><span>No</span><span>Pension</span><span>No</span><span>Minimum wage</span><span>No – a price per job instead</span></div>
+    <div class="blk" style="margin-top:24px"><div class="panel"><div class="h4">Not sure this is right for you?</div><p class="sm soft" style="margin:6px 0 0">Talk to HR at the studio – you can also work as a casual worker, with hourly pay and accrued holiday.</p></div></div>
+    <div class="note">Your agreement: <button class="textbtn" onclick="App.go('pay-agreement')">My agreement</button></div>`;
+};
+
+/* ======================================================= AGREEMENT ======================================================= */
+P.ag={kind:null,status:'needs_signing',showFull:false,agreed:false,name:'',drawn:false,err:'',signedName:'',signedAt:''};
+const AGD={
+  worker:{title:'Casual Worker Agreement',version:'v1.2',term:6,summary:[['Status','Casual worker – not an employee, not self-employed'],['Work','We publish shifts; you take the ones you want'],['Pay','Hourly, never below the National Living Wage, + bouquet bonus, weekly through PAYE'],['Holiday','12.07 % of your hours, accrued; paid when you take it'],['Notice','Shifts published 48 h ahead; please release 24 h ahead'],['Term','6 months from signing']],
+    body:'1. Status. You are engaged as a casual worker. There is no obligation on Floritta to offer work, nor on you to accept it.\n2. Shifts. Floritta publishes open shifts in the app. A shift is yours once you take it; you may release it before it starts.\n3. Pay. You are paid for every hour inside a shift you took, at your hourly rate and never below the National Living Wage. Learning inside a shift is paid time. The bouquet bonus is paid on top.\n4. Holiday. Holiday accrues at 12.07 % of the hours you work and is paid when you take it.\n5. Standards. Inside a shift the studio\'s standards apply as for everyone.\n6. Term. This agreement runs for 6 months from signing and may be renewed.'},
+  self_employed:{title:'Services Agreement',version:'v2.0',term:12,summary:[['Status','Self-employed – you run your own business'],['Jobs','Fixed fee per job, shown before you apply'],['Substitute','You may send someone else'],['Other clients','You may work for anyone'],['Pay','Monthly statement or your own invoice, gross'],['Not included','Holiday pay, sick pay, pension, minimum wage'],['Term','12 months from signing']],
+    body:'1. Status. You provide services to Floritta as an independent business.\n2. Jobs. Each job carries a fixed fee shown before you apply. You may withdraw before the job starts.\n3. Substitution. You may send a suitably skilled substitute at your own cost.\n4. Payment. Floritta issues a monthly statement, or you invoice Floritta; payment is gross.\n5. Exclusivity. None – you may work for anyone.\n6. Term. 12 months from signing.'}
+};
+const agKind=p=>{const u=A.me(),c=P.contour(u);if(p&&p.kind)return p.kind;if(P.ag.kind)return P.ag.kind;if(c==='worker')return 'worker';if(c==='self_employed')return 'self_employed';return null};
+window.mount_pay_agreement=function(p){
+  const el=P.$('#pay-ag-body'),cta=P.$('#pay-ag-cta'),u=A.me(),c=P.contour(u),g=P.ag,d=P.d('pay_agreement');P.ptr(el,'pay_agreement');
+  const demo=P.demo('pay_agreement',[['ok','Needs signing'],['signed','Signed'],['expiring','Expiring'],['draft','Draft version'],['v409','New version (409)'],['loading','Loading'],['error','Error']]);
+  cta.innerHTML='';
+  const kind=agKind(p);
+  const picker=(c==='reserve'||P.isAdmin(u))?`<div class="chips" style="margin-top:6px">${[['worker','Casual worker'],['self_employed','Self-employed']].map(k=>`<button class="chip ${kind===k[0]?'on':''}" onclick="PT.agKind('${k[0]}')">${k[1]}</button>`).join('')}</div><div class="note">${c==='reserve'?'In the reserve you sign both – one per way of working (?kind=).':'Admin preview: any kind, by ?kind=.'}</div>`:'';
+  if(!kind){el.innerHTML=demo+P.ptrHint()+P.lens(0,`<b>${u.n}</b> is an employee – there is no agreement kind for employees, the request does not run.`)+P.stt('error','Could not load the agreement. Pull to try again.');return}
+  if(d==='loading'){el.innerHTML=demo+P.ptrHint()+picker+P.stt('loading');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+picker+P.stt('error','Could not load the agreement. Pull to try again.');return}
+  const D=AGD[kind];const status=d==='signed'?'signed':d==='expiring'?'expiring':g.status;
+  const head=`<div class="pad" style="padding-top:8px"><div class="caps muted">${D.version} · ${D.term} months from signing ${d==='draft'?'<span class="pill --todo" style="margin-left:6px">Draft</span>':''}</div><h1 class="h2 mt8">${D.title}</h1></div>
+    <div class="grp">In short</div><div class="wk-kv --info">${D.summary.map(s=>`<span>${s[0]}</span><span>${s[1]}</span>`).join('')}</div>
+    <div class="blk" style="margin-top:14px"><button class="btn --secondary --block --sm" onclick="PT.agFull()">${g.showFull?'Hide the full text':'Read the full agreement'}</button></div>
+    ${g.showFull?`<div class="body" style="margin-top:12px">${P.esc(D.body)}</div><div class="note">Text can be selected and copied.</div>`:''}`;
+  let signed='';
+  if(status==='signed'||status==='expiring'){const nm=g.signedName||'HR · on paper';signed=`<div class="grp">Signature</div><div class="signed ${status==='expiring'?'exp':''}"><div class="flex ai-c jc-sb"><span class="caps muted">Signed</span><span class="pill --done">${g.signedName?'In the app':'On paper'}</span></div><div class="sm mt8"><b>${nm}</b> · ${g.signedAt||'3 Oct 2026'}</div><div class="xs soft mt4">${status==='expiring'?`<span class="accent">Ends on 15 Nov 2026 – please sign the new term.</span>`:'Runs until 15 Apr 2027'}</div></div>`}
+  let form='';
+  if(status!=='signed'){
+    const ok=g.agreed&&(g.name||u.n).trim().length>=2&&g.drawn;
+    form=`<div class="grp">Sign</div>
+      ${g.err?`<div class="errt" style="margin:0 var(--gutter) 12px">${g.err}</div>`:''}
+      <button class="ag-check ${g.agreed?'on':''}" onclick="PT.agAgree()"><i></i><span>I have read the agreement and agree to it.</span></button>
+      <div class="blk" style="margin-top:16px"><div class="field"><label>Your full name</label><input class="input" id="ag-name" value="${P.esc(g.name||u.n)}" oninput="PT.agName(this.value)"></div></div>
+      <div class="sm soft" style="margin:4px var(--gutter) 8px">Sign with your finger in the box. The page stops scrolling while you draw.</div>
+      <div class="ag-sig"><canvas id="pt-ag-canvas" aria-label="Signature pad"></canvas><span class="ph">Signature</span></div>
+      <div class="note">Prefer paper? Ask HR at the studio.</div>`;
+    cta.innerHTML=`<button class="btn --ghost" onclick="PT.agClear()">Clear</button><button class="btn" id="pt-ag-sign" ${ok?'':'disabled'} onclick="PT.agSign()">Sign</button>`;
+  }else{cta.innerHTML=`<button class="btn --block --secondary" onclick="App.toast('Signed copy – PDF (demo)')">Download signed copy</button>`}
+  el.innerHTML=demo+P.ptrHint()+picker+head+signed+form+(status==='signed'?`<div class="note">Signing removed the “Sign your agreement” panel on Today and unlocked “Take this shift / job”. Until then the CRM answers 403 agreement_required.</div>`:'')+'<div style="height:20px"></div>';
+  if(status!=='signed')setTimeout(P.agPad,30);
+};
+P.agKind=k=>{P.ag.kind=k;P.ag.showFull=false;window.mount_pay_agreement()};
+P.agFull=()=>{P.ag.showFull=!P.ag.showFull;A.haptic();window.mount_pay_agreement()};
+P.agAgree=()=>{P.ag.agreed=!P.ag.agreed;A.haptic();P.agUpd();P.$('#s-pay-agreement .ag-check').classList.toggle('on',P.ag.agreed)};
+P.agName=v=>{P.ag.name=v;P.agUpd()};
+P.agUpd=()=>{const g=P.ag,b=P.$('#pt-ag-sign');if(b)b.disabled=!(g.agreed&&(g.name||A.me().n).trim().length>=2&&g.drawn)};
+P.agPad=()=>{const c=P.$('#pt-ag-canvas');if(!c||c.dataset.ready)return;c.dataset.ready=1;const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);const x=c.getContext('2d');x.scale(dpr,dpr);x.lineWidth=2.2;x.lineCap='round';x.lineJoin='round';x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#1e1a17';
+  const body=P.$('#pay-ag-body');let down=false,lx=0,ly=0;const pos=e=>{const b=c.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]};
+  c.onpointerdown=e=>{down=true;c.setPointerCapture(e.pointerId);[lx,ly]=pos(e);body.style.overflowY='hidden';x.beginPath();x.arc(lx,ly,1.1,0,Math.PI*2);x.fillStyle=x.strokeStyle;x.fill()};
+  c.onpointermove=e=>{if(!down)return;const [nx,ny]=pos(e);x.beginPath();x.moveTo(lx,ly);x.lineTo(nx,ny);x.stroke();lx=nx;ly=ny;if(!P.ag.drawn){P.ag.drawn=true;const ph=P.$('#s-pay-agreement .ag-sig .ph');if(ph)ph.style.opacity=.35;P.agUpd()}};
+  c.onpointerup=c.onpointercancel=()=>{down=false;body.style.overflowY=''}};
+P.agClear=()=>{const c=P.$('#pt-ag-canvas');if(c)c.getContext('2d').clearRect(0,0,c.width,c.height);P.ag.drawn=false;const ph=P.$('#s-pay-agreement .ag-sig .ph');if(ph)ph.style.opacity=1;P.agUpd()};
+P.agSign=()=>{const g=P.ag,b=P.$('#pt-ag-sign');if(b.disabled)return;b.disabled=true;b.textContent='Signing…';
+  setTimeout(()=>{if(P.d('pay_agreement')==='v409'){g.err='The agreement has a new version – read it again and sign.';g.drawn=false;g.agreed=false;P.st.pay_agreement='ok';window.mount_pay_agreement();return}
+    const D=AGD[agKind()]||AGD.worker;g.err='';g.status='signed';g.signedName=(g.name||A.me().n).trim();g.signedAt='20 Oct 2026, 11:14';P.st.pay_agreement='signed';A.haptic();A.toast('Signed – a copy is saved here');setTimeout(()=>A.push('Agreement signed',`${D.title} ${D.version} · copy in My agreement`,{icon:'check'}),700);window.mount_pay_agreement()},800)};
+
+/* ======================================================= SHIFT OFFERS ======================================================= */
+P.offers=[
+  {id:1,day:'Tue 20 Oct',hrs:'15:00–22:00',h:7,place:'SE1 studio',spots:1,taken:1,mine:true,st:'open'},
+  {id:2,day:'Thu 22 Oct',hrs:'08:00–15:00',h:7,place:'SE1 studio',spots:2,taken:1,mine:false,st:'open'},
+  {id:3,day:'Fri 23 Oct',hrs:'12:00–20:00',h:8,place:'SE1 studio',spots:1,taken:0,mine:false,st:'open',urgent:100,note:'Pre-Halloween · expect a busy day'},
+  {id:4,day:'Sat 24 Oct',hrs:'08:00–15:00',h:7,place:'SW6 shop',spots:2,taken:2,mine:false,st:'full'},
+  {id:5,day:'Sun 25 Oct',hrs:'10:00–16:00',h:6,place:'SW6 shop',spots:1,taken:0,mine:false,st:'open',skipped:true},
+  {id:6,day:'Wed 28 Oct',hrs:'08:00–15:00',h:7,place:'SE1 studio',spots:3,taken:0,mine:false,st:'open'},
+  {id:7,day:'Sun 18 Oct',hrs:'12:00–20:00',h:8,place:'SE1 studio',spots:1,taken:1,mine:true,st:'cancelled'}
+];
+const busy={};
+window.mount_pay_offers=function(){
+  const el=P.$('#pay-of-body'),u=A.me(),c=P.contour(u),d=P.d('pay_offers');P.ptr(el,'pay_offers');
+  const demo=P.demo('pay_offers',[['ok','Normal'],['unsigned','Agreement unsigned (403)'],['full409','Full on server (409)'],['loading','Loading'],['error','Error'],['empty','Nothing open']]);
+  if(c!=='worker'&&c!=='reserve'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`You are <b>${u.n}</b> · ${c.replace('_',' ')}. Offers load only for casual workers (and the reserve, embedded in its Work).`)+P.stt('error','Could not load the shifts. Pull to try again.');return}
+  if(d==='loading'){el.innerHTML=demo+P.ptrHint()+P.stt('loading');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load the shifts. Pull to try again.');return}
+  const O=P.offers,rate='£13.21/h';
+  const mine=O.filter(o=>o.mine&&o.st!=='cancelled'),open=d==='empty'?[]:O.filter(o=>!o.mine&&!o.skipped&&o.st!=='cancelled'),skipped=O.filter(o=>o.skipped&&!o.mine),canc=O.filter(o=>o.mine&&o.st==='cancelled');
+  const left=o=>o.spots-o.taken;
+  const card=o=>{const pill=o.mine?(o.st==='cancelled'?'<span class="pill --late">Cancelled</span>':'<span class="pill --done">Yours</span>'):(o.st==='full'?'<span class="pill --plain">Full</span>':`<span class="pill --todo">${left(o)} place${left(o)===1?'':'s'} left</span>`);
+    const urg=o.urgent?`<span class="pill --review">Urgent +${P.gbp(o.urgent)}/h</span>`:'';
+    let btns='';
+    if(o.mine&&o.st!=='cancelled')btns=`<div class="btns"><button class="btn --sm --ghost" onclick="PT.ofRelease(${o.id})">Can’t make it</button></div><div class="xs muted mt8">Clock-in on Today opens 30 min before start and closes 30 min after the end.</div>`;
+    else if(o.mine&&o.st==='cancelled')btns=`<div class="xs muted mt8">Nothing is paid or deducted.</div>`;
+    else if(o.skipped)btns=`<div class="btns"><button class="btn --sm --secondary" onclick="PT.ofAnswer(${o.id},'unskip')">Show again</button></div>`;
+    else btns=`<div class="btns"><button class="btn --sm --secondary" onclick="PT.ofAnswer(${o.id},'skip')">Skip</button><button class="btn --sm" ${o.st==='full'?'disabled':''} onclick="PT.ofAnswer(${o.id},'take')">${o.st==='full'?'Full':'Take this shift'}</button></div>`;
+    return `<div class="offer ${o.mine?'mine':''} ${o.skipped||o.st==='cancelled'?'gone':''}" id="pt-of-${o.id}"><div class="top"><span class="caps muted">${o.day}</span><span style="display:flex;gap:6px">${urg}${pill}</span></div><div class="hrs">${o.hrs}</div><div class="meta">${o.h} h · ${rate} · ${o.place}${o.note?`<br>${o.note}`:''}</div>${btns}</div>`};
+  el.innerHTML=demo+P.ptrHint()+`
+    <div class="sec-head" style="margin-top:10px"><div class="h2">Your shifts</div><span class="xs muted">${mine.reduce((s,o)=>s+o.h,0)} h booked</span></div>
+    ${mine.length?mine.map(card).join(''):P.stt('empty','Nothing booked.')}
+    <div class="sec-head"><div class="h2">Open shifts</div><span class="xs muted">next 2 weeks · ${open.length}</span></div>
+    ${open.length?open.map(card).join(''):P.stt('empty','No open shifts right now – we send a push when one appears.')}
+    ${skipped.length?`<div class="sec-head"><div class="h2">Skipped</div><span class="xs muted">only you see this</span></div>${skipped.map(card).join('')}`:''}
+    ${canc.length?`<div class="sec-head"><div class="h2">Cancelled by the studio</div></div>${canc.map(card).join('')}`:''}
+    <div class="grp">How this works</div>
+    <div class="wk-kv --info">
+      <span>Notice</span><span>We publish a shift at least 48 h before it starts (notice_hours from the CRM)</span>
+      <span>Releasing</span><span>Please release 24 h before – no fee, no rating</span>
+      <span>Pay</span><span>Hourly, never below the National Living Wage, + bouquet bonus</span>
+      <span>Holiday</span><span>12.07 % of your hours, up to 28 days</span>
+    </div>
+    <div class="note">Skipping is private – managers don’t see it and nothing is recorded.</div>`;
+};
+P.ofAnswer=(id,act)=>{if(busy[id])return;const o=P.offers.find(x=>x.id===id);busy[id]=1;
+  const done=()=>{busy[id]=0;window.mount_pay_offers()};
+  if(act==='take'){const d=P.d('pay_offers');
+    if(d==='unsigned'){busy[id]=0;P.alert('Sign your agreement first – then you can take shifts.','The CRM answered 403 agreement_required.',[{l:'Not now'},{l:'Open agreement',primary:true,fn:()=>App.go('pay-agreement')}]);return}
+    if(d==='full409'){busy[id]=0;P.alert('All places on this shift are taken.','Someone was faster – the CRM answered 409 full. The list reloads.',[{l:'OK',primary:true,fn:()=>{o.st='full';o.taken=o.spots;window.mount_pay_offers()}}]);return}
+    o.mine=true;o.taken++;A.haptic();A.toast(`Booked · ${o.day}, ${o.hrs}`);setTimeout(()=>A.push('Shift booked',`${o.day} · ${o.hrs} · ${o.place}`,{icon:'check'}),600);return done()}
+  if(act==='skip'){o.skipped=true;A.toast('Skipped – nothing recorded');return done()}
+  if(act==='unskip'){o.skipped=false;return done()}
+  if(act==='release'){o.mine=false;o.taken--;A.toast('Released – back on the board');return done()}
+};
+P.ofRelease=id=>{const o=P.offers.find(x=>x.id===id);P.alert('Release this shift?',`${o.day} · ${o.hrs}. It goes back to the board for a colleague. Please release 24 h before – no fee, no rating.`,[{l:'Keep it'},{l:'Release',primary:true,danger:true,fn:()=>P.ofAnswer(id,'release')}])};
+
+/* persona change re-renders the open screen */
+document.addEventListener('user',()=>{const id=A.state.current;if(/^(pay-w|pay-wk|se-statements|se-bizprofile|se-taxstatus|pay-agreement|pay-offers)$/.test(id)){P.ag.kind=null;const f=P.mountOf(id.replace(/-/g,'_'));if(f)f(A.state.params)}});
+})();
+</script>
