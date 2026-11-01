@@ -1,13 +1,24 @@
-<section class="scr fl fl" id="s-fl-su3" data-nav="Sign up 3 · Right to work" data-group="Freelance · Start">
-  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 3 of 4</div><span class="ib"></span></div>
+<section class="scr fl" id="s-fl-su3" data-nav="Sign up 3 · Right to work" data-group="Freelance · Start">
+  <!-- ids: TM-FL-018 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-su2')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Step 3 of 4</div><span class="ib"></span></div>
   <div class="scr-body has-cta pad">
+    <!-- ids: TM-FL-010 -->
     <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
     <h1 class="h1" style="margin-bottom:8px">Right to work</h1>
     <p class="soft sm" style="margin:0 0 18px">UK law asks every delivery platform to check this before your first delivery. Get a share code at gov.uk/prove-right-to-work – it takes two minutes.</p>
-    <div class="field"><label for="fl-su-sc">Share code</label><input class="input num" id="fl-su-sc" value="W7K 4PX 9QM" style="letter-spacing:.12em"></div>
-    <div class="field"><label for="fl-su-dob">Date of birth</label><input class="input num" id="fl-su-dob" value="14 / 03 / 1996"><span class="hint">The Home Office check needs it. You must be 18 or over.</span></div>
-    <div class="panel sm soft mt8"><b>British or Irish passport?</b> You don't need a share code – pick "Show my passport instead" and a studio manager will check it in person.</div>
-    <div style="margin-top:14px"><button class="textbtn">Show my passport instead</button></div>
+    <!-- ids: TM-FL-014 -->
+    <div id="fl-su3-code">
+      <div class="field"><label for="fl-su-sc">Share code</label><input class="input num" id="fl-su-sc" value="W7K 4PX 9QM" style="letter-spacing:.12em" oninput="FLX.suValidate()"><span class="hint">9 letters and digits. Spaces and dashes don't matter.</span></div>
+      <div class="field"><label for="fl-su-dob">Date of birth</label><input class="input num" id="fl-su-dob" value="1996-03-14" placeholder="YYYY-MM-DD" oninput="FLX.suValidate()"><span class="hint" id="fl-su-dob-hint">The Home Office check needs it. You must be 18 or over.</span></div>
+      <div class="panel sm soft mt8"><b>British or Irish passport?</b> You don't need a share code – pick "Show my passport instead" and a studio manager will check it in person.</div>
+      <div style="margin-top:14px"><button class="textbtn" onclick="FLX.suRtw('passport')">Show my passport instead</button></div>
+    </div>
+    <div id="fl-su3-passport" hidden>
+      <div class="panel --ok sm"><b>Passport check in person.</b> Bring your British or Irish passport to the studio (80 Willow Walk, SE1) – a manager checks it and marks your account. Until then you can look at the board but not request.</div>
+      <div class="field" style="margin-top:14px"><label for="fl-su-dob2">Date of birth</label><input class="input num" id="fl-su-dob2" value="1996-03-14" placeholder="YYYY-MM-DD"><span class="hint">You must be 18 or over.</span></div>
+      <div style="margin-top:6px"><button class="textbtn" onclick="FLX.suRtw('code')">I have a share code</button></div>
+    </div>
   </div>
-  <div class="cta-bar"><button class="btn --block" onclick="App.go('fl-su4')">Continue</button></div>
+  <!-- ids: TM-FL-014 -->
+  <div class="cta-bar"><button class="btn --block" id="fl-su3-next" onclick="App.go('fl-su4')">Continue</button></div>
 </section>

@@ -1,20 +1,39 @@
-<section class="scr fl fl" id="s-fl-me" data-tab="fl-me" data-nav="Profile" data-group="Freelance · Profile">
-  <div class="appbar"><div class="ttl">Profile</div></div>
-  <div class="scr-body has-tab">
-    <div class="pad" style="display:flex;gap:14px;align-items:center;margin:6px 0 16px">
-      <div style="width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:20px;letter-spacing:.04em;font-weight:500">SK</div>
-      <div><div class="h2">Sam Kowalski</div><div class="sm muted">Self-employed courier · Bike · since Oct 2026</div><div style="margin-top:6px" id="fl-me-pill"></div></div>
+<section class="scr fl" id="s-fl-me" data-nav="Profile" data-group="Freelance · Profile">
+  <!-- ids: TM-FL-031 TM-FL-098 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-board')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Profile</div><span class="ib"></span></div>
+  <div class="scr-body">
+    <!-- ids: TM-FL-090 -->
+    <div class="pad" style="display:flex;gap:14px;align-items:center;margin:10px 0 12px">
+      <div class="flx-ava --lg">SK</div>
+      <div><div class="h2">Sam Kowalski</div><div class="sm muted">Self-employed courier · Bike · since 12 Oct 2026</div><div style="margin-top:6px" id="fl-me-pill"></div></div>
     </div>
-    <div class="stats num"><div><b>23</b><span>Delivered</span></div><div><b>0</b><span>Problems</span></div><div><b>SE15</b><span>Home area</span></div></div>
+    <div class="pad"><div class="flx-refresh"><span>Pull down to refresh</span><button class="textbtn" onclick="FLX.refresh()">Refresh</button></div></div>
+    <!-- ids: TM-FL-091 -->
+    <div class="stats num" id="flx-me-stats" style="margin-top:10px"></div>
+    <p class="hint pad" style="margin:8px 0 0">Your courier rating isn't shown here on purpose.</p>
+    <!-- ids: TM-FL-092 -->
     <div style="margin-top:14px">
-      <button class="row" onclick="App.go('fl-notif')"><svg class="i"><use href="#fl-i-bell"/></svg><div class="rt"><div class="l">Notifications</div><div class="d">Areas and routes · near the studio on</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
-      <button class="row" onclick="App.go('fl-alco')"><svg class="i"><use href="#fl-i-glass"/></svg><div class="rt"><div class="l">Alcohol deliveries</div><div class="d">Trained · valid until April 2027</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-notif')"><svg class="i"><use href="#fl-i-bell"/></svg><div class="rt"><div class="l">Notifications</div><div class="d" id="flx-me-notif-d"></div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-alco')"><svg class="i"><use href="#fl-i-glass"/></svg><div class="rt"><div class="l">Alcohol deliveries</div><div class="d" id="flx-me-alco-d"></div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-saved')"><svg class="i"><use href="#fl-i-route"/></svg><div class="rt"><div class="l">Routes and areas</div><div class="d" id="flx-me-routes-d"></div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
       <button class="row" onclick="App.tab('fl-studio')"><svg class="i"><use href="#fl-i-msg"/></svg><div class="rt"><div class="l">Write to the studio</div><div class="d">Kamila replied 2 h ago</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
-      <button class="row" onclick="App.go('fl-tax')"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Tax &amp; status</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
-      <button class="row"><svg class="i"><use href="#fl-i-shield"/></svg><div class="rt"><div class="l">Right to work</div><div class="d">Checked 23 Oct 2026 · valid until March 2027</div></div></button>
-      <button class="row"><svg class="i"><use href="#fl-i-help"/></svg><div class="rt"><div class="l">Help and courier agreement</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
-      <button class="row" onclick="App.go('fl-welcome')"><svg class="i"><use href="#fl-i-out"/></svg><div class="rt"><div class="l">Sign out</div></div></button>
-      <button class="row --danger" onclick="App.go('fl-delete')"><svg class="i" style="color:var(--accent)"><use href="#fl-i-trash"/></svg><div class="rt"><div class="l">Delete account</div></div></button>
+      <button class="row" onclick="App.go('fl-bank')"><svg class="i"><use href="#fl-i-bank"/></svg><div class="rt"><div class="l">Bank details</div><div class="d" id="flx-me-bank-d"></div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <button class="row" onclick="App.go('fl-tax')"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Tax &amp; status</div><div class="d">Self-employed · trading allowance £1,000</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <!-- ids: TM-FL-093 -->
+      <div class="row" id="flx-me-rtw"></div>
+      <div class="pad"><div class="flx-demo"><span>Demo · right to work</span><span id="flx-d-rtw"></span></div></div>
     </div>
+    <!-- ids: TM-FL-094 -->
+    <div class="sec-head" style="margin-top:20px"><div class="caps muted">Language</div><span class="xs muted">saved on device</span></div>
+    <div class="pad"><div class="seg" id="flx-lang"><button data-l="en" onclick="FLX.lang(this)">English</button><button data-l="ru" onclick="FLX.lang(this)">Русский</button><button data-l="sys" onclick="FLX.lang(this)">System</button></div></div>
+    <div style="margin-top:20px">
+      <!-- ids: TM-FL-095 -->
+      <button class="row" onclick="FLX.sheet('password')"><svg class="i"><use href="#fl-i-lock"/></svg><div class="rt"><div class="l">Change password</div><div class="d">Same screen as for studio staff</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+      <!-- ids: TM-FL-096 -->
+      <button class="row" onclick="App.toast('Signed out');App.go('fl-welcome')"><svg class="i"><use href="#fl-i-out"/></svg><div class="rt"><div class="l">Sign out</div><div class="d">Straight away, no confirmation</div></div></button>
+      <!-- ids: TM-FL-097 -->
+      <button class="row --danger" onclick="App.go('fl-delete')"><svg class="i" style="color:var(--accent)"><use href="#fl-i-trash"/></svg><div class="rt"><div class="l">Delete account</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    </div>
+    <p class="hint pad" style="margin:16px 0 24px">Floritta Team 1.0.7 · freelance courier</p>
   </div>
 </section>

@@ -1,13 +1,19 @@
-<section class="scr fl fl" id="s-fl-earn" data-tab="fl-earn" data-nav="Earnings" data-group="Freelance · Earnings">
-  <div class="appbar"><div class="ttl">Earnings</div><button class="ib" aria-label="Profile" onclick="App.tab('fl-me')"><span style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:11px;font-weight:500;letter-spacing:.04em">SK</span></button></div>
+<section class="scr fl" id="s-fl-earn" data-tab="fl-earn" data-nav="Earnings" data-group="Freelance · Earnings">
+  <!-- ids: TM-FL-005 TM-FL-031 -->
+  <div class="appbar"><div class="ttl">Earnings</div><button class="ib" aria-label="Profile" onclick="App.go('fl-me')"><span class="flx-ava">SK</span></button></div>
   <div class="scr-body has-tab">
-    <div class="stats num"><div><b>£63</b><span>This week</span></div><div><b>£214</b><span>October</span></div><div><b>£63</b><span>Unpaid</span></div></div>
-    <div class="pad" style="margin-top:12px"><div class="panel sm soft" style="display:flex;gap:10px;align-items:center"><svg class="i"><use href="#fl-i-bank"/></svg><span>Paid every Friday to the account ending <b class="num">4821</b>. Last payout £81.00 on 17 Oct.</span></div></div>
-    <div class="sec-head"><div class="h2">Statements</div></div>
-    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 43 · 20–26 Oct</div><div class="d">7 deliveries · issued Mon 27 Oct</div></div><span class="pill --review">Check it</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
-    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 42 · 13–19 Oct</div><div class="d">9 deliveries · £81.00</div></div><span class="pill --done">Paid</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
-    <button class="row" onclick="App.go('fl-stmt')"><div class="rt"><div class="l num">Week 41 · 6–12 Oct</div><div class="d">8 deliveries · £70.00</div></div><span class="pill --done">Paid</span><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
-    <button class="row" onclick="App.go('fl-bank')"><svg class="i"><use href="#fl-i-bank"/></svg><div class="rt"><div class="l">Bank details</div><div class="d">Account ending 4821</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
+    <!-- ids: TM-FL-079 -->
+    <div class="pad" style="margin-bottom:10px"><div class="flx-refresh"><span>Pull down to refresh earnings and statements</span><button class="textbtn" onclick="FLX.refresh()">Refresh</button></div>
+      <div class="flx-demo"><span>Demo</span><span id="flx-d-earn"></span></div></div>
+    <!-- ids: TM-FL-073 -->
+    <div class="stats num" id="flx-earn-stats"></div>
+    <!-- ids: TM-FL-074 TM-FL-075 -->
+    <div class="pad" style="margin-top:12px" id="flx-earn-bank"></div>
+    <!-- ids: TM-FL-076 TM-FL-077 -->
+    <div class="sec-head"><div class="h2">Statements</div><span class="caps muted">Last 8 weeks</span></div>
+    <div id="flx-earn-stmts"></div>
+    <!-- ids: TM-FL-078 -->
+    <button class="row" onclick="App.go('fl-bank')"><svg class="i"><use href="#fl-i-bank"/></svg><div class="rt"><div class="l">Bank details</div><div class="d" id="flx-earn-bank-d">Account ending 4821</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
     <button class="row" onclick="App.go('fl-tax')"><svg class="i"><use href="#fl-i-doc"/></svg><div class="rt"><div class="l">Tax &amp; status</div><div class="d">Self-employed · trading allowance £1,000</div></div><svg class="i chev"><use href="#fl-i-chev"/></svg></button>
   </div>
 </section>

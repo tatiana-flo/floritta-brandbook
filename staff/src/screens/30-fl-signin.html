@@ -1,11 +1,15 @@
-<section class="scr fl fl" id="s-fl-signin" data-nav="Sign in" data-group="Freelance · Start">
-  <div class="appbar"><button class="ib" onclick="App.back()" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Sign in</div><span class="ib"></span></div>
+<section class="scr fl" id="s-fl-signin" data-nav="Sign in" data-group="Freelance · Start">
+  <!-- ids: TM-FL-001 TM-FL-008 -->
+  <div class="appbar"><button class="ib" onclick="App.back('fl-welcome')" aria-label="Back"><svg class="i"><use href="#fl-i-back"/></svg></button><div class="ttl caps">Sign in</div><span class="ib"></span></div>
   <div class="scr-body pad">
     <h1 class="h1 mt16" style="margin:16px 0 24px">Welcome back.</h1>
     <div class="field"><label for="fl-si-e">Email</label><input class="input" id="fl-si-e" value="sam.k@example.com"></div>
     <div class="field"><label for="fl-si-p">Password</label><input class="input" id="fl-si-p" type="password" value="password12"></div>
-    <button class="btn --block" onclick="App.tab('fl-board')">Sign in</button>
-    <div style="text-align:center;margin-top:18px"><button class="textbtn">Forgot password</button></div>
-    <p class="hint" style="text-align:center;margin-top:28px">Floritta studio staff sign in here too – the app shows each person their own screens.</p>
+    <button class="btn --block" onclick="App.toast('Signed in as a freelance courier');App.tab('fl-board')">Sign in</button>
+    <div style="text-align:center;margin-top:18px"><button class="textbtn" onclick="App.toast('Reset link sent to sam.k@example.com')">Forgot password</button></div>
+    <!-- ids: TM-FL-007 -->
+    <div class="hr" style="margin:28px 0 18px"></div>
+    <p class="hint" style="text-align:center;margin:0 0 12px">New here? The server decides what you see: a freelance account opens only the courier screens, staff never see them.</p>
+    <div style="text-align:center"><button class="textbtn" onclick="App.go('fl-welcome')">Become a Floritta courier</button></div>
   </div>
 </section>
