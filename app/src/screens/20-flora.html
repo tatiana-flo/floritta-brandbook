@@ -1,14 +1,148 @@
-<section class="scr" id="s-flora" data-nav="Flora (AI florist)" data-group="Extras">
+<style>
+/* ---- flora: additions (owner: app-extras); base styles live in 17-reminders.html ---- */
+#s-flora .status{display:flex;align-items:center;gap:10px;padding:10px var(--gutter);border-bottom:1px solid var(--hair);font-size:13px;color:var(--graphite)}
+#s-flora .status i{width:14px;height:14px;background:var(--ok);display:grid;place-items:center;flex:none}
+#s-flora .status i svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:1.6}
+#s-flora .status.--team i{background:var(--ink)}
+#s-flora .demo{display:flex;gap:6px;overflow-x:auto;padding:8px var(--gutter);border-bottom:1px dashed var(--light);scrollbar-width:none}
+#s-flora .demo::-webkit-scrollbar{display:none}
+#s-flora .demo .chip{flex:none;height:28px;font-size:11px}
+#s-flora .demo .lbl{flex:none;font-size:10px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);align-self:center}
+#s-flora .sysln{align-self:center;font-size:11px;color:var(--grey);text-align:center;letter-spacing:.03em;max-width:90%}
+#s-flora .msg.--f .bub{user-select:text;-webkit-user-select:text}
+#s-flora .msg.--u .bub{user-select:none}
+#s-flora .msg.--u.pending .bub{opacity:.55}
+#s-flora .msg.--u.failed .bub{opacity:.75}
+#s-flora .msg .st{font-size:11px;letter-spacing:.04em}
+#s-flora .msg .st.--fail{color:var(--accent)}
+#s-flora .bub img{display:block;width:220px;height:220px;object-fit:cover;background:var(--silver);margin:-4px -6px 6px}
+#s-flora .prods .inside{font-size:10px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);margin-left:auto;padding-right:8px}
+#s-flora .typing.still i{animation:none;opacity:.6}
+#s-flora .contact{padding:8px var(--gutter) 0;display:grid;gap:8px}
+#s-flora .contact .hint{font-size:12px;color:var(--grey)}
+#s-flora .contact .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#s-flora .contact .input{height:44px}
+#s-flora .contact .input.err{border-color:var(--accent)}
+#s-flora .contact .error{font-size:12px;color:var(--accent);display:none}
+#s-flora .contact .error.on{display:block}
+#s-flora .footer{position:absolute;left:0;right:0;bottom:0;background:rgba(253,253,253,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--hair);z-index:30}
+#s-flora .scr-body{padding-bottom:calc(150px + var(--safe-b))}
+#s-flora .offline{margin:8px var(--gutter) 0;padding:8px 12px;font-size:13px;display:none}
+#s-flora .offline.on{display:block}
+#s-flora .inbar{position:static;background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none;align-items:flex-end}
+#s-flora .inbar textarea.input{min-height:48px;max-height:150px;resize:none;padding-top:13px;line-height:1.4;font-family:inherit}
+#s-flora .inbar .ib.send[disabled]{background:var(--silver);color:var(--grey)}
+#s-flora .unavail{padding:64px var(--gutter);text-align:center}
+#s-flora .unavail svg{width:36px;height:36px;stroke:var(--grey);fill:none;stroke-width:1.3;margin:0 auto 16px;display:block}
+</style>
+<!-- ids: APP-FLORA-001 -->
+<section class="scr" id="s-flora" data-nav="Flora (chat)" data-group="Extras">
   <div class="appbar">
     <button class="ib" onclick="App.back()" aria-label="Back">${back}</button>
     <div class="ava">${flower}</div>
-    <div class="ttl-wrap"><div class="ttl">Flora</div><div class="st">Usually replies instantly</div></div>
+    <div class="ttl-wrap"><div class="ttl">Flora</div></div>
     <button class="ib" onclick="App.go('help')" aria-label="Help">${help}</button>
   </div>
+  <!-- ids: APP-FLORA-002 -->
+  <div class="status" id="fl-status"><i>${edit}</i><span id="fl-status-t">Usually replies in a minute</span></div>
+  <!-- stand-only demo switches (not in the app) -->
+  <div class="demo" id="fl-demo"><span class="lbl">Stand</span>
+    <button class="chip" data-k="team" onclick="Extras.flDemo(this)">Assistant off</button>
+    <button class="chip" data-k="offline" onclick="Extras.flDemo(this)">Offline</button>
+    <button class="chip" data-k="off404" onclick="Extras.flDemo(this)">Chat off (404)</button>
+    <button class="chip" data-k="motion" onclick="Extras.flDemo(this)">Reduce motion</button>
+    <button class="chip" onclick="Extras.flTeamPhoto()">Team photo reply</button>
+    <button class="chip" onclick="Extras.flForget()">Server forgot (401)</button>
+    <button class="chip" onclick="Extras.flRestart()">Restart app</button>
+    <button class="chip" onclick="Extras.flPush()">Push tap</button>
+  </div>
+  <!-- ids: APP-FLORA-003 APP-FLORA-004 APP-FLORA-009 APP-FLORA-010 APP-FLORA-011 APP-FLORA-012 APP-FLORA-013 APP-FLORA-014 APP-FLORA-015 APP-FLORA-016 APP-FLORA-017 APP-FLORA-018 APP-FLORA-019 APP-FLORA-020 APP-FLORA-021 APP-FLORA-022 APP-FLORA-024 APP-FLORA-025 APP-FLORA-026 APP-FLORA-027 APP-FLORA-028 -->
   <div class="scr-body" id="fl-body"><div class="chat" id="fl-chat"></div></div>
-  <div class="inbar">
-    <button class="ib" onclick="App.toast('Listening… say what you need')" aria-label="Voice">${mic}</button>
-    <input class="input" id="fl-input" placeholder="Ask Flora anything" onkeydown="if(event.key==='Enter')Extras.flSend()">
-    <button class="ib send" onclick="Extras.flSend()" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+  <div class="footer" id="fl-footer">
+    <!-- ids: APP-FLORA-023 -->
+    <div class="offline panel --warn" id="fl-offline">No connection – we’ll keep trying</div>
+    <!-- ids: APP-FLORA-005 APP-FLORA-006 APP-FLORA-029 -->
+    <div class="contact" id="fl-contact">
+      <div class="hint">So we can reach you about an order – optional</div>
+      <div class="two"><input class="input" id="fl-name" placeholder="Your name" autocapitalize="words"><input class="input" id="fl-reach" placeholder="Phone or email" oninput="Extras.flReachInput(this)"></div>
+      <div class="error" id="fl-reach-err">That doesn’t look like a phone number or an email</div>
+    </div>
+    <!-- ids: APP-FLORA-007 APP-FLORA-008 -->
+    <div class="inbar">
+      <textarea class="input" id="fl-input" rows="1" maxlength="2000" placeholder="Ask Flora anything" oninput="Extras.flGrow(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();Extras.flSend()}"></textarea>
+      <button class="ib send" id="fl-send" disabled onclick="Extras.flSend()" aria-label="Send message"><svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+    </div>
   </div>
 </section>
+<script>
+(function(){
+  const $=App.$,$$=App.$$;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const now=()=>new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/London"});
+  const GREETING="Hello, I'm Flora from Floritta. Tell me who the flowers are for and your budget – I'll suggest something we can deliver, and a florist is right here if you need one.";
+  const QUICK=["Birthday under £60","Something for Mum","Sympathy flowers","Same-day delivery today"];
+  // replies: product links in Flora's text become cards and leave the text (APP-FLORA-018)
+  const R={
+    "Birthday under £60":{t:"Lovely – two birthday favourites under £60, both ready today: floritta.uk/product/peach-posy and floritta.uk/product/belgravia.",ids:[1,5]},
+    "Something for Mum":{t:"For Mum I'd go soft and generous. These two are our most-gifted – pet-friendly, and we write the card by hand.",ids:[12,7]},
+    "Sympathy flowers":{t:"I'm sorry. Whites and gentle greens are the quiet choice here. Both can be delivered today with a handwritten card.",ids:[4,10]},
+    "Same-day delivery today":{t:"It's before 10 pm, so same-day is on. These are ready now in Bermondsey – order in the next hour for the evening window.",ids:[6,10]}
+  };
+  function replyFor(txt){const k=Object.keys(R).find(k=>k.toLowerCase()===txt.toLowerCase());if(k)return R[k];const s=txt.toLowerCase();
+    if(/mum|mother/.test(s))return R["Something for Mum"];if(/sympath|funeral|sorry|condol/.test(s))return R["Sympathy flowers"];
+    if(/today|now|same|asap|tonight/.test(s))return R["Same-day delivery today"];if(/birthday|bday/.test(s))return R["Birthday under £60"];
+    if(/rose/.test(s))return {t:"Roses it is. Our red Naomi and powdered garden roses are the ones people come back for.",ids:[6,3]};
+    if(/pet|cat|dog/.test(s))return {t:"All of these are pet-friendly – no lilies, nothing toxic to cats or dogs.",ids:[4,9]};
+    if(/£|budget|cheap|under/.test(s))return {t:"Within that, these two give the most flowers for the money and are ready today.",ids:[7,5]};
+    return {t:"Happy to help. Tell me the occasion, who it's for and a rough budget – or start with one of these, both ready today.",ids:[2,12]}}
+  const S={msgs:[],token:null,pushed:false,assistant:true,offline:false,off404:false,motion:false,busy:false,awaiting:false,cid:0};
+  const fresh=()=>!S.msgs.some(m=>m.u);
+  const stripLinks=t=>t.replace(/:\s*floritta\.uk\/product\/[a-z0-9-]+\s+and\s+floritta\.uk\/product\/[a-z0-9-]+\./,".").replace(/\s*floritta\.uk\/product\/[a-z0-9-]+/g,"");
+  function render(){
+    $("#fl-status").className="status "+(S.assistant?"":"--team");
+    $("#fl-status-t").textContent=S.assistant?"Usually replies in a minute":"Floritta florists · replies 8:00–22:00";
+    const c=$("#fl-chat");
+    if(S.off404){c.innerHTML=`<div class="unavail">${App.icon("chat")}<div class="h3">Chat is resting</div><p class="soft sm mt8">The in-app chat isn’t available right now. Our florists are on WhatsApp 8:00–22:00.</p><button class="btn --secondary --sm mt16" onclick="Extras.flOpenWa()">Open WhatsApp</button></div>`;$("#fl-footer").style.display="none";return}
+    $("#fl-footer").style.display="";
+    $("#fl-contact").style.display=(!S.token&&fresh())?"":"none";
+    $("#fl-offline").classList.toggle("on",S.offline);
+    const typing=S.busy||(S.awaiting&&S.assistant);
+    c.innerHTML=`<div class="msg --f fade-up"><div class="bub">${GREETING}</div>${fresh()?`<div class="qr">${QUICK.map(q=>`<button class="chip" onclick="Extras.flSend('${q}')">${q}</button>`).join("")}</div>`:""}<div class="ts">Flora</div></div>`
+      +S.msgs.map((m,i)=>{
+        if(m.sys)return `<div class="sysln">${m.t}</div>`;
+        if(m.u)return `<div class="msg --u fade-up ${m.st==="sending"?"pending":m.st==="failed"?"failed":""}" ${m.st==="failed"?`onclick="Extras.flRetry(${i})"`:""}><div class="bub">${esc(m.t)}</div><div class="ts">${m.st==="sending"?`<span class="st">Sending…</span>`:m.st==="failed"?`<span class="st --fail">Not sent · Tap to retry</span>`:`You · ${m.ts}`}</div></div>`;
+        const prods=m.ids?`<div class="prods">${m.ids.map(id=>{const p=App.product(id);return `<div class="pr-row">${App.miniCard(p)}<span class="inside">inside</span></div>`}).join("")}</div>`:"";
+        return `<div class="msg --f fade-up"><div class="bub">${m.img?`<img src="${m.img}" alt="">`:""}${esc(stripLinks(m.t))}</div>${prods}<div class="ts">${m.who||"Flora"} · ${m.ts}</div></div>`;
+      }).join("")
+      +(typing?`<div class="typing ${S.motion?"still":""}" aria-label="Flora is typing"><i></i><i></i><i></i></div>`:"");
+    const b=$("#fl-body");b.scrollTop=b.scrollHeight;
+  }
+  window.mount_flora=function(){render();Extras.flGrow($("#fl-input"))};
+  Extras.flGrow=ta=>{ta.style.height="auto";ta.style.height=Math.min(150,ta.scrollHeight)+"px";$("#fl-send").disabled=!ta.value.trim()};
+  const isReach=v=>!v||/^\+?[\d\s()-]{7,}$/.test(v)||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  Extras.flReachInput=el=>{el.classList.remove("err");$("#fl-reach-err").classList.remove("on")};
+  function openSession(){
+    const name=($("#fl-name")||{}).value||"",reach=($("#fl-reach")||{}).value||"";
+    S.token="tok-demo";S.msgs.push({sys:`Session opened on this device · device id d-7f3a… · ${name||reach?"contact "+esc(name||reach)+" sent":"no contact given"} · token kept in Keychain`});
+  }
+  function deliver(i){const m=S.msgs[i];m.st="sending";S.busy=true;render();
+    setTimeout(()=>{if(S.offline){m.st="failed";S.busy=false;render();return}
+      m.st="sent";m.ts=now();if(!S.pushed){S.pushed=true;S.msgs.splice(i+1,0,{sys:"Push registered · replies arrive even when the app is closed · checking every 4 s while open"})}
+      S.busy=false;S.awaiting=true;render();
+      setTimeout(()=>{S.awaiting=false;const r=replyFor(m.t);S.msgs.push({t:r.t,ids:r.ids,ts:now()});render()},S.assistant?1100:2600)},700)}
+  Extras.flSend=function(txt){
+    const inp=$("#fl-input");txt=(txt||inp.value||"").trim();if(!txt||S.busy||S.off404)return;
+    if(txt.length>2000){App.toast("That message is a little long – please split it in two");return}
+    if(!S.token){const reach=$("#fl-reach").value.trim();if(!isReach(reach)){$("#fl-reach").classList.add("err");$("#fl-reach-err").classList.add("on");return}openSession()}
+    inp.value="";Extras.flGrow(inp);
+    S.msgs.push({u:true,t:txt,ts:now(),st:"sending",cid:"c-"+(++S.cid)});deliver(S.msgs.length-1);
+  };
+  Extras.flRetry=i=>{if(S.msgs[i].st!=="failed")return;deliver(i)};
+  Extras.flDemo=el=>{el.classList.toggle("on");const on=el.classList.contains("on");({team:()=>S.assistant=!on,offline:()=>S.offline=on,off404:()=>S.off404=on,motion:()=>S.motion=on})[el.dataset.k]();render()};
+  Extras.flTeamPhoto=()=>{if(!S.token){App.toast("Send a message first – replies come into the session");return}S.awaiting=false;S.msgs.push({t:"Here's your bouquet before it leaves the shop – Vita hand-tied it just now.",img:"img/peach-posy.webp",who:"Vita · Floritta",ts:now()});render()};
+  Extras.flForget=()=>{if(!S.token){App.toast("No session yet");return}S.token=null;S.pushed=false;S.msgs=[{sys:"Server replied 401 · token cleared · the next message opens a new session, this history will be gone"}];render()};
+  Extras.flRestart=()=>{if(S.token){S.msgs=S.msgs.filter(m=>!m.sys);S.msgs.push({sys:"App restarted · token found in Keychain · history re-fetched from the server · contact line not shown again"})}else S.msgs=[];S.busy=false;S.awaiting=false;render()};
+  Extras.flPush=()=>App.toast("<b>Flora</b> · Your bouquet photo is ready",{action:{label:"Open",onclick:"App.go('flora')"},ms:4000});
+  Extras.flOpenWa=()=>App.toast("Opening WhatsApp · +44 7387 939120");
+})();
+</script>
