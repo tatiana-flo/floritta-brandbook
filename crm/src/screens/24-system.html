@@ -1,0 +1,527 @@
+<style>
+/* ===== 24 · System (Settings · Team · Integrations · API · Logs · Backup · Import/Export · B2B) + Ask CRM ===== */
+.s24 .sysnav{margin:0;flex:1 1 100%}
+.s24 .sysnav button.--403{color:var(--grey)}
+.s24 .sysnav button.--403 svg{width:12px;height:12px;stroke:var(--grey)}
+.s24 .set-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.s24 .frow{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;align-items:center;min-height:52px;border-bottom:1px solid var(--hair);padding:8px 0}
+.s24 .frow:last-child{border-bottom:0}
+.s24 .frow .fl{font-size:14px;color:var(--ink)}
+.s24 .frow .fl small{display:block;color:var(--grey);font-size:12px;line-height:1.3}
+.s24 .frow .input,.s24 .frow .select{max-width:360px}
+.s24 .dirty{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--warn)}
+.s24 .dirty::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--warn)}
+.s24 .forbid{border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.s24 .forbid b{font-weight:500}
+.s24 .err{font-size:12px;color:var(--accent);margin-top:4px}
+.s24 .tbl td .tagbtn{cursor:pointer}
+#s-system-users .tbl{min-width:1560px}
+#s-system-users .tbl td{max-width:none}
+#s-system-b2b .tbl td{max-width:none}
+#s-system-api .tbl td{max-width:none}
+.s24 .tbl td .tagbtn:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.s24 .tbl .input.--inline{width:130px}
+.s24 .tbl .select.--inline{height:28px;border-color:transparent;background-color:transparent;padding-left:6px;width:150px}
+.s24 .tbl .select.--inline:hover{border-color:var(--light)}
+.s24 .tbl .select.--inline:focus{border-color:var(--sel)}
+.s24 .av-up{position:relative;cursor:pointer}
+.s24 .av-up:hover::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px var(--sel)}
+.s24 .av-up img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+.s24 .gw-dot{display:inline-flex;align-items:center;gap:8px}
+.s24 .token-box{border:1px solid var(--ok);background:var(--ok-bg);color:var(--ok);padding:12px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.s24 .token-box code{font-size:12.5px;background:var(--paper);color:var(--ink);padding:3px 8px;border:1px solid var(--hair);word-break:break-all}
+.s24 .scopes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;max-height:300px;overflow:auto;border:1px solid var(--hair);padding:10px 12px}
+.s24 .scopes .check{align-items:flex-start;font-size:13px}
+.s24 .scopes .check small{display:block;color:var(--grey);font-size:11.5px}
+.s24 .pager{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--grey);padding:10px 0 0}
+.s24 .pager .btn{--btn-h:28px;height:28px;padding:0 10px}
+.s24 .skel{height:12px;background:var(--silver);margin:10px 0}
+.s24 .skel.--w{width:60%}
+.s24 .ask-wrap{max-width:860px}
+.s24 .ask-in{display:flex;gap:8px;align-items:center}
+.s24 .ask-in .input{height:44px;font-size:15px}
+.s24 .ask-ans{font-size:15px;line-height:1.5;color:var(--ink)}
+.s24 pre.sql{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:var(--silver);padding:12px;margin:0;white-space:pre-wrap;color:var(--graphite)}
+.s24 .b2b-sec{margin-top:28px}
+.s24 .b2b-sec:first-child{margin-top:0}
+.s24 .rowlinks{display:inline-flex;gap:10px;flex-wrap:wrap}
+.s24 .rowlinks .textbtn{font-size:11px}
+.s24 .flag{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--grey)}
+.s24 .flag .switch{width:28px;height:16px}
+.s24 .flag .switch::after{width:12px;height:12px}
+.s24 .flag .switch.on::after{transform:translateX(12px)}
+.s24 .prefill{border:1px solid var(--hair);background:var(--silver);padding:12px 14px;display:flex;gap:12px;align-items:center;margin-bottom:16px;font-size:13.5px}
+.s24 .kv.--tight{grid-template-columns:120px minmax(0,1fr)}
+[data-size="ipad"] .s24 .set-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] .s24 .scopes{grid-template-columns:1fr}
+[data-size="phone"] .s24 .frow{grid-template-columns:1fr;gap:6px}
+[data-size="phone"] .s24 .set-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .s24 .scopes{grid-template-columns:1fr}
+[data-size="phone"] .s24 .ask-in{flex-wrap:wrap}
+</style>
+
+<!-- ids: SYST-001 SYST-002 SYST-003 – System section entry (sidebar «Settings» item of the shell should open s-system-settings; sub-tabs on every System screen; manager sees all 8 tabs, 5 of them answer 403) -->
+<section class="scr s24" id="s-system-settings" data-nav="System · Settings" data-group="Settings &amp; System" data-title="System" data-sub="Settings" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-set-head"></div>
+  <div class="scr-body" id="s24-set-body"></div>
+</section>
+
+<!-- ids: SYST-011 SYST-012 SYST-013 SYST-014 SYST-015 SYST-016 SYST-017 SYST-018 SYST-019 SYST-020 SYST-021 SYST-022 SYST-023 SYST-024 SYST-025 SYST-026 SYST-027 SYST-028 SYST-029 SYST-030 SYST-031 SYST-032 SYST-177 SYST-178 SYST-179 – Team: accounts table, inline edits, flags, PIN, password reset, server refusals shown inline -->
+<section class="scr s24" id="s-system-users" data-nav="System · Team" data-group="Settings &amp; System" data-title="System" data-sub="Team" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-team-head"></div>
+  <div class="scr-body" id="s24-team-body"></div>
+</section>
+
+<!-- ids: SYST-033 SYST-034 SYST-035 SYST-036 SYST-037 SYST-038 SYST-039 – Integrations: result banner, AI key card (BYOK), gateways table with Test connection -->
+<section class="scr s24" id="s-system-integrations" data-nav="System · Integrations" data-group="Settings &amp; System" data-title="System" data-sub="Integrations" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-int-head"></div>
+  <div class="scr-body" id="s24-int-body"></div>
+</section>
+
+<!-- ids: SYST-040 SYST-041 SYST-042 SYST-043 – API clients: table, New client with 21 scopes, one-time token banner, Revoke -->
+<section class="scr s24" id="s-system-api" data-nav="System · API" data-group="Settings &amp; System" data-title="System" data-sub="API" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-api-head"></div>
+  <div class="scr-body" id="s24-api-body"></div>
+</section>
+
+<!-- ids: SYST-044 SYST-045 SYST-046 – Audit log: tabs All / Orders / Payments / Sync, table, pager (missing in the live CRM) -->
+<section class="scr s24" id="s-system-logs" data-nav="System · Logs" data-group="Settings &amp; System" data-title="System" data-sub="Logs" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-logs-head"></div>
+  <div class="scr-body" id="s24-logs-body"></div>
+</section>
+
+<!-- ids: SYST-047 SYST-048 SYST-049 SYST-050 – Backup: note, «not configured» warning, list, Backup now -->
+<section class="scr s24" id="s-system-backup" data-nav="System · Backup" data-group="Settings &amp; System" data-title="System" data-sub="Backup" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-bak-head"></div>
+  <div class="scr-body" id="s24-bak-body"></div>
+</section>
+
+<!-- ids: SYST-051 SYST-052 SYST-053 SYST-054 – Import / Export: Download all (admin), entities table with Download CSV, Import (dry-run) -->
+<section class="scr s24" id="s-system-import-export" data-nav="System · Import / Export" data-group="Settings &amp; System" data-title="System" data-sub="Import / Export" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-ie-head"></div>
+  <div class="scr-body" id="s24-ie-body"></div>
+</section>
+
+<!-- ids: SYST-055 SYST-056 SYST-057 SYST-058 SYST-059 SYST-060 SYST-061 SYST-062 SYST-063 SYST-064 SYST-065 SYST-066 SYST-067 SYST-068 SYST-069 SYST-070 SYST-071 SYST-072 SYST-073 SYST-074 SYST-075 SYST-180 – B2B: prefill from customer card, accounts, standing orders, quarterly invoices, row actions with confirmations and inline errors -->
+<section class="scr s24" id="s-system-b2b" data-nav="System · B2B" data-group="Settings &amp; System" data-title="System" data-sub="B2B" data-roles="owner manager" data-parent="settings">
+  <div class="scr-head" id="s24-b2b-head"></div>
+  <div class="scr-body" id="s24-b2b-body"></div>
+</section>
+
+<!-- ids: SYST-076 SYST-077 SYST-078 SYST-079 SYST-080 SYST-081 SYST-082 SYST-083 SYST-084 SYST-085 SYST-181 – Ask the CRM: question → read-only SQL → answer + table; feature flag, examples, loading, errors -->
+<section class="scr s24" id="s-ask-crm" data-nav="Ask the CRM" data-group="Settings &amp; System" data-title="Ask the CRM" data-sub="Beta · admin" data-roles="owner" data-parent="settings">
+  <div class="scr-head" id="s24-ask-head"></div>
+  <div class="scr-body" id="s24-ask-body"></div>
+</section>
+
+<script>
+(()=>{
+const A=App,E=s=>A.esc(s),I=n=>A.icon(n),$=(s,r)=>A.$(s,r),$$=(s,r)=>A.$$(s,r);
+const tt=m=>A.toast(m);
+const isAdmin=()=>A.role()==="owner";
+/* ---------- demo state (fictional) ---------- */
+const S={dirty:false,saving:false,banner:null,aiEditing:false,aiState:"ok",newToken:null,logsTab:"all",logsPage:1,bakConfigured:true,b2bPrefill:false,flagStanding:true,flagInvoices:true,askEnabled:true,askLoading:false,askResult:null,askErr:null,askSql:false,askQ:""};
+const SET={store_name:"Floritta",support_email:"hello@floritta.example",phone:"+44 7700 900120",auto_accept_uber:true,convert_webp:true,maintenance:false,order_emails:true,theme:"paper",density:"comfortable"};
+const ROLE_OPTS=[["florist","Florist"],["florist:seasonal","Holiday florist"],["florist:trainee","Trainee florist"],["manager","Manager"],["admin","Admin"],["courier","Courier"],["courier:seasonal","Holiday courier"]];
+const ROLE_LBL=k=>(ROLE_OPTS.find(r=>r[0]===k)||[,k])[1];
+const PERMS=[["analytics.all","Analytics – view all"],["prices.purchase","Purchase prices"],["flora.facts","Flora facts – confirm alone and retire"]];
+const USERS=(()=>{
+  const map={owner:"admin",manager:"manager",florist:"florist",courier:"courier"};
+  const list=A.data.staff.map((s,i)=>({id:s.id,n:s.n,email:s.id+"@floritta.example",role:map[s.role]+(s.staff_type?":"+s.staff_type:""),phone:"+44 7700 9003"+String(10+i).padStart(2,"0"),tg:s.role==="courier"?"@"+s.id+"_rides":"",tgId:s.id==="george"?"88412093":"",lang:["ru","en","uk"][i%3],birthday:"19"+(80+i)+"-0"+(1+i%9)+"-1"+(i%9),hired:"202"+(1+i%5)+"-0"+(1+i%9)+"-01",active:s.id!=="omar",shared:false,makes:s.role==="manager"&&i%2===0,consent:s.role==="florist"&&i%3!==0,perms:s.role==="manager"?["analytics.all"]:[],lastLogin:i%4===3?null:A.T(8+i%9,ri(0,59),-(i%6)),push:i%5===4?null:A.T(9,ri(0,59),-(i%3)),pin:s.role==="manager"&&i%2===1,service:false,photo:i%3===0?A.data.products[i%17].img:null}));
+  list.push({id:"screen",n:"Workshop screen",email:"screen@floritta.example",role:"florist",phone:"",tg:"",tgId:"",lang:"en",birthday:"",hired:"",active:true,shared:true,makes:false,consent:false,perms:[],lastLogin:A.T(7,58,0),push:null,pin:false,service:false,photo:null,av:"WS"});
+  list.push({id:"automation",n:"Claude – automation",email:"automation@floritta.example",role:"manager",phone:"",tg:"",tgId:"",lang:"en",birthday:"",hired:"",active:true,shared:false,makes:false,consent:false,perms:[],lastLogin:null,push:null,pin:false,service:true,photo:null,av:"CA"});
+  return list.sort((a,b)=>a.n.localeCompare(b.n));
+})();
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+const GATEWAYS=[
+ {id:1,gw:"anthropic",name:"Anthropic (AI)",driver:"http",creds:true,status:"ok",sync:A.T(10,30,0),err:"",real:true},
+ {id:2,gw:"stripe",name:"Stripe",driver:"stripe-php",creds:true,status:"ok",sync:A.T(10,41,0),err:"",real:false},
+ {id:3,gw:"ringover",name:"Ringover",driver:"rest",creds:true,status:"ok",sync:A.T(9,2,0),err:"",real:true},
+ {id:4,gw:"gsc",name:"Google Search Console",driver:"oauth",creds:true,status:"failed",sync:A.T(3,10,-2),err:"invalid_grant: token has been expired or revoked",real:true},
+ {id:5,gw:"uber_direct",name:"Uber Direct",driver:"oauth",creds:true,status:"ok",sync:A.T(10,38,0),err:"",real:true},
+ {id:6,gw:"uber_eats",name:"Uber Eats",driver:"marketplace",creds:true,status:"ok",sync:A.T(10,40,0),err:"",real:true},
+ {id:7,gw:"deliveroo",name:"Deliveroo",driver:"marketplace",creds:true,status:"none",sync:null,err:"",real:false},
+ {id:8,gw:"whatsapp",name:"WhatsApp (Wazzup)",driver:"webhook",creds:true,status:"ok",sync:A.T(10,42,0),err:"",real:false},
+ {id:9,gw:"xero",name:"Xero",driver:"oauth",creds:false,status:"none",sync:null,err:"",real:false},
+ {id:10,gw:"expo",name:"Expo push",driver:"expo",creds:true,status:"ok",sync:A.T(10,20,0),err:"",real:false},
+ {id:11,gw:"telegram",name:"Telegram bot",driver:"bot-api",creds:true,status:"ok",sync:A.T(10,35,0),err:"",real:false}
+];
+const SCOPES=[["orders.write","create and update orders"],["leads.write","write site leads"],["promo.write","create promo codes"],["giftcard.redeem","redeem gift cards"],["giftcard.issue","issue gift cards"],["delivery.quote","quote a delivery price"],["catalog.write","edit products"],["constructor.read","read the bouquet constructor"],["tasks.write","create tasks"],["learning.write","write lessons"],["development.write","write development notes"],["analytics.read","read analytics"],["districts.read","read delivery districts"],["workshops.write","manage workshops"],["loyalty.read","read loyalty balances"],["candidates.write","write hiring candidates"],["print.agent","print agent – labels"],["photos.read","read order photos"],["media.write","upload media"],["glossary.read","read the glossary"],["delivery.bot","courier bot – deliveries"]];
+const CLIENTS=[
+ {id:11,name:"Website floritta.uk",scopes:["orders.write","delivery.quote","giftcard.redeem","promo.write","leads.write"],revoked:false,used:A.T(10,41,0),created:A.T(9,0,-400)},
+ {id:12,name:"Courier bot (freelance)",scopes:["delivery.bot","photos.read"],revoked:false,used:A.T(10,12,0),created:A.T(9,0,-120)},
+ {id:13,name:"Print agent · workshop",scopes:["print.agent"],revoked:false,used:A.T(10,39,0),created:A.T(9,0,-80)},
+ {id:14,name:"Routine · morning lessons",scopes:["learning.write","tasks.write"],revoked:false,used:A.T(3,0,0),created:A.T(9,0,-30)},
+ {id:15,name:"Routine · analytics digest",scopes:["analytics.read"],revoked:false,used:A.T(7,0,0),created:A.T(9,0,-14)},
+ {id:16,name:"Old Zapier hook",scopes:[],revoked:true,used:A.T(9,0,-200),created:A.T(9,0,-600)}
+];
+const LOG_ACTIONS=[["order.status","Order"],["order.create","Order"],["payment.refund","Payment"],["payment.link","Payment"],["sync.uber_eats","Marketplace"],["sync.deliveroo","Marketplace"],["settings.update","Setting"],["user.update","User"],["api_client.create","ApiClient"],["integration.test","IntegrationConfig"],["backup.run","Backup"],["data.export","Export"]];
+const LOGS=Array.from({length:137},(_,i)=>{const a=LOG_ACTIONS[(i*7)%LOG_ACTIONS.length];const u=USERS[(i*5)%USERS.length];return{id:9000-i,at:A.T(10-Math.floor(i/14),59-(i*7)%60,-Math.floor(i/40)),user:u,routine:u.service?["lessons-relay","buh-floritta","night-merge"][i%3]:"",action:a[0],entity:a[1]+"#"+(118420+(i*3)%80),ip:i%4===0?"10.0.0."+(10+i%40):"81.2."+(i%250)+"."+(i*13%250)}});
+const BACKUPS=Array.from({length:7},(_,i)=>({name:"floritta-"+["2026-10-20","2026-10-19","2026-10-18","2026-10-17","2026-10-16","2026-10-15","2026-10-14"][i]+"-0300.sql.gz",size:(412+i*3)+" MB",at:A.T(3,0,-i)}));
+const ENT=[["orders","Orders",18420,A.T(9,0,-3)],["customers","Customers",6612,A.T(9,0,-12)],["products","Products",31,null]];
+/* B2B */
+const B2B={accounts:[
+  {id:1,name:"Shad Thames Partners LLP",contact:"Grace Ashby",terms:"Net 30",settle:"current",due:A.T(9,0,20),active:true,customer:5009},
+  {id:2,name:"Borough Dental Clinic",contact:"Dr Priya Mehta",terms:"Prepaid quarter",settle:"overdue",due:A.T(9,0,-6),active:true,customer:5025},
+  {id:3,name:"Tooley Street Hotel",contact:"Reception",terms:"Net 14",settle:"settled",due:null,active:false,customer:5006}
+ ],schedules:[
+  {id:1,acc:1,name:"Monday reception",weekday:1,every:1,lead:1,addr:"4 Shad Thames, SE1",win:"before",from:"",to:"10:00",amount:65,first:null,what:"Seasonal desk arrangement",note:"",courier:"Reception desk, ask for Grace",next:A.T(9,0,6),last:"118402",active:true,paused:null},
+  {id:2,acc:2,name:"Fortnightly waiting room",weekday:3,every:2,lead:2,addr:"12 Borough High St, SE1",win:"between",from:"08:00",to:"09:00",amount:90,first:null,what:"Low vase arrangement, no lilies",note:"Allergy – no lilies",courier:"",next:A.T(9,0,8),last:"118388",active:true,paused:A.T(9,0,14)},
+  {id:3,acc:3,name:"Lobby Friday",weekday:5,every:1,lead:1,addr:"118 Tooley St, SE1",win:"none",from:"",to:"",amount:150,first:null,what:"Large lobby piece",note:"",courier:"",next:null,last:"",active:false,paused:null}
+ ],invoices:[
+  {id:1,no:"B2B-2026-0014",acc:2,from:A.T(9,0,-90),weeks:13,disc:10,lines:7,gross:630,status:"paid",at:A.T(9,0,-80),ref:"BACS 44812"},
+  {id:2,no:"B2B-2026-0019",acc:1,from:A.T(9,0,-14),weeks:13,disc:10,lines:13,gross:845,status:"sent",at:A.T(9,0,-10),ref:""},
+  {id:3,no:"B2B-2026-0021",acc:2,from:A.T(9,0,2),weeks:13,disc:10,lines:7,gross:630,status:"draft",at:null,ref:""}
+ ]};
+const DOW=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const acc=id=>B2B.accounts.find(a=>a.id===id);
+/* Ask CRM canned results */
+const ASK=[
+ {q:"unpaid orders over £100",ans:"There are 4 unpaid orders over £100 for today and tomorrow – together £612. Two of them are in the 14:00–16:00 slot.",cols:["order","customer","slot","total","channel"],rows:()=>A.data.orders.filter(o=>o.paid!=="paid"&&o.total>100).slice(0,4).map(o=>[o.id,A.customer(o.customer).n,o.slot,"£"+o.total,o.chan]),sql:"SELECT o.id AS \"order\", c.name AS customer, o.slot, o.total, o.channel\nFROM orders o JOIN customers c ON c.id = o.customer_id\nWHERE o.paid_at IS NULL AND o.total > 10000 AND o.cancelled_at IS NULL\nORDER BY o.delivery_date, o.slot LIMIT 50;",trunc:false},
+ {q:"which products sold best last 30 days",ans:"Red Roses lead with 41 orders, then Peony Basket (33) and Pink Garden (29). Signature bouquets make 38 % of all orders.",cols:["product","orders","revenue","active"],rows:()=>A.data.products.filter(p=>!p.addon).sort((a,b)=>b.stats.orders30-a.stats.orders30).slice(0,8).map(p=>[p.name,p.stats.orders30,"£"+p.stats.revenue30,p.active]),sql:"SELECT p.name AS product, COUNT(*) AS orders, SUM(oi.price) AS revenue, p.is_active AS active\nFROM order_items oi JOIN products p ON p.id = oi.product_id\nJOIN orders o ON o.id = oi.order_id\nWHERE o.placed_at >= NOW() - INTERVAL '30 days'\nGROUP BY p.id ORDER BY orders DESC LIMIT 50;",trunc:true},
+ {q:"customers with a birthday this month",ans:"7 customers have a birthday in October; 3 of them ordered in the last 90 days.",cols:["customer","phone","birthday","last_order"],rows:()=>A.data.customers.filter(c=>/Oct/.test(c.occasion)).slice(0,7).map(c=>[c.n,c.phone,c.occasion.replace("Birthday · ",""),"20"+c.since.slice(2)+"-09-1"+(c.id%9)]),sql:"SELECT c.name AS customer, c.phone, c.birthday, MAX(o.placed_at)::date AS last_order\nFROM customers c LEFT JOIN orders o ON o.customer_id = c.id\nWHERE EXTRACT(MONTH FROM c.birthday) = 10\nGROUP BY c.id ORDER BY c.birthday LIMIT 50;",trunc:false},
+ {q:"late deliveries this week by courier",ans:"5 deliveries missed their slot this week: Daniel 3, George 1, Uber Direct 1. Three of the five were in the 18:00–20:00 slot.",cols:["courier","late","total","share"],rows:()=>[["Daniel",3,41,"7.3 %"],["George",1,28,"3.6 %"],["Uber Direct",1,12,"8.3 %"],["Omar",0,9,"0 %"]],sql:"SELECT COALESCE(u.name, d.carrier) AS courier,\n  COUNT(*) FILTER (WHERE d.delivered_at > d.slot_end) AS late, COUNT(*) AS total\nFROM deliveries d LEFT JOIN users u ON u.id = d.courier_id\nWHERE d.delivered_at >= date_trunc('week', NOW())\nGROUP BY 1 ORDER BY late DESC LIMIT 50;",trunc:false}
+];
+/* ---------- shared pieces ---------- */
+const TABS=[["system-settings","Settings",true],["system-users","Team",true],["system-integrations","Integrations",true],["system-api","API",true],["system-logs","Logs",false],["system-backup","Backup",true],["system-import-export","Import / Export",false],["system-b2b","B2B",false]];
+function sysNav(cur){
+  return `<!-- ids: SYST-002 SYST-003 --><div class="views sysnav">${TABS.map(t=>`<button class="${t[0]===cur?"on":""} ${t[2]&&!isAdmin()?"--403":""}" onclick="S24.nav('${t[0]}')" title="${t[2]&&!isAdmin()?"Admin only – the server answers 403 for a manager":""}">${t[1]}${t[2]&&!isAdmin()?I("lock"):""}</button>`).join("")}</div>`;
+}
+function nav(id){
+  if(S.dirty&&A.state.current==="system-settings"){A.confirm("Leave without saving?","Store details and switches were changed but not saved. Save first or discard the changes.","Discard & leave",()=>{S.dirty=false;A.go(id)});return}
+  A.go(id);
+}
+function forbid(){return `<!-- ids: SYST-003 --><div class="forbid">${I("lock")}<div><b>403 · Admins only.</b> The tab is visible to a manager (SystemNav does not filter by role), but the server refuses this page. Switch the stand role to Owner to see it.</div></div>`}
+function fmtDT(iso){return iso?A.fmtDay(iso)+" "+A.fmtTime(iso):"–"}
+function sw(on,fn,extra=""){return `<span class="switch ${on?"on":""}" ${extra} onclick="${fn}"></span>`}
+/* ======================= SETTINGS ======================= */
+function mountSettings(){
+  $("#s24-set-head").innerHTML=sysNav("system-settings")+`<span class="sp"></span>`+(isAdmin()?`<!-- ids: SYST-176 SYST-009 -->${S.dirty?`<span class="dirty">Unsaved changes</span>`:`<span class="xs muted">All saved</span>`}<button class="btn --sm ${S.dirty&&!S.saving?"":"is-disabled"}" onclick="S24.save()">${S.saving?"Saving…":"Save"}</button>`:"");
+  if(!isAdmin()){$("#s24-set-body").innerHTML=forbid()+`<div class="note-box">What a manager can open here: Logs, Import / Export and B2B. The only entry to B2B from the interface for a manager is «Set up a regular order» in a customer card.</div>`;return}
+  const f=(k,lbl,sub,type="text")=>`<div class="frow"><div class="fl">${lbl}${sub?`<small>${sub}</small>`:""}</div><input class="input" type="${type}" value="${E(SET[k])}" oninput="S24.set('${k}',this.value)"></div>`;
+  const s=(k,lbl,sub)=>`<div class="frow"><div class="fl">${lbl}<small>${sub}</small></div><div>${sw(SET[k],`S24.set('${k}',!S24.SET.${k});S24.mountSettings()`)}</div></div>`;
+  $("#s24-set-body").innerHTML=`
+  <div class="set-grid">
+    <div class="col" style="gap:16px">
+      <!-- ids: SYST-004 -->
+      <div class="card"><span class="caps">Store</span>${f("store_name","Store name","Shown in emails and on printed tickets")}${f("support_email","Support email","Reply-to address for customer emails","email")}${f("phone","Phone","Shown to recipients on the tracking page","tel")}</div>
+      <!-- ids: SYST-005 SYST-006 SYST-007 SYST-008 -->
+      <div class="card"><span class="caps">Automation</span>
+        ${s("auto_accept_uber","Auto-accept Uber Eats","Stored only – the marketplace code does not read this key yet (decide: wire or remove)")}
+        ${s("convert_webp","Convert uploads to WebP","Stored only – uploads are converted by the storage service regardless")}
+        ${s("maintenance","Maintenance mode","Stored only – there is no maintenance screen behind it")}
+        ${s("order_emails","Order email notifications","Real emails follow the ORDER_EMAILS_ENABLED environment flag, not this switch")}
+        <div class="note-box --warn mt16">${I("info")} These four switches only write a row to <code>settings</code>; no code reads them. Owner decision needed before the redesign promises behaviour.</div>
+      </div>
+      <!-- ids: SYST-010 – appearance keys travel in the same PUT; here they get real fields -->
+      <div class="card"><span class="caps">Appearance</span>
+        <div class="frow"><div class="fl">Theme<small>Paper is the only theme in the brandbook; Ink stays off</small></div><div class="seg-ctl"><button class="on" onclick="App.setTheme('ivory')">Paper</button></div></div>
+        <div class="frow"><div class="fl">Density<small>Row height in tables · also in the ⌘K palette</small></div><div class="seg-ctl"><button class="${A.state.density==="comfortable"?"on":""}" onclick="App.setDensity('comfortable')">Comfortable</button><button class="${A.state.density==="compact"?"on":""}" onclick="App.setDensity('compact')">Compact</button></div></div>
+        <div class="frow"><div class="fl">New design (beta)<small>Personal toggle per user (users.theme) – switch it for people in Team</small></div><div><button class="textbtn" onclick="App.go('system-users')">Open Team</button></div></div>
+      </div>
+    </div>
+    <div class="col" style="gap:16px">
+      <div class="card --flat"><span class="caps">How saving works</span><div class="sm soft">One «Save» writes every field at once (PUT /settings). While it runs the button reads «Saving…» and a second click is ignored; leaving the page with unsaved changes asks first.</div></div>
+      <div class="card --flat"><span class="caps">Audit</span><div class="sm soft">Each save writes <code>settings.update</code> to the audit log – <button class="textbtn" onclick="App.go('system-logs')">open Logs</button>.</div></div>
+      <div class="card --flat"><span class="caps">Shop</span><div class="sm soft">80 Willow Walk, Bermondsey SE1 5SY · 08:00–22:00 · same-day until 22:00.</div></div>
+    </div>
+  </div>`;
+}
+function set(k,v){SET[k]=v;if(!S.dirty){S.dirty=true;mountSettings()}}
+function save(){if(!S.dirty||S.saving)return;S.saving=true;mountSettings();setTimeout(()=>{S.saving=false;S.dirty=false;mountSettings();tt("Settings saved")},700)}
+/* ======================= TEAM ======================= */
+function uAv(u){return u.photo?`<span class="avatar av-up" title="Click to change the photo" onclick="S24.avatar('${u.id}')"><img src="${u.photo}" alt=""></span>`:`<span class="avatar av-up" title="Click the avatar to upload a photo" onclick="S24.avatar('${u.id}')">${u.av||A.user(u.id)?.av||"–"}</span>`}
+function user(id){return USERS.find(u=>u.id===id)}
+function tagBtn(on,a,b,fn,title){return `<span class="tag tagbtn ${on?"--ink":"--line"}" title="${title||""}" onclick="${fn}">${on?a:b}</span>`}
+function mountTeam(){
+  $("#s24-team-head").innerHTML=sysNav("system-users")+`<span class="sp"></span>`+(isAdmin()?`<span class="xs muted">${USERS.length} accounts · ${USERS.filter(u=>u.active).length} active</span><!-- ids: SYST-012 --><button class="btn --sm" onclick="S24.addStaff()">${I("plus")} Add staff</button>`:"");
+  if(!isAdmin()){$("#s24-team-body").innerHTML=forbid();return}
+  const me=A.me().id;
+  const rows=USERS.map(u=>{const base=u.role.split(":")[0];const isMgr=base==="manager";const isAdm=base==="admin";const own=u.id===me;
+    return `<tr class="r ${u.active?"":"muted"}" data-u="${u.id}">
+      <!-- ids: SYST-014 SYST-015 SYST-016 -->
+      <td class="wrap" style="max-width:none" onclick="S24.member('${u.id}')"><div class="row" style="gap:10px">${uAv(u)}<div style="min-width:0"><b style="font-weight:400">${E(u.n)}${own?` <span class="tag">you</span>`:""}${u.service?` <span class="tag">service</span>`:""}</b><span class="sub">${E(u.email)}${u.photo?` · <button class="textbtn" onclick="event.stopPropagation();S24.removePhoto('${u.id}')">remove photo</button>`:""}</span></div></div></td>
+      <!-- ids: SYST-017 SYST-177 -->
+      <td onclick="event.stopPropagation()"><select class="select --inline" onchange="S24.role('${u.id}',this.value,this)">${ROLE_OPTS.map(r=>`<option value="${r[0]}" ${r[0]===u.role?"selected":""}>${r[1]}</option>`).join("")}</select><div class="err" id="s24-err-${u.id}"></div></td>
+      <!-- ids: SYST-018 -->
+      <td onclick="event.stopPropagation()"><input class="input --inline tnum" type="tel" value="${E(u.phone)}" placeholder="+44 7700 …" onblur="S24.field('${u.id}','phone',this.value)" onkeydown="if(event.key==='Enter')this.blur()"></td>
+      <!-- ids: SYST-019 SYST-020 SYST-179 -->
+      <td onclick="event.stopPropagation()"><div class="row" style="gap:4px"><input class="input --inline" value="${E(u.tg||u.tgId)}" placeholder="@nick or ID" title="Couriers' chat: @nick or numeric Telegram ID" onblur="S24.tg('${u.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">${u.tgId?`<button class="ib" title="Clear Telegram ID" onclick="S24.tgClear('${u.id}')">${I("close")}</button>`:""}<select class="select --inline" style="width:64px" onchange="S24.field('${u.id}','lang',this.value)">${["ru","en","uk"].map(l=>`<option ${l===u.lang?"selected":""}>${l.toUpperCase()}</option>`).join("")}</select></div></td>
+      <!-- ids: SYST-022 SYST-178 -->
+      <td onclick="event.stopPropagation()">${tagBtn(u.active,"Active","Inactive",`S24.toggleActive('${u.id}')`,u.active?"Deactivate account":"Reactivate account")}</td>
+      <!-- ids: SYST-023 SYST-024 SYST-025 -->
+      <td onclick="event.stopPropagation()"><div class="rowlinks">${tagBtn(u.shared,"Screen login","Person",`S24.flag('${u.id}','shared')`,"Shared screen – the workshop screen login is not offered as a florist and cannot take an order")}${base==="florist"?`<span class="tag --line" style="opacity:.5" title="Florists always make bouquets">–</span>`:tagBtn(u.makes,"At the bench","No",`S24.flag('${u.id}','makes')`,"Also makes bouquets – adds a manager/admin to the florist pickers")}${u.service||u.shared?`<span class="tag --line" style="opacity:.5">–</span>`:tagBtn(u.consent,"Shown","Hidden",`S24.flag('${u.id}','consent')`,"Name to customers – «Made this morning by …»")}</div></td>
+      <!-- ids: SYST-026 -->
+      <td onclick="event.stopPropagation()">${isAdm?`<span class="xs muted">Everything (admin)</span>`:u.service?`<span class="muted">–</span>`:`<button class="textbtn" onclick="S24.perms(event,'${u.id}')">${u.perms.length?u.perms.length+" extra":"none"}</button>`}</td>
+      <!-- ids: SYST-027 -->
+      <td class="xs muted">${fmtDT(u.lastLogin)}</td>
+      <!-- ids: SYST-028 -->
+      <td>${u.push?`<span class="gw-dot"><span class="dot --ok"></span><span class="xs">allowed <span class="muted">· ${A.timeAgo(u.push)}</span></span></span>`:`<span class="gw-dot" title="No push device. Ask the person to open the Floritta Team app and allow notifications in iOS Settings → Notifications → Floritta Team."><span class="dot"></span><span class="xs muted">not allowed</span>${I("info")}</span>`}</td>
+      <!-- ids: SYST-029 SYST-030 SYST-031 -->
+      <td onclick="event.stopPropagation()">${isMgr&&!u.service?`<div class="rowlinks"><span class="tag ${u.pin?"--ok":"--line"}">${u.pin?"PIN set":"No PIN"}</span><button class="textbtn" onclick="S24.setPin('${u.id}')">Set PIN</button>${u.pin?`<button class="textbtn --accent" onclick="S24.clearPin('${u.id}')">Clear</button>`:""}</div>`:`<span class="muted">–</span>`}</td>
+      <!-- ids: SYST-032 -->
+      <td onclick="event.stopPropagation()">${own||u.service?`<span class="muted xs" title="${own?"You cannot reset your own password here":"Service accounts use tokens, not passwords"}">–</span>`:`<button class="textbtn" onclick="S24.resetPw('${u.id}')">Reset password</button>`}</td>
+    </tr>`}).join("");
+  $("#s24-team-body").innerHTML=`
+  <!-- ids: SYST-011 -->
+  <div class="toolbar"><div class="search">${I("search")}<input placeholder="Filter by name or email…" oninput="S24.filterTeam(this.value)"></div><span class="xs muted">Inline fields save on blur or Enter; selects, dates and tags save at once. Click a name for the full card (care days, extra access, PIN, password).</span></div>
+  <div class="tbl-wrap"><table class="tbl" id="s24-team-tbl"><thead><tr><th>Name</th><th>Role</th><th>Phone</th><th>Telegram · chat language</th><th>Status</th><th>Shared screen · bench · name to customers</th><th>Extra access</th><th>Last login</th><th>Notifications</th><th>Refund PIN</th><th>Password</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="xs muted mt8">Role rules on the server: you cannot change your own role, demote the last active admin or make a service account an admin. Refusals now show under the field instead of being lost.</div>`;
+}
+function filterTeam(q){q=q.toLowerCase();$$("#s24-team-tbl tbody tr").forEach(tr=>{const u=user(tr.dataset.u);tr.style.display=!q||u.n.toLowerCase().includes(q)||u.email.includes(q)?"":"none"})}
+function err(id,msg){const el=$("#s24-err-"+id);if(el)el.textContent=msg;if(msg)A.toast(msg)}
+function role(id,v,sel){const u=user(id);const me=A.me().id;
+  if(id===me){err(id,"You cannot change your own role");sel.value=u.role;return}
+  if(u.role==="admin"&&v!=="admin"&&USERS.filter(x=>x.role==="admin"&&x.active).length<=1){err(id,"Cannot demote the last active admin");sel.value=u.role;return}
+  if(u.service&&v==="admin"){err(id,"A service account cannot be an admin");sel.value=u.role;return}
+  err(id,"");u.role=v;tt(`${u.n} · ${ROLE_LBL(v)}`);mountTeam()}
+function field(id,k,v){const u=user(id);if(u[k]===v)return;u[k]=v;tt("Team member updated")}
+function tg(id,v){const u=user(id);v=v.trim().replace(/^@/,"");if(!v){if(u.tg){u.tg="";tt("Telegram nick cleared")}return}
+  if(/^\d+$/.test(v)){u.tgId=v;u.tg="";tt("Telegram ID saved");mountTeam();return}
+  if(!/^[A-Za-z0-9_]{4,32}$/.test(v)){err(id,"Telegram nick: 4–32 characters, A–Z, 0–9 and _");return}
+  err(id,"");u.tg="@"+v;u.tgId="";tt("Telegram nick saved · old ID cleared");mountTeam()}
+function tgClear(id){const u=user(id);u.tgId="";tt("Telegram ID cleared");mountTeam()}
+function toggleActive(id){const u=user(id);const me=A.me().id;
+  if(u.active&&id===me){A.confirm("Deactivate your own account?","You will be signed out immediately and will not be able to sign in again until another admin reactivates you.","Deactivate me",()=>{u.active=false;mountTeam();tt("Signed out (demo)")},{danger:true});return}
+  if(u.active&&u.role==="admin"&&USERS.filter(x=>x.role==="admin"&&x.active).length<=1){err(id,"Cannot deactivate the last active admin");return}
+  if(u.active){A.confirm("Deactivate "+u.n+"?","All API and mobile tokens are deleted and the open session is thrown out. Shifts and history stay.","Deactivate",()=>{u.active=false;mountTeam();tt(u.n+" deactivated")},{danger:true})}else{u.active=true;mountTeam();tt(u.n+" reactivated")}}
+function flag(id,k){const u=user(id);u[k]=!u[k];mountTeam();tt({shared:"Shared screen",makes:"Also makes bouquets",consent:"Name to customers"}[k]+" · "+(u[k]?"on":"off"))}
+function perms(ev,id){const u=user(id);A.pop(ev,["Extra access · "+u.n,...PERMS.map(p=>({t:(u.perms.includes(p[0])?"✓ ":"  ")+p[1],ic:u.perms.includes(p[0])?"check":"plus",fn:()=>{u.perms=u.perms.includes(p[0])?u.perms.filter(x=>x!==p[0]):[...u.perms,p[0]];mountTeam();tt("Permissions saved · audit user.permissions")}}))])}
+function avatar(id){const u=user(id);A.modal({title:"Photo · "+u.n,body:`<div class="row" style="gap:16px;align-items:flex-start"><span class="avatar --l">${u.av||A.user(id)?.av||"–"}</span><div class="sm soft">Pick a JPG or PNG up to 8 MB. It is stored as WebP without EXIF and shown in the «who takes the bouquet» picker on the board.<div class="mt8"><button class="btn --ghost --sm" onclick="S24.pickPhoto('${id}')">${I("upload")} Choose file…</button></div></div></div>`})}
+function pickPhoto(id){const u=user(id);u.photo=A.data.products[ri(0,16)].img;A.closeModal();mountTeam();tt("Photo uploaded · audit user.avatar.set")}
+function removePhoto(id){const u=user(id);A.confirm("Remove the photo?",u.n+" goes back to initials on the board and in pickers.","Remove photo",()=>{u.photo=null;mountTeam();tt("Photo removed")})}
+function setPin(id){const u=user(id);A.modal({title:"Refund PIN for "+u.n,body:`<div class="sm soft mb16">Personal PIN for self-service Stripe refunds up to £100 in Finance. Not the admin PIN. 4–20 characters; the server accepts letters too.</div><div class="field"><label>Refund PIN</label><input class="input" type="password" inputmode="numeric" id="s24-pin" placeholder="••••"></div><div class="err" id="s24-pin-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.savePin('${id}')">Save PIN</button>`})}
+function savePin(id){const v=$("#s24-pin").value;if(v.length<4||v.length>20){$("#s24-pin-err").textContent="4 to 20 characters";return}user(id).pin=true;A.closeModal();mountTeam();tt("Refund PIN set")}
+function clearPin(id){const u=user(id);A.confirm("Clear the refund PIN?",u.n+" will not be able to refund without an admin until a new PIN is set.","Clear PIN",()=>{u.pin=false;mountTeam();tt("Refund PIN cleared")},{danger:true})}
+function resetPw(id){const u=user(id);A.modal({title:"New password for "+u.n,body:`<div class="sm soft mb16">A temporary password. ${u.n.split(" ")[0]} must change it at first sign-in; all mobile and API tokens are deleted.</div><div class="field"><label>New password</label><input class="input" type="password" id="s24-pw" placeholder="At least 8 characters with letters and digits"></div><div class="err" id="s24-pw-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.savePw('${id}')">Reset password</button>`})}
+function savePw(id){const v=$("#s24-pw").value;if(!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(v)){$("#s24-pw-err").textContent="At least 8 characters, letters and digits";return}A.closeModal();tt("Password reset · must change at next sign-in")}
+function addStaff(){A.modal({title:"New team member",wide:true,body:`<!-- ids: SYST-013 --><div class="grid g2"><div class="field"><label>Name *</label><input class="input" id="s24-ns-n" placeholder="Full name"></div><div class="field"><label>Email *</label><input class="input" id="s24-ns-e" type="email" placeholder="name@floritta.uk"></div><div class="field"><label>Phone</label><input class="input" type="tel" placeholder="+44 7700 …"></div><div class="field"><label>Role</label><select class="select" id="s24-ns-r">${ROLE_OPTS.map(r=>`<option value="${r[0]}">${r[1]}</option>`).join("")}</select></div><div class="field"><label>Password *</label><input class="input" type="password" id="s24-ns-p" placeholder="Temporary – changed at first sign-in"></div><div class="field"><label>Birthday</label><input class="input" type="date"></div><div class="field"><label>Hire date</label><input class="input" type="date" value="2026-10-20"></div></div><div class="err" id="s24-ns-err"></div><div class="note-box mt16">The person is active at once, gets initials as an avatar and must set their own password at first sign-in.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.saveStaff()">Add staff</button>`})}
+function saveStaff(){const n=$("#s24-ns-n").value.trim(),e=$("#s24-ns-e").value.trim(),p=$("#s24-ns-p").value;if(!n||!e||!p){$("#s24-ns-err").textContent="Name, email and password are required";return}
+  USERS.push({id:"u"+Date.now(),n,email:e,role:$("#s24-ns-r").value,phone:"",tg:"",tgId:"",lang:"en",birthday:"",hired:"2026-10-20",active:true,shared:false,makes:false,consent:false,perms:[],lastLogin:null,push:null,pin:false,service:false,photo:null,av:n.split(" ").map(x=>x[0]).join("").slice(0,2).toUpperCase()});USERS.sort((a,b)=>a.n.localeCompare(b.n));A.closeModal();mountTeam();tt(n+" added · audit user.create")}
+function member(id){const u=user(id);const base=u.role.split(":")[0];
+  A.sheet({eyebrow:"Team member",title:E(u.n),body:`<div class="row" style="gap:14px">${uAv(u).replace("avatar av-up","avatar av-up --l")}<div><div class="sm">${E(u.email)} · <span class="tnum">${E(u.phone)||"no phone"}</span></div><div class="row mt8" style="gap:6px"><span class="tag --ink">${ROLE_LBL(u.role)}</span>${u.active?`<span class="tag --ok">Active</span>`:`<span class="tag">Inactive</span>`}${u.shared?`<span class="tag">Shared screen</span>`:""}</div></div></div>
+   <!-- ids: SYST-021 -->
+   <div class="sec-head"><div class="h3">Care days</div><span class="xs muted">Floritta Active</span></div>
+   <div class="grid g2"><div class="field"><label>Birthday</label><input class="input" type="date" value="${u.birthday}" onchange="S24.field('${id}','birthday',this.value)"></div><div class="field"><label>Hire date</label><input class="input" type="date" value="${u.hired}" onchange="S24.field('${id}','hired',this.value)"></div></div>
+   <!-- ids: SYST-026 -->
+   <div class="sec-head"><div class="h3">Extra access</div></div>
+   ${base==="admin"?`<div class="sm muted">Everything (admin)</div>`:u.service?`<div class="sm muted">Service accounts get access through API scopes, not permissions.</div>`:`<div class="col">${PERMS.map(p=>`<label class="check"><input type="checkbox" ${u.perms.includes(p[0])?"checked":""} onchange="S24.permSet('${id}','${p[0]}',this.checked)">${p[1]}</label>`).join("")}</div>`}
+   <div class="sec-head"><div class="h3">Security</div></div>
+   <div class="col">${base==="manager"&&!u.service?`<div class="row"><span class="tag ${u.pin?"--ok":"--line"}">${u.pin?"Refund PIN set":"No refund PIN"}</span><button class="textbtn" onclick="S24.setPin('${id}')">Set PIN</button>${u.pin?`<button class="textbtn --accent" onclick="S24.clearPin('${id}')">Clear</button>`:""}</div>`:""}
+   ${u.id!==A.me().id&&!u.service?`<div class="row"><button class="textbtn" onclick="S24.resetPw('${id}')">Reset password</button><span class="xs muted">temporary password · tokens deleted</span></div>`:""}
+   <div class="row"><span class="xs muted">Last login ${fmtDT(u.lastLogin)} · push ${u.push?"allowed":"not allowed"}</span></div></div>
+   <div class="sec-head"><div class="h3">New design (beta)</div></div>
+   <div class="row"><span class="switch ${u.beta?"on":""}" onclick="this.classList.toggle('on');S24.user('${id}').beta=!S24.user('${id}').beta;App.toast('${E(u.n)} · '+(S24.user('${id}').beta?'new design at next sign-in':'classic design'))"></span><span class="sm soft">Personal toggle (users.theme) – the person sees the new CRM at next sign-in.</span></div>`,
+   foot:`<button class="btn --ghost --sm" onclick="App.closeSheet()">Close</button><span class="sp"></span>${u.id!==A.me().id?`<button class="btn --sm ${u.active?"--secondary":""}" onclick="App.closeSheet();S24.toggleActive('${id}')">${u.active?"Deactivate":"Reactivate"}</button>`:""}`});
+}
+function permSet(id,p,on){const u=user(id);u.perms=on?[...new Set([...u.perms,p])]:u.perms.filter(x=>x!==p);mountTeam();tt("Permissions saved")}
+/* ======================= INTEGRATIONS ======================= */
+function mountInt(){
+  $("#s24-int-head").innerHTML=sysNav("system-integrations")+`<span class="sp"></span>`+(isAdmin()?`<span class="xs muted">Demo:</span><div class="seg-ctl"><button class="${S.aiState==="ok"?"on":""}" onclick="S24.aiDemo('ok')">AI ok</button><button class="${S.aiState==="failed"?"on":""}" onclick="S24.aiDemo('failed')">Key failed</button><button class="${S.aiState==="none"?"on":""}" onclick="S24.aiDemo('none')">No key</button></div>`:"");
+  if(!isAdmin()){$("#s24-int-body").innerHTML=forbid();return}
+  const ai=S.aiState;const form=S.aiEditing||ai==="none";
+  $("#s24-int-body").innerHTML=`
+  <!-- ids: SYST-033 -->
+  ${S.banner?`<div class="note-box ${S.banner.ok?"--ok":"--accent"} mb16" style="display:flex;gap:10px;align-items:center">${I(S.banner.ok?"check":"alert")}<span style="flex:1">${E(S.banner.t)}</span><button class="textbtn" onclick="S24.S.banner=null;S24.mountInt()">dismiss</button></div>`:""}
+  <div class="set-grid">
+    <div class="col" style="gap:16px">
+      <!-- ids: SYST-034 SYST-035 SYST-036 -->
+      <div class="card"><span class="caps">Artificial intelligence</span>
+        <div class="sm soft">Flora replies, Ask the CRM and photo checks run on your own Anthropic key (bring your own key). The key is stored encrypted and never shown again.</div>
+        <div class="row mt16" style="gap:10px">${ai==="ok"?`<span class="dot --ok"></span><span>AI is connected – key checked ${A.fmtTime(A.T(10,30))} today.</span>`:ai==="failed"?`<span class="dot --accent"></span><span class="accent">The key stopped working – <span class="sm">401 authentication_error: invalid x-api-key</span></span>`:`<span class="dot"></span><span class="muted">AI is not connected – add a key below.</span>`}</div>
+        ${form?`<div class="hr"></div><ol class="sm soft" style="padding-left:18px;margin:0 0 12px"><li>Open <button class="link" onclick="App.toast('Opens console.anthropic.com in a new tab')">console.anthropic.com</button> and create an API key.</li><li>Paste the key below.</li><li>Press «Check and connect» – we test it with one request before saving.</li></ol>
+          <div class="field" style="max-width:460px"><label>Anthropic key</label><input class="input" type="password" id="s24-aikey" placeholder="sk-ant-…"></div><div class="err" id="s24-aikey-err"></div>
+          <div class="btn-row mt16"><button class="btn --sm" id="s24-aikey-btn" onclick="S24.aiSave()">Check and connect</button>${ai!=="none"?`<button class="btn --ghost --sm" onclick="S24.S.aiEditing=false;S24.mountInt()">Cancel</button>`:""}</div>`:`<div class="btn-row mt16"><button class="btn --ghost --sm" onclick="S24.S.aiEditing=true;S24.mountInt()">Replace key</button></div>`}
+      </div>
+      <!-- ids: SYST-037 SYST-038 SYST-039 -->
+      <div class="panel"><div class="p-head"><div class="h4">Gateways</div><span class="xs muted">${GATEWAYS.length} configured</span></div>
+      <div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Gateway</th><th>Driver</th><th>Credentials</th><th>Status</th><th>Last sync</th><th></th></tr></thead><tbody>
+      ${GATEWAYS.map(g=>`<tr class="r ${g.status==="failed"?"--late":""}"><td><b style="font-weight:400">${E(g.name)}</b><span class="sub">${g.gw}</span></td><td class="xs muted">${g.driver}</td><td>${g.creds?`<span class="tag --line">configured</span>`:`<span class="tag --accent">missing</span>`}</td><td class="wrap" style="max-width:none">${g.status==="ok"?`<span class="pill --done">Connected</span>`:g.status==="failed"?`<span class="pill --late">Failed</span><div class="err">${E(g.err)}</div>`:`<span class="pill --plain">Not tested</span>`}</td><td class="xs muted tnum">${fmtDT(g.sync)}</td><td><button class="btn --ghost --sm" id="s24-gw-${g.id}" onclick="S24.testGw(${g.id})">${I("refresh")} Test connection</button></td></tr>`).join("")}
+      </tbody></table></div></div>
+    </div>
+    <div class="col" style="gap:16px">
+      <div class="card --flat"><span class="caps">What «Test connection» does</span><div class="sm soft">A live ping for Ringover, Search Console, Uber Direct, Uber Eats and Anthropic. For the rest the CRM answers honestly «No real client wired». Result is written to the row and to the audit log.</div></div>
+      <div class="card --flat"><span class="caps">Error text</span><div class="sm soft">Shown under the status, not on hover – readable on iPad and phone.</div></div>
+      <div class="card --flat"><span class="caps">Pinterest</span><div class="sm soft">Lives in Marketing → Pinterest. <button class="textbtn" onclick="App.go('marketing')">Open</button></div></div>
+    </div>
+  </div>`;
+}
+function aiDemo(v){S.aiState=v;S.aiEditing=false;S.banner=null;mountInt()}
+function aiSave(){const k=$("#s24-aikey").value.trim();const b=$("#s24-aikey-btn");if(!/^sk-ant-/.test(k)){$("#s24-aikey-err").textContent="That does not look like an Anthropic key (starts with sk-ant-).";return}
+  b.textContent="Checking the key…";b.classList.add("is-disabled");setTimeout(()=>{S.aiState="ok";S.aiEditing=false;S.banner={ok:true,t:"AI key checked and saved. Audit: integration.ai_key.save (without the value)."};const g=GATEWAYS[0];g.status="ok";g.sync=A.NOW.toISOString();mountInt();tt("AI connected")},900)}
+function testGw(id){const g=GATEWAYS.find(x=>x.id===id);const b=$("#s24-gw-"+id);b.classList.add("is-disabled");b.innerHTML=I("refresh")+" Testing…";
+  setTimeout(()=>{if(!g.real){S.banner={ok:false,t:g.name+": No real client wired – the test only confirms credentials are present."};g.status=g.creds?"ok":"none"}else if(g.gw==="gsc"){S.banner={ok:false,t:"gsc: invalid_grant – reconnect Google in Marketing → SEO."};}else{g.status="ok";g.err="";S.banner={ok:true,t:g.gw+": connection OK."}}g.sync=A.NOW.toISOString();mountInt()},800)}
+/* ======================= API ======================= */
+function mountApi(){
+  $("#s24-api-head").innerHTML=sysNav("system-api")+`<span class="sp"></span>`+(isAdmin()?`<!-- ids: SYST-041 --><button class="btn --sm" onclick="S24.newClient()">${I("plus")} New client</button>`:"");
+  if(!isAdmin()){$("#s24-api-body").innerHTML=forbid();return}
+  $("#s24-api-body").innerHTML=`
+  <!-- ids: SYST-042 -->
+  ${S.newToken?`<div class="token-box">${I("check")}<div style="flex:1;min-width:0"><b>Copy this token now – it will not be shown again.</b><div class="mt8"><code>${S.newToken}</code></div></div><button class="btn --sm --ok" onclick="App.toast('Token copied')">${I("copy")} Copy</button><button class="textbtn" onclick="S24.S.newToken=null;S24.mountApi()">dismiss</button></div>`:""}
+  <!-- ids: SYST-040 -->
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Scopes</th><th>Status</th><th>Last used</th><th>Created</th><th></th></tr></thead><tbody>
+  ${CLIENTS.map(c=>`<tr class="r ${c.revoked?"muted":""}"><td><b style="font-weight:400">${E(c.name)}</b></td><td class="wrap" style="max-width:none">${c.scopes.length?c.scopes.map(s=>`<span class="tag --line">${s}</span>`).join(" "):`<span class="xs accent">no scopes – the token cannot call anything</span>`}</td><td>${c.revoked?`<span class="pill --cancelled">Revoked</span>`:`<span class="pill --done">Active</span>`}</td><td class="xs muted">${fmtDT(c.used)}</td><td class="xs muted">${A.fmtDate(c.created)}</td><td><!-- ids: SYST-043 -->${c.revoked?"":`<button class="textbtn --accent" onclick="S24.revoke(${c.id})">Revoke</button>`}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="note-box mt16">${I("lock")} Tokens are 40 characters; only a SHA-256 hash is stored. Revoking stops the site, bots and routines that use it at once.</div>`;
+}
+function newClient(){A.modal({title:"New API client",wide:true,body:`<!-- ids: SYST-041 --><div class="field mb16"><label>Name *</label><input class="input" id="s24-nc-n" placeholder="e.g. Routine · stock reorder"></div><div class="lbl mb8">Scopes</div><div class="scopes">${SCOPES.map(s=>`<label class="check"><input type="checkbox" value="${s[0]}"><span>${s[0]}<small>${s[1]}</small></span></label>`).join("")}</div><div class="err" id="s24-nc-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.saveClient()">Create token</button>`})}
+function saveClient(){const n=$("#s24-nc-n").value.trim();const sc=$$(".scopes input:checked").map(i=>i.value);if(!n){$("#s24-nc-err").textContent="Name is required";return}if(!sc.length){$("#s24-nc-err").textContent="Pick at least one scope – a token without scopes cannot call anything";return}
+  CLIENTS.unshift({id:Date.now(),name:n,scopes:sc,revoked:false,used:null,created:A.NOW.toISOString()});S.newToken="flo_"+Array.from({length:36},()=>"abcdefghijklmnopqrstuvwxyz0123456789"[ri(0,35)]).join("");A.closeModal();mountApi();tt("Client created · audit api_client.create")}
+function revoke(id){const c=CLIENTS.find(x=>x.id===id);A.confirm("Revoke this token?",`«${E(c.name)}» stops working immediately – the site, bots or routines that use it will get 401.`,"Revoke",()=>{c.revoked=true;mountApi();tt("Token revoked")},{danger:true})}
+/* ======================= LOGS ======================= */
+function mountLogs(){
+  const cnt=t=>LOGS.filter(l=>t==="all"||l.action.startsWith(t==="orders"?"order":t==="payments"?"payment":"sync")).length;
+  $("#s24-logs-head").innerHTML=sysNav("system-logs")+`<!-- ids: SYST-044 --><div class="seg-ctl">${[["all","All"],["orders","Orders"],["payments","Payments"],["sync","Sync"]].map(t=>`<button class="${S.logsTab===t[0]?"on":""}" onclick="S24.logsTab('${t[0]}')">${t[1]} <span class="n">${cnt(t[0])}</span></button>`).join("")}</div><span class="sp"></span><span class="xs muted">Append-only · manager and admin</span><button class="btn --ghost --sm" onclick="App.toast('CSV of the current filter · 137 rows')">${I("download")} Export</button>`;
+  const list=LOGS.filter(l=>S.logsTab==="all"||l.action.startsWith(S.logsTab==="orders"?"order":S.logsTab==="payments"?"payment":"sync"));
+  const per=50,pages=Math.max(1,Math.ceil(list.length/per));if(S.logsPage>pages)S.logsPage=pages;const page=list.slice((S.logsPage-1)*per,S.logsPage*per);
+  $("#s24-logs-body").innerHTML=`<!-- ids: SYST-045 --><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Time</th><th>User</th><th>Action</th><th>Entity</th><th>IP</th></tr></thead><tbody>
+  ${page.length?page.map(l=>`<tr class="r" onclick="S24.logRow(${l.id})"><td class="xs tnum">${fmtDT(l.at)}</td><td>${E(l.user.n)}${l.routine?` <span class="muted">· ${l.routine}</span>`:""}</td><td><code class="xs">${l.action}</code></td><td class="xs">${l.entity}</td><td class="xs muted tnum">${l.ip}</td></tr>`).join(""):`<tr><td colspan="5"><div class="empty">${I("list")}<div class="h3">No log entries</div></div></td></tr>`}
+  </tbody></table></div>
+  <!-- ids: SYST-046 – pager (the live CRM shows 50 rows with no pager) -->
+  <div class="pager"><span>${list.length?`${(S.logsPage-1)*per+1}–${Math.min(list.length,S.logsPage*per)} of ${list.length}`:"0 rows"}</span><span class="sp"></span><button class="btn --ghost --sm ${S.logsPage<=1?"is-disabled":""}" onclick="S24.logsPage(-1)">${I("back")} Newer</button><span>Page ${S.logsPage} of ${pages}</span><button class="btn --ghost --sm ${S.logsPage>=pages?"is-disabled":""}" onclick="S24.logsPage(1)">Older ${I("chev")}</button></div>`;
+}
+function logsTab(t){S.logsTab=t;S.logsPage=1;mountLogs()}
+function logsPage(d){S.logsPage+=d;mountLogs()}
+function logRow(id){const l=LOGS.find(x=>x.id===id);A.sheet({eyebrow:"Audit entry #"+id,title:l.action,narrow:true,body:`<dl class="kv --tight"><dt>When</dt><dd>${fmtDT(l.at)}</dd><dt>User</dt><dd>${E(l.user.n)}${l.routine?" · "+l.routine:""}</dd><dt>Entity</dt><dd>${l.entity}</dd><dt>IP</dt><dd class="tnum">${l.ip}</dd><dt>Before / after</dt><dd><pre class="sql">{"status":"making"} → {"status":"ready"}</pre></dd></dl>`})}
+/* ======================= BACKUP ======================= */
+function mountBackup(){
+  $("#s24-bak-head").innerHTML=sysNav("system-backup")+`<span class="sp"></span>`+(isAdmin()?`<span class="flag">R2 bucket configured ${sw(S.bakConfigured,"S24.S.bakConfigured=!S24.S.bakConfigured;S24.mountBackup()")}</span><!-- ids: SYST-050 --><button class="btn --sm ${S.bakConfigured?"":"is-disabled"}" onclick="S24.backupNow()">${I("download")} Backup now</button>`:"");
+  if(!isAdmin()){$("#s24-bak-body").innerHTML=forbid();return}
+  $("#s24-bak-body").innerHTML=`
+  <!-- ids: SYST-047 --><div class="note-box mb16">Full DB dump (gzip) to a private R2 bucket, every night at 03:00. Restore is done by the engineer from the bucket – there is no restore button here on purpose.</div>
+  <!-- ids: SYST-048 -->${S.bakConfigured?"":`<div class="forbid">${I("alert")}<div><b>Backups are not configured.</b> Set the private R2 bucket (R2_BACKUPS_BUCKET) on the server – until then nothing is saved and «Backup now» is disabled.</div></div>`}
+  <!-- ids: SYST-049 --><div class="panel"><div class="p-head"><div class="h4">Backups</div><span class="xs muted">newest first</span></div>${S.bakConfigured&&BACKUPS.length?`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>File</th><th class="num">Size</th><th>Created</th></tr></thead><tbody>${BACKUPS.map(b=>`<tr><td><code class="xs">${b.name}</code></td><td class="num xs">${b.size}</td><td class="xs muted">${fmtDT(b.at)}</td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${I("box")}<div class="h3">No backups yet.</div><div class="sm">${S.bakConfigured?"The first dump appears after tonight's run.":"Configure the bucket first."}</div></div>`}</div>`;
+}
+function backupNow(){if(!S.bakConfigured)return;BACKUPS.unshift({name:"floritta-2026-10-20-1042-manual.sql.gz",size:"queued",at:A.NOW.toISOString()});mountBackup();tt("Backup queued – it appears in the list in a minute or two")}
+/* ======================= IMPORT / EXPORT ======================= */
+function mountIE(){
+  $("#s24-ie-head").innerHTML=sysNav("system-import-export")+`<span class="sp"></span>`+(isAdmin()?`<!-- ids: SYST-051 --><button class="btn --sm" onclick="S24.exportAll()">${I("download")} Download all data (ZIP)</button>`:`<span class="xs muted">«Download all data» is admin only</span>`);
+  $("#s24-ie-body").innerHTML=`
+  <div class="set-grid">
+    <div class="col" style="gap:16px">
+      <!-- ids: SYST-052 SYST-053 -->
+      <div class="panel"><div class="p-head"><div class="h4">Export</div><span class="xs muted">CSV, UTF-8, London time</span></div><div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Entity</th><th class="num">Rows</th><th>Last export</th><th></th></tr></thead><tbody>
+      ${ENT.map(e=>`<tr><td>${e[1]}${e[0]==="customers"?`<span class="sub">personal data – exported through Comms, audited</span>`:""}</td><td class="num tnum">${e[2].toLocaleString("en-GB")}</td><td class="xs muted">${fmtDT(e[3])}</td><td><button class="btn --ghost --sm" onclick="S24.exportOne('${e[0]}')">${I("download")} Download CSV</button></td></tr>`).join("")}
+      </tbody></table></div></div>
+      <!-- ids: SYST-054 -->
+      <div class="panel"><div class="p-head"><div class="h4">Import</div><span class="xs muted">dry-run first</span></div><div style="padding:14px"><div class="sm soft mb16">Upload a CSV; the CRM checks it and shows what would change before anything is written. Nothing is imported without your confirmation.</div><div class="btn-row">${ENT.map(e=>`<button class="btn --ghost --sm" onclick="S24.importOne('${e[1]}')">${I("upload")} Import ${e[1]}</button>`).join("")}</div></div></div>
+    </div>
+    <div class="col" style="gap:16px"><div class="card --flat"><span class="caps">Audit</span><div class="sm soft">Every download writes <code>data.export</code> with the resource and row count; the ZIP is deleted from the server after it is sent.</div></div>
+    <div class="card --flat"><span class="caps">Who</span><div class="sm soft">Manager and admin can export tables; the full ZIP is admin only.</div></div></div>
+  </div>`;
+}
+function exportAll(){tt("floritta-all-data.zip · 25 CSV files · audit data.export resource=all")}
+function exportOne(r){const e=ENT.find(x=>x[0]===r);e[3]=A.NOW.toISOString();mountIE();tt(e[1]+".csv · "+e[2].toLocaleString("en-GB")+" rows")}
+function importOne(n){A.modal({title:"Import "+n,body:`<div class="sm soft mb16">Step 1 – choose a CSV. Step 2 – dry-run report: rows to create, update, skip. Step 3 – apply.</div><div class="card --flat" style="text-align:center;padding:28px"><div>${I("upload")}</div><div class="sm mt8">Drop a .csv here or <button class="link" onclick="S24.dryRun('${n}')">choose a file</button></div></div>`})}
+function dryRun(n){A.modal({title:"Dry-run · "+n,body:`<dl class="kv --tight"><dt>Rows</dt><dd>412</dd><dt>Create</dt><dd>38</dd><dt>Update</dt><dd>371</dd><dt>Skip</dt><dd class="accent">3 – missing required column «phone»</dd></dl>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('Import applied · 409 rows')">Apply import</button>`})}
+/* ======================= B2B ======================= */
+function b2bPrefill(){S.b2bPrefill=!S.b2bPrefill;mountB2b();if(S.b2bPrefill)setTimeout(()=>{const c=A.customer(5009);const a=B2B.accounts.find(x=>x.customer===5009);if(a)newSchedule(a.id,{weekday:1,amount:65});else newAccount(c)},300)}
+function mountB2b(){
+  $("#s24-b2b-head").innerHTML=sysNav("system-b2b")+`<span class="flag">Demo: prefill from customer card ${sw(S.b2bPrefill,"S24.b2bPrefill()")}</span><span class="flag">B2B_STANDING_ORDERS ${sw(S.flagStanding,"S24.S.flagStanding=!S24.S.flagStanding;S24.mountB2b()")}</span><span class="flag">B2B_INVOICES ${sw(S.flagInvoices,"S24.S.flagInvoices=!S24.S.flagInvoices;S24.mountB2b()")}</span><span class="sp"></span><!-- ids: SYST-059 --><button class="btn --ghost --sm" onclick="S24.newAccount()">${I("plus")} New account</button>`;
+  const c=A.customer(5009);const hasAcc=B2B.accounts.length>0;
+  const settleTag=a=>`<span class="tag ${a.settle==="overdue"?"--accent":a.settle==="settled"?"--ok":"--line"}">${a.settle.replace("_"," ")}</span>${a.due?`<span class="sub">${a.settle==="overdue"?"was due":"due"} ${A.fmtDate(a.due)}</span>`:""}`;
+  $("#s24-b2b-body").innerHTML=`
+  <!-- ids: SYST-055 SYST-056 SYST-057 -->
+  ${S.b2bPrefill?`<div class="prefill">${I("info")}<div style="flex:1">Regular order for <b>${E(c.n)}</b>: the form is filled in from the order rhythm found overnight (Mondays, ~£65, 4 Shad Thames). Check and save.</div><button class="textbtn" onclick="App.openCustomer(5009)">Back to the card</button></div>`:""}
+  <!-- ids: SYST-058 -->
+  <div class="b2b-sec"><div class="sec-head"><div class="h3">Accounts</div><span class="xs muted">${B2B.accounts.length} accounts</span></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Account</th><th>Contact</th><th>Terms</th><th>Settlement</th><th>Status</th><th></th></tr></thead><tbody>
+  ${B2B.accounts.length?B2B.accounts.map(a=>`<tr class="r" onclick="S24.account(${a.id})"><td><b style="font-weight:400">${E(a.name)}</b><span class="sub">customer #${a.customer}</span></td><td>${E(a.contact)}</td><td>${E(a.terms)}</td><td>${settleTag(a)}</td><td>${a.active?`<span class="pill --done">Active</span>`:`<span class="pill --plain">Inactive</span>`}</td><td onclick="event.stopPropagation()"><div class="rowlinks"><button class="textbtn" onclick="S24.account(${a.id})">edit</button><button class="textbtn ${a.active?"--accent":""}" onclick="S24.accToggle(${a.id})">${a.active?"disable":"enable"}</button></div></td></tr>`).join(""):`<tr><td colspan="6"><div class="empty">${I("customers")}<div class="h3">No B2B accounts</div><button class="btn --sm" onclick="S24.newAccount()">New account</button></div></td></tr>`}
+  </tbody></table></div></div>
+  <!-- ids: SYST-060 SYST-061 SYST-062 -->
+  <div class="b2b-sec"><div class="sec-head"><div class="h3">Standing orders</div><span class="sp"></span><button class="btn --sm ${hasAcc?"":"is-disabled"}" onclick="S24.newSchedule()">${I("plus")} New schedule</button></div>
+  <div class="note-box ${S.flagStanding?"":"--warn"} mb16">${S.flagStanding?"Every day at 06:00 the CRM creates the order for each schedule «lead days» before the delivery – it then appears in Orders as a normal order.":"Orders start being created once B2B_STANDING_ORDERS is on. Schedules can be prepared now."}</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Account</th><th>Schedule</th><th>Delivery address</th><th>What we deliver</th><th>Next delivery</th><th>Status</th><th></th></tr></thead><tbody>
+  ${B2B.schedules.length?B2B.schedules.map(s=>{const a=acc(s.acc);const win=s.win==="none"?"no window":s.win==="between"?`${s.from}–${s.to}`:s.win==="before"?"before "+s.to:"after "+s.from;
+    return `<tr class="r ${s.active?"":"muted"}"><td><b style="font-weight:400">${E(a.name)}</b><span class="sub">${E(s.name)}</span></td><td>${DOW[s.weekday]} · every ${s.every} wk${s.every>1?"s":""}<span class="sub">${win} · order ${s.lead} d. before</span></td><td class="wrap">${E(s.addr)}</td><td>${E(s.what)}<span class="sub">${A.fmt(s.amount)} per change</span></td><td>${s.next?A.fmtDay(s.next):"–"}${s.last?`<span class="sub">last order #${s.last}</span>`:""}</td><td>${!s.active?`<span class="pill --plain">Inactive</span>`:s.paused?`<span class="pill --review">paused until ${A.fmtDate(s.paused)}</span>`:`<span class="pill --done">Active</span>`}</td>
+    <td><!-- ids: SYST-063 SYST-064 SYST-065 SYST-066 SYST-067 --><div class="rowlinks">${s.active&&!s.paused?`<button class="textbtn" onclick="S24.skip(${s.id})">skip next</button><button class="textbtn" onclick="S24.pause(${s.id})">pause</button>`:""}${s.active&&s.paused?`<button class="textbtn" onclick="S24.resume(${s.id})">resume</button>`:""}<button class="textbtn" onclick="S24.schedToggle(${s.id})">${s.active?"switch off":"switch on"}</button><button class="textbtn --accent" onclick="S24.schedDelete(${s.id})">Delete</button></div></td></tr>`}).join(""):`<tr><td colspan="7"><div class="empty">${I("calendar")}<div class="h3">No schedules yet</div></div></td></tr>`}
+  </tbody></table></div></div>
+  <!-- ids: SYST-068 SYST-069 SYST-070 -->
+  <div class="b2b-sec"><div class="sec-head"><div class="h3">Quarterly invoices <span class="muted sm">(10 % prepayment discount)</span></div><span class="sp"></span><button class="btn --sm ${hasAcc&&S.flagInvoices?"":"is-disabled"}" onclick="S24.draftInvoice()">${I("plus")} Draft next quarter</button></div>
+  <div class="note-box ${S.flagInvoices?"":"--warn"} mb16">${S.flagInvoices?"The account pays the quarter upfront with a discount; a paid invoice covers its weeks – orders in that period are created already paid.":"Issuing and printing switch on with B2B_INVOICES. Until then the table is read-only and print answers 404."}</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Invoice</th><th>Period</th><th class="num">Lines</th><th class="num">To pay</th><th>Status</th><th></th></tr></thead><tbody>
+  ${B2B.invoices.length?B2B.invoices.map(v=>{const a=acc(v.acc);const net=Math.round(v.gross*(100-v.disc)/100);const to=new Date(v.from);to.setDate(to.getDate()+v.weeks*7);
+    return `<tr class="r ${v.status==="cancelled"?"muted":""}"><td><b style="font-weight:400">${v.no}</b><span class="sub">${E(a.name)}</span></td><td>${A.fmtDate(v.from)} – ${A.fmtDate(to.toISOString())}<span class="sub">${v.weeks} weeks · due ${A.fmtDate(v.from)}</span></td><td class="num tnum">${v.lines}</td><td class="num"><b class="tnum" style="font-weight:400">${A.fmt(net)}</b><span class="sub tnum">${A.fmt(v.gross)} −${v.disc} %</span></td><td>${A.pill({draft:"todo",sent:"doing",paid:"paid",cancelled:"cancelled"}[v.status],v.status)}${v.at?`<span class="sub">${A.fmtDate(v.at)}${v.ref?" · "+E(v.ref):""}</span>`:""}</td>
+    <td><!-- ids: SYST-071 SYST-072 SYST-073 SYST-074 SYST-075 --><div class="rowlinks">${S.flagInvoices?`<button class="textbtn" onclick="S24.printInv(${v.id})">print</button>`:""}${v.status==="draft"?`<button class="textbtn" onclick="S24.invAction(${v.id},'send')">mark sent</button>`:""}${v.status==="draft"||v.status==="sent"?`<button class="textbtn" onclick="S24.markPaid(${v.id})">mark paid</button>`:""}${v.status!=="cancelled"&&v.status!=="paid"?`<button class="textbtn --accent" onclick="S24.cancelInv(${v.id})">cancel</button>`:""}${v.status==="cancelled"||v.status==="paid"?`<button class="textbtn" onclick="S24.invAction(${v.id},'reopen')">back to draft</button>`:""}</div></td></tr>`}).join(""):`<tr><td colspan="6"><div class="empty">${I("pound")}<div class="h3">No invoices yet</div></div></td></tr>`}
+  </tbody></table></div></div>
+  <!-- ids: SYST-180 --><div class="xs muted mt16">Row actions answer with a toast on success and show the server reason on refusal (wrong date, wrong status transition) – nothing fails silently.</div>`;
+}
+function newAccount(c){const cust=c||null;A.modal({title:"New account",body:`<!-- ids: SYST-059 --><div class="grid g2"><div class="field"><label>Account *</label><input class="input" id="s24-na-n" value="${cust?E(cust.n.split(" ")[1])+" & Co":""}" placeholder="Company name"></div><div class="field"><label>Contact</label><input class="input" value="${cust?E(cust.n):""}"></div><div class="field"><label>Terms</label><select class="select"><option>Net 14</option><option>Net 30</option><option>Prepaid quarter</option></select></div><div class="field"><label>Customer ID</label><input class="input tnum" value="${cust?cust.id:""}" placeholder="from the customer card"></div><div class="field"><label>Settlement</label><select class="select"><option value="current">Current</option><option value="due">Due</option><option value="overdue">Overdue</option><option value="settled">Settled</option><option value="not_applicable">Not applicable</option></select></div><div class="field"><label>Settlement due</label><input class="input" type="date"></div></div><div class="err" id="s24-na-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.saveAccount(${cust?cust.id:0})">Save account</button>`})}
+function saveAccount(custId){const n=$("#s24-na-n").value.trim();if(!n){$("#s24-na-err").textContent="Account name is required";return}const a={id:Date.now(),name:n,contact:custId?A.customer(custId).n:"",terms:"Net 30",settle:"current",due:null,active:true,customer:custId||0};B2B.accounts.push(a);A.closeModal();mountB2b();tt("Account created · audit b2b_account.create");if(custId)setTimeout(()=>newSchedule(a.id,{weekday:1,amount:65}),400)}
+function account(id){const a=acc(id);A.sheet({eyebrow:"B2B account",title:E(a.name),body:`<dl class="kv"><dt>Contact</dt><dd>${E(a.contact)}</dd><dt>Terms</dt><dd>${E(a.terms)}</dd><dt>Settlement</dt><dd>${a.settle}${a.due?" · due "+A.fmtDate(a.due):""}</dd><dt>Customer</dt><dd>${a.customer?`<button class="link" onclick="App.openCustomer(${a.customer})">#${a.customer}</button>`:"–"}</dd><dt>Schedules</dt><dd>${B2B.schedules.filter(s=>s.acc===id).length}</dd><dt>Invoices</dt><dd>${B2B.invoices.filter(v=>v.acc===id).length}</dd></dl><div class="note-box mt16">Editing and disabling an account is new in this design – the live CRM only creates accounts.</div>`,foot:`<button class="btn --ghost --sm" onclick="App.closeSheet();S24.newSchedule(${id})">New schedule</button><span class="sp"></span><button class="btn --sm" onclick="App.closeSheet();App.toast('Account saved')">Save</button>`})}
+function accToggle(id){const a=acc(id);a.active=!a.active;mountB2b();tt(a.name+" · "+(a.active?"enabled":"disabled"))}
+function newSchedule(accId,pre={}){if(!B2B.accounts.length){tt("Create an account first");return}const a=acc(accId)||B2B.accounts[0];
+  A.modal({title:"New schedule",wide:true,body:`<!-- ids: SYST-061 --><div class="grid g2">
+   <div class="field"><label>Account</label><select class="select" id="s24-ns-acc" onchange="S24.schedAddr(this.value)">${B2B.accounts.map(x=>`<option value="${x.id}" ${x.id===a.id?"selected":""}>${E(x.name)}</option>`).join("")}</select></div>
+   <div class="field"><label>Name *</label><input class="input" id="s24-ns-name" placeholder="e.g. Monday reception"></div>
+   <div class="field"><label>Weekday</label><select class="select">${DOW.slice(1).concat(DOW[0]).map((d,i)=>`<option ${((i+1)%7)===(pre.weekday??1)?"selected":""}>${d}</option>`).join("")}</select></div>
+   <div class="field"><label>Every N weeks</label><select class="select"><option>1</option><option>2</option><option>4</option></select></div>
+   <div class="field"><label>Create (days before)</label><input class="input tnum" type="number" min="0" max="14" value="1"></div>
+   <div class="field"><label>Delivery address</label><select class="select" id="s24-ns-addr">${a.customer?`<option>${E(A.customer(a.customer)?.addr||"Main address")}</option>`:`<option>No addresses – add one in the customer card first</option>`}</select></div>
+   <div class="field"><label>Window</label><select class="select" onchange="S24.schedWin(this.value)"><option value="none">no window</option><option value="between">between</option><option value="before">before</option><option value="after">after</option></select></div>
+   <div class="row" style="gap:8px"><div class="field"><label>From</label><input class="input" type="time" id="s24-ns-from" disabled></div><div class="field"><label>To</label><input class="input" type="time" id="s24-ns-to" disabled></div></div>
+   <div class="field"><label>Amount per change £ *</label><input class="input tnum" type="number" id="s24-ns-amt" value="${pre.amount||""}" placeholder="65"></div>
+   <div class="field"><label>First delivery not before</label><input class="input" type="date"></div>
+   <div class="field" style="grid-column:1/-1"><label>What we deliver</label><input class="input" placeholder="Seasonal desk arrangement"></div>
+   <div class="field"><label>Order note</label><input class="input" placeholder="for the florist"></div><div class="field"><label>For the courier</label><input class="input" placeholder="Reception desk, ask for …"></div>
+  </div><div class="err" id="s24-ns-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.saveSchedule()">Save schedule</button>`})}
+function schedAddr(v){const a=acc(+v);$("#s24-ns-addr").innerHTML=a.customer?`<option>${E(A.customer(a.customer)?.addr||"Main address")}</option>`:`<option>No addresses – add one in the customer card first</option>`}
+function schedWin(v){$("#s24-ns-from").disabled=!(v==="between"||v==="after");$("#s24-ns-to").disabled=!(v==="between"||v==="before")}
+function saveSchedule(){const n=$("#s24-ns-name").value.trim(),amt=+$("#s24-ns-amt").value;if(!n||!amt){$("#s24-ns-err").textContent="Name and amount are required";return}const a=acc(+$("#s24-ns-acc").value);
+  B2B.schedules.push({id:Date.now(),acc:a.id,name:n,weekday:1,every:1,lead:1,addr:a.customer?A.customer(a.customer).addr:"",win:"none",from:"",to:"",amount:amt,what:"",note:"",courier:"",next:A.T(9,0,6),last:"",active:true,paused:null});A.closeModal();mountB2b();tt("Schedule saved · next run "+A.fmtDate(A.T(9,0,6)))}
+const sch=id=>B2B.schedules.find(s=>s.id===id);
+function skip(id){const s=sch(id);A.confirm("Skip the delivery on "+A.fmtDate(s.next)+"?","The one after stays on schedule.","Skip",()=>{const d=new Date(s.next);d.setDate(d.getDate()+7*s.every);s.next=d.toISOString();mountB2b();tt("Skipped · next "+A.fmtDate(s.next))})}
+function pause(id){const s=sch(id);A.modal({title:"Pause «"+E(s.name)+"»",body:`<div class="field"><label>Pause until</label><input class="input" type="date" id="s24-pause" value="${s.next?s.next.slice(0,10):""}"></div><div class="err" id="s24-pause-err"></div><div class="xs muted mt8">No orders are created until this date; the schedule resumes by itself.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.pauseSave(${id})">Pause</button>`})}
+function pauseSave(id){const v=$("#s24-pause").value;if(!v){$("#s24-pause-err").textContent="Pick a date – the server rejects an empty paused_until";return}if(new Date(v)<=A.NOW){$("#s24-pause-err").textContent="The date must be in the future";return}sch(id).paused=new Date(v).toISOString();A.closeModal();mountB2b();tt("Standing order paused until "+A.fmtDate(v))}
+function resume(id){sch(id).paused=null;mountB2b();tt("Standing order resumed")}
+function schedToggle(id){const s=sch(id);if(s.active){A.confirm("Switch off «"+E(s.name)+"»?","No more orders are created. Orders already created stay.","Switch off",()=>{s.active=false;mountB2b();tt("Standing order switched off")})}else{s.active=true;s.next=A.T(9,0,6);mountB2b();tt("Standing order switched on")}}
+function schedDelete(id){const s=sch(id);A.confirm("Remove the schedule «"+E(s.name)+"»?","Orders already created stay.","Remove",()=>{B2B.schedules=B2B.schedules.filter(x=>x.id!==id);mountB2b();tt("Schedule removed")},{danger:true})}
+function draftInvoice(){if(!S.flagInvoices||!B2B.accounts.length)return;A.modal({title:"Draft next quarter",body:`<!-- ids: SYST-069 --><div class="grid g2"><div class="field" style="grid-column:1/-1"><label>Account</label><select class="select" id="s24-di-acc">${B2B.accounts.map(x=>`<option value="${x.id}">${E(x.name)}</option>`).join("")}</select></div><div class="field"><label>Period from *</label><input class="input" type="date" id="s24-di-from" oninput="document.getElementById('s24-di-btn').classList.toggle('is-disabled',!this.value)"></div><div class="field"><label>Weeks</label><input class="input tnum" type="number" min="4" max="26" value="13"></div><div class="field"><label>Prepayment discount, %</label><input class="input tnum" type="number" min="0" max="50" value="10"></div></div><div class="xs muted mt8">Lines come from the account's active schedules in the period.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm is-disabled" id="s24-di-btn" onclick="S24.saveInvoice()">Save</button>`})}
+function saveInvoice(){const a=acc(+$("#s24-di-acc").value);const from=$("#s24-di-from").value;const lines=B2B.schedules.filter(s=>s.acc===a.id&&s.active).length*13;if(!lines){A.closeModal();tt(a.name+": no standing orders in the period");return}const no="B2B-2026-00"+(22+B2B.invoices.length);B2B.invoices.unshift({id:Date.now(),no,acc:a.id,from:new Date(from).toISOString(),weeks:13,disc:10,lines,gross:lines*65,status:"draft",at:null,ref:""});A.closeModal();mountB2b();tt("Invoice "+no+" drafted")}
+const inv=id=>B2B.invoices.find(v=>v.id===id);
+function invAction(id,act){const v=inv(id);if(act==="send"){v.status="sent";v.at=A.NOW.toISOString();tt("Invoice "+v.no+": marked sent – the email is not sent automatically")}else if(act==="reopen"){v.status="draft";v.at=null;v.ref="";tt("Invoice "+v.no+": back to draft")}mountB2b()}
+function printInv(id){const v=inv(id);A.modal({title:"Print · "+v.no,wide:true,body:`<div class="card" style="font-family:var(--f-display)"><div class="h2">Floritta</div><div class="sm" style="font-family:var(--f-body)">80 Willow Walk, Bermondsey SE1 5SY</div><div class="hr"></div><div class="h3">Invoice ${v.no} · ${E(acc(v.acc).name)}</div><div class="sm mt8" style="font-family:var(--f-body)">${v.lines} deliveries · ${A.fmt(v.gross)} − ${v.disc} % = <b>${A.fmt(Math.round(v.gross*(100-v.disc)/100))}</b></div></div><div class="xs muted mt8">Opens in a new tab for the browser's Print → PDF.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Close</button><button class="btn --sm" onclick="App.closeModal();App.toast('Sent to printer')">${I("printer")} Print</button>`})}
+function markPaid(id){const v=inv(id);A.modal({title:"Mark "+v.no+" as paid",body:`<div class="sm soft mb16">A paid invoice covers its period – orders in those weeks are created already paid.</div><div class="field"><label>Payment reference</label><input class="input" id="s24-ref" placeholder="BACS, number – may be empty"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S24.paidSave(${id})">Mark paid</button>`})}
+function paidSave(id){const v=inv(id);v.status="paid";v.at=A.NOW.toISOString();v.ref=$("#s24-ref").value.trim();A.closeModal();mountB2b();tt("Invoice "+v.no+": paid"+(v.ref?" · "+v.ref:""))}
+function cancelInv(id){const v=inv(id);A.confirm("Cancel invoice "+v.no+"?","The account is not notified. You can bring it back to draft later.","Cancel invoice",()=>{v.status="cancelled";v.at=A.NOW.toISOString();mountB2b();tt("Invoice "+v.no+": cancelled")},{danger:true})}
+/* ======================= ASK CRM ======================= */
+function mountAsk(){
+  $("#s24-ask-head").innerHTML=`<span class="sm soft">Ask in plain words – the CRM writes a read-only query and answers with a table.</span><span class="sp"></span><span class="flag">ASK_CRM_ENABLED ${sw(S.askEnabled,"S24.S.askEnabled=!S24.S.askEnabled;S24.S.askResult=null;S24.S.askErr=null;S24.mountAsk()")}</span>`;
+  if(!S.askEnabled){$("#s24-ask-body").innerHTML=`<!-- ids: SYST-077 --><div class="empty">${I("sparkle")}<div class="h3">Ask the CRM is not enabled on this server yet.</div><div class="sm">Set ASK_CRM_ENABLED and the Anthropic key for Ask CRM in the server environment.</div><button class="btn --ghost --sm" onclick="App.go('system-integrations')">Open Integrations</button></div>`;return}
+  const r=S.askResult;
+  $("#s24-ask-body").innerHTML=`<div class="ask-wrap">
+   <!-- ids: SYST-078 -->
+   <div class="ask-in"><input class="input" id="s24-ask-q" value="${E(S.askQ)}" placeholder="e.g. unpaid orders over £100" maxlength="500" onkeydown="if(event.key==='Enter')S24.ask()" ${S.askLoading?"disabled":""}><button class="btn ${S.askLoading?"is-disabled":""}" onclick="S24.ask()">${S.askLoading?"Looking through your data…":"Ask"}</button></div>
+   <div class="row mt8" style="justify-content:space-between"><span class="xs muted" id="s24-ask-cnt">${S.askQ.length} / 500 · 3 to 500 characters · 20 questions a minute</span><span class="xs muted">Read-only · allowed tables only · every question and query is logged</span></div>
+   <!-- ids: SYST-079 -->
+   <div class="chips mt16">${ASK.map((x,i)=>`<button class="chip ${S.askLoading?"is-disabled":""}" onclick="S24.askTry(${i})">${I("sparkle")} ${E(x.q)}</button>`).join("")}</div>
+   <!-- ids: SYST-085 SYST-181 -->
+   ${S.askErr?`<div class="forbid mt24">${I("alert")}<div><b>${E(S.askErr.t)}</b><div class="sm">${E(S.askErr.d)}</div></div></div>`:""}
+   <!-- ids: SYST-080 -->
+   ${S.askLoading?`<div class="card mt24"><div class="skel --w"></div><div class="skel"></div><div class="skel"></div><div class="skel --w"></div></div>`:""}
+   ${r?`<!-- ids: SYST-081 --><div class="card mt24"><span class="caps">Answer</span><div class="ask-ans">${E(r.ans)}</div></div>
+   <!-- ids: SYST-082 SYST-083 SYST-084 -->
+   <div class="panel mt16"><div class="p-head"><div class="h4">${E(r.q)}</div><span class="xs muted">${r.rows.length} rows</span><button class="textbtn" onclick="S24.S.askSql=!S24.S.askSql;S24.mountAsk()">${S.askSql?"Hide query":"Show query"}</button></div>
+   ${S.askSql?`<pre class="sql">${E(r.sql)}</pre>`:""}
+   ${r.rows.length?`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr>${r.cols.map(c=>`<th>${c.replace(/_/g," ")}</th>`).join("")}</tr></thead><tbody>${r.rows.map(row=>`<tr>${row.map(v=>`<td class="${typeof v==="number"?"num":""}">${v===true?"✓":v===false?"–":v===null||v===""?"–":E(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:`<div class="empty"><div class="sm">No rows matched.</div></div>`}
+   ${r.trunc?`<div class="xs muted" style="padding:8px 14px">Showing the first rows only – narrow the question for more.</div>`:""}</div>`:""}
+  </div>`;
+  const inp=$("#s24-ask-q");if(inp)inp.oninput=()=>{S.askQ=inp.value;$("#s24-ask-cnt").textContent=inp.value.length+" / 500 · 3 to 500 characters · 20 questions a minute"};
+}
+function askTry(i){S.askQ=ASK[i].q;ask()}
+function ask(){if(S.askLoading)return;const q=S.askQ.trim();S.askErr=null;S.askResult=null;S.askSql=false;
+  if(q.length<3){S.askErr={t:"The question is too short.",d:"Write at least 3 characters."};mountAsk();return}
+  if(q.length>500){S.askErr={t:"The question is too long.",d:"Keep it under 500 characters."};mountAsk();return}
+  S.askLoading=true;mountAsk();
+  setTimeout(()=>{S.askLoading=false;const hit=ASK.find(x=>q.toLowerCase().includes(x.q.split(" ")[0])||x.q.includes(q.toLowerCase()));
+    if(/delete|drop|update|password|token/i.test(q)){S.askErr={t:"I can't answer that.",d:"Ask the CRM only reads orders, customers, products, deliveries and payments. Passwords, tokens and writes are off limits."}}
+    else if(/staff|salary|wage|users/i.test(q)){S.askErr={t:"That table is not available.",d:"Staff and payroll data are not exposed to Ask the CRM."}}
+    else if(hit){S.askResult={q:hit.q,ans:hit.ans,cols:hit.cols,rows:hit.rows(),sql:hit.sql,trunc:hit.trunc}}
+    else{S.askResult={q,ans:"I looked through orders for «"+q+"» and found nothing matching in the last 90 days.",cols:["order","customer","total"],rows:[],sql:"SELECT o.id AS \"order\", c.name AS customer, o.total FROM orders o JOIN customers c ON c.id=o.customer_id WHERE o.placed_at >= NOW() - INTERVAL '90 days' AND … LIMIT 50;",trunc:false}}
+    mountAsk()},900)}
+/* ---------- commands & mounts ---------- */
+A.registerCommands([{g:"Go to",t:"System · Settings",ic:"settings",fn:()=>A.go("system-settings")},{g:"Go to",t:"System · Team",ic:"user",fn:()=>A.go("system-users")},{g:"Go to",t:"System · Integrations",ic:"zap",fn:()=>A.go("system-integrations")},{g:"Go to",t:"System · Audit log",ic:"list",fn:()=>A.go("system-logs")},{g:"Actions",t:"Ask the CRM",ic:"sparkle",fn:()=>A.go("ask-crm")},{g:"Actions",t:"Add staff",ic:"plus",fn:()=>{A.go("system-users");setTimeout(addStaff,200)}}]);
+window.S24={S,SET,user,nav,set,save,mountSettings,mountTeam,filterTeam,role,field,tg,tgClear,toggleActive,flag,perms,avatar,pickPhoto,removePhoto,setPin,savePin,clearPin,resetPw,savePw,addStaff,saveStaff,member,permSet,mountInt,aiDemo,aiSave,testGw,mountApi,newClient,saveClient,revoke,mountLogs,logsTab,logsPage,logRow,mountBackup,backupNow,mountIE,exportAll,exportOne,importOne,dryRun,mountB2b,b2bPrefill,newAccount,saveAccount,account,accToggle,newSchedule,schedAddr,schedWin,saveSchedule,skip,pause,pauseSave,resume,schedToggle,schedDelete,draftInvoice,saveInvoice,invAction,printInv,markPaid,paidSave,cancelInv,mountAsk,askTry,ask};
+window.mount_system_settings=mountSettings;window.mount_system_users=mountTeam;window.mount_system_integrations=mountInt;window.mount_system_api=mountApi;window.mount_system_logs=mountLogs;window.mount_system_backup=mountBackup;window.mount_system_import_export=mountIE;window.mount_system_b2b=mountB2b;window.mount_ask_crm=mountAsk;
+})();
+</script>

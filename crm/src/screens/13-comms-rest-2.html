@@ -1,0 +1,345 @@
+<style>
+/* ===== 13 · Comms – rest, part 2 (subscriptions, audience, email, broadcasts, forms, feedback, NPS) ===== */
+.c13 .img-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.c13 .img-card{border:1px solid var(--hair);display:flex;flex-direction:column;min-width:0}
+.c13 .img-card .photo{aspect-ratio:1}
+.c13 .img-card .im{padding:8px 10px;font-size:12.5px;min-width:0}
+.c13 .img-card .im b{display:block;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c13 .img-card .im small{color:var(--grey);font-size:11.5px}
+.c13 .img-card .ia{display:flex;gap:4px;padding:0 6px 6px}
+.c13 .upl{border:1px dashed var(--light);padding:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.c13 .upl .fld{display:flex;align-items:center;gap:8px}
+.c13 .lang-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.c13 .orig{border-left:2px solid var(--light);padding:6px 10px;font-size:12.5px;color:var(--grey);margin-bottom:6px;white-space:pre-wrap}
+.c13 .rtl{direction:rtl;text-align:right}
+.c13 .mt{background:var(--warn-bg);color:var(--warn);font-size:11.5px;padding:3px 8px;display:inline-block;margin-top:4px}
+.c13 .sms-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:13.5px}
+.c13 .sms-row .t{flex:1;min-width:0}
+.c13 .sms-row .t small{display:block;color:var(--grey);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c13 .fb{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:13.5px}
+.c13 .fb .sc{min-width:48px;font-family:var(--f-display);font-size:22px;line-height:1;font-variant-numeric:tabular-nums}
+.c13 .fb .t{flex:1;min-width:0}
+.c13 .fb .t small{display:block;color:var(--grey);font-size:12px;margin-top:3px}
+.c13 .nps-bar{display:flex;height:14px;margin:10px 0 8px}
+.c13 .nps-bar i{display:block;height:100%}
+.c13 .nps-bar i.p{background:var(--ok)}.c13 .nps-bar i.s{background:var(--light)}.c13 .nps-bar i.d{background:var(--accent)}
+.c13 .nps-leg{display:flex;gap:16px;font-size:12.5px;color:var(--graphite)}
+.c13 .nps-leg i{width:10px;height:10px;display:inline-block;margin-right:6px;vertical-align:middle}
+.c13 .trend{display:flex;align-items:flex-end;gap:10px;height:140px;padding-top:10px;position:relative}
+.c13 .trend::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--hair)}
+.c13 .trend .c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;cursor:default}
+.c13 .trend .c .bar2{width:100%;max-width:38px;background:var(--sel);display:block}
+.c13 .trend .c .bar2.--neg{background:var(--accent)}
+.c13 .trend .c b{font-size:11px;font-weight:400;color:var(--graphite);font-variant-numeric:tabular-nums}
+.c13 .trend .c small{font-size:10.5px;color:var(--grey);text-transform:uppercase;letter-spacing:.06em}
+.c13 .stub{border:1px solid var(--warn);background:var(--warn-bg);color:var(--warn);padding:10px 14px;font-size:13px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+[data-size="ipad"] .c13 .img-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] .c13 .img-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+</style>
+
+<!-- ================= Subscriptions ================= -->
+<section class="scr c13" id="s-subscriptions" data-nav="Subscriptions" data-group="Inbox &amp; Customers" data-title="Subscriptions" data-sub="floritta.uk" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-subs-head"></div>
+  <div class="scr-body" id="c13-subs-body">
+    <!-- ids: CMRS-081 CMRS-082 CMRS-083 CMRS-084 CMRS-085 CMRS-086 CMRS-087 CMRS-088 CMRS-089 CMRS-090 CMRS-091 CMRS-092 CMRS-093 CMRS-094 CMRS-095 CMRS-096 CMRS-097 CMRS-098 CMRS-099 CMRS-100 CMRS-101 CMRS-167 CMRS-168 CMRS-169 -->
+    <!-- «Storefront DB connection is not configured» state (Demo); filter tabs Active / Paused / Failing / Cancelled / All with counters (overlapping – note in the footer, CMRS-168); up to 300 rows read-only from the site DB; columns Subscription (name + plan), Prepaid gift GS-… → sale order, Customer (name + phone · email), Frequency, Next delivery + Paused until, Status + Payment failing (N), Orders → last order; Manage sheet with Customer / Recipient / Address / Plan / Frequency / Next delivery / Cancel reason; actions proxied to the site: Pause, Pause 1 month, Skip next (confirm), Resume, Renew, Rename, Cancel with reason (confirm, email to the customer) – the sheet footer says «Close», not «Cancel» (CMRS-167); «Manage actions are disabled: set FLORITTA_STOREFRONT_INTERNAL_TOKEN» state; sheet stays open and shows the error when the site rejects (CMRS-169 fixed); empty state and flash errors; the Dashboard KPI «Active subscriptions» lands here (red when failing) -->
+  </div>
+</section>
+
+<!-- ================= Subscribers ================= -->
+<section class="scr c13" id="s-subscribers" data-nav="Subscribers" data-group="Inbox &amp; Customers" data-title="Subscribers" data-sub="Marketing consent" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-subr-head"></div>
+  <div class="scr-body" id="c13-subr-body">
+    <!-- ids: CMRS-102 CMRS-103 CMRS-104 CMRS-105 -->
+    <!-- Segment All / Consented / Lapsed (90 days without an order) – All and Consented are the same set (noted); table Name / Email / Consent / Last order, no pagination; Export CSV in the tab row – now passes the chosen segment (noted); empty state -->
+  </div>
+</section>
+
+<!-- ================= Images ================= -->
+<section class="scr c13" id="s-sub-images" data-nav="Images" data-group="Inbox &amp; Customers" data-title="Images" data-sub="Subscriptions &amp; comms" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-img-head"></div>
+  <div class="scr-body" id="c13-img-body">
+    <!-- ids: CMRS-106 CMRS-107 CMRS-108 CMRS-109 CMRS-110 CMRS-111 CMRS-112 CMRS-113 CMRS-170 -->
+    <!-- subtitle «Imagery used in subscription & comms sends» now visible in the bar (CMRS-106); flash error strip; «Image storage (R2 / images.floritta.uk) is not configured – uploads are disabled» state; Upload image (JPG / PNG / WebP) + Label + Upload disabled without a file + hint up to 15 MB, converted to WebP; grid of cards with preview, label or file name, W×H · weight; Copy URL with «Copied» for 1.5 s (and «Could not copy» when the clipboard is blocked – CMRS-170); Delete → «Remove this image?»; empty state -->
+  </div>
+</section>
+
+<!-- ================= Email templates ================= -->
+<section class="scr c13" id="s-email-templates" data-nav="Email templates" data-group="Inbox &amp; Customers" data-title="Email templates" data-sub="Customer emails &amp; SMS" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-et-head"></div>
+  <div class="scr-body" id="c13-et-body">
+    <!-- ids: CMRS-114 CMRS-115 CMRS-116 CMRS-117 CMRS-118 CMRS-119 CMRS-120 CMRS-121 CMRS-122 CMRS-123 CMRS-124 CMRS-125 CMRS-171 CMRS-172 CMRS-173 CMRS-174 -->
+    <!-- the 4 standard lifecycle emails are seeded on open (line in the bar); Add template → modal with Name / Subject (EN) / Body (EN) / Variables + «English is the source» hint; table Name / Subject / Languages (All N languages or N missing → translations sheet) / Variables chips; Edit → same modal, changing EN queues machine translation (toast); translations sheet: language chips, English original above each field, subject / body (SMS – body only, fragments – own fields), RTL for Arabic, «Machine translation – edit it and it counts as reviewed» hint, Save per language keeps the sheet open (CMRS-171 fixed), switching a chip asks about unsaved text (CMRS-172 fixed), Translate now when autotranslate is on; standard names locked against renaming (CMRS-173); built-in Delivery photo / Redelivery requested / Payment reminder listed as «built-in» rows (CMRS-174); fragments line «Edit their languages»; SMS section with English text fixed in code; empty state -->
+  </div>
+</section>
+
+<!-- ================= Email log ================= -->
+<section class="scr c13" id="s-emails-log" data-nav="Email log" data-group="Inbox &amp; Customers" data-title="Email log" data-sub="Sent to customers" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-el-head"></div>
+  <div class="scr-body" id="c13-el-body">
+    <!-- ids: CMRS-126 CMRS-127 CMRS-128 CMRS-129 -->
+    <!-- Status filter All / Sent / Failed / Bounced; table To / Order / Template / Status / Sent, newest first, no pagination (count in the bar); Order code → order sheet, deleted orders without a link; empty state -->
+  </div>
+</section>
+
+<!-- ================= Broadcasts ================= -->
+<section class="scr c13" id="s-broadcasts" data-nav="Broadcasts" data-group="Inbox &amp; Customers" data-title="Broadcasts" data-sub="Drafts only" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-bc-head"></div>
+  <div class="scr-body" id="c13-bc-body">
+    <!-- ids: CMRS-130 CMRS-131 CMRS-132 CMRS-133 CMRS-134 CMRS-135 CMRS-136 CMRS-137 -->
+    <!-- New broadcast in the tab row → modal Title / Channel (audience size in brackets) / Body EN / Body RU / Schedule (London time) → always Draft; table Title / Channel / Recipients / Status / last column Send or sent date; Confirm send «Send to N (channel) recipients? This cannot be undone.» → Send now – marks Sent only; honest «not wired» strip: messages do not go out, scheduling has no cron; empty state; the Dashboard quick action Broadcast lands here -->
+  </div>
+</section>
+
+<!-- ================= Forms & submissions ================= -->
+<section class="scr c13" id="s-forms" data-nav="Forms · Submissions" data-group="Inbox &amp; Customers" data-title="Forms" data-sub="Site forms" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-fm-head"></div>
+  <div class="scr-body" id="c13-fm-body">
+    <!-- ids: CMRS-138 CMRS-139 CMRS-140 CMRS-141 CMRS-142 CMRS-175 CMRS-143 CMRS-144 CMRS-145 -->
+    <!-- 403 without comms.manage (Demo); Forms | Submissions segment (Submissions also a sub-tab and a button in the tab row); Add form → modal Name / Routing → slug, active, no fields; table Name / Slug / Submissions / Status (+ Routing column now visible, CMRS-175); forms are read-only otherwise (no edit / disable / delete – noted); Submissions: last 200, Form / Date / View → sheet with key – value pairs (objects as JSON, escaped), «No submissions» in table and in an empty entry -->
+  </div>
+</section>
+
+<!-- ================= Feedback ================= -->
+<section class="scr c13" id="s-feedback" data-nav="Feedback" data-group="Inbox &amp; Customers" data-title="Feedback" data-sub="Reviews &amp; NPS comments" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-fd-head"></div>
+  <div class="scr-body" id="c13-fd-body">
+    <!-- ids: CMRS-146 CMRS-147 CMRS-148 -->
+    <!-- KPI Reviews / NPS comments (totals); feed by date with Review / NPS badge, score (★ or /10), date, text, no pagination; empty state -->
+  </div>
+</section>
+
+<!-- ================= NPS ================= -->
+<section class="scr c13" id="s-nps" data-nav="NPS" data-group="Inbox &amp; Customers" data-title="NPS" data-sub="Loyalty" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-nps-head"></div>
+  <div class="scr-body" id="c13-nps-body">
+    <!-- ids: CMRS-149 CMRS-150 CMRS-151 CMRS-152 CMRS-153 CMRS-154 CMRS-176 -->
+    <!-- 403 without comms.manage (Demo); Period 30d / 90d / 180d / 365d in the tab row; KPI NPS / Responses / Detractors open (red > 0) / Repeat rate (marked as a front-end constant); Score split bar Promoters / Passives / Detractors with % labels, formula and hover titles; Trend by month – negative months drawn below the axis in accent, month names not numbers (CMRS-176 fixed), value on hover, «No data»; Detractor follow-up list customer · comment · Open / Done with a «Mark done» action added; «No detractors» -->
+  </div>
+</section>
+
+<script>
+/* ===== 13 · Comms rest · part 2 – state + demo data (fictional) ===== */
+const T13S2={sfConfigured:true,sfToken:true,subsFilter:"active",subsFail:false,subSeg:"all",storage:true,imgFlash:"",autotranslate:true,etLang:"ru",logStatus:"all",formsTab:"forms",manage:true,npsDays:90,subsEmpty:false};
+let T13_SUBS=[
+ {id:881,name:"Weekly desk flowers",plan:"Peach Posy · Standard",cust:5004,phone:"+44 7700 900148",email:"harry.okafor@example.com",freq:"Weekly",next:"Thu 22 Oct",status:"active",errors:0,orders:14,last:118426,gift:null,rec:"Harry Okafor",addr:"41 Jamaica Road, SE16",reason:""},
+ {id:884,name:"Subscription #884",plan:"White · Deluxe",cust:5008,phone:"+44 7700 900259",email:"james.patel@example.com",freq:"Fortnightly",next:"Mon 2 Nov",status:"paused",pausedUntil:"Mon 2 Nov",errors:0,orders:6,last:118430,gift:null,rec:"Grace Patel",addr:"9 Abbey Street, SE1",reason:""},
+ {id:890,name:"Reception · Tooley St",plan:"Hero Basket · Grand",cust:5006,phone:"+44 7700 900185",email:"sophie.moreau@example.com",freq:"Weekly",next:"Mon 26 Oct",status:"active",errors:2,orders:22,last:118434,gift:null,rec:"Reception desk",addr:"120 Tooley Street, SE1",reason:""},
+ {id:893,name:"Gift · 3 months",plan:"Pink · Standard",cust:5013,phone:"+44 7700 900444",email:"freya.hughes@example.com",freq:"Monthly",next:"Sat 7 Nov",status:"paused",pausedUntil:null,errors:1,orders:1,last:118440,gift:"GS-2031",giftSale:118444,rec:"Mum",addr:"3 Weston Street, SE1",reason:""},
+ {id:896,name:"Subscription #896",plan:"Seasonal · Deluxe",cust:5021,phone:"+44 7700 900740",email:"hannah.rossi@example.com",freq:"Monthly",next:"–",status:"cancelled",errors:4,orders:3,last:118446,gift:null,rec:"Hannah Rossi",addr:"77 Long Lane, SE1",reason:"Card declined 4 times – cancelled by the site"},
+ {id:899,name:"Birthday roses",plan:"Red Roses · Standard",cust:5017,phone:"+44 7700 900592",email:"zara.marchetti@example.com",freq:"Yearly",next:"Thu 12 Nov",status:"active",errors:0,orders:2,last:118450,gift:"GS-1980",giftSale:null,rec:"Zara Marchetti",addr:"15 Druid Street, SE1",reason:""}
+];
+const T13_SUBR=App.data.customers.filter((c,i)=>i%2===0).map((c,i)=>({id:c.id,n:c.n,email:c.email,last:i%4===3?null:App.fmtDate(App.T(12,0,-(i*9+3))),lapsed:i%4===3||i%5===4}));
+let T13_IMGS=[["Autumn edit · hero","red-roses",1600,2000,412],["Peony basket · subs","peony-basket",1600,2000,388],["White spray · card","white-spray",1200,1500,256],["Lilac dream","lilac-dream",1600,2000,402],["Garden basket · October","hero-basket",1600,2000,455],["IMG_2041.jpg","pink-garden",1600,2000,377]].map((r,i)=>({id:701+i,label:r[0],img:r[1],w:r[2],h:r[3],kb:r[4]}));
+const T13_LANGS=["ru","uk","pl","fr","es","ar"];
+const T13_LANG_N={ru:"Russian",uk:"Ukrainian",pl:"Polish",fr:"French",es:"Spanish",ar:"Arabic"};
+let T13_ET=[
+ {id:1,name:"Order confirmation",std:true,subject:"Your Floritta order {{order_id}} is booked",body:"Hi {{first_name}},\n\nThank you – your order {{order_id}} is booked for {{slot}}. We'll send a photo before it leaves the studio.",vars:["first_name","order_id","slot"],tr:{ru:{s:"Ваш заказ Floritta {{order_id}} принят",b:"Здравствуйте, {{first_name}}! Заказ {{order_id}} принят на {{slot}}.",mt:false},uk:{s:"Ваше замовлення {{order_id}} прийнято",b:"",mt:true},pl:{s:"Twoje zamówienie {{order_id}} jest przyjęte",b:"Cześć {{first_name}}, zamówienie {{order_id}} na {{slot}}.",mt:true},fr:{s:"",b:"",mt:false},es:{s:"",b:"",mt:false},ar:{s:"تم حجز طلبك {{order_id}}",b:"",mt:true}}},
+ {id:2,name:"Out for delivery",std:true,subject:"{{product}} is on its way",body:"Hi {{first_name}}, {{courier}} has just left with your flowers. Expected within the {{slot}} slot.",vars:["first_name","product","courier","slot"],tr:{ru:{s:"Букет уже в пути",b:"{{courier}} выехал с вашими цветами.",mt:false},uk:{s:"",b:"",mt:false},pl:{s:"",b:"",mt:false},fr:{s:"",b:"",mt:false},es:{s:"",b:"",mt:false},ar:{s:"",b:"",mt:false}}},
+ {id:3,name:"Delivered",std:true,subject:"Delivered – how did we do?",body:"Hi {{first_name}}, the flowers reached {{recipient}}. If anything is not perfect, reply to this email.",vars:["first_name","recipient"],tr:{ru:{s:"Доставлено",b:"Цветы у {{recipient}}.",mt:true},uk:{s:"Доставлено",b:"",mt:true},pl:{s:"Dostarczono",b:"",mt:true},fr:{s:"Livré",b:"",mt:true},es:{s:"Entregado",b:"",mt:true},ar:{s:"تم التسليم",b:"",mt:true}}},
+ {id:4,name:"Order cancelled",std:true,subject:"Order {{order_id}} cancelled",body:"Hi {{first_name}}, order {{order_id}} is cancelled. {{refund_line}}",vars:["first_name","order_id","refund_line"],tr:{ru:{s:"Заказ {{order_id}} отменён",b:"Заказ отменён. {{refund_line}}",mt:false},uk:{s:"Замовлення {{order_id}} скасовано",b:"{{refund_line}}",mt:false},pl:{s:"",b:"",mt:false},fr:{s:"",b:"",mt:false},es:{s:"",b:"",mt:false},ar:{s:"",b:"",mt:false}}},
+ {id:5,name:"Corporate invoice",std:false,subject:"Invoice {{invoice_no}} from Floritta",body:"Dear {{company}}, please find invoice {{invoice_no}} for {{period}} attached. Payment terms: 14 days.",vars:["company","invoice_no","period"],tr:{ru:{s:"",b:"",mt:false},uk:{s:"",b:"",mt:false},pl:{s:"",b:"",mt:false},fr:{s:"",b:"",mt:false},es:{s:"",b:"",mt:false},ar:{s:"",b:"",mt:false}}}
+];
+const T13_ET_BUILTIN=[{name:"Delivery photo",hint:"sent with the bouquet photo"},{name:"Redelivery requested",hint:"after a failed delivery"},{name:"Payment reminder",hint:"unpaid 2 h before the slot"}];
+const T13_FRAG={name:"Email fragments",fields:["Greeting","Signature","Footer · shop address & hours","Unsubscribe line"],tr:{ru:{Greeting:"Здравствуйте",Signature:"С теплом, Floritta",mt:false},uk:{mt:true},pl:{mt:false},fr:{mt:false},es:{mt:false},ar:{mt:false}}};
+const T13_SMS=[{name:"SMS · out for delivery",en:"Floritta: your flowers are on the way, arriving within {{slot}}.",missing:4},{name:"SMS · payment link",en:"Floritta: pay for order {{order_id}} here {{pay_link}} – the slot is held for 2 h.",missing:6},{name:"SMS · delivered",en:"Floritta: delivered to {{recipient}}. Reply to this number if anything is wrong.",missing:5}];
+const T13_LOG=(()=>{const tpl=["Order confirmation","Out for delivery","Delivered","Delivery photo","Payment reminder","Order cancelled"];const st=["sent","sent","sent","sent","failed","sent","bounced","sent"];return Array.from({length:18},(_,i)=>{const o=App.data.orders[i%App.data.orders.length];const c=App.customer(o.customer);return{id:3001+i,to:c.email,order:i===5?null:o.id,code:o.id,tpl:tpl[i%6],st:st[i%8],at:App.T(ri(7,21),ri(0,59),-Math.floor(i/4))}})})();
+let T13_BC=[
+ {id:51,title:"Autumn edit · 15 % this week",chan:"WhatsApp",rec:0,status:"draft",sched:"",sent:null,en:"Our autumn bouquets are here – 15 % off until Sunday with AUTUMN15.",ru:"Осенняя коллекция – скидка 15 % до воскресенья по коду AUTUMN15."},
+ {id:52,title:"Christmas wreaths – pre-order",chan:"Email",rec:0,status:"scheduled",sched:"Mon 2 Nov · 10:00",sent:null,en:"Pre-order your wreath by 18 Dec.",ru:""},
+ {id:53,title:"Mother's Day slots",chan:"SMS",rec:412,status:"sent",sched:"",sent:"14 Mar · 09:00",en:"Last same-day slots for Mother's Day.",ru:""}
+];
+let T13_FORMS=[{id:1,name:"Contact form",slug:"contact-form",n:118,active:true,routing:"info@ · inbox"},{id:2,name:"Wedding enquiry",slug:"wedding-enquiry",n:27,active:true,routing:"Tatiana · WhatsApp"},{id:3,name:"Corporate gifting",slug:"corporate-gifting",n:14,active:true,routing:"info@ · inbox"},{id:4,name:"Workshop waitlist",slug:"workshop-waitlist",n:63,active:false,routing:"—"}];
+const T13_SUBM=[{id:9101,form:"Wedding enquiry",at:App.T(9,26,0),e:{name:"Isla Lindqvist",phone:"+44 7700 900185",date:"June 2027",guests:"80",venue:"Shad Thames",budget:"£2 500–3 500",notes:"Garden roses, lots of foliage"}},{id:9102,form:"Contact form",at:App.T(8,4,0),e:{name:"Noah Clarke",email:"noah.clarke@example.com",message:"Can I collect after 22:00?"}},{id:9103,form:"Corporate gifting",at:App.T(17,40,-1),e:{company:"Marchetti & Co",contact:"Zara Marchetti",quantity:"40 boxes",date:"12 Nov",address:{line1:"15 Druid Street",postcode:"SE1 2EZ"}}},{id:9104,form:"Contact form",at:App.T(12,11,-1),e:{}},{id:9105,form:"Workshop waitlist",at:App.T(19,2,-2),e:{name:"Rosie Nowak",workshop:"Wreath making · Sat 24 Oct"}}];
+const T13_FB=[{k:"review",score:5,at:"Today 09:10",t:"Beautiful bouquet, arrived early. Thank you Svetlana!",who:"Charlotte W."},{k:"nps",score:9,at:"Today 08:30",t:"Easy to order, lovely photo before delivery.",who:"Harry O."},{k:"nps",score:4,at:"Yesterday 18:20",t:"The vase arrived chipped. Sorted quickly but still.",who:"Priya M."},{k:"review",score:4,at:"Yesterday 11:05",t:"Great flowers, delivery was at the very end of the slot.",who:"James P."},{k:"nps",score:10,at:"Sun 19 Oct",t:"Best florist in SE1.",who:"Grace A."},{k:"review",score:2,at:"Sat 18 Oct",t:"Roses dropped after two days.",who:"Louis G."},{k:"nps",score:7,at:"Fri 17 Oct",t:"",who:"Max D."}];
+const T13_NPS={responses:{30:38,90:112,180:201,365:388},prom:{30:26,90:74,180:131,365:255},pass:{30:8,90:25,180:46,365:86},det:{30:4,90:13,180:24,365:47},trend:[["May",41],["Jun",48],["Jul",-6],["Aug",22],["Sep",39],["Oct",54]],detr:[{cust:5025,t:"The vase arrived chipped.",st:"open"},{cust:5024,t:"Roses dropped after two days.",st:"open"},{cust:5014,t:"Delivered to the wrong floor.",st:"done"}]};
+
+/* ===== Subscriptions ===== */
+const T13SB={
+  re(){if(App.state.current==="subscriptions")window.mount_subscriptions(App.state.params)},
+  filter(f){T13S2.subsFilter=f;this.re()},
+  rows(f){const live=s=>s.status!=="cancelled";return T13_SUBS.filter(s=>f==="all"?true:f==="failing"?(live(s)&&s.errors>0):f==="active"?s.status==="active":s.status===f)},
+  manage(id){const s=T13_SUBS.find(x=>x.id===id);const esc=App.esc,ic=App.icon;const act=T13S2.sfToken;const c=App.customer(s.cust);
+    const btn=(t,fn,cls="--ghost")=>`<button class="btn --sm ${cls}" onclick="${fn}">${t}</button>`;
+    const body=`<dl class="kv"><dt>Customer</dt><dd><button class="link" onclick="App.openCustomer(${c.id})">${esc(c.n)}</button> · ${esc(s.phone)} · ${esc(s.email)}</dd><dt>Recipient</dt><dd>${esc(s.rec)}</dd><dt>Address</dt><dd>${esc(s.addr)}</dd><dt>Plan</dt><dd>${esc(s.plan)}</dd><dt>Frequency</dt><dd>${s.freq}</dd><dt>Next delivery</dt><dd>${esc(s.next)}${s.status==="paused"?` · Paused until ${s.pausedUntil||"resumed"}`:""}</dd><dt>Status</dt><dd>${App.pill(s.status==="active"?"paid":s.status==="paused"?"partial":"cancelled",s.status[0].toUpperCase()+s.status.slice(1))}${s.errors&&s.status!=="cancelled"?` <span class="tag --accent">Payment failing (${s.errors})</span>`:""}</dd>${s.reason?`<dt>Cancel reason</dt><dd>${esc(s.reason)}</dd>`:""}</dl>
+    <div class="hr"></div>
+    ${!act?`<div class="note-box --warn">Manage actions are disabled: set FLORITTA_STOREFRONT_INTERNAL_TOKEN in the CRM .env to talk to the site.</div>`:`
+    <div class="caps mb8">Actions · run on floritta.uk (Stripe charges and pauses live there)</div>
+    <div class="btn-row">${s.status==="active"?btn("Pause",`T13SB.act(${id},'pause')`)+btn("Pause 1 month",`T13SB.act(${id},'pause_month')`)+btn("Skip next",`T13SB.skip(${id})`):""}${s.status==="paused"?btn("Resume",`T13SB.act(${id},'resume')`):""}${s.status==="cancelled"?btn("Renew",`T13SB.act(${id},'renew')`):""}</div>
+    <div class="row mt16"><input class="input" id="sb-name" value="${esc(s.name)}" maxlength="191" data-initial="1"><button class="btn --ghost --sm" onclick="T13SB.rename(${id})">Rename</button></div>
+    ${s.status!=="cancelled"?`<div class="mt16 field"><label>Cancellation reason (optional)</label><div class="row"><input class="input" id="sb-reason" placeholder="Why the customer cancels"><button class="btn --accent --sm" onclick="T13SB.cancel(${id})">Cancel subscription</button></div><div class="hint mt8">The customer gets a cancellation email from the site.</div></div>`:""}`}
+    <div class="err" id="sb-err"></div>`;
+    App.sheet({eyebrow:"Subscription #"+s.id+(s.gift?" · "+s.gift:""),title:esc(s.name),body,foot:`<span class="hint">Read from the site DB · last sync 2 min ago</span><span class="sp"></span><button class="btn --secondary --sm" onclick="App.closeSheet()">Close</button>`})},
+  act(id,a){const s=T13_SUBS.find(x=>x.id===id);if(T13S2.subsFail){const e=document.getElementById("sb-err");if(e)e.textContent="The site rejected the action (HTTP 503) – nothing changed. Try again or check the site.";App.toast("Site unavailable – action not applied");return}
+    if(a==="pause"){s.status="paused";s.pausedUntil=null}if(a==="pause_month"){s.status="paused";s.pausedUntil="Fri 20 Nov"}if(a==="resume"){s.status="active";s.pausedUntil=null}if(a==="renew"){s.status="active";s.errors=0;s.reason=""}if(a==="skip"){s.next="Thu 29 Oct"}
+    App.toast(`#${id} · ${a.replace("_"," ")} · audit subscription.${a}`);this.manage(id);this.re()},
+  skip(id){App.confirm("Skip the upcoming delivery?","The unpaid cycle order will be removed and the next date moves one interval forward.","Skip next",()=>this.act(id,"skip"))},
+  rename(id){const s=T13_SUBS.find(x=>x.id===id);const v=(document.getElementById("sb-name")?.value||"").trim().slice(0,191);if(!v)return;s.name=v;App.toast("Renamed");this.manage(id);this.re()},
+  cancel(id){const r=(document.getElementById("sb-reason")?.value||"").trim();App.confirm("Cancel this subscription?","No more cycle orders. The customer gets a cancellation email from the site.","Cancel subscription",()=>{const s=T13_SUBS.find(x=>x.id===id);if(T13S2.subsFail){this.act(id,"cancel");return}s.status="cancelled";s.reason=r||"Cancelled by "+App.me().n;s.next="–";App.toast("Cancelled · email sent by the site · audit");this.manage(id);this.re()},{danger:true})},
+  demo(ev){App.pop(ev,["Demo data",{t:"Storefront DB · "+(T13S2.sfConfigured?"connected":"not configured"),ic:"globe",fn:()=>{T13S2.sfConfigured=!T13S2.sfConfigured;this.re()}},{t:"Internal token · "+(T13S2.sfToken?"set":"missing"),ic:"lock",fn:()=>{T13S2.sfToken=!T13S2.sfToken;this.re()}},{t:"Site rejects actions · "+(T13S2.subsFail?"yes":"no"),ic:"alert",fn:()=>{T13S2.subsFail=!T13S2.subsFail;this.re()}},{t:"No subscriptions",ic:"moon",fn:()=>{T13S2.subsEmpty=!T13S2.subsEmpty;this.re()}}])}
+};
+window.mount_subscriptions=function(p){
+  const esc=App.esc,ic=App.icon;
+  const cnt=f=>T13S2.subsEmpty?0:T13SB.rows(f).length;
+  document.getElementById("c13-subs-head").innerHTML=T13.nav("subscriptions",`Live flower subscriptions from <b>floritta.uk</b> · up to 300 latest, read-only`,`<div class="seg-ctl">${[["active","Active"],["paused","Paused"],["failing","Failing"],["cancelled","Cancelled"],["all","All"]].map(f=>`<button class="${T13S2.subsFilter===f[0]?"on":""}" onclick="T13SB.filter('${f[0]}')">${f[1]} <span class="n">${cnt(f[0])}</span></button>`).join("")}</div>`,"T13SB.demo(event)");
+  const b=document.getElementById("c13-subs-body");
+  if(!T13S2.sfConfigured){b.innerHTML=`<div class="empty">${ic("globe")}<div class="h3">Storefront DB connection is not configured</div><div class="sm">Set the <code>storefront</code> connection in the CRM .env to read subscriptions from floritta.uk.</div></div>`;return}
+  const rows=T13S2.subsEmpty?[]:T13SB.rows(T13S2.subsFilter);
+  let h=T13S2.sfToken?"":`<div class="note-box --warn mb16">Manage actions are disabled: set FLORITTA_STOREFRONT_INTERNAL_TOKEN in the CRM .env. The list is still readable.</div>`;
+  if(!rows.length)h+=`<div class="empty">${ic("refresh")}<div class="h3">No subscriptions</div><div class="sm">Nothing in «${T13S2.subsFilter}».</div></div>`;
+  else h+=`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>Subscription</th><th>Customer</th><th>Frequency</th><th>Next delivery</th><th>Status</th><th class="num">Orders</th><th></th></tr></thead><tbody>${rows.map(s=>`<tr class="r" onclick="T13SB.manage(${s.id})"><td>${esc(s.name)}<span class="sub">${esc(s.plan)}${s.gift?` · ${s.giftSale?`<button class="link" onclick="event.stopPropagation();App.openOrder(${s.giftSale})">Prepaid gift ${s.gift}</button>`:"Prepaid gift "+s.gift+" (no CRM sale)"}`:""}</span></td><td>${esc(App.customer(s.cust).n)}<span class="sub">${esc(s.phone)} · ${esc(s.email)}</span></td><td>${s.freq}</td><td>${esc(s.next)}${s.status==="paused"?`<span class="sub">Paused until ${s.pausedUntil||"resumed"}</span>`:""}</td><td>${App.pill(s.status==="active"?"paid":s.status==="paused"?"partial":"cancelled",s.status[0].toUpperCase()+s.status.slice(1))}${s.errors&&s.status!=="cancelled"?` <span class="tag --accent">Payment failing (${s.errors})</span>`:""}</td><td class="num">${s.orders?`<button class="link" onclick="event.stopPropagation();App.openOrder(${s.last})">${s.orders}</button>`:"0"}</td><td><span class="acts"><button class="btn --ghost --sm" onclick="event.stopPropagation();T13SB.manage(${s.id})">Manage</button></span></td></tr>`).join("")}</tbody><tfoot><tr><td colspan="7">Filters overlap: Failing = live subscriptions with charge errors (active and paused); Active includes failing ones – tab counts do not add up to All. After 4 failed charges the site cancels by itself.</td></tr></tfoot></table></div>`;
+  b.innerHTML=h;if(p&&p.open)T13SB.manage(p.open);
+};
+
+/* ===== Subscribers ===== */
+const T13SR={
+  re(){if(App.state.current==="subscribers")window.mount_subscribers(App.state.params)},
+  seg(s){T13S2.subSeg=s;this.re()},
+  rows(){return T13_SUBR.filter(c=>T13S2.subSeg==="lapsed"?c.lapsed:true)},
+  exportCsv(){App.toast(`CSV · ${this.rows().length} rows · segment ${T13S2.subSeg} · audit subscriber.export`)}
+};
+window.mount_subscribers=function(){
+  const esc=App.esc,ic=App.icon;const rows=T13SR.rows();
+  document.getElementById("c13-subr-head").innerHTML=T13.nav("subscribers",`<b>${rows.length}</b> customers with marketing consent`,`<div class="seg-ctl">${[["all","All"],["consented","Consented"],["lapsed","Lapsed"]].map(s=>`<button class="${T13S2.subSeg===s[0]?"on":""}" onclick="T13SR.seg('${s[0]}')">${s[1]}</button>`).join("")}</div><button class="btn --ghost --sm" onclick="T13SR.exportCsv()">${ic("download")} Export CSV</button>`);
+  let h=`<div class="hint mb16">Only customers with marketing consent are listed – «All» and «Consented» are the same set. Lapsed = no order in 90 days. The CSV export (ID, Name, Email, Last order) follows the chosen segment.</div>`;
+  if(!rows.length)h+=`<div class="empty">${ic("mail")}<div class="h3">No subscribers</div></div>`;
+  else h+=`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>Name</th><th>Email</th><th>Consent</th><th>Last order</th></tr></thead><tbody>${rows.map(c=>`<tr class="r" onclick="App.openCustomer(${c.id})"><td>${esc(c.n)}</td><td>${esc(c.email)}</td><td><span class="pill --paid --plain">Active</span></td><td>${c.last||"<span class='muted'>never</span>"}${c.lapsed?` <span class="tag --line">Lapsed</span>`:""}</td></tr>`).join("")}</tbody><tfoot><tr><td colspan="4">${rows.length} rows · no pagination</td></tr></tfoot></table></div>`;
+  document.getElementById("c13-subr-body").innerHTML=h;
+};
+
+/* ===== Images ===== */
+const T13IM={
+  file:null,
+  re(){if(App.state.current==="sub-images")window.mount_sub_images(App.state.params)},
+  pick(){this.file="IMG_2048.jpg";const b=document.getElementById("im-upl");if(b)b.classList.remove("is-disabled");const n=document.getElementById("im-file");if(n)n.textContent=this.file+" · 3.1 MB"},
+  upload(){if(!this.file)return;const lbl=(document.getElementById("im-label")?.value||"").trim().slice(0,160);T13_IMGS.unshift({id:Date.now(),label:lbl||this.file.replace(".jpg",".webp"),img:"veronica",w:1600,h:2000,kb:398});this.file=null;this.re();App.toast("Uploaded · converted to WebP · images.floritta.uk · audit comms.sub_image.add")},
+  copy(id){const el=document.getElementById("im-copy-"+id);const ok=!!(navigator.clipboard&&window.isSecureContext);if(ok)navigator.clipboard.writeText("https://images.floritta.uk/subs/"+id+".webp").catch(()=>{});if(el){el.textContent=ok?"Copied":"Could not copy";setTimeout(()=>{el.textContent="Copy URL"},1500)}},
+  del(id){App.confirm("Remove this image?","The file is deleted from images.floritta.uk (best effort) and from the library. Sends that already used it keep working.","Remove",()=>{T13_IMGS=T13_IMGS.filter(i=>i.id!==id);this.re();App.toast("Removed · audit comms.sub_image.remove")},{danger:true})},
+  demo(ev){App.pop(ev,["Demo data",{t:"Image storage (R2) · "+(T13S2.storage?"configured":"not configured"),ic:"upload",fn:()=>{T13S2.storage=!T13S2.storage;this.re()}},{t:"Show a flash error",ic:"alert",fn:()=>{T13S2.imgFlash="The file could not be read as an image.";this.re()}},{t:"Empty library",ic:"moon",fn:()=>{T13_IMGS=[];this.re()}}])}
+};
+window.mount_sub_images=function(){
+  const esc=App.esc,ic=App.icon,canManage=App.isMgr();
+  document.getElementById("c13-img-head").innerHTML=T13.nav("images",`Imagery used in subscription &amp; comms sends · <b>${T13_IMGS.length}</b> files on images.floritta.uk`,"","T13IM.demo(event)");
+  let h="";
+  if(T13S2.imgFlash){h+=`<div class="note-box --accent mb16">${ic("alert")} ${esc(T13S2.imgFlash)} <button class="textbtn --accent" style="margin-left:8px" onclick="T13S2.imgFlash='';T13IM.re()">dismiss</button></div>`}
+  if(canManage){h+=T13S2.storage?`<div class="upl"><div class="fld"><button class="btn --ghost --sm" onclick="T13IM.pick()">${ic("upload")} Upload image</button><span class="sm soft" id="im-file">${T13IM.file?T13IM.file+" · 3.1 MB":"JPG / PNG / WebP"}</span></div><div class="fld"><span class="lbl">Label (optional)</span><input class="input" id="im-label" maxlength="160" style="width:220px" placeholder="Autumn edit · hero"></div><button class="btn --sm ${T13IM.file?"":"is-disabled"}" id="im-upl" onclick="T13IM.upload()">Upload</button><span class="hint">Up to 15 MB. Converted to WebP and stored on images.floritta.uk.</span></div>`:`<div class="note-box --warn mb16">Image storage (R2 / images.floritta.uk) is not configured – uploads are disabled.</div>`}
+  if(!T13_IMGS.length)h+=`<div class="empty">${ic("photo")}<div class="h3">No images</div><div class="sm">Upload the first picture for subscription and broadcast sends.</div></div>`;
+  else h+=`<div class="img-grid">${T13_IMGS.map(i=>`<div class="img-card"><div class="photo"><img loading="lazy" src="img/${i.img}.webp" alt=""></div><div class="im"><b title="${esc(i.label)}">${esc(i.label)}</b><small>${i.w}×${i.h} · ${i.kb} KB</small></div><div class="ia"><button class="textbtn" id="im-copy-${i.id}" onclick="T13IM.copy(${i.id})">Copy URL</button><span class="sp"></span>${canManage?`<button class="ib" title="Delete" onclick="T13IM.del(${i.id})">${ic("trash")}</button>`:""}</div></div>`).join("")}</div>`;
+  document.getElementById("c13-img-body").innerHTML=h;
+};
+
+/* ===== Email templates ===== */
+const T13ET={
+  re(){if(App.state.current==="email-templates")window.mount_email_templates(App.state.params)},
+  missing(t){let m=0;T13_LANGS.forEach(l=>{if(!t.tr[l].s)m++;if(!t.tr[l].b)m++});return m},
+  form(t){t=t||{};return `<div class="note-box mb16">English is the source. Editing it re-translates the other languages (machine translation, Anthropic).</div><div class="field"><label>Name</label><input class="input" id="et-name" value="${App.esc(t.name||"")}" ${t.std?"readonly":""} placeholder="Required"><div class="hint">${t.std?"Standard lifecycle email – the name is fixed so the live email keeps using this text.":""}</div></div><div class="field mt8"><label>Subject (EN)</label><input class="input" id="et-subj" maxlength="200" value="${App.esc(t.subject||"")}"></div><div class="field mt8"><label>Body (EN)</label><textarea class="textarea" id="et-body" rows="6">${App.esc(t.body||"")}</textarea></div><div class="field mt8"><label>Variables (comma-separated)</label><input class="input" id="et-vars" value="${App.esc((t.vars||[]).join(", "))}"></div><div class="err" id="et-err"></div>`},
+  add(){App.modal({title:"Add template",wide:true,body:this.form(),foot:`<button class="btn --secondary --sm" onclick="T13.closeDirty()">Cancel</button><button class="btn --sm" onclick="T13ET.save(0)">Create</button>`})},
+  edit(id){const t=T13_ET.find(x=>x.id===id);App.modal({title:"Edit template",wide:true,body:this.form(t),foot:`<button class="btn --secondary --sm" onclick="T13.closeDirty()">Cancel</button><button class="btn --sm" onclick="T13ET.save(${id})">Save</button>`})},
+  save(id){const g=k=>(document.getElementById(k)?.value||"").trim();const name=g("et-name"),subj=g("et-subj"),body=g("et-body"),vars=g("et-vars").split(",").map(s=>s.trim()).filter(Boolean);if(!name){document.getElementById("et-err").textContent="Name is required.";return}
+    if(!id){const empty=()=>Object.fromEntries(T13_LANGS.map(l=>[l,{s:"",b:"",mt:false}]));const bi=T13_ET_BUILTIN.find(b=>b.name===name);T13_ET.unshift({id:Date.now(),name,std:false,subject:subj,body,vars,tr:empty()});App.closeModal();this.re();App.toast(bi?"Created – it now overrides the built-in «"+name+"» text":"Template created · audit email_template.create");return}
+    const t=T13_ET.find(x=>x.id===id);const retr=t.subject!==subj||t.body!==body;Object.assign(t,{name:t.std?t.name:name,subject:subj,body,vars});App.closeModal();this.re();App.toast(retr?"Saved · translations queued (TranslateEmailTemplateJob)":"Saved · audit email_template.update")},
+  translations(kind,id){ // kind: tpl | sms | frag
+    const esc=App.esc,ic=App.icon;const L=T13S2.etLang;
+    let title,sub,fields;
+    if(kind==="tpl"){const t=T13_ET.find(x=>x.id===id);title=t.name;sub="Languages";const tr=t.tr[L];fields=[["s","Subject",t.subject,tr.s,false],["b","Body",t.body,tr.b,true]];this._cur={kind,id}}
+    else if(kind==="sms"){const s=T13_SMS[id];title=s.name;sub="SMS · body only";fields=[["b","Body",s.en,"",true]];this._cur={kind,id}}
+    else{title=T13_FRAG.name;sub="Email fragments";fields=T13_FRAG.fields.map(f=>[f,f,"(English in code)",T13_FRAG.tr[L][f]||"",f.includes("Footer")]);this._cur={kind,id:0}}
+    const mt=kind==="tpl"?T13_ET.find(x=>x.id===id).tr[L].mt:kind==="frag"?T13_FRAG.tr[L].mt:false;
+    const body=`<div class="lang-chips">${T13_LANGS.map(l=>`<button class="chip ${l===L?"on":""}" onclick="T13ET.lang('${l}')">${T13_LANG_N[l]}</button>`).join("")}</div>
+      ${mt?`<div class="mt mb8">Machine translation – edit it and it counts as reviewed.</div>`:""}
+      ${fields.map(f=>`<div class="field mb16"><label>${f[1]} · ${T13_LANG_N[L]}</label><div class="orig">${esc(f[2])}</div>${f[4]?`<textarea class="textarea ${L==="ar"?"rtl":""}" rows="4" data-k="${f[0]}" oninput="T13ET.dirty=true">${esc(f[3])}</textarea>`:`<input class="input ${L==="ar"?"rtl":""}" data-k="${f[0]}" value="${esc(f[3])}" oninput="T13ET.dirty=true">`}</div>`).join("")}
+      <div class="hint">Empty field removes the translation – the email goes out in English. Errors: a lost {{placeholder}}, an SMS over the segment limit.</div><div class="err" id="et-tr-err"></div>`;
+    this.dirty=false;
+    App.sheet({eyebrow:sub,title:esc(title),body,foot:`${T13S2.autotranslate?`<button class="btn --ghost --sm" onclick="T13ET.translateNow()">${ic("sparkle")} Translate now</button>`:`<span class="hint">Auto-translate off (ai.catalog_translate)</span>`}<span class="sp"></span><button class="btn --sm" onclick="T13ET.saveTr()">Save ${T13_LANG_N[L]}</button>`})},
+  lang(l){if(this.dirty){App.confirm("Discard unsaved text?",`The ${T13_LANG_N[T13S2.etLang]} text is not saved.`,"Discard",()=>{T13S2.etLang=l;this.translations(this._cur.kind,this._cur.id)},{danger:true});return}T13S2.etLang=l;this.translations(this._cur.kind,this._cur.id)},
+  saveTr(){const L=T13S2.etLang;const vals={};document.querySelectorAll("#sh-body [data-k]").forEach(el=>vals[el.dataset.k]=el.value.trim());const c=this._cur;
+    if(c.kind==="tpl"){const t=T13_ET.find(x=>x.id===c.id);const lost=(t.vars||[]).filter(v=>t.body.includes("{{"+v+"}}")&&vals.b&&!vals.b.includes("{{"+v+"}}"));if(lost.length){document.getElementById("et-tr-err").textContent="Lost placeholder: {{"+lost[0]+"}}";return}t.tr[L]={s:vals.s||"",b:vals.b||"",mt:false}}
+    else if(c.kind==="sms"){if((vals.b||"").length>306){document.getElementById("et-tr-err").textContent="SMS is longer than 2 segments (306 characters).";return}T13_SMS[c.id].missing=Math.max(0,T13_SMS[c.id].missing-1)}
+    else{T13_FRAG.tr[L]=Object.assign({},vals,{mt:false})}
+    this.dirty=false;App.toast(`${T13_LANG_N[L]} saved · reviewed · audit email_template.translation`);this.translations(c.kind,c.id);this.re()},
+  translateNow(){App.toast("Queued · TranslateEmailTemplateJob (Anthropic) · FeatureUsage comms.translate_templates");const c=this._cur;if(c.kind==="tpl"){const t=T13_ET.find(x=>x.id===c.id);T13_LANGS.forEach(l=>{if(!t.tr[l].s){t.tr[l].s="["+l+"] "+t.subject;t.tr[l].mt=true}if(!t.tr[l].b){t.tr[l].b="["+l+"] "+t.body;t.tr[l].mt=true}});setTimeout(()=>{this.translations(c.kind,c.id);this.re();App.toast("Translations ready – marked as machine")},900)}},
+  demo(ev){App.pop(ev,["Demo data",{t:"Auto-translate · "+(T13S2.autotranslate?"on":"off"),ic:"sparkle",fn:()=>{T13S2.autotranslate=!T13S2.autotranslate;this.re()}},{t:"No templates (before seeding)",ic:"moon",fn:()=>{T13_ET=[];this.re()}},{t:"Seed the 4 standard emails",ic:"refresh",fn:()=>{location.reload()}}])}
+};
+window.mount_email_templates=function(){
+  const esc=App.esc,ic=App.icon;
+  document.getElementById("c13-et-head").innerHTML=T13.nav("emailtemplates",`English texts of customer emails and their translations · <span class="hint">${T13_ET.filter(t=>t.std).length}/4 standard lifecycle emails seeded on open</span>`,`<button class="btn --sm" onclick="T13ET.add()">${ic("plus")} Add template</button>`,"T13ET.demo(event)");
+  let h="";
+  if(!T13_ET.length)h+=`<div class="empty">${ic("mail")}<div class="h3">No templates</div><div class="sm">The server seeds the 4 standard emails on the next open.</div><button class="btn --sm" onclick="location.reload()">Reload</button></div>`;
+  else h+=`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>Name</th><th>Subject</th><th>Languages</th><th>Variables</th><th></th></tr></thead><tbody>${T13_ET.map(t=>{const m=T13ET.missing(t);return `<tr class="r" onclick="T13ET.edit(${t.id})"><td>${esc(t.name)}${t.std?`<span class="sub">standard · name fixed</span>`:""}</td><td class="wrap">${esc(t.subject)}</td><td><button class="link" onclick="event.stopPropagation();T13ET.translations('tpl',${t.id})">${m?m+" missing":"All "+T13_LANGS.length+" languages"}</button></td><td class="wrap">${t.vars.map(v=>`<span class="tag --line">${esc(v)}</span> `).join("")}</td><td><span class="acts"><button class="ib" title="Edit" onclick="event.stopPropagation();T13ET.edit(${t.id})">${ic("edit")}</button></span></td></tr>`}).join("")}
+    ${T13_ET_BUILTIN.filter(b=>!T13_ET.some(t=>t.name===b.name)).map(b=>`<tr><td class="muted">${esc(b.name)}<span class="sub">built-in · ${esc(b.hint)}</span></td><td class="muted wrap">Text lives in code – create a template with this name to override it</td><td><span class="muted">translated by the job</span></td><td></td><td><button class="textbtn" onclick="T13ET.add();setTimeout(()=>{const n=document.getElementById('et-name');if(n)n.value='${esc(b.name)}'},40)">Create override</button></td></tr>`).join("")}</tbody></table></div>`;
+  h+=`<div class="note-box mt16">Email fragments (greeting, signature, footer, unsubscribe line) are shared by every email. <button class="textbtn" onclick="T13ET.translations('frag',0)">Edit their languages</button></div>
+  <div class="sec-head"><div class="h3">SMS</div><span class="hint">English text is fixed in code – only translations are editable</span></div>
+  ${T13_SMS.map((s,i)=>`<div class="sms-row"><div class="t"><button class="link" onclick="T13ET.translations('sms',${i})">${esc(s.name)}</button><small>${esc(s.en)}</small></div><span class="${s.missing?"warn":"ok"} sm">${s.missing?s.missing+" missing":"complete"}</span></div>`).join("")}`;
+  document.getElementById("c13-et-body").innerHTML=h;
+};
+
+/* ===== Email log ===== */
+const T13EL={re(){if(App.state.current==="emails-log")window.mount_emails_log(App.state.params)},status(s){T13S2.logStatus=s;this.re()}};
+window.mount_emails_log=function(){
+  const esc=App.esc,ic=App.icon;const rows=T13_LOG.filter(r=>T13S2.logStatus==="all"||r.st===T13S2.logStatus);
+  document.getElementById("c13-el-head").innerHTML=T13.nav("emailslog",`<b>${rows.length}</b> emails · newest first · no pagination`,`<div class="seg-ctl">${[["all","All"],["sent","Sent"],["failed","Failed"],["bounced","Bounced"]].map(s=>`<button class="${T13S2.logStatus===s[0]?"on":""}" onclick="T13EL.status('${s[0]}')">${s[1]}</button>`).join("")}</div>`);
+  document.getElementById("c13-el-body").innerHTML=rows.length?`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>To</th><th>Order</th><th>Template</th><th>Status</th><th>Sent</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.to)}</td><td>${r.order?`<button class="link" onclick="App.openOrder(${r.order})">#${r.code}</button>`:`<span class="muted">#${r.code} · deleted</span>`}</td><td>${esc(r.tpl)}</td><td>${App.pill(r.st==="sent"?"paid":r.st==="failed"?"unpaid":"partial",r.st)}</td><td>${App.fmtDay(r.at)} ${App.fmtTime(r.at)}</td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${ic("mail")}<div class="h3">No emails</div></div>`;
+};
+
+/* ===== Broadcasts ===== */
+const T13BC={
+  re(){if(App.state.current==="broadcasts")window.mount_broadcasts(App.state.params)},
+  aud:{WhatsApp:318,Email:412,SMS:296},
+  add(){App.modal({title:"New broadcast",wide:true,body:`<div class="field"><label>Title</label><input class="input" id="bc-title" maxlength="140" placeholder="Required"></div><div class="grid g2 mt8"><div class="field"><label>Channel</label><select class="select" id="bc-chan">${Object.keys(this.aud).map(c=>`<option>${c} (${this.aud[c]})</option>`).join("")}</select></div><div class="field"><label>Schedule (London time)</label><input class="input" id="bc-sched" type="datetime-local"><div class="hint">Saved as scheduled_at – no cron sends it yet</div></div></div><div class="grid g2 mt8"><div class="field"><label>Body (EN)</label><textarea class="textarea" id="bc-en" rows="5"></textarea></div><div class="field"><label>Body (RU)</label><textarea class="textarea" id="bc-ru" rows="5"></textarea></div></div><div class="err" id="bc-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="T13.closeDirty()">Cancel</button><button class="btn --sm" onclick="T13BC.save()">Save draft</button>`})},
+  save(){const g=k=>(document.getElementById(k)?.value||"").trim();if(!g("bc-title")){document.getElementById("bc-err").textContent="Title is required.";return}const chan=g("bc-chan").split(" (")[0];const sched=g("bc-sched");T13_BC.unshift({id:Date.now(),title:g("bc-title"),chan,rec:0,status:sched?"scheduled":"draft",sched:sched?new Date(sched).toLocaleString("en-GB",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"",sent:null,en:g("bc-en"),ru:g("bc-ru")});App.closeModal();this.re();App.toast("Draft saved · audit broadcast.create")},
+  send(id){const b=T13_BC.find(x=>x.id===id);const n=this.aud[b.chan];App.confirm(`Send to ${n} (${b.chan}) recipients?`,"This cannot be undone. Note: on the current server this only marks the broadcast as Sent – messages do not go out yet.","Send now",()=>{b.status="sent";b.rec=n;b.sent="Today "+App.fmtTime(App.NOW.toISOString());this.re();App.toast("Marked Sent · recipients "+n+" · audit comms.broadcast.send")},{danger:true})},
+  open(id){const b=T13_BC.find(x=>x.id===id);App.sheet({eyebrow:"Broadcast · "+b.chan,title:App.esc(b.title),body:`<dl class="kv"><dt>Status</dt><dd>${App.pill(b.status==="sent"?"paid":b.status==="scheduled"?"partial":"queue",b.status[0].toUpperCase()+b.status.slice(1))}</dd><dt>Audience</dt><dd>${this.aud[b.chan]} with consent</dd>${b.sched?`<dt>Scheduled</dt><dd>${App.esc(b.sched)}</dd>`:""}${b.sent?`<dt>Sent</dt><dd>${App.esc(b.sent)} · ${b.rec} recipients</dd>`:""}</dl><div class="hr"></div><div class="caps mb8">Body (EN)</div><div class="sm">${App.esc(b.en)||"<span class='muted'>empty</span>"}</div><div class="caps mt16 mb8">Body (RU)</div><div class="sm">${App.esc(b.ru)||"<span class='muted'>empty</span>"}</div>`,foot:`<span class="sp"></span>${b.status!=="sent"?`<button class="btn --sm" onclick="App.closeSheet();T13BC.send(${b.id})">Send</button>`:""}`})},
+  demo(ev){App.pop(ev,["Demo data",{t:"No broadcasts",ic:"moon",fn:()=>{T13_BC=[];this.re()}}])}
+};
+window.mount_broadcasts=function(p){
+  const esc=App.esc,ic=App.icon;
+  document.getElementById("c13-bc-head").innerHTML=T13.nav("broadcasts",`Mass sends to customers · WhatsApp / Email / SMS`,`<button class="btn --sm" onclick="T13BC.add()">${ic("plus")} New broadcast</button>`,"T13BC.demo(event)");
+  let h=`<div class="stub">${ic("alert")}<div><b>Not wired to sending yet.</b> «Send now» only marks a broadcast as Sent and records the recipient count; no message leaves the CRM and scheduled sends have no cron. Audience sizes are estimates from consent counts.</div></div>`;
+  if(!T13_BC.length)h+=`<div class="empty">${ic("send")}<div class="h3">No broadcasts</div><button class="btn --sm" onclick="T13BC.add()">New broadcast</button></div>`;
+  else h+=`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>Title</th><th>Channel</th><th class="num">Recipients</th><th>Status</th><th></th></tr></thead><tbody>${T13_BC.map(b=>`<tr class="r" onclick="T13BC.open(${b.id})"><td>${esc(b.title)}${b.sched?`<span class="sub">scheduled ${esc(b.sched)}</span>`:""}</td><td>${b.chan}</td><td class="num">${b.rec||`<span class="muted">${T13BC.aud[b.chan]} est.</span>`}</td><td>${App.pill(b.status==="sent"?"paid":b.status==="scheduled"?"partial":"queue",b.status[0].toUpperCase()+b.status.slice(1))}</td><td>${b.status==="sent"?`<span class="sm soft">${esc(b.sent)}</span>`:`<button class="btn --ghost --sm" onclick="event.stopPropagation();T13BC.send(${b.id})">Send</button>`}</td></tr>`).join("")}</tbody></table></div>`;
+  document.getElementById("c13-bc-body").innerHTML=h;if(p&&p.new)T13BC.add();
+};
+
+/* ===== Forms & submissions ===== */
+const T13FM={
+  re(){if(App.state.current==="forms")window.mount_forms(App.state.params)},
+  tab(t){T13S2.formsTab=t;this.re()},
+  add(){App.modal({title:"Add form",body:`<div class="field"><label>Name</label><input class="input" id="fm-name" maxlength="120" placeholder="Required · slug is made from it"></div><div class="field mt8"><label>Routing</label><input class="input" id="fm-route" placeholder="info@ · inbox"></div><div class="hint mt8">The form is created active with no fields – fields are defined on the site.</div><div class="err" id="fm-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="T13.closeDirty()">Cancel</button><button class="btn --sm" onclick="T13FM.save()">Add form</button>`})},
+  save(){const n=(document.getElementById("fm-name")?.value||"").trim();if(!n){document.getElementById("fm-err").textContent="Name is required.";return}T13_FORMS.push({id:Date.now(),name:n,slug:n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),n:0,active:true,routing:(document.getElementById("fm-route")?.value||"").trim()||"—"});App.closeModal();this.re();App.toast("Form created · audit comms.form.create")},
+  view(id){const s=T13_SUBM.find(x=>x.id===id);const esc=App.esc;const keys=Object.keys(s.e);App.sheet({eyebrow:s.form+" · "+App.fmtDay(s.at)+" "+App.fmtTime(s.at),title:"Submission #"+s.id,narrow:true,body:keys.length?`<dl class="kv">${keys.map(k=>`<dt>${esc(k)}</dt><dd>${esc(typeof s.e[k]==="object"?JSON.stringify(s.e[k]):s.e[k])}</dd>`).join("")}</dl>`:`<div class="empty">${App.icon("inbox")}<div class="h3">No submissions</div><div class="sm">This entry has no fields.</div></div>`,foot:`<span class="sp"></span><button class="btn --secondary --sm" onclick="App.closeSheet()">Close</button>`})},
+  demo(ev){App.pop(ev,["Demo data",{t:"comms.manage · "+(T13S2.manage?"granted":"missing (403)"),ic:"lock",fn:()=>{T13S2.manage=!T13S2.manage;this.re()}}])}
+};
+window.mount_forms=function(p){
+  const esc=App.esc,ic=App.icon;if(p&&p.tab)T13S2.formsTab=p.tab;const sub=T13S2.formsTab==="submissions";
+  const head=document.getElementById("c13-fm-head"),b=document.getElementById("c13-fm-body");
+  head.innerHTML=T13.nav(sub?"submissions":"forms",`<div class="seg-ctl"><button class="${sub?"":"on"}" onclick="T13FM.tab('forms')">Forms <span class="n">${T13_FORMS.length}</span></button><button class="${sub?"on":""}" onclick="T13FM.tab('submissions')">Submissions <span class="n">${T13_SUBM.length}</span></button></div>`,sub?`<span class="hint">last 200 entries</span>`:`<button class="btn --ghost --sm" onclick="T13FM.tab('submissions')">Submissions</button><button class="btn --sm" onclick="T13FM.add()">${ic("plus")} Add form</button>`,"T13FM.demo(event)");
+  if(!T13S2.manage){b.innerHTML=`<div class="empty">${ic("lock")}<div class="h3">403 · comms.manage needed</div><div class="sm">Forms and submissions are available to managers with the comms.manage permission.</div></div>`;return}
+  if(!sub){b.innerHTML=T13_FORMS.length?`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>Name</th><th>Slug</th><th>Routing</th><th class="num">Submissions</th><th>Status</th></tr></thead><tbody>${T13_FORMS.map(f=>`<tr class="r" onclick="T13S2.formsTab='submissions';T13FM.re()"><td>${esc(f.name)}</td><td><code class="xs">${esc(f.slug)}</code></td><td>${esc(f.routing)}</td><td class="num">${f.n}</td><td>${App.pill(f.active?"paid":"queue",f.active?"Active":"Inactive")}</td></tr>`).join("")}</tbody><tfoot><tr><td colspan="5">Forms are a reference list: no edit, disable or delete here – fields and switching live on the site.</td></tr></tfoot></table></div>`:`<div class="empty">${ic("list")}<div class="h3">No forms</div><button class="btn --sm" onclick="T13FM.add()">Add form</button></div>`;return}
+  b.innerHTML=T13_SUBM.length?`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>Form</th><th>Date</th><th></th></tr></thead><tbody>${T13_SUBM.map(s=>`<tr class="r" onclick="T13FM.view(${s.id})"><td>${esc(s.form)}<span class="sub">${Object.keys(s.e).length?esc(Object.values(s.e)[0]):"empty entry"}</span></td><td>${App.fmtDay(s.at)} ${App.fmtTime(s.at)}</td><td><span class="acts"><button class="btn --ghost --sm" onclick="event.stopPropagation();T13FM.view(${s.id})">View</button></span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${ic("inbox")}<div class="h3">No submissions</div></div>`;
+};
+
+/* ===== Feedback ===== */
+window.mount_feedback=function(){
+  const esc=App.esc,ic=App.icon;const rv=T13_FB.filter(f=>f.k==="review").length,np=T13_FB.filter(f=>f.k==="nps").length;
+  document.getElementById("c13-fd-head").innerHTML=T13.nav("feedback",`Reviews and NPS comments in one feed · newest first`,`<button class="btn --ghost --sm" onclick="App.go('nps')">NPS report</button>`);
+  document.getElementById("c13-fd-body").innerHTML=`<div class="grid g2 mb16"><div class="kpi-card" onclick="App.toast('Reviews come from Google and the site')"><span class="caps">Reviews</span><span class="kpi">${rv}</span></div><div class="kpi-card" onclick="App.go('nps')"><span class="caps">NPS comments</span><span class="kpi">${np}</span></div></div>
+  ${T13_FB.length?T13_FB.map(f=>`<div class="fb"><div class="sc">${f.k==="review"?"★ "+f.score:f.score+"<span class='xs muted'>/10</span>"}</div><div class="t"><div class="row" style="gap:8px"><span class="tag ${f.k==="review"?"--ink":""}">${f.k==="review"?"Review":"NPS"}</span><span class="sm soft">${esc(f.who)}</span></div><div class="mt8">${f.t?esc(f.t):"<span class='muted'>no comment</span>"}</div><small>${esc(f.at)}</small></div></div>`).join("")+`<div class="hint mt8">${T13_FB.length} entries · no pagination</div>`:`<div class="empty">${ic("star")}<div class="h3">No feedback</div></div>`}`;
+};
+
+/* ===== NPS ===== */
+const T13N={re(){if(App.state.current==="nps")window.mount_nps(App.state.params)},days(d){T13S2.npsDays=d;this.re()},done(i){T13_NPS.detr[i].st="done";this.re();App.toast("Follow-up closed")},
+  demo(ev){App.pop(ev,["Demo data",{t:"comms.manage · "+(T13S2.manage?"granted":"missing (403)"),ic:"lock",fn:()=>{T13S2.manage=!T13S2.manage;this.re()}}])}};
+window.mount_nps=function(){
+  const esc=App.esc,ic=App.icon,d=T13S2.npsDays;
+  document.getElementById("c13-nps-head").innerHTML=T13.nav("nps",`Net Promoter Score · last <b>${d} days</b>`,`<div class="seg-ctl">${[30,90,180,365].map(x=>`<button class="${d===x?"on":""}" onclick="T13N.days(${x})">${x}d</button>`).join("")}</div>`,"T13N.demo(event)");
+  const b=document.getElementById("c13-nps-body");
+  if(!T13S2.manage){b.innerHTML=`<div class="empty">${ic("lock")}<div class="h3">403 · comms.manage needed</div></div>`;return}
+  const R=T13_NPS.responses[d],P=T13_NPS.prom[d],S=T13_NPS.pass[d],D=T13_NPS.det[d];const pp=Math.round(100*P/R),sp=Math.round(100*S/R),dp=100-pp-sp;const nps=pp-dp;const open=T13_NPS.detr.filter(x=>x.st==="open").length;
+  const months=d<=90?T13_NPS.trend.slice(-3):d<=180?T13_NPS.trend:T13_NPS.trend;const max=Math.max(...months.map(m=>Math.abs(m[1])),1);
+  b.innerHTML=`<div class="grid g4 mb16"><div class="kpi-card" style="cursor:default"><span class="caps">NPS</span><span class="kpi">${nps>0?"+":""}${nps}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">Responses</span><span class="kpi">${R}</span></div><div class="kpi-card ${open?"--hot":""}" style="cursor:default"><span class="caps">Detractors open</span><span class="kpi ${open?"accent":""}">${open}</span></div><div class="kpi-card" style="cursor:default" title="Front-end constant – not calculated"><span class="caps">Repeat rate</span><span class="kpi">2.3×</span><span class="delta">constant · not calculated yet</span></div></div>
+  <div class="grid g2"><div class="card"><div class="h3">Score split</div><div class="nps-bar"><i class="p" style="width:${pp}%" title="Promoters ${pp}%"></i><i class="s" style="width:${sp}%" title="Passives ${sp}%"></i><i class="d" style="width:${dp}%" title="Detractors ${dp}%"></i></div><div class="nps-leg"><span><i style="background:var(--ok)"></i>Promoters ${pp}% (${P})</span><span><i style="background:var(--light)"></i>Passives ${sp}% (${S})</span><span><i style="background:var(--accent)"></i>Detractors ${dp}% (${D})</span></div><div class="hint mt8">NPS = % promoters (9–10) − % detractors (0–6)</div></div>
+  <div class="card"><div class="h3">Trend by month</div>${months.length?`<div class="trend">${months.map(m=>`<div class="c" title="${m[0]}: ${m[1]>0?"+":""}${m[1]}"><b>${m[1]>0?"+":""}${m[1]}</b><span class="bar2 ${m[1]<0?"--neg":""}" style="height:${Math.round(50*Math.abs(m[1])/max)}%;${m[1]<0?"order:3":""}"></span><small>${m[0]}</small></div>`).join("")}</div><div class="hint mt8">Europe/London months · negative months drawn in accent below the axis</div>`:`<div class="empty"><div class="sm">No data</div></div>`}</div></div>
+  <div class="sec-head"><div class="h3">Detractor follow-up</div><span class="hint">score ≤ 6</span></div>
+  ${T13_NPS.detr.length?`<div class="list" style="border:1px solid var(--hair)">${T13_NPS.detr.map((x,i)=>{const c=App.customer(x.cust);return `<div class="li" onclick="App.openCustomer(${c.id})"><div class="t"><b>${esc(c.n)}</b><small>${esc(x.t)}</small></div>${App.pill(x.st==="open"?"unpaid":"done",x.st==="open"?"Open":"Done")}${x.st==="open"?`<button class="btn --ghost --sm" onclick="event.stopPropagation();T13N.done(${i})">Mark done</button>`:""}<button class="ib" title="Message" onclick="event.stopPropagation();App.go('inbox',{customer:${c.id}})">${ic("chat")}</button></div>`}).join("")}</div>`:`<div class="empty">${ic("star")}<div class="h3">No detractors</div></div>`}`;
+};
+</script>

@@ -1,0 +1,416 @@
+<style>
+/* ===== 13 · Comms – rest (Flora, facts, scripts, occasions) · scoped .c13 ===== */
+.c13 .scr-head{display:block;padding:0}
+.c13 .c13-nav{display:flex;flex-wrap:wrap;gap:0 2px;padding:4px var(--pad) 0;border-bottom:1px solid var(--hair)}
+.c13 .c13-nav button{height:34px;padding:0 10px;font-size:12.5px;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.c13 .c13-nav button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.c13 .c13-nav button:hover:not(.on){color:var(--ink)}
+.c13 .c13-nav button .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+.c13 .c13-nav button .lk{width:12px;height:12px}
+.c13 .c13-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px var(--pad);min-height:52px}
+.c13 .c13-bar .sub{font-size:13px;color:var(--graphite);min-width:0}
+.c13 .c13-bar .sub b{font-weight:500;color:var(--ink)}
+.c13 .c13-bar .sp{flex:1}
+.c13 .c13-intro{border:1px solid var(--hair);background:var(--silver);padding:12px 14px;font-size:13px;color:var(--graphite);margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
+.c13 .c13-intro svg{flex:none;margin-top:1px}
+.c13 .c13-intro .link{margin-left:auto}
+.c13 .hint{font-size:12px;color:var(--grey)}
+.c13 .kbd{vertical-align:middle}
+.c13 .err{color:var(--accent);font-size:12.5px;margin-top:6px}
+.c13 .sc-card{border:1px solid var(--hair);margin-bottom:10px}
+.c13 .sc-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;min-height:52px}
+.c13 .sc-head:hover{background:var(--silver)}
+.c13 .sc-head .t{flex:1;min-width:0}
+.c13 .sc-head .t b{display:block;font-weight:400;font-size:14.5px}
+.c13 .sc-head .t small{display:block;color:var(--grey);font-size:12px}
+.c13 .sc-body{border-top:1px solid var(--hair);padding:14px}
+.c13 .sc-vars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.c13 .sc-var{display:flex;flex-direction:column;gap:6px}
+.c13 .sc-key{display:flex;align-items:center;gap:8px;margin:14px 0 8px}
+.c13 .sc-key .tag{font-family:var(--f-body)}
+.c13 .ph{display:flex;flex-wrap:wrap;gap:6px}
+.c13 .ph code{font-size:12px;border:1px solid var(--hair);padding:1px 6px;background:var(--paper)}
+.c13 details{border:1px solid var(--hair);padding:8px 12px;margin-top:12px;font-size:13px}
+.c13 details summary{cursor:pointer;color:var(--graphite);font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase}
+.c13 details ul{margin:8px 0 0;padding-left:18px;color:var(--graphite)}
+.c13 .fact{border:1px solid var(--hair);padding:14px;margin-bottom:10px}
+.c13 .fact.--retired{opacity:.7}
+.c13 .fact .f-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--grey)}
+.c13 .fact .f-head .id{margin-left:auto;font-variant-numeric:tabular-nums}
+.c13 .fact .f-q{font-size:15px;margin:8px 0 6px}
+.c13 .fact .f-a{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 10px;font-size:13.5px;color:var(--graphite)}
+.c13 .fact .f-a b{font-weight:400;color:var(--grey);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding-top:3px}
+.c13 .fact .f-stamp{font-size:12px;color:var(--grey);margin-top:10px;line-height:1.5}
+.c13 .fact .f-acts{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.c13 .fact .f-acts .hint{margin-left:4px}
+.c13 .fact .timeline{margin-top:12px}
+.c13 .conf{display:inline-flex;align-items:center;gap:6px}
+.c13 .conf i{width:8px;height:8px;border:1px solid var(--grey);display:inline-block}
+.c13 .conf i.on{background:var(--sel);border-color:var(--sel)}
+.c13 .fx-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}
+.c13 .fx-sw{border:1px solid var(--hair);padding:18px}
+.c13 .fx-sw.--off{border-color:var(--accent);background:var(--accent-bg)}
+.c13 .fx-sw .st{display:flex;align-items:center;gap:12px}
+.c13 .fx-sw .st .h2{flex:1}
+.c13 .fx-sw.--off .h2,.c13 .fx-sw.--off .sm{color:var(--accent)}
+.c13 .fx-cfg{font-size:12.5px;color:var(--grey);display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.c13 .ladder{display:grid;grid-template-columns:48px minmax(0,1fr);gap:6px 12px;font-size:13px;color:var(--graphite)}
+.c13 .ladder b{font-weight:500;color:var(--ink)}
+.c13 .tbl tr.--cand td{background:var(--ok-bg)}
+.c13 .tbl td .code{font-size:11px;color:var(--grey);display:block}
+.c13 .tbl td .rb{display:block;color:var(--accent);font-size:11.5px}
+.c13 .tbl td.wr{color:var(--accent)}
+.c13 .tbl td.over{color:var(--accent)}
+.c13 .lvl{display:inline-flex;gap:2px}
+.c13 .lvl button{width:26px;height:26px;display:inline-grid;place-items:center;border:1px solid var(--light);color:var(--ink)}
+.c13 .lvl button:hover{border-color:var(--ink)}
+.c13 .lvl button[disabled]{opacity:.3;pointer-events:none}
+.c13 .inbox-prev{border:1px solid var(--hair);padding:14px}
+.c13 .pend{border:1px solid var(--sel);padding:10px 12px;display:flex;align-items:center;gap:12px;font-size:13px;margin-top:10px}
+.c13 .pend .tm{font-family:var(--f-display);font-size:24px;line-height:1;font-variant-numeric:tabular-nums;min-width:52px}
+.c13 .pend .tx{flex:1;min-width:0}
+.c13 .pend .tx small{display:block;color:var(--grey);font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c13 .kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.c13 .kpi-card.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+.c13 .kpi-card.--hot{box-shadow:inset 0 3px 0 var(--accent)}
+.c13 .cf{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.c13 .cf .at{color:var(--grey);font-size:12px;min-width:92px;font-variant-numeric:tabular-nums}
+.c13 .cf .t{flex:1;min-width:0}
+.c13 .cf .q{color:var(--graphite);font-style:normal;margin-top:3px;font-size:12.5px}
+.c13 .cf .m{color:var(--grey);font-size:11.5px;margin-top:3px}
+.c13 .cand{border:1px solid var(--hair);margin-bottom:16px}
+.c13 .cand .list>.li{cursor:default}
+.c13 .cand .list>.li:hover{background:transparent}
+.c13 .days-soon{font-weight:500}
+.c13 .demo-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;margin-left:4px;vertical-align:middle}
+[data-size="ipad"] .c13 .sc-vars{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="ipad"] .c13 .fx-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] .c13 .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] .c13 .sc-vars{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .c13 .fx-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .c13 .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .c13 .c13-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+/* CMRS-157 tables become cards on phone */
+[data-size="phone"] .c13 .tbl.--cards thead{display:none}
+[data-size="phone"] .c13 .tbl.--cards tr{display:block;border-bottom:1px solid var(--hair);padding:8px 0}
+[data-size="phone"] .c13 .tbl.--cards td{display:block;height:auto;border:0;padding:2px 12px;white-space:normal;max-width:none}
+[data-size="phone"] .c13 .tbl.--cards td:first-child{font-weight:500}
+[data-size="phone"] .c13 .tbl.--cards td.num{text-align:left}
+</style>
+
+<!-- ids: CMRS-001 CMRS-002 CMRS-003 CMRS-004 CMRS-005 CMRS-006 CMRS-007 CMRS-008 CMRS-009 CMRS-010 CMRS-011 CMRS-155 CMRS-156 CMRS-157 -->
+<!-- Shared Comms sub-tab row (T13.nav): all 18 sub-tabs with counters; Flora autonomy only with comms.facts.approve (owner, or manager with the demo grant); Facts review manager+; highlight by screen key (Flora facts not lit on Facts review, Customers not lit on Due to reorder); actions slot on the right; the row is fixed and the body scrolls; page title now in the top bar (fixes CMRS-155, CMRS-006); phone: ☰ in the top bar opens the sidebar (CMRS-005) and the tab row scrolls sideways; tables turn into cards on phone (CMRS-157); modals close on Esc / backdrop – forms with text ask before discarding (CMRS-156); server flashes shown as toasts (CMRS-010); sidebar entries Customers & comms → Inbox, Flora facts → Flora facts (CMRS-008, CMRS-009; trainee / seasonal florist has no Flora facts entry). -->
+
+<!-- ================= Scripts ================= -->
+<section class="scr c13" id="s-comms-scripts" data-nav="Comms · Scripts" data-group="Inbox &amp; Customers" data-title="Scripts" data-sub="Comms" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-scripts-head"></div>
+  <div class="scr-body" id="c13-scripts-body">
+    <!-- ids: CMRS-012 CMRS-013 CMRS-014 CMRS-015 CMRS-016 CMRS-017 CMRS-018 CMRS-019 CMRS-020 CMRS-021 CMRS-022 -->
+    <!-- intro banner; script cards in sort order (name + trigger), expand / collapse, Auto ON/OFF badge reflecting the unsaved checkbox, Auto-send checkbox in the header (saved only by Save inside the open card – unsaved marker shown), placeholders, What not to say (collapsed), variants EN / RU / UK (UK optional – falls back to Russian), Save → PUT comms.scripts.update + audit, "Saved" after success, empty state "No scripts yet." via Demo -->
+  </div>
+</section>
+
+<!-- ================= Flora facts (knowledge base) ================= -->
+<section class="scr c13" id="s-flora-facts" data-nav="Flora facts" data-group="Inbox &amp; Customers" data-title="Flora facts" data-sub="Knowledge base" data-roles="owner manager florist" data-parent="inbox">
+  <div class="scr-head" id="c13-facts-head"></div>
+  <div class="scr-body" id="c13-facts-body">
+    <!-- ids: CMRS-023 CMRS-024 CMRS-025 CMRS-026 CMRS-027 CMRS-028 CMRS-029 CMRS-030 CMRS-031 CMRS-032 CMRS-033 CMRS-034 CMRS-035 CMRS-036 CMRS-037 CMRS-038 CMRS-039 CMRS-040 CMRS-041 CMRS-042 CMRS-158 CMRS-159 -->
+    <!-- role shell: manager / owner get the Comms sub-tabs, florist gets the plain shell (CMRS-023); banner «N confirmations by different people» + How it works; Status filter with counters over the whole base (CMRS-158), Topic filter, Search (Enter) up to 100 chars, pagination 30 / page; Propose a fact panel (not a modal) with Topic / Customer question / EN / RU / UK, Propose disabled without question + EN, Cancel, server errors in red (CMRS-159); fact card: status tag, topic, source, Confirmations X/Y, #id, question, filled answers only, «No English answer yet» warning, stamp line, Confirm (own / already hints), Dispute modal (reason required), Edit modal (What changed), Retire modal (comms.facts.approve only), History toggle, retired card dimmed with History only -->
+  </div>
+</section>
+
+<!-- ================= Flora autonomy ================= -->
+<section class="scr c13" id="s-flora-autonomy" data-nav="Flora autonomy" data-group="Inbox &amp; Customers" data-title="Flora autonomy" data-sub="Comms" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-auto-head"></div>
+  <div class="scr-body" id="c13-auto-body">
+    <!-- ids: CMRS-043 CMRS-044 CMRS-045 CMRS-046 CMRS-047 CMRS-048 CMRS-049 CMRS-050 CMRS-051 CMRS-052 CMRS-053 CMRS-054 CMRS-055 CMRS-056 CMRS-057 CMRS-058 CMRS-059 CMRS-160 CMRS-161 CMRS-162 CMRS-163 -->
+    <!-- 403 for a manager without comms.facts.approve (Demo: grant the right); kill-switch card on / off (red) with Last switched; Switch off / on modal with reason 3–500; server config line; Mode select opens the confirm modal first (select stays until saved); last mode change + model call limits; ladder help L0–L3 + candidate criteria; Period 7/14/30/60; Candidates line; topic table (code, locked L0 only, level or by config, decisions, sent + would send, scored, accepted, Wilson, wrong red + on sent, verdict, changes with «rolled back» line); candidate row green; ↑ Raise / ↓ Lower only for the owner (admin), disabled at locked / L3 / L0, by-config topic → L1 or L2 if candidate, lower → L0; Level modal with allowed levels and reason; preview of what the inbox shows: paused banner + Details (403 for a manager without the right), Flora pending-send bar with live countdown + Cancel (toasts for cancelled / too late); auto-rollback push to admins from comms:flora-autonomy-guard -->
+  </div>
+</section>
+
+<!-- ================= Facts review (customer facts Flora writes) ================= -->
+<section class="scr c13" id="s-facts-review" data-nav="Facts review" data-group="Inbox &amp; Customers" data-title="Facts review" data-sub="Customer facts" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-review-head"></div>
+  <div class="scr-body" id="c13-review-body">
+    <!-- ids: CMRS-060 CMRS-061 CMRS-062 CMRS-063 CMRS-064 CMRS-065 CMRS-066 CMRS-067 CMRS-068 CMRS-069 CMRS-070 CMRS-071 CMRS-072 CMRS-164 -->
+    <!-- banner with the error rule (min facts, max denied share); red «Card writing is switched off» line; «Quiet mode» line; Window 7/14/30 + since date; KPI Written / Confirmed / Denied (warn) / Closed by audit (warn) / Rejected by judge; By type table with Error share red above threshold and Writing state (off in .env, switched off / auto-stopped + who / when / why + Switch on, on + Switch off) – list layout on phone; Switch type on/off modal with reason; Last N facts feed with customer link → customer card, Open chat → inbox; empty state; auto-stop push from comms:facts-guard 03:10 -->
+  </div>
+</section>
+
+<!-- ================= Occasions ================= -->
+<section class="scr c13" id="s-occasions" data-nav="Occasions" data-group="Inbox &amp; Customers" data-title="Occasions" data-sub="Reminders" data-roles="owner manager" data-parent="inbox">
+  <div class="scr-head" id="c13-occ-head"></div>
+  <div class="scr-body" id="c13-occ-body">
+    <!-- ids: CMRS-073 CMRS-074 CMRS-075 CMRS-076 CMRS-077 CMRS-078 CMRS-079 CMRS-080 CMRS-165 CMRS-166 -->
+    <!-- Add reminder in the tab row → modal Customer (searchable select, error shown when empty – fixes CMRS-166) / Occasion / Date / Note → confirmed reminder, cron comms:occasion-reminders 09:30 sends WhatsApp with consent; Proposed from past orders and email replies (N) block only with candidates, Confirm / Dismiss (no confirmation); reminders table Customer / Occasion / Date / Note / Days away (bold ≤ 14, past ones stay with negative days – CMRS-165); Delete in row without confirmation (Undo toast instead); empty state -->
+  </div>
+</section>
+
+<script>
+/* ===== 13 · Comms rest – shared state, demo data (fictional), helpers ===== */
+const T13S={approve:false,floraOff:false,offBy:null,mode:"",modeBy:null,days:14,pendingSec:112,pendingOn:true,
+  frDays:7,frEnabled:true,frQuiet:true,
+  fStatus:"active",fTopic:"",fQ:"",fPage:1,proposing:false,hist:{},
+  scriptsEmpty:false,openScript:null,dirty:{},saved:{},
+  occCandidates:true};
+const T13_TOPICS_KB=["Delivery","Opening hours","Payment","Products","Flower care","Gift cards","Occasions","Other"];
+const T13_SCRIPTS=[
+ {id:1,name:"Order confirmation",trigger:"When an order is paid",auto:true,ph:["{{first_name}}","{{order_id}}","{{slot}}","{{total}}"],guard:["Never promise an exact minute – only the slot.","No prices for other products."],variants:[{k:"paid",lbl:"Paid online",en:"Hi {{first_name}}, thank you! Order {{order_id}} is booked for {{slot}}. I'll send a photo before it leaves.",ru:"Здравствуйте, {{first_name}}! Спасибо – заказ {{order_id}} на {{slot}}. Пришлю фото перед отправкой.",uk:""},{k:"unpaid",lbl:"Awaiting payment",en:"Hi {{first_name}}, your order {{order_id}} is reserved for {{slot}} – it goes into production as soon as the payment link is paid.",ru:"",uk:""}]},
+ {id:2,name:"Photo before delivery",trigger:"When the florist marks the bouquet ready",auto:true,ph:["{{first_name}}","{{product}}"],guard:["Do not ask for a review here."],variants:[{k:"photo",lbl:"Photo",en:"Here is your {{product}}, {{first_name}} – on its way shortly.",ru:"Вот ваш {{product}}, {{first_name}} – скоро выезжает.",uk:"Ось ваш {{product}}, {{first_name}} – скоро виїжджає."}]},
+ {id:3,name:"Delivered – how was it?",trigger:"2 hours after delivery",auto:false,ph:["{{first_name}}","{{recipient}}"],guard:["No discount offers in this message.","Never mention refunds – replacements only."],variants:[{k:"delivered",lbl:"Delivered",en:"Hi {{first_name}}, the flowers reached {{recipient}}. If anything is not perfect, reply here and we'll sort it out.",ru:"",uk:""}]},
+ {id:4,name:"Payment reminder",trigger:"Unpaid 2 hours before the slot",auto:false,ph:["{{first_name}}","{{order_id}}","{{pay_link}}"],guard:[],variants:[{k:"remind",lbl:"Reminder",en:"Hi {{first_name}}, a quick reminder – order {{order_id}} is still unpaid: {{pay_link}}",ru:"",uk:""}]},
+ {id:5,name:"Occasion reminder",trigger:"5 days before a confirmed occasion",auto:false,ph:["{{first_name}}","{{occasion}}","{{date}}"],guard:["Only with marketing consent."],variants:[{k:"occasion",lbl:"Reminder",en:"Hi {{first_name}}, {{occasion}} is on {{date}} – shall I put something together like last time?",ru:"",uk:""}]}
+];
+const T13_FACTS=[
+ {id:412,topic:"Delivery",q:"Do you deliver outside London?",en:"We deliver across Greater London the same day. Outside London we can send a boxed bouquet by courier for the next day.",ru:"Доставляем по Большому Лондону в тот же день. За пределы Лондона – коробкой курьером на следующий день.",uk:"",status:"confirmed",src:"inbox",by:"valeria",at:"12 Oct, 09:40",confirms:["tatiana","eliza"],used:14,since:"13 Oct",hist:[["12 Oct 09:40","valeria","proposed",""],["12 Oct 11:02","eliza","confirmed",""],["13 Oct 08:15","tatiana","confirmed",""]]},
+ {id:418,topic:"Opening hours",q:"Are you open on Sundays?",en:"Yes – the shop at 80 Willow Walk is open every day from 8:00 to 22:00, including Sundays.",ru:"Да, магазин на 80 Willow Walk открыт ежедневно с 8:00 до 22:00, включая воскресенье.",uk:"Так, магазин відкритий щодня з 8:00 до 22:00.",status:"confirmed",src:"team",by:"eliza",at:"3 Oct, 14:10",confirms:["tatiana"],used:31,since:"3 Oct",hist:[["3 Oct 14:10","eliza","proposed",""],["3 Oct 14:30","tatiana","confirmed",""]]},
+ {id:431,topic:"Payment",q:"Can I pay on delivery?",en:"We take payment before delivery – by card link, Apple Pay or Google Pay. Cash is accepted in the shop only.",ru:"",uk:"",status:"proposed",src:"inbox",by:"valeria",at:"19 Oct, 16:22",confirms:["eliza"],used:0,since:null,hist:[["19 Oct 16:22","valeria","proposed",""],["19 Oct 17:05","eliza","confirmed",""]]},
+ {id:433,topic:"Flower care",q:"How long do peonies last?",en:"",ru:"Пионы стоят 4–6 дней: меняйте воду каждый день и держите подальше от фруктов.",uk:"",status:"proposed",src:"review",by:null,at:"20 Oct, 07:30",confirms:[],used:0,since:null,hist:[["20 Oct 07:30","review","proposed","weekly review"]]},
+ {id:427,topic:"Gift cards",q:"Do gift cards expire?",en:"Gift cards are valid for 12 months from purchase, online and in the shop.",ru:"",uk:"",status:"proposed",src:"team",by:"tatiana",at:"18 Oct, 12:00",confirms:[],used:0,since:null,hist:[["17 Oct 10:00","eliza","proposed",""],["18 Oct 11:58","valeria","disputed","Says 6 months – the site says 12"],["18 Oct 12:00","tatiana","edited","Fixed to 12 months"]]},
+ {id:402,topic:"Products",q:"Do you still have peonies?",en:"Peonies are in season May–July. Out of season we offer garden roses that look very similar.",ru:"",uk:"",status:"retired",src:"team",by:"valeria",at:"2 Sep, 10:00",confirms:["tatiana","eliza"],used:52,since:"2 Sep",retired:["tatiana","1 Oct 09:12","Season over – answer confused customers"],hist:[["2 Sep 10:00","valeria","proposed",""],["2 Sep 10:40","eliza","confirmed",""],["2 Sep 12:00","tatiana","confirmed",""],["1 Oct 09:12","tatiana","retired","Season over – answer confused customers"]]}
+];
+const T13_LEVELS={0:"L0 · draft only",1:"L1 · shadow",2:"L2 · sends, undo window",3:"L3 · sends at once"};
+const T13_TOPICS=[
+ {code:"delivery_eta",name:"Delivery time questions",locked:false,level:2,dec:184,sent:171,would:0,scored:160,acc:152,wilson:.91,wrong:3,wrongSent:2,cand:null,why:"on L2 for 9 of 14 days",ch:["valeria","14 Oct 10:12","Stable for a week – raising"],rb:null},
+ {code:"opening_hours",name:"Opening hours",locked:false,level:null,dec:62,sent:0,would:58,scored:55,acc:54,wilson:.9,wrong:0,wrongSent:0,cand:"L2",why:"",ch:null,rb:null},
+ {code:"order_status",name:"Where is my order",locked:false,level:1,dec:240,sent:0,would:221,scored:200,acc:168,wilson:.79,wrong:11,wrongSent:0,cand:null,why:"accepted share below 85 %",ch:["tatiana","9 Oct 18:40","Pilot – shadow first"],rb:null},
+ {code:"product_advice",name:"Which bouquet to choose",locked:false,level:0,dec:97,sent:0,would:0,scored:80,acc:61,wilson:.68,wrong:9,wrongSent:0,cand:null,why:"fewer than 30 cases at L1",ch:["tatiana","11 Oct 08:05","Two wrong answers in a row"],rb:["11 Oct 08:00","auto: 2 × Flora got it wrong"]},
+ {code:"complaints",name:"Complaints",locked:true,level:0,dec:31,sent:0,would:0,scored:31,acc:0,wilson:0,wrong:0,wrongSent:0,cand:null,why:"locked: complaints stay L0",ch:null,rb:null},
+ {code:"payments",name:"Payment & refunds",locked:true,level:0,dec:44,sent:0,would:0,scored:44,acc:0,wilson:0,wrong:0,wrongSent:0,cand:null,why:"locked: money stays L0",ch:null,rb:null},
+ {code:"personal_data",name:"Personal data requests",locked:true,level:0,dec:6,sent:0,would:0,scored:6,acc:0,wilson:0,wrong:0,wrongSent:0,cand:null,why:"locked: data stays L0",ch:null,rb:null}
+];
+const T13_CF_TYPES=[
+ {t:"allergy",w:38,c:21,d:1,a:0,j:2,state:"on"},
+ {t:"preferred_flowers",w:120,c:64,d:9,a:3,j:5,state:"on"},
+ {t:"concierge_instructions",w:52,c:30,d:2,a:1,j:0,state:"off",by:"valeria",at:"17 Oct 11:20",why:"Mixed up two buildings"},
+ {t:"recipient_relation",w:71,c:22,d:14,a:4,j:6,state:"auto",by:"comms:facts-guard",at:"19 Oct 03:10",why:"denied share 20 % over 15 %"},
+ {t:"payment_habits",w:0,c:0,d:0,a:0,j:0,state:"env"}
+];
+const T13_CF=[
+ {at:"Today 09:52",st:"confirmed",byc:"customer",cust:5001,rec:"Mum",type:"allergy",val:"no lilies",quote:"please no lilies, my mum is allergic",conf:.94,judge:"ok",v:"p7",chat:7001},
+ {at:"Today 08:31",st:"question",byc:null,cust:5004,rec:null,type:"preferred_flowers",val:"white peonies",quote:"she always loved the white ones",conf:.71,judge:"ok",v:"p7",chat:7002},
+ {at:"Yesterday 18:04",st:"not confirmed",byc:null,cust:5007,rec:"Reception desk",type:"recipient_relation",val:"colleague",quote:"it's for a colleague's leaving do",conf:.62,judge:"doubt",v:"p7",chat:7004},
+ {at:"Yesterday 12:40",st:"closed",byc:"audit",cust:null,rec:"a recipient not named",type:"concierge_instructions",val:"leave with porter",quote:"the porter can take it",conf:.55,judge:"ok",v:"p6",chat:null,why:"closed by audit: address changed"},
+ {at:"Sun 19 Oct 20:11",st:"confirmed",byc:"customer",cust:5010,rec:"the buyer",type:"preferred_flowers",val:"no red",quote:"anything but red roses",conf:.88,judge:"ok",v:"p7",chat:7006}
+];
+let T13_REMINDERS=[
+ {id:1,cust:5001,occ:"Birthday · Mum",date:"14 Nov 2026",note:"Likes peonies, no lilies",days:25},
+ {id:2,cust:5004,occ:"Anniversary",date:"2 Dec 2026",note:"",days:43},
+ {id:3,cust:5011,occ:"Birthday",date:"22 Oct 2026",note:"Ordered Pink Garden last year",days:2},
+ {id:4,cust:5021,occ:"Birthday · wife",date:"18 Oct 2026",note:"",days:-2},
+ {id:5,cust:5016,occ:"Birthday",date:"12 Dec 2026",note:"Office address",days:53}
+];
+let T13_CANDS=[
+ {id:11,cust:5002,occ:"Anniversary",date:"18 Jan 2027",src:"past orders · 2 years in a row"},
+ {id:12,cust:5009,occ:"Valentine's",date:"14 Feb 2027",src:"email reply"},
+ {id:13,cust:5024,occ:"Diwali",date:"8 Nov 2026",src:"Flora · inbox"}
+];
+const T13=(()=>{
+  const A=()=>App,esc=s=>App.esc(s),ic=n=>App.icon(n);
+  const canApprove=()=>App.role()==="owner"||T13S.approve;
+  const TABS=[
+    {k:"inbox",t:"Inbox",go:"inbox",cnt:()=>App.data.convos.filter(c=>c.unread).length},
+    {k:"scripts",t:"Scripts",go:"comms-scripts"},
+    {k:"facts",t:"Flora facts",go:"flora-facts",cnt:()=>T13_FACTS.filter(f=>f.status==="proposed").length},
+    {k:"autonomy",t:"Flora autonomy",go:"flora-autonomy",cond:canApprove,lock:true},
+    {k:"review",t:"Facts review",go:"facts-review"},
+    {k:"customers",t:"Customers",go:"customers"},
+    {k:"due",t:"Due to reorder",go:"customers-due"},
+    {k:"occasions",t:"Occasions",go:"occasions",cnt:()=>T13S.occCandidates?T13_CANDS.length:0},
+    {k:"subscriptions",t:"Subscriptions",go:"subscriptions"},
+    {k:"subscribers",t:"Subscribers",go:"subscribers"},
+    {k:"images",t:"Images",go:"sub-images"},
+    {k:"emailtemplates",t:"Email templates",go:"email-templates"},
+    {k:"emailslog",t:"Email log",go:"emails-log"},
+    {k:"broadcasts",t:"Broadcasts",go:"broadcasts"},
+    {k:"forms",t:"Forms",go:"forms"},
+    {k:"submissions",t:"Submissions",go:"forms",p:{tab:"submissions"}},
+    {k:"feedback",t:"Feedback",go:"feedback"},
+    {k:"nps",t:"NPS",go:"nps"}
+  ];
+  function nav(active,sub,actions,demo){
+    const tabs=TABS.filter(t=>!t.cond||t.cond()).map(t=>`<button class="${t.k===active?"on":""}" onclick="T13.goTab('${t.k}')" title="${esc(t.t)}">${t.lock?ic("lock","lk"):""}${esc(t.t)}${t.cnt&&t.cnt()?`<span class="n">${t.cnt()}</span>`:""}</button>`).join("");
+    return `<div class="c13-nav">${tabs}</div><div class="c13-bar"><div class="sub">${sub||""}</div><span class="sp"></span>${actions||""}${demo?`<button class="btn --ghost --sm" onclick="${demo}">${ic("columns")} Demo</button>`:""}</div>`;
+  }
+  function goTab(k){const t=TABS.find(x=>x.k===k);if(!t)return;App.go(t.go,t.p||{})}
+  function reasonModal(o){ // o:{title,text,label,cta,danger,min,optional,fn,extra}
+    App.modal({title:o.title,body:`${o.text?`<div class="sm soft mb16">${o.text}</div>`:""}${o.extra||""}<div class="field"><label>${o.label||"Reason"}${o.optional?" (optional)":""}</label><textarea class="textarea" id="t13-reason" placeholder="${o.ph||"Why – goes to the audit log"}" maxlength="${o.max||500}"></textarea><div class="hint">${o.optional?"Up to "+(o.max||500)+" characters":"Required · "+(o.min||3)+"–"+(o.max||500)+" characters"} · <span class="kbd">esc</span> closes without saving</div><div class="err" id="t13-reason-err"></div></div>`,
+      foot:`<button class="btn --secondary --sm" onclick="T13.closeDirty()">Cancel</button><button class="btn --sm ${o.danger?"--accent":""}" onclick="T13._reasonGo()">${o.cta||"Save"}</button>`,onMount:b=>{setTimeout(()=>b.querySelector("#t13-reason")?.focus(),50)}});
+    T13._reasonOpts=o;
+  }
+  function _reasonGo(){const o=T13._reasonOpts;const v=(document.getElementById("t13-reason")?.value||"").trim();if(!o.optional&&v.length<(o.min||3)){document.getElementById("t13-reason-err").textContent="Say why – at least "+(o.min||3)+" characters.";return}App.closeModal();o.fn(v)}
+  function closeDirty(){const ta=document.querySelector("#m-box textarea, #m-box input.input");const dirty=[...document.querySelectorAll("#m-box textarea, #m-box input.input")].some(x=>x.value&&x.value.trim()&&!x.dataset.initial);if(dirty){App.confirm("Discard what you typed?","The text is not saved.","Discard",()=>App.closeModal(),{danger:true});return}App.closeModal()}
+  const who=id=>id==="review"?"the weekly review":id==="comms:facts-guard"?"comms:facts-guard (night audit)":(App.user(id)?.n||id);
+  const flash=(msg)=>App.toast(msg);
+  return {nav,goTab,canApprove,reasonModal,_reasonGo,closeDirty,who,flash,TABS};
+})();
+
+/* ===== Scripts ===== */
+const T13SC={
+  re(){if(App.state.current==="comms-scripts")window.mount_comms_scripts(App.state.params)},
+  toggle(id){T13S.openScript=T13S.openScript===id?null:id;this.re()},
+  auto(id,v){T13S.dirty[id]=Object.assign({},T13S.dirty[id]||{},{auto:v});this.re()},
+  variant(id,k,lang,v){const d=T13S.dirty[id]=T13S.dirty[id]||{};d.v=d.v||{};d.v[k]=d.v[k]||{};d.v[k][lang]=v;const b=document.getElementById("sc-unsaved-"+id);if(b)b.style.display=""},
+  save(id){const s=T13_SCRIPTS.find(x=>x.id===id);const d=T13S.dirty[id]||{};if(d.auto!==undefined)s.auto=d.auto;if(d.v)s.variants.forEach(v=>{if(d.v[v.k])Object.assign(v,d.v[v.k])});if(!s.variants.some(v=>(v.en||"").trim())){App.toast("At least one variant needs a text");return}delete T13S.dirty[id];T13S.saved[id]=true;this.re();App.toast("Script saved · audit comms.script.update"+(s.auto?" · auto-send ON – the engine may send it to customers":""));setTimeout(()=>{delete T13S.saved[id];this.re()},2500)},
+  demo(ev){App.pop(ev,["Demo data",{t:(T13S.scriptsEmpty?"":"· ")+"5 scripts",ic:"list",fn:()=>{T13S.scriptsEmpty=false;this.re()}},{t:(T13S.scriptsEmpty?"· ":"")+"No scripts yet",ic:"moon",fn:()=>{T13S.scriptsEmpty=true;this.re()}}])}
+};
+window.mount_comms_scripts=function(){
+  const esc=App.esc,ic=App.icon;
+  document.getElementById("c13-scripts-head").innerHTML=T13.nav("scripts",`<b>${T13_SCRIPTS.length}</b> message scripts · Tati persona · <span class="hint">global auto-send is <b>on</b> in Settings</span>`,"","T13SC.demo(event)");
+  let h=`<div class="c13-intro">${ic("info")}<div>Scripts are the messages Flora and the team send at fixed moments. Edit each language separately – Ukrainian falls back to Russian when empty. <b>Auto-send</b> lets the engine send that script to customers by itself; saving a script never sends anything.</div></div>`;
+  if(T13S.scriptsEmpty){h+=`<div class="empty">${ic("chat")}<div class="h3">No scripts yet.</div><div class="sm">Scripts are seeded by the server on first use.</div><button class="btn --sm" onclick="T13S.scriptsEmpty=false;T13SC.re()">Load defaults</button></div>`}
+  else h+=T13_SCRIPTS.map(s=>{const d=T13S.dirty[s.id]||{};const auto=d.auto!==undefined?d.auto:s.auto;const open=T13S.openScript===s.id;const unsaved=d.auto!==undefined&&d.auto!==s.auto;
+    return `<div class="sc-card"><div class="sc-head" onclick="T13SC.toggle(${s.id})"><span class="ib">${ic(open?"down":"chev")}</span><div class="t"><b>${esc(s.name)}</b><small>${esc(s.trigger)}</small></div>${unsaved?`<span class="tag --line" title="Changed, not saved – open the card and press Save">Unsaved</span>`:""}<span class="pill ${auto?"--paid":"--queue"} --plain">Auto ${auto?"ON":"OFF"}</span><label class="check" onclick="event.stopPropagation()"><input type="checkbox" ${auto?"checked":""} onchange="T13SC.auto(${s.id},this.checked)"><span class="sm">Auto-send</span></label></div>
+    ${open?`<div class="sc-body">${s.ph.length?`<div class="caps mb8">Placeholders</div><div class="ph">${s.ph.map(p=>`<code>${esc(p)}</code>`).join("")}</div>`:""}
+    ${s.guard.length?`<details><summary>What not to say</summary><ul>${s.guard.map(g=>`<li>${esc(g)}</li>`).join("")}</ul></details>`:""}
+    ${s.variants.map(v=>`<div class="sc-key"><span class="tag --ink">${esc(v.k)}</span><span class="sm soft">${esc(v.lbl)}</span></div><div class="sc-vars">${["en","ru","uk"].map(l=>`<div class="sc-var"><label class="lbl">${l==="en"?"English":l==="ru"?"Russian":"Ukrainian <span style='text-transform:none;letter-spacing:0'>(optional – falls back to Russian)</span>"}</label><textarea class="textarea" rows="4" oninput="T13SC.variant(${s.id},'${v.k}','${l}',this.value)">${esc((d.v?.[v.k]?.[l])??v[l])}</textarea></div>`).join("")}</div>`).join("")}
+    <div class="row mt16"><span class="hint" id="sc-unsaved-${s.id}" style="display:${Object.keys(d).length?"":"none"}">Changes not saved yet</span><span class="sp"></span>${T13S.saved[s.id]?`<span class="ok sm">${ic("check")} Saved</span>`:""}<button class="btn --sm" onclick="T13SC.save(${s.id})">Save</button></div></div>`:""}</div>`}).join("");
+  document.getElementById("c13-scripts-body").innerHTML=h;
+};
+
+/* ===== Flora facts ===== */
+const T13F={
+  REQ:2,
+  re(){if(App.state.current==="flora-facts")window.mount_flora_facts(App.state.params)},
+  status(s){T13S.fStatus=s;T13S.fPage=1;this.re()},topic(t){T13S.fTopic=t;T13S.fPage=1;this.re()},
+  search(){T13S.fQ=(document.getElementById("ff-q")?.value||"").slice(0,100);T13S.fPage=1;this.re()},
+  page(d){T13S.fPage=Math.max(1,T13S.fPage+d);this.re()},
+  propose(){T13S.proposing=!T13S.proposing;this.re()},
+  fields(f,changed){f=f||{};return `<div class="grid g2"><div class="field"><label>Topic</label><select class="select" id="ff-topic">${T13_TOPICS_KB.map(t=>`<option ${(f.topic||"Other")===t?"selected":""}>${t}</option>`).join("")}</select></div><div></div></div>
+    <div class="field mt8"><label>Customer question</label><input class="input" id="ff-q2" maxlength="500" placeholder="As a customer would ask it" value="${App.esc(f.q||"")}" oninput="T13F.check()"></div>
+    <div class="field mt8"><label>Answer – English</label><textarea class="textarea" id="ff-en" maxlength="600" placeholder="Required · up to 600 characters (comms.agent.reply_max_chars)" oninput="T13F.check()">${App.esc(f.en||"")}</textarea></div>
+    <div class="grid g2 mt8"><div class="field"><label>Answer – Russian</label><textarea class="textarea" id="ff-ru">${App.esc(f.ru||"")}</textarea></div><div class="field"><label>Answer – Ukrainian</label><textarea class="textarea" id="ff-uk">${App.esc(f.uk||"")}</textarea></div></div>
+    ${changed?`<div class="field mt8"><label>What changed (optional)</label><input class="input" id="ff-changed" placeholder="One line for the history"></div>`:""}<div class="err" id="ff-err"></div>`},
+  check(){const ok=(document.getElementById("ff-q2")?.value||"").trim()&&(document.getElementById("ff-en")?.value||"").trim();const b=document.getElementById("ff-propose");if(b)b.classList.toggle("is-disabled",!ok)},
+  read(){const g=id=>(document.getElementById(id)?.value||"").trim();return {topic:g("ff-topic"),q:g("ff-q2"),en:g("ff-en"),ru:g("ff-ru"),uk:g("ff-uk"),changed:g("ff-changed")}},
+  submit(){const v=this.read();if(!v.q||!v.en){document.getElementById("ff-err").textContent="A fact needs a question and an answer.";return}const id=Math.max(...T13_FACTS.map(f=>f.id))+1;T13_FACTS.unshift({id,topic:v.topic,q:v.q,en:v.en,ru:v.ru,uk:v.uk,status:"proposed",src:"team",by:App.me().id,at:"Today "+App.fmtTime(App.NOW.toISOString()),confirms:[],used:0,since:null,hist:[["Today "+App.fmtTime(App.NOW.toISOString()),App.me().id,"proposed",""]]});T13S.proposing=false;T13S.fStatus="proposed";this.re();App.toast("Fact proposed – it reaches customers after "+this.REQ+" confirmations")},
+  canConfirm(f){const me=App.me().id;if(f.status!=="proposed"||!f.en)return {ok:false,hint:""};if(f.by===me)return {ok:false,hint:"You wrote this fact – a teammate has to confirm it"};if(f.confirms.includes(me))return {ok:false,hint:"You have already confirmed it"};return {ok:true,hint:""}},
+  confirm(id){const f=T13_FACTS.find(x=>x.id===id);const me=App.me().id;const c=this.canConfirm(f);if(!c.ok){App.toast(c.hint||"Cannot confirm");return}f.confirms.push(me);f.hist.push(["Today "+App.fmtTime(App.NOW.toISOString()),me,"confirmed",""]);if(T13.canApprove()||f.confirms.length>=this.REQ){f.status="confirmed";f.since="Today";App.toast("Confirmed – Flora now gives this answer to customers")}else App.toast(`Confirmed · ${f.confirms.length}/${this.REQ} – one more teammate needed`);this.re()},
+  dispute(id){const f=T13_FACTS.find(x=>x.id===id);T13.reasonModal({title:"What is wrong with this fact?",text:`“${App.esc(f.q)}” goes back to review: confirmations start from zero and Flora stops using it.`,ph:"Say what is wrong with this fact",max:1000,cta:"Send back for review",danger:true,fn:r=>{f.status="proposed";f.confirms=[];f.since=null;f.hist.push(["Today "+App.fmtTime(App.NOW.toISOString()),App.me().id,"disputed",r]);this.re();App.toast("Sent back for review · audit comms.facts.dispute")}})},
+  edit(id){const f=T13_FACTS.find(x=>x.id===id);App.modal({title:"Edit fact",wide:true,body:`<div class="note-box mb16">Editing resets confirmations – the fact goes back to <b>proposed</b> and you become its author.</div>${this.fields(f,true)}`,foot:`<button class="btn --secondary --sm" onclick="T13.closeDirty()">Cancel</button><button class="btn --sm" onclick="T13F.saveEdit(${id})">Save</button>`})},
+  saveEdit(id){const f=T13_FACTS.find(x=>x.id===id);const v=this.read();if(!v.q||!v.en&&!v.ru){document.getElementById("ff-err").textContent="A fact needs a question and an answer.";return}if(v.q===f.q&&v.en===f.en&&v.ru===f.ru&&v.uk===f.uk&&v.topic===f.topic){App.closeModal();App.toast("Nothing changed");return}Object.assign(f,{topic:v.topic,q:v.q,en:v.en,ru:v.ru,uk:v.uk,status:"proposed",confirms:[],since:null,by:App.me().id});f.hist.push(["Today "+App.fmtTime(App.NOW.toISOString()),App.me().id,"edited",v.changed]);App.closeModal();this.re();App.toast("Saved · back to proposed · audit comms.facts.edit")},
+  retire(id){const f=T13_FACTS.find(x=>x.id===id);if(!T13.canApprove()){App.toast("403 · comms.facts.approve needed");return}T13.reasonModal({title:"Retire this fact?",text:"Retired facts never come back – Flora stops using it for good.",optional:true,max:500,cta:"Retire",danger:true,fn:r=>{f.status="retired";f.retired=[App.me().id,"Today "+App.fmtTime(App.NOW.toISOString()),r];f.hist.push(["Today "+App.fmtTime(App.NOW.toISOString()),App.me().id,"retired",r]);this.re();App.toast("Retired · audit comms.facts.retire")}})},
+  hist(id){T13S.hist[id]=!T13S.hist[id];this.re()},
+  how(){App.modal({title:"How Flora facts work",body:`<ol style="padding-left:18px;margin:0;line-height:1.6"><li>Anyone proposes a fact – a question as a customer would ask it and an English answer.</li><li>Two different people confirm it (or one holder of <code>comms.facts.approve</code>).</li><li>From then on Flora may give this answer to customers; you see «Handed to Flora N×».</li><li>Dispute or Edit sends it back to proposed; Retire removes it for good.</li></ol>`})}
+};
+window.mount_flora_facts=function(p){
+  const esc=App.esc,ic=App.icon,mgr=App.isMgr();
+  const counts={active:T13_FACTS.filter(f=>f.status!=="retired").length,proposed:T13_FACTS.filter(f=>f.status==="proposed").length,confirmed:T13_FACTS.filter(f=>f.status==="confirmed").length,retired:T13_FACTS.filter(f=>f.status==="retired").length};
+  const q=T13S.fQ.toLowerCase();
+  let list=T13_FACTS.filter(f=>T13S.fStatus==="active"?f.status!=="retired":f.status===T13S.fStatus).filter(f=>!T13S.fTopic||f.topic===T13S.fTopic).filter(f=>!q||[f.q,f.en,f.ru,f.uk].join(" ").toLowerCase().includes(q));
+  const PER=30,pages=Math.max(1,Math.ceil(list.length/PER));if(T13S.fPage>pages)T13S.fPage=pages;list=list.slice((T13S.fPage-1)*PER,T13S.fPage*PER);
+  const sub=`Facts reach customers only after <b>${T13F.REQ} confirmations</b> by different people. <button class="textbtn" onclick="T13F.how()">How it works</button>`;
+  const actions=`<button class="btn --sm ${T13S.proposing?"--secondary":""}" aria-expanded="${T13S.proposing}" onclick="T13F.propose()">${ic(T13S.proposing?"close":"plus")} Propose a fact</button>`;
+  document.getElementById("c13-facts-head").innerHTML=mgr?T13.nav("facts",sub,actions):`<div class="c13-bar"><div class="sub">${sub}</div><span class="sp"></span>${actions}</div>`;
+  let h=`<div class="toolbar"><div class="seg-ctl">${[["active","Active",counts.active],["proposed","Waiting for confirmation",counts.proposed],["confirmed","Confirmed",counts.confirmed],["retired","Retired",counts.retired]].map(s=>`<button class="${T13S.fStatus===s[0]?"on":""}" onclick="T13F.status('${s[0]}')">${s[1]} <span class="n">${s[2]}</span></button>`).join("")}</div>
+    <select class="select" style="width:170px" onchange="T13F.topic(this.value)"><option value="">All topics</option>${T13_TOPICS_KB.map(t=>`<option ${T13S.fTopic===t?"selected":""}>${t}</option>`).join("")}</select>
+    <div class="search">${ic("search")}<input id="ff-q" placeholder="Question or answer" maxlength="100" value="${esc(T13S.fQ)}" onkeydown="if(event.key==='Enter')T13F.search()"></div><button class="btn --ghost --sm" onclick="T13F.search()">Search</button><span class="hint"><span class="kbd">↵</span> searches question and all three answers</span></div>`;
+  if(T13S.proposing)h+=`<div class="card mb16"><div class="h3 mb16">New fact</div>${T13F.fields({})}<div class="row mt16"><span class="hint">Proposed facts are audited (comms.facts.propose) · 30 per minute</span><span class="sp"></span><button class="btn --secondary --sm" onclick="T13F.propose()">Cancel</button><button class="btn --sm is-disabled" id="ff-propose" onclick="T13F.submit()">Propose</button></div></div>`;
+  if(!list.length)h+=`<div class="empty">${ic("book")}<div class="h3">${counts.active+counts.retired===0?"No facts yet – propose the first one.":"No facts match these filters."}</div>${counts.active+counts.retired?`<button class="btn --ghost --sm" onclick="T13S.fTopic='';T13S.fQ='';T13S.fStatus='active';T13F.re()">Clear filters</button>`:""}</div>`;
+  else h+=list.map(f=>{const ret=f.status==="retired";const c=T13F.canConfirm(f);const needsEn=!f.en;
+    const src=f.src==="inbox"?"From the inbox":f.src==="review"?"Weekly review":"";
+    return `<div class="fact ${ret?"--retired":""}"><div class="f-head">${App.pill(f.status==="proposed"?"review":f.status==="confirmed"?"done":"cancelled",f.status==="proposed"?"Waiting for confirmation":f.status==="confirmed"?"Confirmed":"Retired")}<span class="tag">${esc(f.topic)}</span>${src?`<span class="tag --line">${src}</span>`:""}${ret?"":`<span class="conf" title="Confirmations">${Array.from({length:T13F.REQ},(_,i)=>`<i class="${i<f.confirms.length?"on":""}"></i>`).join("")} ${f.confirms.length}/${T13F.REQ}</span>`}<span class="id">#${f.id}</span></div>
+    <div class="f-q">${esc(f.q)}</div><div class="f-a">${[["en","EN"],["ru","RU"],["uk","UK"]].filter(l=>f[l[0]]).map(l=>`<b>${l[1]}</b><span>${esc(f[l[0]])}</span>`).join("")}</div>
+    ${needsEn&&!ret?`<div class="note-box --warn mt8">${ic("alert")} No English answer yet – add it (Edit) before this fact can be confirmed.</div>`:""}
+    <div class="f-stamp">Proposed by ${f.by?esc(T13.who(f.by)):"the weekly review"}, ${esc(f.at)}${f.confirms.length?` · Confirmed by ${f.confirms.map(x=>esc(T13.who(x))).join(", ")}`:""}${f.since?` · In use since ${esc(f.since)}`:""}${f.retired?` · Retired by ${esc(T13.who(f.retired[0]))}, ${esc(f.retired[1])}`:""}${f.used?` · Handed to Flora ${f.used}×`:""}</div>
+    <div class="f-acts">${ret?"":`${f.status==="proposed"?`<button class="btn --sm ${c.ok?"":"is-disabled"}" onclick="T13F.confirm(${f.id})">${ic("check")} Confirm</button>${c.hint&&!needsEn?`<span class="hint">${c.hint}</span>`:""}`:""}<button class="btn --ghost --sm" onclick="T13F.dispute(${f.id})">Dispute</button><button class="btn --ghost --sm" onclick="T13F.edit(${f.id})">Edit</button>${T13.canApprove()?`<button class="btn --ghost --sm" onclick="T13F.retire(${f.id})">Retire</button>`:""}`}<span class="sp"></span><button class="textbtn" onclick="T13F.hist(${f.id})">${T13S.hist[f.id]?"Hide history":"History ("+f.hist.length+")"}</button></div>
+    ${T13S.hist[f.id]?`<div class="timeline">${f.hist.slice().reverse().map(x=>`<div class="tl ${x[2]==="retired"||x[2]==="disputed"?"--accent":""}">${esc(T13.who(x[1]))} · ${x[2]}${x[3]?` · “${esc(x[3])}”`:""}<small>${esc(x[0])}</small></div>`).join("")}</div>`:""}</div>`}).join("");
+  if(pages>1)h+=`<div class="row mt16"><button class="btn --ghost --sm ${T13S.fPage<=1?"is-disabled":""}" onclick="T13F.page(-1)">Previous</button><span class="sm soft">Page ${T13S.fPage} of ${pages}</span><button class="btn --ghost --sm ${T13S.fPage>=pages?"is-disabled":""}" onclick="T13F.page(1)">Next</button></div>`;
+  document.getElementById("c13-facts-body").innerHTML=h;
+  App.registerCommands([{g:"Actions",t:"Propose a Flora fact",ic:"book",fn:()=>{App.go("flora-facts");T13S.proposing=true;T13F.re()}}]);
+};
+
+/* ===== Flora autonomy ===== */
+const T13A={
+  timer:null,
+  re(){if(App.state.current==="flora-autonomy")window.mount_flora_autonomy(App.state.params)},
+  days(d){T13S.days=d;this.re()},
+  sw(){const off=T13S.floraOff;T13.reasonModal({title:off?"Switch Flora on":"Switch Flora off",text:off?"Flora resumes answering by the current mode and topic levels.":"Nothing goes to customers from now on: answers in the undo window are not sent, Flora keeps writing drafts. Every manager sees a banner in the inbox.",cta:off?"Switch Flora on":"Switch Flora off",danger:!off,fn:r=>{T13S.floraOff=!off;T13S.offBy=[App.me().id,"Today "+App.fmtTime(App.NOW.toISOString()),r];this.re();App.toast(off?"Flora is on · audit comms.agent.kill_switch_off":"Flora switched off · audit comms.agent.kill_switch_on");if(!off)App.push("Flora switched off",App.me().n+" · "+r,{icon:"sparkle",go:["flora-autonomy",{}]})}})},
+  modeSel(v){const sel=document.getElementById("fa-mode");const names={"":"As in .env (live)",live:"Live – answers 24/7",pilot:"Pilot – nights only",shadow:"Shadow – decides, sends nothing",off:"Off – not run at all"};const desc={"":"Removes the CRM override – the server config (.env) decides.",live:"Flora answers customers round the clock by topic levels.",pilot:"Flora answers only at night (22:00–08:00); by day – drafts for the team.",shadow:"Flora decides and scores, but nothing is sent – good for measuring.",off:"The model is not called at all – no drafts, no decisions."}[v];
+    T13.reasonModal({title:"Switch Flora to: "+names[v],text:desc,cta:"Save",fn:r=>{T13S.mode=v;T13S.modeBy=[App.me().id,"Today "+App.fmtTime(App.NOW.toISOString()),r];this.re();App.toast("Mode saved · audit comms.agent.mode")}});
+    if(sel)sel.value=T13S.mode; /* select does not change until saved */},
+  level(code,dir){const t=T13_TOPICS.find(x=>x.code===code);if(App.role()!=="owner"){App.toast("Only an admin changes topic levels");return}let target=dir>0?(t.level===null?(t.cand==="L2"?2:1):t.level+1):(t.level===null?0:t.level-1);const allowed=t.locked?[0]:[0,1,2,3];if(!allowed.includes(target))target=0;
+    T13.reasonModal({title:`Level of «${t.name}»`,text:`Now: ${t.level===null?"by config":"L"+t.level}${t.locked?" · locked – complaints, money and data stay L0":""}`,extra:`<div class="field mb16"><label>Level</label><select class="select" id="fa-lvl">${allowed.map(l=>`<option value="${l}" ${l===target?"selected":""}>${T13_LEVELS[l]}</option>`).join("")}</select></div>`,cta:"Save",fn:r=>{const nv=+document.getElementById("fa-lvl")?.value;t.level=isNaN(nv)?target:nv;t.ch=[App.me().id,"Today "+App.fmtTime(App.NOW.toISOString()),r];t.rb=null;this.re();App.toast(`${t.name} → L${t.level} · audit`)}});
+    setTimeout(()=>{const s=document.getElementById("fa-lvl");if(s)s.value=target},0)},
+  cancelSend(){if(T13S.pendingSec<=0){App.toast("Could not cancel – the answer has gone or was cancelled");return}T13S.pendingOn=false;App.toast("Send cancelled – the text is in the draft");this.re()},
+  pendReset(){T13S.pendingOn=true;T13S.pendingSec=112;this.re()},
+  rollbackPush(){App.push("Flora: auto-rollback – topics","Which bouquet to choose → L0 · 2 × «Flora got it wrong»",{icon:"undo",go:["flora-autonomy",{}],type:"problem"})},
+  guardPush(){App.push("Flora: facts auto-stop – types","recipient_relation switched off · denied share 20 % over 15 %",{icon:"undo",go:["facts-review",{}],type:"problem"})},
+  demo(ev){App.pop(ev,["Demo data",{t:"Manager has comms.facts.approve · "+(T13S.approve?"yes":"no"),ic:"lock",fn:()=>{T13S.approve=!T13S.approve;this.re();App.renderSidebar()}},{t:"Flora · "+(T13S.floraOff?"switched off":"on"),ic:"zap",fn:()=>{T13S.floraOff=!T13S.floraOff;T13S.offBy=["tatiana","Today 08:12","Demo"];this.re()}},{t:"Undo-window answer in the inbox",ic:"clock",fn:()=>this.pendReset()},"-",{t:"Push: auto-rollback (cron guard)",ic:"bell",fn:()=>this.rollbackPush()}])}
+};
+window.mount_flora_autonomy=function(){
+  const esc=App.esc,ic=App.icon,owner=App.role()==="owner",can=T13.canApprove();
+  clearInterval(T13A.timer);
+  const head=document.getElementById("c13-auto-head"),body=document.getElementById("c13-auto-body");
+  if(!can){head.innerHTML=T13.nav("autonomy",`<span class="accent">403</span> · this page needs comms.facts.approve`,"","T13A.demo(event)");body.innerHTML=`<div class="empty">${ic("lock")}<div class="h3">Not allowed</div><div class="sm">Only an admin or a holder of <code>comms.facts.approve</code> can see the Flora switch. Ask Tatiana to grant it in Settings → Team.</div><button class="btn --ghost --sm" onclick="App.go('inbox')">Back to Inbox</button></div>`;return}
+  head.innerHTML=T13.nav("autonomy",`Kill switch, mode and the autonomy ladder per topic · <span class="hint">levels – admin only</span>`,`<div class="seg-ctl">${[7,14,30,60].map(d=>`<button class="${T13S.days===d?"on":""}" onclick="T13A.days(${d})">${d} d</button>`).join("")}</div>`,"T13A.demo(event)");
+  const off=T13S.floraOff;const by=T13S.offBy||["tatiana","9 Oct 18:40","Pilot started"];
+  const modeNames={"":"As in .env (live)",live:"Live – answers 24/7",pilot:"Pilot – nights only",shadow:"Shadow – decides, sends nothing",off:"Off – not run at all"};
+  const cands=T13_TOPICS.filter(t=>t.cand);
+  const sec=T13S.pendingSec,mm=Math.floor(sec/60),ss=String(sec%60).padStart(2,"0");
+  let h=`<div class="fx-grid"><div class="col" style="gap:16px">
+    <div class="fx-sw ${off?"--off":""}"><div class="st">${ic(off?"pause":"zap")}<div class="h2">${off?"Flora is switched off":"Flora is on"}</div><button class="btn --sm ${off?"":"--accent"}" onclick="T13A.sw()">${off?"Switch Flora on":"Switch Flora off"}</button></div><div class="sm mt8">${off?"Nothing is sent to customers. Answers in the undo window are dropped; drafts keep being written for the team.":"Flora answers customers by the mode below and the level of each topic."}</div><div class="sm soft mt8">Last switched: ${esc(T13.who(by[0]))}, ${esc(by[1])} – ${esc(by[2])}</div>
+    <div class="fx-cfg"><span>Enabled in the server config: <b>yes</b></span><span>mode: <b>live</b></span><span>L2 undo window: <b>2 min</b></span></div></div>
+    <div class="card"><div class="row"><div class="field" style="flex:1"><label>Mode</label><select class="select" id="fa-mode" onchange="T13A.modeSel(this.value)">${Object.keys(modeNames).map(k=>`<option value="${k}" ${T13S.mode===k?"selected":""}>${modeNames[k]}${k===""?" ·":""}</option>`).join("")}</select></div></div><div class="hint mt8">Choosing a mode opens a confirmation with a reason – the select does not change until saved.</div>
+    <div class="sm soft mt16">Last change: ${T13S.modeBy?`${esc(T13.who(T13S.modeBy[0]))}, ${esc(T13S.modeBy[1])} – ${esc(T13S.modeBy[2])}`:"none – the server config decides"}</div><div class="fx-cfg"><span>Model calls: <b>6</b> / hour per chat</span><span><b>400</b> / day</span><span><b>9 000</b> / month</span></div></div>
+    <div class="inbox-prev"><div class="caps mb8">What managers see in the inbox right now</div>
+    ${off?`<div class="note-box --accent">${ic("alert")} <b>Flora is switched off</b> – switched off by ${esc(T13.who(by[0]))}, ${esc(by[1])} – ${esc(by[2])}. <button class="textbtn --accent" onclick="${can?"App.toast('You are here')":"App.toast('403 · comms.facts.approve needed')"}">Details</button><span class="hint" style="margin-left:8px">(a manager without the right gets 403 on Details)</span></div>`:`<div class="sm soft">No banner – Flora is on.</div>`}
+    ${T13S.pendingOn&&!off?`<div class="pend"><span class="tm" id="fa-tm">${sec<=0?"0:00":mm+":"+ss}</span><div class="tx">${sec<=0?"Flora is sending this answer…":"Flora sends this answer in <b>"+mm+":"+ss+"</b>"}<small>“Same-day delivery is available until 22:00 across SE1 – order by 19:00 for the last slot.”</small></div>${ic("refresh")}<span class="hint">updates every second</span><button class="btn --ghost --sm" onclick="T13A.cancelSend()">Cancel</button></div>`:`<div class="row mt8"><span class="hint">No answer in the undo window.</span><button class="textbtn" onclick="T13A.pendReset()">simulate one</button></div>`}</div>
+    </div>
+    <div class="card"><div class="h3 mb16">The ladder per topic</div><div class="ladder"><b>L0</b><span>draft only – a manager sends</span><b>L1</b><span>shadow – Flora decides, the team sends; answers are scored</span><b>L2</b><span>Flora sends after a 2-minute undo window</span><b>L3</b><span>Flora sends at once</span></div><div class="hr"></div><div class="caps mb8">Candidate for the next level</div><div class="sm soft">at least <b>30</b> cases · accepted share ≥ <b>85 %</b> · Wilson lower bound ≥ <b>0.8</b> · <b>7</b> days on L2 before L3. Two «Flora got it wrong» marks drop a topic to L0 – the guard runs every 15 min and pushes admins.</div><div class="hr"></div><div class="sm">${cands.length?`<b>Candidates:</b> ${cands.map(t=>esc(t.name)+" → "+t.cand).join(", ")}`:"<b>No candidates.</b>"}</div></div></div>
+    <div class="sec-head"><div class="h3">Topics · last ${T13S.days} days</div><span class="hint">table scrolls sideways on narrow screens</span></div>
+    <div class="tbl-wrap"><table class="tbl" style="min-width:960px"><thead><tr><th>Topic</th><th>Level</th><th class="num">Decisions</th><th class="num">Sent</th><th class="num">Scored</th><th class="num">Accepted</th><th class="num">Wilson</th><th class="num">Wrong</th><th>Verdict</th><th>Changes</th>${owner?"<th></th>":""}</tr></thead><tbody>
+    ${T13_TOPICS.map(t=>{const k=T13S.days/14;const n=v=>Math.round(v*k);return `<tr class="${t.cand?"--cand":""}"><td class="wrap">${esc(t.name)}<span class="code">${t.code}${t.locked?" · "+ic("lock","lk")+" L0 only":""}</span></td><td>${t.level===null?`<span class="muted">by config: live</span>`:`<b>L${t.level}</b>`}</td><td class="num">${n(t.dec)}</td><td class="num">${n(t.sent)}${t.would?`<span class="sub">would send: ${n(t.would)}</span>`:""}</td><td class="num">${n(t.scored)}</td><td class="num">${n(t.acc)}</td><td class="num">${t.wilson.toFixed(2)}</td><td class="num ${t.wrong?"wr":""}">${n(t.wrong)}${t.wrongSent?`<span class="sub">on sent: ${n(t.wrongSent)}</span>`:""}</td><td class="wrap">${t.cand?`<span class="ok">candidate for ${t.cand}</span>`:`<span class="muted">${esc(t.why)}</span>`}</td><td class="wrap">${t.ch?`${esc(T13.who(t.ch[0]))}, ${esc(t.ch[1])} – ${esc(t.ch[2])}`:"<span class='muted'>–</span>"}${t.rb?`<span class="rb">↓ rolled back ${esc(t.rb[0])}: ${esc(t.rb[1])}</span>`:""}</td>${owner?`<td><span class="lvl"><button title="Raise" ${t.locked||t.level===3?"disabled":""} onclick="T13A.level('${t.code}',1)">↑</button><button title="Lower" ${t.level===0?"disabled":""} onclick="T13A.level('${t.code}',-1)">↓</button></span></td>`:""}</tr>`}).join("")}</tbody></table></div>
+    <div class="hint mt8">Period and levels live in the URL (?days=${T13S.days}) · every change needs a reason and lands in the audit log.</div>`;
+  body.innerHTML=h;
+  if(T13S.pendingOn&&!off&&T13S.pendingSec>0)T13A.timer=setInterval(()=>{if(App.state.current!=="flora-autonomy"){clearInterval(T13A.timer);return}T13S.pendingSec--;const el=document.getElementById("fa-tm");if(!el)return;const m=Math.floor(T13S.pendingSec/60),s=String(T13S.pendingSec%60).padStart(2,"0");el.textContent=T13S.pendingSec<=0?"0:00":m+":"+s;if(T13S.pendingSec<=0){clearInterval(T13A.timer);T13A.re()}},1000);
+};
+
+/* ===== Facts review ===== */
+const T13R={
+  re(){if(App.state.current==="facts-review")window.mount_facts_review(App.state.params)},
+  days(d){T13S.frDays=d;this.re()},
+  type(t){const r=T13_CF_TYPES.find(x=>x.t===t);const on=r.state==="on";T13.reasonModal({title:`Switch «${t}» ${on?"off":"on"}`,text:on?"Flora stops writing this type into customer cards. Same switch the night audit (comms:facts-guard, 03:10) uses.":"Flora resumes writing this type. Auto-stop can switch it off again if the error share grows.",cta:on?"Switch off":"Switch on",danger:on,fn:r2=>{r.state=on?"off":"on";r.by=App.me().id;r.at="Today "+App.fmtTime(App.NOW.toISOString());r.why=r2;this.re();App.toast(`${t} · ${on?"switched off":"on"} · audit`)}})},
+  demo(ev){App.pop(ev,["Demo data",{t:"Card writing · "+(T13S.frEnabled?"enabled":"off (COMMS_FACTS_ENABLED)"),ic:"edit",fn:()=>{T13S.frEnabled=!T13S.frEnabled;this.re()}},{t:"Quiet mode · "+(T13S.frQuiet?"on":"off"),ic:"moon",fn:()=>{T13S.frQuiet=!T13S.frQuiet;this.re()}},"-",{t:"Push: facts auto-stop (night guard)",ic:"bell",fn:()=>T13A.guardPush()}])}
+};
+window.mount_facts_review=function(){
+  const esc=App.esc,ic=App.icon,ph=App.state.size==="phone";
+  document.getElementById("c13-review-head").innerHTML=T13.nav("review",`Facts Flora writes into customer cards · <b>${T13S.frDays} days</b>`,`<div class="seg-ctl">${[7,14,30].map(d=>`<button class="${T13S.frDays===d?"on":""}" onclick="T13R.days(${d})">${d} days</button>`).join("")}</div><span class="hint">since ${App.fmtDate(App.T(0,0,-T13S.frDays))}</span>`,"T13R.demo(event)");
+  const k=T13S.frDays/7;const n=v=>Math.round(v*k);const tot=T13_CF_TYPES.reduce((s,r)=>({w:s.w+r.w,c:s.c+r.c,d:s.d+r.d,a:s.a+r.a,j:s.j+r.j}),{w:0,c:0,d:0,a:0,j:0});
+  const MIN=20,MAX=15;
+  const share=r=>r.w>=MIN?Math.round(100*(r.d+r.a)/r.w):null;
+  const stateCell=r=>{if(r.state==="env")return `<span class="muted">off in .env (COMMS_FACTS_DISABLED_TYPES)</span>`;if(r.state==="on")return `<span class="ok">▶ on</span> <button class="textbtn" onclick="T13R.type('${r.t}')">Switch off</button>`;return `<span class="warn">${r.state==="auto"?"auto-stopped":"⏸ switched off"}</span><span class="sub">${esc(r.at)} · ${esc(T13.who(r.by))} · ${esc(r.why)}</span> <button class="textbtn" onclick="T13R.type('${r.t}')">Switch on</button>`};
+  let h=`<div class="c13-intro">${ic("info")}<div>Flora reads chats and writes small facts into customer cards (allergies, favourite flowers, concierge notes). A type is auto-stopped when its error share (denied by the customer + closed by audit) is above <b>${MAX} %</b> with at least <b>${MIN}</b> facts written.</div></div>
+  ${!T13S.frEnabled?`<div class="note-box --accent mb16">${ic("alert")} Card writing is switched off (COMMS_FACTS_ENABLED) – nothing new is written.</div>`:T13S.frQuiet?`<div class="note-box mb16">${ic("moon")} Quiet mode: facts are written and audited, but shown nowhere yet – the team does not see them in cards until Tatiana says so.</div>`:""}
+  <div class="kpis"><div class="kpi-card" style="cursor:default"><span class="caps">Written</span><span class="kpi">${n(tot.w)}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">Confirmed by customer</span><span class="kpi">${n(tot.c)}</span></div><div class="kpi-card ${tot.d?"--warn":""}" style="cursor:default"><span class="caps">Denied by customer</span><span class="kpi ${tot.d?"warn":""}">${n(tot.d)}</span></div><div class="kpi-card ${tot.a?"--warn":""}" style="cursor:default"><span class="caps">Closed by audit</span><span class="kpi ${tot.a?"warn":""}">${n(tot.a)}</span></div><div class="kpi-card" style="cursor:default"><span class="caps">Rejected by judge</span><span class="kpi">${n(tot.j)}</span></div></div>
+  <div class="sec-head"><div class="h3">By type</div></div>`;
+  if(ph)h+=`<div class="list" style="border:1px solid var(--hair)">${T13_CF_TYPES.map(r=>{const s=share(r);return `<div class="li" style="cursor:default;flex-direction:column;align-items:stretch;gap:4px"><div class="row"><b style="flex:1">${r.t}</b><span class="${s!==null&&s>MAX?"accent":""}">${s===null?"–":s+" %"}</span></div><small class="muted">${n(r.w)} written · ${n(r.c)} confirmed · ${n(r.d)} denied · ${n(r.a)} audit · ${n(r.j)} judge</small><div class="sm">${stateCell(r)}</div></div>`}).join("")}</div>`;
+  else h+=`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Type</th><th class="num">Written</th><th class="num">Confirmed by customer</th><th class="num">Denied by customer</th><th class="num">Closed by audit</th><th class="num">Rejected by judge</th><th class="num">Error share</th><th>Writing</th></tr></thead><tbody>${T13_CF_TYPES.map(r=>{const s=share(r);return `<tr><td>${r.t}</td><td class="num">${n(r.w)}</td><td class="num">${n(r.c)}</td><td class="num">${n(r.d)}</td><td class="num">${n(r.a)}</td><td class="num">${n(r.j)}</td><td class="num ${s!==null&&s>MAX?"over":""}">${s===null?"–":s+" %"}</td><td class="wrap">${stateCell(r)}</td></tr>`}).join("")}</tbody></table></div>`;
+  const facts=T13S.frEnabled?T13_CF:[];
+  h+=`<div class="sec-head"><div class="h3">Last ${facts.length} facts</div><span class="hint">up to 100</span></div>`;
+  if(!facts.length)h+=`<div class="empty">${ic("sparkle")}<div class="h3">Flora has not written anything yet</div></div>`;
+  else h+=facts.map(f=>{const c=f.cust?App.customer(f.cust):null;return `<div class="cf"><div class="at">${esc(f.at)}</div><div class="t"><div class="row" style="gap:6px;flex-wrap:wrap">${App.pill(f.st==="confirmed"?"done":f.st==="closed"?"cancelled":f.st==="question"?"review":"queue",f.st)}${f.byc?`<span class="hint">by ${f.byc}</span>`:""}${f.why?`<span class="hint">${esc(f.why)}</span>`:""}</div><div class="mt8">${c?`<button class="link" onclick="App.openCustomer(${c.id})">${esc(c.n)}</button>`:"<span class='muted'>unknown customer</span>"} · ${esc(f.rec||"the buyer")} · <b>${f.type}</b>: ${esc(f.val)}</div><div class="q">“${esc(f.quote)}”</div><div class="m">confidence ${Math.round(f.conf*100)} % · judge ${f.judge} · prompt ${f.v}</div></div>${f.chat?`<button class="btn --ghost --sm" onclick="App.go('inbox',{id:${f.chat}})">Open chat</button>`:""}</div>`}).join("");
+  document.getElementById("c13-review-body").innerHTML=h;
+};
+
+/* ===== Occasions ===== */
+const T13O={
+  re(){if(App.state.current==="occasions")window.mount_occasions(App.state.params)},
+  add(){App.modal({title:"Add reminder",body:`<div class="field"><label>Customer</label><input class="input" id="oc-cust" list="oc-custs" placeholder="Search by name or phone"><datalist id="oc-custs">${App.data.customers.map(c=>`<option value="${App.esc(c.n)}">${App.esc(c.phone)}</option>`).join("")}</datalist><div class="err" id="oc-cust-err"></div></div><div class="grid g2 mt8"><div class="field"><label>Occasion</label><input class="input" id="oc-occ" placeholder="Birthday · Mum"></div><div class="field"><label>Date</label><input class="input" id="oc-date" type="date" value="2026-11-14"><div class="err" id="oc-date-err"></div></div></div><div class="field mt8"><label>Note</label><input class="input" id="oc-note" placeholder="Likes peonies, no lilies"></div><div class="hint mt8">Confirmed at once · the 09:30 cron may send a WhatsApp reminder when occasion reminders are on and the customer has marketing consent.</div>`,foot:`<button class="btn --secondary --sm" onclick="T13.closeDirty()">Cancel</button><button class="btn --sm" onclick="T13O.save()">Add reminder</button>`})},
+  save(){const g=id=>(document.getElementById(id)?.value||"").trim();const c=App.data.customers.find(x=>x.n===g("oc-cust"));if(!c){document.getElementById("oc-cust-err").textContent="Pick a customer from the list.";return}if(!g("oc-date")){document.getElementById("oc-date-err").textContent="Date is required.";return}const d=new Date(g("oc-date"));const days=Math.round((d-App.NOW)/864e5);T13_REMINDERS.push({id:Date.now(),cust:c.id,occ:g("oc-occ")||"Occasion",date:d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}),note:g("oc-note"),days});T13_REMINDERS.sort((a,b)=>a.days-b.days);App.closeModal();this.re();App.toast("Reminder added · audit reminder.create")},
+  confirm(id){const i=T13_CANDS.findIndex(x=>x.id===id);const c=T13_CANDS.splice(i,1)[0];const d=new Date(c.date);T13_REMINDERS.push({id:Date.now(),cust:c.cust,occ:c.occ,date:c.date,note:"from "+c.src,days:Math.round((d-App.NOW)/864e5)});T13_REMINDERS.sort((a,b)=>a.days-b.days);this.re();App.toast("Confirmed – reminders may now go out · audit reminder.confirm")},
+  dismiss(id){const i=T13_CANDS.findIndex(x=>x.id===id);const c=T13_CANDS.splice(i,1)[0];this.re();App.toast("Dismissed","Undo",()=>{T13_CANDS.splice(i,0,c);this.re()})},
+  del(id){const i=T13_REMINDERS.findIndex(x=>x.id===id);const r=T13_REMINDERS.splice(i,1)[0];this.re();App.toast("Reminder deleted · audit reminder.delete","Undo",()=>{T13_REMINDERS.splice(i,0,r);this.re()})},
+  demo(ev){App.pop(ev,["Demo data",{t:"Proposed candidates · "+(T13S.occCandidates?"3":"none"),ic:"sparkle",fn:()=>{T13S.occCandidates=!T13S.occCandidates;this.re()}},{t:"No reminders (empty state)",ic:"moon",fn:()=>{T13_REMINDERS.length=0;this.re()}}])}
+};
+window.mount_occasions=function(){
+  const esc=App.esc,ic=App.icon;
+  document.getElementById("c13-occ-head").innerHTML=T13.nav("occasions",`<b>${T13_REMINDERS.length}</b> confirmed reminders · WhatsApp 5 days before, with consent`,`<button class="btn --sm" onclick="T13O.add()">${ic("plus")} Add reminder</button>`,"T13O.demo(event)");
+  const cands=T13S.occCandidates?T13_CANDS:[];
+  let h="";
+  if(cands.length)h+=`<div class="cand"><div class="p-head" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--hair)"><div class="h4">Proposed from past orders and email replies (${cands.length})</div><span class="hint">found by the Monday 07:30 cron, email replies and Flora – confirm before anything is sent</span></div><div class="list">${cands.map(c=>`<div class="li"><div class="t"><b>${esc(App.customer(c.cust).n)} · ${esc(c.occ)}</b><small>${esc(c.date)} · ${esc(c.src)}</small></div><button class="btn --ghost --sm" onclick="T13O.dismiss(${c.id})">Dismiss</button><button class="btn --sm" onclick="T13O.confirm(${c.id})">Confirm</button></div>`).join("")}</div></div>`;
+  if(!T13_REMINDERS.length)h+=`<div class="empty">${ic("calendar")}<div class="h3">No reminders</div><button class="btn --sm" onclick="T13O.add()">Add reminder</button></div>`;
+  else h+=`<div class="tbl-wrap"><table class="tbl --cards"><thead><tr><th>Customer</th><th>Occasion</th><th>Date</th><th>Note</th><th class="num">Days away</th><th></th></tr></thead><tbody>${T13_REMINDERS.map(r=>{const c=App.customer(r.cust);return `<tr class="r" onclick="App.openCustomer(${c.id})"><td>${esc(c.n)}<span class="sub">${esc(c.phone)}</span></td><td>${esc(r.occ)}</td><td>${esc(r.date)}</td><td class="wrap">${esc(r.note)||"<span class='muted'>–</span>"}</td><td class="num ${r.days<=14?"days-soon":""}">${r.days<0?r.days+" (past)":r.days}</td><td><span class="acts"><button class="ib" title="Delete" onclick="event.stopPropagation();T13O.del(${r.id})">${ic("trash")}</button></span></td></tr>`}).join("")}</tbody><tfoot><tr><td colspan="6">Past reminders stay in the list with negative days · Delete has no confirmation – Undo in the toast instead</td></tr></tfoot></table></div>`;
+  document.getElementById("c13-occ-body").innerHTML=h;
+};
+</script>
