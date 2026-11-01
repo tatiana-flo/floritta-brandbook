@@ -1,8 +1,16 @@
+<!-- Экран избранного /saved – реестр 02-shop-search-saved.md. Логика – ShopX в 04-shop.html (mount_saved). -->
 <section class="scr" id="s-saved" data-tab="shop" data-nav="Saved" data-group="Shop">
+  <!-- ids: APP-SAVED-002 – шапка «Saved», назад (кнопки «поделиться» и «очистить всё» в приложении нет – APP-SAVED-009: remove/clear стора без вызовов из UI) -->
   <div class="appbar">
     <button class="ib" onclick="App.back('shop')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl">Saved</div>
-    <button class="ib" onclick="App.toast('Link copied – share your list')" aria-label="Share list"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button>
   </div>
-  <div class="scr-body has-tab" id="saved-body"></div>
+  <!-- ids: APP-SAVED-001 APP-SAVED-003 APP-SAVED-004 APP-SAVED-005 APP-SAVED-006 APP-SAVED-007 APP-SAVED-008 APP-SAVED-009 – «N designs · tap the heart to remove», сетка (новые сверху, сердце удаляет на месте без подтверждения, быстрое добавление с карточки; id вне снимка пропущены), «Find more to save» → bouquets, подпись «saved on this phone only»; пусто → «Nothing saved yet» + Browse bestsellers -->
+  <div class="scr-body has-tab" id="savedx-body"></div>
 </section>
+<style>
+/* saved */
+#s-saved .empty{padding:72px var(--gutter) 24px}
+#s-saved .empty p{margin:6px 0 24px}
+#s-saved .sub{padding:4px var(--gutter) 0;font-size:13px;color:var(--grey)}
+</style>

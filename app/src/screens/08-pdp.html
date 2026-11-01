@@ -1,70 +1,4 @@
-<style>
-/* shop */
-#s-shop .cat-list{display:flex;flex-direction:column;gap:10px;padding:16px var(--gutter) 0}
-#s-shop .ctile{position:relative;aspect-ratio:16/7;overflow:hidden;background:var(--silver);width:100%;text-align:left}
-#s-shop .ctile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--m-ease)}
-#s-shop .ctile:active img{transform:scale(1.04)}
-#s-shop .ctile .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,26,23,0) 35%,rgba(30,26,23,.6) 100%)}
-#s-shop .ctile .tx{position:absolute;left:16px;right:16px;bottom:12px;color:#fff;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-#s-shop .ctile .tx .nm{font-family:var(--f-display);font-weight:300;font-size:28px;line-height:1.05;letter-spacing:.01em}
-#s-shop .ctile .tx .ct{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.85;white-space:nowrap}
-#s-shop .chip-grid{display:flex;flex-wrap:wrap;gap:8px}
-#s-shop .ib .dot{background:var(--ink)}
-
-/* category */
-#s-category .sticky{position:sticky;top:0;z-index:6;background:var(--paper);padding:4px 0 10px;border-bottom:1px solid var(--hair)}
-#s-category .tools{display:flex;gap:8px;margin-bottom:10px}
-#s-category .tool{flex:1;height:44px;border:1px solid var(--light);display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;position:relative;transition:border-color var(--m-fast)}
-#s-category .tool:active{border-color:var(--ink)}
-#s-category .tool svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-#s-category .tool .n{font-style:normal;min-width:18px;height:18px;padding:0 5px;background:var(--ink);color:var(--paper);font-size:10px;display:flex;align-items:center;justify-content:center;letter-spacing:0}
-#s-category .tool .n:empty{display:none}
-#s-category .applied{margin-top:12px}
-#s-category .applied:empty{display:none}
-#s-category .applied .chip{background:var(--silver);border-color:var(--silver);padding-right:8px}
-#s-category .applied .chip svg{width:14px;height:14px}
-#s-category .empty{padding:56px var(--gutter) 24px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
-#s-category .empty p{margin:0 0 10px}
-#s-category .sk{aspect-ratio:4/5}
-/* filter sheet */
-.fsheet .fs-sec{padding:16px 0;border-bottom:1px solid var(--hair)}
-.fsheet .fs-sec:last-child{border-bottom:0}
-.fsheet .fs-t{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);margin-bottom:12px}
-.fsheet .fs-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--hair)}
-.fsheet .fs-row:last-child{border-bottom:0}
-.fsheet .fs-row .l{font-size:15px}.fsheet .fs-row .d{font-size:13px;color:var(--grey);margin-top:1px}
-.fsheet .wrap{display:flex;flex-wrap:wrap;gap:8px}
-.fsheet .sw{width:44px;height:44px;border:1px solid var(--light);display:grid;place-items:center;position:relative;transition:border-color var(--m-fast)}
-.fsheet .sw i{display:block;width:24px;height:24px;border:1px solid rgba(30,26,23,.12)}
-.fsheet .sw.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-.fsheet .sw.on::after{content:"";position:absolute;right:-1px;top:-1px;width:12px;height:12px;background:var(--ink)}
-.fsheet .swl{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);text-align:center;margin-top:4px}
-.fsheet .dates{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:10px}
-.fsheet .dates::-webkit-scrollbar{display:none}
-.fsheet .dt{flex:none;width:58px;height:62px;border:1px solid var(--light);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--grey)}
-.fsheet .dt b{font-family:var(--f-display);font-weight:400;font-size:22px;color:var(--ink);line-height:1}
-.fsheet .dt.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-
-/* search */
-#s-search .appbar{gap:8px;padding-bottom:12px;border-bottom:1px solid var(--hair)}
-#s-search .input-wrap .input{height:48px;padding-right:48px;background:var(--silver);border-color:var(--silver)}
-#s-search .input-wrap .input:focus{border-color:var(--ink);background:var(--paper)}
-#s-search .input::-webkit-search-cancel-button{-webkit-appearance:none}
-#s-search .mic{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;color:var(--ink)}
-#s-search .mic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-#s-search .chip-grid{display:flex;flex-wrap:wrap;gap:8px;padding:0 var(--gutter)}
-#s-search .all{display:flex;align-items:center;gap:14px;padding:16px var(--gutter);border-top:1px solid var(--hair);margin-top:8px;text-align:left;width:100%;font-size:15px}
-#s-search .all svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none}
-#s-search .all .q{font-weight:400}
-#s-search .empty{padding:56px var(--gutter) 24px}
-#s-search .empty p{margin:6px 0 20px}
-#s-search mark{background:none;color:inherit;font-weight:500}
-
-/* saved */
-#s-saved .empty{padding:72px var(--gutter) 24px}
-#s-saved .empty p{margin:6px 0 24px}
-#s-saved .sub{padding:4px var(--gutter) 0;font-size:13px;color:var(--grey)}
-</style>
+<!-- Страница товара /product/[slug] – реестр 03-product.md. Базовый рендер – window.PDP шелла; PDPX (script ниже) оборачивает mount_pdp и доводит экран до реестра: «не найден», метки ≤3, категория, рейтинг, отсчёт до 22:00 и состояние «после 10 pm», размеры «Most chosen»/«As on the photo», дата и окна на весь заказ (saved on device), открытка Write/Edit + ошибка, «Anything more?» с «+ Add», «You may also like» без кнопки сумки, qty 1–20, Buy now словом, зум с «Photo N of M», системный Share. -->
 <section class="scr" id="s-pdp" data-nav="Product" data-group="Shop">
 <style>
 #s-pdp .h1{font-size:30px}
@@ -79,7 +13,7 @@
 #s-pdp .gal{position:relative;background:var(--silver)}
 #s-pdp .gal-tr{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;aspect-ratio:4/5;cursor:zoom-in}
 #s-pdp .gal-tr::-webkit-scrollbar{display:none}
-#s-pdp .gal-tr>div{flex:none;width:100%;height:100%;scroll-snap-align:start;overflow:hidden;position:relative}
+#s-pdp .gal-tr>div{flex:none;width:100%;height:100%;scroll-snap-align:start;overflow:hidden;position:relative;background:linear-gradient(90deg,var(--silver) 25%,#f2f2f4 50%,var(--silver) 75%);background-size:200% 100%;animation:sk 1.4s infinite}
 #s-pdp .gal-tr img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--m-ease)}
 #s-pdp .gal .fl{position:absolute;top:calc(54px + var(--safe-t));left:12px;right:12px;display:flex;justify-content:space-between;z-index:3;pointer-events:none}
 #s-pdp .gal .fl>*{pointer-events:auto}
@@ -104,11 +38,13 @@
 #s-pdp .promise{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--ink);background:var(--silver);padding:10px 12px}
 #s-pdp .promise svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
 #s-pdp .promise b{font-weight:500;font-variant-numeric:tabular-nums}
+#s-pdp .promise.closed{background:var(--accent-bg)}
 /* sizes */
 #s-pdp .tile .ph{width:100%;aspect-ratio:1;overflow:hidden;background:var(--silver)}
 #s-pdp .tile .ph img{width:100%;height:100%;object-fit:cover;transform-origin:50% 45%}
 #s-pdp .tile .tl{font-size:13px;font-weight:400}
 #s-pdp .tile .badge{z-index:2}
+#s-pdp .tile .asph{font-size:11px;color:var(--grey);letter-spacing:.04em}
 /* days */
 #s-pdp .days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:0 var(--gutter)}
 #s-pdp .day{aspect-ratio:1;min-width:0;overflow:hidden;border:1px solid var(--light);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;color:var(--grey);transition:all var(--m-fast);padding:0}
@@ -117,10 +53,12 @@
 #s-pdp .day .dm{font-size:9px;letter-spacing:.06em;text-transform:uppercase}
 #s-pdp .day.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 #s-pdp .day.on .dd{color:var(--paper)}
+#s-pdp .day[disabled]{opacity:.35;pointer-events:none}
 #s-pdp .wins{margin-top:12px}
 #s-pdp .chip[disabled]{opacity:.35;pointer-events:none;text-decoration:line-through}
 #s-pdp .dnote{font-size:12px;color:var(--grey);padding:10px var(--gutter) 0;display:flex;gap:6px;align-items:center}
 #s-pdp .dnote svg{width:14px;height:14px;stroke:var(--ok);fill:none;stroke-width:1.8}
+#s-pdp .dsaved{font-size:11px;color:var(--grey);padding:6px var(--gutter) 0}
 /* add-ons */
 #s-pdp .ad{width:140px;border:1px solid var(--hair);padding:10px;display:flex;flex-direction:column;gap:6px;transition:border-color var(--m-fast)}
 #s-pdp .ad.on{border-color:var(--ink)}
@@ -132,6 +70,10 @@
 #s-pdp .ad .pr{font-size:12px;color:var(--grey)}
 #s-pdp .ad .ab{height:36px;border:1px solid var(--ink);font-size:11px;letter-spacing:.1em;text-transform:uppercase;width:100%;transition:all var(--m-fast)}
 #s-pdp .ad.on .ab{background:var(--ink);color:var(--paper)}
+/* anything more */
+#s-pdp .pdpx-am{display:flex;align-items:center;gap:10px}
+#s-pdp .pdpx-am .mini{flex:1;min-width:0}
+#s-pdp .pdpx-am .btn{flex:none}
 /* reviews */
 #s-pdp .agg{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;padding:0 var(--gutter)}
 #s-pdp .agg .big{font-family:var(--f-display);font-size:56px;font-weight:300;line-height:1}
@@ -146,30 +88,153 @@
 #s-pdp .rv .vf{font-size:11px;color:var(--ok);display:inline-flex;align-items:center;gap:4px;margin-top:8px}
 #s-pdp .rv .vf svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
 /* cta */
-#s-pdp .cta-bar .btn.--ghost{flex:none;width:52px;padding:0}
+#s-pdp .scr-body.has-cta{padding-bottom:calc(var(--btn-h) + 76px + var(--safe-b))}
+#s-pdp .cta-bar{display:grid;grid-template-columns:auto 1fr;gap:8px 10px;align-items:center}
+#s-pdp .cta-bar .btn.--ghost{display:none}
 #s-pdp .cta-bar .btn .btn-price{margin-left:8px}
 #s-pdp .cta-bar .qty{height:52px}
 #s-pdp .cta-bar .qty button{width:34px}
+#s-pdp .cta-bar .buynow{grid-column:1/-1;justify-self:center;border:0;color:var(--graphite)}
 /* sheets */
 .pdp-lb{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px}
 .pdp-lb::-webkit-scrollbar{display:none}
 .pdp-lb>div{flex:none;width:100%;aspect-ratio:4/5;scroll-snap-align:start;overflow:hidden;background:var(--silver)}
-.pdp-lb img{width:100%;height:100%;object-fit:cover}
+.pdp-lb img{width:100%;height:100%;object-fit:cover;transition:transform .35s var(--m-ease)}
+.pdp-lb>div.z img{transform:scale(2.5)}
 .pdp-cnt{text-align:right;font-size:12px;color:var(--grey);margin-top:6px}
 .pdp-sg{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:12px -16px 0;padding:0 16px}
 .pdp-sg::-webkit-scrollbar{display:none}
 .pdp-sg .chip{height:auto;padding:8px 12px;white-space:normal;max-width:220px;text-align:left;font-size:12px;line-height:1.35;align-items:flex-start}
+.pdpx-err{color:var(--accent);font-size:12px;margin-top:6px}
+.pdpx-share .row{padding-left:0;padding-right:0}
+.pdpx-share .msg{background:var(--silver);padding:12px;font-size:13px;color:var(--graphite);line-height:1.45;word-break:break-word}
 </style>
 
+<!-- ids: APP-PDP-014 – компактная шапка после прокрутки за галерею: назад, название, «цена · размер», сердце -->
 <div class="cbar" id="pdp-cbar">
   <button class="ib" onclick="App.back()" aria-label="Back"></button>
   <div class="ct"><b id="pdp-cbar-n"></b><span id="pdp-cbar-p"></span></div>
   <button class="ib fav" id="pdp-cbar-fav" aria-label="Save"></button>
 </div>
+<!-- ids: APP-PDP-003 APP-PDP-004 APP-PDP-005 APP-PDP-006 APP-PDP-007 APP-PDP-008 APP-PDP-009 APP-PDP-010 APP-PDP-011 APP-PDP-012 APP-PDP-013 APP-PDP-015 APP-PDP-016 APP-PDP-017 APP-PDP-018 APP-PDP-019 APP-PDP-020 APP-PDP-021 APP-PDP-022 APP-PDP-023 APP-PDP-024 APP-PDP-025 APP-PDP-026 APP-PDP-027 APP-PDP-028 APP-PDP-029 APP-PDP-030 APP-PDP-031 APP-PDP-032 APP-PDP-033 APP-PDP-034 APP-PDP-035 APP-PDP-036 APP-PDP-037 APP-PDP-038 APP-PDP-039 APP-PDP-040 APP-PDP-041 APP-PDP-042 APP-PDP-043 APP-PDP-044
+     Тело рендерит PDP.mount (шелл) + PDPX: галерея 4:5 со свайпом, точками, скелетоном под фото, метками (≤3, без Pet-friendly), плавающие Back/Share/Heart, «Tap to zoom» → просмотр (свайп, двойной тап ×2,5, «Photo N of M», «Close photos»); категория капсом, название, цена размера + «was» + «−N%»; рейтинг «4.6 · Floritta on Google · 590 reviews»; обещание доставки с отсчётом до 22:00 / «closed for today»; размеры с «Most chosen» и «As on the photo» (по умолчанию); 7 дней («Today» после 22:00 неактивен), окна «Today, by 10 pm» / Any time, 9–13, 13–18, 18–23 (недоступное зачёркнуто), подпись с галочкой, «saved on this phone»; «Make it special»: открытка Free → Write/Edit (шторка: 150 знаков, счётчик, 4 подсказки, Anonymous sender, ошибка «Add a few words first», Add card → тост, Remove), доп. товары «+ Add»/«Added»; аккордеон «The details» (What’s inside открыт, Care guide, Delivery & returns £120/£7.95, Pet-friendly?); «Anything more?» ≤3 строк с «+ Add»; «You may also like» ≤6 карточек с сердцем без сумки + «Shop all». -->
 <div class="scr-body has-cta" id="pdp-body"></div>
+<!-- ids: APP-PDP-045 APP-PDP-046 APP-PDP-047 APP-PDP-048 APP-PDP-049 – липкая панель: степпер 1–20, «Add to bag» с итогом (размер + доп.) × qty → «Added ✓» 1,3 с + тост «Added to bag · View bag»; «Buy now» словом под кнопкой – в корзину и сразу к данным доставки -->
 <div class="cta-bar">
   <div class="qty"><button onclick="PDP.qty(-1)" aria-label="Less">−</button><span id="pdp-qty">1</span><button onclick="PDP.qty(1)" aria-label="More">+</button></div>
   <button class="btn" id="pdp-add" onclick="PDP.add()"><span>Add to bag</span><span class="btn-price" id="pdp-add-p"></span></button>
-  <button class="btn --ghost" onclick="PDP.buyNow()" aria-label="Buy now" title="Buy now"></button>
+  <button class="btn --ghost" aria-hidden="true" tabindex="-1"></button>
+  <button class="textbtn buynow" onclick="PDP.buyNow()">Buy now</button>
 </div>
 </section>
+<script>
+/* PDPX – доводка страницы товара до реестра 03-product.md поверх window.PDP шелла. */
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const X=window.ShopX, PDP=window.PDP;
+  const SIZES=[{k:"Standard",x:0},{k:"Deluxe",x:25},{k:"Grand",x:55}];
+  const WINS=[["any","Any time"],["9-13","9–13"],["13-18","13–18"],["18-23","18–23"]];
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const slug=p=>p.n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const PX=window.PDPX={id:null,qty:1,T:null};
+  const orig=window.mount_pdp;
+
+  window.mount_pdp=function(params){
+    const id=(params&&params.id)||1;
+    /* APP-PDP-001 / 002: товар по slug не найден → отдельный экран */
+    if(!App.product(id)){setTimeout(()=>App.go("shx-pdp-404",{id},{replace:true}),0);return}
+    /* APP-PDP-003: товар → товар сбрасывает выбор (размер, доп., qty) */
+    if(PX.id!==id){PX.id=id;PX.qty=1}
+    orig(params);
+    const pr=App.product(id);
+    /* APP-PDP-015: категория капсом */
+    const caps=$("#s-pdp .info .caps");if(caps)caps.textContent=X.catName(pr);
+    /* APP-PDP-007: до 3 меток без Pet-friendly */
+    const gt=$("#s-pdp .gtags");if(gt){const keep=[...gt.children].filter(t=>!/pet/i.test(t.textContent)).slice(0,3);gt.innerHTML="";keep.forEach(t=>gt.appendChild(t))}
+    /* APP-PDP-017: статичная строка рейтинга */
+    const rr=$("#s-pdp .rrow > span:not(.stars)");if(rr)rr.innerHTML=`<b>4.6</b> · Floritta on Google · <u>590 reviews</u>`;
+    /* APP-PDP-018: обещание доставки – свой отсчёт (каждые 30 с), шелловский таймер отключён переименованием элемента */
+    const pm=$("#pdp-promise");if(pm)pm.id="pdpx-promise";
+    tick();clearInterval(PX.T);PX.T=setInterval(tick,30000);
+    /* APP-PDP-019…021: «Most chosen», «As on the photo» у размера по умолчанию */
+    $$("#pdp-sizes .tile").forEach((t,i)=>{const bd=t.querySelector(".badge");if(bd)bd.textContent="Most chosen";if(i===0)t.insertAdjacentHTML("beforeend",'<span class="asph">As on the photo</span>')});
+    /* APP-PDP-022…027: дата и окна на весь заказ */
+    X.ensureDelivery();renderDelivery();
+    /* APP-PDP-028: открытка – Write / Edit */
+    cardLabel();
+    /* APP-PDP-040: pet-friendly по флагу товара */
+    $$("#s-pdp .acc details").forEach(d=>{if(/Pet-friendly/.test(d.querySelector("summary").textContent))d.querySelector(".acc-b").textContent=X.isPet(pr)?"Yes – this one is marked pet-friendly.":"Not marked pet-friendly. Keep it out of reach of curious cats and dogs – or ask Flora for a pet-safe alternative."});
+    /* APP-PDP-041/042 и 043/044 */
+    $$("#s-pdp .sec-head").forEach(h=>{const t=h.querySelector(".h2");if(!t)return;
+      if(t.textContent==="Anything more?"){const pad=h.nextElementSibling;const minis=$$(".mini",pad).slice(0,3);pad.innerHTML="";minis.forEach(m=>{const mid=+(m.getAttribute("onclick").match(/id:(\d+)/)||[])[1];const row=document.createElement("div");row.className="pdpx-am";row.appendChild(m);row.insertAdjacentHTML("beforeend",`<button class="btn --secondary --xs" onclick="PDPX.addMore(${mid})">+ Add</button>`);pad.appendChild(row)});if(!minis.length){h.hidden=true;pad.hidden=true}}
+      if(t.textContent==="You may also like"){const hs=h.nextElementSibling;$$(".add",hs).forEach(x=>x.remove());[...hs.children].slice(6).forEach(x=>x.remove())}
+    });
+    $("#pdp-body").insertAdjacentHTML("beforeend",`<div class="pad tc" style="padding-bottom:8px"><button class="textbtn" style="border:0;color:var(--grey)" onclick="App.go('shx-demo')">Prototype states</button></div>`);
+    renderTotal();
+  };
+
+  function tick(){const el=$("#pdpx-promise");if(!el)return;const n=X.now();const cut=new Date(n);cut.setHours(22,0,0,0);const box=el.closest(".promise");
+    if(n<cut){const ms=cut-n,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);el.innerHTML=`Order within <b>${h} h ${String(m).padStart(2,"0")} m</b> for delivery today`;box&&box.classList.remove("closed")}
+    else{el.innerHTML="Same-day orders are closed for today – delivery from <b>tomorrow</b>";box&&box.classList.add("closed")}}
+
+  function renderDelivery(){
+    const days=X.days(),open=X.sameDayOpen(),OC=X.OC;
+    const dz=$("#pdp-days");if(!dz)return;
+    /* APP-PDP-022 / 023 */
+    dz.innerHTML=days.map((d,i)=>`<button class="day ${i===OC.day?"on":""}" ${i===0&&!open?'disabled aria-label="Today – closed for today"':""} onclick="PDPX.day(${i})"><span class="dl">${i===0?"Today":i===1?"Tmrw":d.label}</span><span class="dd">${d.day}</span><span class="dm">${d.mon}</span></button>`).join("");
+    /* APP-PDP-024 / 025 */
+    const w=$("#pdp-wins");
+    w.innerHTML=OC.day===0?`<button class="chip on" ${open?"":'disabled aria-label="No longer available today"'} onclick="PDPX.win('today')">Today, by 10 pm</button>`:WINS.map(([k,l])=>`<button class="chip ${OC.win===k?"on":""}" onclick="PDPX.win('${k}')">${l}</button>`).join("");
+    /* APP-PDP-027 / 026 */
+    const d=days[OC.day];
+    $("#pdp-dnote").innerHTML=`${App.icon("check")}${OC.day===0?"Same-day · hand-delivered by our courier":App.dateLabel(d.d)+" · photo of your bouquet before it leaves"}`;
+    if(!$("#pdpx-dsaved"))$("#pdp-dnote").insertAdjacentHTML("afterend",'<div class="dsaved" id="pdpx-dsaved">Saved on this phone · applies to your whole order and to checkout</div>');
+    X.syncDelivery();
+  }
+  PX.day=i=>{const OC=X.OC;OC.day=i;if(i===0)OC.win="today";else if(!OC.win||OC.win==="today")OC.win="any";renderDelivery();App.haptic()};
+  PX.win=k=>{X.OC.win=k;renderDelivery();App.haptic()};
+
+  /* ---- цена: (размер + доп.) × qty – APP-PDP-045/046 ---- */
+  const sizeIdx=()=>Math.max(0,$$("#pdp-sizes .tile").findIndex(t=>t.classList.contains("on")));
+  const addonIds=()=>$$("#pdp-addons .ad.on").map(a=>a.dataset.ad);
+  const unit=()=>{const pr=App.product(PX.id);if(!pr)return 0;return pr.p+SIZES[sizeIdx()].x+addonIds().reduce((a,id)=>a+((ADDONS.find(x=>x.id===id)||{p:0}).p),0)};
+  function renderTotal(){const ap=$("#pdp-add-p");if(ap)ap.textContent=App.fmt(unit()*PX.qty);const q=$("#pdp-qty");if(q)q.textContent=PX.qty}
+  PDP.qty=d=>{PX.qty=Math.min(20,Math.max(1,PX.qty+d));renderTotal();App.haptic();if(PX.qty===20&&d>0)App.toast("Maximum 20 per design")};
+  const oSize=PDP.size;PDP.size=i=>{oSize(i);renderTotal()};
+  const oAddon=PDP.addon;PDP.addon=id=>{oAddon(id);renderTotal()};
+
+  /* ---- открытка – APP-PDP-028/033/034/035 ---- */
+  function cardLabel(){const el=$('#s-pdp .ad[data-ad="card"]');if(!el)return;const on=!!X.OC.card;el.classList.toggle("on",on);el.querySelector(".ab").textContent=on?"Edit":"Write"}
+  const oSheet=PDP.cardSheet;PDP.cardSheet=function(){oSheet();const f=$("#sheet-inner .sh-foot");if(X.OC.card&&f&&!f.querySelector(".--secondary"))f.insertAdjacentHTML("afterbegin",'<button class="btn --secondary" onclick="PDP.cardRemove()">Remove</button>');const t=$("#pdp-msg");if(t)t.addEventListener("input",()=>{const e=$(".pdpx-err");e&&e.remove()})};
+  const oSave=PDP.cardSave;PDP.cardSave=function(){const t=$("#pdp-msg");if(!t||!t.value.trim()){if(!$(".pdpx-err"))t.insertAdjacentHTML("afterend",'<div class="pdpx-err">Add a few words first</div>');App.haptic();return}
+    oSave();X.OC.card=t.value.trim();cardLabel();renderTotal()};
+  const oRemove=PDP.cardRemove;PDP.cardRemove=function(){oRemove();X.OC.card=null;cardLabel();renderTotal()};
+
+  /* ---- «Anything more?» – APP-PDP-042: размер по умолчанию, qty 1, дату заказа не трогает ---- */
+  PX.addMore=id=>{const p=App.product(id);if(!p)return;App.addToBag(id,{size:"Standard",silent:true});App.haptic();App.toast(`<b>${p.n}</b> added`,{action:{label:"View bag",onclick:"App.tab('bag')"},ms:3200})};
+
+  /* ---- в корзину / Buy now – APP-PDP-047…049 ---- */
+  PDP.add=function(){const btn=$("#pdp-add");const sz=SIZES[sizeIdx()];
+    App.addToBag(PX.id,{size:sz.k,extra:sz.x,addons:addonIds(),qty:PX.qty,silent:true});X.ensureDelivery();App.haptic();
+    const t=btn.innerHTML;btn.innerHTML="<span>Added ✓</span>";btn.classList.add("pop");setTimeout(()=>{btn.innerHTML=t;btn.classList.remove("pop");renderTotal()},1300);
+    App.toast("Added to bag",{action:{label:"View bag",onclick:"App.tab('bag')"},ms:3200})};
+  PDP.buyNow=function(){const sz=SIZES[sizeIdx()];App.addToBag(PX.id,{size:sz.k,extra:sz.x,addons:addonIds(),qty:PX.qty,silent:true});X.ensureDelivery();App.haptic();App.go(document.getElementById("s-checkout")?"checkout":"bag")};
+
+  /* ---- зум – APP-PDP-008…010 ---- */
+  PDP.zoom=function(i){const pr=App.product(PX.id);const tr=$("#pdp-tr");const imgs=$$("img",tr).map(im=>im.outerHTML);const k=typeof i==="number"?i:Math.round(tr.scrollLeft/tr.clientWidth);
+    App.sheet(`<div class="sh-head"><div class="h3">${pr.n}</div><button class="ib" onclick="App.closeSheet()" aria-label="Close photos">${App.icon("close")}</button></div>
+      <div class="sh-body"><div class="pdp-lb" id="pdp-lb" onscroll="PDPX.lbScroll(this)">${imgs.map(h=>`<div ondblclick="this.classList.toggle('z')">${h}</div>`).join("")}</div>
+      <div class="flex jc-sb mt12 xs muted"><span>Pinch or double-tap to zoom</span><span id="pdpx-lbc" ${imgs.length>1?"":"hidden"}>Photo ${k+1} of ${imgs.length}</span></div></div>`,
+      {full:true,onOpen:()=>{const lb=document.getElementById("pdp-lb");lb.scrollLeft=k*lb.clientWidth}})};
+  PX.lbScroll=lb=>{const n=lb.children.length,k=Math.round(lb.scrollLeft/lb.clientWidth);const c=$("#pdpx-lbc");if(c)c.textContent=`Photo ${k+1} of ${n}`};
+
+  /* ---- Share – APP-PDP-012: системное меню, «<Name> from Floritta – <url>» ---- */
+  PDP.share=function(){const pr=App.product(PX.id);const url=`https://floritta.uk/product/${slug(pr)}`;const msg=`${pr.n} from Floritta – ${url}`;
+    App.sheet(`<div class="sh-head"><div class="h3">Share</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
+      <div class="sh-body pdpx-share"><div class="msg">${esc(msg)}</div>
+      ${[["Copy link","Link copied"],["Messages","Opens Messages with the link"],["WhatsApp","Opens WhatsApp with the link"],["Mail","Opens Mail with the link"],["More…","System share sheet"]].map(([l,t])=>`<button class="row" onclick="App.closeSheet();App.toast('${t}')"><div class="rt"><div class="l">${l}</div></div>${App.icon("chev").replace("<svg",'<svg class="chev"')}</button>`).join("")}
+      <p class="xs muted mt12" style="margin-bottom:0">On the phone this is the system share sheet.</p></div>`)};
+
+  document.addEventListener("screen",e=>{if(e.detail.id!=="pdp")clearInterval(PX.T)});
+})();
+</script>

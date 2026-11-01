@@ -1,0 +1,82 @@
+<!-- Дополнительные экраны участка «Магазин / Товар»: «товар не найден» (APP-PDP-001/002) и стендовый экран демо-состояний и deep links (APP-CAT-001/005, APP-SEARCH-002, APP-SAVED-006, время после 22:00). -->
+<style>
+#s-shx-pdp-404 .nf{padding:96px var(--gutter) 24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+#s-shx-pdp-404 .nf p{margin:0 0 12px}
+#s-shx-demo .dl{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--ink)}
+#s-shx-demo .row .rt .d{white-space:normal}
+#s-shx-demo .kv{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#s-shx-demo .kv span:last-child{color:var(--grey)}
+</style>
+<!-- ids: APP-PDP-001 APP-PDP-002 – товар по slug не найден (старый deep link, товар ушёл из снимка): текст, назад/на главную, «Shop all flowers» → таб Shop -->
+<section class="scr" id="s-shx-pdp-404" data-nav="Product not found" data-group="Shop">
+  <div class="appbar"><button class="ib" onclick="App.back('home')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl"></div></div>
+  <div class="scr-body">
+    <div class="nf">
+      <div class="caps muted">Product</div>
+      <div class="h2">This bouquet is not available</div>
+      <p class="soft sm">It may have sold out or left the collection. Have a look at what is fresh today.</p>
+      <div class="flex g8"><button class="btn --sm" onclick="App.tab('shop')">Shop all flowers</button><button class="btn --ghost --sm" onclick="App.back('home')">Go back</button></div>
+      <p class="xs muted mt24" id="shx-404-link"></p>
+    </div>
+  </div>
+</section>
+<!-- Стендовый экран (в приложении его нет): переключатели демо-состояний и deep links floritta:// -->
+<section class="scr" id="s-shx-demo" data-nav="Shop · demo states" data-group="Shop">
+  <div class="appbar"><button class="ib" onclick="App.back('shop')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Demo states</div></div>
+  <div class="scr-body">
+    <p class="xs muted pad" style="margin:4px 0 0">Stand only – switches change what the Shop, Category, Search and Product screens show.</p>
+    <!-- ids: APP-CAT-011 APP-PDP-023 – состояние «после 22:00 по Лондону»: фильтр Today скрывает всё и подпись акцентом, на товаре «Today» неактивен, окно «Today, by 10 pm» недоступно, обещание «closed for today» -->
+    <div class="sec-head"><div class="h2">Time</div></div>
+    <div class="row" style="border-top:1px solid var(--hair)"><div class="rt"><div class="l">After 10 pm London</div><div class="d">Same-day closed: «Today» disabled on the product, delivery filter hides everything, promise says «closed for today»</div></div><button class="switch" id="shx-late" role="switch" aria-checked="false" onclick="ShopX.setLate(!ShopX.late)"></button></div>
+    <!-- ids: APP-CAT-001 APP-CAT-005 APP-SEARCH-002 – deep links floritta://category/<slug>?…, floritta://search?q=, floritta://product/<slug> -->
+    <div class="sec-head"><div class="h2">Deep links</div></div>
+    <div id="shx-links"></div>
+    <!-- ids: APP-SAVED-006 APP-SAVED-009 APP-SAVED-001 – стор избранного на устройстве: id вне снимка (бейдж считает, сетка пропускает); методы remove/clear без кнопок в приложении -->
+    <div class="sec-head"><div class="h2">Saved store</div></div>
+    <div class="pad">
+      <div class="kv"><span>Ids in saved.v1</span><span id="shx-fav-n">–</span></div>
+      <div class="kv"><span>Shown in Saved grid</span><span id="shx-fav-shown">–</span></div>
+      <div class="flex g8 mt12"><button class="btn --ghost --xs" onclick="ShopX.demoStaleFav()">Add a stale id (99)</button><button class="btn --ghost --xs" onclick="ShopX.demoClearFav()">clear() – store only</button></div>
+      <p class="xs muted mt8">AsyncStorage on the phone only · not synced with the account or the website.</p>
+    </div>
+    <!-- ids: APP-SHOP-006 APP-PDP-026 – выбор доставки на весь заказ (order-choice.v1): что сохранено, сброс для проверки нормализации -->
+    <div class="sec-head"><div class="h2">Order choice</div></div>
+    <div class="pad">
+      <div class="kv"><span>Delivery date</span><span id="shx-oc-day">–</span></div>
+      <div class="kv"><span>Window</span><span id="shx-oc-win">–</span></div>
+      <div class="kv"><span>Card</span><span id="shx-oc-card">–</span></div>
+      <div class="flex g8 mt12"><button class="btn --ghost --xs" onclick="ShopX.demoResetOC()">Reset order choice</button><button class="btn --ghost --xs" onclick="ShopX.demoStaleOC()">Make it stale</button></div>
+      <p class="xs muted mt8" style="margin-bottom:24px">Stale date moves to the nearest available day and the window to «Any time» on the next product or quick add.</p>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  const $=(s,r=document)=>r.querySelector(s);const X=window.ShopX;
+  const LINKS=[
+    ["floritta://category/sale","Virtual collection «Sale»",()=>App.go("category",{slug:"sale"})],
+    ["floritta://category/pink-flowers","Site collection by colour",()=>App.go("category",{slug:"pink-flowers"})],
+    ["floritta://category/all?price=under50&colour=pink,white&sort=asc&pet=1","Filters from query",()=>App.go("category",{slug:"all",price:"under50",colour:"pink,white",sort:"asc",pet:"1"})],
+    ["floritta://category/all?delivery=today","Delivery filter (after 10 pm hides everything)",()=>App.go("category",{slug:"all",delivery:"today"})],
+    ["floritta://category/balloons","Empty section",()=>App.go("category",{slug:"balloons"})],
+    ["floritta://category/no-such-thing","Unknown slug → «Category», empty",()=>App.go("category",{slug:"no-such-thing"})],
+    ["floritta://search?q=roses","Search with initial query",()=>App.go("search",{q:"roses"})],
+    ["floritta://product/peach-garden-posy","Product by slug",()=>App.go("pdp",{id:1})],
+    ["floritta://product/sold-out-bouquet","Product not found",()=>App.go("pdp",{id:999})]
+  ];
+  window._shxLink=i=>LINKS[i][2]();
+  window.mount_shx_demo=function(){
+    $("#shx-late").classList.toggle("on",X.late);$("#shx-late").setAttribute("aria-checked",X.late);
+    $("#shx-links").innerHTML=LINKS.map((l,i)=>`<button class="row" onclick="_shxLink(${i})"><div class="rt"><div class="l dl">${l[0]}</div><div class="d">${l[1]}</div></div>${App.icon("chev").replace("<svg",'<svg class="chev"')}</button>`).join("");
+    const fav=[...App.state.fav];$("#shx-fav-n").textContent=fav.length+(fav.includes(99)?" (incl. 99 – not in catalogue)":"");$("#shx-fav-shown").textContent=fav.map(App.product).filter(Boolean).length;
+    const OC=X.OC;$("#shx-oc-day").textContent=OC.day===null?"not set":OC.day===0?"Today":OC.day===1?"Tomorrow":App.dateLabel(X.days()[Math.min(OC.day,6)].d);
+    $("#shx-oc-win").textContent=X.winLabel(OC.win)||"–";$("#shx-oc-card").textContent=OC.card?`“${OC.card.slice(0,40)}”${OC.anon?" · anonymous":""}`:"none";
+  };
+  window.mount_shx_pdp_404=function(params){$("#shx-404-link").textContent=params&&params.id?`Link opened: floritta://product/${params.id===999?"sold-out-bouquet":params.id}`:""};
+  X.setLate=v=>{X.late=!!v;App.toast(X.late?"Demo: it is now after 10 pm in London":"Demo: back to the real time");window.mount_shx_demo()};
+  X.demoStaleFav=()=>{App.state.fav.add(99);document.dispatchEvent(new CustomEvent("fav"));App.toast("Added id 99 – badge counts it, the grid skips it");window.mount_shx_demo()};
+  X.demoClearFav=()=>{App.state.fav.clear();document.dispatchEvent(new CustomEvent("fav"));App.toast("savedActions.clear() – no button in the app");window.mount_shx_demo()};
+  X.demoResetOC=()=>{Object.assign(X.OC,{day:null,win:null,card:null,anon:false});App.toast("Order choice cleared");window.mount_shx_demo()};
+  X.demoStaleOC=()=>{X.OC.day=9;X.OC.win="9-13";App.toast("Date set to a day that is no longer offered");window.mount_shx_demo()};
+})();
+</script>
