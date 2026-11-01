@@ -1,9 +1,108 @@
+<style>
+.lr .rv-face-o{display:flex;flex-direction:column;border:1px solid var(--light);background:var(--paper);padding:24px;margin:12px var(--gutter) 0;min-height:300px}
+.lr .rv-face-o .big{font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1.12;margin:14px 0 20px}
+.lr .rv-idea{border-left:2px solid var(--ink);padding:4px 0 4px 14px;margin-top:12px;font-size:14px;line-height:1.45}
+</style>
+<!-- Review cards (/b/learn-review). Entered from the review panel, push review_due or an Inbox row; opens by push even without the Learn tab. ids: TM-LEARN-068 -->
 <section class="scr lr" id="s-review" data-nav="Review cards" data-group="Learning">
+  <!-- close/back, segments by card count + "2/7" counter ("question N of M" for VoiceOver). ids: TM-LEARN-042 TM-LEARN-046 -->
   <div class="appbar">
     <button class="ib" aria-label="Close" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="lr-seg" id="rv-seg"></div>
     <div class="lr-cnt" id="rv-cnt"></div>
   </div>
+  <!-- body (script below):
+       demo chips: live / loading / error / empty / 422 (answered elsewhere → skip) / send error; pull-to-refresh only while the deck is not loaded or empty. ids: TM-LEARN-043 TM-LEARN-044
+       deck frozen at first load – later refetches never reshuffle (note under the card). ids: TM-LEARN-045
+       flash card: "Question N of M", big text, grey "Answer" back. ids: TM-LEARN-047
+       "Show answer" (secondary), then "Didn't know" / "Knew it" – sends and moves on, double tap blocked. ids: TM-LEARN-048 TM-LEARN-049
+       option card: tap A/B/C sends at once, right green / wrong red, no second pick; verdict "Right" or "Wrong, correct: …" + main idea; "Next" active after verdict. ids: TM-LEARN-050 TM-LEARN-051 TM-LEARN-052
+       422 from server = skip quietly; other errors = "couldn't send", card stays. ids: TM-LEARN-053
+       "From lesson: …" link after reveal. ids: TM-LEARN-054
+       hint under the card ("missed cards come back sooner"). ids: TM-LEARN-055
+       result: Done, knew N of M, list with tick / repeat icon, "back later / soon"; +2 min paid. ids: TM-LEARN-056
+       "Back to learning". ids: TM-LEARN-057 -->
   <div class="scr-body has-cta" id="rv-body"></div>
   <div class="cta-bar" id="rv-cta"></div>
 </section>
+<script>
+(function(){
+'use strict';
+const A=window.App, ic=A.icon, L=window.LR;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const {sic,cardsList,baseCards}=L;
+const segs=(on,tot)=>Array.from({length:tot},(_,i)=>`<i class="${i<on?'on':''}"></i>`).join('');
+L.rdemo='live';
+const OPT={q:'Photos before packing – how many?',o:['One','Two','Five'],ok:1,idea:'Two shots: full bouquet plus the focal flower, in daylight.',src:2};
+const OPTC={q:'No answer at the door – first step?',o:['Leave it by the door','Call the recipient','Go back to the shop'],ok:1,idea:'Call the recipient, then the shop. Never leave flowers outside in rain.',src:8};
+let V=null;
+const buildDeck=()=>{const cards=cardsList(), extra=!cards.length, base=(extra?baseCards():cards).slice();
+/* the second card of the deck is a quiz-style card returned by CRM as a review card */
+if(base.length>1)base.splice(1,0,L.R()==='courier'?OPTC:OPT);return{cards:base,extra}};
+const top=()=>`<div class="lr-demo" style="padding-top:4px">${[['live','Live'],['loading','Loading'],['error','Error'],['empty','Empty'],['e422','422 → skip'],['senderr','Send error']].map(d=>`<button class="chip ${L.rdemo===d[0]?'on':''}" onclick="LR.rdemo='${d[0]}';window.mount_review()">${d[1]}</button>`).join('')}</div>`;
+const ptr=()=>`<button class="lr-ptr" onclick="App.haptic();App.toast('Deck refreshed')">${ic('repeat')} Pull to refresh</button>`;
+window.mount_review=function(){
+const body=$('#rv-body'), cta=$('#rv-cta');
+$('#rv-seg').innerHTML='';$('#rv-cnt').textContent='';cta.className='cta-bar';
+if(L.rdemo==='loading'){body.innerHTML=top()+ptr()+`<div class="lr-sk skeleton" style="height:380px;margin-top:12px"></div>`;cta.innerHTML='';return}
+if(L.rdemo==='error'){body.innerHTML=top()+ptr()+`<div class="pad mt12"><div class="panel --accent"><div class="h4 accent">Couldn't load your cards</div><div class="sm soft mt4">Pull down to try again.</div></div></div>`;cta.innerHTML=`<button class="btn --secondary" onclick="App.back('learn')">Back to learning</button>`;return}
+if(L.rdemo==='empty'){body.innerHTML=top()+ptr()+`<div class="pad mt12"><div class="panel"><div class="h3">No cards today</div><div class="sm soft mt4">Nothing to repeat. Missed quiz questions and cards you marked "didn't know" land here.</div></div></div>`;cta.innerHTML=`<button class="btn" onclick="App.back('learn')">Back to learning</button>`;return}
+const d=buildDeck();
+V={cards:d.cards,i:0,flip:false,knew:[],again:[],done:false,extra:d.extra,pick:null,verdict:null,busy:false,msg:''};
+vpaint();
+};
+function vpaint(){
+const n=V.cards.length, body=$('#rv-body'), cta=$('#rv-cta');
+if(V.done)return vresult();
+const c=V.cards[V.i], src=c.src?A.lesson(c.src):null, opt=!!c.o;
+$('#rv-seg').innerHTML=segs(V.i,n);$('#rv-cnt').textContent=(V.i+1)+'/'+n;
+const hint=`<div class="pad mt16 xs muted">${V.extra?'Extra practice – this does not change your schedule.':'Cards you miss return tomorrow. Cards you know return in 3 days.'} Deck fixed when opened – refreshing never reshuffles it.</div>`;
+if(opt){
+const v=V.verdict;
+body.innerHTML=top()+`<div class="lr-slide"><div class="rv-face-o"><div class="caps muted">Question ${V.i+1} of ${n}</div><div class="big">${c.q}</div><div>${c.o.map((t,k)=>`<button class="lr-opt ${v?(k===c.ok?'yes':k===V.pick?'bad':'dim'):''}" style="min-height:50px" onclick="LR.rpick(${k})"><span class="k">${v?(k===c.ok?ic('check'):k===V.pick?ic('close'):'ABC'[k]):'ABC'[k]}</span><span class="f1">${t}</span></button>`).join('')}</div>
+<div class="lr-fb" style="min-height:24px">${v?(v.correct?`<span class="ok">${sic('check',16,2)}</span> Right.`:`<span class="accent">${sic('close',16,2)}</span> Wrong. Correct: <b>${c.o[c.ok]}</b><div class="rv-idea"><span class="caps muted">Main idea</span><br>${c.idea}</div>`):V.msg}</div>
+${v&&src?`<button class="textbtn" style="align-self:flex-start" onclick="App.go('lesson',{id:${src.id}})">From: ${src.title.split(' – ')[0]}</button>`:''}</div>${hint}</div>`;
+cta.className='cta-bar';cta.innerHTML=`<button class="btn" ${v?'':'disabled'} onclick="LR.rnext(${v?v.correct:false})">Next</button>`;
+return;
+}
+body.innerHTML=top()+`<div class="lr-slide"><div class="lr-flip ${V.flip?'on':''}" id="rv-card" onclick="LR.flip()"><div class="lr-fi">
+<div class="lr-face"><div class="caps muted">Question ${V.i+1}</div><div class="big">${c.q}</div><div class="tap">${sic('sparkle',16)} Tap to reveal</div></div>
+<div class="lr-face bk"><div class="caps muted">Answer</div><div class="big" style="font-size:31px">${c.a}</div>${src?`<button class="textbtn" style="align-self:flex-start" onclick="event.stopPropagation();App.go('lesson',{id:${src.id}})">From: ${src.title.split(' – ')[0]}</button>`:''}</div></div></div>${hint}<div class="pad xs accent mt8" id="rv-msg">${V.msg}</div></div>`;
+flipCta();
+}
+function flipCta(){const cta=$('#rv-cta');cta.className='cta-bar'+(V.flip?' two':'');cta.innerHTML=V.flip?`<button class="btn --secondary" onclick="LR.rate(false)">Didn't know</button><button class="btn" onclick="LR.rate(true)">Knew it</button>`:`<button class="btn --secondary" onclick="LR.flip()">Show answer</button>`}
+L.flip=function(){const card=$('#rv-card');if(!card)return;V.flip=!V.flip;card.classList.toggle('on',V.flip);A.haptic();flipCta()};
+function send(ok){
+/* POST /learning/review/{id}/answer; 422 = answered elsewhere → skip; other error → keep the card */
+if(L.rdemo==='senderr'){V.msg='Couldn\'t send – check the connection and try again.';return'err'}
+if(L.rdemo==='e422'){A.toast('Already answered on another device – skipped');return'skip'}
+return'ok';
+}
+function advance(k){(k?V.knew:V.again).push(V.i);V.i++;V.flip=false;V.pick=null;V.verdict=null;V.msg='';V.busy=false;A.haptic();
+if(V.i>=V.cards.length){V.done=true;if(!V.extra){L.reviewed=true;L.queue=[];L.paid+=2}document.dispatchEvent(new CustomEvent('learn',{detail:{review:true}}))}
+vpaint()}
+L.rate=function(k){
+if(!V.flip||V.busy)return;V.busy=true;
+const r=send(k);
+if(r==='err'){V.busy=false;const m=$('#rv-msg');if(m)m.textContent=V.msg;return}
+advance(r==='skip'?true:k);
+};
+L.rpick=function(k){
+const c=V.cards[V.i];if(V.verdict||V.busy)return;V.busy=true;V.pick=k;
+const r=send(k===c.ok);
+if(r==='err'){V.pick=null;V.busy=false;vpaint();return}
+if(r==='skip'){advance(true);return}
+V.verdict={correct:k===c.ok};V.busy=false;A.haptic();vpaint();
+};
+L.rnext=function(ok){if(!V.verdict)return;advance(ok)};
+function vresult(){
+const n=V.cards.length, k=V.knew.length, sc=k/n;
+$('#rv-seg').innerHTML=segs(n,n);$('#rv-cnt').textContent='';
+$('#rv-body').innerHTML=top()+`<div class="pad lr-slide"><div class="flex ai-c mt16" style="gap:22px"><div id="rv-ring">${A.ring(0,112,'lr-big'+(sc>=.6?' --ok':''))}</div><div class="f1"><div class="caps muted">Review</div><h1 class="h1 mt4">Done</h1><div class="sm soft mt4">Knew ${k} of ${n} · next review Thu</div></div></div>
+<div class="mt24" style="border-top:1px solid var(--hair)">${V.cards.map((c,i)=>{const good=V.knew.includes(i);return `<div class="lr-qr"><span class="${good?'ok':''}" style="${good?'':'color:var(--warn)'}">${ic(good?'check':'repeat')}</span><div class="f1">${c.q}<div class="xs muted mt4">${good?'Back later':'Back soon'}</div></div></div>`}).join('')}</div>
+${V.extra?'':`<div class="panel --ok mt16 flex ai-c g12"><span class="ok">${sic('timer',20)}</span><div class="sm">+2 min added to your paid learning time</div></div>`}<div class="xs muted mt12">Outcomes are shown here only – CRM decides when each card returns.</div></div>`;
+L.animRing($('#rv-ring .ring'),sc);
+$('#rv-cta').className='cta-bar';$('#rv-cta').innerHTML=`<button class="btn" onclick="App.back('learn')">Back to learning</button>`;
+}
+})();
+</script>

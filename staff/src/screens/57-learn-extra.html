@@ -1,0 +1,408 @@
+<style>
+.lr .gh-tile{display:flex;gap:14px;align-items:center;width:calc(100% - 32px);margin:0 var(--gutter) 8px;padding:16px;border:1px solid var(--hair);text-align:left}
+.lr .gh-tile.big{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.lr .gh-tile.big .h3{color:var(--paper)}
+.lr .gh-tile .ic{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.lr .gh-sec{display:flex;align-items:center;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.lr .gh-sec .ic{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5}
+.lr .gl-row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:10px var(--gutter);border-bottom:1px solid var(--hair)}
+.lr .gl-row img,.lr .gl-row .ph{width:48px;height:48px;object-fit:cover;background:var(--silver);flex:none;display:grid;place-items:center;color:var(--grey)}
+.lr .gl-row .ph svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+.lr .gl-search{position:relative;margin:0 var(--gutter)}
+.lr .gl-search .input{padding-left:44px;padding-right:44px;height:46px}
+.lr .gl-search>svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;stroke:var(--grey);fill:none;stroke-width:1.5}
+.lr .gl-search .clr{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;display:grid;place-items:center}
+.lr .gl-search .clr svg{width:16px;height:16px;stroke:var(--grey);fill:none;stroke-width:1.5}
+.lr .gl-big{position:relative;aspect-ratio:1;background:var(--silver);margin:0 var(--gutter);overflow:hidden}
+.lr .gl-big img{width:100%;height:100%;object-fit:cover}
+.lr .gl-now{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid var(--ink);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.lr .gl-now.p{background:var(--ink);color:var(--paper)}
+.lr .gl-now.n{border-color:var(--light);color:var(--grey)}
+/* classic step lesson */
+.lr .lx-md h3{font-family:var(--f-display);font-weight:400;font-size:22px;margin:22px 0 6px}
+.lr .lx-md p{font-size:16px;line-height:1.55;margin:10px 0;color:var(--graphite)}
+.lr .lx-md p.key{border:1px solid var(--ink);padding:12px 14px;color:var(--ink)}
+.lr .lx-md ul{padding-left:18px;font-size:15px;line-height:1.5;color:var(--graphite)}
+.lr .lx-md blockquote{border-left:2px solid var(--ink);margin:14px 0;padding:2px 0 2px 14px;font-family:var(--f-display);font-size:21px;line-height:1.3}
+.lr .lx-md a{text-decoration:underline;text-underline-offset:3px}
+.lr .lx-md img{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--silver);margin-top:10px}
+.lr .lx-md figcaption{font-size:12px;color:var(--grey);margin-top:6px}
+.lr .lx-vid{position:relative;aspect-ratio:16/9;background:var(--silver);overflow:hidden;margin-top:10px;display:block;width:100%}
+.lr .lx-vid img{width:100%;height:100%;object-fit:cover}
+.lr .lx-vid .lr-play{position:absolute}
+.lr .lx-ck{counter-reset:ck;margin-top:8px}
+.lr .lx-ck .check{counter-increment:ck}
+.lr .lx-ck .check .cb{font-size:11px;color:var(--grey)}
+.lr .lx-ck .check .cb::before{content:counter(ck)}
+.lr .lx-ck .check.on .cb{color:var(--paper)}
+.lr .lx-ck .check.on .cb::before{content:""}
+.lr .lx-dots{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--grey)}
+.lr .lx-dots i{width:8px;height:8px;border:1px solid var(--light)}
+.lr .lx-dots i.on{background:var(--ink);border-color:var(--ink)}
+.lr .lx-ph{width:100%;aspect-ratio:4/3;border:1px dashed var(--light);display:grid;place-items:center;text-align:center;color:var(--graphite);font-size:14px;gap:8px;margin-top:12px;position:relative;overflow:hidden}
+.lr .lx-ph svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.5}
+.lr .lx-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lr .lx-yn{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--hair)}
+.lr .lx-yn .q{flex:1;font-size:15px;line-height:1.4}
+.lr .lx-yn .seg{height:36px;width:120px;flex:none}
+.lr .lx-sig{border:1px solid var(--light);height:150px;position:relative;touch-action:none;background:var(--paper);margin-top:8px}
+.lr .lx-sig canvas{width:100%;height:100%;display:block}
+.lr .lx-sig .ln{position:absolute;left:16px;right:16px;bottom:34px;border-top:1px dashed var(--light);pointer-events:none}
+.lr .lx-sig .lb{position:absolute;left:16px;bottom:10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);pointer-events:none}
+.lr .lx-cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.lr .lx-cmp>div{border:1px solid var(--hair);padding:12px;font-size:13px;line-height:1.45}
+.lr .lx-cmp .caps{display:block;color:var(--grey);margin-bottom:6px}
+.lr .lx-res{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14px;width:100%;text-align:left}
+.lr .lx-res svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;flex:none;margin-top:1px}
+.lr .lx-hint{font-size:12px;color:var(--grey);text-align:center;width:100%;position:absolute;left:0;right:0;bottom:calc(6px + var(--safe-b))}
+.lr .lx-cta{padding-bottom:calc(30px + var(--safe-b))}
+.lr .lx-cta .lr-prev{flex:none;width:52px;padding:0}
+.lr .lx-goal{display:flex;gap:12px;align-items:flex-start;padding:14px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.lr .lx-goal .cb{width:22px;height:22px;border:1px solid var(--light);display:grid;place-items:center;flex:none;margin-top:1px}
+.lr .lx-goal.on .cb{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.lr .lx-goal .cb svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.lr .lx-push{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:14px var(--gutter);border-bottom:1px solid var(--hair)}
+.lr .lx-push .pl{width:36px;height:36px;background:var(--ink);color:var(--paper);display:grid;place-items:center;flex:none}
+.lr .lx-push .pl svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+</style>
+
+<!-- ============ Азбука home (/glossary) – root screen, classic shell ============ -->
+<!-- entered from the Azbuka card on Learn. ids: TM-LEARN-027 TM-CLEARN-018 -->
+<section class="scr lr" id="s-gl-home" data-nav="Азбука · home" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Азбука флориста</div></div>
+  <!-- demo chips live / offline (saved copy) / loading / error / no cards; pull-to-refresh. ids: TM-GLOS-001 TM-GLOS-002 TM-GLOS-003 TM-GLOS-008 TM-GLOS-009
+       ring N% + "Learned X of Y" + "counted only after a right answer in the quiz", streak N days. ids: TM-GLOS-004
+       big tile Deck of the day: "N new + M to review · ~K min" or "All done for today", Start. ids: TM-GLOS-005
+       tiles What is it? (N photos waiting), Reference (search EN / RU / Latin), Seasons (October: N at peak). ids: TM-GLOS-006
+       Sections list with learned / total. ids: TM-GLOS-007 -->
+  <div class="scr-body" id="gh-body"></div>
+</section>
+
+<!-- ============ Reference list (/glossary/list) ============ -->
+<section class="scr lr" id="s-gl-list" data-nav="Азбука · reference" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('gl-home')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Reference</div></div>
+  <!-- search by name in both languages, Latin and synonyms, clear button, no autocorrect – local, works offline. ids: TM-GLOS-029
+       chips All / Learn / New / sections (empty ones hidden). ids: TM-GLOS-030
+       row: photo or placeholder, name, Latin, status pill (New / Learn / In review / Learned). ids: TM-GLOS-031
+       tap → full card. ids: TM-GLOS-032
+       "Nothing found" / "Didn't load". ids: TM-GLOS-034 -->
+  <div class="scr-body" id="gls-body"></div>
+</section>
+
+<!-- ============ Full card (/glossary/[id]) ============ -->
+<section class="scr lr" id="s-gl-term" data-nav="Азбука · card" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('gl-list')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="glt-ttl">Card</div></div>
+  <!-- big photo, name, status pill, subtitle, the same body (chips, how to recognise, care, similar, team only, tips), "+ Add information" with the same sheet and toast; missing id → "Not found". ids: TM-GLOS-033 TM-GLOS-034 -->
+  <div class="scr-body" id="glt-body"></div>
+</section>
+
+<!-- ============ Flower season page (/glossary/season/[genus]) ============ -->
+<section class="scr lr" id="s-gl-flower" data-nav="Азбука · flower season" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('glossary')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="glf-ttl">Flower</div></div>
+  <!-- photo, name, badge "Now: peak / on sale / not in", Latin, 12-month bar with the current month, legend, Peak and On sale in words, season text, "Our varieties (N)". ids: TM-GLOS-042
+       variety chips (up to 12, "+N more") → reference card. ids: TM-GLOS-043
+       "Learn these cards (N)" → deck of this genus only; all learned → "All cards learned". ids: TM-GLOS-044
+       genus not found → "Not found"; loading. ids: TM-GLOS-045 -->
+  <div class="scr-body has-cta" id="glf-body"></div>
+  <div class="cta-bar" id="glf-cta"></div>
+</section>
+
+<!-- ============ "When is it in season?" (/glossary/season-quiz) ============ -->
+<section class="scr lr" id="s-gl-sq" data-nav="Азбука · season quiz" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Close" onclick="App.back('glossary')"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="lr-seg" id="sq-seg"></div><div class="lr-cnt" id="sq-cnt"></div></div>
+  <!-- 5 questions: photo, pick the peak season of four; answer coloured green / accent, 12-month bar and "Peak: …" under it; local only, no server. ids: TM-GLOS-046
+       Next; result "X of 5", Again (new round), Back. ids: TM-GLOS-047
+       no data → "No seasons yet". ids: TM-GLOS-048 -->
+  <div class="scr-body has-cta" id="sq-body"></div>
+  <div class="cta-bar" id="sq-cta"></div>
+</section>
+
+<!-- ============ Lesson · full flow (/learning/[id], classic step lesson used by B, classic and the freelance app) ============ -->
+<!-- single hand-in point; lesson_due push opens it. ids: TM-LEARN-074 TM-LEARN-067 TM-CLEARN-042 -->
+<section class="scr lr" id="s-lx-lesson" data-nav="Lesson · full flow" data-group="Learning">
+  <!-- no system title: round close (router.back) + segmented step scale ("Step N of M"). ids: TM-CLEARN-024 -->
+  <div class="appbar">
+    <button class="ib" aria-label="Close" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="lr-seg" id="lx-seg" role="progressbar"></div>
+    <div class="lr-cnt" id="lx-cnt"></div>
+  </div>
+  <!-- demo chips choose the lesson kind: Quiz / Photo task / Link proof / Declaration (alcohol) / Station / Handed in (awaiting countersign) / Bad id.
+       loading; bad deep-link id → no request, "Couldn't load". ids: TM-CLEARN-023
+       steps depend on the lesson: station = read only; handed in = read → result; consent lesson skips own words; questions only if present; proof only for photo / link / declaration. ids: TM-CLEARN-025
+       opens on the right step: result when handed in or last attempt failed, else read. ids: TM-CLEARN-026
+       READ: "Lesson · N min · overdue", title, markdown body (headings, lists, quote, bold, link, image with caption) or old text with the first paragraph in a key frame, numbered checklist. ids: TM-CLEARN-027
+       photo with caption; video = preview with play that opens in the in-app browser (no built-in player); links open in the browser. ids: TM-CLEARN-028
+       language switch English / Русский when ≥2 translations (default = app language, then profile language); same on the declaration step. ids: TM-CLEARN-029
+       station: olive frame "This is a station: a manager clears you after watching you on shift", "cleared" tick, "Back to learning". ids: TM-CLEARN-030
+       OWN WORDS: textarea, dot counter "N of 5 words", dictation hint; Next off under 5 words. ids: TM-CLEARN-031
+       CHECK YOURSELF: one question per screen, A/B/C, "Question N of M", Next after a pick; on return after a fail the old answers are marked, wrong ones red. ids: TM-CLEARN-032
+       PROOF photo: tile "Take or choose a photo" → camera / library sheet, preview, "Photo attached", "Retake"; photo travels with the answers. ids: TM-CLEARN-033
+       PROOF link: URL field, no auto-capitalisation. ids: TM-CLEARN-034
+       DECLARATION: Yes / No per question (never pre-filled), declaration text, "I have read and accept" switch, full name (2 words). ids: TM-CLEARN-035
+       finger signature pad: Clear, "Too short – sign again", page does not scroll while drawing. ids: TM-CLEARN-036
+       HAND IN: collects time, main idea, answers, url, photo, declaration, name, strokes, choices; incomplete → "Answer every question, write the main idea and sign"; send error text. ids: TM-CLEARN-037
+       RESULT: ring "X of Y right" or icon, "Passed! / Not yet / Sent", fail reason, "Awaiting manager countersign" / "Sent for review", "Signed: name · time", your choices, "+N min work time". ids: TM-CLEARN-038
+       "You wrote" vs "As in the lesson" cards, only after an attempt. ids: TM-CLEARN-039
+       rows per question (tap → that question), "Answer again" / "Rewrite the main idea" / "Re-read the lesson". ids: TM-CLEARN-040
+       bottom bar: back chevron, main button by step, hint under it. ids: TM-CLEARN-041 -->
+  <div class="scr-body has-cta" id="lx-body"></div>
+  <div class="cta-bar lx-cta" id="lx-cta"></div>
+  <div class="lx-hint" id="lx-hint"></div>
+</section>
+
+<!-- ============ My plan (/goals) – root screen opened over B ============ -->
+<!-- ids: TM-LEARN-016 TM-LEARN-017 TM-LEARN-075 TM-CLEARN-012 -->
+<section class="scr lr" id="s-lx-goals" data-nav="My plan (goals)" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My plan</div></div>
+  <div class="scr-body" id="lxg-body"></div>
+</section>
+
+<!-- ============ What changed – all stories (list view of the Learn block, opens the same sheet) ============ -->
+<!-- ids: TM-LEARN-018 TM-LEARN-019 TM-LEARN-020 TM-LEARN-021 TM-CLEARN-013 TM-CLEARN-014 TM-CLEARN-015 TM-CLEARN-016 TM-CLEARN-017 -->
+<section class="scr lr" id="s-lx-changes" data-nav="What changed · stories" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">What changed</div></div>
+  <div class="scr-body" id="lxc-body"></div>
+</section>
+
+<!-- ============ Push routes for learning (cross-cutting) ============ -->
+<!-- lesson_due → the lesson; review_due → review (B) or the learning list (classic); learning push without a lesson → Learn tab; open app → data refresh first; cold start → refresh then route; mounted variant decides B vs classic; Inbox rows use the same router. ids: TM-LEARN-067 TM-LEARN-068 TM-LEARN-069 TM-LEARN-070 TM-LEARN-071 TM-LEARN-072 TM-LEARN-073 TM-CLEARN-042 -->
+<section class="scr lr" id="s-lx-push" data-nav="Learning pushes" data-group="Learning">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Learning pushes</div></div>
+  <div class="scr-body" id="lxp-body"></div>
+</section>
+
+<script>
+(function(){
+'use strict';
+const A=window.App, ic=A.icon, L=window.LR, GL=window.T21;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const {sic,chev}=L;
+const E=GL.E, SEASONS=GL.SEASONS, MN=GL.MN, NOWM=GL.NOWM;
+const segs=(on,tot)=>Array.from({length:tot},(_,i)=>`<i class="${i<on?'on':''}"></i>`).join('');
+const ricon=n=>ic(n).replace('<svg','<svg class="ic"');
+/* ================= Azbuka home ================= */
+let GH={demo:'live'};
+window.mount_gl_home=function(){
+const b=$('#gh-body');
+const chips=`<div class="lr-demo" style="padding-top:4px">${[['live','Live'],['offline','Offline copy'],['loading','Loading'],['error','Error'],['none','No cards']].map(d=>`<button class="chip ${GH.demo===d[0]?'on':''}" onclick="T57.ghDemo('${d[0]}')">${d[1]}</button>`).join('')}</div><button class="lr-ptr" onclick="App.haptic();App.toast('Glossary refreshed · copy on the phone updated, photos cached')">${ic('repeat')} Pull to refresh</button>`;
+if(GH.demo==='loading'){b.innerHTML=chips+`<div class="lr-sk skeleton"></div><div class="lr-sk skeleton" style="height:120px"></div>`;return}
+if(GH.demo==='error'){b.innerHTML=chips+`<div class="pad"><div class="panel --accent"><div class="h4 accent">Didn't load</div><div class="sm soft mt4">Pull down to try again. Retried twice already; not retried on a 4xx.</div></div></div>`;return}
+if(GH.demo==='none'){b.innerHTML=chips+`<div class="pad"><div class="panel"><div class="h3">No cards yet</div><div class="sm soft mt4">CRM has not published any glossary cards. On Learn the Азбука card and its heading are not shown at all.</div></div></div>`;return}
+const learned=L.glossKnown, tot=GL.total, q=GL.deckQueue(''), newN=q.filter(e=>e.st==='new').length, rev=q.length-newN, quizN=GL.quizQueue().length, peakN=SEASONS.filter(s=>s.peak.includes(NOWM)&&s.peak.length<10).length;
+const secs=GL.SECS.map(s=>{const all=E.filter(e=>e.sec===s.k).length, l=E.filter(e=>e.sec===s.k&&e.st==='learned').length;return `<button class="gh-sec" onclick="App.go('gl-list',{sec:'${s.k}'})">${ricon(s.k==='cut'?'flower':s.k==='green'?'leaf':s.k==='pot'?'sun':s.k==='balloon'?'star':s.k==='wrap'?'tag':s.k==='tools'?'edit':s.k==='gift'?'star':'leaf')}<div class="rt f1"><div class="sm">${s.n}</div></div><span class="xs muted num">${all?`${l} / ${all}`:'soon'}</span>${chev}</button>`}).join('');
+b.innerHTML=chips+GL.offBar()+`<div class="lr-hero" style="padding-top:4px">${A.ring(learned/tot,96,'lr-big')}<div class="f1"><div class="caps muted">Learned</div><div class="h2 mt4">${learned} of ${tot}</div><div class="xs muted mt4">Counted only after a right answer in the quiz</div><div class="mt8">${A.pill('done',`${GL.streak} days in a row`)}</div></div></div>
+<div class="sec-head"><div class="h2">Today</div></div>
+<button class="gh-tile big" onclick="App.go('glossary',{fresh:true,tab:'deck'})">${ricon('book')}<div class="f1"><div class="h3">Deck of the day</div><div class="sm mt4" style="opacity:.8">${L.glossDone?'All done for today':`${newN} new + ${rev} to review · ~${Math.max(1,Math.round(q.length*.4))} min`}</div></div><span class="lr-link" style="color:var(--paper);border-color:rgba(253,253,253,.5)">Start</span></button>
+<button class="gh-tile" onclick="App.go('glossary',{fresh:true,tab:'photo'})">${ricon('camera')}<div class="f1"><div class="h4">What is it?</div><div class="sm muted mt4">${quizN} photos waiting to be checked</div></div>${chev}</button>
+<button class="gh-tile" onclick="App.go('gl-list')">${ricon('search')}<div class="f1"><div class="h4">Reference</div><div class="sm muted mt4">Search by EN / RU / Latin</div></div>${chev}</button>
+<button class="gh-tile" onclick="App.go('glossary',{fresh:true,tab:'seasons'})">${ricon('sun')}<div class="f1"><div class="h4">Seasons</div><div class="sm muted mt4">${GL.noSeasons?'Not published yet':`October: ${peakN} at peak`}</div></div>${chev}</button>
+<div class="sec-head"><div class="h2">Sections</div></div>${secs}<div class="pad xs muted mt12">Saved on this phone · works in the cold room without signal.</div><div style="height:16px"></div>`;
+};
+const T57=window.T57={};
+T57.ghDemo=v=>{GH.demo=v;GL.offline=v==='offline';L.noSeasons=GL.noSeasons;window.mount_gl_home()};
+/* ================= Reference list ================= */
+let GS={q:'',f:'all'};
+window.mount_gl_list=function(p){
+p=p||{};if(p.sec)GS.f=p.sec;
+const b=$('#gls-body');
+const F=[['all','All'],['learn','Learn'],['new','New']].concat(GL.SECS.filter(s=>E.some(e=>e.sec===s.k)).map(s=>[s.k,s.n]));
+const norm=s=>(s||'').toLowerCase().replace(/ё/g,'е');
+const q=norm(GS.q);
+let list=E.filter(e=>GS.f==='all'?true:GS.f==='learn'?e.st==='learn'||e.st==='check':GS.f==='new'?e.st==='new':e.sec===GS.f);
+if(q)list=list.filter(e=>[e.n,e.ru,e.lat,e.genus].some(x=>norm(x).includes(q)));
+b.innerHTML=`<div class="gl-search mt4">${ic('search')}<input class="input" id="gls-q" placeholder="Rose, роза, Rosa…" autocorrect="off" autocapitalize="none" spellcheck="false" value="${GS.q.replace(/"/g,'&quot;')}" oninput="T57.glsQ(this.value)">${GS.q?`<button class="clr" aria-label="Clear" onclick="T57.glsQ('')">${ic('close')}</button>`:''}</div>
+<div class="chips mt12">${F.map(f=>`<button class="chip ${GS.f===f[0]?'on':''}" onclick="T57.glsF('${f[0]}')">${f[1]}</button>`).join('')}</div>
+<div class="mt12" style="border-top:1px solid var(--hair)">${list.length?list.map(e=>`<button class="gl-row" onclick="App.go('gl-term',{id:${e.id}})">${e.img?`<img src="${e.img}" alt="">`:`<span class="ph">${ic('camera')}</span>`}<div class="f1"><div class="sm">${e.n} <span class="muted">· ${e.ru}</span></div><div class="xs muted mt4">${e.lat||GL.secName(e.sec)}</div></div>${GL.pill(e.st)}</button>`).join(''):`<div class="pad mt24"><div class="panel"><div class="h4">Nothing found</div><div class="sm soft mt4">Try the English, Russian or Latin name.</div></div></div>`}</div>
+<div class="pad xs muted mt12">${GL.offline?'Searching the saved copy – no connection needed.':'Search runs on the phone over the saved copy.'}</div><div style="height:16px"></div>`;
+if(p.focus){const i=$('#gls-q');if(i)i.focus()}
+};
+T57.glsQ=v=>{GS.q=v;const b=$('#gls-body');const st=b.scrollTop;window.mount_gl_list({focus:true});b.scrollTop=st;const i=$('#gls-q');if(i){i.setSelectionRange(v.length,v.length)}};
+T57.glsF=f=>{GS.f=f;window.mount_gl_list()};
+/* ================= Full card ================= */
+window.mount_gl_term=function(p){
+p=p||{};const e=E.find(x=>x.id===+p.id);const b=$('#glt-body');
+if(!e){$('#glt-ttl').textContent='Card';b.innerHTML=`<div class="pad mt16"><div class="panel"><div class="h3">Not found</div><div class="sm soft mt4">This card is no longer in the glossary.</div><button class="btn --xs --secondary mt12" onclick="App.go('gl-list')">Open the reference</button></div></div>`;return}
+$('#glt-ttl').textContent=e.n;
+b.innerHTML=`${GL.offBar()}<div class="gl-big">${e.img?`<img src="${e.img}" alt="">`:`<div class="gl-noph" style="height:100%">No photo yet</div>`}</div><div class="pad mt16"><div class="flex ai-c jc-sb g12"><h1 class="h2">${e.n}</h1>${GL.pill(e.st)}</div><div class="soft mt4" style="font-size:16px">${e.ru}${e.lat?` · <span class="muted">${e.lat}</span>`:''}</div><div class="xs muted mt4">${GL.secName(e.sec)}${e.genus?` · <button class="textbtn" onclick="App.go('gl-flower',{genus:'${e.genus}'})">${e.genus} season</button>`:''}</div>${GL.body(e)}</div><div style="height:24px"></div>`;
+};
+/* ================= Flower season page ================= */
+window.mount_gl_flower=function(p){
+p=p||{};const s=SEASONS.find(x=>x.genus===p.genus);const b=$('#glf-body'),cta=$('#glf-cta');
+if(!s){$('#glf-ttl').textContent='Flower';b.innerHTML=`<div class="pad mt16"><div class="panel"><div class="h3">Not found</div><div class="sm soft mt4">No season data for this flower.</div></div></div>`;cta.innerHTML=`<button class="btn --secondary" onclick="App.back('glossary')">Back</button>`;return}
+$('#glf-ttl').textContent=s.genus;
+const now=s.peak.includes(NOWM)?'p':s.sale.includes(NOWM)?'s':'n', vars=GL.varieties(s.genus), left=vars.filter(v=>v.st!=='learned').length;
+const mon=a=>{const r=[];let st=null;const arr=a.slice().sort((x,y)=>x-y);for(let i=0;i<arr.length;i++){if(st===null)st=arr[i];if(arr[i+1]!==arr[i]+1){r.push(st===arr[i]?MN[st-1]:`${MN[st-1]}–${MN[arr[i]-1]}`);st=null}}return r.join(', ')};
+b.innerHTML=`<div class="gl-big" style="aspect-ratio:4/3"><img src="${s.img}" alt=""></div><div class="pad mt16"><div class="flex ai-c jc-sb g12"><h1 class="h2">${s.genus}</h1><span class="gl-now ${now}">${now==='p'?'Now: peak':now==='s'?'Now: on sale':'Now: not in'}</span></div><div class="soft mt4" style="font-size:16px">${s.ru} · <span class="muted">${s.lat}</span></div>
+<div class="mt16">${GL.strip(s,true)}${GL.stripL()}</div><div class="gl-legend" style="padding-left:0"><span><i class="p"></i>Peak</span><span><i class="s"></i>On sale</span><span><i></i>Not in</span></div>
+<div class="mt16 sm"><b>Peak</b> · ${s.peak.length>=10?'all year':mon(s.peak)}</div><div class="sm mt4"><b>On sale</b> · ${s.sale.length>=12?'all year':mon(s.sale)}</div><p class="sm soft" style="margin:12px 0 0;line-height:1.5">${s.text}${s.checked?'':' <span class="muted">· not yet verified</span>'}</p>
+<div class="sec-head" style="padding:0;margin:28px 0 10px"><div class="h2">Our varieties</div><span class="xs muted">${vars.length}</span></div><div class="chips" style="padding:0;flex-wrap:wrap">${vars.slice(0,12).map(v=>`<button class="chip" onclick="App.go('gl-term',{id:${v.id}})">${v.n}</button>`).join('')}${vars.length>12?`<span class="chip">+${vars.length-12} more</span>`:''}${vars.length?'':'<span class="sm muted">No cards for this flower yet</span>'}</div></div><div style="height:24px"></div>`;
+cta.innerHTML=left?`<button class="btn" onclick="App.go('glossary',{fresh:true,tab:'deck',genus:'${s.genus}'})">Learn these cards (${left})</button>`:`<button class="btn --secondary" disabled>All cards learned</button>`;
+};
+/* ================= Season quiz ================= */
+let SQ=null;
+window.mount_gl_sq=function(p){
+p=p||{};
+if(p.fresh||!SQ){const pool=SEASONS.filter(s=>s.peak.length<10&&s.img);const seed='2026-10-20#'+((SQ&&SQ.round)||0);const qs=pool.slice().sort((a,b)=>((a.genus+seed).length*7)%5-((b.genus+seed).length*7)%5).slice(0,5).map(s=>({s,pick:null}));SQ={qs,i:0,ok:0,done:false,round:((SQ&&SQ.round)||0)+1}}
+sqPaint();
+};
+function sqPaint(){
+const b=$('#sq-body'),cta=$('#sq-cta'),n=SQ.qs.length;
+if(!n){b.innerHTML=`<div class="pad mt24"><div class="panel"><div class="h3">No seasons yet</div></div></div>`;cta.innerHTML=`<button class="btn --secondary" onclick="App.back('glossary')">Back</button>`;return}
+if(SQ.done){$('#sq-seg').innerHTML=segs(n,n);$('#sq-cnt').textContent='';b.innerHTML=`<div class="pad lr-slide"><div class="flex ai-c mt24" style="gap:22px"><div id="sq-ring">${A.ring(0,112,'lr-big'+(SQ.ok>=3?' --ok':''))}</div><div class="f1"><div class="caps muted">When is it in season?</div><h1 class="h1 mt4">${SQ.ok} of ${n}</h1><div class="sm soft mt4">Practice only – not sent anywhere, not in your glossary progress.</div></div></div></div>`;L.animRing($('#sq-ring .ring'),SQ.ok/n);cta.className='cta-bar two';cta.innerHTML=`<button class="btn --secondary" onclick="App.back('glossary')">Back</button><button class="btn" onclick="App.go('gl-sq',{fresh:true})">Again</button>`;return}
+const q=SQ.qs[SQ.i], right=GL.seasonOf(q.s.peak[0]), opts=['Winter','Spring','Summer','Autumn'];
+$('#sq-seg').innerHTML=segs(SQ.i,n);$('#sq-cnt').textContent=(SQ.i+1)+'/'+n;
+b.innerHTML=`<div class="lr-slide"><div class="pad mt16"><div class="caps muted">Question ${SQ.i+1} of ${n}</div><h1 class="h2 mt8">When is ${q.s.genus.toLowerCase()} at its peak?</h1></div><div class="lr-pq mt12"><img src="${q.s.img}" alt=""></div><div class="pad mt16">${opts.map(o=>`<button class="lr-opt ${q.pick===null?'':(o===right?'yes':o===q.pick?'bad':'dim')}" onclick="T57.sqPick('${o}')"><span class="k">${q.pick===null?o[0]:(o===right?ic('check'):o===q.pick?ic('close'):o[0])}</span><span class="f1">${o}</span></button>`).join('')}
+${q.pick!==null?`<div class="mt12">${GL.strip(q.s,true)}${GL.stripL()}</div><div class="sm mt8">Peak: <b>${right}</b> · ${q.s.peak.map(m=>MN[m-1]).join(', ')}</div>`:''}</div></div>`;
+cta.className='cta-bar';cta.innerHTML=`<button class="btn" ${q.pick===null?'disabled':''} onclick="T57.sqNext()">${SQ.i===n-1?'Finish':'Next'}</button>`;
+}
+T57.sqPick=o=>{const q=SQ.qs[SQ.i];if(q.pick!==null)return;q.pick=o;if(o===GL.seasonOf(q.s.peak[0]))SQ.ok++;A.haptic();sqPaint()};
+T57.sqNext=()=>{if(SQ.i<SQ.qs.length-1)SQ.i++;else SQ.done=true;sqPaint()};
+/* ================= Lesson · full flow ================= */
+const LX={
+ quiz:{id:1,title:'Same-day until 10 pm – what to tell clients',mins:3,cat:'Handover',due:'overdue 1 day',md:true,questions:[{q:'A client calls at 21:40 and wants delivery tonight. What do you say?',a:['Sorry, we closed at 9.','We can still deliver today until 10 pm – let me check the slot.','Only tomorrow, sorry.'],ok:1},{q:'Last production slot for same-day?',a:['20:00','21:15','22:00'],ok:1}],ref:'Same-day is a promise until 22:00; the last production slot is 21:15.',ru:true,media:'photo'},
+ photo:{id:2,title:'Photo before packing – the Floritta standard',mins:3,cat:'Handover',due:'due Thu',md:true,questions:[{q:'How many photos minimum?',a:['One','Two','Five'],ok:1}],proof:'photo',ref:'Two photos in daylight before packing: full bouquet and the focal flower.',ru:true,media:'video'},
+ link:{id:12,title:'Your Floritta Team profile – set it up',mins:2,cat:'App',due:'due Fri',md:false,questions:[],proof:'link',ref:'A complete profile with a photo and a phone number.',ru:false},
+ declaration:{id:4,title:'Alcohol with gifts – Challenge 25',mins:4,cat:'Compliance',due:'due today',md:true,questions:[{q:'Accepted ID?',a:['Student card','PASS card','Bank card'],ok:1}],proof:'declaration',consent:true,ref:'No ID – no alcohol. Log every refusal.',ru:true},
+ station:{id:13,title:'Photo station – standard',mins:2,cat:'Station',due:'',md:true,questions:[],station:true,cleared:true,ru:false},
+ submitted:{id:9,title:'Fire safety & first aid in the shop',mins:5,cat:'Compliance',due:'',md:true,questions:[{q:'Where is the first-aid kit?',a:['Under the till','In the van','In the fridge'],ok:0}],proof:'declaration',handedIn:true,ref:'Extinguisher by the back door, kit under the till, assembly point by the gate.',ru:true},
+ bad:null};
+let X=null;
+const stepsOf=(l)=>{if(l.station)return['read'];if(l.handedIn)return['read','result'];const s=['read'];if(!l.consent)s.push('words');if(l.questions.length)s.push('quiz');if(l.proof)s.push('proof');s.push('result');return s};
+window.mount_lx_lesson=function(p){
+p=p||{};const kind=p.kind||(X?X.kind:'quiz');
+if(!X||X.kind!==kind||p.fresh){const l=LX[kind];X={kind,l,step:0,qi:0,lang:'en',words:'',answers:[],photo:false,url:'',choices:[null,null,null],accept:false,name:'',sig:0,last:null,err:'',t0:Date.now(),verdict:null};
+if(l){X.steps=stepsOf(l);if(l.handedIn){X.step=X.steps.indexOf('result');X.verdict={v:'needs_review',ok:1,n:1};X.words='Extinguisher by the back door, first-aid kit under the till, meet at the gate.';X.answers=[0];X.name='Kamila Nurlan';X.choices=[true,true,false]}}}
+lxPaint();
+};
+const chipsBar=()=>`<div class="lr-demo" style="padding-top:4px">${[['quiz','Quiz'],['photo','Photo task'],['link','Link proof'],['declaration','Declaration'],['station','Station'],['submitted','Handed in'],['bad','Bad id']].map(d=>`<button class="chip ${X.kind===d[0]?'on':''}" onclick="App.go('lx-lesson',{kind:'${d[0]}',fresh:true},{replace:true})">${d[1]}</button>`).join('')}</div>`;
+function lxPaint(){
+const b=$('#lx-body'),cta=$('#lx-cta'),hint=$('#lx-hint'),l=X.l;
+if(!l){$('#lx-seg').innerHTML='';$('#lx-cnt').textContent='';b.innerHTML=chipsBar()+`<div class="pad mt16"><div class="panel --accent"><div class="h4 accent">Couldn't load</div><div class="sm soft mt4">This link points at a lesson id that does not exist – no request was sent.</div></div></div>`;cta.innerHTML=`<button class="btn --secondary" onclick="App.back('learn')">Back to learning</button>`;hint.textContent='';return}
+const st=X.steps[X.step], n=X.steps.length;
+$('#lx-seg').innerHTML=segs(X.step+1,n);$('#lx-seg').setAttribute('aria-label',`Step ${X.step+1} of ${n}`);$('#lx-cnt').textContent=`${X.step+1}/${n}`;
+let h='',c='',hi='';
+const prev=X.step>0&&st!=='result'?`<button class="btn --ghost lr-prev" aria-label="Back" onclick="T57.lxPrev()">${ic('back')}</button>`:'';
+if(st==='read'){
+const ru=X.lang==='ru';
+const langSeg=l.ru?`<div class="seg" style="height:36px;width:200px;margin-top:12px"><button class="${!ru?'on':''}" onclick="T57.lxLang('en')">English</button><button class="${ru?'on':''}" onclick="T57.lxLang('ru')">Русский</button></div>`:'';
+const media=l.media==='video'?`<button class="lx-vid" onclick="App.toast('Opens in the in-app browser (YouTube)')"><img src="img/pink-manifesto.webp" alt=""><span class="lr-play">${ic('play')}</span></button><figcaption>Svetlana builds a spiral · 2:40 · opens in the browser</figcaption>`:l.media==='photo'?`<img src="img/peach-posy.webp" alt=""><figcaption>${ru?'Фото до упаковки: дневной свет, белый фон':'Photo before packing: daylight, white backdrop'}</figcaption>`:'';
+const body=l.md?(ru?`<h3>Главное</h3><p class="key">Самовывоз и доставка в тот же день – до <b>22:00</b>. Последний слот производства 21:15.</p><ul><li>Скажи это как обещание, а не условие.</li><li>После 21:15 предложи завтра 8–11 и открытку в подарок.</li></ul><blockquote>«Мы ещё успеем сегодня – до 22:00.»</blockquote><p>Подробнее – <a onclick="App.toast('Opens in the browser')">правила доставки</a>.</p>`:`<h3>The rule</h3><p class="key">Same-day orders are taken until <b>22:00</b>. The last production slot is 21:15.</p><ul><li>Say it as a promise, not a condition.</li><li>After 21:15 offer tomorrow 8–11 with a complimentary card.</li><li>Mention the photo before it leaves – it closes most doubts.</li></ul><blockquote>“We can still deliver today – until 10 pm.”</blockquote><p>Full rules on the <a onclick="App.toast('Opens in the browser')">delivery page</a>.</p>`):`<p class="key">Open Me → Profile. Add a photo, your phone number and emergency contact.</p><p>Then copy the profile link and paste it on the next step.</p>`;
+const station=l.station?`<div class="panel --ok mt16"><div class="h4">This is a station</div><div class="sm soft mt4">A manager clears you after watching you on shift – there is nothing to hand in here.</div>${l.cleared?`<div class="sm ok mt8">${sic('check',14,2)} Cleared · Valeria, 13 Oct</div>`:''}</div>`:'';
+h=`<div class="pad lr-slide"><div class="caps muted mt8">Lesson · ${l.mins} min${l.due?` · <span class="${/overdue/.test(l.due)?'accent':''}">${l.due}</span>`:''}</div><h1 class="h1 mt8">${l.title}</h1>${langSeg}<div class="lx-md">${media}${body}</div>${station}
+<div class="caps muted mt24">Checklist</div><div class="lx-ck">${(ru?['Сказать срок как обещание','Предложить завтра, если поздно','Упомянуть фото'].slice(0,3):['Say the cut-off as a promise','Offer tomorrow if it is late','Mention the photo before it leaves']).map((t,i)=>`<button class="check ${X.ck&&X.ck[i]?'on':''}" onclick="T57.lxCk(${i})"><span class="cb"></span><span class="ct">${t}</span></button>`).join('')}</div></div>`;
+c=l.station?`<button class="btn" onclick="App.back('learn')">Back to learning</button>`:`<button class="btn" onclick="T57.lxNext()">Got it, next</button>`;
+hi=l.station?'':n>2?'Next: '+({words:'the main idea in your own words',quiz:'check yourself',proof:'proof',result:'result'})[X.steps[X.step+1]]:'';
+}else if(st==='words'){
+const wc=X.words.trim().split(/\s+/).filter(Boolean).length, ok=wc>=5;
+h=`<div class="pad lr-slide"><div class="caps muted mt16">In your own words</div><h1 class="h1 mt8">What is the main thing?</h1><p class="lr-pre mt12">One or two sentences. Dictation works – tap the mic on your keyboard.</p><textarea class="input mt16" rows="4" placeholder="Next time a client calls late, I will…" oninput="T57.lxWords(this.value)">${X.words}</textarea><div class="flex jc-sb ai-c mt8"><div class="lx-dots" id="lx-dots">${[0,1,2,3,4].map(i=>`<i class="${i<wc?'on':''}"></i>`).join('')}<span>${Math.min(wc,5)} of 5 words</span></div><span class="xs ${ok?'ok':'muted'}" id="lx-wc">${ok?'Looks good':'Minimum 5 words'}</span></div></div>`;
+c=`<button class="btn" id="lx-next" ${ok?'':'disabled'} onclick="T57.lxNext()">Next</button>`;hi='Shown back to you with the lesson wording after you hand in';
+}else if(st==='quiz'){
+const q=l.questions[X.qi], m=l.questions.length, pick=X.answers[X.qi], lastWrong=X.last&&X.last.answers&&X.last.answers[X.qi]!==q.ok?X.last.answers[X.qi]:null;
+h=`<div class="pad lr-slide"><div class="caps muted mt16">Check yourself · Question ${X.qi+1} of ${m}</div><h1 class="h1 mt12">${q.q}</h1><div class="mt24">${q.a.map((t,k)=>`<button class="lr-opt ${pick===k?'yes':''} ${lastWrong===k&&pick!==k?'bad':''}" style="${pick===k?'border-color:var(--ink);background:var(--silver)':''}" onclick="T57.lxPick(${k})"><span class="k" style="${pick===k?'background:var(--ink);border-color:var(--ink);color:var(--paper)':''}">${'ABC'[k]}</span><span class="f1">${t}</span></button>`).join('')}</div>${lastWrong!==null?`<div class="xs accent mt8">Your last answer is marked red – pick again.</div>`:''}</div>`;
+c=`<button class="btn" ${pick==null?'disabled':''} onclick="T57.lxNext()">${X.qi<m-1?'Next':(X.steps[X.step+1]==='proof'?'Next':'Hand in')}</button>`;hi='The server grades after you hand in';
+}else if(st==='proof'){
+if(l.proof==='photo')h=`<div class="pad lr-slide"><div class="caps muted mt16">Proof</div><h1 class="h1 mt8">Show the photo</h1><p class="lr-pre mt12">Your photo-before-packing on a real order, taken the way the lesson says.</p><button class="lx-ph" onclick="T57.lxPhotoSheet()">${X.photo?`<img src="img/white-spray.webp" alt=""><span style="position:relative;z-index:2;background:var(--paper);padding:6px 10px">${sic('check',14,2)} Photo attached · retake</span>`:`${ic('camera')}<span>Take or choose a photo</span>`}</button>${X.photo?`<div class="xs muted mt8">Goes with your answers – no separate upload.</div>`:''}</div>`;
+else if(l.proof==='link')h=`<div class="pad lr-slide"><div class="caps muted mt16">Proof</div><h1 class="h1 mt8">Add the link</h1><p class="lr-pre mt12">Paste the link to your profile.</p><div class="field mt16"><label>URL</label><input class="input" autocapitalize="none" autocorrect="off" placeholder="https://" value="${X.url}" oninput="T57.lxUrl(this.value)"></div></div>`;
+else{
+const ru=X.lang==='ru';
+const Q=ru?['Я могу отказать в выдаче без документа','Я буду записывать каждый отказ','Я никогда не оставлю алкоголь соседу']:['I will refuse the hand-over without ID','I will log every refusal','I will never leave alcohol with a neighbour'];
+h=`<div class="pad lr-slide"><div class="caps muted mt16">Declaration</div><h1 class="h1 mt8">${ru?'Ваш выбор':'Your choices'}</h1>${l.ru?`<div class="seg" style="height:36px;width:200px;margin-top:12px"><button class="${!ru?'on':''}" onclick="T57.lxLang('en')">English</button><button class="${ru?'on':''}" onclick="T57.lxLang('ru')">Русский</button></div>`:''}
+<div class="mt12">${Q.map((t,i)=>`<div class="lx-yn"><div class="q">${t}</div><div class="seg"><button class="${X.choices[i]===true?'on':''}" onclick="T57.lxChoice(${i},true)">${ru?'Да':'Yes'}</button><button class="${X.choices[i]===false?'on':''}" onclick="T57.lxChoice(${i},false)">${ru?'Нет':'No'}</button></div></div>`).join('')}</div>
+<div class="panel mt16 sm" style="line-height:1.5">${ru?'Я понимаю правило Challenge 25 и подтверждаю, что буду проверять документ у всех, кто выглядит младше 25. Принимаются паспорт, права и карта PASS.':'I understand Challenge 25 and confirm I will ask for ID from anyone who looks under 25. Passport, driving licence and PASS card are accepted.'}</div>
+<div class="flex ai-c g12 mt16"><button class="switch ${X.accept?'on':''}" aria-label="Accept" onclick="T57.lxAccept()"></button><span class="sm">${ru?'Подтверждаю свой выбор выше и принимаю текст':'I confirm my choices above and accept the declaration'}</span></div>
+<div class="field mt16"><label>${ru?'Полное имя':'Full name'}</label><input class="input" placeholder="${ru?'Имя и фамилия':'First and last name'}" value="${X.name}" oninput="T57.lxName(this.value)"></div>
+<div class="caps muted">${ru?'Ваша подпись':'Your signature'}</div><div class="lx-sig" id="lx-sig"><canvas></canvas><div class="ln"></div><div class="lb">${ru?'Распишитесь пальцем':'Sign with your finger'}</div></div><div class="flex jc-sb ai-c mt8"><span class="xs ${X.sigShort?'accent':'muted'}" id="lx-sigmsg">${X.sigShort?(ru?'Слишком коротко – распишитесь ещё раз':'Too short – sign again'):(ru?'Пока палец на поле, страница не скроллится':'The page does not scroll while you draw')}</span><button class="textbtn" onclick="T57.lxSigClear()">${ru?'Очистить':'Clear'}</button></div><div class="xs accent mt8" id="lx-err">${X.err}</div></div>`;
+}
+c=`<button class="btn" onclick="T57.lxSubmit()">Hand in</button>`;hi=l.proof==='declaration'?'Sent with your name, strokes and time':'Sent with time spent, main idea and answers';
+}else{
+const v=X.verdict, m=l.questions.length, ok=v.ok, pass=v.v==='pass', needs=v.v==='needs_review';
+const rows=l.questions.map((q,i)=>{const good=X.answers[i]===q.ok;return `<button class="lx-res" onclick="T57.lxReopen(${i})"><span class="${good?'ok':'accent'}">${ic(good?'check':'close')}</span><div class="f1">${q.q}${good?'':`<div class="xs muted mt4">Your answer: ${q.a[X.answers[i]]}</div>`}</div>${chev}</button>`}).join('');
+const reason=!pass&&!needs?(X.words.trim().split(/\s+/).filter(Boolean).length<5&&!l.consent?`Main idea too short: ${X.words.trim().split(/\s+/).filter(Boolean).length} of 5 words.`:`${ok} of ${m} right · wrong questions are marked red.`):'';
+h=`<div class="pad lr-slide"><div class="flex ai-c mt16" style="gap:22px">${m?`<div id="lx-ring">${A.ring(0,112,'lr-big'+(pass?' --ok':''))}</div>`:`<span style="font-size:56px;line-height:1" class="${pass?'ok':needs?'':'accent'}">${sic(pass?'check':needs?'clock':'close',56,1.2)}</span>`}<div class="f1"><div class="caps muted">Result</div><h1 class="h1 mt4">${pass?'Passed!':needs?'Sent':'Not yet'}</h1><div class="sm soft mt4">${m?`${ok} of ${m} right`:''}${reason?` · ${reason}`:''}</div></div></div>
+${needs?`<div class="panel --warn mt16"><div class="h4">Awaiting manager countersign</div><div class="sm soft mt4">Valeria countersigns declarations within a shift. You will get a push.</div></div>`:''}
+${l.proof==='declaration'?`<div class="panel mt12 sm">Signed: ${X.name} · 20 Oct 11:12<div class="xs muted mt8">Your choices: ${X.choices.map((c,i)=>c?'yes':'no').join(' · ')}</div></div>`:''}
+${pass?`<div class="panel --ok mt12 flex ai-c g12"><span class="ok">${sic('timer',20)}</span><div class="sm">+${l.mins} min of work time</div></div>`:''}
+${!l.consent?`<div class="lx-cmp"><div><span class="caps">You wrote</span>${X.words||'—'}</div><div><span class="caps">As in the lesson</span>${l.ref}</div></div>`:''}
+${m?`<div class="mt16" style="border-top:1px solid var(--hair)">${rows}</div>`:''}
+${!pass&&!needs?`<div class="flex g8 mt16" style="flex-wrap:wrap">${m?`<button class="btn --xs --secondary" onclick="T57.lxRetry()">Answer again</button>`:''}${l.consent?'':`<button class="btn --xs --secondary" onclick="T57.lxGo('words')">Rewrite the main idea</button>`}<button class="btn --xs --ghost" onclick="T57.lxGo('read')">Re-read the lesson</button></div>`:''}</div>`;
+c=`<button class="btn" onclick="App.back('learn')">Back to learning</button>`;hi=pass?'Counted everywhere: B, classic and the freelance app':'';
+}
+b.innerHTML=chipsBar()+h;b.scrollTop=0;cta.innerHTML=prev+c;hint.textContent=hi;
+if(st==='result'&&l.questions.length)L.animRing($('#lx-ring .ring'),X.verdict.ok/l.questions.length);
+if(st==='proof'&&l.proof==='declaration')sigInit();
+}
+function sigInit(){
+const box=$('#lx-sig'),cv=$('canvas',box);if(!cv)return;const body=$('#lx-body');
+const r=box.getBoundingClientRect();cv.width=r.width*2;cv.height=r.height*2;const ctx=cv.getContext('2d');ctx.scale(2,2);ctx.lineWidth=1.8;ctx.lineCap='round';ctx.strokeStyle='#1e1a17';
+let on=false,lx=0,ly=0;
+cv.onpointerdown=e=>{on=true;body.style.overflowY='hidden';const q=cv.getBoundingClientRect();lx=e.clientX-q.left;ly=e.clientY-q.top;cv.setPointerCapture(e.pointerId)};
+cv.onpointermove=e=>{if(!on)return;const q=cv.getBoundingClientRect(),x=e.clientX-q.left,y=e.clientY-q.top;ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(x,y);ctx.stroke();X.sig+=Math.hypot(x-lx,y-ly);lx=x;ly=y};
+cv.onpointerup=cv.onpointercancel=()=>{on=false;body.style.overflowY='';X.sigShort=X.sig>0&&X.sig<120;const m=$('#lx-sigmsg');if(m){m.textContent=X.sigShort?'Too short – sign again':'Signature captured';m.className='xs '+(X.sigShort?'accent':'ok')}};
+}
+T57.lxLang=v=>{X.lang=v;lxPaint()};
+T57.lxCk=i=>{X.ck=X.ck||[];X.ck[i]=!X.ck[i];A.haptic();lxPaint()};
+T57.lxWords=v=>{X.words=v;const wc=v.trim().split(/\s+/).filter(Boolean).length,ok=wc>=5;$('#lx-dots').innerHTML=[0,1,2,3,4].map(i=>`<i class="${i<wc?'on':''}"></i>`).join('')+`<span>${Math.min(wc,5)} of 5 words</span>`;$('#lx-wc').textContent=ok?'Looks good':'Minimum 5 words';$('#lx-wc').className='xs '+(ok?'ok':'muted');$('#lx-next').disabled=!ok};
+T57.lxPick=k=>{X.answers[X.qi]=k;A.haptic();lxPaint()};
+T57.lxUrl=v=>{X.url=v};
+T57.lxName=v=>{X.name=v};
+T57.lxAccept=()=>{X.accept=!X.accept;A.haptic();lxPaint()};
+T57.lxChoice=(i,v)=>{X.choices[i]=v;A.haptic();lxPaint()};
+T57.lxSigClear=()=>{X.sig=0;X.sigShort=false;lxPaint()};
+T57.lxPhotoSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Photo</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body"><button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();T57.lxPhoto()">${ricon('camera')}<div class="rt"><div class="l">Take a photo</div></div></button><button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();T57.lxPhoto()">${ricon('image')}<div class="rt"><div class="l">Choose from library</div></div></button><div class="xs muted mt12">Camera refused → the phone's own alert with a link to Settings.</div></div>`);
+T57.lxPhoto=()=>{X.photo=true;A.toast('Photo attached');lxPaint()};
+T57.lxNext=()=>{const st=X.steps[X.step];if(st==='quiz'&&X.qi<X.l.questions.length-1){X.qi++;lxPaint();return}if(st==='quiz'&&X.steps[X.step+1]==='result'){T57.lxSubmit();return}X.step++;if(X.steps[X.step]==='quiz')X.qi=0;lxPaint()};
+T57.lxPrev=()=>{const st=X.steps[X.step];if(st==='quiz'&&X.qi>0){X.qi--;lxPaint();return}if(X.step>0)X.step--;if(X.steps[X.step]==='quiz')X.qi=X.l.questions.length-1;lxPaint()};
+T57.lxSubmit=()=>{
+const l=X.l;X.err='';
+const wc=X.words.trim().split(/\s+/).filter(Boolean).length;
+const missingAns=l.questions.some((q,i)=>X.answers[i]==null);
+if(l.proof==='declaration'&&(X.choices.some(c=>c===null)||!X.accept||X.name.trim().split(/\s+/).length<2||X.sig<120)){X.err='Answer every question, write your full name, accept the text and sign.';X.sigShort=X.sig>0&&X.sig<120;lxPaint();return}
+if(l.proof==='link'&&!/^https?:\/\/\S+/.test(X.url)){X.err='Paste a link that starts with https://';A.toast(X.err);return}
+if(l.proof==='photo'&&!X.photo){A.toast('Attach the photo first');return}
+if(missingAns||(!l.consent&&wc<5)){A.toast('Answer every question and write the main idea');return}
+if(GL.offline){A.toast('Couldn\'t send. Check the connection – your answers are kept');return}
+const ok=l.questions.filter((q,i)=>X.answers[i]===q.ok).length, n=l.questions.length;
+const pass=(n?ok/n>=.6:true)&&(l.consent||wc>=5);
+X.verdict={v:l.proof==='declaration'?'needs_review':pass?'pass':'fail',ok,n};
+if(!pass)X.last={answers:X.answers.slice()};
+X.step=X.steps.indexOf('result');A.haptic();lxPaint();
+if(pass&&l.proof!=='declaration'){const real=A.lesson(l.id);if(real&&real.status!=='done')A.completeLesson(l.id,n?ok/n:1)}
+if(l.proof==='declaration'&&L.R()==='courier')L.alcoholSigned=true;
+};
+T57.lxRetry=()=>{const i=X.l.questions.findIndex((q,k)=>X.answers[k]!==q.ok);X.qi=Math.max(0,i);X.step=X.steps.indexOf('quiz');lxPaint()};
+T57.lxGo=s=>{X.step=X.steps.indexOf(s);lxPaint()};
+T57.lxReopen=i=>{X.qi=i;X.step=X.steps.indexOf('quiz');lxPaint()};
+/* ================= My plan ================= */
+window.mount_lx_goals=function(){
+const g=L.plan,d=g.goals.filter(x=>x.d).length,n=g.goals.length,tg=L.teamGoal;
+$('#lxg-body').innerHTML=`<div class="lr-hero" style="padding-top:4px">${A.ring(d/n,96,'lr-big')}<div class="f1"><div class="caps muted">Development plan</div><div class="h2 mt4">${d} of ${n} goals</div><div class="sm soft mt4">Written with Valeria · 6 Oct</div></div></div>
+<div class="pad mt16"><div class="panel flex ai-c g12">${sic('calendar',20)}<div class="f1 sm">Next meeting · ${g.meet}</div><button class="lr-link" onclick="App.toast('Added to your calendar')">Add</button></div></div>
+<div class="sec-head"><div class="h2">Goals</div></div>${g.goals.map((x,i)=>`<button class="lx-goal ${x.d?'on':''}" onclick="T57.goalToggle(${i})"><span class="cb">${ic('check')}</span><div class="f1"><div class="sm">${x.t}</div><div class="xs muted mt4">${x.d?'Done · confirmed by Valeria':'In progress'}</div></div></button>`).join('')}
+<div class="sec-head"><div class="h2">Team goal</div></div><div class="pad"><div class="panel"><div class="sm">${tg.t}</div><div class="progress mt12"><i style="width:${Math.round(tg.cur/tg.goal*100)}%"></i></div><div class="xs muted mt8">${tg.cur}% now · goal ${tg.goal}% · no action needed from you</div></div></div>
+<div class="pad mt16"><button class="btn --ghost --block" onclick="App.toast('Note sent to Valeria')">${ic('chat')} Add a note for the meeting</button></div><div style="height:24px"></div>`;
+};
+T57.goalToggle=i=>{const g=L.plan.goals[i];if(g.d){A.toast('Only your mentor un-ticks a goal');return}A.confirm('Mark as done?',`“${g.t}” – Valeria confirms it at the next meeting.`,'Mark done',()=>{g.d=true;window.mount_lx_goals()})};
+/* ================= What changed list ================= */
+window.mount_lx_changes=function(){
+const ids=L.mine().map(l=>l.id), cs=L.changes.filter(c=>ids.includes(c.l)), un=cs.filter(c=>!c.seen);
+$('#lxc-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="sm soft">${un.length?`${un.length} unread · unread first, each asks one question`:'Everything acknowledged'}</div></div>${L.storiesBlock()}<div class="sec-head"><div class="h2">All changes</div></div>${cs.filter(c=>!c.seen).concat(cs.filter(c=>c.seen)).map(c=>`<button class="row" onclick="LR.openStory(${c.id})"><div class="rt"><div class="l">${c.t}</div><div class="d">${c.cat} · ${c.date}${c.q?' · question':''}</div></div>${c.seen?A.pill('done','Read'):A.pill('doing','New')}${chev}</button>`).join('')}`;
+};
+/* ================= Pushes ================= */
+let PV='b';
+window.mount_lx_push=function(){
+const row=(icn,t,d,fn)=>`<button class="lx-push" onclick="${fn}"><span class="pl">${ic(icn)}</span><div class="f1"><div class="sm">${t}</div><div class="xs muted mt4">${d}</div></div>${chev}</button>`;
+$('#lxp-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Mounted navigator</div><div class="seg mt8" style="height:40px"><button class="${PV==='b'?'on':''}" onclick="T57.pv('b')">B interface</button><button class="${PV==='classic'?'on':''}" onclick="T57.pv('classic')">Classic view</button></div><div class="xs muted mt8">A manager or admin on the emergency classic view gets the classic routes.</div></div>
+<div class="sec-head"><div class="h2">Tap a push</div></div>
+${row('book','Lesson due today','type=learning · lesson_due · assignment_id=1 → the lesson itself',`T57.pushLesson()`)}
+${row('repeat','Cards to review',`review_due → ${PV==='b'?'/b/learn-review':'/learning (classic has no review screen)'}`,`T57.pushReview()`)}
+${row('bell','New lessons for you',`learning push without a lesson or kind → ${PV==='b'?'Learn tab':'/learning'}`,`T57.pushLearn()`)}
+<div class="sec-head"><div class="h2">Behaviour</div></div>
+<div class="pad"><div class="panel sm" style="line-height:1.5">App open: a learning push refreshes the lesson list and all Learn blocks first, then opens the screen.<br>Cold start: the last notification tap is read on launch → refresh → route, only when signed in.<br>Inbox: rows of type learning use the same router; a bare “lesson” row only marks itself read.</div></div>
+<div class="pad mt12"><button class="btn --secondary --block" onclick="App.go('inbox')">Open Inbox</button></div><div style="height:24px"></div>`;
+};
+T57.pv=v=>{PV=v;window.mount_lx_push()};
+T57.pushLesson=()=>{A.toast('Refreshing lessons…');setTimeout(()=>A.push('Lesson due today','Same-day until 10 pm – 3 min',{icon:'book',go:['lesson',{id:1}]}),500)};
+T57.pushReview=()=>{A.toast('Refreshing lessons…');setTimeout(()=>A.push('5 cards to review','2 minutes · missed ones come back sooner',{icon:'repeat',go:PV==='b'?['review',{}]:['learn',{}]}),500)};
+T57.pushLearn=()=>{A.toast('Refreshing lessons…');setTimeout(()=>A.push('New lessons for you','Two lessons were added to your path',{icon:'bell',go:['learn',{}]}),500)};
+})();
+</script>
