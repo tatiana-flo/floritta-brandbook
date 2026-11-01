@@ -1,0 +1,256 @@
+<!-- ============ RECEIVE WITHOUT ORDER · ids: TM-INV-074 TM-INV-075 TM-INV-076 TM-INV-077 TM-INV-078 ============ -->
+<!-- TM-INV-074: Supplier card → sheet with search and list (cached 5 min) -->
+<!-- TM-INV-075 TM-INV-076: Lines card → Add line sheet: stock search from 2 characters (up to 8 results) or a free name for a new item; qty; unit (taken from the item); Remove on a line; Note up to 2000 -->
+<!-- TM-INV-077 TM-INV-078: Post receipt (supplier + ≥1 valid line) → "Receipt posted: N lines", back; Unavailable without rights / 403 / 404 on suppliers -->
+<section class="scr" id="s-stk-receipt-new" data-nav="Stock · receive without order" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-rn-bar"></div>
+  <div class="scr-body stk-body has-cta" id="stk-rn-body"></div>
+  <div class="cta-bar stk-cta" id="stk-rn-cta"></div>
+</section>
+
+<!-- ============ MY CLAIMS · ids: TM-INV-079 TM-INV-080 TM-INV-081 TM-INV-082 ============ -->
+<!-- TM-INV-079 TM-INV-080: row Supplier · code, reason · N lines · N photos, time; send state colour (Queued / Sent / Cancelled / Portal only / No e-mail / Send failed); tap → claim card -->
+<!-- TM-INV-081 TM-INV-082: refresh; Unavailable, empty "No claims yet", error -->
+<section class="scr" id="s-stk-claims" data-nav="Stock · my claims" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-cl-bar"></div>
+  <div class="scr-body stk-body" id="stk-cl-body"></div>
+</section>
+
+<!-- ============ NEW CLAIM · ids: TM-INV-083 TM-INV-084 TM-INV-085 TM-INV-086 TM-INV-087 TM-INV-088 TM-INV-089 TM-INV-090 ============ -->
+<!-- TM-INV-083: "For PO-…" caption, form prefilled from the delivery (lines, faulty qty, reason); opened without a source → empty form and the "opens from a delivery" hint -->
+<!-- TM-INV-084 TM-INV-085 TM-INV-086: reason chips (7, "Other" needs a description), lines with Faulty qty + note (only qty > 0 go), disposition chips, comment up to 2000 -->
+<!-- TM-INV-087 TM-INV-088: Photos block (camera / library, any number); Send claim → claim created, photos one by one (2 retries), "N photos failed – add them on the card", replace → card -->
+<!-- TM-INV-089 TM-INV-090: grey blocking hints (no source / no lines / describe the reason), red create error; Unavailable without inventory.receive -->
+<section class="scr" id="s-stk-claim-new" data-nav="Stock · new claim" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-cn-bar"></div>
+  <div class="scr-body stk-body has-cta" id="stk-cn-body"></div>
+  <div class="cta-bar stk-cta" id="stk-cn-cta"></div>
+</section>
+
+<!-- ============ CLAIM CARD · ids: TM-INV-091 TM-INV-092 TM-INV-093 TM-INV-094 TM-INV-095 ============ -->
+<!-- TM-INV-091: header – supplier, code · reason · text, send state, note; no_email explanation -->
+<!-- TM-INV-092 TM-INV-093: banner "E-mail goes at HH:MM – you can cancel" with Cancel claim → confirm (destructive) → "Claim cancelled"; already sent → "Could not cancel" -->
+<!-- TM-INV-094 TM-INV-095: lines (name · faulty, SKU, disposition, defect note) and History log; Photos with Add photo and retention (Send again) -->
+<section class="scr" id="s-stk-claim" data-nav="Stock · claim" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-c-bar"></div>
+  <div class="scr-body stk-body" id="stk-c-body"></div>
+</section>
+
+<!-- ============ STOCKTAKES · ids: TM-INV-096 TM-INV-097 TM-INV-098 TM-INV-099 TM-INV-100 ============ -->
+<!-- TM-INV-096 TM-INV-098: row code · Full / Category / Sample · category, Counted N of M · Shared session, started / applied time, status Open (amber) / Applied (green); tap → sheet -->
+<!-- TM-INV-097: New stocktake → sheet with chips Sample 30 / One category (+ name, required) / Whole stock, Open session -->
+<!-- TM-INV-099 TM-INV-100: refresh; Unavailable, empty "No stocktakes", error -->
+<section class="scr" id="s-stk-stocktakes" data-nav="Stock · stocktakes" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-sts-bar"></div>
+  <div class="scr-body stk-body" id="stk-sts-body"></div>
+</section>
+
+<!-- ============ STOCKTAKE SHEET · ids: TM-INV-101 TM-INV-102 TM-INV-103 TM-INV-104 TM-INV-105 TM-INV-106 ============ -->
+<!-- TM-INV-101 TM-INV-102: header Counted N of M (+ Saving… / Some lines did not save – we will retry), "Applied – view only"; search + chips All / Not counted -->
+<!-- TM-INV-103 TM-INV-104 TM-INV-105: line with photo, name, SKU · In the system N, who · when; empty Fact field (never prefilled), disabled on an applied sheet; autosave batches 1 s after the last key, retry 5 s, kept offline, flushed on leaving; 409 "already applied" / 422 CRM text -->
+<!-- TM-INV-106: Apply (manage only, open sheet) → confirm → "Stocktake applied", stock lists refreshed -->
+<section class="scr" id="s-stk-stocktake" data-nav="Stock · stocktake sheet" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-st-bar"></div>
+  <div class="scr-body stk-body" id="stk-st-body"></div>
+  <div class="cta-bar stk-cta" id="stk-st-cta" style="display:none"></div>
+</section>
+
+<!-- ============ SHOWCASE (card from Shift / Today + "Bouquet for the showcase") · ids: TM-INV-107 TM-INV-108 TM-INV-109 TM-INV-110 TM-INV-111 TM-INV-112 TM-INV-113 TM-INV-114 TM-INV-115 TM-INV-116 TM-INV-117 TM-INV-118 TM-INV-119 TM-INV-120 ============ -->
+<!-- TM-INV-112 TM-INV-113 TM-INV-114 TM-INV-120: showcase card (hidden while loading / on any error incl. old CRM 404), "Bouquet for the showcase" + "On the shelf: N", list of open bouquets (florist – own, manager – all with author), "On the shelf" badge for a ready bouquet, empty "Shelf is empty" / "You have no open bouquets" -->
+<!-- TM-INV-115 TM-INV-116 TM-INV-117 TM-INV-118 TM-INV-119: Ready – send a photo (sheet: optional price, camera / library / cancel; no photo – no finish), Price sheet (pounds → pence), Write off and Dismantled (manager, confirm, final); action that got 404/403 loses its button and shows "Unavailable", 422 shows CRM text -->
+<!-- TM-INV-107 TM-INV-108 TM-INV-109 TM-INV-110 TM-INV-111: "What to make" – 0–3 CRM suggestions (refetched on each open), radio with "No suggestion" default, Start takes a shelf slot (suggestion → note up to 500), studio limit 422 shown as a calm block and Start disabled; courier → redirected to Work -->
+<section class="scr" id="s-stk-showcase" data-nav="Showcase" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-sc-bar"></div>
+  <div class="scr-body stk-body" id="stk-sc-body"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App, I=n=>A.icon(n), $=id=>document.getElementById(id), K=window.STK;
+const {demo,S,ITEMS,CLAIMS,STKS,SHOW,SHOW_SUG,SUPPLIERS,RECEIPTS,item,po,claim,stk,supN,money,hm,dayS,whenS,nm,youOr,can,esc}=K;
+const NOW=A.NOW, sh=K.sheetHead, remount=K.remount, unavailable=K.unavailable;
+const sameDay=(a,b)=>new Date(a).toDateString()===new Date(b).toDateString();
+const demoIb=`<button class="ib" aria-label="Demo states" onclick="STK.demoSheet()">${I('cog')}</button>`;
+const bar=(id,title,ibs,back)=>{$(id).innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('${back||'stk-inv'}')">${I('back')}</button><div class="ttl">${esc(title)}</div>${ibs||''}`};
+const sec=(t,n,cls)=>`<div class="stk-sec ${cls||''}"><h2 class="h3">${t}</h2>${n!=null?`<span class="n">${n}</span>`:''}</div>`;
+const empty=(t,d,cls)=>`<div class="stk-empty ${cls||''}"><b>${t}</b>${d||''}</div>`;
+const spin=()=>`<div class="stk-spin" aria-label="Loading"></div>`;
+const thumb=i=>i&&i.img?`<img class="th" src="${i.img}" alt="">`:`<span class="th">${I('leaf')}</span>`;
+const lock=(t,d,extra)=>`<div class="stk-lock">${I('lock')}<b>${t}</b>${d}${extra||''}</div>`;
+
+/* ===================== RECEIVE WITHOUT ORDER ===================== */
+window.mount_stk_receipt_new=function(){
+ bar('stk-rn-bar','Receive without order',demoIb,'stk-deliveries');
+ const body=$('stk-rn-body'),cta=$('stk-rn-cta');const f=S.recForm;
+ if(!can('receive')||demo.oldCrm){body.innerHTML=unavailable();cta.innerHTML='';return}
+ const valid=f.lines.filter(l=>(l.itemId||l.name.trim())&&/^[1-9]\d*$/.test(l.qty));
+ body.innerHTML=`<div class="stk-sub">Goods bought without an expected delivery · no prices here</div>
+  <div class="stk-blk"><div class="h4">Supplier</div><button class="row" style="padding-left:0;padding-right:0;border-bottom:0" onclick="STK.supSheet()"><span class="rt"><span class="l">${f.sup?esc(supN(f.sup)):'<span class="muted">Choose a supplier</span>'}</span></span>${I('chev').replace('<svg','<svg class="chev"')}</button></div>
+  <div class="stk-blk"><div class="h4">Lines<span class="caps muted">${f.lines.length}</span></div>
+   ${f.lines.map((l,k)=>`<div class="stk-kv"><span style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink)">${esc(l.itemId?item(l.itemId).en:l.name)}${l.itemId?'':' <span class="tag --soft">new item</span>'}</span><span>${l.qty} ${l.unit} <button class="stk-link" style="margin:0 0 0 10px" onclick="STK.recRemove(${k})">Remove</button></span></div>`).join('')}
+   <button class="btn --sm --secondary --block mt12" onclick="STK.lineSheet()">${I('plus')} Add line</button></div>
+  <div class="pad mt16"><div class="field"><label>Note (up to 2000)</label><textarea class="input" maxlength="2000" oninput="STK.S.recForm.note=this.value">${esc(f.note)}</textarea></div></div>`;
+ cta.innerHTML=`<button class="btn" ${f.sup&&valid.length?'':'disabled'} onclick="STK.postReceipt()">${I('check')} Post receipt</button>`;
+};
+STK.supSheet=()=>{const render=q=>{const l=SUPPLIERS.filter(s=>!q||s.n.toLowerCase().includes(q.toLowerCase()));return l.length?l.map(s=>`<button class="stk-sheetrow" onclick="STK.S.recForm.sup=${s.id};App.closeSheet();mount_stk_receipt_new()">${esc(s.n)}${I('chev')}</button>`).join(''):'<p class="sm muted" style="margin:12px 0">No supplier found – the buyer adds suppliers in the CRM.</p>'};
+ A.sheet(sh('Supplier',`<div class="input-wrap mb12">${I('search')}<input class="input" placeholder="Search supplier…" oninput="document.getElementById('stk-sup-l').innerHTML=STK._supR(this.value)"></div><div id="stk-sup-l">${render('')}</div><p class="xs muted" style="margin:12px 0 0">List cached for 5 minutes.</p>`));STK._supR=render};
+STK.lineSheet=()=>{STK._ln={q:'',itemId:null,name:'',qty:'',unit:'stem'};const draw=()=>{const l=STK._ln;const q=l.q.trim();const res=q.length>=2?ITEMS.filter(i=>i.en.toLowerCase().includes(q.toLowerCase())||i.sku.toLowerCase().includes(q.toLowerCase())).slice(0,8):[];const ok=(l.itemId||l.name.trim())&&/^[1-9]\d*$/.test(l.qty);
+  return `<div class="input-wrap mb12">${I('search')}<input class="input" placeholder="Search the stock (2+ characters)…" value="${esc(l.q)}" oninput="STK._ln.q=this.value;STK._ln.itemId=null;STK._lnDraw(true)"></div>
+   ${l.itemId?`<div class="stk-ban --ok" style="margin:0 0 12px">${esc(item(l.itemId).en)} · unit ${item(l.itemId).unit}</div>`:res.length?res.map(i=>`<button class="stk-sheetrow" onclick="STK._ln.itemId=${i.id};STK._ln.unit='${i.unit}';STK._lnDraw()">${esc(i.en)}<span class="d" style="margin-left:8px">${i.sku}</span>${I('chev')}</button>`).join(''):q.length>=2?`<div class="field"><label>Not found – name of the new item</label><input class="input" value="${esc(l.name)}" oninput="STK._ln.name=this.value;STK._lnBtn()"></div>`:''}
+   <div class="stk-grid mt12"><div class="field"><label>Quantity</label><input class="input" inputmode="numeric" value="${esc(l.qty)}" oninput="STK._ln.qty=this.value;STK._lnBtn()"></div><div class="field"><label>Unit</label><select class="input" ${l.itemId?'disabled':''} onchange="STK._ln.unit=this.value">${['stem','bunch','pcs','box','roll'].map(u=>`<option ${u===l.unit?'selected':''}>${u}</option>`).join('')}</select></div></div>
+   <p class="xs muted" style="margin:0">A free name creates the item on the server when the receipt is posted.</p>`};
+ STK._lnDraw=keep=>{const b=document.getElementById('stk-ln-b');const inp=b&&b.querySelector('input');const pos=inp?inp.selectionStart:0;b.innerHTML=draw();STK._lnBtn();if(keep){const i2=b.querySelector('input');i2.focus();i2.setSelectionRange(pos,pos)}};
+ STK._lnBtn=()=>{const l=STK._ln;document.getElementById('stk-ln-ok').disabled=!((l.itemId||l.name.trim())&&/^[1-9]\d*$/.test(l.qty))};
+ A.sheet(sh('Add line',`<div id="stk-ln-b">${draw()}</div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="stk-ln-ok" disabled onclick="STK.lineAdd()">Add</button>`))};
+STK.lineAdd=()=>{const l=STK._ln;S.recForm.lines.push({itemId:l.itemId,name:l.name,qty:l.qty,unit:l.unit});A.closeSheet();mount_stk_receipt_new()};
+STK.recRemove=k=>{S.recForm.lines.splice(k,1);mount_stk_receipt_new()};
+STK.postReceipt=()=>{const f=S.recForm;if(demo.offline){A.toast('Could not post the receipt');return}const n=f.lines.length;f.lines.forEach(l=>{let it=l.itemId&&item(l.itemId);if(!it){const id=Math.max(...ITEMS.map(i=>i.id))+1;it={id,en:l.name.trim(),ru:'',sku:'NEW-'+id,cat:'Seasonal',unit:l.unit,onHand:0,avail:0,min:0,retail:0,cost:0,daysLeft:null,countedBy:null,countedAt:null,showcase:false,groupA:false,img:'',fresh:null,bunch:null,status:'out',movements:[]};ITEMS.push(it)}it.onHand+=+l.qty;it.avail+=+l.qty;it.status=it.onHand===0?'out':it.onHand<it.min?'low':'ok';it.movements.unshift({at:NOW.toISOString(),type:'Receipt · no order',by:A.state.me,q:+l.qty})});
+ RECEIPTS.unshift({id:511+RECEIPTS.length,sup:f.sup,at:NOW.toISOString(),by:A.state.me,lines:n,noOrder:true});S.recForm={sup:null,lines:[],note:''};A.confirm('Receipt posted',`${n} line${n>1?'s':''} added to the stock.`,'OK',()=>A.back('stk-deliveries'))};
+
+/* ===================== CLAIMS ===================== */
+const SEND={queued:['Queued','queued'],sent:['Sent','sent'],cancelled:['Cancelled','cancelled'],portal:['Portal only – file manually','fail'],no_email:['No e-mail for the supplier','fail'],failed:['Send failed','fail']};
+const REASONS=[['damaged','Damaged'],['poor_quality','Poor quality'],['short_delivery','Short delivery'],['not_delivered','Not delivered'],['wrong_item','Wrong item'],['late','Late'],['other','Other']];
+const DISP=[['unresolved','Unresolved'],['return','Return'],['writeoff','Write-off'],['markdown','Markdown'],['internal','Internal use'],['quarantine','Quarantine']];
+const rl=k=>(REASONS.find(r=>r[0]===k)||[k,k])[1];
+window.mount_stk_claims=function(){
+ bar('stk-cl-bar','My claims',demoIb,'stk-deliveries');
+ const body=$('stk-cl-body');
+ if(!can('receive')||demo.oldCrm){body.innerHTML=unavailable();return}
+ if(demo.loading){body.innerHTML=spin();return}
+ const head=`<div class="stk-dev mt12"><span>Refresh</span><button onclick="STK.refresh()">Pull to refresh</button><span>· auto every 60 s</span></div>`;
+ if(demo.offline){body.innerHTML=head+empty('Could not load the claims','Pull down to try again.','--err');return}
+ const l=demo.empty?[]:CLAIMS.filter(c=>c.by===A.state.me||can('manage'));
+ body.innerHTML=head+(l.length?`<div class="mt8">${l.map(c=>`<button class="stk-row" onclick="App.go('stk-claim',{id:${c.id}})"><div class="f1"><div class="nm">${esc(supN(c.sup))} · ${c.code}</div><div class="mt">${rl(c.reason)} · ${c.lines.length} line${c.lines.length>1?'s':''} · ${c.photos} photo${c.photos===1?'':'s'}</div><div class="mt">${whenS(c.at)}</div></div><span class="stk-rs --${SEND[c.send][1]}" style="margin:0">${SEND[c.send][0]}</span></button>`).join('')}</div>`:empty('No claims yet','Claims are raised from a delivery when something is short or faulty.'));
+};
+
+window.mount_stk_claim_new=function(p){
+ bar('stk-cn-bar','Claim to supplier',demoIb,'stk-delivery');
+ const body=$('stk-cn-body'),cta=$('stk-cn-cta');
+ if(!can('receive')){body.innerHTML=unavailable();cta.innerHTML='';return}
+ if(!S.claimForm||(p&&p.po&&S.claimForm.po!==+p.po))S.claimForm={po:p&&p.po?+p.po:null,reason:'',reasonText:'',disp:'',note:'',photos:[],lines:[]};
+ const f=S.claimForm;const o=f.po?po(f.po):null;
+ const problem=!o?'A claim opens from a delivery':!f.lines.some(l=>/^[1-9]\d*$/.test(l.bad))?'Add at least one line with a faulty quantity':!f.reason?'Choose a reason':(f.reason==='other'&&!f.reasonText.trim())?'Describe the reason':'';
+ body.innerHTML=`<div class="stk-sub">${o?`For ${o.code} · ${esc(supN(o.sup))}`:'No delivery selected'}</div>
+  ${!o?`<div class="stk-ban --soft">Open a delivery, receive it and tap "Raise a claim" or "Not delivered / faulty" on a line. A claim is tied to the receipt (it wins over the order).</div>`:''}
+  <div class="stk-blk"><div class="h4">Reason</div><div class="stk-wrap mt12">${REASONS.map(r=>`<button class="chip ${f.reason===r[0]?'on':''}" onclick="STK.cf('reason','${r[0]}')">${r[1]}</button>`).join('')}</div>
+   ${f.reason==='other'?`<div class="field mt12"><label>Describe the reason</label><input class="input" value="${esc(f.reasonText)}" oninput="STK.cf('reasonText',this.value,true)"></div>`:''}</div>
+  <div class="stk-blk"><div class="h4">Lines<span class="caps muted">${f.lines.length}</span></div>
+   ${f.lines.length?f.lines.map((l,k)=>`<div style="padding:10px 0;border-bottom:1px solid var(--hair)"><div class="sm">${esc(l.name)}</div><div class="stk-grid mt8"><div class="field" style="margin:0"><label>Faulty, pcs</label><input class="input" inputmode="numeric" value="${esc(l.bad)}" oninput="STK.cfl(${k},'bad',this.value)"></div><div class="field" style="margin:0"><label>Line note</label><input class="input" value="${esc(l.dn)}" oninput="STK.cfl(${k},'dn',this.value)"></div></div></div>`).join(''):'<p class="stk-small mt8">Lines come from the delivery.</p>'}
+   <p class="stk-small mt8">Only lines with a quantity above 0 go into the claim.</p></div>
+  <div class="stk-blk"><div class="h4">What happens to the goods</div><div class="stk-wrap mt12">${DISP.map(d=>`<button class="chip ${f.disp===d[0]?'on':''}" onclick="STK.cf('disp','${d[0]}')">${d[1]}</button>`).join('')}</div>
+   <div class="field mt12" style="margin-bottom:0"><label>Comment (up to 2000)</label><textarea class="input" maxlength="2000" oninput="STK.S.claimForm.note=this.value">${esc(f.note)}</textarea></div></div>
+  <div class="stk-blk"><div class="h4">Photos<span class="caps muted">${f.photos.length}</span></div><div class="stk-th mt12">${f.photos.map((ph,k)=>`<span class="t"><img src="${ph}" alt=""><button class="x" onclick="STK.cfPhoto(${k})">×</button></span>`).join('')}<button class="t add" onclick="STK.cfAddPhoto()">${I('camera')}<br>Add photo</button></div><p class="stk-small mt8">As many as you need. They are kept in the form until it is sent.</p></div>
+  <div class="pad mt16">${problem?`<div class="stk-small">${problem}</div>`:''}${f.err?`<div class="stk-small accent mt4">${f.err}</div>`:''}</div>`;
+ cta.innerHTML=`<button class="btn" ${problem?'disabled':''} onclick="STK.sendClaim()">${I('send')} Send claim</button>`;
+};
+STK.cf=(k,v,keep)=>{S.claimForm[k]=v;if(keep){const p=problem();$('stk-cn-cta').querySelector('.btn').disabled=!!p;$('stk-cn-body').querySelector('.pad.mt16').innerHTML=p?`<div class="stk-small">${p}</div>`:''}else mount_stk_claim_new(A.state.params)};
+function problem(){const f=S.claimForm;const o=f.po?po(f.po):null;return !o?'A claim opens from a delivery':!f.lines.some(l=>/^[1-9]\d*$/.test(l.bad))?'Add at least one line with a faulty quantity':!f.reason?'Choose a reason':(f.reason==='other'&&!f.reasonText.trim())?'Describe the reason':''}
+STK.cfl=(k,key,v)=>{S.claimForm.lines[k][key]=v;if(key==='bad'){const p=problem();$('stk-cn-cta').querySelector('.btn').disabled=!!p;$('stk-cn-body').querySelector('.pad.mt16').innerHTML=p?`<div class="stk-small">${p}</div>`:''}};
+STK.cfAddPhoto=()=>STK.photoSheet('claimnew',0,()=>{S.claimForm.photos.push(['img/powdered-rose-2.webp','img/red-roses.webp','img/lilac-dream.webp'][S.claimForm.photos.length%3]);mount_stk_claim_new(A.state.params)});
+STK.cfPhoto=k=>{S.claimForm.photos.splice(k,1);mount_stk_claim_new(A.state.params)};
+STK.sendClaim=()=>{const f=S.claimForm;const o=po(f.po);if(demo.offline){f.err='Could not create the claim – no connection. Nothing was sent.';mount_stk_claim_new(A.state.params);return}
+ const lines=f.lines.filter(l=>/^[1-9]\d*$/.test(l.bad)).map(l=>({name:l.name,sku:(o.lines.find(x=>x.id===l.lineId)||{}).itemId?item(o.lines.find(x=>x.id===l.lineId).itemId).sku:'—',bad:+l.bad,disp:(DISP.find(d=>d[0]===f.disp)||['','Unresolved'])[1],dn:l.dn}));
+ const id=Math.max(...CLAIMS.map(c=>c.id))+1;const sup=SUPPLIERS.find(s=>s.id===o.sup);const send=!sup.email?'no_email':sup.portal?'portal':'queued';const failed=f.photos.length>2?1:0;
+ const c={id,code:'CL-'+id,sup:o.sup,po:o.code,reason:f.reason,reasonText:f.reasonText,send,sendAfter:send==='queued'?new Date(NOW.getTime()+5*6e4).toISOString():null,by:A.state.me,at:NOW.toISOString(),disp:f.disp,note:f.note,lines,photos:f.photos.length-failed,photoList:f.photos.slice(0,f.photos.length-failed),events:[{at:NOW.toISOString(),type:'Created',by:A.state.me,note:''},send==='queued'?{at:NOW.toISOString(),type:'Email queued',by:'system',note:'sends in 5 min'}:send==='no_email'?{at:NOW.toISOString(),type:'No e-mail',by:'system',note:'Supplier has no e-mail – stays in CRM'}:{at:NOW.toISOString(),type:'Portal only',by:'system',note:'File on the supplier portal manually'}]};
+ CLAIMS.unshift(c);S.claimForm=null;A.haptic();A.confirm(`Claim ${c.code} created`,failed?`${failed} photo did not upload – add it on the claim card.`:`${lines.length} line${lines.length>1?'s':''}${f.photos.length?` · ${f.photos.length} photo${f.photos.length>1?'s':''} sent one by one`:''}.`,'Open',()=>A.go('stk-claim',{id},{replace:true}))};
+
+window.mount_stk_claim=function(p){
+ const id=+(p&&p.id);const c=claim(id);const body=$('stk-c-body');
+ bar('stk-c-bar',c?c.code:'Claim',demoIb,'stk-claims');
+ if(!c){body.innerHTML=lock('Claim not found','');return}
+ if(demo.offline){body.innerHTML=empty('Could not load the claim','Check the connection.','--err');return}
+ const mine=c.by===A.state.me;const cancellable=mine&&c.send==='queued'&&new Date(c.sendAfter)>NOW;
+ const ph=S.itemPhoto['claim'+id]||{};
+ body.innerHTML=`<div class="pad mt8"><div class="stk-kv"><span>Supplier</span><span>${esc(supN(c.sup))}</span></div><div class="stk-kv"><span>Claim</span><span>${c.code} · ${rl(c.reason)}${c.reasonText?' · '+esc(c.reasonText):''}</span></div><div class="stk-kv"><span>E-mail</span><span><span class="stk-rs --${SEND[c.send][1]}" style="margin:0">${SEND[c.send][0]}</span></span></div>${c.note?`<div class="stk-kv"><span>Note</span><span>${esc(c.note)}</span></div>`:''}</div>
+  ${c.send==='no_email'?`<div class="stk-ban --soft">The supplier has no e-mail – the claim stays in the CRM for the buyer.</div>`:''}
+  ${cancellable?`<div class="stk-ban">E-mail goes at ${hm(c.sendAfter)} (in 5 minutes) – you can still cancel.<br><button class="btn --sm --secondary" onclick="STK.cancelClaim(${id})">Cancel claim</button></div>`:''}
+  ${sec('Lines',c.lines.length)}<div class="pad">${c.lines.map(l=>`<div class="stk-req"><div class="t">${esc(l.name)} · faulty ${l.bad}</div><div class="m">${l.sku} · ${l.disp}${l.dn?' · '+esc(l.dn):''}</div></div>`).join('')}</div>
+  ${sec('Photos',c.photos)}<div class="pad"><div class="stk-th">${Array.from({length:c.photos}).map((_,k)=>`<span class="t"><img src="${(c.photoList||['img/powdered-rose-2.webp','img/red-roses.webp','img/lilac-dream.webp'])[k%3]}" alt=""></span>`).join('')}${ph.pending?`<span class="t"><span class="err">Not sent</span></span>`:''}${mine?`<button class="t add" onclick="STK.claimPhoto(${id})">${I('camera')}<br>${ph.pending?'Send again':'Add photo'}</button>`:''}</div>${ph.pending?'<div class="stk-small accent mt8">Could not upload the photo – kept on the phone, send again.</div>':''}</div>
+  ${sec('History',c.events.length)}<div class="pad">${c.events.map(e=>`<div class="stk-mv"><span class="d">${sameDay(e.at,NOW)?hm(e.at):dayS(e.at)}</span><span class="f1">${e.type} · ${e.by==='system'?'system':nm(e.by)}${e.note?` · <span class="muted">${esc(e.note)}</span>`:''}</span></div>`).join('')}</div>`;
+};
+STK.cancelClaim=id=>{const c=claim(id);A.sheet(`<div class="sh-head"><div class="h3">Cancel the claim?</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">The e-mail to the supplier will not be sent.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep</button><button class="btn --accent" onclick="STK.cancelClaimDo(${id})">Cancel claim</button></div>`)};
+STK.cancelClaimDo=id=>{const c=claim(id);A.closeSheet();if(demo.offline||new Date(c.sendAfter)<=NOW){A.confirm('Could not cancel','The e-mail has already gone – contact the buyer.','OK',null);return}c.send='cancelled';c.events.push({at:NOW.toISOString(),type:'Cancelled',by:A.state.me,note:''});A.confirm('Claim cancelled','Nothing was sent to the supplier.','OK',null);mount_stk_claim({id})};
+STK.claimPhoto=id=>{const store=(S.itemPhoto['claim'+id]=S.itemPhoto['claim'+id]||{});if(store.pending){if(demo.offline){A.toast('Still no connection – kept on the phone');return}store.pending=false;claim(id).photos++;A.toast('Photo sent');mount_stk_claim({id});return}
+ STK.photoSheet('claim',id,()=>{if(demo.offline){store.pending=true;A.sheet(`<div class="sh-head"><div class="h3">Photo not sent</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">Could not upload the photo. It is kept in memory.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();STK.remount()">Cancel</button><button class="btn" onclick="App.closeSheet();STK.claimPhoto(${id})">Send again</button></div>`);return}claim(id).photos++;A.toast('Photo added');mount_stk_claim({id})})};
+
+/* ===================== STOCKTAKES ===================== */
+const SCOPE={sample:'Sample',category:'Category',full:'Full'};
+const counted=s=>s.lines.filter(l=>l.fact!=null).length;
+window.mount_stk_stocktakes=function(){
+ bar('stk-sts-bar','Stocktakes',demoIb,'stk-inv');
+ const body=$('stk-sts-body');
+ if(!can('count')||demo.oldCrm){body.innerHTML=unavailable();return}
+ if(demo.loading){body.innerHTML=spin();return}
+ const head=`<div class="pad mt12"><button class="btn --sm --secondary --block" onclick="STK.newStocktake()">${I('plus')} New stocktake</button></div><div class="stk-dev mt12"><span>Refresh</span><button onclick="STK.refresh()">Pull to refresh</button></div>`;
+ if(demo.offline){body.innerHTML=head+empty('Could not load the stocktakes','Pull down to try again.','--err');return}
+ const l=demo.empty?[]:STKS.slice().sort((a,b)=>(a.status==='open'?0:1)-(b.status==='open'?0:1)||new Date(b.at)-new Date(a.at));
+ body.innerHTML=head+(l.length?`<div class="mt8">${l.map(s=>`<button class="stk-row" onclick="App.go('stk-stocktake',{id:${s.id}})"><div class="f1"><div class="nm">${s.code} · ${SCOPE[s.scope]}${s.cat?' · '+s.cat:''}</div><div class="mt">Counted ${counted(s)} of ${s.lines.length}${s.owner?'':' · Shared session'}</div><div class="mt">${s.status==='open'?'Started':'Applied'} ${whenS(s.at)}</div></div><span class="stk-rs --${s.status}" style="margin:0">${s.status==='open'?'Open':'Applied'}</span></button>`).join('')}</div>`:empty('No stocktakes','Open a session – several phones can count at once.'));
+};
+STK.newStocktake=()=>{S.stScope='sample';S.stCat='';const draw=()=>`<div class="stk-wrap">${[['sample','Sample 30'],['category','One category'],['full','Whole stock']].map(x=>`<button class="chip ${S.stScope===x[0]?'on':''}" onclick="STK.S.stScope='${x[0]}';STK._nsDraw()">${x[1]}</button>`).join('')}</div>${S.stScope==='category'?`<div class="field mt12"><label>Category (required)</label><input class="input" value="${esc(S.stCat)}" list="stk-cats" oninput="STK.S.stCat=this.value;STK._nsBtn()"><datalist id="stk-cats">${K.CATS.map(c=>`<option value="${c}">`).join('')}</datalist></div>`:''}<p class="xs muted" style="margin:12px 0 0">${S.stScope==='sample'?'30 random items – the CRM picks them.':S.stScope==='category'?'Every item of one category.':'Every item. Takes the whole team an evening.'}</p>`;
+ STK._nsDraw=()=>{$('stk-ns-b').innerHTML=draw();STK._nsBtn()};STK._nsBtn=()=>{$('stk-ns-ok').disabled=S.stScope==='category'&&!S.stCat.trim()};
+ A.sheet(sh('New stocktake',`<div id="stk-ns-b">${draw()}</div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="stk-ns-ok" onclick="STK.openSession()">Open session</button>`))};
+STK.openSession=()=>{if(demo.offline){A.toast('Could not open the session');return}const id=Math.max(...STKS.map(s=>s.id))+1;const src=S.stScope==='full'?ITEMS:S.stScope==='category'?ITEMS.filter(i=>i.cat.toLowerCase()===S.stCat.trim().toLowerCase()):ITEMS.slice().sort(()=>Math.random()-.5).slice(0,10);STKS.unshift({id,code:'ST-'+id,scope:S.stScope,cat:S.stScope==='category'?S.stCat.trim():'',status:'open',owner:null,at:NOW.toISOString(),lines:src.map(i=>({id:i.id,itemId:i.id,fact:null,by:null,at:null}))});A.closeSheet();A.toast('Session opened');A.go('stk-stocktake',{id})};
+
+window.mount_stk_stocktake=function(p){
+ const id=+(p&&p.id);const s=stk(id);const body=$('stk-st-body'),cta=$('stk-st-cta');cta.style.display='none';body.classList.remove('has-cta');
+ bar('stk-st-bar',s?s.code:'Stocktake',demoIb,'stk-stocktakes');
+ if(!can('count')||demo.oldCrm){body.innerHTML=unavailable();return}
+ if(!s){body.innerHTML=lock('Stocktake not found','');return}
+ if(S.stId!==id){S.stId=id;S.stQ='';S.stChip='all';S.stSave=''}
+ const open=s.status==='open';
+ let lines=s.lines.slice();if(S.stChip==='todo')lines=lines.filter(l=>l.fact==null);if(S.stQ){const q=S.stQ.toLowerCase();lines=lines.filter(l=>{const i=item(l.itemId);return i.en.toLowerCase().includes(q)||i.sku.toLowerCase().includes(q)})}
+ const save=S.stSave==='saving'?' · <span class="stk-saving">Saving…</span>':S.stSave==='err'?' · <span class="stk-saving --err">Some lines did not save – we will retry</span>':'';
+ body.innerHTML=`<div class="stk-sub">${open?`Counted ${counted(s)} of ${s.lines.length}${save}`:'Applied – view only'}${s.owner?'':' · shared session'}</div>
+  <div class="pad mt12"><div class="input-wrap">${I('search')}<input class="input" placeholder="Name or SKU…" value="${esc(S.stQ)}" oninput="STK.stQ(this.value)"></div></div>
+  <div class="chips stk-chips"><button class="chip ${S.stChip==='all'?'on':''}" onclick="STK.stChip('all')">All</button><button class="chip ${S.stChip==='todo'?'on':''}" onclick="STK.stChip('todo')">Not counted <b>${s.lines.filter(l=>l.fact==null).length}</b></button></div>
+  ${open?`<div class="stk-hint">${I('info')} Numbers save by themselves 1 s after the last key; offline they wait on the phone.</div>`:''}
+  <div class="mt8">${lines.length?lines.map(l=>{const i=item(l.itemId);return `<div class="stk-line">${thumb(i)}<div class="f1"><div class="nm">${esc(i.en)}</div><div class="mt">${i.sku} · In the system ${i.onHand} ${i.unit}</div><div class="mt">${l.fact!=null?`${youOr(l.by)} · ${sameDay(l.at,NOW)?hm(l.at):dayS(l.at)}`:'—'}</div></div><input class="stk-fact" inputmode="numeric" placeholder="Fact" value="${l.fact==null?'':l.fact}" ${open?'':'disabled'} oninput="STK.stFact(${id},${l.id},this.value)"></div>`}).join(''):empty('Nothing here','')}</div>`;
+ if(open&&can('manage')){cta.style.display='';body.classList.add('has-cta');cta.innerHTML=`<button class="btn" onclick="STK.applySt(${id})">${I('check')} Apply</button>`}
+};
+STK.stQ=v=>{S.stQ=v;const b=$('stk-st-body');mount_stk_stocktake({id:S.stId});const inp=b.querySelector('.input');inp.focus();inp.setSelectionRange(v.length,v.length)};
+STK.stChip=c=>{S.stChip=c;mount_stk_stocktake({id:S.stId})};
+let stT,stQueue={};
+STK.stFact=(id,lid,v)=>{if(!/^\d*$/.test(v))return;stQueue[lid]=v===''?null:+v;S.stSave='saving';setSub(id);clearTimeout(stT);stT=setTimeout(()=>flush(id),1000)};
+function setSub(id){const s=stk(id);const el=$('stk-st-body').querySelector('.stk-sub');if(!el)return;const save=S.stSave==='saving'?' · <span class="stk-saving">Saving…</span>':S.stSave==='err'?' · <span class="stk-saving --err">Some lines did not save – we will retry</span>':'';el.innerHTML=`Counted ${counted(s)} of ${s.lines.length}${save}${s.owner?'':' · shared session'}`}
+function flush(id){const s=stk(id);if(!s||!Object.keys(stQueue).length)return;if(s.status!=='open'){stQueue={};S.stSave='';A.confirm('This stocktake is already applied','Someone applied it from another phone. The sheet reloads; nothing more is saved.','OK',()=>mount_stk_stocktake({id}));return}
+ if(demo.offline){S.stSave='err';setSub(id);clearTimeout(stT);stT=setTimeout(()=>flush(id),5000);return}
+ Object.keys(stQueue).forEach(lid=>{const l=s.lines.find(x=>x.id===+lid);if(!l)return;l.fact=stQueue[lid];l.by=l.fact==null?null:A.state.me;l.at=l.fact==null?null:NOW.toISOString()});stQueue={};S.stSave='';if(A.state.current==='stk-stocktake')mount_stk_stocktake({id})}
+document.addEventListener('screen',e=>{if(e.detail.id!=='stk-stocktake'&&Object.keys(stQueue).length&&S.stId){clearTimeout(stT);const was=demo.offline;demo.offline=false;flush(S.stId);demo.offline=was}});
+STK.applySt=id=>{clearTimeout(stT);flush(id);A.sheet(`<div class="sh-head"><div class="h3">Apply the stocktake?</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">Differences are posted to the stock and the session closes. This cannot be undone.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="STK.applyStDo(${id})">Apply</button></div>`)};
+STK.applyStDo=id=>{const s=stk(id);A.closeSheet();if(demo.offline){A.toast('Could not apply – no connection');return}s.lines.forEach(l=>{if(l.fact==null)return;const i=item(l.itemId);const d=l.fact-i.onHand;if(d){i.movements.unshift({at:NOW.toISOString(),type:'Stocktake '+s.code,by:A.state.me,q:d,from:i.onHand,to:l.fact});i.onHand=l.fact;i.avail=Math.min(i.avail,l.fact);i.status=i.onHand===0?'out':i.onHand<i.min?'low':'ok'}i.countedBy=l.by||A.state.me;i.countedAt=NOW.toISOString()});s.status='applied';s.owner=A.state.me;s.at=NOW.toISOString();A.confirm('Stocktake applied','Stock lists are refreshed.','OK',null);mount_stk_stocktake({id})};
+
+/* ===================== SHOWCASE ===================== */
+const unavailableActs=new Set();
+window.mount_stk_showcase=function(){
+ const body=$('stk-sc-body');
+ if(!K.showcaseRole()){A.go('work',{},{replace:true});A.toast('Showcase is for florists and managers');return}
+ bar('stk-sc-bar','Showcase',demoIb,'work');
+ const me=A.state.me,fl=A.role()==='florist';
+ const vis=demo.empty?[]:SHOW.filter(b=>b.status==='open'&&(!fl||b.by===me)).sort((a,b)=>new Date(a.startedAt)-new Date(b.startedAt));
+ const onShelf=SHOW.filter(b=>b.status==='open').length;
+ let card;
+ if(demo.loading||demo.offline||demo.oldCrm)card=`<div class="stk-ban --soft">Showcase card is not drawn: ${demo.loading?'still loading':demo.oldCrm?'the CRM answered 404 – no button, no screen':'the list failed to load'}. The Shift / Today screen shows nothing here.</div>`;
+ else card=`<div class="stk-blk"><div class="h4">Showcase<span class="caps muted">On the shelf: ${onShelf}</span></div>
+   <button class="btn --sm --block mt12" onclick="STK.scNew()">${I('flower')} Bouquet for the showcase</button>
+   ${vis.length?`<div class="mt8">${vis.map(b=>{const canPrice=b.by===me||!fl;const act=k=>unavailableActs.has(k)?'<span class="na">Unavailable</span>':'';return `<div class="stk-bq"><div class="t">${esc(b.note)}</div><div class="m">${fl?'':nm(b.by)+' · '}started ${hm(b.startedAt)}${b.price!=null?' · '+money(b.price):''}${b.ready?' <span class="tag --ok">On the shelf</span>':''}</div>
+    <div class="a">${b.by===me&&!b.ready?(unavailableActs.has('ready')?act('ready'):`<button class="btn --xs" onclick="STK.scReady(${b.id})">Ready – send a photo</button>`):''}${canPrice?(unavailableActs.has('price')?act('price'):`<button class="btn --xs --secondary" onclick="STK.scPrice(${b.id})">Price</button>`):''}${!fl?(unavailableActs.has('writeoff')?act('writeoff'):`<button class="btn --xs --ghost" onclick="STK.scFinal(${b.id},'writeoff')">Write off</button>`)+(unavailableActs.has('dismantle')?act('dismantle'):`<button class="btn --xs --ghost" onclick="STK.scFinal(${b.id},'dismantle')">Dismantled</button>`):''}</div></div>`}).join('')}</div>`:`<p class="stk-small mt12">${fl?'You have no open bouquets':'Shelf is empty'}</p>`}</div>`;
+ body.innerHTML=`<div class="stk-sub">Card from Shift (classic) and Today (B) · bonus scheme §2.6</div>${card}
+  <div class="stk-dev mt16"><span>Demo</span><button class="${unavailableActs.size?'on':''}" onclick="STK.scToggle404()">${unavailableActs.size?'Actions back':'CRM 404 on Write off'}</button><button onclick="STK.scLimit()">Studio limit (422)</button></div>
+  ${sec('Bonus',null)}<div class="pad"><p class="stk-small">A finished bouquet (photo sent) counts in today's bonus counter in Me.</p></div>`;
+};
+STK.scToggle404=()=>{if(unavailableActs.size)unavailableActs.clear();else{unavailableActs.add('writeoff');unavailableActs.add('dismantle')}mount_stk_showcase()};
+STK.scNew=function(){
+ const sug=demo.empty?[]:SHOW_SUG;S.showCol=null;
+ const draw=()=>`<div class="caps muted mb8">What to make</div>${sug.length?sug.map((s,k)=>`<button class="stk-radio ${S.showCol===k?'on':''}" onclick="STK.S.showCol=${k};STK._scDraw()"><span class="rd"></span><span class="f1"><span class="t">${esc(s.name)}</span><span class="m" style="display:block">${esc(s.parts)}<br>${esc(s.note)}</span></span></button>`).join(''):'<p class="sm muted" style="margin:0 0 8px">No suggestions – you can still start.</p>'}<button class="stk-radio ${S.showCol==null?'on':''}" onclick="STK.S.showCol=null;STK._scDraw()"><span class="rd"></span><span class="f1"><span class="t">No suggestion</span></span></button>${S.scLimit?`<div class="stk-ban --soft" style="margin:12px 0 0">Already 6 on the showcase – sell first.</div>`:''}`;
+ STK._scDraw=()=>{$('stk-sc-b').innerHTML=draw();$('stk-sc-ok').disabled=!!S.scLimit};
+ A.sheet(sh('Bouquet for the showcase',`<div id="stk-sc-b">${draw()}</div><p class="xs muted" style="margin:12px 0 0">Suggestions are refetched every time this opens. Start takes a shelf slot; the photo comes later.</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="stk-sc-ok" ${S.scLimit?'disabled':''} onclick="STK.scStart()">Start</button>`),{full:true});
+};
+STK.scLimit=()=>{S.scLimit=!S.scLimit;A.toast(S.scLimit?'Studio limit on: 6 on the showcase':'Studio limit off');STK.scNew()};
+STK.scStart=()=>{if(demo.offline){$('stk-sc-b').insertAdjacentHTML('beforeend','<div class="stk-small accent mt8">Could not start – try again.</div>');return}const sug=S.showCol!=null?SHOW_SUG[S.showCol]:null;SHOW.push({id:SHOW.length+1,by:A.state.me,note:sug?`${sug.name}: ${sug.parts}`.slice(0,500):'Free bouquet',startedAt:NOW.toISOString(),price:null,ready:false,status:'open'});A.closeSheet();A.toast('Slot taken – the photo comes when it is ready');mount_stk_showcase()};
+STK.scReady=id=>{const b=SHOW.find(x=>x.id===id);A.sheet(sh('Ready – send a photo',`<div class="field"><label>Price on the shelf, £ (optional)</label><input class="input" inputmode="decimal" id="stk-sc-pr" value="${b.price!=null?(b.price/100).toFixed(2):''}"></div><p class="xs muted" style="margin:0 0 12px">Without a photo the bouquet cannot be finished. Upload timeout 60 s.</p><button class="stk-sheetrow" onclick="STK.scShot(${id},'camera')">${I('camera')} Take a photo${I('chev')}</button><button class="stk-sheetrow" onclick="STK.scShot(${id},'library')">${I('photo')} Choose from library${I('chev')}</button><button class="stk-sheetrow" onclick="App.closeSheet()">${I('close')} Cancel</button>`))};
+STK.scShot=(id,src)=>{const b=SHOW.find(x=>x.id===id);const pr=($('stk-sc-pr')||{}).value;A.closeSheet();if(src==='camera'&&demo.camDenied){setTimeout(()=>A.confirm('Camera is off for Floritta Team','Allow the camera in Settings, or choose from the library.','OK',null),200);return}if(demo.offline){setTimeout(()=>A.sheet(`<div class="sh-head"><div class="h3">Photo not sent</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">The upload dropped. The photo is kept – send again or cancel.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();STK.scShot(${id},'library')">Send again</button></div>`),200);return}if(pr&&/^\d+([.,]\d{1,2})?$/.test(pr))b.price=Math.round(parseFloat(pr.replace(',','.'))*100);b.ready=true;A.haptic();A.confirm('Done','On the shelf. It counts in today\'s bonus.','OK',null);mount_stk_showcase()};
+STK.scPrice=id=>{const b=SHOW.find(x=>x.id===id);A.sheet(sh('Price on the shelf',`<div class="field"><label>Price, £</label><input class="input" inputmode="decimal" id="stk-sc-pr2" value="${b.price!=null?(b.price/100).toFixed(2):''}"></div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="STK.scPriceSave(${id})">Save price</button>`))};
+STK.scPriceSave=id=>{const b=SHOW.find(x=>x.id===id);const v=$('stk-sc-pr2').value;if(!/^\d+([.,]\d{1,2})?$/.test(v)){A.toast('Enter a price like 45 or 45.50');return}A.closeSheet();if(demo.offline){A.toast('Try again');return}b.price=Math.round(parseFloat(v.replace(',','.'))*100);A.toast('Price saved');mount_stk_showcase()};
+STK.scFinal=(id,kind)=>{const b=SHOW.find(x=>x.id===id);const L=kind==='writeoff'?['Write off the bouquet?','Nobody bought it. This is final.','Write off']:['Mark as dismantled?','Taken apart for another bouquet. This is final.','Dismantled'];A.confirm(L[0],L[1],L[2],()=>{if(demo.offline){A.toast('Try again');return}if(S.scLimit&&kind==='writeoff'){A.toast('CRM: bouquet is already sold – refresh');return}b.status=kind;A.toast(L[2]+' · slot freed');mount_stk_showcase()})};
+})();
+</script>

@@ -1,0 +1,616 @@
+<style>
+/* ===== 60-stock · Work · Stock (classic inventory moved into the Work tab) · prefix stk- ===== */
+.stk-body{padding-bottom:calc(var(--tab-h) + var(--safe-b) + 24px)}
+.stk-body.has-cta{padding-bottom:calc(var(--tab-h) + var(--btn-h) + 56px + var(--safe-b))}
+.stk-cta{bottom:calc(var(--tab-h) + var(--safe-b))}
+html[data-style="glass"] .stk-cta{bottom:calc(var(--tab-h) + var(--safe-b) + 22px)}
+.stk-sub{padding:2px var(--gutter) 0;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.stk-sub.accent{color:var(--accent)}
+.stk-chips{margin-top:14px}
+.stk-chips .chip b{font-weight:400;opacity:.55;margin-left:2px}
+.stk-chips .chip.--acc{border-color:var(--accent);color:var(--accent)}
+.stk-chips .chip.--acc.on{background:var(--accent);color:#fff}
+.stk-hint{display:flex;align-items:center;gap:8px;padding:12px var(--gutter) 0;font-size:12px;color:var(--grey)}
+.stk-hint svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.stk-sec{display:flex;align-items:baseline;gap:10px;margin:26px var(--gutter) 10px}
+.stk-sec .h3{flex:1}
+.stk-sec .n{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.stk-sec.--acc .h3,.stk-sec.--acc .n{color:var(--accent)}
+.stk-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px var(--gutter);border-bottom:1px solid var(--hair);background:var(--paper)}
+.stk-row:active{background:var(--silver)}
+.stk-row .th{width:48px;height:60px;object-fit:cover;background:var(--silver);flex:none;display:grid;place-items:center;color:var(--grey)}
+.stk-row .th svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
+.stk-row .nm{font-size:15px;line-height:1.3}
+.stk-row .mt{font-size:12px;color:var(--grey);margin-top:2px}
+.stk-row .pr{font-size:12px;color:var(--graphite);margin-top:2px}
+.stk-row .qt{text-align:right;flex:none}
+.stk-row .qt b{display:block;font-family:var(--f-display);font-size:24px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums}
+.stk-row .qt span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.stk-row .qt.out b,.stk-row .qt.out span{color:var(--accent)}
+.stk-row .qt.low b,.stk-row .qt.low span{color:var(--warn)}
+.stk-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.stk-empty{margin:16px var(--gutter) 0;padding:28px 16px;text-align:center;background:var(--silver);color:var(--graphite);font-size:14px}
+.stk-empty b{display:block;font-family:var(--f-display);font-weight:400;font-size:20px;color:var(--ink);margin-bottom:4px}
+.stk-empty.--err{background:var(--accent-bg);color:var(--accent)}
+.stk-empty.--err b{color:var(--accent)}
+.stk-spin{margin:40px auto;width:22px;height:22px;border:1.5px solid var(--light);border-top-color:var(--ink);border-radius:50%;animation:stkspin .9s linear infinite}
+@keyframes stkspin{to{transform:rotate(360deg)}}
+.stk-blk{margin:18px var(--gutter) 0;border:1px solid var(--hair);padding:14px}
+.stk-blk .h4{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stk-blk .h4 .lk{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;font-weight:400;border-bottom:1px solid var(--light);padding-bottom:1px}
+.stk-kv{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.stk-kv:last-child{border-bottom:0}
+.stk-kv span:first-child{color:var(--grey);font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;padding-top:2px}
+.stk-kv span:last-child{text-align:right}
+.stk-photo{position:relative;aspect-ratio:4/3;background:var(--silver);display:grid;place-items:center;color:var(--graphite);text-align:center;font-size:12px;letter-spacing:.08em;text-transform:uppercase;overflow:hidden}
+.stk-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stk-photo svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.5;margin-bottom:8px}
+.stk-photo .cap{position:relative;z-index:1;background:rgba(253,253,253,.85);padding:6px 10px}
+.stk-link{display:inline-block;font-size:13px;letter-spacing:var(--ls-caps);text-transform:uppercase;border-bottom:1px solid var(--light);padding-bottom:2px;margin-top:10px}
+.stk-link.accent{border-bottom-color:var(--accent)}
+.stk-big{display:flex;align-items:baseline;gap:10px}
+.stk-big b{font-family:var(--f-display);font-size:44px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums}
+.stk-big span{font-size:13px;color:var(--grey)}
+.stk-var{font-size:13px;color:var(--graphite);margin-top:8px;min-height:18px}
+.stk-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.stk-mv{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.stk-mv .d{font-size:12px;color:var(--grey);width:64px;flex:none}
+.stk-mv .q{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:400}
+.stk-mv .q.plus{color:var(--ok)}.stk-mv .q.minus{color:var(--accent)}
+.stk-req{padding:12px 0;border-bottom:1px solid var(--hair)}
+.stk-req .t{font-size:15px}
+.stk-req .m{font-size:12px;color:var(--grey);margin-top:3px;line-height:1.5}
+.stk-req .a{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.stk-rs{font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;display:inline-block;margin-top:6px}
+.stk-rs.--new{background:var(--warn-bg);color:var(--warn)}.stk-rs.--ordered{background:var(--ink);color:var(--paper)}.stk-rs.--arrived{background:var(--ok-bg);color:var(--ok)}.stk-rs.--rejected{background:var(--silver);color:var(--grey)}
+.stk-rs.--queued{background:var(--warn-bg);color:var(--warn)}.stk-rs.--sent{background:var(--ok-bg);color:var(--ok)}.stk-rs.--cancelled{background:var(--silver);color:var(--grey)}.stk-rs.--fail{background:var(--accent-bg);color:var(--accent)}
+.stk-rs.--open{background:var(--warn-bg);color:var(--warn)}.stk-rs.--applied{background:var(--ok-bg);color:var(--ok)}
+.stk-step{display:inline-flex;align-items:center;border:1px solid var(--light);height:36px}
+.stk-step button{width:36px;height:100%;font-size:18px;font-weight:300}
+.stk-step input{width:56px;height:100%;border:0;border-left:1px solid var(--light);border-right:1px solid var(--light);text-align:center;font-size:14px;outline:none;background:var(--paper);font-family:var(--f-body)}
+.stk-line{display:flex;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair);align-items:center}
+.stk-line .th{width:44px;height:54px;object-fit:cover;background:var(--silver);flex:none;display:grid;place-items:center;color:var(--grey)}
+.stk-line .th svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+.stk-line .nm{font-size:15px;line-height:1.3}
+.stk-line .mt{font-size:12px;color:var(--grey);margin-top:2px}
+.stk-line .mt .w{color:var(--warn)}
+.stk-line .act{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+.stk-panel{margin:16px var(--gutter) 0}
+.stk-ban{margin:16px var(--gutter) 0;padding:14px;background:var(--warn-bg);color:var(--warn);font-size:13px;line-height:1.5}
+.stk-ban.--acc{background:var(--accent-bg);color:var(--accent)}
+.stk-ban.--ok{background:var(--ok-bg);color:var(--ok)}
+.stk-ban.--soft{background:var(--silver);color:var(--graphite)}
+.stk-ban .btn{margin-top:10px}
+.stk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stk-small{font-size:12px;color:var(--grey);line-height:1.5}
+.stk-th{display:flex;gap:8px;flex-wrap:wrap}
+.stk-th .t{width:72px;height:72px;background:var(--silver);display:grid;place-items:center;color:var(--grey);position:relative;overflow:hidden}
+.stk-th .t img{width:100%;height:100%;object-fit:cover}
+.stk-th .t svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+.stk-th .t.add{border:1px dashed var(--grey);background:var(--paper);color:var(--graphite);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-align:center;line-height:1.3;padding:4px}
+.stk-th .t .x{position:absolute;top:0;right:0;width:20px;height:20px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:12px}
+.stk-th .t .err{position:absolute;inset:0;background:rgba(180,89,95,.85);color:#fff;display:grid;place-items:center;font-size:9px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.stk-day{display:flex;align-items:baseline;gap:10px;margin:22px var(--gutter) 8px;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.stk-day.--acc{color:var(--accent)}
+.stk-day span{flex:1}
+.stk-sheetrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 0;border-bottom:1px solid var(--hair);min-height:56px;font-size:15px}
+.stk-sheetrow .d{font-size:12px;color:var(--grey);margin-top:1px}
+.stk-sheetrow svg{width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;margin-left:auto;flex:none}
+.stk-sheetrow[disabled]{opacity:.45;pointer-events:none}
+.stk-demo{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.stk-demo .d{font-size:12px;color:var(--grey);margin-top:1px}
+.stk-fact{height:44px;width:84px;border:1px solid var(--light);text-align:center;font-size:16px;outline:none;background:var(--paper);font-family:var(--f-body)}
+.stk-fact:focus{border-color:var(--ink)}
+.stk-fact[disabled]{background:var(--silver);color:var(--grey)}
+.stk-saving{font-size:12px;color:var(--grey)}
+.stk-saving.--err{color:var(--accent)}
+.stk-lock{margin:48px var(--gutter) 0;text-align:center;color:var(--graphite);font-size:14px;line-height:1.55}
+.stk-lock svg{width:30px;height:30px;stroke:var(--grey);fill:none;stroke-width:1.2;margin-bottom:12px}
+.stk-lock b{display:block;font-family:var(--f-display);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:6px}
+.stk-dev{margin:0 var(--gutter);padding:8px 10px;background:var(--silver);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.stk-dev button{border-bottom:1px solid var(--light);color:var(--ink)}
+.stk-dev button.on{color:var(--accent);border-bottom-color:var(--accent)}
+.stk-sug{padding:10px 0;border-bottom:1px solid var(--hair)}
+.stk-sug .t{font-size:15px}
+.stk-sug .m{font-size:12px;color:var(--grey);margin-top:2px}
+.stk-radio{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.stk-radio .rd{width:20px;height:20px;border:1px solid var(--light);flex:none;display:grid;place-items:center;margin-top:2px}
+.stk-radio .rd::after{content:"";width:10px;height:10px;background:var(--ink);transform:scale(0);transition:transform var(--m-fast)}
+.stk-radio.on .rd{border-color:var(--ink)}.stk-radio.on .rd::after{transform:scale(1)}
+.stk-radio .t{font-size:15px}.stk-radio .m{font-size:12px;color:var(--grey);margin-top:2px;line-height:1.45}
+.stk-bq{padding:12px 0;border-bottom:1px solid var(--hair)}
+.stk-bq .t{font-size:15px;line-height:1.35}
+.stk-bq .m{font-size:12px;color:var(--grey);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stk-bq .a{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
+.stk-bq .na{font-size:12px;color:var(--grey)}
+.app:has(.scr.on .stk-cta:not([style*="none"])) .toast{bottom:calc(var(--tab-h) + var(--btn-h) + 44px + var(--safe-b))}
+</style>
+
+<!-- ============ STOCK (list) · embedded under Work · ids: TM-INV-001 TM-INV-002 TM-INV-003 TM-INV-004 TM-INV-005 TM-INV-006 TM-INV-007 TM-INV-008 TM-INV-009 TM-INV-010 TM-INV-011 TM-INV-012 TM-INV-013 TM-INV-014 TM-INV-015 TM-INV-016 TM-INV-017 TM-INV-018 TM-INV-019 ============ -->
+<!-- TM-INV-001 TM-INV-002: the classic Stock tab becomes a "Stock" row inside Work (B); hidden for couriers and limited accounts – mount shows the lock panel instead; heading lives in the app bar -->
+<!-- TM-INV-003 TM-INV-004: app bar buttons "To order" (list icon) and "+" (new item / not on the list) -->
+<!-- TM-INV-005 TM-INV-006 TM-INV-007 TM-INV-008: search 300 ms debounce; chip "Count today · X of Y" (only when group A not empty); section chips Showcase / All / per category; "To count · X of Y" / "Whole stock" toggle under chips -->
+<!-- TM-INV-009 TM-INV-010 TM-INV-011: stock-ops chips Deliveries (· today N, accent) and Stocktakes (· open, accent) – block hidden without receive/count -->
+<!-- TM-INV-012 TM-INV-013 TM-INV-014 TM-INV-015 TM-INV-016: item row (thumb, name EN, SKU · category, Counted: who · when, prices by permission, on-hand colour, Use first / days-left badges), tap → item -->
+<!-- TM-INV-017 TM-INV-018 TM-INV-019: pull-to-refresh (demo button), loading / empty / error states per mode, pushes inventory / stocktake / purchase_order / claim from the demo sheet -->
+<section class="scr" id="s-stk-inv" data-nav="Stock" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-inv-bar"></div>
+  <div class="scr-body stk-body" id="stk-inv-body"></div>
+</section>
+
+<!-- ============ ITEM CARD · ids: TM-INV-020 TM-INV-021 TM-INV-022 TM-INV-023 TM-INV-024 TM-INV-025 TM-INV-026 TM-INV-027 TM-INV-028 TM-INV-029 TM-INV-030 TM-INV-031 TM-INV-032 TM-INV-033 TM-INV-034 TM-INV-035 TM-INV-036 TM-INV-037 TM-INV-038 TM-INV-039 ============ -->
+<!-- TM-INV-020 TM-INV-021: title = item name, back labelled "Stock"; loading / not found for a bad id (demo: open with id 0) -->
+<!-- TM-INV-022 TM-INV-023: photo tile → Take a photo / Choose from library; "Update photo" turns into "Send again" after a dropped upload (held in memory, alert cannot be dismissed by tapping outside) -->
+<!-- TM-INV-024 TM-INV-025: stock block (SKU · category, big on-hand, available · min, Counted: who · when); retail with VAT for all, cost without VAT only with inventory.cost -->
+<!-- TM-INV-026 TM-INV-027 TM-INV-028: Counted quantity (digits only, opens empty) + note; live variance line; Save count → alert "Stock updated: N on hand" -->
+<!-- TM-INV-029 TM-INV-030 TM-INV-031: Write off card (reason chips + qty) → "Written off: N" line with Undo (same day, author) -->
+<!-- TM-INV-032 TM-INV-033 TM-INV-034 TM-INV-035: Need to order card – open requests from everyone, form (qty / urgency / note), Send to buyer (update not duplicate), red one-tap "Ran out – order" -->
+<!-- TM-INV-036: Recent movements with signed quantities -->
+<!-- TM-INV-037 TM-INV-038 TM-INV-039: Item card edit (manage only): names, category, unit, min, retail, freshness days, stems per bunch; Cost field only with inventory.cost; Save → "Card updated" / Cancel -->
+<section class="scr" id="s-stk-item" data-nav="Stock · item" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-item-bar"></div>
+  <div class="scr-body stk-body" id="stk-item-body"></div>
+</section>
+
+<!-- ============ NEW ITEM / NOT ON THE LIST · ids: TM-INV-040 TM-INV-041 TM-INV-042 TM-INV-043 TM-INV-044 TM-INV-045 ============ -->
+<!-- TM-INV-040: one route, two forms – manager/admin "New stock item", everyone else "Not on the list" (switch persona to see) -->
+<!-- TM-INV-041: photo tile in both forms, camera denied → error text inside the form -->
+<!-- TM-INV-042 TM-INV-043: create form (name, on hand, unit, cost without VAT – manage only) → Add to stock → item card (replace); opened from a delivery → back to the delivery with the line linked -->
+<!-- TM-INV-044 TM-INV-045: suggest form (what is it, how many on the shelf) → Send → To order, where the manager's answer shows -->
+<section class="scr" id="s-stk-new" data-nav="Stock · new item" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-new-bar"></div>
+  <div class="scr-body stk-body has-cta" id="stk-new-body"></div>
+  <div class="cta-bar stk-cta" id="stk-new-cta"></div>
+</section>
+
+<!-- ============ TO ORDER (restock requests) · ids: TM-INV-046 TM-INV-047 TM-INV-048 TM-INV-049 TM-INV-050 TM-INV-051 TM-INV-052 ============ -->
+<!-- TM-INV-046 TM-INV-047: heading + hint, chips All / Mine -->
+<!-- TM-INV-048 TM-INV-049: request card with status colour, buyer note and who handled; buyer buttons Ordered / Arrived / Reject with note prompt (iOS) – Android demo toggle skips the note -->
+<!-- TM-INV-050 TM-INV-051 TM-INV-052: Suggested items block (author only, only when present), pull-to-refresh, empty / error states -->
+<section class="scr" id="s-stk-requests" data-nav="Stock · to order" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-req-bar"></div>
+  <div class="scr-body stk-body" id="stk-req-body"></div>
+</section>
+
+<!-- ============ RAN OUT – NEEDS ORDERING · ids: TM-INV-053 TM-INV-054 TM-INV-055 ============ -->
+<!-- TM-INV-053 TM-INV-054 TM-INV-055: search from 2 characters (no prices, every role incl. couriers), result row EN · RU · on hand (red at 0), tap → confirm → "Sent: X – the buyer will order"; busy state blocks other rows -->
+<section class="scr" id="s-stk-out" data-nav="Stock · ran out" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-out-bar"></div>
+  <div class="scr-body stk-body" id="stk-out-body"></div>
+</section>
+
+<!-- ============ DELIVERIES · ids: TM-INV-056 TM-INV-057 TM-INV-058 TM-INV-059 TM-INV-060 TM-INV-061 TM-INV-062 ============ -->
+<!-- TM-INV-056 TM-INV-057 TM-INV-058: groups Overdue / Today / Tomorrow / Later / Received in 7 days by shop day; row supplier, code · day · note, N of M lines received, status; tap → delivery -->
+<!-- TM-INV-059 TM-INV-060 TM-INV-061 TM-INV-062: header buttons Receive without order / My claims; footer My receipts (no-order only, 7 days); refresh; Unavailable (no rights / old CRM), error, empty -->
+<section class="scr" id="s-stk-deliveries" data-nav="Stock · deliveries" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-dlv-bar"></div>
+  <div class="scr-body stk-body" id="stk-dlv-body"></div>
+</section>
+
+<!-- ============ DELIVERY & RECEIVING · ids: TM-INV-063 TM-INV-064 TM-INV-065 TM-INV-066 TM-INV-067 TM-INV-068 TM-INV-069 TM-INV-070 TM-INV-071 TM-INV-072 TM-INV-073 ============ -->
+<!-- TM-INV-063 TM-INV-064 TM-INV-065: header (supplier, code · Expected day · note, status, N of M lines), lines with photo, SKU · expected · received, "outstanding N"; steppers open on the outstanding qty (0…1 000 000) -->
+<!-- TM-INV-066 TM-INV-067 TM-INV-068 TM-INV-069 TM-INV-070: All arrived as listed; Receive with changes (only when a stepper differs); shortfall sheet → Not now / Raise a claim; per-line "Not delivered / faulty"; item_missing alert → Create item → back with the line linked -->
+<!-- TM-INV-071 TM-INV-072 TM-INV-073: Received block (time, "by me", "Edits until HH:MM"), Correct quantities sheet (changed lines only); states "Edits need a newer CRM", "Edits closed – ask a manager", Unavailable, not found -->
+<section class="scr" id="s-stk-delivery" data-nav="Stock · delivery" data-group="Work · Stock" data-tab="work">
+  <div class="appbar" id="stk-dl-bar"></div>
+  <div class="scr-body stk-body" id="stk-dl-body"></div>
+  <div class="cta-bar stk-cta" id="stk-dl-cta" style="display:none"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App, I=n=>A.icon(n), $=id=>document.getElementById(id);
+const ic=(n,s=18,x='')=>A.icon(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;${x}"`);
+const T=A.T, NOW=A.NOW;
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const money=p=>'£'+(p/100).toFixed(2);
+const p2=n=>String(n).padStart(2,'0');
+const hm=iso=>{const d=new Date(iso);return p2(d.getHours())+':'+p2(d.getMinutes())};
+const dayS=iso=>{const d=new Date(iso);return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})};
+const sameDay=(a,b)=>new Date(a).toDateString()===new Date(b).toDateString();
+const whenS=iso=>sameDay(iso,NOW)?hm(iso):dayS(iso)+' '+hm(iso);
+const nm=id=>{const u=A.user(id);return u?u.n:id};
+const youOr=id=>id===A.state.me?'You':nm(id);
+const isLimited=()=>{const m=A.me();return m.staff_type==='trainee'||m.staff_type==='seasonal'};
+const PERM={owner:['view','count','receive','manage','cost'],manager:['view','count','receive','manage'],florist:['view','count','receive'],courier:[]};
+const can=p=>!isLimited()&&(PERM[A.role()]||[]).includes(p);
+const hasStock=()=>A.role()!=='courier'&&!isLimited();
+const showcaseRole=()=>['florist','manager','owner'].includes(A.role());
+
+/* ---------- demo data (fictional) ---------- */
+const CATS=['Roses','Foliage','Seasonal','Sundries','Vases'];
+const ITEMS=[
+ {id:1,en:'Rose Quicksand 50 cm',ru:'Роза Квиксенд 50',sku:'RS-QS50',cat:'Roses',unit:'stem',onHand:140,avail:120,min:60,retail:450,cost:85,useFirst:true,daysLeft:2,countedBy:'kamila',countedAt:T(8,40),showcase:true,groupA:true,img:'img/powdered-rose-2.webp',fresh:7,bunch:20},
+ {id:2,en:'Rose Explorer 60 cm',ru:'Роза Эксплорер 60',sku:'RS-EX60',cat:'Roses',unit:'stem',onHand:80,avail:80,min:100,retail:520,cost:95,daysLeft:4,countedBy:'vita',countedAt:T(17,30,-1),showcase:true,groupA:true,img:'img/red-roses.webp',fresh:7,bunch:20},
+ {id:3,en:'Peony Sarah Bernhardt',ru:'Пион Сара Бернар',sku:'SE-PEO',cat:'Seasonal',unit:'stem',onHand:0,avail:0,min:20,retail:650,cost:140,daysLeft:null,countedBy:'svetlana',countedAt:T(9,0,-2),showcase:false,groupA:true,img:'',fresh:5,bunch:10},
+ {id:4,en:'Eucalyptus cinerea',ru:'Эвкалипт цинерея',sku:'FO-EUC',cat:'Foliage',unit:'bunch',onHand:24,avail:22,min:8,retail:900,cost:320,daysLeft:6,countedBy:null,countedAt:null,showcase:true,groupA:false,img:'img/lilac-dream.webp',fresh:10,bunch:1},
+ {id:5,en:'Ruscus',ru:'Рускус',sku:'FO-RUS',cat:'Foliage',unit:'bunch',onHand:6,avail:6,min:10,retail:700,cost:260,daysLeft:8,countedBy:'svetlana',countedAt:T(9,5),showcase:false,groupA:false,img:'',fresh:12,bunch:1},
+ {id:6,en:'Hydrangea white',ru:'Гортензия белая',sku:'SE-HYD',cat:'Seasonal',unit:'stem',onHand:18,avail:18,min:10,retail:950,cost:310,useFirst:true,daysLeft:0,countedBy:'kamila',countedAt:T(7,50,-1),showcase:true,groupA:true,img:'img/white-spray.webp',fresh:5,bunch:10},
+ {id:7,en:'Lisianthus pink',ru:'Лизиантус розовый',sku:'SE-LIS',cat:'Seasonal',unit:'stem',onHand:35,avail:35,min:20,retail:480,cost:120,useFirst:true,daysLeft:-1,countedBy:'kamila',countedAt:T(8,45),showcase:true,groupA:true,img:'img/pink-manifesto.webp',fresh:6,bunch:10},
+ {id:8,en:'Chrysal sachets (box of 100)',ru:'Кризал пакетики',sku:'SU-CHR',cat:'Sundries',unit:'box',onHand:3,avail:3,min:1,retail:0,cost:1800,daysLeft:null,countedBy:null,countedAt:null,showcase:false,groupA:false,img:'',fresh:null,bunch:null},
+ {id:9,en:'Kraft wrap roll',ru:'Крафт рулон',sku:'SU-KRF',cat:'Sundries',unit:'roll',onHand:7,avail:7,min:3,retail:0,cost:950,daysLeft:null,countedBy:'vita',countedAt:T(16,0,-3),showcase:false,groupA:false,img:'',fresh:null,bunch:null},
+ {id:10,en:'Ribbon ivory 25 mm',ru:'Лента айвори 25',sku:'SU-RIB',cat:'Sundries',unit:'roll',onHand:2,avail:2,min:3,retail:0,cost:420,daysLeft:null,countedBy:null,countedAt:null,showcase:false,groupA:false,img:'',fresh:null,bunch:null},
+ {id:11,en:'Glass vase H25',ru:'Ваза стекло H25',sku:'VA-G25',cat:'Vases',unit:'pcs',onHand:12,avail:11,min:4,retail:1800,cost:620,daysLeft:null,countedBy:'kamila',countedAt:T(10,0,-5),showcase:false,groupA:false,img:'img/addon-vase.webp',fresh:null,bunch:null},
+ {id:12,en:'Ceramic vase stone',ru:'Ваза керамика стоун',sku:'VA-CST',cat:'Vases',unit:'pcs',onHand:0,avail:0,min:2,retail:2400,cost:900,daysLeft:null,countedBy:'sasha',countedAt:T(12,0,-6),showcase:false,groupA:false,img:'',fresh:null,bunch:null},
+ {id:13,en:'Dahlia café au lait',ru:'Георгина кафе о ле',sku:'SE-DAH',cat:'Seasonal',unit:'stem',onHand:22,avail:22,min:10,retail:580,cost:160,daysLeft:3,countedBy:'vita',countedAt:T(18,10,-1),showcase:true,groupA:true,img:'img/peach-posy.webp',fresh:4,bunch:10},
+ {id:14,en:'Spray rose Bombastic',ru:'Спрей-роза Бомбастик',sku:'RS-BOM',cat:'Roses',unit:'stem',onHand:60,avail:60,min:30,retail:390,cost:70,daysLeft:5,countedBy:'kamila',countedAt:T(8,52),showcase:true,groupA:true,img:'img/white-spray.webp',fresh:7,bunch:10}
+];
+ITEMS.forEach(i=>{i.status=i.onHand===0?'out':i.onHand<i.min?'low':'ok';i.movements=[
+ {at:T(8,40),type:'Count',by:'kamila',q:i.onHand-(i.onHand>10?2:0),from:i.onHand+2,to:i.onHand},
+ {at:T(9,30,-1),type:'Delivery',by:'vita',q:+Math.max(10,Math.round(i.onHand*0.6))},
+ {at:T(15,10,-1),type:'Write-off · wilted',by:'svetlana',q:-3},
+ {at:T(11,0,-2),type:'Sold',by:'system',q:-8}
+]});
+const item=id=>ITEMS.find(i=>i.id===+id);
+const SUPPLIERS=[{id:1,n:'Dutch Flower Group',email:true},{id:2,n:'Rose Farm Kenya',email:true},{id:3,n:'Covent Garden Market',email:false},{id:4,n:'Sundries Supplies Ltd',email:true,portal:true},{id:5,n:'Vases & Co',email:true}];
+const REQ=[
+ {id:1,itemId:3,by:'kamila',qty:null,urg:'today',status:'new',note:'Ran out',at:T(9,12),mgrNote:'',handledBy:null},
+ {id:2,itemId:2,by:'vita',qty:100,urg:'tomorrow',status:'ordered',note:'Wedding on Thursday',at:T(16,20,-1),mgrNote:'Rose Farm Kenya · PO-2041',handledBy:'valeria'},
+ {id:3,itemId:10,by:'kamila',qty:5,urg:'week',status:'arrived',note:'',at:T(10,0,-4),mgrNote:'In the sundries box',handledBy:'sasha'},
+ {id:4,itemId:12,by:'svetlana',qty:4,urg:'week',status:'rejected',note:'',at:T(11,0,-6),mgrNote:'Discontinued – use glass H25',handledBy:'valeria'}
+];
+const SUG=[
+ {id:1,by:'kamila',name:'Dried pampas grass (tall)',qty:3,status:'pending',found:'',mgrNote:'',at:T(10,15)},
+ {id:2,by:'kamila',name:'Amaranthus red',qty:null,status:'found',found:'Amaranthus caudatus',mgrNote:'It is under the Latin name',at:T(13,0,-2)}
+];
+const PO=[
+ {id:2038,code:'PO-2038',sup:1,exp:T(7,0,-1),note:'Van 2 · before 8',status:'ordered',lines:[{id:1,itemId:4,name:'Eucalyptus cinerea',exp:20,rec:0},{id:2,itemId:5,name:'Ruscus',exp:15,rec:0},{id:3,itemId:6,name:'Hydrangea white',exp:40,rec:0}],receipts:[]},
+ {id:2041,code:'PO-2041',sup:2,exp:T(7,0),note:'Airfreight · Heathrow',status:'in_transit',lines:[{id:4,itemId:2,name:'Rose Explorer 60 cm',exp:200,rec:0},{id:5,itemId:1,name:'Rose Quicksand 50 cm',exp:100,rec:0},{id:6,itemId:null,name:'Rose Toffee 50 cm',exp:60,rec:0},{id:7,itemId:14,name:'Spray rose Bombastic',exp:80,rec:0}],receipts:[]},
+ {id:2042,code:'PO-2042',sup:4,exp:T(7,0,1),note:'',status:'ordered',lines:[{id:8,itemId:8,name:'Chrysal sachets (box of 100)',exp:4,rec:0},{id:9,itemId:9,name:'Kraft wrap roll',exp:10,rec:0}],receipts:[]},
+ {id:2037,code:'PO-2037',sup:1,exp:T(7,0,-1),note:'',status:'partially_received',lines:[{id:10,itemId:13,name:'Dahlia café au lait',exp:60,rec:60},{id:11,itemId:7,name:'Lisianthus pink',exp:50,rec:35},{id:12,itemId:3,name:'Peony Sarah Bernhardt',exp:30,rec:0}],receipts:[{id:501,at:T(9,30),by:'kamila',lines:[{id:1,name:'Dahlia café au lait',qty:60},{id:2,name:'Lisianthus pink',qty:35}]}]},
+ {id:2035,code:'PO-2035',sup:5,exp:T(7,0,-2),note:'',status:'received',lines:[{id:13,itemId:11,name:'Glass vase H25',exp:12,rec:12},{id:14,itemId:12,name:'Ceramic vase stone',exp:6,rec:6}],receipts:[{id:498,at:T(10,5,-2),by:'vita',lines:[{id:1,name:'Glass vase H25',qty:12},{id:2,name:'Ceramic vase stone',qty:6}]}]}
+];
+const po=id=>PO.find(p=>p.id===+id);
+const supN=id=>{const s=SUPPLIERS.find(x=>x.id===id);return s?s.n:'—'};
+const RECEIPTS=[{id:510,sup:3,at:T(7,50),by:'kamila',lines:2,noOrder:true},{id:505,sup:3,at:T(7,40,-3),by:'kamila',lines:1,noOrder:true}];
+const CLAIMS=[
+ {id:118,code:'CL-118',sup:1,po:'PO-2037',reason:'short_delivery',reasonText:'',send:'queued',sendAfter:T(11,16),by:'kamila',at:T(11,11),disp:'unresolved',note:'15 lisianthus short, 30 peony not delivered',lines:[{name:'Lisianthus pink',sku:'SE-LIS',bad:15,disp:'Unresolved',dn:'Box opened, 15 stems missing'},{name:'Peony Sarah Bernhardt',sku:'SE-PEO',bad:30,disp:'Unresolved',dn:''}],photos:1,events:[{at:T(11,11),type:'Created',by:'kamila',note:''},{at:T(11,11),type:'Email queued',by:'system',note:'to orders@ supplier · sends in 5 min'}]},
+ {id:112,code:'CL-112',sup:2,po:'PO-2029',reason:'damaged',reasonText:'',send:'sent',sendAfter:T(14,0,-3),by:'kamila',at:T(13,55,-3),disp:'writeoff',note:'Bruised heads on arrival',lines:[{name:'Rose Quicksand 50 cm',sku:'RS-QS50',bad:40,disp:'Write-off',dn:'Heads bruised'}],photos:3,events:[{at:T(13,55,-3),type:'Created',by:'kamila',note:''},{at:T(14,0,-3),type:'Email sent',by:'system',note:''},{at:T(9,20,-2),type:'Supplier replied',by:'system',note:'Credit note 40 stems agreed'}]},
+ {id:109,code:'CL-109',sup:4,po:'PO-2031',reason:'wrong_item',reasonText:'',send:'no_email',sendAfter:null,by:'kamila',at:T(12,0,-5),disp:'return',note:'',lines:[{name:'Ribbon ivory 25 mm',sku:'SU-RIB',bad:5,disp:'Return',dn:'Sent 15 mm instead of 25 mm'}],photos:0,events:[{at:T(12,0,-5),type:'Created',by:'kamila',note:''},{at:T(12,0,-5),type:'No e-mail',by:'system',note:'Supplier has no e-mail – stays in CRM'}]}
+];
+const claim=id=>CLAIMS.find(c=>c.id===+id);
+const STKS=[
+ {id:31,code:'ST-31',scope:'sample',cat:'',status:'open',owner:null,at:T(10,20),lines:ITEMS.slice(0,10).map((i,k)=>({id:i.id,itemId:i.id,fact:k<4?i.onHand-(k%2):null,by:k<4?(k<2?'kamila':'vita'):null,at:k<4?T(10,30+k*3):null}))},
+ {id:29,code:'ST-29',scope:'category',cat:'Roses',status:'applied',owner:'valeria',at:T(18,0,-3),lines:ITEMS.filter(i=>i.cat==='Roses').map(i=>({id:i.id,itemId:i.id,fact:i.onHand,by:'kamila',at:T(17,40,-3)}))},
+ {id:27,code:'ST-27',scope:'full',cat:'',status:'applied',owner:'valeria',at:T(19,0,-10),lines:ITEMS.map(i=>({id:i.id,itemId:i.id,fact:i.onHand,by:'svetlana',at:T(18,30,-10)}))}
+];
+const stk=id=>STKS.find(s=>s.id===+id);
+const SHOW=[
+ {id:1,by:'kamila',note:'Mix under £50: Rose ×5 · Eucalyptus',startedAt:T(9,40),price:4500,ready:false,status:'open'},
+ {id:2,by:'vita',note:'Autumn dahlia posy',startedAt:T(8,55),price:5500,ready:true,status:'open'},
+ {id:3,by:'svetlana',note:'Hydrangea & rose, tall',startedAt:T(10,10),price:null,ready:false,status:'open'}
+];
+const SHOW_SUG=[
+ {name:'Mix under £50',parts:'Rose ×5 · Eucalyptus ×2 · since Monday',note:'Sells 3–4 a day on weekdays'},
+ {name:'Hydrangea statement',parts:'Hydrangea ×3 · Lisianthus ×6',note:'Hydrangea must go today – use first'},
+ {name:'Dahlia posy',parts:'Dahlia ×7 · Ruscus ×2',note:'Sold out by 2 pm yesterday'}
+];
+const WOFF=[]; // written off today: {id,itemId,by,qty,reason,at}
+const PENDING={}; // photo upload held in memory: key -> true
+
+const demo={offline:false,oldCrm:false,empty:false,android:false,loading:false,noGroupA:false,camDenied:false};
+const S={ // UI state
+ q:'',section:'showcase',uncounted:true,today:false,reqScope:'all',outQ:'',outBusy:false,outSent:{},
+ itemPhoto:{},wo:{},rs:{},edit:{},dl:{},stScope:'sample',stCat:'',stQ:'',stChip:'all',stSave:'',clTab:'all',dlNewItem:null,
+ showCol:null,newForm:{},claimForm:null,recForm:{sup:null,lines:[],note:''}
+};
+window.STK={demo,S,ITEMS,REQ,SUG,PO,RECEIPTS,CLAIMS,STKS,SHOW,SHOW_SUG,SUPPLIERS,CATS,WOFF,item,po,claim,stk,supN,money,hm,dayS,whenS,nm,youOr,can,hasStock,isLimited,showcaseRole,esc,ic,sheetHead:null,remount:null,demoSheet:null,unavailable:null};
+
+/* ---------- shared bits ---------- */
+const sh=(t,b,f)=>`<div class="sh-head"><div class="h3">${t}</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body">${b}</div>${f?`<div class="sh-foot">${f}</div>`:''}`;
+STK.sheetHead=sh;
+const bar=(id,title,ibs,back)=>{$(id).innerHTML=`${back!==false?`<button class="ib" aria-label="Back" onclick="App.back('${back||'stk-inv'}')">${I('back')}</button>`:''}<div class="ttl">${esc(title)}</div>${ibs||''}`};
+const demoIb=`<button class="ib" aria-label="Demo states" onclick="STK.demoSheet()">${I('cog')}</button>`;
+const sec=(t,n,cls)=>`<div class="stk-sec ${cls||''}"><h2 class="h3">${t}</h2>${n!=null?`<span class="n">${n}</span>`:''}</div>`;
+const empty=(t,d,cls)=>`<div class="stk-empty ${cls||''}"><b>${t}</b>${d||''}</div>`;
+const spin=()=>`<div class="stk-spin" aria-label="Loading"></div>`;
+const thumb=i=>i&&i.img?`<img class="th" src="${i.img}" alt="">`:`<span class="th">${I('leaf')}</span>`;
+const lock=(t,d,extra)=>`<div class="stk-lock">${I('lock')}<b>${t}</b>${d}${extra||''}</div>`;
+const unavailable=()=>lock('Unavailable','No permission, or the CRM is older than the app.',`<div class="mt16"><button class="btn --sm --secondary" onclick="App.back('stk-inv')">Back</button></div>`);
+STK.unavailable=unavailable;
+function remount(){const id=A.state.current;const f=window['mount_'+String(id||'').replace(/-/g,'_')];if(/^stk-/.test(id||'')&&f)f(A.state.params)}
+STK.remount=remount;
+const countedLine=i=>!i.countedAt?'Not counted yet':`Counted: ${youOr(i.countedBy)} · ${sameDay(i.countedAt,NOW)?hm(i.countedAt):dayS(i.countedAt)}`;
+const daysBadge=i=>{if(i.daysLeft==null)return'';const d=i.daysLeft;const t=d<0?`overdue by ${-d} d`:d===0?'use today':`${d} d left`;return `<span class="tag ${d<=0?'--sale':'--soft'}">${t}</span>`};
+const dayLabel=iso=>{const a=new Date(iso),b=new Date(NOW);const dd=Math.round((new Date(a.getFullYear(),a.getMonth(),a.getDate())-new Date(b.getFullYear(),b.getMonth(),b.getDate()))/864e5);return dd<0?'Overdue':dd===0?'Today':dd===1?'Tomorrow':'Later'};
+
+/* ---------- demo sheet (states, pushes) ---------- */
+STK.demoSheet=function(){
+ const sw=(k,l,d)=>`<div class="stk-demo"><div><div>${l}</div><div class="d">${d}</div></div><button class="switch ${demo[k]?'on':''}" onclick="STK.demoSet('${k}')" aria-label="${l}"></button></div>`;
+ A.sheet(sh('Demo states',`
+  ${sw('offline','Offline / server error','Lists show the error state; saves fail and keep your input')}
+  ${sw('oldCrm','Old CRM (404 on new endpoints)','Count-today chip, deliveries, claims and showcase card disappear')}
+  ${sw('empty','Empty lists','Stock, requests, deliveries, claims, stocktakes empty')}
+  ${sw('loading','Loading spinner','Shows the first-load spinner (not on manual refresh)')}
+  ${sw('noGroupA','Group A empty','No "Count today" chip')}
+  ${sw('camDenied','Camera permission denied','Photo actions show the permission alert')}
+  ${sw('android','Android','Buyer answers without the note prompt')}
+  <div class="caps muted" style="margin:18px 0 6px">Pushes (classic routes)</div>
+  <button class="stk-sheetrow" onclick="App.closeSheet();App.push('Stock count','Hourly reminder · 10 items left to count',{icon:'box',go:['stk-inv',{}]})">Push · inventory → Stock<span class="d" style="display:block"></span>${I('chev')}</button>
+  <button class="stk-sheetrow" onclick="App.closeSheet();App.push('Stocktake ST-31','Spot check · 18 of 30 still to count',{icon:'list',go:['stk-stocktake',{id:31}]})">Push · stocktake → sheet${I('chev')}</button>
+  <button class="stk-sheetrow" onclick="App.closeSheet();App.push('Delivery PO-2041','Rose Farm Kenya is at the door',{icon:'truck',go:['stk-delivery',{id:2041}]})">Push · purchase_order → delivery${I('chev')}</button>
+  <button class="stk-sheetrow" onclick="App.closeSheet();App.push('Claim CL-112','Supplier replied: credit note agreed',{icon:'inbox',go:['stk-claim',{id:112}]})">Push · claim → claim card${I('chev')}</button>
+  <p class="xs muted" style="margin:14px 0 0">In the B interface pushes open the Work tab first, then this inner screen.</p>`));
+};
+STK.demoSet=k=>{demo[k]=!demo[k];A.closeSheet();remount();A.toast(`${k}: ${demo[k]?'on':'off'}`)};
+STK.go=(id,p)=>A.go(id,p||{});
+
+/* ===================== STOCK LIST ===================== */
+function visibleItems(){
+ let l=ITEMS.slice();
+ if(S.today)l=l.filter(i=>i.groupA);
+ else if(S.section==='showcase')l=l.filter(i=>i.showcase).sort((a,b)=>(b.useFirst?1:0)-(a.useFirst?1:0)||(a.daysLeft==null?9:a.daysLeft)-(b.daysLeft==null?9:b.daysLeft));
+ else if(S.section!=='all')l=l.filter(i=>i.cat===S.section);
+ if(S.uncounted&&!S.today&&S.section!=='showcase')l=l.filter(i=>!(i.countedAt&&sameDay(i.countedAt,NOW)));
+ if(S.q){const q=S.q.toLowerCase();l=l.filter(i=>i.en.toLowerCase().includes(q)||i.ru.toLowerCase().includes(q)||i.sku.toLowerCase().includes(q))}
+ return l;
+}
+function itemRow(i){
+ const prices=[i.retail?`Retail with VAT ${money(i.retail)}`:'',can('cost')&&i.cost?`Cost ex VAT ${money(i.cost)}`:''].filter(Boolean).join(' · ');
+ const tags=[i.useFirst?'<span class="tag --ink">Use first</span>':'',daysBadge(i),i.status==='out'?'<span class="tag --sale">Out of stock</span>':i.status==='low'?'<span class="tag --soft">Low</span>':''].filter(Boolean).join('');
+ return `<button class="stk-row" onclick="App.go('stk-item',{id:${i.id}})">${thumb(i)}<div class="f1"><div class="nm">${esc(i.en)}</div><div class="mt">${i.sku} · ${i.cat}</div><div class="mt">${countedLine(i)}</div>${prices?`<div class="pr">${prices}</div>`:''}${tags?`<div class="stk-tags">${tags}</div>`:''}</div><div class="qt ${i.status}"><b>${i.onHand}</b><span>${i.unit}</span></div></button>`;
+}
+window.mount_stk_inv=function(){
+ const body=$('stk-inv-body');
+ if(!hasStock()){ /* TM-INV-001: tab hidden for courier / limited */
+  bar('stk-inv-bar','Stock',demoIb,'work');
+  const why=A.role()==='courier'?'Couriers do not have the stock module.':'Seasonal and trainee accounts do not have the stock module yet.';
+  body.innerHTML=lock('Not in your app',`${why}<br>You can still tell the buyer when something has run out.`,`<div class="mt16 flex col g8"><button class="btn --sm" onclick="App.go('stk-out')">Ran out – needs ordering</button>${showcaseRole()?`<button class="btn --sm --secondary" onclick="App.go('stk-showcase')">Showcase</button>`:''}</div>`);
+  return;
+ }
+ const ibs=`<button class="ib" aria-label="To order" onclick="App.go('stk-requests')">${I('list')}</button><button class="ib" aria-label="New item" onclick="App.go('stk-new')">${I('plus')}</button>${demoIb}`;
+ bar('stk-inv-bar','Stock',ibs,'work');
+ if(demo.loading){body.innerHTML=spin();return}
+ const groupA=demo.noGroupA||demo.oldCrm?[]:ITEMS.filter(i=>i.groupA);
+ const aDone=groupA.filter(i=>i.countedAt&&sameDay(i.countedAt,NOW)).length;
+ if(S.today&&!groupA.length)S.today=false;
+ const total=ITEMS.length, unc=ITEMS.filter(i=>!(i.countedAt&&sameDay(i.countedAt,NOW))).length;
+ const chips=[groupA.length?`<button class="chip ${S.today?'on':''}" onclick="STK.inv({today:${!S.today}})">Count today <b>${aDone} of ${groupA.length}</b></button>`:'',
+  ...[['showcase','Showcase'],['all','All']].map(c=>`<button class="chip ${!S.today&&S.section===c[0]?'on':''}" onclick="STK.inv({section:'${c[0]}',today:false})">${c[1]}</button>`),
+  ...CATS.map(c=>`<button class="chip ${!S.today&&S.section===c?'on':''}" onclick="STK.inv({section:'${c}',today:false})">${c} <b>${ITEMS.filter(i=>i.cat===c).length}</b></button>`)].join('');
+ let under='';
+ if(S.today)under=`<div class="stk-hint">${I('info')} 5–8 group-A items the CRM picked for this shift. Count these first.</div>`;
+ else if(S.section==='showcase')under=`<div class="stk-hint">${I('info')} What is really on the shelf – "use first" at the top.</div>`;
+ else under=`<div class="pad mt12"><div class="seg"><button class="${S.uncounted?'on':''}" onclick="STK.inv({uncounted:true})">To count · ${unc} of ${total}</button><button class="${!S.uncounted?'on':''}" onclick="STK.inv({uncounted:false})">Whole stock</button></div></div>`;
+ const dueToday=PO.filter(p=>['ordered','in_transit'].includes(p.status)&&new Date(p.exp)<=new Date(2026,9,20,23,59)).length;
+ const openSt=STKS.some(s=>s.status==='open');
+ const ops=(can('receive')||can('count'))&&!demo.oldCrm?`<div class="chips stk-chips">${can('receive')?`<button class="chip ${dueToday?'--acc':''}" onclick="App.go('stk-deliveries')">${I('truck')} Deliveries${dueToday?` <b>· today ${dueToday}</b>`:''}</button>`:''}${can('count')?`<button class="chip ${openSt?'--acc':''}" onclick="App.go('stk-stocktakes')">${I('list')} Stocktakes${openSt?' <b>· open</b>':''}</button>`:''}${showcaseRole()?`<button class="chip" onclick="App.go('stk-showcase')">${I('flower')} Showcase</button>`:''}</div>`:'';
+ const l=demo.empty?[]:visibleItems();
+ let list;
+ if(demo.offline)list=empty('Could not load the stock','Pull down to try again.','--err');
+ else if(!l.length)list=empty(S.today?(S.q?'Nothing matches':'Nothing to count today'):S.section==='showcase'?'The shelf is empty':S.uncounted?'Everything in this list is counted for today':'No items',S.section==='showcase'&&!demo.empty?'Receive today\'s delivery first.':'');
+ else list=`<div class="mt8">${l.map(itemRow).join('')}</div>`;
+ body.innerHTML=`<div class="stk-sub">${A.NOW.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})} · ${ITEMS.filter(i=>i.status==='out').length} out · ${ITEMS.filter(i=>i.status==='low').length} low</div>
+  <div class="pad mt12"><div class="input-wrap">${I('search')}<input class="input" placeholder="Search the stock…" value="${esc(S.q)}" autocorrect="off" spellcheck="false" oninput="STK.search(this.value)"></div></div>
+  <div class="chips stk-chips">${chips}</div>${under}${ops}
+  <div class="stk-dev mt16"><span>Refresh</span><button onclick="STK.refresh()">Pull to refresh</button><span>· lists${S.today?' + count today':''}</span></div>
+  ${list}`;
+};
+let qT;STK.search=v=>{clearTimeout(qT);qT=setTimeout(()=>{S.q=v;const b=$('stk-inv-body');const inp=b.querySelector('input');const pos=inp?inp.selectionStart:0;mount_stk_inv();const i2=b.querySelector('input');if(i2){i2.focus();i2.setSelectionRange(pos,pos)}},300)};
+STK.inv=o=>{Object.assign(S,o);mount_stk_inv()};
+STK.refresh=()=>{A.toast(demo.offline?'Still offline – could not load':'Refreshed');remount()};
+
+/* ===================== ITEM CARD ===================== */
+window.mount_stk_item=function(p){
+ const body=$('stk-item-body');const id=+(p&&p.id);const i=item(id);
+ bar('stk-item-bar',i?i.en:'Stock',demoIb,'stk-inv');
+ if(!i||demo.offline){body.innerHTML=id>0&&!demo.offline?lock('Item not found','This link points to an item that no longer exists.'):demo.offline?empty('Could not load the item','Check the connection and go back.','--err'):lock('Item not found','Bad link: no request was sent for an unknown id.');return}
+ const ph=S.itemPhoto[id]||{};
+ const wo=S.wo[id]||(S.wo[id]={reason:'',qty:''});
+ const rs=S.rs[id]||(S.rs[id]={open:false,qty:'',urg:'tomorrow',note:''});
+ const ed=S.edit[id]||(S.edit[id]={open:false});
+ const cnt=S.cnt||(S.cnt={});const c=cnt[id]||(cnt[id]={v:'',note:''});
+ const valid=/^\d+$/.test(c.v);
+ const vline=!c.v?'':!valid?'<span class="accent">Digits only</span>':(+c.v===i.onHand?`Matches the system (${i.onHand})`:`In the system ${i.onHand} · you entered ${+c.v} · ${+c.v-i.onHand>0?'+':''}${+c.v-i.onHand}`);
+ const open=REQ.filter(r=>r.itemId===id&&['new','ordered'].includes(r.status));
+ const URG={today:'Today',tomorrow:'Tomorrow',week:'This week'};
+ const RSL={new:'Waiting for the buyer',ordered:'Ordered',arrived:'Arrived',rejected:'Rejected'};
+ const myWo=WOFF.filter(w=>w.itemId===id&&w.by===A.state.me&&sameDay(w.at,NOW));
+ const photoTile=`<button class="stk-photo" style="margin:0 var(--gutter)" onclick="STK.photoSheet('item',${id})">${i.img?`<img src="${i.img}" alt="">`:''}${i.img?'':I('camera')}<span class="cap">${i.img?'Tap to change the photo':'Add a photo'}</span></button>
+  <div class="pad">${ph.pending?`<button class="stk-link accent" onclick="STK.photoRetry('item',${id})">Send again</button><div class="stk-small mt4">The photo is kept on the phone until it is sent.</div>`:`<button class="stk-link" onclick="STK.photoSheet('item',${id})">Update photo</button>`}</div>`;
+ body.innerHTML=`${photoTile}
+  <div class="stk-blk"><div class="stk-kv"><span>Item</span><span>${i.sku} · ${i.cat}</span></div>
+   <div class="stk-big mt8"><b>${i.onHand}</b><span>${i.unit} on hand</span></div>
+   <div class="stk-small mt4">available ${i.avail} · min ${i.min}</div>
+   <div class="stk-small">${countedLine(i)}</div>
+   <div class="stk-tags">${i.useFirst?'<span class="tag --ink">Use first</span>':''}${daysBadge(i)}${i.status==='out'?'<span class="tag --sale">Out of stock</span>':i.status==='low'?'<span class="tag --soft">Low</span>':''}</div>
+   <div class="mt12">${i.retail?`<div class="stk-kv"><span>Retail (with VAT)</span><span>${money(i.retail)}</span></div>`:''}${can('cost')?`<div class="stk-kv"><span>Cost (ex VAT)</span><span>${money(i.cost)}</span></div>`:''}</div></div>
+  ${can('count')?`<div class="stk-blk"><div class="h4">Count</div>
+   <div class="field mt12"><label>Counted quantity</label><input class="input" inputmode="numeric" placeholder="How many are there really?" value="${esc(c.v)}" oninput="STK.cnt(${id},'v',this.value)"></div>
+   <div class="stk-var">${vline}</div>
+   <div class="field"><label>Note (optional)</label><input class="input" placeholder="e.g. 2 bunches in the fridge" value="${esc(c.note)}" oninput="STK.cnt(${id},'note',this.value)"></div>
+   <button class="btn --block" id="stk-cnt-save" ${valid?'':'disabled'} onclick="STK.saveCount(${id})">Save count</button>
+   <p class="stk-small mt8">Opens empty on purpose: count, do not confirm the system number. A difference needs no reason.</p></div>
+  <div class="stk-blk"><div class="h4">Write off</div>
+   <div class="stk-wrap mt12">${['Wilted','Faulty','Damaged','Expired','Mis-pick','Other'].map(r=>`<button class="chip ${wo.reason===r?'on':''}" onclick="STK.wo(${id},'reason','${r}')">${r}</button>`).join('')}</div>
+   <div class="field mt12"><label>How many</label><input class="input" inputmode="numeric" placeholder="0" value="${esc(wo.qty)}" oninput="STK.wo(${id},'qty',this.value)"></div>
+   <button class="btn --block --secondary" ${wo.reason&&/^[1-9]\d*$/.test(wo.qty)?'':'disabled'} onclick="STK.writeOff(${id})">Write off</button>
+   ${myWo.map(w=>`<div class="flex ai-c jc-sb mt12 sm"><span>Written off: ${w.qty} · ${w.reason} · ${hm(w.at)}</span><button class="stk-link" style="margin:0" onclick="STK.undoWo(${w.id})">Undo</button></div>`).join('')}
+   <p class="stk-small mt8">Three taps: reason, quantity, done. More than on hand → the CRM refuses with its own text.</p></div>
+  <div class="stk-blk"><div class="h4">Need to order${open.length?`<span class="caps muted">${open.length} open</span>`:''}</div>
+   ${open.length?open.map(r=>`<div class="stk-req"><div class="t">${youOr(r.by)} · ${r.qty==null?'as usual':r.qty+' '+i.unit} · ${URG[r.urg]}</div><div class="m">${whenS(r.at)}${r.note?' · '+esc(r.note):''}</div><span class="stk-rs --${r.status}">${RSL[r.status]}</span>${r.mgrNote?`<div class="m">${esc(r.mgrNote)} · ${nm(r.handledBy)}</div>`:''}</div>`).join('')+'<p class="stk-small mt8">Someone already asked – no need to send a second request.</p>':'<p class="stk-small mt8">No open requests for this item.</p>'}
+   ${rs.open?`<div class="field mt12"><label>How many (empty – as usual)</label><input class="input" inputmode="numeric" value="${esc(rs.qty)}" oninput="STK.rs(${id},'qty',this.value)"></div>
+    <div class="stk-wrap">${[['today','Today'],['tomorrow','Tomorrow'],['week','This week']].map(u=>`<button class="chip ${rs.urg===u[0]?'on':''}" onclick="STK.rs(${id},'urg','${u[0]}')">${u[1]}</button>`).join('')}</div>
+    <div class="field mt12"><label>Note to the buyer</label><input class="input" value="${esc(rs.note)}" oninput="STK.rs(${id},'note',this.value)"></div>
+    <button class="btn --block" ${rs.qty===''||/^[1-9]\d*$/.test(rs.qty)?'':'disabled'} onclick="STK.sendRestock(${id})">Send to buyer</button>`:`<button class="btn --block --secondary mt12" onclick="STK.rs(${id},'open',true)">Need to order</button>`}
+   <button class="btn --block --accent mt8" onclick="STK.ranOut(${id})">Ran out – order</button>
+   <p class="stk-small mt8">One tap: usual quantity, today, note "Ran out". The buyer gets a Telegram message at once.</p></div>`:`<div class="stk-blk"><div class="h4">Count and write-off</div><p class="stk-small mt8">Your account can view the stock but not count it.</p></div>`}
+  ${sec('Recent movements',i.movements.length)}<div class="pad">${i.movements.map(m=>`<div class="stk-mv"><span class="d">${sameDay(m.at,NOW)?hm(m.at):dayS(m.at)}</span><span class="f1">${m.type}${m.from!=null?` · was ${m.from}, now ${m.to}`:''} · ${m.by==='system'?'system':nm(m.by)}</span><span class="q ${m.q>0?'plus':'minus'}">${m.q>0?'+':''}${m.q}</span></div>`).join('')}</div>
+  ${can('manage')?`<div class="stk-blk"><div class="h4">Item card ${ed.open?'':`<button class="lk" onclick="STK.edit(${id},true)">Edit</button>`}</div>
+   ${ed.open?`<div class="mt12">
+    <div class="field"><label>Name (EN)</label><input class="input" value="${esc(i.en)}" id="stk-ed-en"></div>
+    <div class="field"><label>Name (RU)</label><input class="input" value="${esc(i.ru)}" id="stk-ed-ru"></div>
+    <div class="stk-grid"><div class="field"><label>Category</label><select class="input" id="stk-ed-cat">${CATS.map(c=>`<option ${c===i.cat?'selected':''}>${c}</option>`).join('')}</select></div><div class="field"><label>Unit</label><input class="input" value="${esc(i.unit)}" id="stk-ed-unit"></div></div>
+    <div class="stk-grid"><div class="field"><label>Minimum stock</label><input class="input" inputmode="numeric" value="${i.min}" id="stk-ed-min"></div><div class="field"><label>Retail with VAT, £</label><input class="input" inputmode="decimal" value="${(i.retail/100).toFixed(2)}" id="stk-ed-retail"></div></div>
+    ${can('cost')?`<div class="field"><label>Cost ex VAT, £</label><input class="input" inputmode="decimal" value="${(i.cost/100).toFixed(2)}" id="stk-ed-cost"></div>`:`<p class="stk-small" style="margin:-6px 0 12px">Cost price is edited by the account holder only.</p>`}
+    <div class="stk-grid"><div class="field"><label>Freshness, days (1–365)</label><input class="input" inputmode="numeric" value="${i.fresh==null?'':i.fresh}" id="stk-ed-fresh"></div><div class="field"><label>Stems per bunch (1–1000)</label><input class="input" inputmode="numeric" value="${i.bunch==null?'':i.bunch}" id="stk-ed-bunch"></div></div>
+    <div class="flex g8"><button class="btn --secondary f1" onclick="STK.edit(${id},false)">Cancel</button><button class="btn f1" onclick="STK.saveEdit(${id})">Save card</button></div></div>`:`<div class="mt8"><div class="stk-kv"><span>Names</span><span>${esc(i.en)}<br>${esc(i.ru)}</span></div><div class="stk-kv"><span>Unit · min</span><span>${i.unit} · ${i.min}</span></div><div class="stk-kv"><span>Freshness · bunch</span><span>${i.fresh==null?'—':i.fresh+' d'} · ${i.bunch==null?'—':i.bunch}</span></div></div>`}</div>`:''}`;
+};
+STK.cnt=(id,k,v)=>{S.cnt[id][k]=v;if(k==='v'){const b=$('stk-item-body');const valid=/^\d+$/.test(v);const i=item(id);b.querySelector('.stk-var').innerHTML=!v?'':!valid?'<span class="accent">Digits only</span>':(+v===i.onHand?`Matches the system (${i.onHand})`:`In the system ${i.onHand} · you entered ${+v} · ${+v-i.onHand>0?'+':''}${+v-i.onHand}`);const sb=$('stk-cnt-save');if(sb)sb.disabled=!valid}};
+STK.saveCount=id=>{const i=item(id);const c=S.cnt[id];if(demo.offline){A.toast('Could not save – no connection');return}const v=+c.v;const d=v-i.onHand;i.movements.unshift({at:NOW.toISOString(),type:'Count',by:A.state.me,q:d,from:i.onHand,to:v});i.onHand=v;i.avail=Math.min(i.avail,v);i.status=v===0?'out':v<i.min?'low':'ok';i.countedBy=A.state.me;i.countedAt=NOW.toISOString();c.v='';c.note='';A.haptic();A.confirm('Stock updated',`${v} on hand${d?` · difference ${d>0?'+':''}${d} recorded by the server`:' · matches'}.`,'OK',null);mount_stk_item({id})};
+STK.wo=(id,k,v)=>{S.wo[id][k]=v;mount_stk_item({id})};
+STK.writeOff=id=>{const i=item(id),w=S.wo[id];const q=+w.qty;if(demo.offline){A.toast('Could not write off – no connection');return}if(q>i.onHand){A.toast(`Only ${i.onHand} on hand – cannot write off ${q}`);return}i.onHand-=q;i.avail=Math.max(0,i.avail-q);i.status=i.onHand===0?'out':i.onHand<i.min?'low':'ok';const rec={id:WOFF.length+1,itemId:id,by:A.state.me,qty:q,reason:w.reason,at:NOW.toISOString()};WOFF.push(rec);i.movements.unshift({at:NOW.toISOString(),type:'Write-off · '+w.reason.toLowerCase(),by:A.state.me,q:-q});w.reason='';w.qty='';A.toast(`Written off: ${q}`);mount_stk_item({id})};
+STK.undoWo=wid=>{const k=WOFF.findIndex(w=>w.id===wid);if(k<0)return;const w=WOFF[k];if(w.by!==A.state.me||!sameDay(w.at,NOW)){A.toast('Could not undo – ask a manager');return}const i=item(w.itemId);i.onHand+=w.qty;i.status=i.onHand===0?'out':i.onHand<i.min?'low':'ok';i.movements.unshift({at:NOW.toISOString(),type:'Write-off cancelled',by:A.state.me,q:w.qty});WOFF.splice(k,1);A.toast('Write-off cancelled – stock restored');mount_stk_item({id:w.itemId})};
+STK.rs=(id,k,v)=>{S.rs[id][k]=v;mount_stk_item({id})};
+function sendRestock(id,qty,urg,note,silent){const i=item(id);if(demo.offline){A.toast('Could not send – no connection');return false}const mine=REQ.find(r=>r.itemId===id&&r.by===A.state.me&&r.status==='new');if(mine){Object.assign(mine,{qty,urg,note,at:NOW.toISOString()});if(!silent)A.toast('Your request was updated')}else{REQ.unshift({id:REQ.length+1,itemId:id,by:A.state.me,qty,urg,status:'new',note,at:NOW.toISOString(),mgrNote:'',handledBy:null});if(!silent)A.toast('Sent to the buyer')}setTimeout(()=>A.push('Buyer · Telegram',`${nm(A.state.me)}: ${i.en} · ${qty==null?'as usual':qty} · ${urg}`,{icon:'send',to:'buyer'}),600);return true}
+STK.sendRestock=id=>{const r=S.rs[id];if(sendRestock(id,r.qty===''?null:+r.qty,r.urg,r.note)){r.open=false;r.qty='';r.note='';mount_stk_item({id})}};
+STK.ranOut=id=>{if(sendRestock(id,null,'today','Ran out'))mount_stk_item({id})};
+STK.edit=(id,on)=>{S.edit[id].open=on;mount_stk_item({id})};
+STK.saveEdit=id=>{const i=item(id);const g=x=>($('stk-ed-'+x)||{}).value;const en=(g('en')||'').trim();const num=v=>v===''?null:(/^\d+([.,]\d{1,2})?$/.test(v)?Math.round(parseFloat(v.replace(',','.'))*100):NaN);const retail=num(g('retail')),cost=can('cost')?num(g('cost')):undefined,min=g('min'),fresh=g('fresh'),bunch=g('bunch');
+ if(!en||!/^\d+$/.test(min)||Number.isNaN(retail)||Number.isNaN(cost)||(fresh&&!(/^\d+$/.test(fresh)&&+fresh>=1&&+fresh<=365))||(bunch&&!(/^\d+$/.test(bunch)&&+bunch>=1&&+bunch<=1000))){A.toast('Check the name and the numbers');return}
+ if(demo.offline){A.toast('Could not save the card');return}
+ Object.assign(i,{en,ru:g('ru'),cat:g('cat'),unit:g('unit')||i.unit,min:+min,retail:retail==null?0:retail,fresh:fresh?+fresh:null,bunch:bunch?+bunch:null});if(cost!==undefined&&cost!=null)i.cost=cost;i.status=i.onHand===0?'out':i.onHand<i.min?'low':'ok';S.edit[id].open=false;A.toast('Card updated');mount_stk_item({id})};
+
+/* ---------- photo source sheet + upload retention (shared) ---------- */
+STK.photoSheet=function(kind,id,cb){
+ const key=kind+':'+id;
+ A.sheet(sh('Photo',`<button class="stk-sheetrow" onclick="STK.photoPick('${kind}',${id},'camera')">${I('camera')} Take a photo${I('chev')}</button><button class="stk-sheetrow" onclick="STK.photoPick('${kind}',${id},'library')">${I('photo')} Choose from library${I('chev')}</button><button class="stk-sheetrow" onclick="App.closeSheet()">${I('close')} Cancel</button>`));
+ STK._cb=cb;
+};
+STK.photoPick=function(kind,id,src){
+ A.closeSheet();
+ if(src==='camera'&&demo.camDenied){setTimeout(()=>A.confirm('Camera is off for Floritta Team','Allow the camera in Settings → Floritta Team, or choose a photo from the library.','OK',null),200);return}
+ const key=kind+':'+id;const store=(S.itemPhoto[id]=S.itemPhoto[id]||{});
+ if(demo.offline){store.pending=true;setTimeout(()=>A.sheet(`<div class="sh-head"><div class="h3">Photo not sent</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">The connection dropped. The compressed photo is kept in memory – send it again or cancel.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="STK.photoCancel('${kind}',${id})">Cancel</button><button class="btn" onclick="STK.photoRetry('${kind}',${id})">Send again</button></div>`),200);document.getElementById('scrim').onclick=null;remount();return}
+ store.pending=false;if(STK._cb){const f=STK._cb;STK._cb=null;f(src);return}
+ if(kind==='item'){const i=item(id);if(i&&!i.img)i.img='img/peach-posy.webp';A.confirm('Photo updated','The new photo is on the item card.','OK',null);remount()}
+};
+STK.photoRetry=function(kind,id){A.closeSheet();document.getElementById('scrim').onclick=A.closeSheet;if(demo.offline){A.toast('Still no connection – kept on the phone');return}const store=S.itemPhoto[id]||{};store.pending=false;A.toast('Photo sent');remount()};
+STK.photoCancel=function(kind,id){A.closeSheet();document.getElementById('scrim').onclick=A.closeSheet;(S.itemPhoto[id]||{}).pending=false;remount()};
+
+/* ===================== NEW ITEM / NOT ON THE LIST ===================== */
+window.mount_stk_new=function(p){
+ p=p||{};const f=S.newForm;if(!f.init||f.linkLineId!==p.linkLineId){Object.assign(f,{init:true,name:p.name||'',qty:'',unit:'stem',cost:'',photo:false,err:'',linkLineId:p.linkLineId||null,orderId:p.orderId||null,sqty:''})}
+ const mgr=can('manage');
+ bar('stk-new-bar',mgr?'New stock item':'Not on the list',demoIb,p.orderId?'stk-delivery':'stk-inv');
+ const photo=`<button class="stk-photo" style="margin:0 var(--gutter)" onclick="STK.newPhoto()">${f.photo?'<img src="img/peach-posy.webp" alt="">':I('camera')}<span class="cap">${f.photo?'Photo attached · tap to replace':'Take a photo'}</span></button>${f.err?`<div class="pad"><div class="stk-small accent mt8">${f.err}</div></div>`:''}`;
+ const costOk=f.cost===''||/^\d+([.,]\d{1,2})?$/.test(f.cost);
+ const ok=mgr?(f.name.trim()&&/^\d+$/.test(f.qty)&&costOk):(f.name.trim()&&(f.sqty===''||/^\d+$/.test(f.sqty)));
+ $('stk-new-body').innerHTML=mgr?`${f.orderId?`<div class="stk-ban --soft">From delivery ${po(f.orderId)?po(f.orderId).code:''}: create the item, then the line is linked and received on the next receipt.</div>`:''}${photo}
+   <div class="pad mt16"><div class="field"><label>Name</label><input class="input" value="${esc(f.name)}" oninput="STK.nf('name',this.value)"></div>
+   <div class="stk-grid"><div class="field"><label>Quantity on hand</label><input class="input" inputmode="numeric" value="${esc(f.qty)}" oninput="STK.nf('qty',this.value)"></div><div class="field"><label>Unit</label><select class="input" onchange="STK.nf('unit',this.value)">${['stem','bunch','pcs','box','roll'].map(u=>`<option ${u===f.unit?'selected':''}>${u}</option>`).join('')}</select></div></div>
+   <div class="field"><label>Cost per unit ex VAT, £</label><input class="input" inputmode="decimal" placeholder="0.00" value="${esc(f.cost)}" oninput="STK.nf('cost',this.value)"></div>${costOk?'':'<div class="stk-small accent" style="margin:-8px 0 12px">A bad price blocks the button – it is never sent as zero.</div>'}
+   <p class="stk-small">Only the stock keeper creates items. Others see "Not on the list" here – switch persona to compare.</p></div>`
+  :`<div class="stk-ban --soft">Suggest an item: the manager will add it or find it under another name.</div>${photo}
+   <div class="pad mt16"><div class="field"><label>What is it (as you call it)</label><input class="input" value="${esc(f.name)}" oninput="STK.nf('name',this.value)"></div>
+   <div class="field"><label>How many on the shelf (optional)</label><input class="input" inputmode="numeric" value="${esc(f.sqty)}" oninput="STK.nf('sqty',this.value)"></div></div>`;
+ $('stk-new-cta').innerHTML=mgr?`<button class="btn" ${ok?'':'disabled'} onclick="STK.createItem()">${I('plus')} Add to stock</button>`:`<button class="btn" ${ok?'':'disabled'} onclick="STK.suggestItem()">${I('send')} Send</button>`;
+};
+STK.nf=(k,v)=>{S.newForm[k]=v;const cta=$('stk-new-cta').querySelector('.btn');const f=S.newForm;const mgr=can('manage');const costOk=f.cost===''||/^\d+([.,]\d{1,2})?$/.test(f.cost);cta.disabled=!(mgr?(f.name.trim()&&/^\d+$/.test(f.qty)&&costOk):(f.name.trim()&&(f.sqty===''||/^\d+$/.test(f.sqty))));if(k==='cost')mount_stk_new(A.state.params)};
+STK.newPhoto=()=>{if(demo.camDenied){S.newForm.err='Camera permission denied – allow it in Settings or pick from the library.';mount_stk_new(A.state.params);return}STK.photoSheet('new',0,()=>{S.newForm.photo=true;S.newForm.err='';mount_stk_new(A.state.params)})};
+STK.createItem=()=>{const f=S.newForm;if(demo.offline){A.toast('Could not add the item');return}const id=Math.max(...ITEMS.map(i=>i.id))+1;const cost=f.cost?Math.round(parseFloat(f.cost.replace(',','.'))*100):0;const it={id,en:f.name.trim(),ru:'',sku:'NEW-'+id,cat:'Seasonal',unit:f.unit,onHand:+f.qty,avail:+f.qty,min:0,retail:0,cost,daysLeft:null,countedBy:A.state.me,countedAt:NOW.toISOString(),showcase:false,groupA:false,img:f.photo?'img/peach-posy.webp':'',fresh:null,bunch:null,status:+f.qty?'ok':'out',movements:[{at:NOW.toISOString(),type:'Created',by:A.state.me,q:+f.qty}]};ITEMS.push(it);
+ if(f.linkLineId){const line=PO.flatMap(x=>x.lines).find(l=>l.id===f.linkLineId);if(line){S.dlNewItem={lineId:f.linkLineId,itemId:id,orderId:f.orderId};}f.init=false;A.toast(`${it.en} created – link it and receive`);A.go('stk-delivery',{id:f.orderId},{replace:true});return}
+ f.init=false;A.toast('Added to stock');A.go('stk-item',{id},{replace:true})};
+STK.suggestItem=()=>{const f=S.newForm;if(demo.offline){A.toast('Did not send – try again');return}SUG.unshift({id:SUG.length+1,by:A.state.me,name:f.name.trim(),qty:f.sqty===''?null:+f.sqty,status:'pending',found:'',mgrNote:'',at:NOW.toISOString()});f.init=false;A.toast('Sent to the manager');A.go('stk-requests',{},{replace:true})};
+
+/* ===================== TO ORDER ===================== */
+window.mount_stk_requests=function(){
+ bar('stk-req-bar','To order',demoIb,'stk-inv');
+ const URG={today:'Today',tomorrow:'Tomorrow',week:'This week'};
+ const RSL={new:'Waiting for the buyer',ordered:'Ordered',arrived:'Arrived',rejected:'Rejected'};
+ const SSL={pending:'Waiting for the manager',added:'Added to stock',found:'Found in stock',rejected:'Rejected'};
+ const me=A.state.me;
+ const mine=SUG.filter(s=>s.by===me);
+ let l=demo.empty?[]:REQ.filter(r=>S.reqScope==='all'||r.by===me);
+ const body=$('stk-req-body');
+ if(demo.loading){body.innerHTML=spin();return}
+ const sug=mine.length&&!demo.empty?`${sec('Suggested items',mine.length)}<div class="pad">${mine.map(s=>`<div class="stk-sug"><div class="t">${esc(s.name)}${s.qty!=null?` · ${s.qty} on the shelf`:''}</div><div class="m">${whenS(s.at)}</div><span class="stk-rs --${s.status==='pending'?'new':s.status==='rejected'?'rejected':'arrived'}">${SSL[s.status]}</span>${s.found?`<div class="m">Found as: ${esc(s.found)}</div>`:''}${s.mgrNote?`<div class="m">${esc(s.mgrNote)}</div>`:''}</div>`).join('')}</div>`:'';
+ const list=demo.offline?empty('Could not load the requests','Pull down to try again.','--err'):!l.length?empty(S.reqScope==='all'?'Nothing to order right now':'No requests in the last two weeks'):l.map(r=>{const i=item(r.itemId);const openR=['new'].includes(r.status)||r.status==='ordered';return `<div class="stk-req" style="padding-left:var(--gutter);padding-right:var(--gutter)"><div class="t">${esc(i.en)}</div><div class="m">${youOr(r.by)} · ${r.qty==null?'as usual':r.qty+' '+i.unit} · ${URG[r.urg]} · ${whenS(r.at)}${r.note?' · '+esc(r.note):''}</div><span class="stk-rs --${r.status}">${RSL[r.status]}</span>${r.mgrNote?`<div class="m">${esc(r.mgrNote)} · ${nm(r.handledBy)}</div>`:''}${can('manage')&&openR?`<div class="a">${r.status==='new'?`<button class="btn --xs" onclick="STK.reqStatus(${r.id},'ordered')">Ordered</button>`:''}<button class="btn --xs --secondary" onclick="STK.reqStatus(${r.id},'arrived')">Arrived</button><button class="btn --xs --ghost" onclick="STK.reqStatus(${r.id},'rejected')">Reject</button></div>`:''}</div>`}).join('');
+ body.innerHTML=`<div class="stk-sub">Everything the team asked to buy, with the buyer's answers</div>
+  <div class="chips stk-chips"><button class="chip ${S.reqScope==='all'?'on':''}" onclick="STK.reqScope('all')">All</button><button class="chip ${S.reqScope==='mine'?'on':''}" onclick="STK.reqScope('mine')">Mine</button></div>
+  <div class="stk-dev mt12"><span>Refresh</span><button onclick="STK.refresh()">Pull to refresh</button><span>· requests + suggestions · auto every 60 s</span></div>
+  ${sug}${sec(S.reqScope==='all'?'Requests':'My requests',l.length)}${list}`;
+};
+STK.reqScope=s=>{S.reqScope=s;mount_stk_requests()};
+STK.reqStatus=(id,st)=>{const r=REQ.find(x=>x.id===id);const L={ordered:'Ordered',arrived:'Arrived',rejected:'Rejected'};
+ const apply=note=>{if(demo.offline){A.confirm('Could not save','No connection – try again.','OK',null);return}r.status=st;r.handledBy=A.state.me;r.mgrNote=note||'';A.closeSheet();A.toast(`${L[st]} · ${nm(r.by)} will see it`);mount_stk_requests()};
+ if(demo.android){apply('');return}
+ A.sheet(sh(`${L[st]} – note to ${nm(r.by)}`,`<div class="field"><label>Note (optional)</label><input class="input" id="stk-req-note" placeholder="e.g. Rose Farm Kenya · Thursday"></div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="STK.reqApply(${id},'${st}')">${L[st]}</button>`));STK._apply=apply};
+STK.reqApply=()=>{const n=($('stk-req-note')||{}).value;STK._apply(n)};
+
+/* ===================== RAN OUT ===================== */
+window.mount_stk_out=function(){
+ bar('stk-out-bar','Ran out – needs ordering',demoIb,hasStock()?'stk-inv':'work');
+ const q=S.outQ.trim();
+ const res=q.length>=2?ITEMS.filter(i=>i.en.toLowerCase().includes(q.toLowerCase())||i.ru.toLowerCase().includes(q.toLowerCase())):[];
+ $('stk-out-body').innerHTML=`<div class="stk-sub">Any role · no prices · the buyer gets a Telegram message</div>
+  <div class="pad mt12"><div class="input-wrap">${I('search')}<input class="input" placeholder="Search the stock…" value="${esc(S.outQ)}" autofocus autocorrect="off" oninput="STK.outQ(this.value)"></div></div>
+  ${q.length<2?`<div class="stk-hint">${I('info')} Type at least 2 characters.</div>`:demo.offline?empty('Could not search','No connection.','--err'):!res.length?empty('Nothing found','Try another spelling – RU names work too.'):`<div class="mt8">${res.map(i=>`<button class="stk-row" id="out-item-${i.id}" ${S.outBusy?'disabled style="opacity:.5"':''} onclick="STK.outAsk(${i.id})"><div class="f1"><div class="nm">${esc(i.en)}</div><div class="mt">${esc(i.ru)}</div>${S.outSent[i.id]?`<div class="mt ok">Sent: ${esc(i.en)} – the buyer will order</div>`:''}</div><div class="qt ${i.onHand===0?'out':''}"><b>${i.onHand}</b><span>${i.unit}</span></div></button>`).join('')}</div>`}`;
+};
+STK.outQ=v=>{S.outQ=v;const b=$('stk-out-body');mount_stk_out();const inp=b.querySelector('input');if(inp){inp.focus();inp.setSelectionRange(v.length,v.length)}};
+STK.outAsk=id=>{const i=item(id);A.confirm(`Mark "${esc(i.en)}" as run out?`,'The buyer gets a request for the usual quantity, for today, with the note "Ran out".','Send',()=>{S.outBusy=true;mount_stk_out();setTimeout(()=>{S.outBusy=false;if(demo.offline){A.toast('Could not send');mount_stk_out();return}sendRestock(id,null,'today','Ran out',true);S.outSent[id]=true;A.toast(`Sent: ${i.en} – the buyer will order`);mount_stk_out()},500)})};
+
+/* ===================== DELIVERIES ===================== */
+const POST={ordered:['Ordered','todo'],in_transit:['In transit','doing'],partially_received:['Partly received','review'],received:['Received','done']};
+const recLines=p=>p.lines.filter(l=>l.rec>0).length;
+function dlvRow(p){return `<button class="stk-row" onclick="App.go('stk-delivery',{id:${p.id}})"><div class="f1"><div class="nm">${supN(p.sup)}</div><div class="mt">${p.code} · ${dayS(p.exp)}${p.note?' · '+esc(p.note):''}</div><div class="mt">${recLines(p)} of ${p.lines.length} lines received</div></div><span class="pill --${POST[p.status][1]}">${POST[p.status][0]}</span></button>`}
+window.mount_stk_deliveries=function(){
+ bar('stk-dlv-bar','Deliveries',demoIb,'stk-inv');
+ const body=$('stk-dlv-body');
+ if(!can('receive')||demo.oldCrm){body.innerHTML=unavailable();return}
+ if(demo.loading){body.innerHTML=spin();return}
+ const head=`<div class="pad mt12 flex g8"><button class="btn --sm --secondary f1" onclick="App.go('stk-receipt-new')">${I('plus')} Receive without order</button><button class="btn --sm --ghost f1" onclick="App.go('stk-claims')">${I('inbox')} My claims</button></div>
+  <div class="stk-dev mt12"><span>Refresh</span><button onclick="STK.refresh()">Pull to refresh</button><span>· orders + receipts · auto every 60 s</span></div>`;
+ if(demo.offline){body.innerHTML=head+empty('Could not load the deliveries','Pull down to try again.','--err');return}
+ const list=demo.empty?[]:PO.slice();
+ const openL=list.filter(p=>p.status!=='received').sort((a,b)=>new Date(a.exp)-new Date(b.exp));
+ const groups=['Overdue','Today','Tomorrow','Later'].map(g=>{const l=openL.filter(p=>dayLabel(p.exp)===g);return l.length?`<div class="stk-day ${g==='Overdue'?'--acc':''}"><span>${g}</span>${l.length}</div>${l.map(dlvRow).join('')}`:''}).join('');
+ const recent=list.filter(p=>p.status==='received').sort((a,b)=>new Date(b.exp)-new Date(a.exp));
+ const my=demo.empty?[]:RECEIPTS.filter(r=>r.noOrder&&r.by===A.state.me);
+ body.innerHTML=head+(openL.length?groups:empty('No deliveries expected','Orders placed by the buyer appear here by day.'))
+  +(recent.length?`<div class="stk-day"><span>Received in the last 7 days</span>${recent.length}</div>${recent.map(dlvRow).join('')}`:'')
+  +`${sec('My receipts',my.length)}<div class="pad">${my.length?my.map(r=>`<div class="stk-req"><div class="t">${supN(r.sup)}</div><div class="m">${whenS(r.at)} · ${r.lines} line${r.lines>1?'s':''} · <span class="tag --soft">No order</span></div></div>`).join(''):'<p class="stk-small">Receipts without an order from the last 7 days show here.</p>'}</div>`;
+};
+
+/* ===================== DELIVERY & RECEIVING ===================== */
+window.mount_stk_delivery=function(p){
+ const id=+(p&&p.id);const o=po(id);const body=$('stk-dl-body');const cta=$('stk-dl-cta');cta.style.display='none';body.classList.remove('has-cta');
+ bar('stk-dl-bar',o?supN(o.sup):'Delivery',demoIb,'stk-deliveries');
+ if(demo.oldCrm){body.innerHTML=unavailable();return}
+ if(!o){body.innerHTML=lock('Delivery not found','The order was removed or the link is wrong.');return}
+ if(demo.offline){body.innerHTML=empty('Could not load the delivery','Check the connection.','--err');return}
+ const d=S.dl[id]||(S.dl[id]={drafts:{},spent:false});
+ const out=l=>Math.max(0,l.exp-l.rec);
+ const canRec=can('receive')&&['ordered','in_transit','partially_received'].includes(o.status)&&o.lines.some(l=>out(l)>0);
+ o.lines.forEach(l=>{if(d.drafts[l.id]==null||d.key!==o.lines.map(x=>x.id+':'+x.rec).join())d.drafts[l.id]=out(l)});d.key=o.lines.map(x=>x.id+':'+x.rec).join();
+ const changed=o.lines.some(l=>out(l)>0&&d.drafts[l.id]!==out(l));
+ const link=S.dlNewItem&&S.dlNewItem.orderId===id?S.dlNewItem:null;
+ const lines=o.lines.map(l=>{const i=l.itemId?item(l.itemId):null;const ot=out(l);const linked=link&&link.lineId===l.id;return `<div class="stk-line">${i?thumb(i):`<span class="th">${I('leaf')}</span>`}<div class="f1"><div class="nm">${esc(l.name)}</div><div class="mt">${i?i.sku:(linked?'linked to new item':'<span class="w">not in stock yet</span>')} · expected ${l.exp} ${i?i.unit:'pcs'} · received ${l.rec}</div>${o.status==='partially_received'&&ot>0&&l.rec>0?`<div class="mt"><span class="w">outstanding ${ot}</span></div>`:''}</div>
+  <div class="act">${canRec&&ot>0?`<div class="stk-step"><button onclick="STK.dlStep(${id},${l.id},-1)">−</button><input inputmode="numeric" value="${d.drafts[l.id]}" oninput="STK.dlSet(${id},${l.id},this.value)"><button onclick="STK.dlStep(${id},${l.id},1)">+</button></div>`:''}${can('receive')&&l.rec<l.exp&&o.receipts.length?`<button class="btn --xs --ghost" onclick="STK.claimLine(${id},${l.id})">Not delivered / faulty</button>`:''}</div></div>`}).join('');
+ const rec=o.receipts.map(r=>{const mineR=r.by===A.state.me;const until=new Date(new Date(r.at).getTime()+864e5);const editable=mineR&&until>NOW;const closed=mineR&&until<=NOW;return `<div class="stk-req"><div class="t">${whenS(r.at)} · ${r.lines.length} line${r.lines.length>1?'s':''}${mineR?' · by me':' · '+nm(r.by)}</div><div class="m">${r.lines.map(x=>`${esc(x.name)} ${x.qty}`).join(' · ')}</div>${editable?`<div class="m">Edits until ${sameDay(until,NOW)?hm(until):dayS(until)+' '+hm(until)}</div><div class="a"><button class="btn --xs --secondary" onclick="STK.correct(${id},${r.id})">Correct quantities</button></div>`:closed?`<div class="m">Edits closed – ask a manager</div>`:can('manage')?`<div class="a"><button class="btn --xs --secondary" onclick="STK.correct(${id},${r.id})">Correct quantities</button></div>`:''}${!r.lines.length?'<div class="m">Edits need a newer CRM version</div>':''}</div>`}).join('');
+ body.innerHTML=`<div class="pad mt8"><div class="stk-kv"><span>Order</span><span>${o.code} · Expected ${dayS(o.exp)}${o.note?' · '+esc(o.note):''}</span></div><div class="stk-kv"><span>Status</span><span><span class="pill --${POST[o.status][1]}">${POST[o.status][0]}</span> · ${recLines(o)} of ${o.lines.length} lines received</span></div></div>
+  ${link?`<div class="stk-ban --ok">${esc(item(link.itemId).en)} created – the line is linked and goes with the next receipt.</div>`:''}
+  ${sec('Lines',o.lines.length)}${lines}
+  ${canRec?`<div class="stk-hint">${I('info')} Counters open on the outstanding quantity ("all arrived") – change only what came differently.</div>`:''}
+  ${o.receipts.length?sec('Received',o.receipts.length)+`<div class="pad">${rec}</div>`:''}
+  ${!can('receive')?`<div class="stk-ban --soft">Your account can see the order but not receive it.</div>`:''}`;
+ if(canRec){cta.style.display='';body.classList.add('has-cta');cta.innerHTML=`<button class="btn --secondary" ${changed?'':'disabled'} onclick="STK.receive(${id},'lines')">With changes</button><button class="btn" onclick="STK.receive(${id},'all')">${I('check')} All arrived</button>`}
+};
+STK.dlStep=(id,lid,d)=>{const dr=S.dl[id].drafts;dr[lid]=Math.max(0,Math.min(1e6,(+dr[lid]||0)+d));mount_stk_delivery({id})};
+STK.dlSet=(id,lid,v)=>{if(!/^\d*$/.test(v))return;S.dl[id].drafts[lid]=Math.max(0,Math.min(1e6,+v||0));const o=po(id);const changed=o.lines.some(l=>Math.max(0,l.exp-l.rec)>0&&S.dl[id].drafts[l.id]!==Math.max(0,l.exp-l.rec));$('stk-dl-cta').querySelector('.--secondary').disabled=!changed};
+STK.receive=(id,mode)=>{const o=po(id);const d=S.dl[id];if(demo.offline){A.toast('Could not receive – no connection');return}
+ const link=S.dlNewItem&&S.dlNewItem.orderId===id?S.dlNewItem:null;
+ const missing=o.lines.find(l=>!l.itemId&&Math.max(0,l.exp-l.rec)>0&&!(link&&link.lineId===l.id));
+ if(missing){A.sheet(`<div class="sh-head"><div class="h3">${esc(missing.name)} is not in stock yet</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">Create the item, then receive again. The link is kept and goes with the next receipt.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" ${can('manage')?'':'disabled'} onclick="App.closeSheet();App.go('stk-new',{name:'${esc(missing.name)}',linkLineId:${missing.id},orderId:${id}})">Create item</button></div>${can('manage')?'':'<p class="xs muted" style="padding:0 16px 12px;margin:0">Only the stock keeper creates items – ask a manager.</p>'}`);return}
+ if(link){const l=o.lines.find(x=>x.id===link.lineId);if(l)l.itemId=link.itemId;S.dlNewItem=null}
+ const before=o.lines.map(l=>l.rec);let any=false;const short=[];
+ o.lines.forEach(l=>{const out=Math.max(0,l.exp-l.rec);if(!out)return;const q=mode==='all'?out:Math.min(out,+d.drafts[l.id]||0);if(mode==='lines'&&d.drafts[l.id]===out){l.rec+=out;any=true;const it=l.itemId&&item(l.itemId);if(it){it.onHand+=out;it.avail+=out}return}
+  if(q>0){l.rec+=q;any=true;const it=l.itemId&&item(l.itemId);if(it){it.onHand+=q;it.avail+=q;it.status=it.onHand===0?'out':it.onHand<it.min?'low':'ok';it.movements.unshift({at:NOW.toISOString(),type:'Delivery '+o.code,by:A.state.me,q})}}
+  if(l.rec<l.exp)short.push({line:l,rec:l.rec,exp:l.exp})});
+ if(!any){A.toast('Nothing left to receive');return}
+ const lines=o.lines.map((l,k)=>({id:k+1,name:l.name,qty:l.rec-before[k],lineId:l.id})).filter(x=>x.qty>0);
+ o.receipts.push({id:500+o.receipts.length+20,at:NOW.toISOString(),by:A.state.me,lines});
+ o.status=o.lines.every(l=>l.rec>=l.exp)?'received':'partially_received';
+ A.haptic();
+ if(short.length){A.sheet(`<div class="sh-head"><div class="h3">${short.length} item${short.length>1?'s':''} short</div></div><div class="sh-body">${short.map(s=>`<div class="stk-kv"><span>${esc(s.line.name)}</span><span>${s.rec} / ${s.exp}</span></div>`).join('')}<p class="xs muted" style="margin:12px 0 0">Delivery received. Raise a claim now or later from a line.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();STK.remount()">Not now</button><button class="btn" onclick="App.closeSheet();STK.openClaim(${id},${JSON.stringify(short.map(s=>s.line.id))})">Raise a claim</button></div>`);return}
+ A.toast('Delivery received – stock updated');mount_stk_delivery({id})};
+STK.openClaim=(id,lineIds)=>{const o=po(id);const ls=o.lines.filter(l=>lineIds.includes(l.id));const allZero=ls.every(l=>l.rec===0);S.claimForm={po:id,reason:allZero?'not_delivered':'short_delivery',reasonText:'',disp:'',note:'',photos:[],lines:ls.map(l=>({lineId:l.id,name:l.name,bad:String(l.exp-l.rec),dn:''}))};A.go('stk-claim-new',{po:id})};
+STK.claimLine=(id,lid)=>STK.openClaim(id,[lid]);
+STK.correct=(id,rid)=>{const o=po(id);const r=o.receipts.find(x=>x.id===rid);if(!r.lines.length){A.toast('Edits need a newer CRM version');return}const dr={};r.lines.forEach(l=>dr[l.id]=l.qty);STK._corr=dr;
+ A.sheet(sh('Correct quantities',r.lines.map(l=>`<div class="flex ai-c jc-sb" style="padding:10px 0;border-bottom:1px solid var(--hair)"><span class="sm">${esc(l.name)}</span><div class="stk-step"><button onclick="STK.corrStep(${l.id},-1,this)">−</button><input inputmode="numeric" value="${l.qty}" oninput="STK._corr[${l.id}]=Math.max(0,+this.value||0)"><button onclick="STK.corrStep(${l.id},1,this)">+</button></div></div>`).join('')+'<p class="xs muted" style="margin:12px 0 0">Only changed lines are sent. Stock moves by the difference.</p>',`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="STK.corrSave(${id},${rid})">Save edits</button>`))};
+STK.corrStep=(lid,d,btn)=>{const inp=btn.parentNode.querySelector('input');const v=Math.max(0,(+inp.value||0)+d);inp.value=v;STK._corr[lid]=v};
+STK.corrSave=(id,rid)=>{const o=po(id);const r=o.receipts.find(x=>x.id===rid);let n=0;r.lines.forEach(l=>{const v=STK._corr[l.id];if(v!=null&&v!==l.qty){const line=o.lines.find(x=>x.name===l.name);if(line){line.rec+=v-l.qty;const it=line.itemId&&item(line.itemId);if(it){it.onHand+=v-l.qty}}l.qty=v;n++}});if(demo.offline){A.toast('Could not save the edits');return}A.closeSheet();o.status=o.lines.every(l=>l.rec>=l.exp)?'received':(o.lines.some(l=>l.rec>0)?'partially_received':'ordered');A.toast(n?`${n} line${n>1?'s':''} corrected`:'Nothing changed');mount_stk_delivery({id})};
+
+document.addEventListener('user',()=>{S.cnt={};S.newForm={};remount()});
+})();
+</script>
