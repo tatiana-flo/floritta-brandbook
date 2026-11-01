@@ -1,5 +1,517 @@
-<section class="scr" id="s-order" data-nav="Order" data-group="Work">
+<style>
+/* ===== 11-order · prefix o5- (shared by the Orders screens in 55-orders*.html) ===== */
+.o5-demo{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:6px var(--gutter) 0}
+.o5-demo::-webkit-scrollbar{display:none}
+.o5-demo .chip{height:28px;font-size:11px;padding:0 10px;flex:none}
+.o5-demo .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);align-self:center;flex:none;margin-right:2px}
+.o5-off{display:flex;align-items:center;gap:10px;margin:10px var(--gutter) 0;padding:10px 12px;font-size:13px;background:var(--warn-bg);color:var(--warn);width:calc(100% - 2*var(--gutter));text-align:left}
+.o5-off.--red{background:var(--accent-bg);color:var(--accent)}
+.o5-off svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.o5-off b{font-weight:500}
+.o5-off .sp{flex:1}
+.o5-plate{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--ink);white-space:nowrap;font-weight:500}
+.o5-plate.--unconfirmed{background:var(--grey)}.o5-plate.--in_production{background:var(--ink)}.o5-plate.--ready{background:var(--ok)}.o5-plate.--out_for_delivery{background:var(--graphite)}.o5-plate.--fulfilled{background:var(--ok)}.o5-plate.--cancelled{background:var(--accent)}
+.o5-plate.--static{opacity:.75}
+.o5-plate.--sm{height:26px;font-size:10px;padding:0 8px}
+.o5-plate svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+.o5-sla{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;font-size:12px;font-variant-numeric:tabular-nums;border:1px solid var(--light);color:var(--graphite)}
+.o5-sla svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5}
+.o5-sla.late{background:var(--accent);border-color:var(--accent);color:#fff}
+.o5-note{font-size:13px;color:var(--grey);margin:6px var(--gutter) 0}
+.o5-note.--err{color:var(--accent)}
+.o5-sec{display:flex;align-items:baseline;gap:10px;margin:26px var(--gutter) 10px}
+.o5-sec .h3{flex:1}
+.o5-sec .n{font-size:13px;color:var(--grey);font-variant-numeric:tabular-nums}
+.o5-sec .textbtn{font-size:12px}
+.o5-kv{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--hair);font-size:15px}
+.o5-kv span:first-child{color:var(--grey);font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;padding-top:3px;flex:none}
+.o5-kv span:last-child{text-align:right}
+.o5-kv.--tot span:last-child{font-weight:500}
+.o5-sticky{background:var(--warn-bg);padding:12px 14px;margin:0 var(--gutter);font-size:14px;line-height:1.45}
+.o5-sticky .ru{font-size:12px;color:var(--graphite);margin-top:6px;border-top:1px solid rgba(30,26,23,.08);padding-top:6px}
+.o5-sticky .caps{color:var(--warn)}
+.o5-btns{display:flex;flex-direction:column;gap:8px;padding:0 var(--gutter)}
+.o5-btns .btn{width:100%}
+.o5-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.o5-prow{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--hair)}
+.o5-ph{width:44px;height:44px;border:1px dashed var(--light);display:grid;place-items:center;color:var(--grey);flex:none;border-radius:50%;font-size:16px}
+.o5-item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair)}
+.o5-item img{width:48px;height:60px;object-fit:cover;background:var(--silver);flex:none;display:block}
+.o5-item .t{font-size:15px;line-height:1.3}
+.o5-item .d{font-size:12px;color:var(--grey);margin-top:2px}
+.o5-item .p{font-size:14px;flex:none;font-variant-numeric:tabular-nums}
+.o5-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 var(--gutter)}
+.o5-strip::-webkit-scrollbar{display:none}
+.o5-strip button{flex:none;width:92px;height:116px;background:var(--silver);position:relative;overflow:hidden}
+.o5-strip img{width:100%;height:100%;object-fit:cover}
+.o5-strip .cap{position:absolute;left:0;right:0;bottom:0;font-size:10px;padding:3px 6px;background:rgba(253,253,253,.9);color:var(--graphite);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.o5-viewer{position:relative;background:var(--ink);aspect-ratio:4/5;overflow:hidden}
+.o5-viewer img{width:100%;height:100%;object-fit:contain}
+.o5-chk{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.o5-chk .cb{width:22px;height:22px;border:1px solid var(--light);flex:none;display:grid;place-items:center;margin-top:1px}
+.o5-chk .cb svg{width:14px;height:14px;stroke:var(--paper);fill:none;stroke-width:2;opacity:0}
+.o5-chk.on .cb{background:var(--ink);border-color:var(--ink)}.o5-chk.on .cb svg{opacity:1}
+.o5-chk.on .ct{color:var(--grey);text-decoration:line-through}
+.o5-chk .ct{font-size:15px;line-height:1.4;flex:1}
+.o5-chk .ct small{display:block;font-size:12px;color:var(--grey);text-decoration:none}
+.o5-plate-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.o5-tl{display:flex;flex-direction:column}
+.o5-tl div{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.o5-tl div span:first-child{color:var(--grey);font-variant-numeric:tabular-nums}
+.o5-tl div span:last-child small{display:block;color:var(--grey)}
+.o5-comp{padding:9px 0;border-bottom:1px solid var(--hair);font-size:14px;display:flex;gap:10px;align-items:center}
+.o5-comp .q{font-variant-numeric:tabular-nums;color:var(--graphite);flex:none;width:56px}
+.o5-comp .k{font-size:11px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase;flex:none}
+.o5-comp .x{margin-left:auto;width:28px;height:28px;display:grid;place-items:center;color:var(--grey);flex:none}
+.o5-comp .x svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+.o5-boost{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.o5-boost .chip{height:28px;padding:0 10px;font-size:12px}
+.o5-stepper{display:inline-flex;align-items:center;border:1px solid var(--light);height:40px}
+.o5-stepper button{width:40px;height:100%;display:grid;place-items:center}
+.o5-stepper button svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.o5-stepper span{min-width:36px;text-align:center;font-variant-numeric:tabular-nums;font-size:15px}
+.o5-yl{background:var(--warn-bg);padding:10px 12px;font-size:14px;line-height:1.45;margin-top:8px}
+.o5-yl small{display:block;font-size:11px;color:var(--grey);margin-top:4px}
+.o5-yl .orig{display:block;font-size:12px;color:var(--graphite);margin-top:6px;border-top:1px solid rgba(30,26,23,.08);padding-top:6px}
+.o5-frame{border:1px solid var(--light);padding:12px}
+.o5-frame.--ok{border-color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)}
+.o5-link{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 0;border-bottom:1px solid var(--hair);font-size:15px}
+.o5-link svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5;flex:none}
+.o5-link .d{font-size:12px;color:var(--grey);margin-top:1px}
+.o5-link .chv{margin-left:auto;stroke:var(--grey);width:18px;height:18px}
+.o5-pick{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 0;border-bottom:1px solid var(--hair);min-height:58px}
+.o5-pick .xs{display:block;color:var(--grey)}
+.o5-pick svg.chv{margin-left:auto;width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5;flex:none}
+.o5-pick>svg:last-child:not(.chv){width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:1.8;margin-left:auto;flex:none}
+.o5-pick.on .h4{text-decoration:underline;text-underline-offset:4px}
+.o5-big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:96px;border:1px solid var(--ink);font-size:12px;letter-spacing:.08em;text-transform:uppercase;width:100%}
+.o5-big svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.5}
+.o5-big.--ghost{border-color:var(--light)}
+.o5-rn{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.o5-rn b{font-weight:500}
+.o5-rn .at{margin-left:auto;font-size:12px;color:var(--grey);flex:none}
+.o5-pod{position:relative;aspect-ratio:16/10;background:var(--silver);overflow:hidden;display:grid;place-items:center;color:var(--grey);font-size:13px;text-align:center;padding:12px}
+.o5-pod img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.o5-pod .cap{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;font-size:11px;background:rgba(253,253,253,.9);color:var(--graphite)}
+.o5-vs{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair)}
+.o5-vs .switch{margin-left:auto}
+.o5-radio{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left;font-size:15px}
+.o5-radio .rd{width:20px;height:20px;border:1px solid var(--light);flex:none;display:grid;place-items:center}
+.o5-radio .rd::after{content:"";width:10px;height:10px;background:var(--ink);transform:scale(0)}
+.o5-radio.on .rd{border-color:var(--ink)}.o5-radio.on .rd::after{transform:scale(1)}
+.o5-radio small{display:block;font-size:12px;color:var(--grey)}
+#s-order .o5-hero{position:relative;aspect-ratio:5/3;background:var(--silver);overflow:hidden}
+#s-order .o5-hero img{width:100%;height:100%;object-fit:cover}
+#s-order .o5-hero .tag{position:absolute;left:16px;top:16px}
+#s-order .o5-hero .tag.--r{left:auto;right:16px}
+#s-order .o5-head{padding:14px var(--gutter) 0}
+#s-order .o5-pull{text-align:center;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);padding:6px 0 0;width:100%}
+#s-order .o5-photos-pending{font-size:12px;color:var(--graphite);text-align:center;margin-top:6px}
+.o5-ro{margin:16px var(--gutter) 0}
+.o5-red{color:var(--accent);font-size:13px}
+.o5-empty{margin:0 var(--gutter);padding:28px 16px;text-align:center;background:var(--silver);color:var(--graphite);font-size:14px}
+.o5-empty b{display:block;font-family:var(--f-display);font-weight:400;font-size:20px;color:var(--ink);margin-bottom:4px}
+.o5-channel{display:inline-flex;align-items:center;height:20px;padding:0 7px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--graphite)}
+.o5-channel.--ubereats,.o5-channel.--deliveroo,.o5-channel.--flowwow{background:var(--ink)}
+.o5-spinner{width:22px;height:22px;border:2px solid var(--light);border-top-color:var(--ink);border-radius:50%;animation:o5spin .9s linear infinite;margin:36px auto}
+@keyframes o5spin{to{transform:rotate(360deg)}}
+</style>
+<!-- ids: TM-ORDER-001 TM-ORDER-002 TM-ORDER-003 TM-ORDER-004 TM-ORDER-005 TM-ORDER-006 TM-ORDER-007 TM-ORDER-008 TM-ORDER-009 TM-ORDER-010 TM-ORDER-011 TM-ORDER-012 TM-ORDER-013 TM-ORDER-014 TM-ORDER-015 TM-ORDER-016 TM-ORDER-017 TM-ORDER-018 TM-ORDER-019 TM-ORDER-040 TM-ORDER-041 TM-ORDER-042 TM-ORDER-043 TM-ORDER-044 TM-ORDER-045 TM-ORDER-046 TM-ORDER-047 TM-ORDER-048 TM-ORDER-049 TM-ORDER-050 TM-ORDER-051 TM-ORDER-052 TM-ORDER-053 – карточка заказа целиком рисуется в mount_order (скрипт ниже, блоки помечены по ID) -->
+<!-- ids: TM-ORDER-020 TM-ORDER-021 TM-ORDER-022 TM-ORDER-023 TM-ORDER-024 TM-ORDER-025 TM-ORDER-026 TM-ORDER-027 TM-ORDER-028 TM-ORDER-029 TM-ORDER-030 – шит «фото букета» O5.photoSheet: подпись, камера/галерея, офлайн-очередь, повтор при сбое сети, сообщение «что сделал CRM», «Будут ещё фото?», правило «нужно ли фото», «Готово без фото» менеджеру, красная строка отказа CRM, «N снимков удержано» -->
+<!-- ids: TM-CLASSIC-114 – глобальное окно «алкоголь вне лицензионных часов» (O5.alcoholNotice, демо-переключатель «Licensed hours: closed») -->
+<!-- ids: TM-CLASSIC-027 TM-CLASSIC-030 TM-CLASSIC-031 TM-CLASSIC-032 TM-CLASSIC-033 TM-CLASSIC-035 – общие действия статуса (O5.confirm / pressReady / dispatch / complete + строка «Saved on this phone») используются и доской, и карточкой -->
+<section class="scr" id="s-order" data-nav="Order" data-group="Work · Orders">
   <div class="appbar" id="od-bar"></div>
   <div class="scr-body" id="od-body"></div>
-  <div class="cta-bar" id="od-cta" style="display:none"></div>
 </section>
+<script>
+(function(){
+const A=window.App, I=A.icon, T=A.T;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+const O5=window.O5={};
+O5.esc=esc;
+/* ---------- demo state (switches in the Demo strip) ---------- */
+O5.demo={offline:false,evening:false,tempPass:false,viewAs:false,alcoholClosed:false,lookupsFail:false,loadError:false,netFail:false,routeConfirmed:true};
+O5.TODAY='2026-10-20';O5.TOMORROW='2026-10-21';
+O5.t0=Date.now();
+O5.now=()=>new Date(A.NOW.getTime()+(Date.now()-O5.t0));
+O5.dayLabel=d=>d===O5.TODAY?'Today':d===O5.TOMORROW?'Tomorrow':d==='2026-10-19'?'Yesterday':new Date(d+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+O5.addDays=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.toISOString().slice(0,10)};
+O5.CH={website:'Website',whatsapp:'WhatsApp',instagram:'Instagram',phone:'Phone',in_store:'In store',ubereats:'Uber Eats',deliveroo:'Deliveroo',flowwow:'Flowwow'};
+O5.STATUS={unconfirmed:'Unconfirmed',in_production:'In progress',ready:'Ready',out_for_delivery:'Out for delivery',fulfilled:'Fulfilled',cancelled:'Cancelled'};
+const IMG={pm:'img/pink-manifesto.webp',pp:'img/peach-posy.webp',ws:'img/white-spray.webp',rr:'img/red-roses.webp',ld:'img/lilac-dream.webp',db:'img/daydream-basket.webp',bg:'img/belgravia.webp',pb:'img/peony-basket.webp'};
+O5.IMG=IMG;
+const recipePM=[{ing:'Peony · pink',qty:7,unit:'stems',base:true},{ing:'Garden rose · Pink O’Hara',qty:5,unit:'stems',base:true},{ing:'Eucalyptus cinerea',qty:4,unit:'stems'},{ing:'Astilbe',qty:3,unit:'stems',addon:true}];
+const recipeWS=[{ing:'Spray rose · white',qty:12,unit:'stems',base:true},{ing:'Ruscus',qty:5,unit:'stems'},{ing:'Ivory wrap',qty:1,unit:'sheet'}];
+const mk=(o)=>Object.assign({crmCode:null,channel:'website',method:'delivery',date:O5.TODAY,slot:'',postcode:'',paymentStatus:'paid',assignedTo:null,itemFlorists:{},unitCount:1,queue:null,attention:null,approval:null,bouquetPhotos:[],bouquetPhotosPending:0,referencePhotos:[],bouquetPhotoSkip:null,photoOptOut:false,pod:null,marketplace:null,courier:null,courierCall:null,note:'',noteRu:'',giftMessage:'',deliveryInstructions:'',substitutionPreference:'similar',composition:null,extras:[],substitutions:[],boost:{},checks:[],timeline:[],unpaid:null,paymentLink:null,alcohol:false,offlineNotice:null,money:null,priority:null,recipientPhone:''},o);
+O5.orders=[
+ mk({id:1,code:'715602',crmCode:'C-9821',status:'in_production',slot:'14:00–17:00',postcode:'SW3 4UY',area:'Chelsea SW3',customer:{id:'c1',name:'Mrs Harper',phone:'+44 7700 900356'},recipient:'Olivia Bennett',recipientPhone:'+44 7700 900356',address:'6 Markham Sq, London',items:[{id:11,title:'Pink manifesto · Deluxe',qty:1,price:99,img:IMG.pm,type:'built'},{id:12,title:'Glass vase',qty:1,price:18,img:IMG.db},{id:13,title:'Handwritten card',qty:1,price:12}],total:129,money:{subtotal:129,delivery:0,tip:0,discount:0,total:129},assignedTo:'kamila',sla:T(13,30),note:'Vase colour TBC – see task',noteRu:'Цвет вазы уточняется – см. задачу',giftMessage:'Happy anniversary, with all my love – J.',deliveryInstructions:'Gate code is on the card inside the wrap. Ring twice.',composition:recipePM,referencePhotos:[IMG.pm],pod:{required:true,photo:null,missing:null},courier:'andrii',timeline:[[T(9,2),'unconfirmed','in_production','Valeria'],[T(9,40),'—','taken by Kamila','Kamila']],checks:[{t:'Confirm vase colour with Mrs Harper',d:false},{t:'Pack the card inside the wrap',d:true}]}),
+ mk({id:2,code:'715611',status:'in_production',channel:'whatsapp',slot:'15:00–18:00',postcode:'SE1 3LE',area:'Bermondsey SE1',customer:{id:'c6',name:'James O.',phone:'+44 7700 900127'},recipient:'Peter O.',address:'31 Tanner St, London',items:[{id:21,title:'Happy Birthday balloons ×5',qty:1,price:25,img:IMG.pp},{id:22,title:'Peach posy',qty:1,price:49,img:IMG.pp,type:'built'},{id:23,title:'Lindt truffles',qty:1,price:20}],total:94,money:{subtotal:94,delivery:0,tip:0,discount:0,total:94},unitCount:2,sla:T(14,30),queue:{florist:'kamila',position:2,changed:'new',date:O5.TODAY},note:'Balloons collected 13:10',deliveryInstructions:'Leave with reception if nobody answers.',composition:[{ing:'Peach garden rose',qty:6,unit:'stems',base:true},{ing:'Stock · apricot',qty:4,unit:'stems'},{ing:'Pistache',qty:3,unit:'stems'}],pod:{required:true,photo:null,missing:null},courier:'andrii',timeline:[[T(8,15),'unconfirmed','in_production','Valeria']]}),
+ mk({id:3,code:'715619',status:'in_production',channel:'instagram',slot:'12:00–15:00',postcode:'SW11 4AB',area:'Battersea SW11',customer:{id:'c3',name:'Anna K.',phone:'+44 7700 900418'},recipient:'Marta K.',address:'88 Prince of Wales Dr, flat 4B',items:[{id:31,title:'White spray roses in ivory wrap · Grand',qty:1,price:110,img:IMG.ws,type:'built'}],total:110,money:{subtotal:110,delivery:0,tip:0,discount:0,total:110},assignedTo:'vita',sla:T(11,0),note:'Pet-friendly – no lilies',noteRu:'Дома собака – без лилий',composition:recipeWS,approval:{photoBefore:IMG.ws,sentAt:T(10,48),replies:[{id:1,text:'Could you add a bit more greenery? Otherwise lovely, thank you!',orig:'Could u add a bit more greenery?? otherwise lovely thank u!!',at:T(10,55)}],verdict:'feedback',acked:false},bouquetPhotosPending:1,pod:{required:true,photo:null,missing:null},courier:'oleh',timeline:[[T(8,20),'unconfirmed','in_production','Sasha'],[T(10,48),'—','photo before wrapping sent','Vita']]}),
+ mk({id:4,code:'715588',status:'fulfilled',date:'2026-10-19',slot:'18:00–21:00',postcode:'SW3 2QE',area:'Chelsea SW3',customer:{id:'c2',name:'Daniel R.',phone:'+44 7700 900602'},recipient:'Daniel R.',address:'12 Sloane Ave',items:[{id:41,title:'20 velvety red roses',qty:1,price:89,img:IMG.rr,type:'built'}],total:89,money:{subtotal:89,delivery:0,tip:0,discount:0,total:89},assignedTo:'svetlana',courier:'oleh',fulfilledAt:T(19,42,-1),bouquetPhotos:[{img:IMG.rr,cap:'Finished bouquet',at:T(16,10,-1),by:'svetlana'}],pod:{required:true,photo:null,missing:null},timeline:[[T(14,2,-1),'unconfirmed','in_production','Valeria'],[T(16,12,-1),'in_production','ready','Svetlana'],[T(17,50,-1),'ready','out_for_delivery','Valeria'],[T(19,42,-1),'out_for_delivery','fulfilled','Oleh']]}),
+ mk({id:5,code:'715623',status:'unconfirmed',slot:'17:00–20:00',postcode:'SW4 7AA',area:'Clapham SW4',customer:{id:'c5',name:'Sophie L.',phone:'+44 7700 900733'},recipient:'Sophie L.',address:'4 Abbeville Rd',items:[{id:51,title:'Lilac daydream',qty:1,price:75,img:IMG.ld,type:'built'},{id:52,title:'Ferrero Rocher',qty:1,price:15}],total:90,money:{subtotal:90,delivery:0,tip:0,discount:0,total:90},sla:T(16,0),pod:{required:true,photo:null,missing:null},timeline:[[T(10,58),'—','placed on the website','Website']]}),
+ mk({id:6,code:'715627',status:'in_production',channel:'phone',slot:'18:00–21:00',postcode:'W8 5AD',area:'Kensington W8',customer:{id:'c7',name:'Anonymous',phone:'+44 7700 900288'},recipient:'Ms Delaney',recipientPhone:'+44 7700 900299',address:'22 Kensington Church St',items:[{id:61,title:'Rose-tinted daydream basket',qty:1,price:169,img:IMG.db,type:'built'},{id:62,title:'Prosecco · 75 cl',qty:1,price:30}],total:199,money:{subtotal:199,delivery:0,tip:0,discount:0,total:199},assignedTo:'svetlana',alcohol:true,sla:T(17,0),attention:{on:true,note:'Anonymous sender – nothing on the card. Call the recipient before dispatch.',assignees:['valeria','svetlana'],by:'valeria',at:T(9,25)},note:'Anonymous sender',composition:[{ing:'Garden rose · Pink O’Hara',qty:9,unit:'stems',base:true},{ing:'Lisianthus · blush',qty:6,unit:'stems'},{ing:'Basket · oval',qty:1,unit:'pc'}],pod:{required:true,photo:null,missing:null},checks:[{t:'Call Ms Delaney – is she home after 6 pm?',d:false},{t:'Challenge 25 at the door (Prosecco)',d:false}],timeline:[[T(9,20),'unconfirmed','in_production','Valeria']]}),
+ mk({id:7,code:'715598',status:'out_for_delivery',slot:'11:00–14:00',postcode:'SW1V 2NZ',area:'Pimlico SW1',customer:{id:'c8',name:'Ms Patel',phone:'+44 7700 900214'},recipient:'Ms Patel',address:'14 Moreton Pl',items:[{id:71,title:'Belgravia petite rosettes',qty:1,price:45,img:IMG.bg,type:'built'}],total:45,money:{subtotal:45,delivery:0,tip:0,discount:0,total:45},assignedTo:'kamila',courier:'andrii',bouquetPhotos:[{img:IMG.bg,cap:'Ready for the courier',at:T(10,12),by:'kamila'}],deliveryInstructions:'Leave with the concierge if out.',pod:{required:true,photo:null,missing:null},timeline:[[T(8,5),'unconfirmed','in_production','Valeria'],[T(10,14),'in_production','ready','Kamila'],[T(10,40),'ready','out_for_delivery','Valeria']]}),
+ mk({id:8,code:'715631',status:'in_production',channel:'whatsapp',date:O5.TOMORROW,slot:'8:00–11:00',postcode:'SE16 2XB',area:'Bermondsey SE16',customer:{id:'c4',name:'Mark T.',phone:'+44 7700 900845'},recipient:'Ward 4 · St Olave’s',address:'Lower Rd, London',items:[{id:81,title:'Peony roses elegance basket',qty:1,price:149,img:IMG.pb,type:'built'},{id:82,title:'Clear vase',qty:1,price:0}],total:149,money:{subtotal:149,delivery:0,tip:0,discount:0,total:149},queue:{florist:'svetlana',position:1,changed:null,date:O5.TOMORROW},note:'Hospital – ward 4, no lilies',noteRu:'Больница – 4-я палата, без лилий',composition:[{ing:'Peony rose · coral',qty:8,unit:'stems',base:true},{ing:'Eucalyptus',qty:4,unit:'stems'}],pod:{required:true,photo:null,missing:null},timeline:[[T(10,20),'unconfirmed','in_production','Sasha']]}),
+ mk({id:9,code:'715640',crmCode:'UE-4471',status:'in_production',channel:'ubereats',slot:'12:30–13:00',postcode:'SE1 2HQ',area:'Bermondsey SE1',customer:{id:null,name:'Uber Eats customer',phone:''},recipient:'Uber Eats customer',address:'Collected by the Uber courier',items:[{id:91,title:'Peach posy · Standard',qty:1,price:42,img:IMG.pp,type:'built'}],total:42,money:{subtotal:42,delivery:0,tip:0,discount:0,total:42},marketplace:{name:'Uber Eats',status:'Accepted · courier not yet assigned'},sla:T(12,10),pod:null,timeline:[[T(11,2),'—','accepted on Uber Eats','Valeria']]}),
+ mk({id:10,code:'715644',status:'ready',channel:'in_store',method:'collection',slot:'Collection · from 13:00',customer:{id:'c9',name:'Lena P.',phone:'+44 7700 900318'},recipient:'Lena P.',items:[{id:101,title:'Lilac daydream',qty:1,price:75,img:IMG.ld,type:'built'}],total:75,money:{subtotal:75,delivery:0,tip:0,discount:0,total:75},assignedTo:'vita',bouquetPhotos:[{img:IMG.ld,cap:'',at:T(10,50),by:'vita'}],timeline:[[T(9,0),'unconfirmed','in_production','Valeria'],[T(10,52),'in_production','ready','Vita']]}),
+ mk({id:11,code:'715650',status:'in_production',channel:'instagram',slot:'16:00–19:00',postcode:'SW6 1RU',area:'Fulham SW6',customer:{id:'c10',name:'Chloe W.',phone:'+44 7700 900512'},recipient:'Chloe W.',address:'9 Parsons Green Ln',items:[{id:111,title:'Pink manifesto · Standard',qty:1,price:75,img:IMG.pm,type:'built'}],total:83,money:{subtotal:75,delivery:8,tip:0,discount:0,total:83},paymentStatus:'unpaid',sla:T(15,0),composition:recipePM,unpaid:{since:T(7,52),waMessages:3,contacted:false,noAnswer:1,outcome:null,notes:[{by:'valeria',t:'Left a voicemail, link resent on WhatsApp',at:T(9,10)}],linkSent:true},paymentLink:{amount:83,status:'awaiting payment',expires:T(7,52,1)},pod:{required:true,photo:null,missing:null},timeline:[[T(7,52),'—','placed via Instagram','Sasha']]}),
+ mk({id:12,code:'715581',status:'fulfilled',method:'collection',slot:'Collection · 10:00',customer:{id:'c11',name:'Rob H.',phone:'+44 7700 900166'},recipient:'Rob H.',items:[{id:121,title:'White spray roses · Standard',qty:1,price:65,img:IMG.ws,type:'built'},{id:122,title:'Strawberries · dipped',qty:1,price:18}],total:83,money:{subtotal:83,delivery:0,tip:0,discount:0,total:83},assignedTo:'svetlana',unitCount:2,itemFlorists:{121:'svetlana',122:'ayana'},fulfilledAt:T(10,5),bouquetPhotos:[{img:IMG.ws,cap:'',at:T(9,30),by:'svetlana'}],timeline:[[T(8,0),'unconfirmed','in_production','Valeria'],[T(9,32),'in_production','ready','Svetlana'],[T(10,5),'ready','fulfilled · collected','Valeria']]}),
+ mk({id:13,code:'715577',status:'cancelled',slot:'13:00–16:00',postcode:'W8 4PT',area:'Kensington W8',customer:{id:'c12',name:'Oliver S.',phone:'+44 7700 900940'},recipient:'Oliver S.',address:'3 Phillimore Gdns',items:[{id:131,title:'20 velvety red roses',qty:1,price:89,img:IMG.rr,type:'built'}],total:89,money:{subtotal:89,delivery:0,tip:0,discount:0,total:89},cancelledAt:T(9,30),cancelReason:'Customer cancelled – sent flowers from elsewhere',timeline:[[T(8,40),'unconfirmed','in_production','Valeria'],[T(9,30),'in_production','cancelled · customer cancelled','Valeria']]}),
+ mk({id:14,code:'715655',status:'fulfilled',slot:'9:00–12:00',postcode:'SW11 1AA',area:'Battersea SW11',customer:{id:'c13',name:'Priya S.',phone:'+44 7700 900377'},recipient:'Priya S.',address:'5 Lavender Hill',items:[{id:141,title:'20 velvety red roses',qty:1,price:89,img:IMG.rr,type:'built'}],total:89,money:{subtotal:89,delivery:0,tip:0,discount:0,total:89},assignedTo:'kamila',courier:'oleh',fulfilledAt:T(10,40),bouquetPhotos:[{img:IMG.rr,cap:'',at:T(8,58),by:'kamila'}],pod:{required:true,photo:IMG.rr,at:T(10,40),by:'oleh',missing:null},timeline:[[T(7,30),'unconfirmed','in_production','Valeria'],[T(9,0),'in_production','ready','Kamila'],[T(9,25),'ready','out_for_delivery','Valeria'],[T(10,40),'out_for_delivery','fulfilled · delivered','Oleh']]}),
+ mk({id:15,code:'715660',crmCode:'DL-2210',status:'ready',channel:'deliveroo',slot:'11:30–12:00',postcode:'SE1 2HQ',area:'Bermondsey SE1',customer:{id:null,name:'Deliveroo customer',phone:''},recipient:'Deliveroo customer',address:'Rider collects at the shop',items:[{id:151,title:'Lilac daydream · Petite',qty:1,price:38,img:IMG.ld,type:'built'}],total:38,money:{subtotal:38,delivery:0,tip:0,discount:0,total:38},assignedTo:'vita',marketplace:{name:'Deliveroo',status:'Rider on the way · 6 min'},pod:null,timeline:[[T(10,30),'—','accepted on Deliveroo','Sasha'],[T(11,5),'in_production','ready','Vita']]}),
+ mk({id:16,code:'715672',status:'in_production',date:'2026-10-24',slot:'10:00–13:00',postcode:'SW3 6RD',area:'Chelsea SW3',customer:{id:'c14',name:'Harriet M.',phone:'+44 7700 900455'},recipient:'The Pelham · wedding suite',address:'15 Cromwell Pl',items:[{id:161,title:'White spray roses · Grand bridal',qty:1,price:220,img:IMG.ws,type:'built'},{id:162,title:'Bridesmaid posy',qty:2,price:50,img:IMG.pp,type:'built'}],total:320,money:{subtotal:320,delivery:0,tip:0,discount:0,total:320},unitCount:3,queue:{florist:'svetlana',position:3,changed:'moved',date:'2026-10-24'},note:'Wedding – deliver to the suite, ask for Harriet',pod:{required:true,photo:null,missing:null},timeline:[[T(9,0,-2),'unconfirmed','in_production','Valeria']]}),
+ mk({id:17,code:'715615',status:'in_production',channel:'phone',method:null,slot:'',customer:{id:'c15',name:'Sarah M.',phone:'+44 7700 900620'},recipient:'Sarah M.',items:[{id:171,title:'Belgravia petite rosettes',qty:1,price:45,img:IMG.bg,type:'built'}],total:45,money:{subtotal:45,delivery:0,tip:0,discount:0,total:45},assignedTo:'vita',sla:T(12,30),note:'Customer will say later: collect or deliver',timeline:[[T(9,50),'unconfirmed','in_production','Sasha']]})
+];
+O5.order=code=>O5.orders.find(o=>o.code===String(code));
+O5.nm=id=>{const u=id&&A.user(id);return u?u.n:'—'};
+O5.florists=()=>window.STAFF.filter(s=>s.role==='florist');
+O5.couriers=()=>window.STAFF.filter(s=>s.role==='courier');
+O5.roles=()=>{const u=A.me(),r=u.role;const mgr=r==='manager'||r==='owner';const trainee=u.staff_type==='trainee',seasonal=u.staff_type==='seasonal';
+  return {role:r,mgr,trainee,seasonal,courier:r==='courier',florist:r==='florist',canManage:mgr,customersManage:mgr,inventoryCount:(mgr||r==='florist')&&!trainee&&!seasonal,deliveryManage:mgr,viewAs:mgr&&O5.demo.viewAs}};
+O5.isCollection=o=>o.method==='collection';
+O5.noMethod=o=>!o.method;
+/* ---------- status, transitions, photo rule ---------- */
+O5.plate=(o,label,opts={})=>`<span class="o5-plate --${opts.neutral?'unconfirmed':o.status} ${opts.static?'--static':''} ${opts.sm?'--sm':''}">${label||O5.STATUS[o.status]||o.status}${opts.action?'<span>›</span>':''}</span>`;
+O5.transitions=o=>{const s=o.status,R=O5.roles();let t=[];
+  if(s==='unconfirmed')t=['confirm'];
+  else if(s==='in_production')t=['ready'];
+  else if(s==='ready')t=O5.isCollection(o)?['collected']:O5.noMethod(o)?[]:['out_for_delivery','back_to_production'];
+  else if(s==='out_for_delivery')t=O5.isCollection(o)?['collected']:['delivered','back_to_shop'];
+  if(R.canManage&&s!=='fulfilled'&&s!=='cancelled')t.push('cancel');
+  return t};
+O5.TL={confirm:'Confirm',ready:'Ready',collected:'Collected',out_for_delivery:'Hand to courier',back_to_production:'Back to making',delivered:'Confirm delivery',back_to_shop:'Back to the shop',cancel:'Cancel order'};
+const PHOTO_FREE=['ubereats','deliveroo','justeat','flowwow','shop_sale'];
+O5.needsPhoto=o=>{if(typeof o.bouquetPhotoRequired==='boolean')return o.bouquetPhotoRequired;return !o.bouquetPhotos.length&&!o.bouquetPhotoSkip&&!o.marketplace&&!PHOTO_FREE.includes(o.channel)};
+O5.sla=o=>{if(!o.sla||o.status==='fulfilled'||o.status==='cancelled')return '';return `<span class="o5-sla" data-dl="${o.sla}">${I('timer')}<span>…</span></span>`};
+setInterval(()=>{const now=O5.now();document.querySelectorAll('.o5-sla[data-dl]').forEach(el=>{let ms=new Date(el.dataset.dl)-now;const late=ms<0;ms=Math.abs(ms);const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),ss=s%60;const p=n=>String(n).padStart(2,'0');el.lastElementChild.textContent=(late?'−':'')+(h?h+':'+p(m)+':'+p(ss):p(m)+':'+p(ss));el.classList.toggle('late',late)})},1000);
+/* ---------- shell sync (other screens read window.ORDERS) ---------- */
+O5.syncShell=o=>{const s=A.order(o.code);if(!s)return;s.status=o.status==='unconfirmed'?'queue':o.status==='in_production'?(o.bouquetPhotos.length?'photo':o.assignedTo?'making':'queue'):o.status==='ready'?'ready':o.status==='out_for_delivery'?'out':o.status==='fulfilled'?'delivered':'queue';s.florist=o.assignedTo;s.courier=o.courier;A.renderBadges()};
+O5.remount=()=>{const cur=A.state.current;const f=cur&&window['mount_'+cur.replace(/-/g,'_')];if(typeof f==='function')f(A.state.params)};
+/* ---------- write queue (offline) ---------- */
+O5.queue=[
+ {id:1,code:'715619',kind:'orderStatus',to:'ready',state:'parked',parkReason:'rejected',lastError:'Photo of the finished bouquet is required before Ready',refusal:'bouquet_photo',attempts:1,at:T(10,58),owner:'kamila'},
+ {id:2,code:'715619',kind:'bouquetPhoto',state:'parked',parkReason:'blocked',attempts:0,at:T(10,59),owner:'kamila'},
+ {id:3,code:'715598',kind:'podPhoto',state:'queued',attempts:4,at:T(10,40),owner:'andrii'},
+ {id:4,code:'715611',kind:'orderConfirm',state:'queued',attempts:0,at:T(10,52),owner:'valeria'}
+];
+let qid=10;
+O5.KIND={orderStatus:w=>O5.TL[w.to]||w.to,orderConfirm:()=>'Confirm',orderComplete:()=>'Collected',bouquetPhoto:w=>w.photoKind==='before_wrapping'?'Photo before wrapping':'Bouquet photo',podPhoto:()=>'Proof of delivery photo',podMissing:()=>'No proof photo · reason'};
+O5.describe=w=>`Order #${w.code} · ${(O5.KIND[w.kind]||(()=>w.kind))(w)}`;
+O5.statusLine=w=>w.state==='queued'?(w.attempts?`waiting to send (attempt ${w.attempts+1})`:'waiting to send'):w.parkReason==='blocked'?'blocked by the record before it':w.parkReason==='attempts'?`too many failed attempts: ${w.lastError||''}`:`rejected: ${w.lastError||''}`;
+O5.myQueue=()=>O5.queue.filter(w=>w.owner===A.state.me);
+O5.queueSummary=()=>{const q=O5.myQueue();return {waiting:q.filter(w=>w.state==='queued').length,parked:q.filter(w=>w.state==='parked').length,stuck:q.filter(w=>w.state==='queued'&&w.attempts>0).length}};
+O5.submit=(w)=>{w.code=String(w.code);
+  if(O5.demo.offline){const blocked=O5.queue.some(x=>x.code===w.code&&x.state==='parked'&&x.owner===A.state.me);
+    O5.queue.push(Object.assign({id:++qid,state:blocked?'parked':'queued',parkReason:blocked?'blocked':null,attempts:0,at:O5.now().toISOString(),owner:A.state.me},w));
+    const o=O5.order(w.code);if(o)o.offlineNotice={ok:'Saved on this phone – it will go when the connection is back'};
+    A.toast('Saved on this phone');return {queued:true}}
+  const res=O5.apply(w);return {ok:true,result:res}};
+O5.apply=w=>{const o=O5.order(w.code);if(!o)return null;
+  if(w.kind==='orderStatus')return O5.setStatus(o,w.to,w.note,w.skip_photo_reason);
+  if(w.kind==='orderConfirm')return O5.setStatus(o,'confirm');
+  if(w.kind==='orderComplete')return O5.setStatus(o,'collected');
+  if(w.kind==='bouquetPhoto'){const dup=o.bouquetPhotos.some(p=>p.sig===w.sig);if(dup)return {reason:'duplicate'};
+    const held=o.date!==O5.TODAY,before=w.photoKind==='before_wrapping';
+    if(before){o.approval=o.approval||{photoBefore:null,replies:[],verdict:null,acked:true,sentAt:null};o.approval.photoBefore=w.img;o.approval.sentAt=O5.now().toISOString();o.timeline.push([O5.now().toISOString(),'—','photo before wrapping sent',A.me().n]);return {sent:!o.marketplace&&!o.photoOptOut,recipientName:o.customer.name,channel:O5.CH[o.channel],before:true}}
+    o.bouquetPhotos.push({img:w.img,cap:w.caption||'',at:O5.now().toISOString(),by:A.state.me,sig:w.sig});
+    if(w.holdUntilDone){o.bouquetPhotosPending++;return {reason:'held_until_done'}}
+    if(o.marketplace)return {reason:'marketplace'};if(o.photoOptOut)return {reason:'photo_opt_out'};if(held)return {reason:'held_until_delivery_day'};
+    return {sent:true,recipientName:o.customer.name,channel:O5.CH[o.channel]==='Website'?'email':O5.CH[o.channel]}}
+  if(w.kind==='podPhoto'){o.pod=o.pod||{required:true};o.pod.photo=w.img;o.pod.at=O5.now().toISOString();o.pod.by=A.state.me;o.pod.missing=null;return {ok:true}}
+  if(w.kind==='podMissing'){o.pod=o.pod||{required:true};o.pod.missing={reason:w.reason,note:w.note,by:A.state.me,at:O5.now().toISOString()};return {ok:true}}
+  return null};
+O5.syncNow=()=>{const q=O5.myQueue().filter(w=>w.state==='queued');if(!q.length){A.toast('Nothing to send');return}
+  if(O5.demo.offline){q.forEach(w=>w.attempts++);A.toast('Still no connection – will retry');O5.remount();return}
+  let n=0;q.forEach(w=>{if(O5.queue.some(x=>x.code===w.code&&x.state==='parked'&&x.id<w.id&&x.owner===w.owner))return;O5.apply(w);O5.queue=O5.queue.filter(x=>x.id!==w.id);n++});
+  A.toast(`Sent ${n} record${n===1?'':'s'} to the CRM`);O5.remount()};
+O5.retry=id=>{const w=O5.queue.find(x=>x.id===id);if(!w)return;w.state='queued';w.parkReason=null;O5.queue.filter(x=>x.code===w.code&&x.state==='parked'&&x.parkReason==='blocked'&&x.id>id).forEach(x=>{x.state='queued';x.parkReason=null});O5.syncNow()};
+O5.discard=id=>{const w=O5.queue.find(x=>x.id===id);if(!w)return;A.confirm('Discard this record?',`“${O5.describe(w)}” will be deleted for good. Records parked behind it stay for you to decide.`,'Discard',()=>{O5.queue=O5.queue.filter(x=>x.id!==id);A.toast('Discarded');O5.remount()})};
+/* ---------- banners & demo strip ---------- */
+O5.offlineBanner=()=>{const s=O5.queueSummary();
+  if(O5.demo.offline)return `<!-- ids: TM-CLASSIC-050 --><button class="o5-off" onclick="O5.tapOffline()">${I('zap')}<span><b>No connection</b>${s.waiting+s.parked?` · Waiting to send: ${s.waiting+s.parked}`:' · actions are saved on this phone'}</span><span class="sp"></span>${s.waiting+s.parked?I('chev'):''}</button>`;
+  if(s.parked)return `<!-- ids: TM-CLASSIC-051 --><button class="o5-off --red" onclick="App.go('ord-unsent')">${I('info')}<span><b>${s.parked} record${s.parked===1?'':'s'} rejected</b> by the CRM · tap to see</span><span class="sp"></span>${I('chev')}</button>`;
+  if(s.stuck)return `<!-- ids: TM-CLASSIC-051 --><button class="o5-off" onclick="App.go('ord-unsent')">${I('clock')}<span><b>${s.stuck} record${s.stuck===1?'':'s'} stuck</b> · retrying</span><span class="sp"></span>${I('chev')}</button>`;
+  return ''};
+O5.tapOffline=()=>{A.toast('Checking the connection…');setTimeout(()=>{const s=O5.queueSummary();if(s.waiting+s.parked)App.go('ord-unsent');else A.toast('Still offline')},500)};
+O5.demoBar=(keys)=>{const L={offline:'Offline',evening:'Evening (closing hour)',tempPass:'Temp password',viewAs:'View as florist',alcoholClosed:'Licensed hours: closed',lookupsFail:'Lookups fail',loadError:'Load error',netFail:'Photo upload fails',routeConfirmed:'Courier route confirmed'};
+  return `<div class="o5-demo"><span class="lbl">Demo</span>${keys.map(k=>`<button class="chip ${O5.demo[k]?'on':''}" onclick="O5.toggle('${k}')">${L[k]}</button>`).join('')}</div>`};
+O5.toggle=k=>{O5.demo[k]=!O5.demo[k];A.haptic();O5.remount()};
+/* ---------- guards: view-as, alcohol hours ---------- */
+O5.guardSend=(o,kind,fn)=>{const R=O5.roles();if(!(R.mgr&&O5.demo.viewAs)){fn();return}
+  const what={ready:'“your bouquet is ready”',out:'“on its way”',done:'“delivered”',photo:'the bouquet photo'}[kind]||'a message';
+  A.confirm('You are viewing as a florist',`<!-- ids: TM-ORDER-005 -->Customer of #${o.code} (${esc(o.customer.name)}) will get ${what}. Send it anyway?`,'Send',fn)};
+O5.alcoholGate=(o)=>{if(o.alcohol&&O5.demo.alcoholClosed){O5.alcoholNotice();return false}return true};
+O5.alcoholNotice=()=>A.sheet(`<div class="sh-head"><div class="h3">Alcohol outside licensed hours</div></div><div class="sh-body"><p class="soft" style="margin:0 0 8px">This order contains alcohol. The licence allows sales and handovers between 10:00 and 22:00 only – the CRM refused the step.</p><p class="xs muted" style="margin:0">One explanation for every screen: the same window opens wherever the CRM answers “alcohol outside licensed hours”.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">Understood</button></div>`);
+/* ---------- status changes ---------- */
+O5.setStatus=(o,to,note,skipReason)=>{const from=o.status,who=A.me().n,at=O5.now().toISOString();
+  if(to==='confirm'){o.status='in_production';o.timeline.push([at,'unconfirmed','in_production',who])}
+  else if(to==='ready'){o.status='ready';if(skipReason)o.bouquetPhotoSkip={reason:skipReason,by:A.state.me,at};o.bouquetPhotosPending=0;o.timeline.push([at,from,'ready'+(note?' · '+note:''),who])}
+  else if(to==='out_for_delivery'){o.status='out_for_delivery';o.timeline.push([at,from,'out_for_delivery',who])}
+  else if(to==='collected'){o.status='fulfilled';o.fulfilledAt=at;o.timeline.push([at,from,'fulfilled · collected',who])}
+  else if(to==='delivered'){o.status='fulfilled';o.fulfilledAt=at;o.timeline.push([at,from,'fulfilled · delivered',who])}
+  else if(to==='back_to_production'){o.status='in_production';o.timeline.push([at,from,'in_production',who])}
+  else if(to==='back_to_shop'){o.status='ready';o.timeline.push([at,from,'ready · back to the shop',who])}
+  else if(to==='cancelled'){o.status='cancelled';o.cancelledAt=at;o.cancelReason=note;o.timeline.push([at,from,'cancelled · '+note,who])}
+  O5.syncShell(o);return {status:o.status,bouquetPhotosSent:o.bouquetPhotos.length}};
+O5.act=(o,fn,kind)=>{const run=()=>{if(!O5.alcoholGate(o))return;try{const out=fn();o.offlineNotice=out&&out.queued?{ok:'Saved on this phone'}:null;A.renderBadges();O5.remount();return out}catch(e){o.offlineNotice={err:e.message||'The action failed'};O5.remount()}};
+  if(kind)O5.guardSend(o,kind,run);else run()};
+O5.confirm=code=>{const o=O5.order(code);O5.act(o,()=>{const r=O5.submit({code,kind:'orderConfirm'});if(r.ok)A.toast('Confirmed');return r})};
+O5.pressReady=(code)=>{const o=O5.order(code);if(o._busy)return;o._busy=true;setTimeout(()=>o._busy=false,400);
+  const needs=O5.demo.offline?true:O5.needsPhoto(o);
+  if(needs){O5.photoSheet(code,{mode:'photo_first'});return}
+  O5.act(o,()=>{const r=O5.submit({code,kind:'orderStatus',to:'ready'});if(r.ok)A.toast(`#${code} is ready`);return r},'ready')};
+O5.dispatch=code=>{const o=O5.order(code),R=O5.roles();
+  const impact=R.mgr&&o.courier&&O5.demo.routeConfirmed?`<div class="panel mt12"><div class="caps muted mb8">Where it lands in ${O5.nm(o.courier)}’s route</div><div class="sm">Stop 3 of 4 · after Battersea SW11 · +1.9 km</div><div class="sm accent mt4">Delays: #715611 Bermondsey by about 12 min</div></div>`:'';
+  A.sheet(`<!-- ids: TM-CLASSIC-032 TM-ORDER-011 --><div class="sh-head"><div class="h3">Hand #${code} to the courier?</div></div><div class="sh-body"><p class="soft" style="margin:0">The customer will get an “on its way” email${o.courier?` · ${O5.nm(o.courier)} collects`:' · no courier assigned yet'}.</p>${impact}</div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="App.closeSheet();O5.doDispatch('${code}')">Hand over</button></div>`)};
+O5.doDispatch=code=>{const o=O5.order(code);O5.act(o,()=>{const r=O5.submit({code,kind:'orderStatus',to:'out_for_delivery'});if(r.ok){A.toast('Out for delivery · customer emailed');setTimeout(()=>A.push('Floritta','Your flowers are on their way – '+(O5.nm(o.courier)||'courier')+' is driving to '+(o.postcode||'you'),{icon:'truck',to:o.customer.name}),600)}return r},'out')};
+O5.complete=code=>{const o=O5.order(code);O5.act(o,()=>{const r=O5.submit({code,kind:'orderComplete'});if(r.ok)A.toast('Collected · order closed');return r},'done')};
+O5.statusTo=(code,to)=>{const o=O5.order(code);if(to==='confirm')return O5.confirm(code);if(to==='ready')return O5.pressReady(code);if(to==='out_for_delivery')return O5.dispatch(code);if(to==='collected')return O5.complete(code);if(to==='cancel')return O5.cancelSheet(code);
+  O5.act(o,()=>{const r=O5.submit({code,kind:'orderStatus',to});if(r.ok)A.toast(O5.TL[to]+' · done');return r},to==='delivered'?'done':null)};
+/* ---------- cancel with reason (online only) ---------- */
+O5.REASONS=[['customer_cancelled','Customer cancelled'],['payment_failed','Payment failed'],['out_of_stock','Out of stock'],['duplicate','Duplicate order'],['marketplace_cancelled','Cancelled by the marketplace'],['other','Other']];
+O5.cancelSheet=code=>{let pick='customer_cancelled';
+  const draw=()=>`<div class="sh-head"><div class="h3">Why is the order cancelled?</div></div><div class="sh-body" id="o5-cs"><!-- ids: TM-ORDER-010 -->${O5.REASONS.map(r=>`<button class="o5-radio ${pick===r[0]?'on':''}" onclick="O5._cpick('${r[0]}')"><span class="rd"></span>${r[1]}</button>`).join('')}<div class="field mt16"><label>${pick==='other'?'Reason · at least 10 characters':'Note (optional)'}</label><textarea class="input" id="o5-cnote" placeholder="${pick==='other'?'Say what happened':'Anything the team should know'}"></textarea></div><div class="xs muted">Cancelling needs the network – it is never queued.</div><div class="o5-red mt8" id="o5-cerr"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn --accent" onclick="O5._cgo('${code}')">Cancel order</button></div>`;
+  O5._cpick=r=>{pick=r;const n=$('o5-cnote')?$('o5-cnote').value:'';A.sheet(draw());if($('o5-cnote'))$('o5-cnote').value=n};
+  O5._cgo=c=>{const n=($('o5-cnote')||{}).value||'';if(pick==='other'&&n.trim().length<10){$('o5-cerr').textContent='Say a little more – at least 10 characters.';return}
+    if(O5.demo.offline){$('o5-cerr').textContent='No connection – cancelling cannot wait in the queue. Try again online.';return}
+    const o=O5.order(c);const lab=O5.REASONS.find(r=>r[0]===pick)[1];App.closeSheet();O5.setStatus(o,'cancelled',lab+(n?' · '+n:''));A.toast('Order cancelled');O5.remount()};
+  A.sheet(draw())};
+/* ---------- florist picker, item florists ---------- */
+O5.pickFlorist=(code,opts={})=>{const o=O5.order(code);const cur=opts.current!==undefined?opts.current:o.assignedTo;
+  const rows=O5.florists().map(f=>`<button class="o5-pick ${cur===f.id?'on':''}" onclick="App.closeSheet();O5._fsel('${code}','${f.id}',${opts.unit!==undefined?opts.unit:'null'})">${A.avatar(f,'--shift')}<span class="f1"><span class="h4">${f.n}${f.id===A.state.me?' (you)':''}</span><span class="xs">${f.title}${f.onShift?' · on shift':''}</span></span>${cur===f.id?I('check'):''}</button>`).join('');
+  O5._fopts=opts;
+  A.sheet(`<!-- ids: TM-CLASSIC-028 TM-ORDER-012 --><div class="sh-head"><div class="h3">${opts.title||'Who makes #'+code+'?'}</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body">${rows}<button class="o5-pick" onclick="App.closeSheet();O5._fsel('${code}',null,${opts.unit!==undefined?opts.unit:'null'})"><span class="o5-ph">–</span><span class="f1"><span class="h4">Nobody – remove the name</span><span class="xs">The order goes back to the shared list</span></span></button><div class="xs muted mt12">Assigning is sent straight away – it is not queued offline.</div></div>`,{full:true})};
+O5._fsel=(c,id,unit)=>{if(O5.demo.offline){A.toast('No connection – assigning needs the network');return}const oo=O5.order(c);const opts=O5._fopts||{};
+  if(unit!==null&&unit!==undefined){const it=O5.units(oo)[unit];if(it)oo.itemFlorists[it.key]=id;if(!oo.assignedTo&&id)oo.assignedTo=id;A.toast(id?`${O5.nm(id)} makes unit ${unit+1}`:'Unit unassigned');O5.syncShell(oo);O5.itemFlorists(c,{closed:oo.status==='fulfilled'});return}
+  oo.assignedTo=id;A.toast(id?(id===A.state.me?'You took #'+c:O5.nm(id)+' is on #'+c):'Name removed');O5.syncShell(oo);if(id&&id!==A.state.me)setTimeout(()=>A.push('Queue changed','#'+c+' is now yours – '+A.me().n+' assigned it',{icon:'flower',to:O5.nm(id),go:['ord-board',{tab:'mine'}]}),600);O5.remount()};
+O5.units=o=>{const out=[];o.items.forEach(it=>{if(it.price===0&&!it.type)return;for(let i=0;i<(o.unitCount>1?it.qty:1);i++){if(out.length>=o.unitCount&&o.unitCount>1)break;out.push({key:it.id+(i?'-'+i:''),title:it.title+(it.qty>1&&o.unitCount>1?' · '+(i+1)+'/'+it.qty:''),img:it.img})}});return out.slice(0,Math.max(o.unitCount,1))};
+O5.unitSummary=o=>{const u=O5.units(o);const n=u.filter(x=>o.itemFlorists[x.key]).length;return {done:n,total:u.length}};
+O5.itemFlorists=(code,opts={})=>{const o=O5.order(code);const u=O5.units(o);
+  const rows=u.map((x,i)=>`<button class="o5-pick" onclick="O5.pickFlorist('${code}',{unit:${i},current:${o.itemFlorists[x.key]?`'${o.itemFlorists[x.key]}'`:'null'},title:'Unit ${i+1} · ${esc(x.title).replace(/'/g,'’')}'})">${x.img?`<img src="${x.img}" alt="" style="width:40px;height:50px;object-fit:cover;background:var(--silver)">`:'<span class="o5-ph">'+(i+1)+'</span>'}<span class="f1"><span class="h4" style="font-weight:400">${esc(x.title)}</span><span class="xs">${o.itemFlorists[x.key]?O5.nm(o.itemFlorists[x.key]):'Nobody yet – tap to name'}</span></span>${I('chev').replace('<svg','<svg class="chv"')}</button>`).join('');
+  A.sheet(`<!-- ids: TM-CLASSIC-029 TM-CLASSIC-040 --><div class="sh-head"><div class="h3">${opts.closed?'Who made what':'Who makes what'} · #${code}</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body">${rows}<div class="xs muted mt12">${opts.closed?'Corrections after the fact go to the same CRM field – bonuses follow it.':'Once one unit is named, Ready becomes available. Needs the CRM to send the unit count and line ids.'}</div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();O5.remount()">Done</button></div>`,{full:true})};
+/* ---------- bouquet photo sheet ---------- */
+let pendingPhoto=null;
+O5.photoSheet=(code,opts={})=>{const o=O5.order(code),R=O5.roles();const mode=opts.mode||'photo';const before=mode==='before_wrapping';
+  const title=before?'Photo before wrapping':mode==='photo_first'?'Photo first, then Ready':'Photo of the finished bouquet';
+  const hint=before?'The customer sees the bouquet before it is wrapped and can ask for changes. This photo does not mark the order ready and does not go to the team chat.':mode==='photo_first'?'Ready is set after the photo – the CRM sends it to the customer and the team chat.':'Goes to the customer and to the team chat.';
+  const refusal=opts.refusal?`<div class="o5-red mb12"><!-- ids: TM-ORDER-029 -->${esc(opts.refusal)}</div>`:'';
+  const pend=pendingPhoto&&pendingPhoto.code===code?`<div class="panel --warn mt12"><!-- ids: TM-ORDER-024 --><div class="sm">The photo is kept in memory – the upload failed (network).</div><button class="btn --sm mt8" onclick="O5._pretry('${code}','${mode}')">Send again</button></div>`:'';
+  const skip=R.mgr&&mode==='photo_first'?`<button class="textbtn mt16" onclick="O5.skipPhoto('${code}')"><!-- ids: TM-ORDER-028 -->Ready without photo</button>`:'';
+  const held=o.bouquetPhotosPending?`<div class="xs muted mt12"><!-- ids: TM-ORDER-030 -->${o.bouquetPhotosPending} photo${o.bouquetPhotosPending===1?'':'s'} held until “No, that’s all”.</div>`:'';
+  A.sheet(`<!-- ids: TM-ORDER-022 --><div class="sh-head"><div class="h3">${title}</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body">${refusal}<p class="sm soft" style="margin:0 0 12px">${hint}</p><div class="field"><label>Caption (optional)</label><input class="input" id="o5-cap" placeholder="e.g. Focal detail"></div><div class="o5-row2"><button class="o5-big" onclick="O5._pick('${code}','${mode}','camera')">${I('camera')}Take a photo</button><button class="o5-big --ghost" onclick="O5._pick('${code}','${mode}','library')">${I('photo')}Choose from gallery</button></div><div class="xs muted mt8">Camera permission is asked once · compressed to 1280 px JPEG.</div>${pend}${held}${skip}</div>`,{full:true})};
+O5._pick=(code,mode,src)=>{const o=O5.order(code);const cap=($('o5-cap')||{}).value||'';const img=o.items[0]&&o.items[0].img||IMG.pm;const sig=mode+':'+src+':'+Math.floor(Date.now()/5000);
+  if(src==='camera')A.toast('Camera · shutter');
+  if(O5.demo.netFail&&!O5.demo.offline){pendingPhoto={code,img,cap,mode,sig};App.closeSheet();setTimeout(()=>A.sheet(`<!-- ids: TM-ORDER-024 --><div class="sh-head"><div class="h3">Photo saved on the phone</div></div><div class="sh-body"><p class="soft" style="margin:0">The upload failed – network. Send it again now?</p><p class="xs muted" style="margin:8px 0 0">Kept in memory until the app closes; only the queue survives a restart.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();O5.photoSheet('${code}',{mode:'${mode}'})">Later</button><button class="btn" onclick="O5.demo.netFail=false;App.closeSheet();O5._pretry('${code}','${mode}')">Send again</button></div>`),350);return}
+  O5._send(code,mode,{img,caption:cap,sig})};
+O5._pretry=(code,mode)=>{if(!pendingPhoto)return;const p=pendingPhoto;pendingPhoto=null;O5._send(code,mode,{img:p.img,caption:p.cap,sig:p.sig})};
+O5._send=(code,mode,p)=>{const o=O5.order(code);const before=mode==='before_wrapping';
+  const doSend=()=>{const r=O5.submit({code,kind:'bouquetPhoto',img:p.img,caption:p.caption,sig:p.sig,photoKind:before?'before_wrapping':undefined,holdUntilDone:false});
+    App.closeSheet();
+    if(r.queued){o.offlineNotice={ok:'Saved on this phone – the photo goes before Ready'};O5.remount();if(mode==='photo_first')setTimeout(()=>O5.morePhotos(code),350);return}
+    const res=r.result||{};if(res.reason==='duplicate'&&!o.bouquetPhotos.length){A.toast('Not saved – take it again');return}
+    O5.remount();
+    const msg=O5.savedMessage(o,res);
+    const next=mode!=='before_wrapping'&&o.status==='in_production'&&O5.transitions(o).includes('ready');
+    setTimeout(()=>A.sheet(`<!-- ids: TM-ORDER-025 --><div class="sh-head"><div class="h3">Photo saved</div></div><div class="sh-body"><p class="soft" style="margin:0">${msg}</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();${next?`setTimeout(function(){O5.morePhotos('${code}')},350)`:''}">OK</button></div>`),350)};
+  O5.guardSend(o,'photo',doSend)};
+O5.savedMessage=(o,res)=>{if(res.before)return res.sent?`Sent to ${esc(res.recipientName)} via ${res.channel} as “before wrapping”. The reply will show on the order and the board.`:'Saved on the order – the customer will not get it (platform or no-photo request).';
+  const r={marketplace:'Saved on the order. It is a platform order – the customer will not get the photo.',photo_opt_out:'Saved on the order. The customer asked for no photo – the CRM keeps it.',held_until_delivery_day:'Saved. It is for a later day – the CRM sends it on the delivery day.',held_until_done:'Saved. It goes out with the rest when you say “No, that’s all”.',duplicate:'Already saved – nothing new sent.'}[res.reason];
+  if(r)return r;return res.sent?`Sent to ${esc(res.recipientName)} via ${res.channel} and posted to the team chat.`:'Saved without the chat.'};
+O5.morePhotos=code=>{A.sheet(`<!-- ids: TM-ORDER-026 --><div class="sh-head"><div class="h3">More photos?</div></div><div class="sh-body"><p class="soft" style="margin:0">“No, that’s all” marks #${code} ready – the CRM sends every held photo to the customer at once.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();setTimeout(function(){O5.photoSheet('${code}',{mode:'photo'})},350)">Yes, one more</button><button class="btn" onclick="App.closeSheet();O5.photosDone('${code}')">No, that’s all</button></div>`)};
+O5.photosDone=code=>{const o=O5.order(code);O5.act(o,()=>{const r=O5.submit({code,kind:'orderStatus',to:'ready',note:'All photos ready'});if(r.ok){const n=o.bouquetPhotos.length;setTimeout(()=>A.sheet(`<div class="sh-head"><div class="h3">Ready</div></div><div class="sh-body"><p class="soft" style="margin:0">${o.marketplace?'Marked ready on the platform – no photo to the customer.':`${n} photo${n===1?'':'s'} sent to ${esc(o.customer.name)} via ${O5.CH[o.channel]}; “All photos ready” written in the log.`}</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>`),350)}return r},'ready')};
+O5.skipPhoto=code=>{A.sheet(`<!-- ids: TM-ORDER-028 --><div class="sh-head"><div class="h3">Ready without photo</div></div><div class="sh-body"><div class="field"><label>Why · 3–500 characters</label><textarea class="input" id="o5-skip" placeholder="e.g. Customer collected while I was on the phone"></textarea></div><div class="xs muted">Online only – the CRM records who skipped and why.</div><div class="o5-red mt8" id="o5-skiperr"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="O5._skipgo('${code}')">Mark ready</button></div>`)};
+O5._skipgo=c=>{const v=(($('o5-skip')||{}).value||'').trim();if(v.length<3||v.length>500){$('o5-skiperr').textContent='3 to 500 characters, please.';return}if(O5.demo.offline){$('o5-skiperr').textContent='No connection – skipping the photo is not queued.';return}App.closeSheet();O5.guardSend(O5.order(c),'ready',()=>{O5.setStatus(O5.order(c),'ready',null,v);A.toast('Ready without photo · reason saved');O5.remount()})};
+/* ---------- photo viewer ---------- */
+O5.viewPhoto=(code,img,cap)=>{const o=O5.order(code);A.sheet(`<!-- ids: TM-ORDER-018 TM-ORDER-050 --><div class="sh-head"><div class="h3">${esc(cap||'Photo')} · #${code}</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="o5-viewer"><img src="${img}" alt=""></div>${o&&o.note?`<div class="o5-sticky" style="margin:12px 0 0"><div class="caps">Internal note</div>${esc(o.note)}${o.noteRu?`<div class="ru">${esc(o.noteRu)}</div>`:''}</div>`:''}</div>`,{full:true})};
+/* ======================= ORDER CARD ======================= */
+const OD=window.OD={};
+const sec=(t,n,link)=>`<div class="o5-sec"><div class="h3">${t}</div>${n!=null?`<span class="n">${n}</span>`:''}${link||''}</div>`;
+const kv=(k,v,cls='')=>`<div class="o5-kv ${cls}"><span>${k}</span><span>${v}</span></div>`;
+O5.sec=sec;O5.kv=kv;
+OD.refresh=()=>{A.toast('Refreshed');O5.remount()};
+window.mount_order=function(p){
+  const code=String((p&&p.code)||'715602');const o=O5.order(code);const R=O5.roles();
+  $('od-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('ord-board')">${I('back')}</button><div class="ttl">Order ${o?o.code:''}</div>${o?`<button class="ib" aria-label="Refresh" onclick="OD.refresh()">${I('repeat')}</button>`:''}`;
+  if(!o){$('od-body').innerHTML=`<!-- ids: TM-ORDER-003 --><div class="o5-empty mt24"><b>${/^\d+$/.test(code)?'Could not load the order':'Order not found'}</b>${/^\d+$/.test(code)?'Pull to refresh or check the connection.':'The link is broken – no request is sent for a bad id.'}</div><div class="pad mt16"><button class="btn --secondary --block" onclick="App.back('ord-board')">Back to the board</button></div>`;return}
+  if(O5.demo.loadError){$('od-body').innerHTML=`<!-- ids: TM-ORDER-003 -->${O5.demoBar(['loadError'])}<div class="o5-spinner"></div><div class="o5-empty"><b>Could not load</b>Pull down to try again.</div>`;return}
+  const ro=R.trainee, mgr=R.mgr, courier=R.courier;
+  const closed=o.status==='fulfilled'||o.status==='cancelled';
+  const first=o.items[0]||{};
+  const tr=O5.transitions(o);
+  /* ---- head ---- */
+  let h=O5.demoBar(mgr?['offline','viewAs','alcoholClosed','netFail','routeConfirmed','loadError']:['offline','alcoholClosed','netFail','loadError']);
+  h+=O5.offlineBanner();
+  h+=`<button class="o5-pull" onclick="OD.refresh()"><!-- ids: TM-ORDER-002 -->↓ Pull to refresh</button>`;
+  h+=`<div class="o5-hero mt8"><img src="${first.img||IMG.pm}" alt=""><span class="o5-channel tag --${o.channel}">${O5.CH[o.channel]||o.channel}</span>${o.marketplace?`<span class="tag --ink --r">${o.marketplace.name}</span>`:''}</div>`;
+  h+=`<div class="o5-head"><!-- ids: TM-ORDER-001 --><div class="flex ai-c jc-sb g8"><span class="caps muted">Order ${o.code}${o.crmCode?` · CRM ${o.crmCode}`:''}</span>${O5.sla(o)}</div><h1 class="h1 mt8">${esc(first.title||'Order')}${o.items.length>1?` <span class="muted" style="font-size:20px">+${o.items.length-1}</span>`:''}</h1><div class="o5-plate-row mt12">${O5.plate(o)}<span class="sm soft">${O5.dayLabel(o.date)}${o.slot?' · '+esc(o.slot):''}${o.method==='collection'?'':o.postcode?' · '+esc(o.postcode):''}${O5.noMethod(o)?' · <span class="accent">no delivery method</span>':''}</span></div></div>`;
+  if(o.offlineNotice)h+=`<div class="o5-note ${o.offlineNotice.err?'--err':''}"><!-- ids: TM-ORDER-004 TM-CLASSIC-035 -->${o.offlineNotice.err||o.offlineNotice.ok}</div>`;
+  if(o.photoOptOut&&o.status==='in_production')h+=`<div class="o5-note"><!-- ids: TM-ORDER-007 -->The customer asked for no photo – still take one, the CRM keeps it for the record.</div>`;
+  /* ---- action buttons ---- */
+  if(!courier){
+    if(ro){h+=`<div class="o5-ro panel"><!-- ids: TM-ORDER-006 --><div class="sm soft">Read only for trainees – photo, status and “who makes it” are hidden. The CRM would refuse the write anyway.</div></div>`}
+    else if(!closed){
+      let b='';
+      if(o.status==='in_production'){b+=`<button class="btn --accent" onclick="O5.photoSheet('${code}',{mode:'photo'})"><!-- ids: TM-ORDER-020 -->${I('camera')} Send photo of the finished bouquet</button>`;b+=`<button class="btn --ghost" onclick="O5.photoSheet('${code}',{mode:'before_wrapping'})"><!-- ids: TM-ORDER-021 -->${I('photo')} Photo before wrapping</button>`}
+      tr.filter(t=>t!=='cancel').forEach(t=>{const primary=t==='collected'||t==='delivered';b+=`<button class="btn ${primary?'':'--secondary'}" onclick="O5.statusTo('${code}','${t}')"><!-- ids: TM-ORDER-008 TM-ORDER-009 -->${t==='out_for_delivery'?I('truck'):t==='confirm'?I('check'):''} ${O5.TL[t]}</button>`});
+      if(tr.includes('cancel'))b+=`<button class="btn --ghost" style="color:var(--accent)" onclick="O5.cancelSheet('${code}')">Cancel order</button>`;
+      if(O5.noMethod(o)&&o.status==='ready')b+=`<div class="xs muted" style="text-align:center"><!-- ids: TM-CLASSIC-036 -->No delivery method yet – the order cannot move past Ready.</div>`;
+      h+=`<div class="o5-btns mt16">${b}</div>`;
+      if(o.bouquetPhotosPending)h+=`<div class="o5-photos-pending"><!-- ids: TM-ORDER-030 -->${o.bouquetPhotosPending} photo${o.bouquetPhotosPending===1?'':'s'} held until “No, that’s all”.</div>`;
+    } else if(o.status==='cancelled')h+=`<div class="pad mt16"><div class="panel --accent"><div class="caps accent">Cancelled</div><div class="sm mt4">${esc(o.cancelReason||'')}</div></div></div>`;
+  } else h+=`<div class="pad mt16"><div class="panel"><div class="sm soft">Couriers do not open orders here – the drop lives in your route.</div><button class="btn --sm mt8" onclick="App.go('stop',{code:'${code}'})">Open the stop</button></div></div>`;
+  /* ---- internal note sticker ---- */
+  if(o.note)h+=`<div class="mt16"><div class="o5-sticky"><!-- ids: TM-ORDER-044 --><div class="caps">Internal note</div>${esc(o.note)}${o.noteRu?`<div class="ru">${esc(o.noteRu)}</div>`:''}</div></div>`;
+  if(!closed&&o.substitutionPreference==='contact_me')h+=`<div class="mt12"><div class="o5-sticky"><!-- ids: TM-ORDER-019 --><div class="caps">If a stem runs out</div>Contact me first – the CRM blocks substitutions on this order.</div></div>`;
+  /* ---- florist ---- */
+  if(!courier&&!ro){const us=O5.unitSummary(o),multi=o.unitCount>1;
+    h+=sec('Florist',null,closed&&multi?`<button class="textbtn" onclick="O5.itemFlorists('${code}',{closed:true})">Who made what</button>`:'');
+    h+=`<div class="pad"><!-- ids: TM-ORDER-012 --><div class="o5-prow">${o.assignedTo?A.avatar(o.assignedTo,'--lg --shift'):'<span class="o5-ph" style="width:56px;height:56px">?</span>'}<div class="f1"><div class="h4">${o.assignedTo?O5.nm(o.assignedTo)+(o.assignedTo===A.state.me?' (you)':''):'Nobody yet'}</div><div class="xs muted">${multi?`${us.done}/${us.total} units named`:o.assignedTo?A.user(o.assignedTo).title:'Take it or name a florist'}</div></div>${closed?'':`<div class="flex g6">${!o.assignedTo?`<button class="btn --xs" onclick="O5._fopts={};O5._fsel('${code}','${A.state.me}',null)">Take</button>`:''}<button class="btn --xs --ghost" onclick="${multi?`O5.itemFlorists('${code}')`:`O5.pickFlorist('${code}')`}">${o.assignedTo?'Change':'Assign'}</button></div>`}</div>${multi?O5.units(o).map((x,i)=>`<div class="o5-kv"><span>Unit ${i+1} of ${us.total}</span><span>${esc(x.title)} · ${o.itemFlorists[x.key]?O5.nm(o.itemFlorists[x.key]):'<span class="muted">nobody</span>'}</span></div>`).join(''):''}</div>`;
+    if(!closed){const q=o.queue;h+=sec('Production queue',null,mgr?`<button class="textbtn" onclick="OD.queueSheet('${code}')">${q?'Change':'Assign'}</button>`:'');
+      h+=`<div class="pad"><!-- ids: TM-ORDER-013 --><div class="sm ${q?'':'muted'}">${q?`№${q.position} · ${O5.nm(q.florist)}, makes ${q.date===O5.TODAY?'today':q.date===O5.TOMORROW?'tomorrow':'on '+O5.dayLabel(q.date)}${q.changed?` · <span class="accent">${{moved:'moved',new:'new',removed:'removed'}[q.changed]}</span>`:''}`:'Not in anyone’s queue – the manager plans it here.'}</div>${mgr?'':'<div class="xs muted mt4">The manager’s plan – read only for you.</div>'}</div>`}
+  }
+  /* ---- courier ---- */
+  if(mgr&&o.method==='delivery'&&!closed){h+=sec('Courier',null,`<button class="textbtn" onclick="OD.courierSheet('${code}')">${o.courier?'Change':'Assign'}</button>`);
+    h+=`<div class="pad"><!-- ids: TM-ORDER-014 --><div class="o5-prow">${o.courier?A.avatar(o.courier,'--lg --shift'):'<span class="o5-ph" style="width:56px;height:56px">?</span>'}<div class="f1"><div class="h4">${o.courier?O5.nm(o.courier):'No courier yet'}</div><div class="xs muted">${o.priority==='first'?'First in the route':o.priority==='free'?'Free courier / freelancer':o.courier?'In today’s route':'Dispatcher advice: Andrii · 2 drops nearby'}</div></div></div><div class="flex g6 mt8"><button class="chip ${o.priority==='first'?'on':''}" onclick="OD.priority('${code}','first')">First in route</button><button class="chip ${o.priority==='free'?'on':''}" onclick="OD.priority('${code}','free')">Free courier / freelancer</button></div></div>`}
+  /* ---- attention ---- */
+  if(!courier){const at=o.attention;const checks=o.checks||[];const tasks=window.TASKS.filter(t=>String(t.order)===code);const done=checks.filter(c=>c.d).length+tasks.filter(t=>t.status==='done').length,tot=checks.length+tasks.length;
+    h+=sec('Special attention',tot?`${done}/${tot}`:null,ro?'':`<button class="textbtn" onclick="OD.attentionSheet('${code}')">${at&&at.on?'Edit':'Flag'}</button>`);
+    h+=`<div class="pad"><!-- ids: TM-ORDER-015 -->${at&&at.on?`<div class="panel --accent"><div class="caps accent">Flagged by ${O5.nm(at.by)} · ${A.fmtTime(at.at)}</div><div class="sm mt4">${esc(at.note)}</div><div class="flex ai-c g6 mt8"><span class="avatars">${at.assignees.map(a=>A.avatar(a,'--sm')).join('')}</span><span class="xs muted">${at.assignees.map(O5.nm).join(', ')}</span>${mgr?`<button class="textbtn" style="margin-left:auto" onclick="OD.attentionOff('${code}')">Remove</button>`:''}</div></div>`:'<div class="sm muted">Not flagged.</div>'}
+      ${checks.map((c,i)=>`<button class="o5-chk ${c.d?'on':''}" ${ro?'disabled':''} onclick="OD.tick('${code}',${i})"><span class="cb">${I('check')}</span><span class="ct">${esc(c.t)}</span></button>`).join('')}
+      ${tasks.map(t=>`<button class="o5-chk ${t.status==='done'?'on':''}" onclick="App.go('task',{id:${t.id}})"><span class="cb">${I('check')}</span><span class="ct">${esc(t.title)}<small>Task · ${A.STATUS[t.status]} · ${A.fmtDue(t.due)}</small></span></button>`).join('')}
+      ${ro?'':`<div class="flex g8 mt12"><input class="input" id="od-newchk" placeholder="Add a check – on the responsible or on you" style="height:44px"><button class="btn --sm" onclick="OD.addCheck('${code}')">Add</button></div>`}</div>`}
+  /* ---- approval ---- */
+  if(o.approval&&o.approval.photoBefore){const ap=o.approval;const v={approved:'Approved',feedback:'Changes requested',unclear:'Not clear'}[ap.verdict]||'Waiting for the reply';
+    h+=sec('Customer approval');
+    h+=`<div class="pad"><!-- ids: TM-ORDER-016 --><div class="o5-frame ${ap.verdict==='approved'?'--ok':''}"><div class="flex g12"><button style="width:72px;height:90px;flex:none;background:var(--silver);overflow:hidden" onclick="O5.viewPhoto('${code}','${ap.photoBefore}','Before wrapping')"><img src="${ap.photoBefore}" alt="" style="width:100%;height:100%;object-fit:cover"></button><div class="f1"><div class="caps muted">Before wrapping · sent ${A.fmtTime(ap.sentAt)}</div><div class="h4 mt4 ${ap.verdict==='approved'?'ok':ap.verdict==='feedback'?'accent':''}">${v}</div><div class="xs muted mt4">AI verdict from the reply</div></div></div>
+      ${ap.replies.map(r=>`<div class="o5-yl">${esc(r.text)}<small>${esc(o.customer.name)} · ${A.fmtTime(r.at)}${r.edited?' · edited':''}</small>${r.showOrig?`<span class="orig">Original: ${esc(r.orig)}</span>`:''}${mgr?`<div class="flex g12 mt8"><button class="textbtn" onclick="OD.editReply('${code}',${r.id})">Edit</button><button class="textbtn" onclick="OD.toggleOrig('${code}',${r.id})">${r.showOrig?'Hide original':'Original'}</button><button class="textbtn" style="color:var(--accent)" onclick="OD.delReply('${code}',${r.id})">Delete</button></div>`:''}</div>`).join('')||'<div class="sm muted mt8">No reply yet.</div>'}
+      ${!ap.acked&&ap.replies.length?`<button class="btn --sm --block mt12" onclick="OD.ack('${code}')">Got it – clear the badge on the board</button>`:ap.acked&&ap.replies.length?'<div class="xs muted mt8">Acknowledged.</div>':''}</div></div>`}
+  /* ---- recipient ---- */
+  h+=sec(o.method==='collection'?'Customer':'Recipient',null,mgr&&!closed?`<button class="textbtn" onclick="OD.editSheet('${code}')">Edit</button>`:'');
+  h+=`<div class="pad"><!-- ids: TM-ORDER-017 -->${kv('Name',esc(o.recipient||o.customer.name))}${o.method==='delivery'?kv('Address',esc(o.address||'')+(o.postcode?'<br>'+esc(o.postcode):'')):''}${kv('When',O5.dayLabel(o.date)+(o.slot?' · '+esc(o.slot):''))}${kv('Ordered by',esc(o.customer.name)+(o.customer.phone?'<br>'+esc(o.customer.phone):''))}${o.recipientPhone?kv('Recipient phone',esc(o.recipientPhone)):''}${kv('Channel',O5.CH[o.channel]||o.channel)}${o.photoOptOut?kv('Photo','Customer asked for none'):''}</div>`;
+  if(o.giftMessage||o.deliveryInstructions)h+=`<div class="pad mt12"><!-- ids: TM-ORDER-043 -->${o.giftMessage?`<div class="panel"><div class="caps muted">Card message</div><div class="sm mt4">${esc(o.giftMessage)}</div></div>`:''}${o.deliveryInstructions?`<div class="panel mt8"><div class="caps muted">Delivery instructions</div><div class="sm mt4">${esc(o.deliveryInstructions)}</div></div>`:''}</div>`;
+  /* ---- items & money ---- */
+  h+=sec('Items',o.items.length);
+  h+=`<div class="pad"><!-- ids: TM-ORDER-018 -->${o.items.map(it=>`<div class="o5-item">${it.img?`<button onclick="O5.viewPhoto('${code}','${it.img}','${esc(it.title).replace(/'/g,'’')}')"><img src="${it.img}" alt=""></button>`:'<span class="o5-ph" style="border-radius:0;width:48px;height:60px">–</span>'}<div class="f1"><div class="t">${it.qty}× ${esc(it.title)}</div>${it.type==='built'?`<div class="d">Built by the florist${!closed&&R.inventoryCount?` · <button class="link-u" onclick="OD.subSheet('${code}',${it.id})">substitute a stem</button>`:''}</div>`:''}</div><span class="p">${A.fmt(it.price*it.qty)}</span></div>`).join('')}
+    ${o.money?`<div class="mt8">${kv('Subtotal',A.fmt(o.money.subtotal))}${o.money.delivery?kv('Delivery',A.fmt(o.money.delivery)):''}${o.money.tip?kv('Tip',A.fmt(o.money.tip)):''}${o.money.discount?kv('Discount','−'+A.fmt(o.money.discount)):''}${kv('Total',A.fmt(o.money.total)+(o.paymentStatus==='unpaid'?' · <span class="accent">not paid</span>':''),'--tot')}</div>`:''}
+    ${o.substitutionPreference!=='contact_me'?`<div class="xs muted mt8"><!-- ids: TM-ORDER-019 -->If a stem runs out: ${{similar:'swap for something similar',upgrade:'upgrade at no cost',refund:'refund the difference'}[o.substitutionPreference]||o.substitutionPreference}.</div>`:''}</div>`;
+  if(o.substitutions.length)h+=`<div class="pad mt8"><!-- ids: TM-ORDER-041 --><div class="caps muted mb8">Substitutions</div>${o.substitutions.map(s=>`<div class="o5-rn"><span>${esc(s.from)} → <b>${esc(s.to)}</b> ×${s.qty}${s.agreed?' · agreed with the customer':''}${s.note?' · '+esc(s.note):''}</span><span class="at">${O5.nm(s.by)}</span></div>`).join('')}</div>`;
+  /* ---- composition ---- */
+  if(o.composition&&!courier){const canEdit=R.inventoryCount&&!closed;
+    h+=sec('Composition',null,`<span class="xs muted">${o.compositionMode==='shadow'?'Shadow mode':'Live stock'}</span>`);
+    h+=`<div class="pad"><!-- ids: TM-ORDER-040 -->${o.composition.map(c=>`<div class="o5-comp"><span class="q">${c.qty} ${c.unit}</span><span class="f1">${esc(c.ing)}</span><span class="k">${c.base?'base':c.addon?'add-on':''}</span></div>`).join('')}
+      ${o.extras.map((e,i)=>`<div class="o5-comp"><span class="q">${e.qty} ${e.unit||'stems'}</span><span class="f1">${esc(e.ing)} <span class="xs muted">added by ${O5.nm(e.by)}</span></span>${canEdit?`<button class="x" onclick="OD.delExtra('${code}',${i})">${I('close')}</button>`:''}</div>`).join('')}
+      ${canEdit?`<div class="o5-boost"><span class="xs muted" style="align-self:center">Extra stems</span>${[0,5,10,15,20,30].map(p=>`<button class="chip ${(o.boost[first.id]||0)===p?'on':''}" onclick="OD.boost('${code}',${first.id},${p})">${p?'+'+p+'%':'none'}</button>`).join('')}</div><button class="btn --sm --ghost mt12" onclick="OD.addExtraSheet('${code}')">${I('plus')} Add from stock</button>`:'<div class="xs muted mt8">Editing needs stock rights and an open order.</div>'}</div>`}
+  /* ---- marketplace & outside courier ---- */
+  if(mgr&&o.marketplace)h+=`${sec(o.marketplace.name)}<div class="pad"><!-- ids: TM-ORDER-046 --><div class="sm soft">${esc(o.marketplace.status)}</div><div class="flex g8 mt12" style="flex-wrap:wrap"><button class="btn --sm" onclick="OD.mp('${code}','ready')">Ready on the platform</button><button class="btn --sm --ghost" onclick="OD.mp('${code}','deny')">Decline</button><button class="btn --sm --ghost" style="color:var(--accent)" onclick="OD.mp('${code}','cancel')">Cancel</button></div></div>`;
+  if(mgr&&o.method==='delivery'&&!closed&&!o.marketplace)h+=`${sec('Outside courier')}<div class="pad"><!-- ids: TM-ORDER-045 -->${o.courierCall?`<div class="panel"><div class="caps muted">${esc(o.courierCall.carrier)} · ${esc(o.courierCall.status)}</div><div class="sm mt4">Courier: ${esc(o.courierCall.name)}</div><button class="textbtn mt8" onclick="App.toast('Opens the tracking page in the browser')">Track the courier</button></div>`:`<button class="btn --ghost --block" onclick="OD.callCourier('${code}')">${I('truck')} Call an Uber courier</button><div class="xs muted mt8">Uses the account on file · asks before booking.</div>`}</div>`;
+  /* ---- payment & unpaid ---- */
+  if(mgr&&o.paymentStatus!=='paid'&&o.status!=='cancelled'){const pl=o.paymentLink;
+    h+=sec('Payment',null,'<span class="accent xs">NOT PAID</span>');
+    h+=`<div class="pad"><!-- ids: TM-ORDER-047 -->${kv('To pay',A.fmt(o.money?o.money.total:o.total))}${pl?`<div class="panel mt12"><div class="caps muted">Payment link</div><div class="sm mt4">${A.fmt(pl.amount)} · ${pl.status} · until ${A.fmtDue(pl.expires)}</div><div class="flex g8 mt12"><button class="btn --sm" onclick="App.toast('System share sheet · link copied')">Share</button><button class="btn --sm --ghost" onclick="OD.cancelLink('${code}')">Cancel link</button></div></div>`:`<button class="btn --block mt12" onclick="OD.createLink('${code}')">Create a payment link</button>`}<div class="flex g8 mt8"><button class="btn --sm --ghost" onclick="OD.remind('${code}','SMS')">Remind by SMS</button><button class="btn --sm --ghost" onclick="OD.remind('${code}','email')">Remind by email</button></div><div class="xs muted mt8">Money actions need the network – never queued.</div></div>`;
+    const u=o.unpaid||(o.unpaid={since:O5.now().toISOString(),waMessages:0,contacted:false,noAnswer:0,outcome:null,notes:[]});
+    h+=sec('Not paid · follow-up');
+    h+=`<div class="pad"><!-- ids: TM-ORDER-048 --><div class="sm soft">${u.contacted?'<span class="ok">✓ reached</span>':'not reached yet'} · ${u.noAnswer} unanswered attempt${u.noAnswer===1?'':'s'} · waiting since ${A.fmtTime(u.since)}${u.waMessages?` · WhatsApp: ${u.waMessages} messages`:''}${u.outcome?` · outcome: ${esc(u.outcome)}`:''}</div>
+      <div class="flex g8 mt12" style="flex-wrap:wrap"><button class="btn --sm" onclick="OD.call('${code}')">${I('phone')} Call</button><button class="btn --sm --ghost" onclick="App.toast('Opens wa.me/${(o.customer.phone||'').replace(/\D/g,'')}')">WhatsApp</button><button class="btn --sm --ghost" onclick="OD.noAnswer('${code}')">No answer</button><button class="btn --sm --ghost" onclick="OD.contacted('${code}')">${u.contacted?'Unmark reached':'Reached'}</button><button class="btn --sm --ghost" onclick="OD.outcomeSheet('${code}')">Outcome</button></div>
+      <div class="xs muted mt8">Third “No answer” archives the order (cancelled). No confirmations on these buttons.</div>
+      <div class="mt12">${u.notes.map(n=>`<div class="o5-rn"><span><b>${O5.nm(n.by)}</b> ${esc(n.t)}</span><span class="at">${A.fmtTime(n.at)}</span></div>`).join('')}</div>
+      <div class="flex g8 mt12"><input class="input" id="od-unote" placeholder="Note on the call" style="height:44px"><button class="btn --sm" onclick="OD.unpaidNote('${code}')">Add</button></div></div>`}
+  /* ---- POD ---- */
+  if(mgr&&o.pod&&o.pod.required&&o.method==='delivery'){const pd=o.pod;
+    h+=sec('Proof of delivery');
+    h+=`<div class="pad"><!-- ids: TM-ORDER-042 --><div class="o5-pod">${pd.photo?`<img src="${pd.photo}" alt=""><span class="cap">${A.fmtDue(pd.at)} · ${O5.nm(pd.by)}</span>`:pd.missing?`<span>No photo · ${esc(pd.missing.reason)}${pd.missing.note?' · '+esc(pd.missing.note):''}<br><span class="xs">${O5.nm(pd.missing.by)} · ${A.fmtTime(pd.missing.at)}</span></span>`:'<span>No proof photo yet</span>'}</div><div class="flex g8 mt12" style="flex-wrap:wrap"><button class="btn --sm" onclick="OD.podPhoto('${code}')">${I('camera')} ${pd.photo?'Replace photo':'Add photo'}</button>${!pd.photo?`<button class="btn --sm --ghost" onclick="OD.podMissing('${code}')">No photo · reason</button>`:`<button class="btn --sm --ghost" style="color:var(--accent)" onclick="OD.podDelete('${code}')">Delete</button>`}</div><div class="xs muted mt8">Photo and “no photo” go through the offline queue; delete is network only.</div></div>`}
+  /* ---- photos ---- */
+  h+=sec('Photos of the finished bouquet',o.bouquetPhotos.length||null);
+  h+=`<!-- ids: TM-ORDER-050 -->${o.bouquetPhotos.length?`<div class="o5-strip">${o.bouquetPhotos.map(p=>`<button onclick="O5.viewPhoto('${code}','${p.img}','${esc(p.cap||'Finished bouquet').replace(/'/g,'’')}')"><img src="${p.img}" alt=""><span class="cap">${A.fmtTime(p.at)} · ${O5.nm(p.by)}</span></button>`).join('')}</div>`:'<div class="pad sm muted">None yet.</div>'}`;
+  if(o.bouquetPhotoSkip)h+=`<div class="pad mt12"><!-- ids: TM-ORDER-051 --><div class="panel --warn"><div class="caps">Ready without photo</div><div class="sm mt4">${esc(o.bouquetPhotoSkip.reason)}</div><div class="xs muted mt4">${O5.nm(o.bouquetPhotoSkip.by)} · ${A.fmtDue(o.bouquetPhotoSkip.at)}</div></div></div>`;
+  if(o.referencePhotos.length)h+=`${sec('Reference photos',o.referencePhotos.length)}<div class="o5-strip"><!-- ids: TM-ORDER-050 -->${o.referencePhotos.map(p=>`<button onclick="O5.viewPhoto('${code}','${p}','Reference')"><img src="${p}" alt=""><span class="cap">From the manager</span></button>`).join('')}</div>`;
+  /* ---- tasks & links ---- */
+  if(!ro&&!courier)h+=`${sec('Tasks and links')}<div class="pad"><button class="o5-link" onclick="App.go('task-new',{order:'${code}'})">${I('plus')}<span><div>Create a task from this order</div><div class="d">Call the client, buy an add-on, fix a photo</div></span>${I('chev').replace('<svg','<svg class="chv"')}</button></div>`;
+  /* ---- timeline ---- */
+  h+=sec('Status log');
+  h+=`<div class="pad"><!-- ids: TM-ORDER-052 --><div class="o5-tl">${o.timeline.slice().reverse().map(t=>`<div><span>${A.fmtTime(t[0])}</span><span>${esc(t[1])} → ${esc(t[2])}<small>${esc(t[3])} · ${A.fmtDay(t[0])}</small></span></div>`).join('')}</div></div><div style="height:32px"></div>`;
+  $('od-body').innerHTML=h;
+  /* ?photo=1 from Not sent: the sheet opens itself once the order is in production (once) – TM-ORDER-053 */
+  if(p&&p.photo&&!o._openedFromParam&&o.status==='in_production'){o._openedFromParam=true;setTimeout(()=>O5.photoSheet(code,{mode:'photo_first',refusal:'CRM: photo of the finished bouquet is required before Ready'}),300)}
+};
+/* ---- order-card actions ---- */
+OD.tick=(code,i)=>{const o=O5.order(code);o.checks[i].d=!o.checks[i].d;A.haptic();O5.remount()};
+OD.addCheck=code=>{const v=(($('od-newchk')||{}).value||'').trim();if(!v)return;const o=O5.order(code);o.checks.push({t:v,d:false});A.toast('Added to the responsible');O5.remount()};
+OD.attentionSheet=code=>{const o=O5.order(code);const at=o.attention||{on:false,note:'',assignees:[A.state.me]};let sel=at.assignees.slice();
+  const draw=()=>`<!-- ids: TM-ORDER-015 --><div class="sh-head"><div class="h3">Special attention</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="field"><label>Why</label><textarea class="input" id="od-atnote" placeholder="What everyone must know">${esc(at.note||'')}</textarea></div><div class="caps muted mb8">Responsible · at least one</div>${window.STAFF.filter(s=>s.role!=='courier'&&s.role!=='owner').map(s=>`<button class="o5-chk ${sel.includes(s.id)?'on':''}" onclick="OD._atsel('${s.id}')"><span class="cb">${I('check')}</span><span class="ct" style="text-decoration:none;color:var(--ink)">${s.n} <small>${s.title}</small></span></button>`).join('')}<div class="o5-red mt8" id="od-aterr"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn --accent" onclick="OD._atgo('${code}')">${at.on?'Save':'Flag the order'}</button></div>`;
+  OD._atsel=id=>{at.note=($('od-atnote')||{}).value||at.note;sel=sel.includes(id)?sel.filter(x=>x!==id):sel.concat(id);A.sheet(draw(),{full:true})};
+  OD._atgo=c=>{const n=(($('od-atnote')||{}).value||'').trim();if(!sel.length){$('od-aterr').textContent='Name at least one responsible person.';return}o.attention={on:true,note:n,assignees:sel,by:at.by||A.state.me,at:at.at||O5.now().toISOString()};App.closeSheet();A.toast('Flagged – it shows red on the board');setTimeout(()=>A.push('Special attention · #'+c,n||'Check the order',{icon:'flag',to:sel.map(O5.nm).join(', '),go:['order',{code:c}]}),600);O5.remount()};
+  A.sheet(draw(),{full:true})};
+OD.attentionOff=code=>{const o=O5.order(code);A.confirm('Remove the flag?','The order leaves “Special attention” on the board. Only managers can do this.','Remove',()=>{o.attention.on=false;A.toast('Flag removed');O5.remount()})};
+OD.ack=code=>{const o=O5.order(code);o.approval.acked=true;A.toast('Badge cleared on the board');O5.remount()};
+OD.toggleOrig=(code,id)=>{const r=O5.order(code).approval.replies.find(x=>x.id===id);r.showOrig=!r.showOrig;O5.remount()};
+OD.editReply=(code,id)=>{const o=O5.order(code),r=o.approval.replies.find(x=>x.id===id);A.sheet(`<div class="sh-head"><div class="h3">Edit the reply</div></div><div class="sh-body"><textarea class="input" id="od-rep">${esc(r.text)}</textarea><div class="xs muted mt8">The original stays available with one tap.</div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="OD._rep('${code}',${id})">Save</button></div>`)};
+OD._rep=(code,id)=>{const v=(($('od-rep')||{}).value||'').trim();if(!v)return;const r=O5.order(code).approval.replies.find(x=>x.id===id);r.orig=r.orig||r.text;r.text=v;r.edited=true;App.closeSheet();A.toast('Reply updated');O5.remount()};
+OD.delReply=(code,id)=>{A.confirm('Delete this message?','It disappears from the order and the board badge.','Delete',()=>{const o=O5.order(code);o.approval.replies=o.approval.replies.filter(x=>x.id!==id);if(!o.approval.replies.length){o.approval.verdict=null;o.approval.acked=true}A.toast('Deleted');O5.remount()})};
+OD.queueSheet=code=>{const o=O5.order(code);let f=o.queue?o.queue.florist:'kamila',pos=o.queue?o.queue.position:1,day=o.queue?(o.queue.date===O5.TODAY?'today':'delivery'):'today';const future=o.date!==O5.TODAY;
+  const draw=()=>`<!-- ids: TM-ORDER-013 --><div class="sh-head"><div class="h3">Production queue · #${code}</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="caps muted mb8">Florist</div><div class="flex g8" style="flex-wrap:wrap">${O5.florists().map(x=>`<button class="chip ${f===x.id?'on':''}" onclick="OD._q('f','${x.id}')">${x.n}</button>`).join('')}</div><div class="caps muted mt16 mb8">Position</div><div class="flex ai-c g8"><button class="chip ${pos===1?'on':''}" onclick="OD._q('pos',1)">First</button><button class="chip ${pos===99?'on':''}" onclick="OD._q('pos',99)">Last</button><span class="o5-stepper"><button onclick="OD._q('pos',${Math.max(1,pos-1)})">${I('minus')}</button><span>${pos}</span><button onclick="OD._q('pos',${Math.min(99,pos+1)})">${I('plus')}</button></span></div>${future?`<div class="caps muted mt16 mb8">When</div><div class="flex g8"><button class="chip ${day==='today'?'on':''}" onclick="OD._q('day','today')">Make today</button><button class="chip ${day==='delivery'?'on':''}" onclick="OD._q('day','delivery')">On the delivery day</button></div>`:''}<button class="textbtn mt16" onclick="OD._qnone('${code}')">Nobody – remove from the queue</button></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="OD._qgo('${code}')">Assign</button></div>`;
+  OD._q=(k,v)=>{if(k==='f')f=v;if(k==='pos')pos=v;if(k==='day')day=v;A.sheet(draw(),{full:true})};
+  OD._qgo=c=>{if(O5.demo.offline){A.toast('No connection – the queue needs the network');return}o.queue={florist:f,position:pos,changed:'new',date:day==='today'?O5.TODAY:o.date};App.closeSheet();A.toast(`№${pos} in ${O5.nm(f)}’s queue`);setTimeout(()=>A.push('Queue changed','#'+c+' is №'+pos+' in your queue',{icon:'list',to:O5.nm(f),go:['ord-board',{tab:'mine'}]}),600);O5.remount()};
+  OD._qnone=()=>{o.queue=null;App.closeSheet();A.toast('Removed from the queue');O5.remount()};
+  A.sheet(draw(),{full:true})};
+OD.courierSheet=code=>{const o=O5.order(code);const adv='andrii';
+  A.sheet(`<!-- ids: TM-ORDER-014 --><div class="sh-head"><div class="h3">Courier for #${code}</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="panel mb12"><div class="caps muted">Dispatcher advice</div><div class="sm mt4">Andrii – 2 drops within 1.5 km, back at the shop by 13:40.</div></div>${O5.couriers().map(c=>`<button class="o5-pick ${o.courier===c.id?'on':''}" onclick="OD._csel('${code}','${c.id}','${adv}')">${A.avatar(c,'--shift')}<span class="f1"><span class="h4">${c.n}${c.id===adv?' · suggested':''}</span><span class="xs">${c.title}${c.onShift?' · on shift':' · off today'}</span></span>${o.courier===c.id?I('check'):''}</button>`).join('')}<button class="o5-pick" onclick="OD._csel('${code}',null,'${adv}')"><span class="o5-ph">–</span><span class="f1"><span class="h4">Nobody</span><span class="xs">Leave for dispatch later</span></span></button></div>`,{full:true})};
+OD._csel=(code,id,adv)=>{const o=O5.order(code);const go=()=>{o.courier=id;App.closeSheet();A.toast(id?O5.nm(id)+' assigned':'Courier removed');O5.syncShell(o);O5.remount()};if(id&&id!==adv){App.closeSheet();setTimeout(()=>A.confirm('Not the suggested courier',`The advisor suggested ${O5.nm(adv)}. Assign ${O5.nm(id)} anyway?`,'Assign',go),350)}else go()};
+OD.priority=(code,p)=>{const o=O5.order(code);o.priority=o.priority===p?null:p;A.toast(o.priority==='first'?'First in the route':o.priority==='free'?'Any free courier or freelancer':'Priority cleared');O5.remount()};
+OD.editSheet=code=>{const o=O5.order(code);const slotType=o.slot&&/–/.test(o.slot)?'between':'none';
+  A.sheet(`<!-- ids: TM-ORDER-017 --><div class="sh-head"><div class="h3">Edit #${code}</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="field"><label>Recipient</label><input class="input" id="oe-rec" value="${esc(o.recipient||'')}"></div><div class="field"><label>Recipient phone</label><input class="input" id="oe-rph" value="${esc(o.recipientPhone||'')}"></div>${o.method==='delivery'?`<div class="field"><label>Address line 1</label><input class="input" id="oe-a1" value="${esc(o.address||'')}"></div><div class="field"><label>Address line 2</label><input class="input" id="oe-a2" placeholder="Flat, floor, building"></div><div class="o5-row2"><div class="field"><label>City</label><input class="input" id="oe-city" value="London"></div><div class="field"><label>Postcode</label><input class="input" id="oe-pc" value="${esc(o.postcode||'')}"></div></div>`:''}<div class="o5-row2"><div class="field"><label>Date</label><input class="input" id="oe-date" value="${o.date}" placeholder="YYYY-MM-DD"></div><div class="field"><label>Slot</label><select class="input" id="oe-st"><option ${slotType==='none'?'selected':''} value="none">No slot</option><option ${slotType==='between'?'selected':''} value="between">Between</option><option value="before">Before</option><option value="after">After</option></select></div></div><div class="o5-row2"><div class="field"><label>From</label><input class="input" id="oe-t1" value="${esc((o.slot.split('–')[0]||'').trim())}" placeholder="14:00"></div><div class="field"><label>To</label><input class="input" id="oe-t2" value="${esc((o.slot.split('–')[1]||'').trim())}" placeholder="17:00"></div></div>
+    <div class="caps muted mb8 mt8">Items</div><div id="oe-items">${o.items.map((it,i)=>`<div class="flex ai-c g8 mb8"><input class="input f1" value="${esc(it.title)}" data-i="${i}" data-k="title" style="height:44px"><input class="input" value="${it.qty}" data-i="${i}" data-k="qty" style="width:56px;height:44px"><input class="input" value="${it.price}" data-i="${i}" data-k="price" style="width:72px;height:44px"><button class="ib" onclick="OD._eiRemove('${code}',${i})">${I('trash')}</button></div>`).join('')}</div><button class="textbtn" onclick="OD._eiAdd('${code}')">+ Add an item</button>
+    <div class="field mt16"><label>Card message</label><textarea class="input" id="oe-gift">${esc(o.giftMessage||'')}</textarea></div><div class="field"><label>Delivery instructions</label><textarea class="input" id="oe-ins">${esc(o.deliveryInstructions||'')}</textarea></div><div class="field"><label>Internal note</label><textarea class="input" id="oe-note">${esc(o.note||'')}</textarea></div><div class="o5-vs"><span class="sm">Customer asked for no photo</span><button class="switch ${o.photoOptOut?'on':''}" id="oe-opt" onclick="this.classList.toggle('on')"></button></div><div class="xs muted mt8">Only changed fields are sent · a wrong time, date or price is blocked here · the CRM’s 422 text shows as is · not queued offline.</div><div class="o5-red mt8" id="oe-err"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="OD._esave('${code}')">Save</button></div>`,{full:true})};
+OD._eiRemove=(code,i)=>{const o=O5.order(code);if(o.items.length<=1){$('oe-err').textContent='An order needs at least one item.';return}o.items.splice(i,1);OD._recalc(o);OD.editSheet(code)};
+OD._eiAdd=code=>{const o=O5.order(code);o.items.push({id:Date.now()%100000,title:'New item',qty:1,price:0});OD.editSheet(code)};
+OD._recalc=o=>{const sub=o.items.reduce((s,i)=>s+i.qty*i.price,0);o.money=o.money||{delivery:0,tip:0,discount:0};o.money.subtotal=sub;o.money.total=sub+(o.money.delivery||0)+(o.money.tip||0)-(o.money.discount||0);o.total=o.money.total};
+OD._esave=code=>{const o=O5.order(code);const v=id=>($(id)||{}).value||'';const err=$('oe-err');
+  if(O5.demo.offline){err.textContent='No connection – editing an order is not queued.';return}
+  const date=v('oe-date');if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){err.textContent='Date must be YYYY-MM-DD.';return}
+  const st=v('oe-st');const t1=v('oe-t1'),t2=v('oe-t2');const tm=/^\d{1,2}:\d{2}$/;if(st!=='none'&&((st==='between'&&(!tm.test(t1)||!tm.test(t2)))||(st==='before'&&!tm.test(t2))||(st==='after'&&!tm.test(t1)))){err.textContent='Time must look like 14:00.';return}
+  if(o.method==='delivery'&&!v('oe-pc').trim()){err.textContent='CRM: the postcode is required for delivery (422).';return}
+  let bad=false;document.querySelectorAll('#oe-items input').forEach(inp=>{const it=o.items[+inp.dataset.i];if(!it)return;if(inp.dataset.k==='title')it.title=inp.value;else{const n=Number(inp.value);if(!(n>=0)||(inp.dataset.k==='qty'&&n<1))bad=true;else it[inp.dataset.k]=n}});if(bad){err.textContent='Quantity must be 1 or more and the price a number.';return}
+  o.recipient=v('oe-rec');o.recipientPhone=v('oe-rph');if(o.method==='delivery'){o.address=v('oe-a1')+(v('oe-a2')?', '+v('oe-a2'):'');o.postcode=v('oe-pc')}o.date=date;o.slot=st==='none'?'':st==='between'?t1+'–'+t2:st==='before'?'before '+t2:'after '+t1;o.giftMessage=v('oe-gift');o.deliveryInstructions=v('oe-ins');o.note=v('oe-note');o.photoOptOut=$('oe-opt').classList.contains('on');OD._recalc(o);
+  App.closeSheet();A.toast('Order updated');O5.remount()};
+OD.boost=(code,itemId,p)=>{const o=O5.order(code);o.boost[itemId]=p;A.toast(p?`+${p}% extra stems reserved`:'Extra stems cleared');O5.remount()};
+OD.delExtra=(code,i)=>{const o=O5.order(code);o.extras.splice(i,1);A.toast('Removed');O5.remount()};
+OD._stock={};
+OD.addExtraSheet=code=>{const STOCK=[['Eucalyptus cinerea',48],['Eucalyptus populus',12],['Peony · pink',21],['Garden rose · Pink O’Hara',30],['Astilbe',9],['Pistache',40],['Ruscus',60],['Lisianthus · blush',15]];let q='';
+  const draw=()=>{const res=q.length>=2?STOCK.filter(s=>s[0].toLowerCase().includes(q.toLowerCase())):[];return `<div class="sh-head"><div class="h3">Add from stock</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="input-wrap">${I('search')}<input class="input" id="od-stq" placeholder="Search · from 2 characters" value="${esc(q)}" oninput="OD._stq(this.value)"></div><div class="mt12">${q.length<2?'<div class="sm muted">Type at least 2 characters.</div>':res.length?res.map(s=>`<div class="o5-comp"><span class="f1">${esc(s[0])}</span><span class="q">${s[1]} left</span><span class="o5-stepper"><button onclick="OD._stn('${esc(s[0]).replace(/'/g,'’')}',-1)">${I('minus')}</button><span>${OD._stock[s[0]]||1}</span><button onclick="OD._stn('${esc(s[0]).replace(/'/g,'’')}',1)">${I('plus')}</button></span><button class="btn --xs" onclick="OD._stadd('${code}','${esc(s[0]).replace(/'/g,'’')}')">Add</button></div>`).join(''):'<div class="sm muted">Nothing in stock matches.</div>'}</div></div>`};
+  OD._stq=v=>{q=v;A.sheet(draw(),{full:true});const n=$('od-stq');n.value=q;n.focus();n.setSelectionRange(q.length,q.length)};
+  OD._stn=(name,d)=>{OD._stock[name]=Math.max(1,(OD._stock[name]||1)+d);A.sheet(draw(),{full:true});$('od-stq').value=q};
+  OD._stadd=(c,name)=>{const o=O5.order(c);o.extras.push({ing:name,qty:OD._stock[name]||1,unit:'stems',by:A.state.me});App.closeSheet();A.toast(name+' added to the composition');O5.remount()};
+  A.sheet(draw(),{full:true})};
+OD.subSheet=(code)=>{const o=O5.order(code);const comp=o.composition||[];let from=comp[0]?comp[0].ing:'',to='',q='',qty=1,agreed=false,note='';const STOCK=['Eucalyptus cinerea','Peony · white','Garden rose · Pink O’Hara','Spray rose · white','Lisianthus · blush','Ranunculus · pink'];
+  const draw=()=>`<!-- ids: TM-ORDER-041 --><div class="sh-head"><div class="h3">Substitute a stem</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="caps muted mb8">From</div><div class="flex g8" style="flex-wrap:wrap">${comp.map(c=>`<button class="chip ${from===c.ing?'on':''}" onclick="OD._ss('from','${esc(c.ing).replace(/'/g,'’')}')">${esc(c.ing)}</button>`).join('')}</div><div class="caps muted mt16 mb8">To · search the stock</div><div class="input-wrap">${I('search')}<input class="input" id="od-subq" value="${esc(q)}" placeholder="From 2 characters" oninput="OD._ss('q',this.value)"></div><div class="flex g8 mt8" style="flex-wrap:wrap">${(q.length>=2?STOCK.filter(s=>s.toLowerCase().includes(q.toLowerCase())):[]).map(s=>`<button class="chip ${to===s?'on':''}" onclick="OD._ss('to','${esc(s).replace(/'/g,'’')}')">${esc(s)} <small>· 12 left</small></button>`).join('')}</div><div class="flex ai-c g12 mt16"><span class="sm">Quantity</span><span class="o5-stepper"><button onclick="OD._ss('qty',${Math.max(1,qty-1)})">${I('minus')}</button><span>${qty}</span><button onclick="OD._ss('qty',${qty+1})">${I('plus')}</button></span></div><div class="field mt12"><label>Note</label><input class="input" id="od-subn" value="${esc(note)}" placeholder="Why"></div><div class="o5-vs"><span class="sm">Agreed with the customer</span><button class="switch ${agreed?'on':''}" onclick="OD._ss('agreed',${!agreed})"></button></div><div class="o5-red mt8" id="od-suberr"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="OD._subgo('${code}')">Substitute</button></div>`;
+  OD._ss=(k,v)=>{note=($('od-subn')||{}).value||note;if(k==='from')from=v;if(k==='to')to=v;if(k==='q'){q=v;to=''}if(k==='qty')qty=v;if(k==='agreed')agreed=v;A.sheet(draw(),{full:true});if(k==='q'){const n=$('od-subq');n.focus();n.setSelectionRange(q.length,q.length)}};
+  OD._subgo=c=>{note=($('od-subn')||{}).value||'';if(!to){$('od-suberr').textContent='Pick what goes in instead.';return}if(o.substitutionPreference==='contact_me'){$('od-suberr').textContent='CRM: the customer asked to be contacted first – substitution refused (422).';return}o.substitutions.push({from,to,qty,agreed,note,by:A.state.me});App.closeSheet();A.toast('Substitution saved');O5.remount()};
+  A.sheet(draw(),{full:true})};
+OD.mp=(code,act)=>{const o=O5.order(code);if(act==='ready'){o.marketplace.status='Marked ready · courier requested';A.toast('Ready on '+o.marketplace.name);O5.remount();return}
+  if(act==='deny'){A.sheet(`<div class="sh-head"><div class="h3">Decline on ${o.marketplace.name}</div></div><div class="sh-body"><div class="field"><label>Reason for the platform</label><input class="input" id="od-mpr" placeholder="e.g. Item out of stock"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn --accent" onclick="OD._mpdeny('${code}')">Decline</button></div>`);return}
+  A.confirm('Cancel on '+o.marketplace.name+'?','The platform refunds the customer. This cannot be undone.','Cancel order',()=>{O5.setStatus(o,'cancelled','Cancelled on '+o.marketplace.name);A.toast('Cancelled on the platform');O5.remount()})};
+OD._mpdeny=code=>{const v=(($('od-mpr')||{}).value||'').trim();if(!v)return;const o=O5.order(code);App.closeSheet();O5.setStatus(o,'cancelled','Declined on '+o.marketplace.name+' · '+v);A.toast('Declined');O5.remount()};
+OD.callCourier=code=>{const o=O5.order(code);A.confirm('Call an Uber courier?',`Pickup at the shop, drop at ${esc(o.postcode||o.address)}. The fee is charged to the shop account.`,'Call courier',()=>{if(O5.demo.offline){A.toast('No connection – could not call the courier');return}o.courierCall={carrier:'Uber Direct',status:'Courier assigned · pickup in 9 min',name:'Dmitri · Toyota Prius'};A.toast('Courier called');O5.remount()})};
+OD.createLink=code=>{const o=O5.order(code);if(O5.demo.offline){A.toast('No connection – links need the network');return}o.paymentLink={amount:o.money?o.money.total:o.total,status:'awaiting payment',expires:O5.addDays(O5.TODAY,1)+'T11:12:00'};o.unpaid=o.unpaid||{since:O5.now().toISOString(),waMessages:0,contacted:false,noAnswer:0,outcome:null,notes:[]};o.unpaid.linkSent=true;A.toast('Link created · share sheet opened');O5.remount()};
+OD.cancelLink=code=>{A.confirm('Cancel the payment link?','The customer can no longer pay through it.','Cancel link',()=>{O5.order(code).paymentLink=null;A.toast('Link cancelled');O5.remount()})};
+OD.remind=(code,how)=>{const o=O5.order(code);if(O5.demo.offline){A.toast('No connection');return}A.toast(`Reminder sent by ${how}`);setTimeout(()=>A.push('Floritta','Hi '+o.customer.name.split(' ')[0]+', your order #'+code+' is waiting for payment – link inside',{icon:'send',to:o.customer.name}),500)};
+OD.call=code=>{const o=O5.order(code);A.toast('Calling via Ringover…');setTimeout(()=>A.toast(O5.demo.offline?'Could not place the call':'Ringing '+o.customer.phone),900)};
+OD.noAnswer=code=>{const o=O5.order(code);o.unpaid.noAnswer++;o.unpaid.notes.push({by:A.state.me,t:'No answer · attempt '+o.unpaid.noAnswer,at:O5.now().toISOString()});if(o.unpaid.noAnswer>=3){O5.setStatus(o,'cancelled','No answer after 3 attempts · archived');A.toast('Third attempt – order archived')}else A.toast('No answer recorded');O5.remount()};
+OD.contacted=code=>{const o=O5.order(code);o.unpaid.contacted=!o.unpaid.contacted;A.toast(o.unpaid.contacted?'Marked as reached':'Mark removed');O5.remount()};
+OD.unpaidNote=code=>{const v=(($('od-unote')||{}).value||'').trim();if(!v)return;const o=O5.order(code);o.unpaid.notes.push({by:A.state.me,t:v,at:O5.now().toISOString()});A.toast('Note saved');O5.remount()};
+OD.outcomeSheet=code=>{const o=O5.order(code);let pick='paid_site';
+  const OUT=[['paid_site','Paid · on the website'],['paid_transfer','Paid · bank transfer'],['paid_cash','Paid · cash'],['paid_link','Paid · payment link'],['paid_other','Paid · other'],['not_paid','Did not pay'],['new_order','Made a new order instead']];
+  const draw=()=>`<!-- ids: TM-ORDER-049 --><div class="sh-head"><div class="h3">Outcome · #${code}</div></div><div class="sh-body">${OUT.map(x=>`<button class="o5-radio ${pick===x[0]?'on':''}" onclick="OD._op('${x[0]}')"><span class="rd"></span>${x[1]}</button>`).join('')}${pick==='new_order'?`<div class="field mt12"><label>New order code · at least 3 characters</label><input class="input" id="od-oc" placeholder="715"></div>`:''}<div class="xs muted mt12">“Paid” changes the payment and the order status straight away – no extra confirmation.</div><div class="o5-red mt8" id="od-oerr"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="OD._ogo('${code}')">Save outcome</button></div>`;
+  OD._op=v=>{pick=v;A.sheet(draw(),{full:true})};
+  OD._ogo=()=>{const lab=OUT.find(x=>x[0]===pick)[1];if(pick==='new_order'){const v=(($('od-oc')||{}).value||'').trim();if(v.length<3){$('od-oerr').textContent='At least 3 characters.';return}o.unpaid.outcome=lab+' #'+v}else o.unpaid.outcome=lab;
+    if(pick.startsWith('paid')){o.paymentStatus='paid';if(o.status==='unconfirmed')O5.setStatus(o,'confirm');A.toast('Paid · order moves on')}else if(pick==='not_paid'){O5.setStatus(o,'cancelled','Did not pay');A.toast('Order archived')}else A.toast('Outcome saved');App.closeSheet();O5.remount()};
+  A.sheet(draw(),{full:true})};
+OD.podPhoto=code=>{A.sheet(`<div class="sh-head"><div class="h3">Proof of delivery</div><button class="ib" onclick="App.closeSheet()">${I('close')}</button></div><div class="sh-body"><div class="o5-row2"><button class="o5-big" onclick="App.closeSheet();OD._pod('${code}')">${I('camera')}Take a photo</button><button class="o5-big --ghost" onclick="App.closeSheet();OD._pod('${code}')">${I('photo')}Gallery</button></div><div class="xs muted mt8">Fails on the network? It is kept and retried.</div></div>`)};
+OD._pod=code=>{const o=O5.order(code);O5.act(o,()=>{const r=O5.submit({code,kind:'podPhoto',img:o.items[0].img});if(r.ok)A.toast('Proof photo saved');return r})};
+OD.podMissing=code=>{let pick='nobody_home';const RS=[['nobody_home','Nobody at home – left in a safe place'],['customer_refused','Customer refused a photo'],['phone_failed','Phone failed'],['other','Other']];
+  const draw=()=>`<div class="sh-head"><div class="h3">Why is there no photo?</div></div><div class="sh-body">${RS.map(x=>`<button class="o5-radio ${pick===x[0]?'on':''}" onclick="OD._pmp('${x[0]}')"><span class="rd"></span>${x[1]}</button>`).join('')}<div class="field mt12"><label>Note</label><input class="input" id="od-pmn"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="OD._pmgo('${code}')">Save</button></div>`;
+  OD._pmp=v=>{pick=v;A.sheet(draw())};OD._pmgo=c=>{const lab=RS.find(x=>x[0]===pick)[1];const n=($('od-pmn')||{}).value||'';App.closeSheet();const o=O5.order(c);O5.act(o,()=>{const r=O5.submit({code:c,kind:'podMissing',reason:lab,note:n});if(r.ok)A.toast('Reason saved');return r})};A.sheet(draw())};
+OD.podDelete=code=>{A.confirm('Delete the proof photo?','Network only – it cannot wait in the queue.','Delete',()=>{if(O5.demo.offline){A.toast('No connection');return}const o=O5.order(code);o.pod.photo=null;A.toast('Deleted');O5.remount()})};
+})();
+</script>
