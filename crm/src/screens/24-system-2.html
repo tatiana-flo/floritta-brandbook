@@ -1,0 +1,410 @@
+<style>
+/* ===== 24-2 · Auth · Public (tracking, redelivery) · Floritta One (tenant pages + admin.floritta.ai) ===== */
+/* bare screens: no sidebar / topbar while a [data-bare] screen is on (CSS only, shell untouched) */
+.app:has(> .screens > .scr[data-bare].on){grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.app:has(> .screens > .scr[data-bare].on) > .sidebar,.app:has(> .screens > .scr[data-bare].on) > .topbar,.app:has(> .screens > .scr[data-bare].on) > .drawer-bg{display:none}
+.s25 .demo-bar{display:flex;align-items:center;gap:10px;padding:8px var(--pad);border-bottom:1px dashed var(--light);background:var(--silver);font-size:12px;color:var(--grey);flex:none;flex-wrap:wrap}
+.s25 .demo-bar .seg-ctl{height:26px}.s25 .demo-bar .seg-ctl button{padding:0 8px;font-size:11px}
+.s25 .auth{flex:1;min-height:0;overflow:auto;display:grid;place-items:center;padding:32px 16px;background:var(--silver)}
+.s25 .auth-box{width:400px;max-width:100%;background:var(--paper);border:1px solid var(--hair);padding:32px 32px 28px}
+.s25 .auth-box .logo{height:18px;margin-bottom:28px}
+.s25 .auth-box .h2{margin-bottom:18px}
+.s25 .auth-box .field{margin-bottom:14px}
+.s25 .auth-box .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;font-size:12px;color:var(--grey);flex-wrap:wrap}
+.s25 .flash{padding:10px 12px;font-size:13px;margin-bottom:14px;border:1px solid transparent}
+.s25 .flash.--ok{background:var(--ok-bg);color:var(--ok)}.s25 .flash.--err{background:var(--accent-bg);color:var(--accent)}.s25 .flash.--warn{background:var(--warn-bg);color:var(--warn)}
+.s25 .err{font-size:12px;color:var(--accent);margin-top:4px}
+/* public tracking (lux) */
+.s25 .pub{flex:1;min-height:0;overflow:auto;background:var(--paper)}
+.s25 .pub-in{max-width:720px;margin:0 auto;padding:36px 24px 48px}
+.s25 .pub-logo{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--hair);padding-bottom:16px;margin-bottom:28px}
+.s25 .pub-logo .wm{font-family:var(--f-display);font-weight:300;font-size:28px;letter-spacing:.14em;text-transform:uppercase}
+.s25 .pub-hero .h-display{font-size:40px}
+.s25 .live{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite)}
+.s25 .live i{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:s25pulse 1.6s infinite}
+@keyframes s25pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+.s25 .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:28px 0 8px}
+.s25 .steps div{position:relative;padding:12px 0 0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);border-top:2px solid var(--hair)}
+.s25 .steps div.on{color:var(--ink);border-top-color:var(--ink)}
+.s25 .steps div.--fail{color:var(--accent);border-top-color:var(--accent)}
+.s25 .pub-map{height:260px;margin:24px 0 10px}
+.s25 .pub-map .stop{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--grey);transform:translate(-50%,-50%)}
+.s25 .pub-map .stop.--done{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--grey)}
+.s25 .pub-map .route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.s25 .pub-map .route path{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 5}
+.s25 .pub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}
+.s25 .pub-card{border:1px solid var(--hair);padding:18px}
+.s25 .pub-card .caps{display:block;margin-bottom:6px}
+.s25 .pub-card .big{font-family:var(--f-display);font-weight:300;font-size:36px;line-height:1}
+.s25 .care{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:12px}
+.s25 .care div{border-top:1px solid var(--hair);padding-top:10px;font-size:13px;color:var(--graphite)}
+.s25 .promo{border:1px solid var(--ink);padding:24px;margin-top:32px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.s25 .promo code{font-size:18px;letter-spacing:.14em;border:1px dashed var(--ink);padding:6px 12px}
+.s25 .links2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.s25 .review{text-align:center;margin:40px 0 24px;font-family:var(--f-display);font-size:22px;font-weight:300;line-height:1.3}
+.s25 .stars{letter-spacing:.2em;font-size:12px;color:var(--ink);margin-bottom:8px}
+.s25 .pub-foot{border-top:1px solid var(--hair);padding-top:16px;font-size:12px;color:var(--grey);line-height:1.5}
+.s25 .slots{display:flex;gap:8px;flex-wrap:wrap}
+.s25 .slots .chip{height:40px;padding:0 18px}
+/* One: impersonation banner, central layout */
+.s25 .imp{background:var(--accent);color:#fff;display:flex;align-items:center;gap:12px;padding:8px var(--pad);font-size:13px;flex:none}
+.s25 .imp .btn{--btn-h:28px;height:28px;border-color:#fff;background:transparent;color:#fff;font-size:11px;padding:0 10px}
+.s25 .c-head{display:flex;align-items:center;gap:20px;padding:0 var(--pad);height:56px;border-bottom:1px solid var(--hair);flex:none;background:var(--paper)}
+.s25 .c-head .wm{font-family:var(--f-display);font-weight:300;font-size:22px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.s25 .c-head .wm small{font-family:var(--f-body);font-size:10px;letter-spacing:.14em;color:var(--grey);margin-left:8px}
+.s25 .c-head nav{display:flex;gap:4px}
+.s25 .c-head nav button{height:36px;padding:0 12px;font-size:13.5px;color:var(--graphite);border-bottom:2px solid transparent}
+.s25 .c-head nav button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.s25 .c-warn{background:var(--warn-bg);color:var(--warn);display:flex;align-items:center;gap:12px;padding:8px var(--pad);font-size:13px;flex:none}
+.s25 .c-body{flex:1;min-height:0;overflow:auto;padding:var(--pad)}
+.s25 .codes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.s25 .codes code{display:block;border:1px solid var(--hair);padding:8px 10px;font-size:13px;text-align:center;letter-spacing:.06em}
+.s25 .secret{font-family:ui-monospace,Menlo,monospace;font-size:22px;letter-spacing:.14em;border:1px solid var(--hair);padding:14px;text-align:center;word-break:break-all}
+.s25 .uri{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--graphite);word-break:break-all;background:var(--silver);padding:10px}
+.s25 .tl-json{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--grey);white-space:pre-wrap}
+.s25 .ops{display:flex;gap:8px;flex-wrap:wrap}
+.s25 .t-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+[data-size="ipad"] .s25 .t-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] .s25 .codes{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .s25 .pub-grid,[data-size="phone"] .s25 .links2,[data-size="phone"] .s25 .care,[data-size="phone"] .s25 .t-grid,[data-size="phone"] .s25 .codes{grid-template-columns:1fr}
+[data-size="phone"] .s25 .steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
+[data-size="phone"] .s25 .auth-box{padding:24px 20px}
+[data-size="phone"] .s25 .c-head{gap:10px;padding:0 12px}
+[data-size="phone"] .s25 .c-head nav button{padding:0 8px}
+[data-size="phone"] .s25 .pub-hero .h-display{font-size:30px}
+</style>
+
+<!-- ids: SYST-086 SYST-087 SYST-088 SYST-089 SYST-090 SYST-182 – Sign in to Floritta Admin: form, DOM-read values (password managers), one generic error, landing by role, Forgot link, flash messages shown -->
+<section class="scr s25" id="s-auth-login" data-bare="1" data-nav="Sign in" data-group="Settings &amp; System" data-title="Sign in" data-parent="settings">
+  <div class="demo-bar" id="s25-login-demo"></div>
+  <div class="auth" id="s25-login"></div>
+</section>
+<!-- ids: SYST-091 SYST-092 SYST-093 – Forgot password: email, Send reset link, same confirmation for any address, Back to sign in -->
+<section class="scr s25" id="s-auth-forgot" data-bare="1" data-nav="Forgot password" data-group="Settings &amp; System" data-title="Forgot password" data-parent="settings">
+  <div class="auth" id="s25-forgot"></div>
+</section>
+<!-- ids: SYST-094 SYST-095 SYST-096 – Reset password by link: email prefilled, new password + confirm, Set new password, sign-in and landing, Back to sign in -->
+<section class="scr s25" id="s-auth-reset" data-bare="1" data-nav="Reset password" data-group="Settings &amp; System" data-title="Reset password" data-parent="settings">
+  <div class="auth" id="s25-reset"></div>
+</section>
+<!-- ids: SYST-097 SYST-098 SYST-099 SYST-100 SYST-101 SYST-183 – Change password: forced after a temporary password, current + new + confirm, sessions and tokens dropped, voluntary entry via account menu, Sign out link -->
+<section class="scr s25" id="s-auth-password-change" data-bare="1" data-nav="Change password" data-group="Settings &amp; System" data-title="Change password" data-parent="settings">
+  <div class="demo-bar" id="s25-pc-demo"></div>
+  <div class="auth" id="s25-pc"></div>
+</section>
+
+<!-- ids: SYST-102 SYST-103 SYST-104 SYST-105 SYST-106 SYST-107 SYST-108 SYST-109 SYST-110 SYST-111 SYST-112 SYST-113 SYST-114 SYST-115 SYST-116 SYST-117 SYST-118 SYST-119 SYST-120 SYST-121 SYST-184 SYST-185 SYST-186 – Public tracking /track/{token}: hero by stage, Live, stepper, map with route and stops, ETA (+5 min buffer), courier, photo, We missed you, redelivery requested, private address mode, care tips, promo, subscription / referral, review, footer; 20-second refresh with «connection lost» mark -->
+<section class="scr s25" id="s-public-tracking" data-bare="1" data-nav="Public · Tracking" data-group="Settings &amp; System" data-title="Delivery tracking" data-parent="settings">
+  <div class="demo-bar" id="s25-trk-demo"></div>
+  <div class="pub" id="s25-trk"></div>
+</section>
+<!-- ids: SYST-122 SYST-123 SYST-187 SYST-188 – Redelivery request: date (tomorrow … +21 days), Morning / Afternoon / Evening, note ≤500, Request redelivery, Back to tracking, repeat request warns -->
+<section class="scr s25" id="s-public-redelivery" data-bare="1" data-nav="Public · Redelivery" data-group="Settings &amp; System" data-title="Request a new time" data-parent="settings">
+  <div class="pub" id="s25-redel"></div>
+</section>
+
+<!-- ids: SYST-124 SYST-125 SYST-126 – Floritta One · tenant welcome: brand + owner email, already-set state, set password & sign in -->
+<section class="scr s25" id="s-one-welcome" data-bare="1" data-nav="One · Welcome" data-group="Settings &amp; System" data-title="Welcome" data-parent="settings">
+  <div class="demo-bar" id="s25-wel-demo"></div>
+  <div class="auth" id="s25-wel"></div>
+</section>
+<!-- ids: SYST-127 SYST-128 – Floritta One · account suspended: message for everyone, billing note and payment stub for the owner -->
+<section class="scr s25" id="s-one-suspended" data-bare="1" data-nav="One · Suspended" data-group="Settings &amp; System" data-title="Account suspended" data-parent="settings">
+  <div class="auth" id="s25-susp"></div>
+</section>
+<!-- ids: SYST-129 SYST-130 SYST-131 SYST-132 – Impersonation: one-time link landing, red banner on every page, Exit, blocked writes answer 403 -->
+<section class="scr s25" id="s-one-impersonation" data-nav="One · Impersonation banner" data-group="Settings &amp; System" data-title="Orders" data-sub="impersonation" data-roles="owner manager" data-parent="settings">
+  <div class="imp" id="s25-imp-bar"></div>
+  <div class="scr-body" id="s25-imp"></div>
+</section>
+
+<!-- ids: SYST-136 SYST-137 SYST-138 SYST-139 – admin.floritta.ai sign in: email, password, TOTP code, recovery code toggle, no-2FA refusal -->
+<section class="scr s25" id="s-one-admin-login" data-bare="1" data-nav="One admin · Sign in" data-group="Settings &amp; System" data-title="Central admin sign in" data-parent="settings">
+  <div class="demo-bar" id="s25-cl-demo"></div>
+  <div class="auth" id="s25-cl"></div>
+</section>
+<!-- ids: SYST-140 SYST-141 SYST-142 SYST-143 SYST-144 SYST-145 SYST-146 SYST-190 SYST-135 – admin 2FA: enrol (secret, otpauth URI, confirm – re-auth required), recovery codes (one-time grid, Copy, Download, remaining, low warning, Generate new codes) -->
+<section class="scr s25" id="s-one-admin-2fa" data-bare="1" data-nav="One admin · 2FA" data-group="Settings &amp; System" data-title="Two-factor" data-parent="settings">
+  <div id="s25-2fa-head"></div>
+  <div class="c-body" id="s25-2fa"></div>
+</section>
+<!-- ids: SYST-133 SYST-134 SYST-135 SYST-189 SYST-147 SYST-148 SYST-149 SYST-150 SYST-151 SYST-152 SYST-153 – admin · Tenants: central nav (Tenants, Leads, Sign out, recovery-codes warning, flash toasts), KPIs, status filter, sorting, table, pagination, row → tenant, New tenant → Provision -->
+<section class="scr s25" id="s-one-admin-tenants" data-bare="1" data-nav="One admin · Tenants" data-group="Settings &amp; System" data-title="Tenants" data-parent="settings">
+  <div id="s25-ten-head"></div>
+  <div class="c-body" id="s25-ten"></div>
+</section>
+<!-- ids: SYST-154 SYST-155 SYST-156 SYST-157 SYST-158 SYST-159 SYST-160 SYST-161 SYST-162 SYST-163 SYST-164 SYST-165 SYST-166 SYST-167 SYST-168 SYST-191 – admin · Tenant card: details, metrics, lifecycle operations with reason dialogs, Impersonate, client AI key, status history, billing timeline, provisioning log, server refusals shown -->
+<section class="scr s25" id="s-one-admin-tenant" data-bare="1" data-nav="One admin · Tenant card" data-group="Settings &amp; System" data-title="Tenant" data-parent="settings">
+  <div id="s25-tc-head"></div>
+  <div class="c-body" id="s25-tc"></div>
+</section>
+<!-- ids: SYST-169 SYST-170 SYST-171 SYST-172 SYST-173 SYST-174 SYST-175 SYST-192 – admin · Leads: KPIs, status filter, table with mailto, Mark contacted, Approve → create tenant (slug prefill), Reject with reason -->
+<section class="scr s25" id="s-one-admin-leads" data-bare="1" data-nav="One admin · Leads" data-group="Settings &amp; System" data-title="Leads" data-parent="settings">
+  <div id="s25-ld-head"></div>
+  <div class="c-body" id="s25-ld"></div>
+</section>
+
+<script>
+(()=>{
+const A=App,E=s=>A.esc(s),I=n=>A.icon(n),$=(s,r)=>A.$(s,r),$$=(s,r)=>A.$$(s,r);
+const tt=m=>A.toast(m);
+const url=u=>{const el=$("#url");if(el)el.textContent=u};
+const LOGO=`<img class="logo" src="logo.svg" alt="Floritta">`;
+const S={login:"plain",pc:"forced",trk:"transit",trkPrivate:false,trkPromo:true,trkLost:false,trkTick:20,trkTimer:null,wel:"fresh",cl:"2fa",clRecovery:false,fa:"enrol",faShown:true,faOld:true,tenStatus:"all",tenSort:"created",tenDir:"desc",tenPage:1,tenant:"bloom-leeds",ldStatus:"all",imp:true,redelDone:false,fresh:false};
+const ME=()=>A.me();
+/* ------------------------------------------------------------------ AUTH */
+function landing(){const r=A.role();const to=r==="florist"?"production":"orders";A.go(to);tt(`Signed in as ${ME().n} · landed on ${r==="florist"?"the board":"Orders"} · last_login_at written`)}
+function mountLogin(){url("app.floritta.ai/login");
+  $("#s25-login-demo").innerHTML=`<span>Demo state</span><div class="seg-ctl">${[["plain","Plain"],["error","Wrong password"],["inactive","Inactive account"],["flash","After password reset"]].map(x=>`<button class="${S.login===x[0]?"on":""}" onclick="S25.S.login='${x[0]}';S25.mountLogin()">${x[1]}</button>`).join("")}</div><span class="sp"></span><span>Shown without sidebar – guest page (AuthLayout)</span>`;
+  $("#s25-login").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.login(this)">${LOGO}<div class="h2">Sign in to Floritta Admin</div>
+   ${S.login==="flash"?`<div class="flash --ok">Password updated. Sign in with your new password.</div>`:""}
+   ${S.login==="error"||S.login==="inactive"?`<div class="flash --err">These credentials do not match our records.</div>`:""}
+   <div class="field"><label>Email</label><input class="input" name="email" type="email" autocomplete="username" value="${S.login==="inactive"?"omar@floritta.example":S.login==="error"?"valeria@floritta.example":""}" placeholder="name@floritta.uk"></div>
+   <div class="field"><label>Password</label><input class="input" name="password" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+   <button class="btn --block" type="submit">Sign in</button>
+   <div class="foot"><button type="button" class="textbtn" onclick="App.go('auth-forgot')">Forgot your password?</button><span title="Values are read from the form at submit – works with password managers and autofill">${I("lock")} autofill-safe</span></div>
+   ${S.login==="inactive"?`<div class="xs muted mt16">Inactive, service (automation) and freelance-only accounts get the same generic error as a wrong password – on purpose.</div>`:""}
+   <div class="xs muted mt16">5 attempts a minute. After sign-in: courier → deliveries app, florist → board, manager / admin → the page you came from or Orders.</div></form>`;
+}
+function login(f){const fd=new FormData(f);if(!fd.get("email")||!fd.get("password")){S.login="error";mountLogin();return}landing()}
+function mountForgot(){url("app.floritta.ai/forgot-password");
+  $("#s25-forgot").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.forgot()">${LOGO}<div class="h2">Forgot your password?</div><div id="s25-forgot-body"><div class="sm soft mb16">Enter the email you use for Floritta Admin – we will send a link to set a new password.</div><div class="field"><label>Email</label><input class="input" id="s25-fg-e" type="email" autofocus placeholder="name@floritta.uk"></div><button class="btn --block" type="submit">Send reset link</button></div><div class="foot"><button type="button" class="textbtn" onclick="App.go('auth-login')">Back to sign in</button><span>5 a minute</span></div></form>`;
+}
+function forgot(){$("#s25-forgot-body").innerHTML=`<div class="flash --ok">If that email belongs to a Floritta account, a reset link is on its way. Check your inbox and spam.</div><div class="xs muted">The same message for any address – the link is only sent to an active user.</div>`}
+function mountReset(){url("app.floritta.ai/reset-password/…?email=valeria@…");
+  $("#s25-reset").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.reset()">${LOGO}<div class="h2">Set a new password</div>
+   <div class="field"><label>Email</label><input class="input" value="valeria@floritta.example" readonly></div>
+   <div class="field"><label>New password</label><input class="input" type="password" id="s25-rs-p" autocomplete="new-password"><div class="xs muted mt8">At least 8 characters with letters and digits.</div></div>
+   <div class="field"><label>Confirm new password</label><input class="input" type="password" id="s25-rs-c" autocomplete="new-password"><div class="err" id="s25-rs-err"></div></div>
+   <button class="btn --block" type="submit">Set new password</button>
+   <div class="foot"><button type="button" class="textbtn" onclick="App.go('auth-login')">Back to sign in</button><span>link valid 60 min</span></div>
+   <div class="xs muted mt16">On success: forced change is cleared, all mobile and API tokens are deleted, other sessions are signed out, you are signed in and land by role.</div></form>`;
+}
+function reset(){const p=$("#s25-rs-p").value,c=$("#s25-rs-c").value;if(!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(p)){$("#s25-rs-err").textContent="At least 8 characters, letters and digits";return}if(p!==c){$("#s25-rs-err").textContent="Passwords do not match";return}landing()}
+function mountPC(){url("app.floritta.ai/password/change");
+  $("#s25-pc-demo").innerHTML=`<span>Demo state</span><div class="seg-ctl"><button class="${S.pc==="forced"?"on":""}" onclick="S25.S.pc='forced';S25.mountPC()">Forced (temporary password)</button><button class="${S.pc==="voluntary"?"on":""}" onclick="S25.S.pc='voluntary';S25.mountPC()">Voluntary</button></div><span class="sp"></span><span>Forced: every CRM page redirects here until the password is changed (only this page and Sign out are allowed)</span>`;
+  $("#s25-pc").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.pcSave()">${LOGO}<div class="h2">Change password</div>
+   ${S.pc==="forced"?`<div class="flash --warn">Set your own password to continue.</div>`:`<div class="sm soft mb16">Opened from the account menu → «Change password».</div>`}
+   <div class="field"><label>Current password</label><input class="input" type="password" id="s25-pc-cur" autocomplete="current-password" placeholder="${S.pc==="forced"?"the temporary password you were given":""}"></div>
+   <div class="field"><label>New password</label><input class="input" type="password" id="s25-pc-p" autocomplete="new-password"><div class="xs muted mt8">At least 8 characters with letters and digits; not the same as the current one.</div></div>
+   <div class="field"><label>Confirm new password</label><input class="input" type="password" id="s25-pc-c"><div class="err" id="s25-pc-err"></div></div>
+   <button class="btn --block" type="submit">Change password</button>
+   <div class="foot"><button type="button" class="textbtn" onclick="App.toast('Signed out (demo)');App.go('auth-login')">Sign out</button>${S.pc==="voluntary"?`<button type="button" class="textbtn" onclick="App.back()">Back</button>`:`<span>can't remember the temporary password? Sign out and ask an admin</span>`}</div>
+   <div class="xs muted mt16">After the change every other session is signed out and all mobile / API tokens are deleted – phones sign in again.</div></form>`;
+}
+function pcSave(){const cur=$("#s25-pc-cur").value,p=$("#s25-pc-p").value,c=$("#s25-pc-c").value;if(!cur){$("#s25-pc-err").textContent="Enter the current password";return}if(!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(p)){$("#s25-pc-err").textContent="At least 8 characters, letters and digits";return}if(p===cur){$("#s25-pc-err").textContent="The new password must differ from the current one";return}if(p!==c){$("#s25-pc-err").textContent="Passwords do not match";return}tt("Password changed · other sessions signed out");landing()}
+/* ------------------------------------------------------------------ PUBLIC TRACKING */
+const TRK={recipient:"Charlotte",courier:"Daniel",stopsBefore:2,stopsTotal:4};
+function stage(){return{preparing:"preparing",transit:"in_transit",arriving:"in_transit",delivered:"delivered",failed:"failed"}[S.trk]}
+function mountTracking(){url("floritta.uk/track/9f3k…");clearInterval(S.trkTimer);
+  $("#s25-trk-demo").innerHTML=`<span>Demo state</span><div class="seg-ctl">${[["preparing","Preparing"],["transit","In transit"],["arriving","Arriving ≤10 min"],["delivered","Delivered"],["failed","Not home"]].map(x=>`<button class="${S.trk===x[0]?"on":""}" onclick="S25.S.trk='${x[0]}';S25.S.redelDone=false;S25.mountTracking()">${x[1]}</button>`).join("")}</div>
+   <label class="check xs"><input type="checkbox" ${S.trkPrivate?"checked":""} onchange="S25.S.trkPrivate=this.checked;S25.mountTracking()">Confidential address</label>
+   <label class="check xs"><input type="checkbox" ${S.trkPromo?"checked":""} onchange="S25.S.trkPromo=this.checked;S25.mountTracking()">Promo code set</label>
+   <label class="check xs"><input type="checkbox" ${S.trkLost?"checked":""} onchange="S25.S.trkLost=this.checked;S25.mountTracking()">Connection lost</label>
+   <span class="sp"></span><span>Public page · no sign-in · own lux CSS (Cormorant / Jost) · refreshes every 20 s</span>`;
+  const st=S.trk,priv=S.trkPrivate,delivered=st==="delivered",failed=st==="failed",moving=st==="transit"||st==="arriving";
+  const hero={preparing:["Being prepared","Your flowers are being made","Our florists in the Bermondsey studio are putting "+TRK.recipient+"'s bouquet together now."],transit:["On its way","The courier is on the way","Fresh from the studio – "+TRK.courier+" is bringing the flowers to "+TRK.recipient+"."],arriving:["Almost there","Arriving any minute","Keep an ear out for the door – "+TRK.courier+" is close."],delivered:["Delivered","Delivered with love","We hope they bring a smile, "+TRK.recipient+"."],failed:["We missed you","Nobody was home","The courier could not hand the flowers over. Choose a new time below."]}[st];
+  const step=delivered?3:failed?1:st==="arriving"?2:moving?1:0;
+  const eta=st==="preparing"?"–":st==="transit"?"~24 min":st==="arriving"?"Any minute":delivered?"Arrived":"–";
+  const stopsHtml=TRK.stopsBefore>0?`The courier is carrying several orders – stops before yours: <b>${TRK.stopsBefore}</b>.`:"Yours is the next stop.";
+  const mapHint=st==="preparing"?"Your bouquet is being prepared in our London studio – the courier appears here live once it sets out.":TRK.stopsTotal>1&&moving?"Grey dots are other stops on the courier's run (hollow – already done). Courier position updates live.":"Courier position updates live.";
+  $("#s25-trk").innerHTML=`<div class="pub-in">
+   <!-- ids: SYST-103 --><div class="pub-logo"><span class="wm">Floritta</span><span class="caps">Fresh flowers · London</span><span class="sp"></span>${moving&&!delivered?`<!-- ids: SYST-105 --><span class="live"><i></i>Live</span>`:""}</div>
+   <!-- ids: SYST-184 -->${S.trkLost?`<div class="flash --warn">Connection lost – showing the last known status (${A.fmtTime(A.T(10,38))}). We keep trying every 20 seconds.</div>`:""}
+   <!-- ids: SYST-104 --><div class="pub-hero"><div class="caps">${hero[0]}</div><div class="h-display mt8">${hero[1]}</div><div class="sm soft mt8" style="font-size:15px">${hero[2]}</div></div>
+   <!-- ids: SYST-106 SYST-107 --><div class="steps">${["Prepared","With courier","Arriving","Delivered"].map((s,i)=>`<div class="${i<=step?"on":""} ${failed&&i===1?"--fail":""}">${s}</div>`).join("")}</div>
+   ${failed?`<div class="accent sm">Delivery unsuccessful</div>`:""}
+   ${!delivered&&!priv?`<!-- ids: SYST-108 SYST-186 --><div class="caps mt24">Live map</div><div class="map pub-map">
+      <svg class="route" viewBox="0 0 700 260" preserveAspectRatio="none"><path d="M90 200 C 200 160, 300 170, 380 120 S 520 70, 610 60"/></svg>
+      <span class="pin --shop" style="left:13%;top:77%"></span><span class="lbl-pin" style="left:13%;top:77%">SHOP</span>
+      ${moving?`<span class="stop --done" style="left:36%;top:60%"></span><span class="stop" style="left:66%;top:36%"></span><span class="pin --ok" style="left:${st==="arriving"?80:54}%;top:${st==="arriving"?30:46}%"></span><span class="lbl-pin" style="left:${st==="arriving"?80:54}%;top:${st==="arriving"?30:46}%">${TRK.courier.toUpperCase()} · COURIER</span>`:""}
+      <span class="pin" style="left:87%;top:23%"></span><span class="lbl-pin" style="left:87%;top:23%">YOU</span></div>
+      <div class="xs muted">${mapHint}</div>
+      ${moving&&TRK.stopsTotal>1?`<!-- ids: SYST-109 --><div class="sm soft mt8">${stopsHtml}</div>`:""}
+      ${moving?`<!-- ids: SYST-110 --><div class="mt8"><button class="link" onclick="App.toast('Opens Uber live map in a new tab')">Follow the courier on Uber's live map</button></div>`:""}`:""}
+   ${priv&&!delivered?`<!-- ids: SYST-116 --><div class="note-box mt24">The address was given by the recipient, so this link shows only the stage and arrival time – no map, courier position or photo.</div>`:""}
+   <div class="pub-grid">
+    <!-- ids: SYST-111 --><div class="pub-card"><span class="caps">${delivered?"Estimated arrival":"Arriving in"}</span><div class="big">${eta}</div>${st==="transit"?`<div class="xs muted mt8">public ETA = internal + 5 min buffer</div>`:""}</div>
+    <!-- ids: SYST-112 --><div class="pub-card"><span class="caps">Courier</span><div class="big">${TRK.courier}</div><div class="xs muted mt8">van · Floritta</div></div>
+   </div>
+   <!-- ids: SYST-113 SYST-185 -->
+   ${delivered&&!priv?`<div class="pub-card mt16"><span class="caps">Delivered</span><div class="row" style="gap:16px"><div class="photo --4x5" style="width:120px"><img src="${A.data.products[0].img}" alt="Your flowers at the door"></div><div><div class="sm soft">Left with the recipient at ${A.fmtTime(A.T(10,31))}.</div><div class="mt8"><button class="link" onclick="App.toast('Opens the full photo in a new tab')">View delivery photo</button></div></div></div></div>`:!delivered&&!priv?`<div class="xs muted mt16">A photo of your delivered flowers will appear here once they arrive.</div>`:""}
+   <!-- ids: SYST-114 SYST-115 -->
+   ${failed&&!S.redelDone?`<div class="pub-card mt16" style="border-color:var(--ink)"><span class="caps">We missed you</span><div class="sm soft">The courier could not find anyone at the address. Pick a new date and time that suits – it takes a minute.</div><div class="mt16"><button class="btn" onclick="App.go('public-redelivery')">Request a new time</button></div></div>`:""}
+   ${S.redelDone?`<div class="flash --ok mt16">New delivery requested for ${A.fmtDay(A.T(12,0,1))} · ${S.redelSlot||"Morning"}. Thank you.</div>`:""}
+   <!-- ids: SYST-117 --><div class="caps mt24" style="margin-top:36px">Make them last</div><div class="care"><div><b>Trim the stems</b><br>Cut 2 cm at an angle before the first vase.</div><div><b>Fresh water</b><br>Change it every two days, rinse the vase.</div><div><b>Cool spot</b><br>Away from radiators, fruit and direct sun.</div></div>
+   <!-- ids: SYST-118 -->${S.trkPromo?`<div class="promo"><div style="flex:1;min-width:200px"><span class="caps">A little thank you</span><div class="h3">10 % off your next bouquet</div></div><code>THANKYOU10</code><button class="btn" onclick="App.toast('Opens floritta.uk')">Order flowers</button></div>`:""}
+   <!-- ids: SYST-119 --><div class="links2"><div class="pub-card"><span class="caps">Flower subscription</span><div class="sm soft">Fresh flowers every week or fortnight, delivered before 10.</div><div class="mt8"><button class="link" onclick="App.toast('Opens floritta.uk/subscription')">See plans</button></div></div><div class="pub-card"><span class="caps">Share with a friend</span><div class="sm soft">Give £10, get £10 on your next order.</div><div class="mt8"><button class="link" onclick="App.toast('Opens the referral page')">Get your link</button></div></div></div>
+   <!-- ids: SYST-120 --><div class="review"><div class="stars">★★★★★</div>“The freshest flowers in London – and the photo before delivery is such a lovely touch.”<div class="caps mt8">Sophie, Bermondsey</div><div class="mt8"><button class="link" onclick="App.toast('Opens instagram.com/floritta.uk')">Follow @floritta.uk</button></div></div>
+   <!-- ids: SYST-121 --><div class="pub-foot">Floritta · 80 Willow Walk, Bermondsey, London SE1 5SY<br>You received this page because someone sent you flowers through Floritta. The link works for this delivery only.</div>
+  </div>`;
+  S.trkTick=20;S.trkTimer=setInterval(()=>{if(A.state.current!=="public-tracking"){clearInterval(S.trkTimer);return}S.trkTick--;if(S.trkTick<=0){S.trkTick=20;if(!S.trkLost&&st==="transit")tt("Status refreshed · courier moved")}},1000);
+}
+function mountRedel(){url("floritta.uk/track/9f3k…/redelivery");const min=A.T(0,0,1).slice(0,10),max=A.T(0,0,21).slice(0,10);
+  $("#s25-redel").innerHTML=`<div class="pub-in" style="max-width:520px">
+   <div class="pub-logo"><span class="wm">Floritta</span><span class="caps">Fresh flowers · London</span></div>
+   <button class="textbtn mb16" onclick="App.go('public-tracking')">${I("back")} Back to tracking</button>
+   <div class="h2">Request a new time</div><div class="sm soft mt8 mb16">Pick a day from tomorrow up to three weeks ahead. We confirm by email.</div>
+   ${S.redelDone?`<div class="flash --warn">You already asked for ${A.fmtDay(A.T(12,0,1))} · ${S.redelSlot}. Sending again replaces that request.</div>`:""}
+   <div class="field mb16"><label>Preferred date</label><input class="input" type="date" id="s25-rd-d" min="${min}" max="${max}" value="${min}"><div class="xs muted mt8">from tomorrow to ${A.fmtDate(A.T(0,0,21))}</div></div>
+   <div class="field mb16"><label>Preferred time</label><div class="slots" id="s25-rd-s">${["Morning","Afternoon","Evening"].map((s,i)=>`<button type="button" class="chip ${i===0?"on":""}" onclick="S25.slot(this)">${s}</button>`).join("")}</div></div>
+   <div class="field mb16"><label>Note for the courier</label><textarea class="textarea" id="s25-rd-n" maxlength="500" placeholder="Flat number, bell, where to leave…"></textarea><div class="xs muted mt8"><span id="s25-rd-cnt">0</span> / 500</div><div class="err" id="s25-rd-err"></div></div>
+   <button class="btn --block" onclick="S25.redelSend()">Request redelivery</button>
+  </div>`;
+  $("#s25-rd-n").oninput=e=>$("#s25-rd-cnt").textContent=e.target.value.length;
+}
+function slot(b){$$("#s25-rd-s .chip").forEach(x=>x.classList.remove("on"));b.classList.add("on")}
+function redelSend(){const d=$("#s25-rd-d").value;if(!d||new Date(d)<=A.NOW){$("#s25-rd-err").textContent="Pick a date from tomorrow onwards";return}const go=()=>{S.redelDone=true;S.redelSlot=$("#s25-rd-s .chip.on").textContent;S.trk="failed";A.go("public-tracking");tt("Your request has been sent.")};if(S.redelDone)A.confirm("Replace the previous request?","The earlier date and note are overwritten; we email the buyer again.","Replace",go);else go()}
+/* ------------------------------------------------------------------ ONE · tenant pages */
+function mountWelcome(){url("bloom-leeds.floritta.one/one/welcome?user=…&signature=…");
+  $("#s25-wel-demo").innerHTML=`<span>Demo state</span><div class="seg-ctl"><button class="${S.wel==="fresh"?"on":""}" onclick="S25.S.wel='fresh';S25.mountWelcome()">First visit</button><button class="${S.wel==="done"?"on":""}" onclick="S25.S.wel='done';S25.mountWelcome()">Password already set</button></div><span class="sp"></span><span>Signed link from the welcome email · route exists only with TENANCY_ENABLED</span>`;
+  $("#s25-wel").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.welSave()">${LOGO}<div class="caps">Floritta One</div><div class="h2">Welcome to Bloom &amp; Co</div><div class="sm soft mb16">owner@bloomandco.example</div>
+   ${S.wel==="done"?`<div class="flash --ok">Your password is already set.</div><button type="button" class="btn --block" onclick="App.go('auth-login')">Sign in</button>`:`<div class="field"><label>New password</label><input class="input" type="password" id="s25-w-p"></div><div class="field"><label>Confirm password</label><input class="input" type="password" id="s25-w-c"><div class="err" id="s25-w-err"></div></div><button class="btn --block" type="submit">Set password &amp; sign in</button><div class="xs muted mt16">10 a minute. Sets the password, clears the forced change and signs you in as the owner.</div>`}</form>`;
+}
+function welSave(){const p=$("#s25-w-p").value,c=$("#s25-w-c").value;if(p.length<8){$("#s25-w-err").textContent="At least 8 characters";return}if(p!==c){$("#s25-w-err").textContent="Passwords do not match";return}tt("Password set · signed in as owner");A.go("orders")}
+function mountSusp(){url("bloom-leeds.floritta.one/one/suspended");const owner=A.role()==="owner";
+  $("#s25-susp").innerHTML=`<div class="auth-box" style="text-align:center">${LOGO}<div class="h2">Account suspended</div><div class="sm soft">Access to <b>Bloom &amp; Co</b> is paused. Your data is safe.</div>
+   ${owner?`<div class="note-box mt16" style="text-align:left">As the owner you can restore access by settling billing.<div class="mt8"><button class="btn --sm" onclick="App.toast('Online payment is not wired yet – email billing@floritta.one')">${I("card")} Pay now</button></div></div>`:`<div class="xs muted mt16">Ask the account owner to restore access.</div>`}
+   <div class="xs muted mt16">Every route of a suspended tenant redirects here (EnforceTenantStatus). Switch the stand role to Owner / Manager to see both variants.</div></div>`;
+}
+function mountImp(){url("bloom-leeds.floritta.one/orders");
+  $("#s25-imp-bar").innerHTML=S.imp?`${I("alert")}<span style="flex:1">You are impersonating <b>Tatiana · admin</b> in tenant <b>bloom-leeds</b>. Writes that are not explicitly allowed answer 403; everything is logged.</span><button class="btn" onclick="S25.impExit()">Exit</button>`:`<span style="flex:1">Impersonation ended – back to admin.floritta.ai/admin/tenants.</span><button class="btn" onclick="S25.S.imp=true;S25.mountImp()">Start again (demo link)</button>`;
+  $("#s25-imp-bar").style.background=S.imp?"":"var(--graphite)";
+  const os=A.data.orders.filter(o=>o.n===0).slice(0,6);
+  $("#s25-imp").innerHTML=`<div class="note-box mb16">How it starts: the central admin presses «Impersonate» in the tenant card → one-time link <code>/one/impersonate/{token}</code> (15 min) → signed in as the tenant's admin on /orders, <code>impersonation.started</code> written to the tenant's audit log.</div>
+   <div class="sec-head"><div class="h3">Orders · today</div><span class="xs muted">a normal CRM page under the banner</span></div>
+   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Customer</th><th>Product</th><th>Slot</th><th>Status</th><th></th></tr></thead><tbody>${os.map(o=>`<tr class="r" onclick="App.openOrder(${o.id})"><td class="tnum">${o.id}</td><td>${E(A.customer(o.customer).n)}</td><td>${E(A.product(o.product).name)}</td><td>${o.slot}</td><td>${A.orderPill(o)}</td><td onclick="event.stopPropagation()"><button class="textbtn" onclick="S25.impWrite(${o.id})">mark paid</button></td></tr>`).join("")}</tbody></table></div>
+   <div class="xs muted mt16">Reading is free; try «mark paid» to see the 403.</div>`;
+}
+function impWrite(id){if(S.imp){tt("403 · This action is blocked during impersonation (impersonation.blocked logged)")}else A.markPaid(id)}
+function impExit(){S.imp=false;mountImp();tt("Impersonation ended · impersonation_logs.ended_at written");setTimeout(()=>A.go("one-admin-tenants"),900)}
+/* ------------------------------------------------------------------ ONE · central admin */
+const PLANS=["Starter","Studio","Chain"];
+const TEN=[
+ {slug:"bloom-leeds",name:"Bloom & Co",status:"active",hold:false,plan:"Studio",trial:null,users:6,o24:38,db:"412 MB",last:A.T(10,30,0),created:A.T(9,0,-120),domains:["bloom-leeds.floritta.one"],ai:"works"},
+ {slug:"studio-fleur",name:"Studio Fleur",status:"trialing",hold:false,plan:"Starter",trial:A.T(9,0,9),users:3,o24:12,db:"88 MB",last:A.T(9,12,0),created:A.T(9,0,-20),domains:["studio-fleur.floritta.one"],ai:"none"},
+ {slug:"petal-bristol",name:"Petal Bristol",status:"past_due",hold:false,plan:"Studio",trial:null,users:4,o24:9,db:"230 MB",last:A.T(18,2,-1),created:A.T(9,0,-200),domains:["petal-bristol.floritta.one","petalbristol.example"],ai:"rejected"},
+ {slug:"rose-row",name:"Rose Row",status:"suspended",hold:true,plan:"Starter",trial:null,users:2,o24:0,db:"61 MB",last:A.T(11,0,-18),created:A.T(9,0,-300),domains:["rose-row.floritta.one"],ai:"platform"},
+ {slug:"thistle-edi",name:"Thistle Edinburgh",status:"provisioning",hold:false,plan:"Chain",trial:null,users:0,o24:0,db:"–",last:null,created:A.T(10,20,0),domains:["thistle-edi.floritta.one"],ai:"unknown"},
+ {slug:"old-vine",name:"Old Vine Florist",status:"archived",hold:false,plan:"Starter",trial:null,users:0,o24:0,db:"–",last:A.T(9,0,-90),created:A.T(9,0,-500),domains:[],ai:"none"},
+ {slug:"demo-shop",name:"Demo workspace",status:"active",hold:false,plan:"Starter",trial:null,users:5,o24:3,db:"40 MB",last:A.T(10,0,0),created:A.T(9,0,-60),domains:["demo.floritta.one"],ai:"platform"},
+ {slug:"ivy-cardiff",name:"Ivy Cardiff",status:"pending",hold:false,plan:"Studio",trial:null,users:0,o24:0,db:"–",last:null,created:A.T(10,41,0),domains:[],ai:"unknown"}
+];
+const STATUSES=["pending","provisioning","trialing","active","past_due","suspended","archived","deleted","purged"];
+const LEADS=[
+ {id:1,at:A.T(9,50,0),name:"Harriet Vale",email:"harriet@valeflowers.example",biz:"Vale Flowers · Bath",type:"single shop",status:"new",tenant:null,phone:"+44 7700 900611",msg:"We do 40 orders a day, mostly phone."},
+ {id:2,at:A.T(16,10,-1),name:"Marco Rinaldi",email:"marco@fioriverdi.example",biz:"Fiori Verdi · Manchester",type:"2 shops",status:"contacted",tenant:null,phone:"+44 7700 900622",msg:"Interested in the courier app."},
+ {id:3,at:A.T(11,0,-3),name:"Ольга Петренко",email:"olga@kvity.example",biz:"Квіти Ольги",type:"single shop",status:"new",tenant:null,phone:"+44 7700 900633",msg:""},
+ {id:4,at:A.T(14,0,-6),name:"Ben Okoro",email:"ben@studiofleur.example",biz:"Studio Fleur",type:"single shop",status:"converted",tenant:"studio-fleur",phone:"+44 7700 900644",msg:""},
+ {id:5,at:A.T(9,0,-9),name:"Anna Lind",email:"anna@lindblom.example",biz:"Lindblom",type:"online only",status:"rejected",tenant:null,phone:"",msg:"",reason:"Outside the UK"},
+ {id:6,at:A.T(13,0,-2),name:"Chloe Hart",email:"chloe@thistle.example",biz:"Thistle Edinburgh",type:"3 shops",status:"approved",tenant:"thistle-edi",phone:"+44 7700 900666",msg:"Three shops, one warehouse."}
+];
+const ten=slug=>TEN.find(t=>t.slug===slug);
+const STAT={pending:"todo",provisioning:"doing",trialing:"review",active:"done",past_due:"late",suspended:"cancelled",archived:"queue",deleted:"cancelled",purged:"cancelled"};
+const stPill=t=>A.pill(STAT[t.status],t.status.replace("_"," "))+(t.hold?` <span class="tag --line">On hold</span>`:"");
+function cHead(cur){return `<!-- ids: SYST-133 SYST-134 SYST-135 --><div class="c-head"><span class="wm">Floritta Landlord<small>admin.floritta.ai</small></span><nav><button class="${cur==="tenants"?"on":""}" onclick="App.go('one-admin-tenants')">Tenants</button><button class="${cur==="leads"?"on":""}" onclick="App.go('one-admin-leads')">Leads</button></nav><span class="sp"></span><span class="xs muted">Tatiana · owner</span><button class="btn --ghost --sm" onclick="App.toast('Signed out of admin.floritta.ai');App.go('one-admin-login')">${I("logout")} Sign out</button></div>${S.faOld&&cur!=="2fa"?`<div class="c-warn">${I("alert")}<span style="flex:1">You are running low on recovery codes – generate a new set.</span><button class="btn --sm" onclick="S25.S.fa='codes';App.go('one-admin-2fa')">Recovery codes</button></div>`:""}`}
+function cToast(m){tt(m)}
+function mountCL(){url("admin.floritta.ai/login");
+  $("#s25-cl-demo").innerHTML=`<span>Demo state</span><div class="seg-ctl"><button class="${S.cl==="2fa"?"on":""}" onclick="S25.S.cl='2fa';S25.mountCL()">2FA required</button><button class="${S.cl==="no2fa"?"on":""}" onclick="S25.S.cl='no2fa';S25.mountCL()">2FA off</button><button class="${S.cl==="notenrolled"?"on":""}" onclick="S25.S.cl='notenrolled';S25.mountCL()">Admin without 2FA</button></div><span class="sp"></span><span>guard central · ADMIN_2FA_REQUIRED_ONE_ADMIN</span>`;
+  $("#s25-cl").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.clSubmit()">${LOGO}<div class="caps">Floritta One</div><div class="h2">Central admin sign in</div>
+   ${S.cl==="notenrolled"?`<div class="flash --err">Two-factor authentication is required, but this admin has not set it up. Enrol with the console command <code>one:admin-create</code>.</div>`:""}
+   <div class="field"><label>Email</label><input class="input" type="email" id="s25-cl-e" value="tatiana@floritta.example"></div>
+   <div class="field"><label>Password</label><input class="input" type="password" id="s25-cl-p"></div>
+   ${S.cl!=="no2fa"?`<div class="field"><label>${S.clRecovery?"Recovery code":"Authentication code"}</label><input class="input tnum" id="s25-cl-c" inputmode="numeric" placeholder="${S.clRecovery?"xxxx-xxxx":"6 digits from your authenticator"}"><div class="xs muted mt8">${S.clRecovery?"A recovery code works once and is then burnt.":"A code is accepted once – the same code cannot be reused."}</div></div><div class="mb16"><button type="button" class="textbtn" onclick="S25.S.clRecovery=!S25.S.clRecovery;S25.mountCL()">${S.clRecovery?"Use your authenticator instead":"Use a recovery code instead"}</button></div>`:""}
+   <button class="btn --block" type="submit">Sign in</button>
+   <div class="foot"><span>5 attempts a minute</span><span>after sign-in → /admin/tenants</span></div></form>`;
+}
+function clSubmit(){if(S.cl==="notenrolled"){tt("Refused – enrol 2FA first");return}const p=$("#s25-cl-p").value;if(!p){tt("Enter the password");return}if(S.cl!=="no2fa"&&!$("#s25-cl-c").value){tt("Enter the code");return}tt("Signed in · admin.floritta.ai");A.go("one-admin-tenants")}
+function mount2fa(){url("admin.floritta.ai/2fa/"+(S.fa==="enrol"?"enrol":"recovery-codes"));
+  $("#s25-2fa-head").innerHTML=cHead("2fa")+`<div class="demo-bar"><span>Page</span><div class="seg-ctl"><button class="${S.fa==="enrol"?"on":""}" onclick="S25.S.fa='enrol';S25.mount2fa()">Enrol (/2fa/enrol)</button><button class="${S.fa==="codes"?"on":""}" onclick="S25.S.fa='codes';S25.mount2fa()">Recovery codes</button></div>${S.fa==="codes"?`<label class="check xs"><input type="checkbox" ${S.faShown?"checked":""} onchange="S25.S.faShown=this.checked;S25.mount2fa()">One-time show (just generated)</label><label class="check xs"><input type="checkbox" ${S.faOld?"checked":""} onchange="S25.S.faOld=this.checked;S25.mount2fa()">Running low</label>`:""}<span class="sp"></span><span>/2fa/enrol has no link in the UI – only by URL</span></div>`;
+  if(S.fa==="enrol"){$("#s25-2fa").innerHTML=`<div style="max-width:560px"><div class="h2">Set up your authenticator</div>
+    <!-- ids: SYST-190 --><div class="flash --warn mt16">2FA is already enabled on this account. Re-enrolling replaces the current secret and all 8 recovery codes – confirm with your password first.</div>
+    <div class="field mb16"><label>Current password</label><input class="input" type="password" id="s25-fa-pw" placeholder="required to re-enrol"></div>
+    <!-- ids: SYST-140 --><div class="caps">Secret</div><div class="secret">JBSW Y3DP EHPK 3PXP 7A4K ZQ2M</div><div class="xs muted mt8">Enter it in Google Authenticator / 1Password, or paste the URI. The same secret stays while you refresh the page.</div><div class="uri mt8">otpauth://totp/Floritta%20One:tatiana@floritta.example?secret=JBSWY3DPEHPK3PXP7A4KZQ2M&issuer=Floritta%20One</div>
+    <!-- ids: SYST-141 --><div class="field mt16"><label>Authentication code</label><input class="input tnum" id="s25-fa-c" inputmode="numeric" placeholder="6 digits"></div><div class="err" id="s25-fa-err"></div><div class="btn-row mt16"><button class="btn" onclick="S25.faConfirm()">Confirm</button><button class="btn --ghost" onclick="App.go('one-admin-tenants')">Cancel</button></div></div>`;return}
+  const codes=["4K7P-Q2MD","B8ZT-11XW","F3LC-9RNA","H0VY-6QEE","M5WD-7JPK","P2XR-3TGB","S9NF-0LHC","Z6QA-8VMT"];
+  $("#s25-2fa").innerHTML=`<div style="max-width:640px"><div class="h2">Recovery codes</div>
+   ${S.faShown?`<!-- ids: SYST-142 SYST-143 SYST-144 --><div class="flash --warn mt16">These are shown only once – save them now. After you leave or refresh the page they are gone.</div><div class="codes">${codes.map(c=>`<code>${c}</code>`).join("")}</div><div class="btn-row"><button class="btn --sm" id="s25-copy" onclick="S25.copyCodes()">${I("copy")} Copy</button><button class="btn --ghost --sm" onclick="App.toast('floritta-one-recovery-codes.txt downloaded')">${I("download")} Download</button></div>`:
+   `<!-- ids: SYST-145 --><div class="mt16 sm">${S.faOld?"<b>1 of 8</b>":"<b>6 of 8</b>"} recovery codes remaining.${S.faOld?` <span class="accent">Running low – generate a new set.</span>`:""}</div>`}
+   <!-- ids: SYST-146 --><div class="hr"></div><div class="h3">Generate new codes</div><div class="sm soft mt8 mb16">The old codes stop working. Confirm with your password or a fresh authenticator code – one is enough.</div>
+   <div class="grid g2"><div class="field"><label>Password</label><input class="input" type="password" id="s25-rg-p"></div><div class="field"><label>Authentication code</label><input class="input tnum" id="s25-rg-c" inputmode="numeric"></div></div><div class="err" id="s25-rg-err"></div><div class="btn-row mt16"><button class="btn" onclick="S25.regen()">Generate new codes</button></div><div class="xs muted mt8">5 a minute.</div></div>`;
+}
+function faConfirm(){if(!$("#s25-fa-pw").value){$("#s25-fa-err").textContent="Enter your current password to replace the authenticator";return}if(!/^\d{6}$/.test($("#s25-fa-c").value)){$("#s25-fa-err").textContent="Enter the 6-digit code";return}S.fa="codes";S.faShown=true;S.faOld=false;mount2fa();tt("2FA enabled · recovery codes generated")}
+function copyCodes(){const b=$("#s25-copy");b.innerHTML=I("check")+" Copied";setTimeout(()=>{if($("#s25-copy"))$("#s25-copy").innerHTML=I("copy")+" Copy"},2000)}
+function regen(){if(!$("#s25-rg-p").value&&!$("#s25-rg-c").value){$("#s25-rg-err").textContent="Enter your password or an authenticator code";return}S.faShown=true;S.faOld=false;mount2fa();tt("New recovery codes generated – the old ones no longer work")}
+function mountTenants(){url("admin.floritta.ai/admin/tenants"+(S.tenStatus!=="all"?"?status="+S.tenStatus:""));
+  $("#s25-ten-head").innerHTML=cHead("tenants");
+  const k=s=>TEN.filter(t=>t.status===s).length;
+  let list=TEN.filter(t=>S.tenStatus==="all"||t.status===S.tenStatus);
+  const key={slug:t=>t.slug,name:t=>t.name,status:t=>t.status,trial:t=>t.trial||"",created:t=>t.created}[S.tenSort];
+  list=list.slice().sort((a,b)=>(key(a)>key(b)?1:key(a)<key(b)?-1:0)*(S.tenDir==="asc"?1:-1));
+  const per=25,pages=Math.max(1,Math.ceil(list.length/per));
+  const th=(k,l)=>`<th class="sort" onclick="S25.tenSort('${k}')">${l}${S.tenSort===k?(S.tenDir==="asc"?" ▲":" ▼"):""}</th>`;
+  $("#s25-ten").innerHTML=`
+   <!-- ids: SYST-147 --><div class="grid g4 mb16"><div class="kpi-card" onclick="S25.tenFilter('all')"><span class="caps">Tenants</span><span class="kpi">${TEN.length}</span></div><div class="kpi-card" onclick="S25.tenFilter('active')"><span class="caps">Active</span><span class="kpi">${k("active")}</span></div><div class="kpi-card" onclick="S25.tenFilter('trialing')"><span class="caps">Trialing</span><span class="kpi">${k("trialing")}</span></div><div class="kpi-card" style="box-shadow:inset 0 3px 0 var(--accent)" onclick="S25.tenFilter('past_due')"><span class="caps">Past due</span><span class="kpi accent">${k("past_due")}</span><span class="delta">suspended: ${k("suspended")}</span></div></div>
+   <!-- ids: SYST-148 SYST-153 --><div class="toolbar"><select class="select" style="width:200px" onchange="S25.tenFilter(this.value)"><option value="all">All statuses</option>${STATUSES.map(s=>`<option value="${s}" ${S.tenStatus===s?"selected":""}>${s.replace("_"," ")}</option>`).join("")}</select><span class="xs muted">${list.length} tenants · incl. archived and deleted</span><span class="sp"></span><button class="btn --sm" onclick="S25.newTenant()">${I("plus")} New tenant</button></div>
+   <!-- ids: SYST-149 SYST-150 SYST-152 --><div class="tbl-wrap"><table class="tbl"><thead><tr>${th("slug","Slug")}${th("name","Name")}${th("status","Status")}<th>Plan</th>${th("trial","Trial ends")}<th class="num">Users</th><th class="num">Orders 24h</th><th class="num">DB size</th><th>Last activity</th></tr></thead><tbody>
+   ${list.length?list.slice((S.tenPage-1)*per,S.tenPage*per).map(t=>`<tr class="r ${t.status==="past_due"?"--late":""}" onclick="S25.openTenant('${t.slug}')"><td><code class="xs">${t.slug}</code></td><td>${E(t.name)}</td><td>${stPill(t)}</td><td>${t.plan}</td><td class="xs">${t.trial?A.fmtDate(t.trial):"–"}</td><td class="num tnum">${t.users}</td><td class="num tnum">${t.o24}</td><td class="num xs">${t.db}</td><td class="xs muted">${t.last?A.fmtDay(t.last)+" "+A.fmtTime(t.last):"–"}</td></tr>`).join(""):`<tr><td colspan="9"><div class="empty">${I("globe")}<div class="h3">No tenants yet</div></div></td></tr>`}
+   </tbody></table></div>
+   <!-- ids: SYST-151 --><div class="pager" style="display:flex;gap:10px;font-size:12px;color:var(--grey);padding-top:10px"><span>Page ${S.tenPage} of ${pages} · 25 per page</span><span class="sp"></span><button class="btn --ghost --sm ${S.tenPage<=1?"is-disabled":""}" onclick="S25.S.tenPage--;S25.mountTenants()">Prev</button><button class="btn --ghost --sm ${S.tenPage>=pages?"is-disabled":""}" onclick="S25.S.tenPage++;S25.mountTenants()">Next</button></div>`;
+}
+function tenFilter(v){S.tenStatus=v;S.tenPage=1;mountTenants()}
+function tenSort(k){if(S.tenSort===k)S.tenDir=S.tenDir==="asc"?"desc":"asc";else{S.tenSort=k;S.tenDir="asc"}mountTenants()}
+function openTenant(slug){S.tenant=slug;A.go("one-admin-tenant")}
+function newTenant(){A.modal({title:"New tenant",body:`<div class="grid g2"><div class="field"><label>Slug</label><input class="input" id="s25-nt-s" placeholder="shop-city"></div><div class="field"><label>Name</label><input class="input" id="s25-nt-n" placeholder="Shop name"></div><div class="field"><label>Owner e-mail</label><input class="input" type="email" id="s25-nt-e"></div><div class="field"><label>Owner name</label><input class="input"></div><div class="field"><label>Plan</label><select class="select">${PLANS.map(p=>`<option>${p}</option>`).join("")}</select></div></div><div class="err" id="s25-nt-err"></div><div class="xs muted mt8">Provisioning: database and DB users, migrations, seed, owner, Stripe subscription (trialing), welcome email with the password link, smoke-check.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S25.provision()">Provision</button>`})}
+function provision(){const s=$("#s25-nt-s").value.trim(),n=$("#s25-nt-n").value.trim();if(!/^[a-z0-9-]{3,30}$/.test(s)||!n){$("#s25-nt-err").textContent="Slug: 3–30 lower-case letters, digits, dashes; name required";return}TEN.unshift({slug:s,name:n,status:"provisioning",hold:false,plan:"Starter",trial:null,users:0,o24:0,db:"–",last:null,created:A.NOW.toISOString(),domains:[s+".floritta.one"],ai:"unknown"});A.closeModal();cToast("Provisioning queued for "+s+".");openTenant(s)}
+function mountTenant(){const t=ten(S.tenant)||TEN[0];url("admin.floritta.ai/admin/tenants/"+t.slug);$("#s25-tc-head").innerHTML=cHead("tenants");
+  const can={suspend:["active","trialing","past_due"].includes(t.status),unsuspend:t.status==="suspended",extend:["trialing","past_due"].includes(t.status),hold:!t.hold&&!["archived","deleted","purged"].includes(t.status),release:t.hold,archive:["suspended","past_due","active"].includes(t.status),restore:t.status==="archived",imp:["active","trialing","past_due"].includes(t.status)};
+  const op=(k,l,cls="--ghost")=>can[k]?`<button class="btn --sm ${cls}" onclick="S25.op('${t.slug}','${k}')">${l}</button>`:"";
+  const AI={works:["--ok","Key works","Checked today 10:30 · model access confirmed"],none:["","No key – AI features are off","Flora, Ask the CRM and photo checks are disabled for this client"],rejected:["--accent","Key is not accepted","401 from Anthropic at the last check – ask the client for a new key"],platform:["","Runs on our keys","Platform key with per-tenant limits – no form"],unknown:["","Unknown","Live check failed or tenancy disabled"]}[t.ai];
+  const hist=[["tenant_provisioned · system",A.T(9,0,-120),{plan:t.plan}],["trial_started · system",A.T(9,1,-120),{days:14}],["converted_to_active · stripe",A.T(3,0,-106),{subscription:"sub_…"}],["ai_key.set_by_concierge · Tatiana",A.T(11,20,-40),{reason:"client sent the key by email"}]];
+  const bill=[["invoice.paid",A.T(3,0,-10),{amount:"£149.00",plan:t.plan}],["invoice.paid",A.T(3,0,-40),{amount:"£149.00"}],["customer.subscription.updated",A.T(3,0,-106),{status:"active"}]];
+  const prov=[["create_database","done",1,"1.8 s"],["create_db_users","done",1,"0.4 s"],["migrate","done",1,"41 s"],["seed","done",1,"6 s"],["create_owner","done",1,"0.2 s"],["stripe_subscription","done",2,"3.1 s"],["welcome_email","done",1,"0.9 s"],["smoke_check","done",1,"2.2 s"]];
+  $("#s25-tc").innerHTML=`<div class="row mb16"><button class="ib" onclick="App.go('one-admin-tenants')">${I("back")}</button><div class="h2">${E(t.name)}</div>${stPill(t)}<span class="sp"></span><!-- ids: SYST-156 SYST-157 SYST-158 SYST-159 SYST-160 SYST-161 SYST-162 SYST-163 --><div class="ops">${op("extend","Extend trial")}${op("hold","Hold billing")}${op("release","Release billing")}${op("unsuspend","Unsuspend")}${op("suspend","Suspend","--secondary")}${op("restore","Restore")}${op("archive","Archive","--secondary")}${op("imp","Impersonate","")}</div></div>
+   <div class="t-grid"><div class="col" style="gap:16px">
+    <div class="grid g2">
+     <!-- ids: SYST-154 --><div class="card"><span class="caps">Details</span><dl class="kv" style="grid-template-columns:100px 1fr"><dt>Status</dt><dd>${stPill(t)}</dd><dt>Slug</dt><dd><code class="xs">${t.slug}</code></dd><dt>Plan</dt><dd>${t.plan}</dd><dt>Database</dt><dd><code class="xs">tenant_${t.slug.replace(/-/g,"_")}</code></dd><dt>Trial ends</dt><dd>${t.trial?A.fmtDate(t.trial):"–"}</dd><dt>Domains</dt><dd>${t.domains.length?t.domains.map(d=>`<code class="xs">${d}</code>`).join("<br>"):"–"}</dd><dt>Created</dt><dd>${A.fmtDate(t.created)}</dd></dl></div>
+     <!-- ids: SYST-155 --><div class="card"><span class="caps">Metrics</span><div class="grid g3"><div><span class="caps">Users</span><div class="kpi-s">${t.users}</div></div><div><span class="caps">Orders 24h</span><div class="kpi-s">${t.o24}</div></div><div><span class="caps">DB size</span><div class="kpi-s" style="font-size:22px">${t.db}</div></div></div><div class="xs muted mt16">As of ${A.fmtDay(A.T(4,0,0))} 04:00 · one:usage-snapshot</div></div>
+    </div>
+    <!-- ids: SYST-164 SYST-165 --><div class="card"><span class="caps">Client AI key</span><div class="row"><span class="dot ${AI[0]}"></span><b>${AI[1]}</b></div><div class="sm soft mt8">${AI[2]}</div>
+     ${t.ai!=="platform"?`<div class="hr"></div><div class="grid g2"><div class="field"><label>Client's Anthropic key</label><input class="input" type="password" id="s25-ai-k" placeholder="sk-ant-…" oninput="S25.aiBtn()"></div><div class="field"><label>Reason (for the audit log)</label><input class="input" id="s25-ai-r" placeholder="e.g. client sent a new key" oninput="S25.aiBtn()"></div></div><div class="err" id="s25-ai-err"></div><div class="btn-row mt8"><button class="btn --sm is-disabled" id="s25-ai-btn" onclick="S25.aiSave('${t.slug}')">Save key</button><span class="xs muted">key name for the client: <code>Floritta One · ${t.slug}</code></span></div>`:""}</div>
+    <!-- ids: SYST-168 --><div class="panel"><div class="p-head"><div class="h4">Provisioning log</div><span class="xs muted">${prov.length} steps</span></div><div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Step</th><th>Status</th><th class="num">Duration</th></tr></thead><tbody>${prov.map(p=>`<tr><td><code class="xs">${p[0]}</code></td><td>${A.pill("done",p[1])}${p[2]>1?` <span class="xs muted">#${p[2]}</span>`:""}</td><td class="num xs">${p[3]}</td></tr>`).join("")}</tbody></table></div></div>
+   </div><div class="col" style="gap:16px">
+    <!-- ids: SYST-166 --><div class="panel"><div class="p-head"><div class="h4">Status history</div><span class="xs muted">last 100</span></div><div style="padding:12px 14px"><div class="timeline">${hist.map((h,i)=>`<div class="tl ${i===0?"--on":""}">${h[0]}<small>${A.fmtDate(h[1])} ${A.fmtTime(h[1])}</small><div class="tl-json">${E(JSON.stringify(h[2]))}</div></div>`).join("")}</div></div></div>
+    <!-- ids: SYST-167 --><div class="panel"><div class="p-head"><div class="h4">Billing timeline</div><span class="xs muted">Stripe</span></div><div style="padding:12px 14px"><div class="timeline">${bill.map((h,i)=>`<div class="tl ${i===0?"--on":""}">${h[0]}<small>${A.fmtDate(h[1])}</small><div class="tl-json">${E(JSON.stringify(h[2]))}</div></div>`).join("")}</div></div></div>
+    <div class="card --flat"><span class="caps">Hold vs Suspend</span><div class="sm soft"><b>Hold billing</b> freezes only automatic billing transitions – access is untouched. <b>Suspend</b> throws the staff out (402) and stops the tenant's background jobs.</div></div>
+   </div></div>`;
+}
+function aiBtn(){const ok=$("#s25-ai-k").value&&$("#s25-ai-r").value;$("#s25-ai-btn").classList.toggle("is-disabled",!ok)}
+function aiSave(slug){const k=$("#s25-ai-k").value;if(!/^sk-ant-/.test(k)){$("#s25-ai-err").textContent="Anthropic rejected the key (401) – the key was not saved";return}ten(slug).ai="works";$("#s25-ai-k").value="";$("#s25-ai-r").value="";mountTenant();cToast("Done.")}
+const OPS={suspend:["Suspend tenant","Staff are thrown out immediately and get 402; the tenant's background jobs stop. Access can be restored with Unsuspend.",true],unsuspend:["Unsuspend tenant","Access returns at once – to trialing if the trial has not ended, otherwise active.",false],extend:["Extend trial","Adds 14 days to the trial end date.",false],hold:["Hold billing","Freezes only automatic billing transitions (past due → suspended). Access is not touched.",false],release:["Release billing","Automatic billing transitions resume.",false],archive:["Archive tenant","Final dump to the archive bucket, then the tenant database and its DB users are dropped. Restore is possible from the confirmed dump.",true],restore:["Restore tenant","Restores the database from the archived dump: archived → provisioning → active.",false],imp:["Impersonate","You will be signed in as this tenant's admin on their domain. Writes are blocked; everything is logged under your name.",true]};
+function op(slug,k){const o=OPS[k];A.modal({title:o[0],body:`<div class="sm soft mb16">${o[1]}</div><div class="field"><label>Reason *</label><input class="input" id="s25-op-r" placeholder="written to tenant_audit_logs"></div><div class="err" id="s25-op-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm ${o[2]?"--accent":""}" onclick="S25.opGo('${slug}','${k}')">${o[0].split(" ")[0]}</button>`})}
+function opGo(slug,k){const r=$("#s25-op-r").value.trim();if(!r){$("#s25-op-err").textContent="A reason is required";return}const t=ten(slug);
+  if(k==="restore"&&slug==="old-vine"){$("#s25-op-err").textContent="Restore refused: no confirmed archive dump for this tenant";return}
+  A.closeModal();
+  if(k==="suspend"){t.status="suspended";cToast("Done.")}else if(k==="unsuspend"){t.status=t.trial&&new Date(t.trial)>A.NOW?"trialing":"active";cToast("Done.")}else if(k==="extend"){const d=new Date(t.trial||A.NOW);d.setDate(d.getDate()+14);t.trial=d.toISOString();cToast("Done. Trial ends "+A.fmtDate(t.trial))}else if(k==="hold"){t.hold=true;cToast("Done.")}else if(k==="release"){t.hold=false;cToast("Done.")}else if(k==="archive"){t.status="archived";cToast("Archive queued for "+slug+".")}else if(k==="restore"){t.status="provisioning";cToast("Restore queued for "+slug+".")}else if(k==="imp"){S.imp=true;cToast("Opening "+slug+" as its admin…");setTimeout(()=>A.go("one-impersonation"),700);return}
+  mountTenant()}
+function mountLeads(){url("admin.floritta.ai/admin/leads"+(S.ldStatus!=="all"?"?status="+S.ldStatus:""));$("#s25-ld-head").innerHTML=cHead("leads");
+  const k=s=>LEADS.filter(l=>l.status===s).length;const list=LEADS.filter(l=>S.ldStatus==="all"||l.status===S.ldStatus).sort((a,b)=>a.at<b.at?1:-1);
+  $("#s25-ld").innerHTML=`
+   <!-- ids: SYST-169 --><div class="grid g4 mb16"><div class="kpi-card" onclick="S25.ldFilter('new')"><span class="caps">New</span><span class="kpi">${k("new")}</span></div><div class="kpi-card" onclick="S25.ldFilter('contacted')"><span class="caps">Contacted</span><span class="kpi">${k("contacted")}</span></div><div class="kpi-card" onclick="S25.ldFilter('converted')"><span class="caps">Converted</span><span class="kpi">${k("converted")}</span></div><div class="kpi-card" onclick="S25.ldFilter('all')"><span class="caps">Leads</span><span class="kpi">${LEADS.length}</span></div></div>
+   <!-- ids: SYST-170 --><div class="toolbar"><select class="select" style="width:200px" onchange="S25.ldFilter(this.value)">${[["all","All"],["new","New"],["contacted","Contacted"],["approved","Approved"],["converted","Converted"],["rejected","Rejected"]].map(x=>`<option value="${x[0]}" ${S.ldStatus===x[0]?"selected":""}>${x[1]}</option>`).join("")}</select><span class="xs muted">from the «Book a demo» form · 25 per page</span></div>
+   <!-- ids: SYST-171 SYST-172 SYST-173 SYST-174 SYST-175 --><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Name</th><th>E-mail</th><th>Business</th><th>Type</th><th>Status</th><th></th></tr></thead><tbody>
+   ${list.length?list.map(l=>`<tr class="r" onclick="S25.lead(${l.id})"><td class="xs">${A.fmtDay(l.at)} ${A.fmtTime(l.at)}</td><td>${E(l.name)}</td><td onclick="event.stopPropagation()"><a class="link" href="mailto:${E(l.email)}" onclick="event.preventDefault();App.toast('Opens your mail app · ${E(l.email)}')">${E(l.email)}</a></td><td>${E(l.biz)}</td><td class="xs">${l.type}</td><td>${A.pill({new:"todo",contacted:"doing",approved:"review",converted:"done",rejected:"cancelled"}[l.status],l.status)}${l.tenant?`<span class="sub"><code>${l.tenant}</code></span>`:""}</td><td onclick="event.stopPropagation()"><div class="ops">${l.status==="new"?`<button class="btn --ghost --sm" onclick="S25.contact(${l.id})">Mark contacted</button>`:""}${l.status==="new"||l.status==="contacted"?`<button class="btn --sm" onclick="S25.approve(${l.id})">Approve</button><button class="btn --ghost --sm" onclick="S25.reject(${l.id})">Reject</button>`:""}</div></td></tr>`).join(""):`<tr><td colspan="7"><div class="empty">${I("inbox")}<div class="h3">No leads yet</div></div></td></tr>`}
+   </tbody></table></div><div class="xs muted mt8">Click a row for phone, message and source (the live CRM receives them but does not show them).</div>`;
+}
+function ldFilter(v){S.ldStatus=v;mountLeads()}
+const lead=id=>LEADS.find(l=>l.id===id);
+function leadRow(id){const l=lead(id);A.sheet({eyebrow:"Lead #"+id,title:E(l.name),narrow:true,body:`<dl class="kv" style="grid-template-columns:100px 1fr"><dt>Business</dt><dd>${E(l.biz)} · ${l.type}</dd><dt>E-mail</dt><dd>${E(l.email)}</dd><dt>Phone</dt><dd class="tnum">${E(l.phone)||"–"}</dd><dt>Message</dt><dd>${E(l.msg)||"–"}</dd><dt>Source</dt><dd>floritta.one/demo · Google Ads</dd><dt>Status</dt><dd>${l.status}${l.reason?" · "+E(l.reason):""}</dd></dl>`})}
+function contact(id){lead(id).status="contacted";mountLeads();cToast("Done.")}
+function suggestSlug(s){return s.normalize("NFKD").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,30)}
+function approve(id){const l=lead(id);const slug=suggestSlug(l.biz||l.name);A.modal({title:"Approve – create tenant",body:`<!-- ids: SYST-192 --><div class="grid g2"><div class="field"><label>Slug</label><input class="input" id="s25-ap-s" value="${slug}">${!slug?`<div class="err">The business name gives no Latin slug – type one by hand</div>`:""}</div><div class="field"><label>Name</label><input class="input" value="${E(l.biz)}"></div><div class="field"><label>Owner e-mail</label><input class="input" value="${E(l.email)}"></div><div class="field"><label>Owner name</label><input class="input" value="${E(l.name)}"></div><div class="field"><label>Plan</label><select class="select">${PLANS.map(p=>`<option>${p}</option>`).join("")}</select></div></div><div class="err" id="s25-ap-err"></div><div class="xs muted mt8">Same path as «New tenant»: provisioning starts, the owner gets a welcome email with the password link.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S25.approveGo(${id})">Approve</button>`})}
+function approveGo(id){const s=$("#s25-ap-s").value.trim();if(!/^[a-z0-9-]{3,30}$/.test(s)){$("#s25-ap-err").textContent="Slug: 3–30 lower-case letters, digits, dashes";return}const l=lead(id);l.status="approved";l.tenant=s;TEN.unshift({slug:s,name:l.biz,status:"provisioning",hold:false,plan:"Starter",trial:null,users:0,o24:0,db:"–",last:null,created:A.NOW.toISOString(),domains:[s+".floritta.one"],ai:"unknown"});A.closeModal();mountLeads();cToast("Provisioning queued for "+s+".")}
+function reject(id){A.modal({title:"Reject lead",body:`<div class="field"><label>Reason *</label><input class="input" id="s25-rj-r" placeholder="e.g. outside the UK"></div><div class="err" id="s25-rj-err"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm --accent" onclick="S25.rejectGo(${id})">Reject</button>`})}
+function rejectGo(id){const r=$("#s25-rj-r").value.trim();if(!r){$("#s25-rj-err").textContent="A reason is required";return}const l=lead(id);l.status="rejected";l.reason=r;A.closeModal();mountLeads();cToast("Done.")}
+/* ---------- commands & mounts ---------- */
+A.registerCommands([{g:"Go to",t:"Public tracking page (recipient view)",ic:"map",fn:()=>A.go("public-tracking")},{g:"Go to",t:"Floritta One · admin tenants",ic:"globe",fn:()=>A.go("one-admin-tenants")},{g:"Actions",t:"Change my password",ic:"lock",fn:()=>{S.pc="voluntary";A.go("auth-password-change")}}]);
+window.S25={S,mountLogin,login,mountForgot,forgot,mountReset,reset,mountPC,pcSave,mountTracking,mountRedel,slot,redelSend,mountWelcome,welSave,mountSusp,mountImp,impWrite,impExit,mountCL,clSubmit,mount2fa,faConfirm,copyCodes,regen,mountTenants,tenFilter,tenSort,openTenant,newTenant,provision,mountTenant,aiBtn,aiSave,op,opGo,mountLeads,ldFilter,lead:leadRow,contact,approve,approveGo,reject,rejectGo};
+window.mount_auth_login=mountLogin;window.mount_auth_forgot=mountForgot;window.mount_auth_reset=mountReset;window.mount_auth_password_change=mountPC;window.mount_public_tracking=mountTracking;window.mount_public_redelivery=mountRedel;window.mount_one_welcome=mountWelcome;window.mount_one_suspended=mountSusp;window.mount_one_impersonation=mountImp;window.mount_one_admin_login=mountCL;window.mount_one_admin_2fa=mount2fa;window.mount_one_admin_tenants=mountTenants;window.mount_one_admin_tenant=mountTenant;window.mount_one_admin_leads=mountLeads;
+})();
+</script>
