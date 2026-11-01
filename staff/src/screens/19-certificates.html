@@ -1,4 +1,49 @@
+<style>
+.lr .ct-share{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-left:12px}
+.lr .ct-share svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+.lr .ct-share.off{color:var(--grey);pointer-events:none}
+</style>
+<!-- Certificates & clearances (/b/learn-certificates). Entered from the ribbon icon and the row on Learn. ids: TM-LEARN-025 -->
 <section class="scr lr" id="s-certificates" data-tab="learn" data-nav="Certificates" data-group="Learning">
+  <!-- back. ids: TM-LEARN-058 -->
   <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Certificates</div></div>
+  <!-- rendered by shell mount_certificates + extended below:
+       demo chips: CRM certificates / 404 → clearances from station lessons only (no "Your certificates" block) / loading / error / empty; pull-to-refresh (certificates + lessons). ids: TM-LEARN-059 TM-LEARN-060 TM-LEARN-061 TM-LEARN-066
+       yellow "Needs renewing" panel: "<clearance> expires in N days" / "expired", joined with " · ". ids: TM-LEARN-062
+       Your certificates: seal (yellow when expiring), name, "passed <date> · valid to <date>" or "no expiry", View (PDF sheet). ids: TM-LEARN-063
+       Station clearances: name, meta, pill valid / expiring / expired / not cleared / waiting for sign-off, sorted expired → expiring → waiting → valid → not cleared. ids: TM-LEARN-064 TM-CLEARN-021 TM-CLEARN-030
+       Share PDF (system share sheet) only when the record has a signed https link; otherwise the button is greyed with "no signed link". ids: TM-LEARN-065 -->
   <div class="scr-body has-tab" id="lr-certs"></div>
 </section>
+<script>
+(function(){
+'use strict';
+const A=window.App, ic=A.icon, L=window.LR;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const orig=window.mount_certificates;
+L.cdemo='crm';
+const top=()=>`<div class="lr-demo" style="padding-top:4px">${[['crm','CRM certificates'],['404','No endpoint'],['loading','Loading'],['error','Error'],['empty','Empty']].map(d=>`<button class="chip ${L.cdemo===d[0]?'on':''}" onclick="LR.cdemo='${d[0]}';window.mount_certificates()">${d[1]}</button>`).join('')}</div><button class="lr-ptr" onclick="App.haptic();App.toast('Refreshed · certificates and lessons')">${ic('repeat')} Pull to refresh</button>`;
+L.shareCert=function(name,signed){
+if(!signed){A.toast('No signed link for this PDF – ask Valeria');return}
+A.sheet(`<div class="sh-head"><div class="h3">Share</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 12px">${name} · PDF with a signed link (valid 7 days). Anyone with the link can open it without logging in.</p><div class="tiles">${['Messages','Mail','Files','AirDrop','WhatsApp','Copy link'].map(t=>`<button class="tile" onclick="App.closeSheet();App.toast('Shared via ${t}')"><span class="tl">${t}</span></button>`).join('')}</div></div>`);
+};
+window.mount_certificates=function(){
+const body=$('#lr-certs');
+if(L.cdemo==='loading'){body.innerHTML=top()+`<div class="lr-sk skeleton"></div><div class="lr-sk skeleton" style="height:140px"></div>`;return}
+if(L.cdemo==='error'){body.innerHTML=top()+`<div class="pad"><div class="panel --accent"><div class="h4 accent">Couldn't load</div><div class="sm soft mt4">Certificates did not load and the lesson list is unavailable too. Pull down to try again.</div></div></div>`;return}
+if(L.cdemo==='empty'){body.innerHTML=top()+`<div class="sec-head" style="margin-top:8px"><div class="h2">Your certificates</div></div><div class="pad"><div class="panel"><div class="h4">Nothing here yet</div><div class="sm soft mt4">Certificates appear after a compliance lesson with a signed declaration; station clearances after a manager watches you on shift.</div></div></div>`;return}
+orig();
+body.insertAdjacentHTML('afterbegin',top());
+/* share buttons on certificate rows; the second certificate has no signed https link */
+$$('.lr-cert',body).forEach((row,i)=>{const nm=$('.h4',row).textContent, signed=i%2===0;const v=$('.lr-link',row);if(v)v.insertAdjacentHTML('afterend',`<button class="ct-share ${signed?'':'off'}" onclick="LR.shareCert('${nm.replace(/'/g,'’')}',${signed})">${ic('send')} ${signed?'Share':'No link'}</button>`)});
+if(L.cdemo==='404'){
+/* no certificates endpoint: the "Your certificates" block is hidden, clearances come from the station lessons */
+const h=$$('.sec-head',body).find(e=>e.textContent.trim().startsWith('Your certificates'));
+if(h){let el=h.nextElementSibling;while(el&&!el.classList.contains('sec-head')){const n=el.nextElementSibling;el.remove();el=n}h.outerHTML=`<div class="pad" style="margin-top:8px"><div class="panel --warn sm">CRM has no certificates endpoint yet – showing clearances from your station lessons.</div></div>`}
+}
+/* station clearances for the classic list: every clearance is an observation lesson, cleared by a manager on shift */
+const cl=$$('.sec-head',body).find(e=>/clearances/i.test(e.textContent));
+if(cl)cl.insertAdjacentHTML('afterend',`<div class="pad xs muted" style="margin:-6px 0 8px">Stations are observation lessons: you read the standard here, a manager clears you on shift. Expiring under 30 days is highlighted.</div>`);
+};
+})();
+</script>

@@ -1,5 +1,287 @@
-<section class="scr lr" id="s-glossary" data-nav="Азбука" data-group="Learning">
-  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Азбука</div><div class="lr-cnt" id="gl-cnt"></div></div>
+<style>
+.lr .gl-off{margin:0 var(--gutter) 12px;padding:10px 12px;background:var(--warn-bg);color:var(--warn);font-size:12px;display:flex;gap:8px;align-items:center}
+.lr .gl-off svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+.lr .gl-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.lr .gl-chips .tag{height:24px;border:1px solid var(--light)}
+.lr .gl-chips .tag.--tox{border-color:var(--accent);color:var(--accent)}
+.lr .gl-sec{margin-top:14px}
+.lr .gl-sec .caps{color:var(--grey)}
+.lr .gl-sec p{margin:4px 0 0;font-size:14px;line-height:1.5;color:var(--graphite)}
+.lr .gl-team{margin-top:14px;padding:12px;background:var(--silver)}
+.lr .gl-team .caps{display:flex;align-items:center;gap:6px}
+.lr .gl-team .caps svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5}
+.lr .gl-team dl{margin:8px 0 0;font-size:13px;line-height:1.45}
+.lr .gl-team dt{color:var(--grey);font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+.lr .gl-team dd{margin:0}
+.lr .gl-tip{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--hair);font-size:13px;line-height:1.45}
+.lr .gl-tip .by{font-size:11px;color:var(--grey);margin-top:2px}
+.lr .gl-add{width:100%;height:44px;border:1px dashed var(--light);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite);margin-top:12px}
+.lr .gl-noph{width:100%;aspect-ratio:1;background:var(--silver);display:grid;place-items:center;color:var(--grey);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.lr .gl-ov{position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:linear-gradient(180deg,rgba(30,26,23,0),rgba(30,26,23,.6));color:#fff;z-index:2}
+.lr .gl-ov .h3{color:#fff}
+.lr .gl-ov .lat{font-size:13px;opacity:.85}
+.lr .gl-photo{position:relative}
+.lr .gl-photo .tag{position:absolute;left:12px;top:12px;z-index:2}
+.lr .gl-dash{display:flex;gap:3px;padding:0 var(--gutter)}
+.lr .gl-dash i{flex:1;height:3px;background:var(--light)}
+.lr .gl-dash i.on{background:var(--ink)}
+.lr .gl-gf .gb{max-height:300px;overflow-y:auto;scrollbar-width:none}
+.lr .gl-months{display:flex;gap:6px;overflow-x:auto;padding:0 var(--gutter);scrollbar-width:none;scroll-snap-type:x proximity}
+.lr .gl-months::-webkit-scrollbar{display:none}
+.lr .gl-m{flex:none;width:52px;height:44px;border:1px solid var(--light);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;position:relative;scroll-snap-align:center}
+.lr .gl-m.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.lr .gl-m .dot{width:5px;height:5px;background:var(--accent);border-radius:50%;position:absolute;bottom:5px}
+.lr .gl-strip{display:grid;grid-template-columns:repeat(12,1fr);gap:1px;height:8px}
+.lr .gl-strip i{background:var(--light)}
+.lr .gl-strip i.s{background:var(--grey)}
+.lr .gl-strip i.p{background:var(--ink)}
+.lr .gl-strip i.now{outline:1px solid var(--accent);outline-offset:-1px}
+.lr .gl-strip.lg{height:14px}
+.lr .gl-strip-l{display:grid;grid-template-columns:repeat(12,1fr);font-size:9px;color:var(--grey);text-align:center;margin-top:3px;letter-spacing:.04em}
+.lr .gl-peak{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 var(--gutter)}
+.lr .gl-peak .tile{padding:0 0 10px;gap:0}
+.lr .gl-peak .tile img{aspect-ratio:4/3}
+.lr .gl-peak .tile .tl{padding:8px 10px 0}
+.lr .gl-peak .tile .tp{padding:0 10px}
+.lr .gl-peak .tile .gl-strip{margin:8px 10px 0}
+.lr .gl-cal{display:flex;gap:10px;align-items:center;padding:10px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.lr .gl-cal .nm{width:110px;flex:none;font-size:13px}
+.lr .gl-cal .gl-strip{flex:1}
+.lr .gl-sq{margin:16px var(--gutter) 0;padding:16px;background:var(--ink);color:var(--paper);display:flex;align-items:center;gap:14px}
+.lr .gl-sq .h4{color:var(--paper)}
+.lr .gl-legend{display:flex;gap:14px;font-size:11px;color:var(--grey);padding:8px var(--gutter) 0}
+.lr .gl-legend i{display:inline-block;width:12px;height:8px;margin-right:4px;vertical-align:middle;background:var(--light)}
+.lr .gl-legend i.p{background:var(--ink)}.lr .gl-legend i.s{background:var(--grey)}
+</style>
+<!-- Азбука flower glossary – root screens (/glossary/deck, /glossary/quiz, /glossary/seasons) opened over B with the classic shell.
+     Data = GET /glossary?locale; saved copy on the phone (works in the cold room); language = app language. ids: TM-GLOS-001 TM-LEARN-075 -->
+<section class="scr lr" id="s-glossary" data-nav="Азбука · deck / quiz / seasons" data-group="Learning">
+  <!-- back button stays: the iOS back-swipe gesture is disabled on the deck so it cannot eat a "Know" swipe. ids: TM-GLOS-012 -->
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('gl-home')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Азбука</div><div class="lr-cnt" id="gl-cnt"></div></div>
+  <!-- body (script below):
+       offline strip "No connection – showing the copy saved on this phone". ids: TM-GLOS-002
+       DECK: stack of 3 (top active, two peeking), order fixed at open. ids: TM-GLOS-010
+         swipe right = Know (stamp, goes to the quiz), left = Don't know (back tomorrow, then 3, 7, 30 days); threshold / flick; vertical scroll inside the card; springs back. ids: TM-GLOS-011
+         Android 12 ms buzz on a swipe, none on iOS (note under the hint). ids: TM-GLOS-013
+         buttons Don't know / Know = the no-gesture path (VoiceOver / TalkBack actions on the top card). ids: TM-GLOS-014
+         each swipe is sent at once and shown optimistically; toast "Coming up in the quiz" / "Again tomorrow…" / "No connection – not saved" with rollback. ids: TM-GLOS-015
+         progress dashes by card count, hint "← Don't know · swipe · Know →". ids: TM-GLOS-016
+         card face: photo or "No photo yet", section tag, name + Latin on the gradient; body: chips (season, fridge, vase life, toxic / not toxic), How to recognise, Care, Similar – don't mix up, grey "Team only" block, "Added by florists". ids: TM-GLOS-017
+         Added by florists: tips with author + date, own "You · in review", empty hint. ids: TM-GLOS-018
+         dashed "+ Add information" → sheet: kind (Tip / How we do it / Error in the card / Photo), text up to 1000, photo required for Photo. ids: TM-GLOS-019
+         photo in the sheet: camera / library / cancel; photo kept in the sheet if sending fails. ids: TM-GLOS-020
+         Send → toast "Sent", the suggestion appears on the card as "You · in review"; 422 shows the CRM text. ids: TM-GLOS-021
+         deck finished: counters "in review" / "don't know – again tomorrow", "Check yourself now" (→ quiz) and "Home". ids: TM-GLOS-022
+         empty deck: "Today's deck is done. New cards tomorrow" + the same buttons. ids: TM-GLOS-023
+       QUIZ "What is it?": round of up to 10 from the "to check" queue, fixed at start, "N of M" in the header. ids: TM-GLOS-024
+         photo + four names (right + three look-alikes), seeded by card and day so buttons never jump. ids: TM-GLOS-025
+         pick = green / red and sent at once; sending error → "answer not saved". ids: TM-GLOS-026
+         feedback: Right + two "how to recognise" features; wrong → "This is <name>", don't-mix-up hint, "comes back later"; scrolls to it. ids: TM-GLOS-027
+         Next / Finish (X of Y); result "X of Y" + Home; empty queue "Nothing to check yet". ids: TM-GLOS-028
+       SEASONS: segment By month / Calendar. ids: TM-GLOS-035
+         season chips (winter / spring / summer / autumn) + 12-month strip with today's dot, centred on the pick. ids: TM-GLOS-036
+         groups: At peak (tiles with photo, varieties count, 12-month bar), Soon, Leaving, All year (6 + Show all N), Not in season. ids: TM-GLOS-037
+         calendar: every flower as a 12-month bar grouped by the season its peak starts, month letters. ids: TM-GLOS-038
+         tap a flower → its season page. ids: TM-GLOS-039
+         banner "When is it in season?" – 5-question practice. ids: TM-GLOS-040
+         "data not yet verified" note, "No seasons yet", pull-to-refresh, error. ids: TM-GLOS-041 -->
   <div class="scr-body" id="gl-body"></div>
   <div class="cta-bar" id="gl-cta" style="display:none"></div>
 </section>
+<script>
+(function(){
+'use strict';
+const A=window.App, ic=A.icon, L=window.LR;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const {sic}=L;
+/* ---- glossary demo data (shared with 57-learn-extra) ---- */
+const SECS=[{k:'cut',n:'Cut flowers'},{k:'green',n:'Greenery'},{k:'pot',n:'Potted plants'},{k:'dried',n:'Dried flowers'},{k:'balloon',n:'Balloons'},{k:'wrap',n:'Wrapping'},{k:'tools',n:'Tools'},{k:'gift',n:'Gifts'}];
+const E=[
+ {id:1,n:'Spray rose',ru:'Роза кустовая',lat:'Rosa · spray',sec:'cut',img:'img/white-spray.webp',genus:'Rose',st:'learn',season:'All year',fridge:'2–4 °C',vase:'7–9 days',toxic:false,how:'Several small heads on one stem; buds open at different times.',care:'Strip leaves below the water line, cut 2 cm at 45°, Chrysal.',similar:'Garden rose – one bigger cupped head per stem.',team:{sup:'Dutch auction, Tue / Thu / Sat',pack:'10 stems a bunch',us:'Fills a Standard without bulk',err:'Counting heads as stems in the size'},tips:[{by:'Svetlana',d:'12 Oct',t:'Open the outer petals with your thumb before the photo – the head looks twice the size.'}]},
+ {id:2,n:'Garden rose',ru:'Роза садовая',lat:'Rosa × centifolia',sec:'cut',img:'img/belgravia.webp',genus:'Rose',st:'check',season:'Jun–Oct',fridge:'2–4 °C',vase:'5–7 days',toxic:false,how:'Cupped, many petals, fragrant. Short neck.',care:'Hold by the stem – petals bruise. Deep water, no mist.',similar:'Peony – bigger, no thorns, opens flat.',team:{sup:'David Austin via Flower Hub',pack:'5 stems',us:'Deluxe and weddings only',err:'Put in a ready-now Standard'},tips:[]},
+ {id:3,n:'Peony',ru:'Пион',lat:'Paeonia lactiflora',sec:'cut',img:'img/peony-basket.webp',genus:'Peony',st:'new',season:'May–Jun',fridge:'1–3 °C',vase:'5–7 days',toxic:true,how:'Tight round bud the size of a marble that opens into a bowl.',care:'Buy tight buds; they open within a day in warm water.',similar:'Garden rose – thorns, smaller bud.',team:null,tips:[]},
+ {id:4,n:'Eucalyptus',ru:'Эвкалипт',lat:'Eucalyptus cinerea',sec:'green',img:'img/veronica.webp',genus:'Eucalyptus',st:'learned',season:'All year',fridge:'4–6 °C',vase:'10–14 days',toxic:true,how:'Silver-green round leaves on a woody stem, strong scent.',care:'Crush the stem end; lasts dry too.',similar:'Olive – narrow matte leaves, no scent.',team:{sup:'APAC, Mondays',pack:'Bunch ~400 g',us:'Frames the focal flowers, never hides them',err:'Too much – the bouquet turns grey'},tips:[]},
+ {id:5,n:'Standard rose',ru:'Роза одноголовая',lat:'Rosa · hybrid tea',sec:'cut',img:'img/red-roses.webp',genus:'Rose',st:'learned',season:'All year',fridge:'2–4 °C',vase:'7–10 days',toxic:false,how:'One bloom per stem, 40–70 cm, straight neck.',care:'Check head size and stem length before the order.',similar:'Spray rose – several heads.',team:null,tips:[]},
+ {id:6,n:'Dahlia',ru:'Георгин',lat:'Dahlia',sec:'cut',img:'img/pink-garden.webp',genus:'Dahlia',st:'check',season:'Aug–Oct',fridge:'3–5 °C',vase:'4–6 days',toxic:false,how:'Flat or ball head of many pointed petals, hollow stem.',care:'Hot water dip 30 s, then cold. No fridge below 3 °C.',similar:'Chrysanthemum – stiffer petals, lasts longer.',team:null,tips:[]},
+ {id:7,n:'Hydrangea',ru:'Гортензия',lat:'Hydrangea macrophylla',sec:'cut',img:'img/lilac-dream.webp',genus:'Hydrangea',st:'learn',season:'Aug–Oct',fridge:'2–4 °C',vase:'5–8 days',toxic:true,how:'Ball of small four-petal florets on a woody stem.',care:'Drinks through the head – mist it. Alum on the cut.',similar:'Viburnum – greener, looser ball.',team:null,tips:[]},
+ {id:8,n:'Ranunculus',ru:'Ранункулюс',lat:'Ranunculus asiaticus',sec:'cut',img:'img/powdered-rose.webp',genus:'Ranunculus',st:'check',season:'Mar–May',fridge:'2–4 °C',vase:'7–10 days',toxic:true,how:'Paper-thin layered petals, thin curving stem.',care:'Shallow water; stems rot in deep buckets.',similar:'Garden rose – thicker petals, thorns.',team:null,tips:[]},
+ {id:9,n:'Tulip',ru:'Тюльпан',lat:'Tulipa',sec:'cut',img:'img/peach-posy.webp',genus:'Tulip',st:'learned',season:'Mar–May',fridge:'2–4 °C',vase:'5–7 days',toxic:true,how:'Six petals in a cup, keeps growing in the vase.',care:'Wrap in paper for 2 hours to straighten.',similar:'Ranunculus – many more petals.',team:null,tips:[]},
+ {id:10,n:'Amaryllis',ru:'Амариллис',lat:'Hippeastrum',sec:'cut',img:'img/hero-white.webp',genus:'Amaryllis',st:'new',season:'Nov–Feb',fridge:'8–10 °C',vase:'10–14 days',toxic:true,how:'Thick hollow stem, 3–4 trumpet blooms on top.',care:'A cane inside the stem; stem splits – tape it.',similar:'Lily – leaves on the stem, strong scent.',team:null,tips:[]},
+ {id:11,n:'Kraft wrap',ru:'Крафт-бумага',lat:'',sec:'wrap',img:'',genus:'',st:'learned',season:'',fridge:'',vase:'',toxic:false,how:'Brown 80 g paper, 70 cm roll.',care:'Fold the edge twice for a clean line.',similar:'Tissue – thin, inside layer only.',team:{sup:'Tiger Feet',pack:'Roll 50 m',us:'Outer layer of every Standard',err:'Logo sticker on the fold'},tips:[]},
+ {id:12,n:'Foil balloon · 18"',ru:'Шар фольгированный 18"',lat:'',sec:'balloon',img:'img/addon-balloon.webp',genus:'',st:'new',season:'',fridge:'',vase:'',toxic:false,how:'Flat foil, valve at the neck, 45 cm inflated.',care:'Helium 0.4 cu ft, do not overfill in a warm van.',similar:'Latex – stretches, floats 8 hours only.',team:null,tips:[]}];
+const SEASONS=[
+ {genus:'Peony',ru:'Пион',lat:'Paeonia',img:'img/peony-basket.webp',peak:[5,6],sale:[4,5,6,7],checked:true,text:'British peonies from late May; Dutch and Israeli stock either side.'},
+ {genus:'Dahlia',ru:'Георгин',lat:'Dahlia',img:'img/pink-garden.webp',peak:[8,9,10],sale:[7,8,9,10,11],checked:true,text:'Peak August to October – our Halloween window flower.'},
+ {genus:'Hydrangea',ru:'Гортензия',lat:'Hydrangea',img:'img/lilac-dream.webp',peak:[8,9,10],sale:[6,7,8,9,10,11],checked:true,text:'Antique tones from September.'},
+ {genus:'Chrysanthemum',ru:'Хризантема',lat:'Chrysanthemum',img:'img/charmingly.webp',peak:[9,10,11],sale:[1,2,3,4,5,6,7,8,9,10,11,12],checked:true,text:'All year from Holland; British bloom September to November.'},
+ {genus:'Rose',ru:'Роза',lat:'Rosa',img:'img/red-roses.webp',peak:[6,7,8,9,10],sale:[1,2,3,4,5,6,7,8,9,10,11,12],checked:true,text:'Always in. Garden roses June to October.'},
+ {genus:'Eucalyptus',ru:'Эвкалипт',lat:'Eucalyptus',img:'img/veronica.webp',peak:[1,2,3,4,5,6,7,8,9,10,11,12],sale:[1,2,3,4,5,6,7,8,9,10,11,12],checked:true,text:'Year-round greenery.'},
+ {genus:'Amaryllis',ru:'Амариллис',lat:'Hippeastrum',img:'img/hero-white.webp',peak:[11,12,1,2],sale:[10,11,12,1,2,3],checked:true,text:'Christmas stem; buy tight.'},
+ {genus:'Ranunculus',ru:'Ранункулюс',lat:'Ranunculus',img:'img/powdered-rose.webp',peak:[3,4,5],sale:[1,2,3,4,5,6],checked:true,text:'Italian clones from January, best in spring.'},
+ {genus:'Tulip',ru:'Тюльпан',lat:'Tulipa',img:'img/peach-posy.webp',peak:[3,4,5],sale:[12,1,2,3,4,5],checked:true,text:'British from March.'},
+ {genus:'Sweet pea',ru:'Душистый горошек',lat:'Lathyrus',img:'img/poem-petals.webp',peak:[6,7,8],sale:[5,6,7,8,9],checked:false,text:'British only, short vase life.'},
+ {genus:'Anemone',ru:'Анемон',lat:'Anemone',img:'img/pink-manifesto-2.webp',peak:[2,3,4],sale:[11,12,1,2,3,4,5],checked:false,text:'Opens and closes with the light.'},
+ {genus:'Lisianthus',ru:'Эустома',lat:'Eustoma',img:'img/daydream-basket.webp',peak:[6,7,8,9,10],sale:[1,2,3,4,5,6,7,8,9,10,11,12],checked:true,text:'Rose look-alike, lasts two weeks.'}];
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const NOWM=10;
+const GLD=window.T21={E,SEASONS,SECS,MN,NOWM,offline:false,noSeasons:false,streak:12,total:180};
+GLD.secName=k=>(SECS.find(s=>s.k===k)||{}).n||k;
+GLD.learned=()=>L.glossKnown;
+GLD.deckQueue=genus=>E.filter(e=>(genus?e.genus===genus:true)&&e.st!=='learned'&&(genus||e.st!=='check')).slice(0,5);
+GLD.quizQueue=()=>E.filter(e=>e.st==='check'&&e.img).slice(0,10);
+GLD.seasonOf=m=>m===12||m<=2?'Winter':m<=5?'Spring':m<=8?'Summer':'Autumn';
+GLD.strip=(s,lg)=>`<div class="gl-strip ${lg?'lg':''}">${MN.map((_,i)=>{const m=i+1;return `<i class="${s.peak.includes(m)?'p':s.sale.includes(m)?'s':''} ${m===NOWM?'now':''}"></i>`}).join('')}</div>`;
+GLD.stripL=()=>`<div class="gl-strip-l">${MN.map(m=>`<span>${m[0]}</span>`).join('')}</div>`;
+GLD.varieties=g=>E.filter(e=>e.genus===g);
+GLD.offBar=()=>GLD.offline?`<div class="gl-off">${ic('info')} No connection – showing the copy saved on this phone</div>`:'';
+GLD.pill=st=>({new:A.pill('todo','New'),learn:A.pill('doing','Learn'),check:A.pill('review','In review'),learned:A.pill('done','Learned')})[st];
+/* ---- card body (deck + reference card) ---- */
+GLD.body=function(e,opts={}){
+const chips=[e.season?`<span class="tag">${e.season}</span>`:'',e.fridge?`<span class="tag">Fridge ${e.fridge}</span>`:'',e.vase?`<span class="tag">Vase ${e.vase}</span>`:'',e.sec==='cut'||e.sec==='green'||e.sec==='pot'?(e.toxic?`<span class="tag --tox">Toxic to cats and dogs</span>`:`<span class="tag">Not toxic</span>`):''].join('');
+const team=e.team?`<div class="gl-team"><div class="caps">${ic('lock')} Team only</div><dl><dt>Supplier</dt><dd>${e.team.sup}</dd><dt>In the pack</dt><dd>${e.team.pack}</dd><dt>How it behaves with us</dt><dd>${e.team.us}</dd><dt>Common mistake</dt><dd>${e.team.err}</dd></dl></div>`:'';
+const tips=e.tips.length?e.tips.map(t=>`<div class="gl-tip"><div class="f1">${t.t}<div class="by">${t.by}${t.pending?' · in review':''} · ${t.d}</div></div></div>`).join(''):`<div class="gl-tip muted">Nobody has added anything yet. Know something useful – add it.</div>`;
+return `<div class="gl-chips">${chips}</div><div class="gl-sec"><div class="caps">How to recognise</div><p>${e.how}</p></div><div class="gl-sec"><div class="caps">Care and cleaning</div><p>${e.care}</p></div><div class="gl-sec"><div class="caps">Similar – don't mix up</div><p>${e.similar}</p></div>${team}<div class="gl-sec"><div class="caps">Added by florists</div><div class="mt8">${tips}</div></div><button class="gl-add" onclick="event.stopPropagation();T21.addInfo(${e.id})">+ Add information</button>`;
+};
+GLD.photo=e=>`<div class="gl-photo">${e.img?`<img src="${e.img}" alt="">`:`<div class="gl-noph">No photo yet</div>`}<span class="tag --soft">${GLD.secName(e.sec)}</span><div class="gl-ov"><div class="h3">${e.n}</div><div class="lat">${e.lat||e.ru}</div></div></div>`;
+/* ---- add information sheet ---- */
+let AI=null;
+GLD.addInfo=function(id){
+const e=E.find(x=>x.id===id);AI={id,kind:'tip',text:'',photo:false,err:''};aiPaint(e);
+};
+function aiPaint(e){
+const K=[['tip','Tip'],['us','How we do it'],['err','Error in the card'],['photo','Photo']];
+const need=AI.kind==='photo'&&!AI.photo?'Add a photo':AI.kind!=='photo'&&!AI.text.trim()?'Write a few words':AI.text.length>1000?'Too long – 1000 characters max':'';
+A.sheet(`<div class="sh-head"><div class="h3">Add information · ${e.n}</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body">
+<div class="chips" style="padding:0">${K.map(k=>`<button class="chip ${AI.kind===k[0]?'on':''}" onclick="T21.aiKind('${k[0]}')">${k[1]}</button>`).join('')}</div>
+<div class="field mt16"><label>${AI.kind==='err'?'What is wrong':AI.kind==='us'?'How we do it at Floritta':'Your note'} · ${AI.text.length} / 1000</label><textarea class="input" id="ai-txt" rows="3" placeholder="${AI.kind==='photo'?'Caption (optional)':'Short and practical…'}" oninput="T21.aiText(this.value)">${AI.text}</textarea></div>
+<button class="btn --secondary --sm" onclick="T21.aiPhoto()">${ic('camera')} ${AI.photo?'Photo attached · retake':'Photo'}${AI.kind==='photo'?' · required':''}</button>
+<div class="xs muted mt12">Checked by Tatiana or Liza before it shows to the team. Your note stays here until it is sent.</div><div class="xs accent mt8" id="ai-err">${AI.err}</div></div>
+<div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" ${need?'disabled':''} onclick="T21.aiSend()">Send</button></div>`);
+}
+GLD.aiKind=k=>{AI.kind=k;aiPaint(E.find(x=>x.id===AI.id))};
+GLD.aiText=v=>{AI.text=v;const lab=$('#ai-txt').previousElementSibling;if(lab)lab.textContent=lab.textContent.replace(/\d+ \/ 1000/,v.length+' / 1000');const b=$('.sh-foot .btn:last-child');if(b)b.disabled=!(AI.kind==='photo'?AI.photo:v.trim()&&v.length<=1000)};
+GLD.aiPhoto=()=>{A.closeSheet();setTimeout(()=>A.sheet(`<div class="sh-head"><div class="h3">Photo</div></div><div class="sh-body"><button class="row" style="padding-left:0;padding-right:0" onclick="T21.aiPhotoDone()">${ic('camera').replace('<svg','<svg class="ic"')}<div class="rt"><div class="l">Take a photo</div></div></button><button class="row" style="padding-left:0;padding-right:0" onclick="T21.aiPhotoDone()">${ic('image').replace('<svg','<svg class="ic"')}<div class="rt"><div class="l">Choose from library</div></div></button><button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();setTimeout(()=>T21.aiReopen(),250)"><div class="rt"><div class="l muted">Cancel</div></div></button><div class="xs muted mt12">Camera refused → the phone shows its own "allow camera" alert.</div></div>`),250)};
+GLD.aiPhotoDone=()=>{AI.photo=true;A.closeSheet();setTimeout(()=>GLD.aiReopen(),250)};
+GLD.aiReopen=()=>aiPaint(E.find(x=>x.id===AI.id));
+GLD.aiSend=()=>{
+const e=E.find(x=>x.id===AI.id);
+if(GLD.offline){AI.err='Not sent – no connection. Your text and photo are kept here.';aiPaint(e);return}
+if(AI.kind==='err'&&/^test$/i.test(AI.text.trim())){AI.err='CRM: this card is being edited by Liza right now – send it again tomorrow.';aiPaint(e);return}
+e.tips.unshift({by:'You',d:'20 Oct',t:AI.kind==='photo'?'Photo'+(AI.text?' · '+AI.text:''):AI.text,pending:true});
+A.closeSheet();A.toast('Sent · in review');AI=null;
+const cur=A.state.current;if(cur==='glossary')gpaint();else if(cur==='gl-term'&&window.mount_gl_term)window.mount_gl_term(A.state.params);
+};
+/* ---- deck / quiz / seasons ---- */
+const segs=(on,tot)=>Array.from({length:tot},(_,i)=>`<i class="${i<on?'on':''}"></i>`).join('');
+const seeded=(arr,seed)=>{let s=0;for(const ch of seed)s=(s*31+ch.charCodeAt(0))%9973;const a=arr.slice();for(let i=a.length-1;i>0;i--){s=(s*7919+13)%9973;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+let G={tab:'deck',ids:[],i:0,knew:[],again:[],done:false,genus:'',pq:[],pqi:0,pqs:0,pqPick:null,pqDone:false,season:'Autumn',month:NOWM,view:'month',allYear:false,err:false};
+window.mount_glossary=function(p){
+p=p||{};
+if(p.fresh||!G.ids.length){G.genus=p.genus||'';G.ids=GLD.deckQueue(G.genus).map(e=>e.id);G.i=0;G.knew=[];G.again=[];G.done=false;G.pq=GLD.quizQueue().map(e=>e.id);G.pqi=0;G.pqs=0;G.pqPick=null;G.pqDone=false;G.tab=p.tab||'deck'}
+if(p.tab)G.tab=p.tab;
+gpaint();
+};
+function gpaint(){
+$('#gl-cnt').textContent=L.glossKnown+' / '+GLD.total;
+const tabs=[['deck','Deck'],['photo','What is it?'],['seasons','Seasons']];
+const seg=`<div class="pad" style="padding-top:4px"><div class="seg">${tabs.map(t=>`<button class="${G.tab===t[0]?'on':''}" onclick="T21.gtab('${t[0]}')">${t[1]}</button>`).join('')}</div></div>${GLD.offBar()?'<div style="height:12px"></div>'+GLD.offBar():''}`;
+const body=$('#gl-body'), cta=$('#gl-cta');cta.style.display='none';body.classList.remove('has-cta');
+if(G.tab==='deck')deck(body,cta,seg);else if(G.tab==='photo')photo(body,cta,seg);else seasons(body,seg);
+}
+GLD.gtab=function(t){G.tab=t;gpaint()};
+function deckCta(cta,html){cta.style.display=html?'':'none';cta.innerHTML=html;cta.className='cta-bar'+(html?' two':'');$('#gl-body').classList.toggle('has-cta',!!html)}
+function deck(body,cta,seg){
+const n=G.ids.length;
+if(!n){body.innerHTML=seg+`<div class="pad mt24"><div class="panel --ok"><div class="h3">Today's deck is done</div><div class="sm soft mt4">New cards tomorrow at 8:00.${G.genus?` Every ${G.genus} card is learned.`:''}</div></div></div>`;deckCta(cta,`<button class="btn --secondary" onclick="App.go('gl-home')">Home</button><button class="btn" onclick="T21.gtab('photo')">Check yourself now</button>`);return}
+if(G.done){
+const k=G.knew.length, a=G.again.length;
+body.innerHTML=seg+`<div class="pad lr-slide"><div class="flex ai-c mt24" style="gap:22px"><div id="gl-ring">${A.ring(0,112,'lr-big --ok')}</div><div class="f1"><div class="caps muted">${G.genus?G.genus+' cards':'Deck of the day'}</div><h1 class="h1 mt4">Deck done</h1><div class="sm soft mt4">${k} in review · ${a} don't know – again tomorrow</div></div></div>
+<div class="mt24" style="border-top:1px solid var(--hair)">${G.ids.map((id,i)=>{const g=E.find(e=>e.id===id),ok=G.knew.includes(i);return `<div class="lr-qr"><span class="${ok?'ok':''}" style="${ok?'':'color:var(--warn)'}">${ic(ok?'check':'repeat')}</span><div class="f1">${g.n} <span class="muted">· ${g.ru}</span><div class="xs muted mt4">${ok?'Learned only after a right answer in the quiz':'Back tomorrow, then 3, 7, 30 days'}</div></div></div>`}).join('')}</div>
+<div class="panel mt16 flex ai-c g12"><span>${sic('sun',20)}</span><div class="sm">${GLD.streak}-day streak. A new deck arrives tomorrow at 8:00.</div></div></div>`;
+L.animRing($('#gl-ring .ring'),k/n);
+deckCta(cta,`<button class="btn --secondary" onclick="App.go('gl-home')">Home</button><button class="btn" onclick="T21.gtab('photo')">Check yourself now</button>`);return;
+}
+const g=E.find(e=>e.id===G.ids[G.i]);
+body.innerHTML=seg+`<div class="flex jc-sb ai-c pad mt16"><span class="caps muted">Card ${G.i+1} of ${n}${G.genus?' · '+G.genus:''}</span><span class="caps muted">${n-G.i-1} left</span></div>
+<div class="gl-dash mt8">${segs(G.i,n)}</div>
+<div class="lr-gc mt16" id="gl-card"><div class="gh"></div><div class="gh" style="transform:translateY(4px) scale(.98)"></div><div class="stamp l">Don't know</div><div class="stamp r">Know</div><div class="gf gl-gf" id="gl-gf" role="group" aria-label="${g.n}. Actions: Don't know, Know">${GLD.photo(g)}<div class="gb">${GLD.body(g)}</div></div></div>
+<div class="pad mt12 xs muted" style="text-align:center">← Don't know · swipe the card · Know →</div>
+<div class="pad mt4 xs muted" style="text-align:center">Order fixed when opened. Android buzzes 12 ms on a swipe; iOS back-swipe is off here.</div><div style="height:16px"></div>`;
+deckCta(cta,`<button class="btn --secondary" onclick="T21.gans(false)">Don't know</button><button class="btn" onclick="T21.gans(true)">Know</button>`);
+const card=$('#gl-gf'), st=$$('.stamp',$('#gl-card'));let x0=null,y0=0,dx=0,claim=null,t0=0;
+card.onpointerdown=e=>{x0=e.clientX;y0=e.clientY;dx=0;claim=null;t0=Date.now();card.setPointerCapture(e.pointerId);card.style.transition='none'};
+card.onpointermove=e=>{if(x0===null)return;const mx=e.clientX-x0,my=e.clientY-y0;if(claim===null&&(Math.abs(mx)>10||Math.abs(my)>10))claim=Math.abs(mx)>Math.abs(my)*1.5?'h':'v';if(claim!=='h')return;dx=mx;card.style.transform=`translateX(${dx}px) rotate(${dx/40}deg)`;st[0].style.opacity=Math.min(1,Math.max(0,-dx/90));st[1].style.opacity=Math.min(1,Math.max(0,dx/90))};
+card.onpointerup=card.onpointercancel=e=>{if(x0===null)return;const d=dx,flick=Math.abs(d)>40&&Date.now()-t0<180;x0=null;if(claim==='h'&&(Math.abs(d)>100||flick)){card.style.transition='transform .25s,opacity .25s';card.style.transform=`translateX(${d>0?420:-420}px) rotate(${d/20}deg)`;card.style.opacity=0;setTimeout(()=>GLD.gans(d>0),220)}else{card.style.transition='transform .3s var(--m-ease)';card.style.transform='';st.forEach(s=>s.style.opacity=0)}};
+}
+GLD.gans=function(k){
+if(G.done||!G.ids.length)return;
+const g=E.find(e=>e.id===G.ids[G.i]);A.haptic();
+if(GLD.offline){A.toast('No connection – the mark was not saved');gpaint();return}
+(k?G.knew:G.again).push(G.i);g.st=k?'check':'learn';
+A.toast(k?'Coming up in the quiz – learned after a right answer there':'Again tomorrow, then in 3, 7 and 30 days');
+G.i++;
+if(G.i>=G.ids.length){G.done=true;if(!L.glossDone&&!G.genus){L.glossDone=true;document.dispatchEvent(new CustomEvent('learn',{detail:{gloss:true}}))}}
+gpaint();
+};
+function photo(body,cta,seg){
+const n=G.pq.length;
+if(!n){body.innerHTML=seg+`<div class="pad mt24"><div class="panel"><div class="h3">Nothing to check yet</div><div class="sm soft mt4">Swipe cards "Know" in the deck – they land here for the photo check.</div></div></div>`;deckCta(cta,`<button class="btn" onclick="T21.gtab('deck')">Open the deck</button>`);cta.className='cta-bar';return}
+if(G.pqDone){
+body.innerHTML=seg+`<div class="pad lr-slide"><div class="flex ai-c mt24" style="gap:22px"><div id="gl-ring">${A.ring(0,112,'lr-big'+(G.pqs>=n/2?' --ok':''))}</div><div class="f1"><div class="caps muted">What is it?</div><h1 class="h1 mt4">${G.pqs} of ${n}</h1><div class="sm soft mt4">${G.pqs===n?'Sharp eye – all learned':'Look at the heads and the leaves'}</div></div></div></div>`;
+L.animRing($('#gl-ring .ring'),G.pqs/n);
+deckCta(cta,`<button class="btn --secondary" onclick="T21.pqReset()">Again</button><button class="btn" onclick="App.go('gl-home')">Home</button>`);return;
+}
+const q=E.find(e=>e.id===G.pq[G.pqi]);
+const others=seeded(E.filter(e=>e.id!==q.id&&e.sec===q.sec&&e.n!==q.n),q.id+':2026-10-20').slice(0,3).map(e=>e.n);
+const opts=seeded([q.n].concat(others),q.id+':2026-10-20:o');
+body.innerHTML=seg+`<div class="pad mt16"><div class="caps muted">What is it? · ${G.pqi+1} of ${n}</div></div><div class="lr-pq mt12"><img src="${q.img}" alt="" style="transform:scale(${G.pqPick===null?1.9:1});transform-origin:45% 40%"></div>
+<div class="pad mt16" id="pq-o">${opts.map((t,k)=>`<button class="lr-opt ${G.pqPick===null?'':(t===q.n?'yes':t===G.pqPick?'bad':'dim')}" onclick="T21.pqPick('${t.replace(/'/g,'’')}')"><span class="k">${G.pqPick===null?'ABCD'[k]:(t===q.n?ic('check'):t===G.pqPick?ic('close'):'ABCD'[k])}</span><span class="f1">${t}</span></button>`).join('')}</div>
+<div class="pad lr-fb" id="pq-fb">${G.pqPick===null?'':G.pqPick===q.n?`<span class="ok">${sic('check',16,2)}</span> Right. ${q.how}`:`<span class="accent">${sic('close',16,2)}</span> This is <b>${q.n}</b>. ${q.similar} Comes back later.`}${G.pqErr?`<div class="xs accent mt8">Answer not saved – no connection.</div>`:''}</div><div style="height:16px"></div>`;
+deckCta(cta,`<button class="btn" id="pq-next" ${G.pqPick===null?'disabled':''} onclick="T21.pqNext()">${G.pqi===n-1?`Finish (${G.pqs} of ${n})`:'Next'}</button>`);cta.className='cta-bar';
+if(G.pqPick!==null){const b=$('#gl-body');b.scrollTop=b.scrollHeight}
+}
+GLD.pqPick=function(t){
+if(G.pqPick!==null)return;const q=E.find(e=>e.id===G.pq[G.pqi]);G.pqPick=t;G.pqErr=false;A.haptic();
+if(GLD.offline){G.pqErr=true}else if(t===q.n){G.pqs++;q.st='learned';L.glossKnown++}else q.st='learn';
+gpaint();
+};
+GLD.pqNext=function(){if(G.pqi<G.pq.length-1){G.pqi++;G.pqPick=null}else G.pqDone=true;gpaint()};
+GLD.pqReset=function(){G.pq=GLD.quizQueue().map(e=>e.id);G.pqi=0;G.pqs=0;G.pqPick=null;G.pqDone=false;gpaint()};
+function groups(m){
+const S=SEASONS.filter(s=>GLD.noSeasons?false:true);
+const peak=S.filter(s=>s.peak.includes(m)&&s.peak.length<10), soon=S.filter(s=>!s.peak.includes(m)&&(s.peak.includes(m%12+1)||s.peak.includes((m+1)%12+1))), leaving=S.filter(s=>!s.peak.includes(m)&&s.sale.includes(m)&&s.peak.some(x=>x<m)&&!soon.includes(s)), year=S.filter(s=>s.peak.length>=10), none=S.filter(s=>!s.sale.includes(m)&&!soon.includes(s));
+return{peak,soon,leaving,year,none};
+}
+function seasons(body,seg){
+if(G.err){body.innerHTML=seg+`<div class="pad mt16"><div class="panel --accent"><div class="h4 accent">Didn't load</div><div class="sm soft mt4">Pull down to try again.</div><button class="btn --xs --secondary mt12" onclick="T21.serr(false)">Retry</button></div></div>`;deckCta($('#gl-cta'),'');return}
+if(GLD.noSeasons){body.innerHTML=seg+`<div class="pad mt16"><div class="panel"><div class="h3">No seasons yet</div><div class="sm soft mt4">CRM has not published seasonality for your cards.</div></div></div>`;deckCta($('#gl-cta'),'');return}
+const m=G.month, g=groups(m), unchecked=SEASONS.some(s=>!s.checked);
+const top=`<button class="lr-ptr" onclick="App.haptic();App.toast('Seasons refreshed')">${ic('repeat')} Pull to refresh</button><div class="pad"><div class="seg" style="height:40px"><button class="${G.view==='month'?'on':''}" role="tab" onclick="T21.sview('month')">By month</button><button class="${G.view==='cal'?'on':''}" role="tab" onclick="T21.sview('cal')">Calendar</button></div></div>${unchecked?`<div class="pad mt12 xs muted">Some seasons are not yet verified by Tatiana – treat them as a guide.</div>`:''}`;
+const tile=s=>`<button class="tile" onclick="App.go('gl-flower',{genus:'${s.genus}'})"><img src="${s.img}" alt=""><span class="tl">${s.genus} <span class="muted">· ${s.ru}</span></span><span class="tp">${GLD.varieties(s.genus).length} of our varieties</span>${GLD.strip(s)}</button>`;
+const rowl=s=>`<button class="gl-cal" onclick="App.go('gl-flower',{genus:'${s.genus}'})"><span class="nm">${s.genus}</span>${GLD.strip(s)}</button>`;
+if(G.view==='cal'){
+const by={Winter:[],Spring:[],Summer:[],Autumn:[]};SEASONS.forEach(s=>{if(s.peak.length>=10)return;by[GLD.seasonOf(s.peak[0])].push(s)});
+body.innerHTML=seg+top+`<div class="gl-legend"><span><i class="p"></i>Peak</span><span><i class="s"></i>On sale</span><span><i></i>Not in</span></div>`+Object.keys(by).map(k=>by[k].length?`<div class="sec-head" style="margin:20px 0 6px"><div class="h3">${k}</div><span class="xs muted">peak starts</span></div><div class="pad">${GLD.stripL()}</div>${by[k].map(rowl).join('')}`:'').join('')+`<div class="sec-head" style="margin:20px 0 6px"><div class="h3">All year</div></div>${g.year.map(rowl).join('')}<div style="height:16px"></div>`;
+deckCta($('#gl-cta'),'');return;
+}
+const chips=['Winter','Spring','Summer','Autumn'].map(s=>`<button class="chip ${G.season===s?'on':''}" onclick="T21.season('${s}')">${s}</button>`).join('');
+const months=MN.map((n,i)=>`<button class="gl-m ${G.month===i+1?'on':''}" onclick="T21.month(${i+1})">${n}${i+1===NOWM?'<span class="dot"></span>':''}</button>`).join('');
+const list=(t,arr,extra)=>arr.length?`<div class="sec-head" style="margin:24px 0 10px"><div class="h3">${t}</div>${extra||''}</div>${arr.map(rowl).join('')}`:'';
+const yr=G.allYear?g.year:g.year.slice(0,6);
+body.innerHTML=seg+top+`<div class="chips mt12">${chips}</div><div class="gl-months mt12" id="gl-months">${months}</div>
+<div class="pad mt16"><div class="h2">${MN[m-1]} · ${GLD.seasonOf(m)}</div><div class="sm soft mt4">${m===NOWM?'In season now. Halloween window: dark dahlias, dried grasses.':'Peak months at the Dutch auction and in our buckets.'}</div></div>
+${g.peak.length?`<div class="sec-head" style="margin:20px 0 10px"><div class="h3">At peak</div><span class="xs muted">${g.peak.length}</span></div><div class="gl-peak">${g.peak.map(tile).join('')}</div>`:''}
+${list('Soon',g.soon,'<span class="xs muted">next two months</span>')}${list('Leaving',g.leaving,'<span class="xs muted">until year end</span>')}
+${list('All year',yr,g.year.length>6&&!G.allYear?`<button class="link" onclick="T21.allYear()">Show all ${g.year.length}</button>`:'')}
+${g.none.length?`<div class="sec-head" style="margin:24px 0 10px"><div class="h3">Not in season</div></div><div class="pad sm muted">${g.none.map(s=>s.genus).join(' · ')}</div>`:''}
+<div class="gl-sq"><div class="f1"><div class="caps" style="opacity:.6">When is it in season?</div><div class="h4 mt4">5 quick questions · not scored</div></div><button class="btn --paper --sm" onclick="App.go('gl-sq',{fresh:true})">Practise</button></div><div style="height:16px"></div>`;
+deckCta($('#gl-cta'),'');
+const mb=$('#gl-months'),on=$('.gl-m.on',mb);if(on)mb.scrollLeft=on.offsetLeft-mb.clientWidth/2+26;
+}
+GLD.sview=v=>{G.view=v;gpaint()};
+GLD.season=s=>{G.season=s;G.month={Winter:1,Spring:4,Summer:7,Autumn:10}[s];G.allYear=false;gpaint()};
+GLD.month=m=>{G.month=m;G.season=GLD.seasonOf(m);G.allYear=false;gpaint()};
+GLD.allYear=()=>{G.allYear=true;gpaint()};
+GLD.serr=v=>{G.err=v;gpaint()};
+})();
+</script>
