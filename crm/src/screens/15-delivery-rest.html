@@ -1,0 +1,380 @@
+<style>
+/* ===== 15 · Delivery – rest (freelance, analytics, Relay) · scoped .dr-scr ===== */
+.dr-scr .dr-nav{display:flex;align-items:center;gap:2px;border-bottom:1px solid var(--hair);padding:0 var(--pad);flex:none;flex-wrap:wrap;background:var(--paper)}
+.dr-scr .dr-nav button{height:40px;padding:0 10px;font-size:12.5px;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.dr-scr .dr-nav button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.dr-scr .dr-nav button:hover:not(.on){color:var(--ink)}
+.dr-scr .dr-nav button .n{font-size:11px;color:var(--grey);font-variant-numeric:tabular-nums}
+.dr-scr .dr-nav button .n.hot{color:var(--accent)}
+.dr-scr .dr-nav .more{display:flex;gap:2px;flex-wrap:wrap;padding-left:8px;border-left:1px solid var(--hair);margin-left:6px}
+.dr-scr .dr-nav .sp{flex:1}
+.dr-scr .dr-badges{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.dr-scr .kpi-card{cursor:default}
+.dr-scr .kpi-card.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+.dr-scr .kpi-card.--hot{box-shadow:inset 0 3px 0 var(--accent)}
+.dr-scr .kpi-card .kpi-s{margin-top:2px}
+.dr-scr .tbl td.wrap{white-space:normal;line-height:1.3}
+.dr-scr .tbl tr.r.--linked td{background:var(--sel-bg);box-shadow:inset 3px 0 0 var(--sel)}
+.dr-scr .tbl tr.drawer td{height:auto;padding:16px 12px 18px;white-space:normal;background:var(--paper-2);max-width:none}
+.dr-scr .dr-apps{display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+.dr-scr .dr-apps .ap{display:flex;align-items:center;gap:8px}
+.dr-scr .dr-apps .ap .textbtn{font-size:11px}
+.dr-scr .dr-note{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px;align-items:start}
+.dr-scr .dr-note small{color:var(--grey);font-size:12px}
+.dr-scr .dr-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.dr-scr .dr-cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.dr-scr .dr-stmt{border:1px solid var(--hair);padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.dr-scr .dr-stmt .s-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dr-scr .dr-stmt .s-top .h4{flex:1}
+.dr-scr .dr-stmt .lines{font-size:12.5px;display:grid;grid-template-columns:auto auto auto minmax(0,1fr) auto;gap:3px 12px;color:var(--graphite)}
+.dr-scr .dr-stmt .lines .adj{color:var(--warn)}
+.dr-scr .dr-form{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.dr-scr .dr-form .field{min-width:120px}
+.dr-scr .err{font-size:12px;color:var(--accent)}
+.dr-scr .dr-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.dr-scr .dr-tiles .t{border:1px solid var(--hair);padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.dr-scr .dr-tiles .t small{font-size:12px;color:var(--grey)}
+.dr-scr .hm{height:440px}
+.dr-scr .hm .c{position:absolute;border-radius:50%;background:var(--sel);opacity:.22;transform:translate(-50%,-50%);cursor:pointer;transition:opacity var(--m-fast)}
+.dr-scr .hm .c:hover{opacity:.5}
+.dr-scr .hm .c.--hot{opacity:.42}
+.dr-scr .hm-tip{position:absolute;background:var(--paper);border:1px solid var(--hair);padding:3px 8px;font-size:11px;pointer-events:none;display:none;z-index:2;white-space:nowrap}
+.dr-scr .dr-method{font-size:12.5px;color:var(--grey);margin-top:10px;line-height:1.4}
+.dr-scr .dr-flag{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--grey)}
+.dr-scr .dr-inline{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px}
+.dr-scr .chipgrp{display:flex;gap:4px;flex-wrap:wrap}
+.dr-scr .tag.--warn{background:var(--warn-bg);color:var(--warn)}
+.dr-scr .tag.--acc{background:var(--accent-bg);color:var(--accent)}
+.dr-scr .tag.--okl{background:var(--ok-bg);color:var(--ok)}
+[data-size="ipad"] .dr-scr .dr-cols,[data-size="ipad"] .dr-scr .dr-cols3{grid-template-columns:minmax(0,1fr)}
+[data-size="ipad"] .dr-scr .dr-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="ipad"] .dr-scr .hide-ipad{display:none}
+[data-size="phone"] .dr-scr .dr-cols,[data-size="phone"] .dr-scr .dr-cols3{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .dr-scr .dr-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] .dr-scr .hide-ph,[data-size="phone"] .dr-scr .hide-ipad{display:none}
+[data-size="phone"] .dr-scr .dr-nav{padding:0 14px}
+</style>
+
+<!-- ids: DLRS-001 DLRS-002 DLRS-003 DLRS-004 DLRS-005 DLRS-006 DLRS-007 DLRS-008 DLRS-009 DLRS-152 DLRS-153 -->
+<!-- The DeliveryNav strip (rendered by DRX.nav into every screen of this file): Dispatch · Freelance (flag) · Heatmap · CO₂ · Courier partners · Courier statuses · Reliability · Courier pay (owner) · More ▾ (ETA accuracy, Zones & rules, Geo-consents, Exports, Shipping + POD / Routes / Presence from the neighbouring registry). One tab lit – the longest matching route. /delivery/relay legacy link lands on Courier partners. Every mutation ends in a toast; server validation errors are shown inline next to the field (fix for the silent forms). Reversed From/To gets swapped with a toast. -->
+
+<!-- ids: DLRS-010 DLRS-011 DLRS-012 DLRS-013 DLRS-014 DLRS-015 DLRS-016 DLRS-017 DLRS-018 DLRS-019 DLRS-020 DLRS-021 DLRS-022 DLRS-023 DLRS-024 DLRS-025 DLRS-026 DLRS-027 DLRS-028 DLRS-029 DLRS-030 DLRS-031 DLRS-032 DLRS-033 DLRS-034 DLRS-035 DLRS-036 DLRS-037 DLRS-038 DLRS-039 DLRS-040 DLRS-041 DLRS-042 DLRS-043 DLRS-044 DLRS-045 DLRS-046 DLRS-047 DLRS-048 DLRS-049 DLRS-050 DLRS-051 DLRS-052 DLRS-053 DLRS-054 DLRS-055 DLRS-154 DLRS-155 DLRS-156 DLRS-157 -->
+<section class="scr dr-scr" id="s-delivery-freelance" data-nav="Freelance board" data-group="Delivery" data-title="Delivery" data-sub="Freelance couriers" data-roles="owner manager" data-parent="delivery">
+  <div id="dr-fl-nav"></div>
+  <!-- ids: DLRS-010 DLRS-011 DLRS-012 DLRS-013 DLRS-014 DLRS-046 — head: badges Freelance N open / M applications, Manual confirm, RTW queue; tabs Jobs · Couriers · Report · Payouts (+ Analytics link), week picker on Payouts -->
+  <div class="scr-head" id="dr-fl-head"></div>
+  <div class="scr-body" id="dr-fl-body"></div>
+</section>
+
+<!-- ids: DLRS-056 DLRS-057 DLRS-058 DLRS-059 DLRS-060 DLRS-061 DLRS-062 DLRS-063 DLRS-064 DLRS-065 DLRS-066 DLRS-067 DLRS-158 DLRS-159 -->
+<section class="scr dr-scr" id="s-delivery-freelance-analytics" data-nav="Freelance analytics" data-group="Delivery" data-title="Delivery" data-sub="Freelance · analytics" data-roles="owner manager" data-parent="delivery">
+  <div id="dr-fa-nav"></div>
+  <div class="scr-head" id="dr-fa-head"></div>
+  <div class="scr-body" id="dr-fa-body"></div>
+</section>
+
+<!-- ids: DLRS-068 DLRS-069 DLRS-070 DLRS-071 DLRS-072 -->
+<section class="scr dr-scr" id="s-delivery-heatmap" data-nav="Heatmap" data-group="Delivery" data-title="Delivery" data-sub="Heatmap" data-roles="owner manager" data-parent="delivery">
+  <div id="dr-hm-nav"></div>
+  <div class="scr-head" id="dr-hm-head"></div>
+  <div class="scr-body" id="dr-hm-body"></div>
+</section>
+
+<!-- ids: DLRS-073 DLRS-074 DLRS-075 DLRS-076 DLRS-077 DLRS-078 -->
+<section class="scr dr-scr" id="s-delivery-co2" data-nav="CO₂" data-group="Delivery" data-title="Delivery" data-sub="CO₂ footprint" data-roles="owner manager" data-parent="delivery">
+  <div id="dr-co-nav"></div>
+  <div class="scr-head" id="dr-co-head"></div>
+  <div class="scr-body" id="dr-co-body"></div>
+</section>
+
+<!-- ids: DLRS-004 DLRS-008 DLRS-079 DLRS-080 DLRS-081 DLRS-082 DLRS-083 DLRS-084 DLRS-085 DLRS-086 DLRS-087 DLRS-088 DLRS-089 DLRS-090 DLRS-091 DLRS-092 DLRS-093 -->
+<section class="scr dr-scr" id="s-delivery-relay" data-nav="Uber Direct (Relay)" data-group="Delivery" data-title="Delivery" data-sub="Courier partners · statuses · reliability" data-roles="owner manager" data-parent="delivery">
+  <div id="dr-rl-nav"></div>
+  <div class="scr-head" id="dr-rl-head"></div>
+  <div class="scr-body" id="dr-rl-body"></div>
+</section>
+
+<script>
+/* ===== 15 · Delivery – rest: shared state, demo flags, DeliveryNav, demo data (all fictional) ===== */
+window.DR=window.DR||{
+  flags:{freelance:true,autoConfirm:false,app:true,consent:true,shipping:true,rateSet:true,geoPartial:true,empty:false,saturday:true},
+  fl:{tab:"jobs",open:null,linked:null,week:"2026-10-12",noteKind:"neg",noteReason:"Late"},
+  fa:{tab:"jobs",sort:{k:"delivered",dir:-1},period:"30d"},
+  range:{heatmap:["2026-07-22","2026-10-20"],co2:["2026-07-22","2026-10-20"],pay:["2026-10-01","2026-10-20"],eta:["2026-10-13","2026-10-20"],exports:["2026-09-20","2026-10-20"]},
+  rl:{tab:"carriers",days:30},
+  eta:{courier:"all",open:{},rating:{},review:"2026-10-19",rules:{}},
+  zones:null,ship:{order:null,provider:"shiptheory",service:null,saturday:false,quote:null},
+  pay:{payouts:[]}
+};
+const DR_ESC=s=>App.esc(s);
+const DR_PH=i=>"+44 7700 900"+String(100+i).padStart(3,"0");
+/* freelance couriers – Omar is staff; the others are fictional contractors */
+const DR_COURIERS=[
+ {id:"omar",n:"Omar",phone:DR_PH(1),transport:"car",home:"SE16",source:"Telegram bot",jobs:48,newcomer:false,rating:"Reliable",onTime:96,issues:{late:1,withdrawn:0,problems:0,pin:0,refusals:1},rtw:"verified",rtwExp:"1 Mar 2027",ins:{ok:true,exp:"14 Jan 2027"},alcohol:"1 Feb 2027",app:true,appEmail:"omar@example.com",bank:"1234",registered:"12 Mar 2026",lastActive:"today 09:40",
+  notes:[{k:"pos",r:"Great service",t:"Customer rang to say thanks – bouquet handed over with care.",who:"valeria",at:"14 Oct"},{k:"neg",r:"Late",t:"20 min late to pick up, traffic on Jamaica Road.",who:"kamila",at:"2 Oct"}]},
+ {id:"fc2",n:"Tomasz K.",phone:DR_PH(2),transport:"bike",home:"SE1",source:"App",jobs:3,newcomer:true,rating:"New",onTime:null,issues:{late:0,withdrawn:0,problems:0,pin:0,refusals:0},rtw:"not_checked",rtwSubmitted:"19 Oct 2026",shareCode:"W3K 9XQ 2PL",dob:"12 Mar 1994",ins:null,alcohol:null,app:true,appEmail:"tomasz@example.com",bank:null,registered:"15 Oct 2026",lastActive:"today 08:10",notes:[]},
+ {id:"fc3",n:"Priya S.",phone:DR_PH(3),transport:"car",home:"SE15",source:"Telegram bot",jobs:21,newcomer:false,rating:"Reliable",onTime:91,issues:{late:2,withdrawn:0,problems:1,pin:0,refusals:0},rtw:"expired",rtwExp:"30 Sep 2026",ins:{ok:false,exp:null},alcohol:"3 Jul 2026",app:false,invite:{email:"priya@example.com",until:"29 Oct"},bank:"7788",registered:"4 May 2026",lastActive:"yesterday 18:22",notes:[{k:"neg",r:"Complaint",t:"Recipient said the box was upside down in the boot.",who:"valeria",at:"9 Oct"}]},
+ {id:"fc4",n:"Leon B.",phone:DR_PH(4),transport:"scooter",home:"SE8",source:"Telegram bot",jobs:9,newcomer:false,rating:"Watch",onTime:67,issues:{late:3,withdrawn:1,problems:2,pin:1,refusals:0},rtw:"rejected",rtwExp:null,ins:null,alcohol:null,app:false,bank:"4410",registered:"2 Aug 2026",lastActive:"3 days ago",notes:[{k:"neg",r:"No-show",t:"Confirmed Tuesday 14:00 job and never collected it.",who:"eliza",at:"13 Oct"},{k:"neg",r:"Rude",t:"",who:"kamila",at:"6 Oct"}]}
+];
+const DR_C=id=>DR_COURIERS.find(c=>c.id===id);
+const DR_CN=id=>{const c=DR_C(id);return c?c.n:(App.user(id)?App.user(id).n:id)};
+const DR_ORD=App.data.orders.filter(o=>o.type==="delivery"&&o.n===0);
+const DR_AREAS=["SE1 · under 3 km","SE16 · 3–6 km","SW1 · 6–10 km","E1 · 3–6 km","SE5 · 3–6 km"];
+const DR_JOBS=[
+ {id:"J-2041",order:DR_ORD[2].id,slot:"12:00–14:00",area:DR_AREAS[0],km:2.4,pay:9.5,status:"open",alcohol:true,apps:[{c:"fc2",s:"pending"},{c:"fc3",s:"pending"}]},
+ {id:"J-2042",order:DR_ORD[5].id,slot:"14:00–16:00",area:DR_AREAS[2],km:7.1,pay:14,status:"assigned",courier:"omar",apps:[{c:"omar",s:"confirmed"},{c:"fc4",s:"lost"}]},
+ {id:"J-2043",order:DR_ORD[8].id,slot:"14:00–16:00",area:DR_AREAS[1],km:4.3,pay:11,status:"picked_up",courier:"fc4",gaveUp:true,apps:[{c:"fc4",s:"confirmed"}]},
+ {id:"J-2044",order:DR_ORD[11].id,slot:"16:00–18:00",area:DR_AREAS[3],km:5.0,pay:12,status:"assigned",courier:"fc3",alcohol:true,ageRefused:true,apps:[{c:"fc3",s:"confirmed"},{c:"fc2",s:"declined"}]},
+ {id:"J-2045",order:DR_ORD[14].id,slot:"18:00–20:00",area:DR_AREAS[4],km:3.8,pay:10.5,status:"open",apps:[]},
+ {id:"J-2046",order:DR_ORD[17].id,slot:"16:00–18:00",area:DR_AREAS[0],km:1.9,pay:9,status:"open",apps:[{c:"fc4",s:"withdrawn"}]}
+];
+const DR_STMTS=[
+ {id:"FS-0431",courier:"omar",status:"draft",jobs:5,amount:58.5,bank:"1234",lines:[["Mon 12 Oct","J-2011","SE1","Delivery · 2.1 km",9.5],["Tue 13 Oct","J-2015","SW1","Delivery · 7.4 km",14],["Wed 14 Oct","J-2019","SE16","Delivery · 4.0 km",11],["Fri 16 Oct","J-2026","SE1","Delivery · 2.6 km",9.5],["Sat 17 Oct","J-2030","E1","Delivery · 5.2 km",12],["Sat 17 Oct","J-2030","E1","Return to studio · 50 %",2.5]],adj:[]},
+ {id:"FS-0432",courier:"fc2",status:"issued",jobs:2,amount:19,bank:null,lines:[["Thu 15 Oct","J-2022","SE1","Delivery · 1.8 km",9],["Sat 17 Oct","J-2031","SE1","Delivery · 2.3 km",10]],adj:[],pdf:true},
+ {id:"FS-0433",courier:"fc3",status:"queried",jobs:3,amount:34,bank:"7788",query:"Wednesday job J-2018 is missing from the list",lines:[["Mon 12 Oct","J-2012","SE15","Delivery · 3.9 km",11],["Thu 15 Oct","J-2023","SE5","Delivery · 4.4 km",11],["Fri 16 Oct","J-2027","SE16","Delivery · 4.1 km",12]],adj:[],pdf:true},
+ {id:"FS-0434",courier:"fc4",status:"paid",jobs:1,amount:11,bank:"4410",paidAt:"19 Oct",ref:"FLO-FS0434",confirmed:true,lines:[["Tue 13 Oct","J-2016","SE8","Delivery · 4.6 km",11]],adj:[],pdf:true}
+];
+const DR_ANALYTICS=[
+ {c:"omar",delivered:22,returned:1,onTime:[21,22],days:12,earned:262,apps:25,won:22,lost:2,declined:0,waiting:1,tta:"4 min",detour:"1.2 km",from:["board","push","route"],dropped:0,removed:0,problems:0,pr:{},refused:1,pushes:31,afterPush:9,msgs:3},
+ {c:"fc3",delivered:14,returned:0,onTime:[12,14],days:9,earned:168,apps:19,won:14,lost:4,declined:1,waiting:0,tta:"11 min",detour:"2.8 km",from:["board","area"],dropped:0,removed:0,problems:1,pr:{"can't find the address":1},refused:0,pushes:27,afterPush:5,msgs:7},
+ {c:"fc4",delivered:5,returned:1,onTime:[3,5],days:4,earned:61,apps:12,won:6,lost:4,declined:2,waiting:0,tta:"26 min",detour:"4.1 km",from:["board","manager"],dropped:1,removed:1,problems:2,pr:{"no answer":1,"damaged":1},refused:0,pushes:24,afterPush:2,msgs:1},
+ {c:"fc2",delivered:3,returned:0,onTime:[3,3],days:2,earned:28,apps:4,won:3,lost:1,declined:0,waiting:1,tta:"2 min",detour:"0.6 km",from:["push"],dropped:0,removed:0,problems:0,pr:{},refused:0,pushes:6,afterPush:3,msgs:2}
+];
+const DR_HM=[[48,46,41],[53,43,27],[44,55,19],[58,52,14],[39,61,11],[62,40,9],[35,38,8],[66,58,7],[50,70,6],[30,52,5],[70,30,4],[60,66,3],[42,28,3],[26,36,2],[74,48,2],[20,60,1],[80,20,1],[56,22,1]];
+const DR_CO2=[["Car / van",62,318.4,41.2],["Scooter",23,96.1,6.7],["Bicycle",88,201.0,0],["On foot",14,12.3,0],["Other",2,9.8,1.1],["Courier not recorded",11,0,0]];
+const DR_RELAY=[{ref:DR_ORD[1].id,acc:"Uber Direct",st:"In progress",eta:"11:25",cost:9.4,track:true},{ref:DR_ORD[4].id,acc:"Uber Direct",st:"Pending",eta:"–",cost:8.9,track:true},{ref:DR_ORD[6].id,acc:"Uber Direct (backup)",st:"Delivered",eta:"09:52",cost:11.2,track:true},{ref:DR_ORD[9].id,acc:"Uber Direct",st:"Delivered",eta:"10:14",cost:0,track:true},{ref:DR_ORD[12].id,acc:"Uber Direct",st:"In progress",eta:"11:40",cost:9.9,hidden:true},{ref:DR_ORD[15].id,acc:"Uber Direct",st:"Cancelled",eta:"–",cost:0,track:false}];
+
+window.DRX={
+  re(){App.remount()},
+  isOwner(){return App.role()==="owner"},
+  flag(k){return DR.flags[k]},
+  /* ids: DLRS-001 DLRS-002 DLRS-003 DLRS-004 DLRS-005 DLRS-006 DLRS-007 – DeliveryNav strip */
+  nav(el,active){
+    const ic=App.icon,owner=this.isOwner();
+    const open=DR_JOBS.filter(j=>j.status==="open").length,apps=DR_JOBS.reduce((s,j)=>s+j.apps.filter(a=>a.s==="pending").length,0);
+    const main=[["dispatch","Dispatch",()=>App.go("delivery")]];
+    if(DR.flags.freelance)main.push(["freelance",`Freelance <span class="n ${open?"hot":""}">${open} open · ${apps} applications</span>`,()=>App.go("delivery-freelance")]);
+    main.push(["heatmap","Heatmap",()=>App.go("delivery-heatmap")],["co2","CO₂",()=>App.go("delivery-co2")],["carriers","Courier partners",()=>{DR.rl.tab="carriers";App.go("delivery-relay")}],["tracking","Courier statuses",()=>{DR.rl.tab="tracking";App.go("delivery-relay")}],["reliability","Reliability",()=>{DR.rl.tab="reliability";App.go("delivery-relay")}]);
+    if(owner)main.push(["pay","Courier pay",()=>App.go("delivery-courier-pay")]);
+    const more=[["eta","ETA accuracy",()=>App.go("delivery-eta")],["zones","Zones & rules",()=>App.go("delivery-zones")],["consents","Geo-consents",()=>App.go("delivery-consents")],["exports","Exports",()=>App.go("delivery-exports")],["shipping","Shipping",()=>App.go("delivery-shipping")],["pod","POD",()=>App.toast("Proof of delivery · neighbouring registry (Delivery – core)")],["routes","Routes",()=>App.toast("Routes · neighbouring registry (Delivery – core)")],["presence","Presence",()=>App.toast("Presence · neighbouring registry (Delivery – core)")]];
+    const inMore=more.some(m=>m[0]===active);
+    DR.navMore=DR.navMore??inMore;if(inMore)DR.navMore=true;
+    window._drNavFns=Object.fromEntries([...main,...more].map(m=>[m[0],m[2]]));
+    el.innerHTML=`<div class="dr-nav" title="One tab is lit – the one with the longest matching route (e.g. /delivery/couriers/pay does not light “Dispatch”)">${main.map(m=>`<button class="${m[0]===active?"on":""}" onclick="window._drNavFns['${m[0]}']()">${m[1]}</button>`).join("")}
+      <button onclick="DR.navMore=!DR.navMore;DRX.re()" title="Sleeping screens">More ${DR.navMore?ic("down"):ic("chev")}</button>
+      ${DR.navMore?`<span class="more">${more.map(m=>`<button class="${m[0]===active?"on":""}" onclick="window._drNavFns['${m[0]}']()">${m[1]}</button>`).join("")}</span>`:""}
+      <span class="sp"></span><button class="dr-flag" onclick="DRX.demoMenu(event)" title="Demo state of flags and roles">${ic("columns")} Demo flags</button></div>`;
+  },
+  /* demo flags – feature flags from .env that change what is visible */
+  demoMenu(ev){const f=DR.flags,t=(k,l)=>({t:(f[k]?"· ":"  ")+l,fn:()=>{f[k]=!f[k];this.re();App.toast(l+" · "+(f[k]?"on":"off"))}});
+    App.pop(ev,["Feature flags (.env)",t("freelance","DELIVERY_FREELANCE_ENABLED"),t("autoConfirm","DELIVERY_FREELANCE_AUTO_CONFIRM"),t("app","DELIVERY_FREELANCE_APP_ENABLED"),t("consent","DELIVERY_CONSENT_ENABLED"),t("shipping","SHIPPING_PROVIDERS_ENABLED"),t("saturday","Shipping · Saturday service"),"-","Demo data",t("rateSet","Hourly rate set"),t("geoPartial","Geocoding incomplete"),t("empty","Empty states (no data)")])},
+  /* ids: DLRS-009 DLRS-152 – toast after every mutation; inline error helper */
+  err(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.style.display=msg?"":"none"}},
+  /* ids: DLRS-153 – From / To bar; reversed dates get swapped with a toast */
+  rangeBar(key,btn="Show",extra=""){const r=DR.range[key];return `<div class="dr-form"><div class="field"><label>From</label><input class="input" type="date" id="dr-${key}-from" value="${r[0]}"></div><div class="field"><label>To</label><input class="input" type="date" id="dr-${key}-to" value="${r[1]}"></div>${extra}<button class="btn --secondary --sm" onclick="DRX.applyRange('${key}')">${btn}</button></div>`},
+  applyRange(key){let a=App.$("#dr-"+key+"-from").value,b=App.$("#dr-"+key+"-to").value;if(!a||!b){App.toast("Unreadable date – default period restored");a=a||DR.range[key][0];b=b||DR.range[key][1]}if(a>b){[a,b]=[b,a];App.toast("From was later than To – dates swapped")}DR.range[key]=[a,b];this.re();App.toast("Period "+this.fd(a)+" – "+this.fd(b))},
+  fd(iso){const d=new Date(iso+"T12:00:00");return d.toLocaleDateString("en-GB",{day:"numeric",month:"short"})},
+  tiles(list){return `<div class="grid g4">${list.map(t=>`<div class="kpi-card ${t.cls||""}" ${t.title?`title="${DR_ESC(t.title)}"`:""}><span class="caps">${t.l}</span><span class="kpi-s tnum">${t.v}</span>${t.sub?`<span class="delta">${t.sub}</span>`:""}</div>`).join("")}</div>`},
+  empty(ic,t,sub,btn){return `<div class="empty">${App.icon(ic)}<div class="h3">${t}</div>${sub?`<div class="sm">${sub}</div>`:""}${btn||""}</div>`},
+
+  /* ===================== FREELANCE BOARD ===================== */
+  flTab(t){DR.fl.tab=t;this.re()},
+  flGo(params){DR.fl.tab=params.tab||DR.fl.tab;if(params.courier){DR.fl.tab="couriers";DR.fl.open=params.courier;DR.fl.linked=params.courier}if(params.week)DR.fl.week=params.week},
+  rtwLbl:{not_checked:"Not checked",verified:"Verified",expired:"Expired",rejected:"Rejected"},
+  appSt:{pending:"Pending",confirmed:"Confirmed",declined:"Declined",withdrawn:"Withdrawn",lost:"Lost"},
+  jobSt:{open:"Open",assigned:"Assigned",picked_up:"Picked up",returned:"Returned",cancelled:"Cancelled"},
+  flJobs(){
+    const ic=App.icon,E=DR_ESC,manual=!DR.flags.autoConfirm;
+    const jobs=DR.flags.empty?[]:DR_JOBS.filter(j=>["open","assigned","picked_up"].includes(j.status));
+    if(!jobs.length)return this.empty("truck","No open or assigned freelance jobs right now","Jobs are published by the 15-minute cron once a delivery is ready for the board");
+    /* ids: DLRS-016 DLRS-017 DLRS-018 DLRS-019 DLRS-020 DLRS-021 DLRS-022 DLRS-023 DLRS-024 */
+    return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Order</th><th>Slot</th><th>Area</th><th class="num">Distance</th><th class="num">Pay</th><th>Status</th><th>Applications</th><th>Actions</th></tr></thead><tbody>
+    ${jobs.map(j=>{const o=App.order(j.order);const pending=j.apps.filter(a=>a.s==="pending");
+      const apps=j.apps.length?`<div class="dr-apps">${j.apps.map(a=>`<span class="ap"><span>${E(DR_CN(a.c))}</span><span class="tag ${a.s==="confirmed"?"--okl":a.s==="pending"?"--warn":a.s==="lost"||a.s==="declined"?"--acc":""}">${this.appSt[a.s]}</span>${a.s==="pending"&&manual?`<button class="textbtn" onclick="DRX.flConfirm('${j.id}','${a.c}')">Confirm</button><button class="textbtn --accent" onclick="DRX.flDecline('${j.id}','${a.c}')">Decline</button>`:""}</span>`).join("")}</div>`:`<span class="muted sm">No applications yet</span>`;
+      const acts=j.status==="open"?`<button class="btn --ghost --sm" onclick="DRX.flUnpublish('${j.id}')">Take off the board</button>`:`<span class="btn-row"><button class="btn --ghost --sm" onclick="DRX.flRemove('${j.id}')">Remove courier</button><button class="btn --ghost --sm" onclick="DRX.flReturned('${j.id}')">Returned to studio</button></span>`;
+      return `<tr class="r"><td class="wrap"><b class="tnum" style="cursor:pointer" onclick="App.openOrder(${j.order})">#${j.order}</b>${j.alcohol?` <span class="tag --line" title="Contains alcohol – courier must be trained, ID check at the door">${ic("alert")} alcohol</span>`:""}<span class="sub">${o?App.fmtDay(o.date):"today"} · ${E(j.id)}</span></td><td class="tnum">${j.slot}</td><td>${E(j.area)}</td><td class="num">${j.km.toFixed(1)} km</td><td class="num">${App.fmt(j.pay)}</td>
+      <td class="wrap"><span class="pill --${j.status==="open"?"queue":j.status==="picked_up"?"out":"making"}">${this.jobSt[j.status]}</span>${j.courier?`<span class="sub">${E(DR_CN(j.courier))}</span>`:""}${j.gaveUp?`<span class="sub accent">Courier can't continue – bringing it back (50 % of the fee)</span>`:""}${j.ageRefused?`<span class="sub accent">Refused at the door – age check</span>`:""}</td>
+      <td class="wrap">${apps}</td><td>${acts}</td></tr>`}).join("")}</tbody></table></div>
+    ${manual?"":`<div class="dr-method">Auto-confirm is on – the first courier to apply gets the job; Confirm / Decline are hidden.</div>`}`;
+  },
+  flConfirm(j,c){const job=DR_JOBS.find(x=>x.id===j);const a=job.apps.find(x=>x.c===c);if(!a||a.s!=="pending"){App.toast("This application is no longer waiting for a decision");return}
+    App.confirm("Give "+j+" to "+DR_CN(c)+"?","The other waiting couriers get “went to another courier this time”. The order's delivery moves Ready → Assigned; alcohol hours are checked.","Confirm",()=>{a.s="confirmed";job.apps.forEach(x=>{if(x!==a&&x.s==="pending")x.s="lost"});job.status="assigned";job.courier=c;App.assignCourier(job.order,c==="omar"?"omar":DR_CN(c));this.re();App.push("Telegram + app push · "+DR_CN(c),"Confirmed – job "+j+" is yours. Pick up at 80 Willow Walk.",{icon:"send"});App.toast("Confirmed · "+DR_CN(c)+" takes "+j)})},
+  flDecline(j,c){const job=DR_JOBS.find(x=>x.id===j);const a=job.apps.find(x=>x.c===c);if(!a||a.s!=="pending"){App.toast("This application is no longer waiting for a decision");return}a.s="declined";this.re();App.toast("Declined · "+DR_CN(c)+" gets “Job "+j+" was not confirmed for you this time”")},
+  flUnpublish(j){const job=DR_JOBS.find(x=>x.id===j);App.confirm("Take "+j+" off the board?","Couriers are not notified. The delivery stays with the order for your own couriers.","Take off",()=>{job.status="cancelled";this.re();App.toast(j+" taken off the board")})},
+  flRemove(j){const job=DR_JOBS.find(x=>x.id===j);if(job.status==="picked_up"){App.toast("Already picked up – nothing changes (was a silent success before; now says so)");return}
+    App.confirm("Remove "+DR_CN(job.courier)+" from "+j+"?","Their application becomes Withdrawn, the delivery goes back to Ready and the job returns to the board. Ops chat gets a Telegram line.","Remove",()=>{job.apps.forEach(a=>{if(a.c===job.courier)a.s="withdrawn"});job.courier=null;job.status="open";this.re();App.toast(j+" is back on the board · ops chat notified")},{danger:true})},
+  flReturned(j){const job=DR_JOBS.find(x=>x.id===j);const gaveUp=!!job.gaveUp;
+    App.confirm("Returned to studio · "+j,gaveUp?"The courier gave up on the way: they get only the 50 % return fee ("+App.fmt(job.pay/2)+").":"The courier brought the order back: full pay "+App.fmt(job.pay)+" plus 50 % return fee ("+App.fmt(job.pay/2)+"). The order and its delivery status are not changed here.","Mark returned",()=>{job.status="returned";this.re();App.push("Telegram + push · "+DR_CN(job.courier),"Job "+j+" marked returned · "+(gaveUp?App.fmt(job.pay/2):App.fmt(job.pay*1.5)),{icon:"pound"});App.toast(j+" · returned, fee recorded")})},
+
+  flCouriers(){
+    const ic=App.icon,E=DR_ESC,owner=this.isOwner();
+    const list=DR.flags.empty?[]:DR_COURIERS;
+    if(!list.length)return this.empty("user","No freelance couriers registered yet","They register in the Telegram bot or the Floritta Team app");
+    /* ids: DLRS-026 DLRS-027 DLRS-028 DLRS-029 DLRS-030 DLRS-031 DLRS-032 DLRS-033 DLRS-034 DLRS-035 DLRS-036 DLRS-037 DLRS-038 DLRS-039 DLRS-015 DLRS-156 */
+    const rows=list.map(c=>{const open=DR.fl.open===c.id;const i=c.issues;const iss=[i.late?`${i.late} late`:"",i.withdrawn?`${i.withdrawn} withdrawn after confirm`:"",i.problems?`${i.problems} problem${i.problems>1?"s":""} reported`:"",i.pin?`${i.pin} PIN lockout${i.pin>1?"s":""}`:""].filter(Boolean);
+      const rtwDone=c.rtw==="verified";
+      const acts=[];
+      if(!rtwDone&&c.rtwSubmitted)acts.push(`<span class="sm">Sent from the app ${c.rtwSubmitted} · <button class="textbtn" onclick="App.toast('Opens the document in a new tab · the view is written to the audit log')">open document</button></span>`);
+      if(!rtwDone&&c.shareCode)acts.push(`<span class="sm">Share code <b class="tnum">${c.shareCode}</b> · DoB <b class="tnum">${c.dob}</b> · <button class="textbtn" onclick="App.toast('gov.uk/view-right-to-work opens in a new tab')">Run the check on gov.uk</button></span>`);
+      if(!rtwDone)acts.push(`<button class="btn --ghost --sm" onclick="DRX.flVerifyForm('${c.id}')">${ic("upload")} Verify right to work</button>`);
+      if(c.transport==="car")acts.push(`<button class="btn --ghost --sm" onclick="DRX.flInsForm('${c.id}')">${ic("card")} Insurance verified</button>`);
+      if(DR.flags.app&&!c.app)acts.push(c.invite?`<span class="sm muted">Invite sent to ${E(c.invite.email)} – code works until ${c.invite.until} · <button class="textbtn" onclick="DRX.flInviteForm('${c.id}')">Send a new code</button></span>`:`<button class="btn --ghost --sm" onclick="DRX.flInviteForm('${c.id}')">${ic("mail")} Invite to app</button>`);
+      return `<tr class="r ${DR.fl.linked===c.id?"--linked":""} ${open?"on":""}" id="dr-cr-${c.id}"><td class="wrap"><b style="cursor:pointer" onclick="DRX.flOpen('${c.id}')">${E(c.n)}</b> ${c.app?`<span class="tag --ink" title="${E(c.appEmail||"")}">App</span>`:""}<span class="sub">${open?"click to collapse":"click for rating & notes"}</span></td>
+        <td class="tnum">${c.phone}</td><td>${c.transport}</td><td class="tnum">${c.home}</td><td>${c.source}</td>
+        <td class="num">${c.jobs}${c.newcomer?` <span class="tag --line" title="Newcomer – order value limit applies">new</span>`:""}</td>
+        <td title="Internal rating over the last 60 days – never shown to the courier"><span class="tag ${c.rating==="Reliable"?"--okl":c.rating==="Watch"?"--acc":""}">${c.rating}</span></td>
+        <td class="num">${c.onTime===null?"–":c.onTime+" %"}</td><td class="wrap sm ${iss.length?"accent":"muted"}">${iss.length?iss.join(" · "):"–"}</td>
+        <td class="wrap"><span class="${c.rtw==="verified"?"ok":c.rtw==="not_checked"?"":"accent"}">${this.rtwLbl[c.rtw]}</span>${c.rtwExp?`<span class="sub">Expires ${c.rtwExp}</span>`:""}</td>
+        <td class="wrap">${c.transport!=="car"?"–":c.ins&&c.ins.ok?`<span class="ok">Insurance verified</span><span class="sub">until ${c.ins.exp}</span>`:`<span class="accent">Insurance not verified</span>`}</td>
+        <td class="wrap">${c.alcohol?`Trained until ${c.alcohol}<span class="sub"><button class="textbtn --accent" onclick="DRX.flRevoke('${c.id}')">Revoke</button></span>`:"–"}</td>
+        <td class="wrap"><div class="col" style="gap:6px;align-items:flex-start">${acts.join("")||"<span class='muted sm'>–</span>"}</div></td></tr>
+        ${open?`<tr class="drawer"><td colspan="13">${this.flDrawer(c)}</td></tr>`:""}`}).join("");
+    return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Phone</th><th>Transport</th><th>Home postcode</th><th>Source</th><th class="num">Jobs done</th><th title="New / Watch / Reliable – internal 60-day rating">Rating</th><th class="num">On time</th><th>Issues</th><th>Right to work</th><th>Insurance</th><th>Alcohol</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="dr-method">Share code, date of birth, RTW documents and bank digits are personal data – shown only here, only to managers; every document view is audited. Rating and notes are internal and never reach the courier.</div>`;
+  },
+  flOpen(id){DR.fl.open=DR.fl.open===id?null:id;this.re();if(DR.fl.open){setTimeout(()=>{const r=document.getElementById("dr-cr-"+id);if(r)r.scrollIntoView({block:"center",behavior:"smooth"})},60)}},
+  /* ids: DLRS-040 DLRS-041 DLRS-042 DLRS-043 DLRS-044 DLRS-154 DLRS-155 */
+  flDrawer(c){const E=DR_ESC,i=c.issues,owner=this.isOwner();const pos=c.notes.filter(n=>n.k==="pos").length,neg=c.notes.length-pos;
+    const kv=[["Completed jobs",c.jobs],["On-time %",c.onTime===null?"Not enough jobs yet":c.onTime+" %"],["Late",i.late],["Withdrawn after confirm",i.withdrawn],["Problems reported",i.problems],["PIN lockouts",i.pin],["Alcohol refusals (neutral)",i.refusals],["Manager notes (+/−)",`+${pos} / −${neg}`]];
+    const reasons=["Late","No-show","Damaged bouquet","Complaint","Rude","Great service","Other"];
+    return `<div class="dr-cols"><div><div class="caps mb8">Numbers (last 60 days)</div><dl class="kv">${kv.map(k=>`<dt>${k[0]}</dt><dd class="tnum">${k[1]}</dd>`).join("")}</dl><div class="dr-method">“Watch” is set when on-time drops under 80 %, or after a withdrawal, two problems or a PIN lockout in 60 days. Notes older than 12 months are pruned automatically (GDPR) and leave the counter.</div></div>
+    <div><div class="caps mb8">Manager notes</div><div style="max-height:180px;overflow:auto">${c.notes.length?c.notes.map((n,k)=>`<div class="dr-note"><span class="tag ${n.k==="pos"?"--okl":"--acc"}">${E(n.r)}</span><span>${n.t?E(n.t):"<span class='muted'>no text</span>"}<br><small>${E(App.user(n.who)?App.user(n.who).n:n.who)} · ${n.at}</small></span>${(owner||n.who===App.me().id)?`<button class="textbtn --accent" onclick="DRX.flDelNote('${c.id}',${k})">Delete</button>`:"<span></span>"}</div>`).join(""):`<div class="muted sm">No notes yet.</div>`}</div>
+    <div class="dr-form mt16"><div class="seg-ctl"><button class="${DR.fl.noteKind==="pos"?"on":""}" onclick="DR.fl.noteKind='pos';DRX.re()">Positive</button><button class="${DR.fl.noteKind==="neg"?"on":""}" onclick="DR.fl.noteKind='neg';DRX.re()">Negative</button></div>
+    <div class="field"><label>Reason</label><select class="select" id="dr-note-reason">${reasons.map(r=>`<option ${r===DR.fl.noteReason?"selected":""}>${r}</option>`).join("")}</select></div>
+    <div class="field" style="flex:1;min-width:180px"><label>Text (optional, 300)</label><input class="input" id="dr-note-text" maxlength="300" placeholder="What happened"></div><button class="btn --secondary --sm" onclick="DRX.flAddNote('${c.id}')">Add note</button></div></div></div>`},
+  flAddNote(id){const c=DR_C(id);const r=App.$("#dr-note-reason").value,t=App.$("#dr-note-text").value.trim();DR.fl.noteReason=r;c.notes.unshift({k:DR.fl.noteKind,r,t,who:App.me().id,at:"today"});this.re();App.toast("Note added · internal only, the courier is not notified")},
+  flDelNote(id,k){App.confirm("Delete this note?","It leaves the counter “Manager notes (+/−)” too.","Delete",()=>{DR_C(id).notes.splice(k,1);this.re();App.toast("Note deleted")},{danger:true})},
+  flRevoke(id){const c=DR_C(id);App.confirm("Revoke alcohol training for "+c.n+"?","Alcohol jobs close for them immediately. They get a Telegram and app push: “Your alcohol-delivery training was revoked…”.","Revoke",()=>{c.alcohol=null;this.re();App.toast("Training revoked · courier notified")},{danger:true})},
+  /* ids: DLRS-036 DLRS-152 – RTW verification form with inline validation */
+  flVerifyForm(id){const c=DR_C(id);App.modal({title:"Verify right to work · "+c.n,body:`<div class="col" style="gap:12px"><div class="field"><label>Document (jpg, png, webp, pdf · up to 16 MB)</label><div class="row"><button class="btn --ghost --sm" onclick="DR._file='rtw.pdf';App.$('#dr-vf-file').textContent='rtw-${id}.pdf · 1.2 MB';DRX.err('dr-vf-err','')">${App.icon("upload")} Choose file</button><span class="sm" id="dr-vf-file">no file chosen</span></div><div class="err" id="dr-vf-err" style="display:none"></div></div>
+    <div class="field"><label>Expires (optional)</label><input class="input" type="date" id="dr-vf-exp"><div class="err" id="dr-vf-err2" style="display:none"></div></div>
+    <div class="note-box">Share code and date of birth are wiped on verify (DoB stays only if an expiry is set). The courier gets “You're verified…”${c.transport==="car"?" plus a reminder about insurance":""}.</div></div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="DRX.flVerify('${id}')">Verify</button>`});DR._file=null},
+  flVerify(id){const c=DR_C(id);if(!DR._file){this.err("dr-vf-err","A document is required (jpg, png, webp or pdf, up to 16 MB)");return}const exp=App.$("#dr-vf-exp").value;if(exp&&exp<="2026-10-20"){this.err("dr-vf-err2","Expiry must be after today");return}
+    c.rtw="verified";c.rtwExp=exp?this.fd(exp)+" "+exp.slice(0,4):null;c.shareCode=null;c.rtwSubmitted=null;if(!exp)c.dob=null;App.closeModal();this.re();App.push("Telegram + push · "+c.n,"You're verified – jobs are open for you."+(c.transport==="car"?" Don't forget Hire & Reward insurance.":""),{icon:"check"});App.toast("Right to work verified · document stored privately, audited")},
+  /* ids: DLRS-037 */
+  flInsForm(id){const c=DR_C(id);App.modal({title:"Hire & Reward insurance · "+c.n,body:`<div class="col" style="gap:12px"><div class="field"><label>Policy expires</label><input class="input" type="date" id="dr-if-exp" value="${c.ins&&c.ins.ok?"2027-01-14":""}"><div class="err" id="dr-if-err" style="display:none"></div></div><div class="field"><label>Certificate (optional)</label><button class="btn --ghost --sm" style="align-self:flex-start" onclick="App.$('#dr-if-file').textContent='certificate.pdf · 0.4 MB'">${App.icon("upload")} Choose file</button><span class="sm" id="dr-if-file">no file</span></div></div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="DRX.flIns('${id}')">Insurance verified</button>`})},
+  flIns(id){const c=DR_C(id);const exp=App.$("#dr-if-exp").value;if(!exp){this.err("dr-if-err","Expiry date is required");return}if(exp<="2026-10-20"){this.err("dr-if-err","Expiry must be after today");return}c.ins={ok:true,exp:this.fd(exp)+" "+exp.slice(0,4)};App.closeModal();this.re();App.push("Telegram + push · "+c.n,"Insurance verified – car jobs are open for you."+(c.rtw!=="verified"?" Right-to-work check still pending.":""),{icon:"check"});App.toast("Insurance verified until "+c.ins.exp)},
+  /* ids: DLRS-038 DLRS-152 */
+  flInviteForm(id){const c=DR_C(id);App.modal({title:(c.invite?"Send a new code · ":"Invite to app · ")+c.n,body:`<div class="col" style="gap:10px"><div class="field"><label>E-mail for the app</label><input class="input" type="email" id="dr-inv-mail" value="${c.invite?DR_ESC(c.invite.email):""}" placeholder="name@example.com"><div class="err" id="dr-inv-err" style="display:none"></div></div><div class="note-box">An 8-digit code goes by e-mail and works for 14 days. It is stored hashed.</div></div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="DRX.flInvite('${id}')">Send code</button>`})},
+  flInvite(id){const c=DR_C(id);const m=App.$("#dr-inv-mail").value.trim();if(!m||!m.includes("@")){this.err("dr-inv-err","Enter a valid e-mail");return}if(m==="omar@example.com"){this.err("dr-inv-err","This e-mail is already used by another courier");return}c.invite={email:m,until:"3 Nov"};App.closeModal();this.re();App.toast("Invite sent to "+m+" · code works until 3 Nov")},
+
+  /* ids: DLRS-045 DLRS-157 */
+  flReport(){const d=DR.flags.empty?[0,0,0,0,0,0,DR_COURIERS.length,1,0]:[6,11,4,3,1,1,DR_COURIERS.length,1,3];const l=["Published today","Applications today","Assigned today","Delivered today","Expired today","Withdrawn today","Couriers registered","Couriers verified","Active last 7 days"];
+    return `<div class="dr-tiles">${l.map((x,i)=>`<div class="t"><span class="caps">${x}</span><span class="kpi-s tnum">${d[i]}</span></div>`).join("")}</div><div class="dr-method">Same nine numbers go to the ops Telegram chat every evening at 21:30 (digest cron). Today, Europe/London.</div>`},
+
+  /* ids: DLRS-046 DLRS-047 DLRS-048 DLRS-049 DLRS-050 DLRS-051 DLRS-052 DLRS-053 DLRS-054 DLRS-055 DLRS-155 DLRS-160 */
+  flPayouts(){const E=DR_ESC,ic=App.icon,owner=this.isOwner();const wk=DR.fl.week;const from=new Date(wk+"T12:00:00"),to=new Date(from);to.setDate(to.getDate()+6);
+    const st=DR.flags.empty||wk!=="2026-10-12"?[]:DR_STMTS;const missing=st.filter(s=>s.status==="issued"&&!s.bank);
+    const head=`<div class="dr-form mb16"><div class="field"><label>Week</label><input class="input" type="date" id="dr-fl-week" value="${wk}" onchange="DRX.flWeek(this.value)"></div><span class="sm muted">Mon ${from.toLocaleDateString("en-GB",{day:"numeric",month:"short"})} – Sun ${to.toLocaleDateString("en-GB",{day:"numeric",month:"short"})} · default: last week</span><span class="sp"></span>${owner?`<button class="btn --ghost --sm" onclick="App.toast('bank-'+'${wk}'+'.csv · Name, Sort code, Account number, Amount, Reference – issued statements with bank details only · audited')">${ic("download")} Download bank CSV</button>`:`<span class="dr-flag">${ic("lock")} Bank CSV – owner only</span>`}</div>`;
+    if(!st.length)return head+this.empty("pound","No statements for this week yet","Drafts are created by the Monday 08:00 cron from last week's jobs");
+    const cards=st.map(s=>{const c=DR_C(s.courier);const canPay=["issued","queried"].includes(s.status);
+      return `<div class="dr-stmt"><div class="s-top"><span class="h4">${E(c.n)}</span><span class="tnum muted">${s.id}</span><span class="pill --${s.status==="paid"?"paid":s.status==="issued"?"ready":s.status==="queried"?"photo":"queue"}">${s.status[0].toUpperCase()+s.status.slice(1)}</span><span class="sm">${s.jobs} jobs</span><b class="tnum">${App.fmt(s.amount)}</b></div>
+      <div class="sm ${s.bank?"":"accent"}">${s.bank?`Bank details on file (…${s.bank})`:"No bank details yet"}${s.paidAt?` · paid ${s.paidAt} (${s.ref})`:""}${s.confirmed?" · courier confirmed":""}${s.query?` · <span class="warn">queried: ${E(s.query)}</span>`:""}</div>
+      <div class="lines">${s.lines.map(l=>`<span>${l[0]}</span><span class="tnum">${l[1]}</span><span>${l[2]}</span><span>${l[3]}</span><span class="tnum">${App.fmt(l[4])}</span>`).join("")}${s.adj.map(a=>`<span class="adj">adj</span><span></span><span></span><span class="adj">${E(a.r)}</span><span class="adj tnum">${a.v>0?"+":""}${App.fmt(a.v)}</span>`).join("")}</div>
+      <div class="btn-row">${s.status==="draft"?`<button class="btn --sm" onclick="DRX.flIssue('${s.id}')">Issue</button><div class="dr-form"><div class="field" style="min-width:90px"><label>Amount £ (±)</label><input class="input" id="dr-adj-v-${s.id}" placeholder="-5.00"></div><div class="field" style="min-width:160px"><label>Reason (120)</label><input class="input" id="dr-adj-r-${s.id}" maxlength="120"></div><button class="btn --ghost --sm" onclick="DRX.flAdj('${s.id}')">Add adjustment</button></div><div class="err" id="dr-adj-err-${s.id}" style="display:none"></div>`:""}
+      ${canPay?`<div class="dr-form"><div class="field" style="min-width:160px"><label>Payment reference (40)</label><input class="input" id="dr-pay-ref-${s.id}" maxlength="40" oninput="App.$('#dr-pay-btn-${s.id}').disabled=!this.value.trim()"></div><button class="btn --sm" id="dr-pay-btn-${s.id}" disabled onclick="DRX.flPaid('${s.id}')">Mark paid</button></div>`:""}
+      ${s.pdf?`<button class="btn --ghost --sm" onclick="App.toast('${s.id}.pdf opens in a new tab')">${ic("download")} Download PDF</button>`:""}</div></div>`}).join("");
+    return head+(missing.length?`<div class="note-box --accent mb16"><b>Cannot pay – bank details missing</b><br>${missing.map(s=>`${E(DR_C(s.courier).n)} (${s.id}) – ask the courier to add bank details in the bot`).join("<br>")}</div>`:"")+`<div class="dr-cols">${cards}</div><div class="dr-method">“Mark paid” here and “Mark paid / Undo” on Courier pay write the same payout record; the reference is required here (40) and optional there (120) – one rule to agree on in the redesign.</div>`},
+  flWeek(v){DR.fl.week=v;this.re();App.toast("Payouts reloaded for the week of "+this.fd(v))},
+  flIssue(id){const s=DR_STMTS.find(x=>x.id===id);App.confirm("Issue "+id+" to "+DR_C(s.courier).n+"?","A PDF is generated and the courier gets a Telegram and push: “Your statement … Payment by Friday”.","Issue",()=>{s.status="issued";s.pdf=true;this.re();App.toast(id+" issued · PDF stored, courier notified")})},
+  flAdj(id){const s=DR_STMTS.find(x=>x.id===id);const v=parseFloat(App.$("#dr-adj-v-"+id).value),r=App.$("#dr-adj-r-"+id).value.trim();if(!v||isNaN(v)){this.err("dr-adj-err-"+id,"Amount must be a non-zero number");return}if(!r){this.err("dr-adj-err-"+id,"Reason is required");return}s.adj.push({v,r});s.amount=Math.round((s.amount+v)*100)/100;this.re();App.toast("Adjustment "+(v>0?"+":"")+App.fmt(v)+" added to "+id)},
+  flPaid(id){const s=DR_STMTS.find(x=>x.id===id);const ref=App.$("#dr-pay-ref-"+id).value.trim();if(!ref){this.err("dr-adj-err-"+id,"Reference is required");return}s.status="paid";s.paidAt="today";s.ref=ref;DR.pay.payouts.push({c:s.courier,v:s.amount,at:"20 Oct",ref,stmt:s.id,week:DR.fl.week});this.re();App.push("Telegram + push · "+DR_C(s.courier).n,"Paid: "+App.fmt(s.amount)+" for statement "+id,{icon:"pound"});App.toast(id+" marked paid · "+ref)},
+
+  /* ===================== FREELANCE ANALYTICS ===================== */
+  /* ids: DLRS-056 DLRS-158 – period select */
+  periodBar(){const P=[["today","Today"],["7d","7 days"],["30d","30 days"],["month","This month"],["lastmonth","Last month"],["quarter","Quarter"]];const p=DR.fa.period;
+    return `<div class="row" style="gap:8px;flex-wrap:wrap"><div class="chips">${P.map(x=>`<button class="chip ${p===x[0]?"on":""}" onclick="DRX.faPeriod('${x[0]}')">${x[1]}</button>`).join("")}</div><div class="field" style="flex-direction:row;align-items:center;gap:6px"><label>One day</label><input class="input" type="date" style="width:150px" onchange="DRX.faPeriod('day:'+this.value)"></div><button class="chip ${p==="custom"?"on":""}" onclick="DRX.faCustom()">Custom dates</button><span class="sm muted">${p==="30d"?"default · 30 days":""}</span></div>`},
+  faPeriod(p){DR.fa.period=p;this.re();App.toast("Period · "+(p.startsWith("day:")?this.fd(p.slice(4)):p))},
+  faCustom(){App.modal({title:"Custom dates",body:`<div class="dr-form"><div class="field"><label>From</label><input class="input" type="date" id="dr-fa-from" value="2026-09-20" oninput="DRX.faCustomCheck()"></div><div class="field"><label>To</label><input class="input" type="date" id="dr-fa-to" value="2026-10-20" oninput="DRX.faCustomCheck()"></div></div><div class="err mt8" id="dr-fa-err" style="display:none"></div><div class="dr-method">Windows longer than 366 days or unreadable dates fall back to 30 days – shown here as a warning instead of a silent swap.</div>`,
+    foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="dr-fa-apply" onclick="DRX.faApply()">Apply</button>`})},
+  faCustomCheck(){const a=App.$("#dr-fa-from").value,b=App.$("#dr-fa-to").value;const bad=a&&b&&a>b;App.$("#dr-fa-apply").disabled=bad;this.err("dr-fa-err",bad?"From is later than To":"")},
+  faApply(){const a=App.$("#dr-fa-from").value,b=App.$("#dr-fa-to").value;if(!a||!b){this.err("dr-fa-err","Both dates are needed");return}const days=(new Date(b)-new Date(a))/864e5;if(days>366){this.err("dr-fa-err","Window longer than 366 days – pick a shorter one (the server would silently fall back to 30 days)");return}DR.fa.period="custom";App.closeModal();this.re();App.toast("Custom period applied")},
+  faTab(t){DR.fa.tab=t;DR.fa.sort={k:null,dir:-1};this.re()},
+  faSort(k,num){const s=DR.fa.sort;if(s.k===k)s.dir=-s.dir;else{s.k=k;s.dir=num?-1:1}this.re()},
+  faBody(){const E=DR_ESC,owner=this.isOwner(),T=DR.fa.tab;
+    const rows=DR.flags.empty||DR.fa.period==="today"?[]:DR_ANALYTICS;
+    const tot={active:rows.length,more:DR_COURIERS.length-rows.length,delivered:rows.reduce((s,r)=>s+r.delivered,0),onTime:rows.reduce((s,r)=>s+r.onTime[0],0),onTimeOf:rows.reduce((s,r)=>s+r.onTime[1],0),returned:rows.reduce((s,r)=>s+r.returned,0),apps:rows.reduce((s,r)=>s+r.apps,0),won:rows.reduce((s,r)=>s+r.won,0),dropped:rows.reduce((s,r)=>s+r.dropped,0),removed:rows.reduce((s,r)=>s+r.removed,0),problems:rows.reduce((s,r)=>s+r.problems,0),refused:rows.reduce((s,r)=>s+r.refused,0),pushes:rows.reduce((s,r)=>s+r.pushes,0),afterPush:rows.reduce((s,r)=>s+r.afterPush,0),earned:rows.reduce((s,r)=>s+r.earned,0)};
+    const pct=(a,b)=>b?Math.round(100*a/b)+" %":"–";
+    /* ids: DLRS-058 DLRS-059 */
+    const tiles=[{l:"Active couriers",v:tot.active,sub:tot.more>0?tot.more+" more had no activity":""},{l:"Delivered",v:tot.delivered,sub:"On time "+pct(tot.onTime,tot.onTimeOf)+" · returned "+tot.returned},{l:"Applications",v:tot.apps,sub:"Won "+pct(tot.won,tot.apps)},{l:"Dropped after getting the job",v:tot.dropped,cls:tot.dropped>0?"--warn":"",sub:"Removed by a manager: "+tot.removed},{l:"Problems reported",v:tot.problems,sub:"Alcohol refused at the door: "+tot.refused},{l:"Job pushes sent",v:tot.pushes,sub:"Applied for "+pct(tot.afterPush,tot.pushes)}];
+    if(owner)tiles.push({l:"Earned",v:App.fmt(tot.earned),sub:"owner only"});
+    let h=this.tiles(tiles);
+    if(!rows.length)return h+this.empty("growth","No courier activity in this period","Pick a longer period – tabs and the table appear once there is something to show");
+    /* ids: DLRS-060 DLRS-061 DLRS-062 DLRS-063 DLRS-064 DLRS-065 DLRS-066 DLRS-159 */
+    const COLS={jobs:[["c","Courier"],["delivered","Delivered",1],["returned","Returned",1],["onTime","On time",1],["days","Days worked",1]].concat(owner?[["earned","Earned",1]]:[]).concat([["lastActive","Last active",0,"hide-ipad"]]),
+      applications:[["c","Courier"],["apps","Applications",1],["won","Won",1],["lost","Lost",1],["declined","Declined",1],["waiting","Waiting",0,"hide-ipad",true],["tta","Time to apply",0,"",true],["detour","Detour",0,"",true],["from","Came from",0,"",true]],
+      reliability:[["c","Courier"],["dropped","Dropped",1],["removed","Removed by a manager",1],["problems","Problems",1],["refused","Alcohol refused",1]],
+      reach:[["c","Courier"],["pushes","Pushes",1],["afterPush","Applied after a push",1],["msgs","Messages to the studio",1],["registered","Registered",0,"hide-ipad",true],["lastActive","Last active",0,"",true]]};
+    const cols=COLS[T];const s=DR.fa.sort;const val=(r,k)=>k==="c"?DR_CN(r.c):k==="onTime"?r.onTime[0]/r.onTime[1]:k==="lastActive"||k==="registered"?DR_C(r.c)[k]:r[k];
+    const sorted=[...rows];if(s.k){sorted.sort((a,b)=>{const x=val(a,s.k),y=val(b,s.k);return (typeof x==="number"?x-y:String(x).localeCompare(String(y)))*s.dir})}
+    const cell=(r,k)=>{const c=DR_C(r.c);switch(k){case"c":return `<b>${E(c.n)}</b><span class="sub">${c.transport}</span>`;case"onTime":return `${pct(r.onTime[0],r.onTime[1])} <span class="muted">(${r.onTime[0]} of ${r.onTime[1]})</span>`;case"earned":return App.fmt(r.earned);case"lastActive":return c.lastActive;case"registered":return c.registered;case"from":return `<span class="chipgrp">${r.from.map(f=>`<span class="tag --line">${f}</span>`).join("")}</span>`;case"dropped":return `<span class="${r.dropped?"accent":""}">${r.dropped}</span>`;case"problems":return `${r.problems}${Object.keys(r.pr).length?`<span class="sub">${Object.entries(r.pr).map(e=>e[0]+" "+e[1]).join(", ")}</span>`:""}`;default:return r[k]}};
+    const NOTE={jobs:"Delivered counts jobs with a confirmed drop-off; On time compares the hand-over with the slot end. Earned is the courier's pay before adjustments.",applications:"Time to apply is the median from push to tap; Detour is the extra distance from the courier's declared route. Came from: board, route (“Where are you heading?”), area, push or manager.",reliability:"Dropped = withdrew after confirmation. Problems are courier reports from the app, by reason. Alcohol refusals are neutral for the rating.",reach:"Pushes are job notifications sent to this courier; Applied after a push counts taps within 30 minutes. Messages are chats to the studio from the bot."};
+    h+=`<div class="views mt16"><button class="${T==="jobs"?"on":""}" onclick="DRX.faTab('jobs')">Jobs</button><button class="${T==="applications"?"on":""}" onclick="DRX.faTab('applications')">Applications</button><button class="${T==="reliability"?"on":""}" onclick="DRX.faTab('reliability')">Reliability</button><button class="${T==="reach"?"on":""}" onclick="DRX.faTab('reach')">Pushes and contact</button>${s.k&&!cols.find(c=>c[0]===s.k)?`<span class="sm muted" style="margin-left:auto;align-self:center">sorted by a column from another tab</span>`:""}</div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr>${cols.map(c=>`<th class="${c[2]?"num":""} ${c[3]||""} ${c[4]?"":"sort"}" ${c[4]?"":`onclick="DRX.faSort('${c[0]}',${c[2]?1:0})"`}>${c[1]}${s.k===c[0]?(s.dir>0?" ↑":" ↓"):""}</th>`).join("")}</tr></thead><tbody>${sorted.map(r=>`<tr class="r" onclick="App.go('delivery-freelance',{courier:'${r.c}'})">${cols.map(c=>`<td class="${c[2]?"num":"wrap"} ${c[3]||""}">${cell(r,c[0])}</td>`).join("")}</tr>`).join("")}</tbody></table></div><div class="dr-method">${NOTE[T]}</div>`;
+    return h},
+
+  /* ===================== HEATMAP ===================== */
+  hmBody(){const pts=DR.flags.empty?[]:DR_HM;const plotted=pts.reduce((s,p)=>s+p[2],0);const geo=DR.flags.geoPartial?[412,468]:[468,468];
+    /* ids: DLRS-069 DLRS-070 DLRS-071 DLRS-072 */
+    return (geo[0]<geo[1]?`<div class="note-box --warn mb16">Only ${geo[0]} of ${geo[1]} delivery addresses have coordinates yet – the map is incomplete until geocoding catches up (counts all delivery addresses ever, not just this period).</div>`:"")+
+    this.tiles([{l:"Drops plotted",v:plotted,sub:"in the period"},{l:"Hot spots",v:pts.length,sub:"~100 m buckets"},{l:"Geocoded",v:geo[0]+" / "+geo[1],sub:"whole address book, all time"}])+
+    `<div class="map hm mt16" id="dr-hm-map">${pts.length?pts.map(p=>{const r=10+Math.sqrt(p[2])*6;return `<span class="c ${p[2]>=14?"--hot":""}" style="left:${p[0]}%;top:${p[1]}%;width:${r*2}px;height:${r*2}px" onmouseenter="DRX.hmTip(event,${p[2]})" onmouseleave="DRX.hmTip()" onclick="App.toast('${p[2]} drops within ~100 m')"></span>`}).join("")+`<span class="pin --shop" style="left:48%;top:46%" title="80 Willow Walk SE1"></span><span class="lbl-pin" style="left:48%;top:46%">Shop · SE1</span>`:`<div class="empty" style="position:absolute;inset:0;justify-content:center">${App.icon("map")}<div class="h3">No geocoded drops in this period</div><div class="sm">The map centres on the shop</div></div><span class="pin --shop" style="left:50%;top:50%"></span>`}<span class="hm-tip" id="dr-hm-tip"></span></div>
+    <div class="dr-method">Each circle groups drops within ~100 m; the size follows the number of deliveries, hover for the count. The map auto-fits to the points; with no points it centres on the shop.</div>`},
+  hmTip(ev,n){const t=document.getElementById("dr-hm-tip");if(!t)return;if(!ev){t.style.display="none";return}const m=document.getElementById("dr-hm-map").getBoundingClientRect();const sc=m.width/document.getElementById("dr-hm-map").offsetWidth;t.style.display="block";t.textContent=n+" drop"+(n>1?"s":"");t.style.left=((ev.clientX-m.left)/sc+12)+"px";t.style.top=((ev.clientY-m.top)/sc-10)+"px"},
+
+  /* ===================== CO₂ ===================== */
+  coBody(){const rows=DR.flags.empty?[]:DR_CO2;const drops=rows.reduce((s,r)=>s+r[1],0),km=rows.reduce((s,r)=>s+r[2],0),kg=rows.reduce((s,r)=>s+r[3],0),zero=rows.filter(r=>r[3]===0&&r[0]!=="Courier not recorded").reduce((s,r)=>s+r[1],0);
+    /* ids: DLRS-074 DLRS-075 DLRS-076 DLRS-077 DLRS-078 */
+    return (DR.flags.geoPartial&&rows.length?`<div class="note-box --warn mb16">Measured ${drops-11} of ${drops} delivered drops – the rest have no coordinates yet.</div>`:"")+
+    this.tiles([{l:"Drops",v:drops},{l:"Distance (km)",v:km.toFixed(1)},{l:"CO₂",v:kg.toFixed(1)+" kg",cls:kg>0?"--warn":""},{l:"Zero-emission",v:zero+" ("+(drops?Math.round(100*zero/drops):0)+" %)"}])+
+    (rows.length?`<div class="tbl-wrap mt16"><table class="tbl"><thead><tr><th>Vehicle</th><th class="num">Drops</th><th class="num">Distance (km)</th><th class="num">CO₂ (kg)</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2].toFixed(1)}</td><td class="num ${r[3]>0?"warn":""}">${r[3].toFixed(1)}</td></tr>`).join("")}</tbody></table></div>`:this.empty("globe","Nothing measurable in this period yet"))+
+    `<div class="dr-method">Method: distance is the straight-line shop → drop ×1.3 for roads; factors per vehicle (car / van 130 g/km, scooter 70 g/km, bicycle and on foot 0). Drops without a courier's transport are listed as “Courier not recorded” and excluded from zero-emission.</div>`},
+
+  /* ===================== RELAY (Uber Direct) ===================== */
+  rlTab(t){DR.rl.tab=t;this.re()},
+  rlBody(){const E=DR_ESC,ic=App.icon,T=DR.rl.tab,empty=DR.flags.empty;
+    if(T==="carriers"){/* ids: DLRS-079 DLRS-080 DLRS-081 DLRS-008 */
+      const acc=empty?[]:[["Uber Direct","uber_main","Standard · Priority · Scheduled","yes","Live"],["Uber Direct (backup)","uber_backup","Standard","no","Off"]];
+      return `<div class="note-box mb16">Courier services we can quote and book for a delivery. Read-only – adapters are configured per environment; the old link /delivery/relay lands here.</div>
+      ${acc.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Carrier</th><th>Code</th><th class="hide-ipad">Service tiers</th><th>Eco</th><th>Status</th></tr></thead><tbody>${acc.map(a=>`<tr><td>${a[0]}</td><td class="tnum">${a[1]}</td><td class="hide-ipad">${a[2]}</td><td>${a[3]}</td><td><span class="row" style="gap:6px"><span class="dot ${a[4]==="Live"?"--ok":""}"></span>${a[4]}</span></td></tr>`).join("")}</tbody></table></div>`:this.empty("truck","No carrier accounts in this environment")}`}
+    if(T==="tracking"){/* ids: DLRS-082 DLRS-083 DLRS-084 DLRS-085 DLRS-086 */
+      const rows=empty?[]:DR_RELAY;
+      return `<div class="row mb16 sm muted">${ic("refresh")} Statuses and ETA arrive by Uber webhooks · last 100 bookings · this view does not auto-refresh <button class="textbtn" style="margin-left:8px" onclick="DRX.re();App.toast('Reloaded')">Reload</button></div>
+      ${rows.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Reference</th><th>Carrier</th><th>Status</th><th>ETA</th><th class="num hide-ipad" title="Uber's cost to us, not the customer price">Price</th><th>Track</th></tr></thead><tbody>${rows.map(r=>`<tr class="r" onclick="App.openOrder(${r.ref})"><td class="tnum">#${r.ref}</td><td>${r.acc}</td><td><span class="pill --${r.st==="Delivered"?"delivered":r.st==="In progress"?"out":r.st==="Cancelled"?"cancelled":"queue"}">${r.st}</span></td><td class="tnum">${r.eta}</td><td class="num hide-ipad">${App.fmt(r.cost)}${r.cost===0?'<span class="sub">no cost received</span>':""}</td><td onclick="event.stopPropagation()">${r.hidden?`<span class="dr-flag" title="Confidential address – tracking link hidden">${ic("lock")} hidden</span>`:r.track?`<button class="textbtn" onclick="App.toast('Uber tracking page opens in a new tab')">Track</button>`:"–"}</td></tr>`).join("")}</tbody></table></div><div class="dr-method">Price is Uber's cost to us (not the customer's delivery fee); bookings without a quoted cost show £0. Failed bookings are shown as Cancelled.</div>`:this.empty("truck","No Uber bookings yet")}`}
+    /* ids: DLRS-087 DLRS-088 DLRS-089 DLRS-090 DLRS-091 DLRS-092 DLRS-093 */
+    const d=DR.rl.days;const S=empty?null:{ok:d===7?92:d===30?94:95,cancel:d===7?8:d===30?5:4,onTime:d===7?81:d===30?86:88,n:d===7?26:d===30?118:342,noEta:d===7?2:d===30?9:21};const risk=empty?[]:[{ref:DR_ORD[4].id,acc:"Uber Direct",risk:"No courier",eta:"–"},{ref:DR_ORD[12].id,acc:"Uber Direct",risk:"ETA overdue",eta:"10:30"}];
+    return `<div class="row mb16"><div class="seg-ctl">${[7,30,90].map(x=>`<button class="${d===x?"on":""}" onclick="DR.rl.days=${x};DRX.re()">${x} days</button>`).join("")}</div><span class="sm muted">server accepts 1–365 via URL</span></div>
+    ${S?this.tiles([{l:"Success rate",v:S.ok+" %"},{l:"Cancel rate",v:S.cancel+" %",cls:S.cancel>=20?"--hot":""},{l:"On-time",v:S.onTime+" %",sub:"of "+S.n+" deliveries · "+S.noEta+" without ETA"},{l:"At risk now",v:risk.length,cls:risk.length?"--warn":""}]):""}
+    <div class="dr-cols mt16"><div><div class="sec-head"><span class="h3">At risk now</span><span class="sm muted">live, outside the period</span></div>${risk.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Reference</th><th>Carrier</th><th>Risk</th><th>ETA</th></tr></thead><tbody>${risk.map(r=>`<tr class="r" onclick="App.openOrder(${r.ref})"><td class="tnum">#${r.ref}</td><td>${r.acc}</td><td><span class="pill --late">${r.risk}</span></td><td class="tnum">${r.eta}</td></tr>`).join("")}</tbody></table></div>`:this.empty("check","Nothing at risk right now")}
+    <div class="sec-head"><span class="h3">By carrier</span></div>${S?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Carrier</th><th class="num">Bookings</th><th class="num">Success rate</th><th class="num hide-ipad">Lost</th><th class="num hide-ipad">Avg cost</th></tr></thead><tbody><tr><td>Uber Direct</td><td class="num">${S.n-6}</td><td class="num">${S.ok} %</td><td class="num hide-ipad">${Math.round(S.n*S.cancel/100)}</td><td class="num hide-ipad">£9.60</td></tr><tr><td>Uber Direct (backup)</td><td class="num">6</td><td class="num">100 %</td><td class="num hide-ipad">0</td><td class="num hide-ipad">£11.20</td></tr></tbody></table></div>`:this.empty("truck","No bookings in this period")}</div>
+    <div><div class="sec-head"><span class="h3">Failure reasons</span></div>${S?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Reason</th><th class="num">Failures</th></tr></thead><tbody><tr><td>customer_unavailable</td><td class="num">3</td></tr><tr><td>cannot_access_location</td><td class="num">1</td></tr><tr><td>Unknown</td><td class="num">1</td></tr></tbody></table></div>`:this.empty("alert","No failures in this period")}
+    <div class="sec-head"><span class="h3">Cancellation reasons</span><span class="sm muted">manual – us · carrier – courier · race – another carrier won</span></div>${S?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Reason</th><th class="num">Cancelled</th></tr></thead><tbody><tr><td>manual · booked our own courier</td><td class="num">${Math.round(S.n*S.cancel/100)-2}</td></tr><tr><td>carrier · no courier found</td><td class="num">2</td></tr><tr><td>race · own courier accepted first</td><td class="num">0</td></tr></tbody></table></div>`:this.empty("undo","No cancellations in this period")}</div></div>`}
+};
+
+/* ---- mounts ---- */
+window.mount_delivery_freelance=function(params){
+  const A=App,$=A.$,ic=A.icon;if(params&&(params.tab||params.courier||params.week))DRX.flGo(params);
+  DRX.nav($("#dr-fl-nav"),"freelance");
+  if(!DR.flags.freelance){$("#dr-fl-head").innerHTML="";$("#dr-fl-body").innerHTML=DRX.empty("lock","Freelance board is off","DELIVERY_FREELANCE_ENABLED=false – the tab is hidden and the URL answers 404",`<button class="btn --ghost --sm" onclick="DR.flags.freelance=true;DRX.re()">Turn the flag on (demo)</button>`);return}
+  const open=DR_JOBS.filter(j=>j.status==="open").length,apps=DR_JOBS.reduce((s,j)=>s+j.apps.filter(a=>a.s==="pending").length,0);const rtwQ=DR_COURIERS.filter(c=>c.app&&c.rtwSubmitted&&c.rtw!=="verified").length;
+  const T=DR.fl.tab;
+  $("#dr-fl-head").innerHTML=`<div class="dr-badges"><span class="tag ${open?"--ink":""}">Freelance: ${open} open / ${apps} applications</span>${!DR.flags.autoConfirm?`<span class="tag --warn">Manual confirm is on – applications wait for you</span>`:""}${rtwQ?`<span class="tag --warn">RTW queue: ${rtwQ}</span>`:""}</div><span class="sp"></span>
+    <div class="views" style="margin:0;border:0">${[["jobs","Jobs"],["couriers","Couriers"],["report","Report"],["payouts","Payouts"]].map(t=>`<button class="${T===t[0]?"on":""}" onclick="DRX.flTab('${t[0]}')">${t[1]}</button>`).join("")}<button onclick="App.go('delivery-freelance-analytics')">${ic("growth")} Analytics</button></div>`;
+  $("#dr-fl-body").innerHTML=T==="jobs"?DRX.flJobs():T==="couriers"?DRX.flCouriers():T==="report"?DRX.flReport():DRX.flPayouts();
+  if(DR.fl.linked){const id=DR.fl.linked;setTimeout(()=>{const r=document.getElementById("dr-cr-"+id);if(r)r.scrollIntoView({block:"center"})},80);DR.fl.linked=null;A.state.params={}}
+  A.registerCommands([{g:"Delivery",t:"Freelance board · jobs",ic:"truck",fn:()=>{DR.fl.tab="jobs";A.go("delivery-freelance")}},{g:"Delivery",t:"Freelance payouts · this week",ic:"pound",fn:()=>{DR.fl.tab="payouts";A.go("delivery-freelance")}}]);
+};
+window.mount_delivery_freelance_analytics=function(){const $=App.$;DRX.nav($("#dr-fa-nav"),"freelance");
+  if(!DR.flags.freelance){$("#dr-fa-head").innerHTML="";$("#dr-fa-body").innerHTML=DRX.empty("lock","Freelance analytics is off","DELIVERY_FREELANCE_ENABLED=false");return}
+  $("#dr-fa-head").innerHTML=`<button class="btn --ghost --sm" onclick="App.go('delivery-freelance')">${App.icon("back")} Freelance board</button>${DRX.periodBar()}`;
+  $("#dr-fa-body").innerHTML=DRX.faBody()};
+window.mount_delivery_heatmap=function(){const $=App.$;DRX.nav($("#dr-hm-nav"),"heatmap");$("#dr-hm-head").innerHTML=`<span class="h3">Where we really deliver</span><span class="sp"></span>${DRX.rangeBar("heatmap","Show")}`;$("#dr-hm-body").innerHTML=DRX.hmBody()};
+window.mount_delivery_co2=function(){const $=App.$;DRX.nav($("#dr-co-nav"),"co2");$("#dr-co-head").innerHTML=`<span class="h3">Carbon footprint of completed deliveries</span><span class="sp"></span>${DRX.rangeBar("co2","Show")}`;$("#dr-co-body").innerHTML=DRX.coBody()};
+window.mount_delivery_relay=function(params){const $=App.$;if(params&&params.tab)DR.rl.tab=params.tab;DRX.nav($("#dr-rl-nav"),DR.rl.tab);
+  $("#dr-rl-head").innerHTML=`<div class="seg-ctl"><button class="${DR.rl.tab==="carriers"?"on":""}" onclick="DRX.rlTab('carriers')">Courier partners</button><button class="${DR.rl.tab==="tracking"?"on":""}" onclick="DRX.rlTab('tracking')">Courier statuses</button><button class="${DR.rl.tab==="reliability"?"on":""}" onclick="DRX.rlTab('reliability')">Reliability</button></div><span class="sm muted">Uber Direct · native screens replace the old Relay iframe</span>`;
+  $("#dr-rl-body").innerHTML=DRX.rlBody()};
+["delivery-freelance","delivery-freelance-analytics","delivery-heatmap","delivery-co2","delivery-relay"].forEach(id=>document.addEventListener("orders",()=>{if(App.state.current===id)window["mount_"+id.replace(/-/g,"_")](App.state.params)}));
+</script>
