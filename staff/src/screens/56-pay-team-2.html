@@ -1,0 +1,533 @@
+<!-- 56-pay-team-2.html – classic screens inside the B shell: Schedule, Shift & hours, Timesheet, My week, Not paid,
+     My bonus, Florists' bonuses, My plan (goals), Floritta Active, candidates. Helpers: window.PT (56-pay-team.html). -->
+<style>
+.pt .grid{display:flex;margin:0 0 0 var(--gutter);border-top:1px solid var(--hair)}
+.pt .grid .names{flex:none;width:96px;border-right:1px solid var(--hair)}
+.pt .grid .days{flex:1;overflow-x:auto;scrollbar-width:none}
+.pt .grid .days::-webkit-scrollbar{display:none}
+.pt .grid .gr{height:28px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);display:flex;align-items:center;padding-left:4px;background:var(--silver);white-space:nowrap}
+.pt .grid .days .gr{padding-left:0}
+.pt .grid .nm{height:38px;display:flex;align-items:center;font-size:13px;padding-right:6px;border-bottom:1px solid var(--hair);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt .grid .nm.me,.pt .grid .ln.me .cell{background:var(--ok-bg)}
+.pt .grid .ln{display:flex;border-bottom:1px solid var(--hair)}
+.pt .grid .hd{display:flex;height:28px}
+.pt .grid .hd span{width:34px;flex:none;font-size:10px;text-align:center;line-height:28px;color:var(--grey);border-left:1px solid var(--hair)}
+.pt .grid .hd span.we{background:var(--silver)}
+.pt .grid .cell{width:34px;height:38px;flex:none;border-left:1px solid var(--hair);font-size:11px;display:flex;align-items:center;justify-content:center;position:relative;color:var(--ink)}
+.pt .grid .cell.we{background:var(--silver)}
+.pt .grid .cell.h{color:var(--light)}
+.pt .grid .cell.lead{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.pt .grid .cell.lead::after{content:"★";position:absolute;top:1px;right:3px;font-size:8px;color:var(--accent)}
+.pt .grid .cell.dot{color:var(--grey)}
+.pt .grid .cell.today{font-weight:500;text-decoration:underline}
+.pt .daystrip{display:flex;gap:4px;overflow-x:auto;padding:0 var(--gutter);scrollbar-width:none}
+.pt .daystrip::-webkit-scrollbar{display:none}
+.pt .daystrip button{flex:none;width:40px;height:48px;border:1px solid var(--hair);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;gap:2px}
+.pt .daystrip button small{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.pt .daystrip button.we{background:var(--silver)}.pt .daystrip button.on{background:var(--ink);color:var(--paper)}.pt .daystrip button.on small{color:var(--paper)}
+.pt .code{display:inline-block;min-width:22px;padding:2px 6px;border:1px solid var(--light);font-size:11px;text-align:center}
+.pt .bigbtn{margin:0 var(--gutter);height:64px;font-size:14px;letter-spacing:.14em}
+.pt .timer{font-family:var(--f-display);font-size:48px;font-weight:300;line-height:1}
+.pt .trk{display:flex;align-items:center;gap:10px;padding:10px var(--gutter);font-size:12px;color:var(--graphite);border-bottom:1px solid var(--hair)}
+.pt .trk i{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.pt .trk.bad i{background:var(--accent)}.pt .trk.off i{background:var(--grey)}
+.pt .idle{margin:0 var(--gutter) 14px;padding:14px 16px;background:var(--warn-bg)}
+.pt .fold{margin:0 var(--gutter);border:1px solid var(--hair)}
+.pt .fold>button.hd{width:100%;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;font-size:14px;text-align:left}
+.pt .fold .bd{border-top:1px solid var(--hair);padding:4px 14px 10px;font-size:13px}
+.pt .fold .bd .r{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--hair)}
+.pt .fold .bd .r:last-child{border-bottom:0}
+.pt .fold .bd .sub{color:var(--grey);font-size:12px}
+.pt .medal{display:inline-flex;width:22px;height:22px;border:1px solid var(--ink);align-items:center;justify-content:center;font-size:11px;margin-right:10px;flex:none}
+.pt .medal.g{background:var(--ink);color:var(--paper)}
+.pt .toprow{display:flex;align-items:center;padding:8px var(--gutter);font-size:14px}
+.pt .tsrow{padding:12px var(--gutter);border-bottom:1px solid var(--hair)}
+.pt .tsrow .tp{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
+.pt .tsrow .fl{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.pt .tsrow .fl span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--light);padding:1px 6px;color:var(--graphite)}
+.pt .tsrow .fl span.bad{border-color:var(--accent);color:var(--accent)}
+.pt .tsrow .ac{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.pt .tsrow.rej .tp{color:var(--grey);text-decoration:line-through}
+.pt .urow{display:flex;gap:12px;align-items:center;padding:12px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.pt .urow .d{font-size:12px;color:var(--grey);margin-top:2px}
+.pt .goal{margin:0 var(--gutter) 10px;border:1px solid var(--hair);padding:14px 16px}
+.pt .goal .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;margin-top:10px}
+.pt .goal .kv span:nth-child(odd){color:var(--grey);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding-top:2px}
+.pt .goal.done{opacity:.6}
+.pt .sugg{margin:0 var(--gutter) 10px;border:1px solid var(--ink);padding:14px 16px}
+.pt .lb{display:flex;align-items:center;gap:12px;padding:12px var(--gutter);border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.pt .lb .n{width:22px;font-size:13px;color:var(--grey)}
+.pt .lb .d{font-size:12px;color:var(--grey);margin-top:2px}
+.pt .ptsrow{display:flex;gap:8px}
+.pt .ptsrow .chip{flex:1;justify-content:center}
+.pt .bar{display:flex;gap:8px;padding:0 var(--gutter);align-items:center;justify-content:space-between}
+.pt .bar b{font-weight:400;font-size:15px}
+.pt .modal{margin:0 var(--gutter);border:1px solid var(--ink);padding:16px}
+.pt .photo{height:120px;background:var(--silver);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--grey);margin:0 var(--gutter)}
+</style>
+
+<!-- ====================================================== SCHEDULE ====================================================== -->
+<!-- ids: TM-BPAGE-080 TM-BPAGE-081 TM-BPAGE-082 TM-BPAGE-083 TM-BPAGE-084 TM-BPAGE-085 TM-BPAGE-086 TM-SHIFT-038 TM-SHIFT-039 TM-SHIFT-040 TM-SHIFT-041 TM-SHIFT-042 TM-SHIFT-043 TM-SHIFT-044 TM-SHIFT-045 TM-SHIFT-046 TM-SHIFT-047 TM-SHIFT-048 -->
+<section class="scr me5 pt" id="s-tm-schedule" data-nav="Schedule · month grid (B)" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Schedule</div><button class="ib" aria-label="More" onclick="PT.schMenu()"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button></div>
+  <div class="scr-body" id="tm-sch-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== SHIFT & HOURS ====================================================== -->
+<!-- ids: TM-BPAGE-100 TM-BPAGE-101 TM-BPAGE-102 TM-BPAGE-103 TM-BPAGE-104 TM-BPAGE-105 TM-BPAGE-106 TM-BPAGE-107 TM-BPAGE-108 TM-BPAGE-109 TM-BPAGE-110 TM-BPAGE-111 TM-BPAGE-112 -->
+<!-- ids: TM-SHIFT-001 TM-SHIFT-002 TM-SHIFT-003 TM-SHIFT-004 TM-SHIFT-005 TM-SHIFT-006 TM-SHIFT-007 TM-SHIFT-008 TM-SHIFT-009 TM-SHIFT-010 TM-SHIFT-011 TM-SHIFT-012 TM-SHIFT-013 TM-SHIFT-014 TM-SHIFT-015 TM-SHIFT-016 TM-SHIFT-017 TM-SHIFT-018 TM-SHIFT-019 TM-SHIFT-020 TM-SHIFT-021 -->
+<!-- bonus card: TM-SHIFT-022 TM-SHIFT-023 TM-SHIFT-024 TM-SHIFT-025 TM-SHIFT-026 TM-SHIFT-027 TM-SHIFT-028 TM-SHIFT-029 · top-3: TM-SHIFT-030 TM-SHIFT-031 TM-SHIFT-032 · day close: TM-SHIFT-033 TM-SHIFT-034 TM-SHIFT-035 TM-SHIFT-036 TM-SHIFT-037 -->
+<section class="scr me5 pt" id="s-tm-shift" data-nav="Shift &amp; hours (B)" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Shift &amp; hours</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_shift')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-sh-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== TIMESHEET ====================================================== -->
+<!-- ids: TM-BPAGE-120 TM-BPAGE-121 TM-BPAGE-122 TM-BPAGE-123 TM-BPAGE-124 TM-BPAGE-125 TM-SHIFT-049 TM-SHIFT-050 TM-SHIFT-051 TM-SHIFT-052 TM-SHIFT-053 TM-SHIFT-054 TM-SHIFT-055 TM-SHIFT-056 TM-SHIFT-057 TM-SHIFT-058 -->
+<section class="scr me5 pt" id="s-tm-timesheet" data-nav="Timesheet · approve (B)" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Timesheet</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_timesheet')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-ts-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== MY WEEK ====================================================== -->
+<!-- ids: TM-BPAGE-140 TM-BPAGE-141 TM-BPAGE-142 TM-BPAGE-143 TM-BPAGE-144 TM-TEAM-007 TM-TEAM-008 TM-TEAM-009 TM-TEAM-010 TM-TEAM-011 TM-TEAM-012 TM-TEAM-013 -->
+<section class="scr me5 pt" id="s-tm-myweek" data-nav="My week (B)" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My week</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_myweek')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-mw-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== NOT PAID ====================================================== -->
+<!-- ids: TM-BPAGE-160 TM-BPAGE-161 TM-BPAGE-162 TM-BPAGE-163 TM-BPAGE-164 -->
+<section class="scr me5 pt" id="s-tm-unpaid" data-nav="Not paid · orders (B)" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Not paid</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_unpaid')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-up-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== MY BONUS ====================================================== -->
+<!-- ids: TM-BPAGE-180 TM-BPAGE-181 TM-BPAGE-182 -->
+<section class="scr me5 pt" id="s-tm-mybonus" data-nav="My bonus (B)" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My bonus</div></div>
+  <div class="scr-body" id="tm-mb-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== FLORISTS' BONUSES ====================================================== -->
+<!-- ids: TM-BPAGE-200 TM-BPAGE-201 TM-BPAGE-202 TM-BPAGE-203 TM-BPAGE-204 TM-TEAM-001 TM-TEAM-002 TM-TEAM-003 TM-TEAM-004 TM-TEAM-005 TM-TEAM-006 -->
+<section class="scr me5 pt" id="s-tm-flbonus" data-nav="Florists’ bonuses · admin" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Florists’ bonuses</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_flbonus')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-fb-body" style="padding-bottom:32px"></div>
+</section>
+<section class="scr me5 pt" id="s-tm-flbonus-one" data-nav="Florist’s bonus · read-only" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('tm-flbonus')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="tm-fb1-ttl">Bonus</div></div>
+  <div class="scr-body" id="tm-fb1-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== MY PLAN (goals) ====================================================== -->
+<!-- ids: TM-TEAM-014 TM-TEAM-015 TM-TEAM-016 TM-TEAM-017 TM-TEAM-018 TM-TEAM-019 TM-TEAM-020 TM-TEAM-021 TM-TEAM-022 TM-TEAM-023 TM-TEAM-024 -->
+<section class="scr me5 pt" id="s-tm-goals" data-nav="My plan · goals" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('learn')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My plan</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_goals')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-go-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== FLORITTA ACTIVE ====================================================== -->
+<!-- ids: TM-TEAM-025 TM-TEAM-026 TM-TEAM-027 TM-TEAM-028 TM-TEAM-029 TM-TEAM-030 TM-TEAM-031 TM-TEAM-032 TM-TEAM-033 -->
+<section class="scr me5 pt" id="s-tm-active" data-nav="Floritta Active" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('me')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Floritta Active</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_active')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-ac-body" style="padding-bottom:32px"></div>
+</section>
+
+<!-- ====================================================== CANDIDATES ====================================================== -->
+<!-- ids: TM-TEAM-034 TM-TEAM-035 TM-TEAM-036 TM-TEAM-037 TM-TEAM-038 TM-TEAM-039 -->
+<section class="scr me5 pt" id="s-tm-cand-new" data-nav="Candidate · add" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('tm-schedule')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Someone who wants to work with us</div></div>
+  <div class="scr-body has-cta" id="tm-cn-body"></div>
+  <div class="cta-bar" id="tm-cn-cta"></div>
+</section>
+<!-- ids: TM-TEAM-040 TM-TEAM-041 -->
+<section class="scr me5 pt" id="s-tm-cand-mine" data-nav="My candidates" data-group="B · Shifts &amp; team">
+  <div class="appbar"><button class="ib" aria-label="Back" onclick="App.back('tm-schedule')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">My candidates</div><button class="ib" aria-label="Refresh" onclick="PT.refresh('tm_cand_mine')"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></button></div>
+  <div class="scr-body" id="tm-cm-body" style="padding-bottom:32px"></div>
+</section>
+
+<script>
+(function(){
+const A=window.App;const P=window.PT=window.PT||{};
+const $=(s,r)=>(r||document).querySelector(s);
+const nm=id=>{const u=A.user(id);return u?u.n:id};
+const lensOn=()=>!!(window.ME5&&ME5.realAdmin&&ME5.realAdmin!==A.state.me);
+const effRole=()=>A.role();
+const canApprove=()=>P.isMgr();
+const canManageOrders=()=>P.isMgr();
+const sheetHead=(t)=>`<div class="sh-head"><div class="h3">${t}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div>`;
+
+/* ======================================================= SCHEDULE ======================================================= */
+const GROUPS=[{k:'florists',l:'Florists',ids:['svetlana','kamila','vita','sofiia','zhadra','ayana','mira']},{k:'managers',l:'Managers',ids:['valeria','sasha']},{k:'support',l:'Support',ids:[]},{k:'couriers',l:'Couriers',ids:['andrii','oleh','max']}];
+const MONTHS=[['2026-09','September 2026',30,2],['2026-10','October 2026',31,4],['2026-11','November 2026',30,0]]; /* key,label,days,weekday of the 1st (0=Mon) */
+const S=P.sch={mi:1,mode:'month',day:20,edits:{},leads:{'svetlana-2026-10-20':1,'vita-2026-10-22':1,'svetlana-2026-10-24':1}};
+const codeOf=(id,mi,d)=>{const k=id+'-'+MONTHS[mi][0]+'-'+d;if(k in S.edits)return S.edits[k];const g=GROUPS.find(g=>g.ids.includes(id));if(!g)return '';const i=g.ids.indexOf(id);const x=(d+i*2+mi)%7;if(g.k==='couriers')return x>=5?'H':(x%2?'08:00':'12:00');if(g.k==='managers')return x>=5?'H':'D';return x>=5?'H':(x%3===0?'L':'D')};
+const isWe=(mi,d)=>((MONTHS[mi][3]+d-1)%7)>=5;
+const dow=(mi,d)=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][(MONTHS[mi][3]+d-1)%7];
+const visGroups=()=>{const u=A.me(),r=effRole();const all=P.isMgr(u)&&!lensOn();if(all)return GROUPS.map(g=>({...g,editable:true}));if(r==='courier')return GROUPS.filter(g=>g.k==='couriers').map(g=>({...g,editable:false}));return GROUPS.filter(g=>g.k==='florists').map(g=>({...g,editable:false}))};
+window.mount_tm_schedule=function(){
+  const el=$('#tm-sch-body'),u=A.me(),d=P.d('tm_schedule'),M=MONTHS[S.mi],c=P.contour(u);
+  const demo=P.demo('tm_schedule',[['ok','Normal'],['unlinked','Not linked'],['error','Load error'],['saveerr','Save fails']]);
+  const lens=lensOn()?P.lens(0,`Admin lens: viewing as <b>${u.n}</b> – the grid is cut to this role’s section, no editing, no star (scope own).`):'';
+  const who=c==='worker'?`<div class="lensnote">Casual workers have no Schedule row in Me – they see Shift offers. Opened by link, the grid shows their florists’ section read-only.</div>`:'';
+  if(d==='error'){el.innerHTML=demo+lens+P.stt('error','Could not load the schedule. Pull to try again.')+`<div class="note">There is nowhere to pull: the classic screen has no RefreshControl. Proposed: pull-to-refresh on the page.</div>`;return}
+  const groups=visGroups();const canLead=P.isMgr(u)&&!lensOn();const anyEdit=groups.some(g=>g.editable);
+  if(d==='unlinked'){el.innerHTML=demo+lens+P.stt('empty','Your account is not linked to the schedule yet – ask a manager.');return}
+  const days=Array.from({length:M[2]},(_,i)=>i+1);
+  const head=`<div class="bar" style="margin-top:8px"><button class="ib" aria-label="Previous month" onclick="PT.schMonth(-1)">${A.icon('back')}</button><b>${M[1]}</b><button class="ib" aria-label="Next month" onclick="PT.schMonth(1)" style="transform:scaleX(-1)">${A.icon('back')}</button></div>
+    <div class="chips" style="margin-top:10px"><button class="chip ${S.mode==='month'?'on':''}" onclick="PT.schMode('month')">Month</button><button class="chip ${S.mode==='day'?'on':''}" onclick="PT.schMode('day')">Everyone</button></div>`;
+  let body='';
+  if(S.mode==='month'){
+    const names=groups.map(g=>g.ids.length?`<div class="gr">${g.l}</div>`+g.ids.map(id=>`<div class="nm ${id===u.id?'me':''}">${nm(id)}${id===u.id?' · you':''}</div>`).join(''):'').join('');
+    const rows=groups.map(g=>g.ids.length?`<div class="gr" style="width:${M[2]*34}px"></div>`+g.ids.map(id=>`<div class="ln ${id===u.id?'me':''}">${days.map(dd=>{const code=codeOf(id,S.mi,dd);const lead=S.leads[id+'-'+M[0]+'-'+dd];const emp=!code||code==='';const cls=`cell ${isWe(S.mi,dd)?'we':''} ${code==='H'?'h':''} ${lead?'lead':''} ${emp&&g.editable?'dot':''} ${S.mi===1&&dd===20?'today':''}`;const txt=emp?(g.editable?'·':''):code;return `<button class="${cls}" onclick="${g.editable?`PT.schCell('${id}','${g.k}',${dd})`:`App.toast('Only managers edit the rota')`}">${txt}</button>`}).join('')}</div>`).join(''):'').join('');
+    body=`<div class="grid" style="margin-top:14px"><div class="names"><div class="gr" style="background:transparent"></div>${names}</div><div class="days"><div class="hd">${days.map(dd=>`<span class="${isWe(S.mi,dd)?'we':''}">${dd}</span>`).join('')}</div>${rows}</div></div>
+      <div class="note">Names stay fixed, days scroll sideways. Codes: D day · L late · E evening · H day off; couriers show start time. ★ with a red frame – lead of the shift.${anyEdit?' Tap a cell in a section you manage to set a shift.':''}</div>`;
+  }else{
+    const sel=Math.min(S.day,M[2]);const on=[];groups.forEach(g=>g.ids.forEach(id=>{const code=codeOf(id,S.mi,sel);if(code&&code!=='H')on.push({id,code,g:g.l,lead:!!S.leads[id+'-'+M[0]+'-'+sel]})}));
+    body=`<div class="daystrip" style="margin-top:14px">${days.map(dd=>`<button class="${isWe(S.mi,dd)?'we':''} ${dd===sel?'on':''}" onclick="PT.schDay(${dd})"><small>${dow(S.mi,dd)}</small>${dd}</button>`).join('')}</div>
+      <div class="sec-head"><div class="h2">Working on ${dow(S.mi,sel)} ${sel}</div><span class="xs muted">${on.length}</span></div>
+      <div class="rows">${on.length?on.map(x=>`<div class="row"><span class="rt"><div class="l">${nm(x.id)}${x.lead?' <span class="accent">★</span>':''}</div><div class="d">${x.lead?'Lead of the shift':x.g}</div></span><span class="code">${x.code}</span></div>`).join(''):P.stt('empty','Nobody rostered.')}</div>`;
+  }
+  el.innerHTML=demo+lens+who+head+body+`<div class="note">Your row is highlighted; weekends are tinted. Grid request: GET /schedule?month=${M[0]} – the server decides which sections you see.</div>`;
+};
+P.schMonth=k=>{S.mi=Math.max(0,Math.min(MONTHS.length-1,S.mi+k));S.day=Math.min(S.day,MONTHS[S.mi][2]);A.haptic();window.mount_tm_schedule()};
+P.schMode=m=>{S.mode=m;A.haptic();window.mount_tm_schedule()};
+P.schDay=d=>{S.day=d;A.haptic();window.mount_tm_schedule()};
+P.schCell=(id,gk,dd)=>{const M=MONTHS[S.mi],k=id+'-'+M[0]+'-'+dd,cur=codeOf(id,S.mi,dd),lead=!!S.leads[k],canLead=P.isMgr()&&!lensOn()&&gk==='florists'&&cur&&cur!=='H';
+  const codes=gk==='couriers'?['08:00','10:00','12:00','H']:['D','L','E','H'];
+  A.sheet(sheetHead(`${nm(id)} · ${dow(S.mi,dd)} ${dd} ${M[1].split(' ')[0]}`)+`<div class="sh-body"><div class="caps muted" style="margin-bottom:10px">Shift code</div><div class="chips wrap" style="padding:0">${codes.map(c=>`<button class="chip ${cur===c?'on':''}" onclick="PT.schSet('${id}','${gk}',${dd},'${c}')">${c}</button>`).join('')}<button class="chip" onclick="PT.schSet('${id}','${gk}',${dd},'')">Clear</button></div>
+    ${canLead?`<div class="blk" style="margin-top:18px;padding:0"><button class="btn --secondary --block --sm" onclick="PT.schLead('${id}',${dd},${lead?0:1})">★ ${lead?'Remove lead of the shift':'Make lead of the shift'}</button><div class="xs muted mt8">One lead for the day and one for the evening; the star moves from the previous person. 422 if the person has no shift that day.</div></div>`:gk==='florists'&&P.isMgr()?'<div class="xs muted mt16">Set a working code first to make this person lead.</div>':''}
+    </div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button></div>`)};
+P.schSet=(id,gk,dd,c)=>{A.closeSheet();if(P.d('tm_schedule')==='saveerr'){P.alert('Could not save','The CRM rejected the change (403 – not your section, or 422). The cell stays as it was.',[{l:'OK',primary:true}]);return}
+  const k=id+'-'+MONTHS[S.mi][0]+'-'+dd;S.edits[k]=c;if(!c||c==='H')delete S.leads[k];A.haptic();A.toast(c?`${nm(id)} · ${dd}: ${c}`:'Cleared');window.mount_tm_schedule()};
+P.schLead=(id,dd,on)=>{A.closeSheet();const M=MONTHS[S.mi],k=id+'-'+M[0]+'-'+dd;Object.keys(S.leads).forEach(x=>{if(x.endsWith('-'+M[0]+'-'+dd)&&codeOf(x.split('-')[0],S.mi,dd)===codeOf(id,S.mi,dd))delete S.leads[x]});if(on)S.leads[k]=1;A.toast(on?`${nm(id)} leads on ${dd}`:'Lead removed');window.mount_tm_schedule()};
+P.schMenu=()=>A.sheet(sheetHead('Schedule')+`<div class="sh-body" style="padding:0"><div class="rows"><button class="row" onclick="App.closeSheet();App.go('tm-cand-new')">${P.ic('user')}<span class="rt"><div class="l">Add a candidate</div><div class="d">Someone who wants to work with us</div></span>${P.ic('chev','chev')}</button><button class="row" onclick="App.closeSheet();App.go('tm-cand-mine')">${P.ic('users')}<span class="rt"><div class="l">My candidates</div><div class="d">People you added</div></span>${P.ic('chev','chev')}</button></div><div class="note">Any role, including couriers and limited accounts (owner’s decision 04.10.2026).</div></div>`);
+
+/* ======================================================= SHIFT & HOURS ======================================================= */
+const SH=P.sh={open:false,since:null,onBreak:false,brkSince:null,auto:false,trk:'sending',buf:3,idle:false,idleAuto:false,geoDenied:false,notice:'',entries:[{a:'07:58',b:'12:10',m:252}],monthsBack:0,dayOpen:null};
+const BON={today:14,bonus:510,toDouble:6,week:3180,pot:42000,potOk:3,potN:4,overdue:1,
+  pay:{today:{rate:1321,h:7.5,bonus:510},month:{h:112,base:147952,bonus:4160},forecast:{amt:198000,by:'rota',hint:'3 h more to reach the next step'}},
+  credited:[{o:'715541',amt:150,lines:['Scale £1.20 × 1.25','Strawberries +£0.30']},{o:'715530',amt:120,lines:['Scale £1.20']},{o:'715498',amt:240,lines:['Scale £1.20 × 2 (balloons)','Walk-in 3 % (£0.00)','Penalty −£0.00']}],
+  without:[{o:'715512',why:'no photo before dispatch'},{o:'715507',why:'£0 order (collaboration)'}]};
+const RATING={week:['svetlana','vita','sofiia'],month:null,pending:['sofiia','ayana']};
+const DC=P.dc={flowers:true,shortage:false,packaging:false,photo:false,rubbish:null,rubbishAt:null,rubbishPhoto:false};
+const MYSH=[{d:'Mon 19 Oct',t:'08:00–16:12',h:'7 h 42 m',st:'pending'},{d:'Sat 17 Oct',t:'08:00–16:00',h:'7 h 30 m',st:'approved'},{d:'Fri 16 Oct',t:'12:00–22:05',h:'9 h 35 m',st:'approved'},{d:'Thu 15 Oct',t:'12:00–21:40',h:'9 h 10 m',st:'rejected'},{d:'Tue 13 Oct',t:'08:00–16:00',h:'7 h 30 m',st:'approved'}];
+const EARLIER=[{d:'Sat 26 Sep',t:'08:00–16:00',h:'7 h 30 m',st:'approved'},{d:'Thu 24 Sep',t:'12:00–22:00',h:'9 h 30 m',st:'approved'}];
+const pfx=()=>P.d('tm_shift');
+const isEvening=()=>pfx()==='evening'||A.NOW.getHours()>=18;
+const clockMins=()=>{const a=SH.since;if(!a)return 0;return Math.max(0,Math.round((Date.now()-a)/6e4))+194}; /* demo: 3 h 14 m already on the clock */
+const fmtM=m=>`${Math.floor(m/60)} h ${m%60} m`;
+P.bonusCard=(ro,b)=>{b=b||BON;const d=P.d('tm_shift');const pb=(t,k,open)=>{const o=SH['pb_'+k]===undefined?open:SH['pb_'+k];return `<div class="fold" style="margin-bottom:8px"><button class="hd" onclick="PT.shFold('pb_${k}',${!o})"><span>${t}</span><span class="xs muted">${o?'Hide':'Show'}</span></button>${o?`<div class="bd">${k==='today'?`<div class="r"><span>Shift · ${b.pay.today.h} h × ${P.gbp(b.pay.today.rate)}</span><span>${P.gbp(Math.round(b.pay.today.h*b.pay.today.rate))}</span></div><div class="r"><span>Bonus</span><span>${P.gbp(b.pay.today.bonus)}</span></div><div class="r"><b>Total</b><b>${P.gbp(Math.round(b.pay.today.h*b.pay.today.rate)+b.pay.today.bonus)}</b></div>`:k==='month'?`<div class="r"><span>${b.pay.month.h} h · base</span><span>${P.gbp(b.pay.month.base)}</span></div><div class="r"><span>Bonus</span><span>${P.gbp(b.pay.month.bonus)}</span></div><div class="r"><b>Month to date</b><b>${P.gbp(b.pay.month.base+b.pay.month.bonus)}</b></div>`:`<div class="r"><span>By the rota, before tax – a guide</span><span>≈ ${P.gbp(b.pay.forecast.amt)}</span></div><div class="sub" style="padding:6px 0">${b.pay.forecast.hint}</div>`}</div>`:''}</div>`};
+  if(d==='bonus404')return `<div class="blk"><div class="panel"><div class="sm">${ro?'This florist’s bonus is not available here yet – the CRM needs an update.':'Your bonus is not available here yet – the CRM needs an update.'}</div></div></div>`;
+  return `${ro?`<div class="pad"><div class="caps muted">Bonus: ${ro} · read only</div></div>`:''}
+    <div class="pad" style="margin-top:8px"><div class="h3">Today: ${b.today} bouquets · bonus ${P.gbp(b.bonus)}</div><div class="sm soft mt4">${b.toDouble>0?`${b.toDouble} more bouquets to double rate`:'Double rate is on'} · This week: ${P.gbp(b.week)}</div></div>
+    <div class="pad mt12"><div class="sm">Monthly pot: ${P.gbp(b.pot)} · ${b.potOk} of ${b.potN} targets</div></div>
+    ${b.overdue?`<div class="pad mt8"><div class="sm accent">Overdue lessons: ${b.overdue} – ${ro?'complete them in Learning, or no share of the weekly pot':`<button class="textbtn" onclick="App.go('learn')">finish in Learning</button>, otherwise no share of the weekly pot`}</div></div>`:''}
+    <div style="height:14px"></div>
+    ${pb('Today','today',true)}${pb('Month to date','month',false)}${pb('Expected at month end','forecast',false)}
+    <div class="fold" style="margin-bottom:8px"><button class="hd" onclick="PT.shFold('cr',${!SH.cr})"><span>Credited today: ${b.credited.length} · ${P.gbp(b.credited.reduce((s,x)=>s+x.amt,0))}</span><span class="xs muted">${SH.cr?'Hide':'Show'}</span></button>${SH.cr?`<div class="bd">${b.credited.map((x,i)=>`<div class="r" style="flex-direction:column;align-items:stretch"><button style="display:flex;justify-content:space-between;width:100%;text-align:left" onclick="PT.shFold('cr_${i}',${!SH['cr_'+i]})"><span>Order ${x.o}</span><span>${P.gbp(x.amt)}</span></button>${SH['cr_'+i]?`<div class="sub" style="margin-top:4px">${x.lines.join(' · ')}</div>`:''}</div>`).join('')}</div>`:''}</div>
+    <div class="fold"><button class="hd" onclick="PT.shFold('wo',${!SH.wo})"><span>Without bonus: ${b.without.length}</span><span class="xs muted">${SH.wo?'Hide':'Show'}</span></button>${SH.wo?`<div class="bd">${b.without.map(x=>`<div class="r"><span>Order ${x.o}</span><span class="sub">${x.why}</span></div>`).join('')}<div class="sub" style="padding-top:8px">Not a penalty – just what did not meet the bonus condition.</div></div>`:''}</div>`};
+P.shFold=(k,v)=>{SH[k]=v;A.haptic();const id=A.state.current;const f=P.mountOf(id.replace(/-/g,'_'));if(f)f(A.state.params)};
+P.ratingCard=()=>{const adm=P.isAdmin()&&!lensOn();
+  if(adm)return `<div class="pad"><div class="h3">Rating is waiting for your marks</div><div class="sm soft mt4">Florists see the top 3 only once everyone has a manager’s mark.</div></div><div class="rows" style="margin-top:12px">${RATING.pending.map(id=>`<div class="row"><span class="rt"><div class="l">${nm(id)}</div><div class="d">No mark yet · this week</div></span><button class="btn --xs --secondary" onclick="App.toast('Mark in the CRM – demo')">Mark</button></div>`).join('')}</div>`;
+  const win=(t,arr)=>`<div class="pad" style="margin-top:12px"><div class="caps muted">${t}</div>${arr?arr.map((id,i)=>`<div class="toprow" style="padding-left:0"><span class="medal ${i===0?'g':''}">${i+1}</span>${nm(id)}</div>`).join(''):'<div class="sm soft mt8">Results are not in yet.</div>'}</div>`;
+  return `<div class="pad"><div class="h3">Top 3 florists</div><div class="xs muted mt4">Places and names only – never your own place or score.</div></div>${win('This week',RATING.week)}${win('This month',RATING.month)}`};
+P.dayCloseCard=()=>{const d=pfx();if(d==='dc404')return `<div class="blk"><div class="panel"><div class="sm">Day close is not available here yet – tick it in the CRM.</div></div></div>`;
+  if(!isEvening()&&!DC.forceOpen)return `<div class="blk"><div class="panel"><div class="h4">Closing the day</div><div class="sm soft mt4">Best ticked in the evening, from 18:00.</div><button class="btn --sm --secondary mt16" onclick="PT.dcOpen()">Open the checklist</button></div></div>`;
+  const sw=(k,l)=>`<div class="flex ai-c jc-sb" style="padding:10px 0;border-bottom:1px solid var(--hair)"><span class="sm">${l}</span><button class="switch ${DC[k]?'on':''}" role="switch" aria-checked="${DC[k]}" onclick="PT.dcSave('${k}')"></button></div>`;
+  const left=['flowers','shortage','packaging'].filter(k=>!DC[k]).length;
+  return `<div class="pad"><div class="flex ai-c jc-sb"><div class="h3">Closing the day</div><span class="pill ${left?'--todo':'--done'}">${left?'Left: '+left:'Done'}</span></div></div>
+    <div class="pad" style="margin-top:6px">${sw('flowers','Tomorrow’s flowers conditioned')}${sw('shortage','No shortage for tomorrow’s orders')}${sw('packaging','Packaging prepared')}</div>
+    <div class="pad mt12"><div class="flex ai-c jc-sb"><span class="sm">${DC.photo?'Photo added':'Photo of the day needed'}</span><button class="btn --xs --secondary" onclick="PT.dcPhoto()">${DC.photo?'Replace photo':'Add photo'}</button></div></div>
+    ${DC.photo?`<div class="photo mt8">Day photo · 20 Oct 18:42</div>`:''}
+    <div class="pad mt16"><div class="sm">Rubbish collected?</div>${DC.rubbish===null?`<div class="flex g8 mt8" style="gap:8px"><button class="btn --sm --secondary" onclick="PT.dcRubbish(true)">Yes</button><button class="btn --sm --secondary" onclick="PT.dcRubbish(false)">No</button></div>`:DC.rubbish?`<div class="xs ok mt4">Collected</div>`:`<div class="xs accent mt4">Not collected · managers emailed at ${DC.rubbishAt}</div><button class="textbtn mt8" onclick="PT.dcRubbishPhoto()">${DC.rubbishPhoto?'Rubbish photo added':'Add a photo of the rubbish'}</button>`}</div>
+    <div class="note">All four (three ticks + photo) count towards the monthly bonus pot. Each tick saves straight away.</div>`};
+P.dcOpen=()=>{DC.forceOpen=true;window.mount_tm_shift()};
+P.dcSave=k=>{const d=pfx();if(d==='dcsaveerr'){P.alert('Day close is not available here yet','Tick it in the CRM. The switches are locked (404/403 on save).',[{l:'OK',primary:true}]);return}DC[k]=!DC[k];A.haptic();A.toast('Saved');const f=P.mountOf(A.state.current.replace(/-/g,'_'));f&&f()};
+P.dcPhoto=()=>A.sheet(sheetHead('Photo of the day')+`<div class="sh-body" style="padding:0"><div class="rows"><button class="row" onclick="PT.dcPhotoDone()">${P.ic('camera')}<span class="rt"><div class="l">Take a photo</div></span></button><button class="row" onclick="PT.dcPhotoDone()">${P.ic('photo')}<span class="rt"><div class="l">Choose from the library</div></span></button></div><div class="note">Upload retries if the connection drops – the photo is kept.</div></div>`);
+P.dcPhotoDone=()=>{A.closeSheet();DC.photo=true;A.toast('Photo saved');const f=P.mountOf(A.state.current.replace(/-/g,'_'));f&&f()};
+P.dcRubbish=v=>{DC.rubbish=v;if(v){A.toast('Saved');window.mount_tm_shift();return}DC.rubbishAt='18:4'+Math.floor(Math.random()*9);
+  A.sheet(sheetHead('Rubbish not collected')+`<div class="sh-body" style="padding:0"><div class="rows"><button class="row" onclick="PT.dcRubbishSend(true)">${P.ic('camera')}<span class="rt"><div class="l">Take a photo</div></span></button><button class="row" onclick="PT.dcRubbishSend(true)">${P.ic('photo')}<span class="rt"><div class="l">Choose from the library</div></span></button><button class="row" onclick="PT.dcRubbishSend(false)">${P.ic('send')}<span class="rt"><div class="l">Send without a photo</div></span></button></div><div class="note">The CRM emails the managers either way.</div></div>`)};
+P.dcRubbishSend=p=>{A.closeSheet();DC.rubbishPhoto=p;A.toast('Managers emailed');window.mount_tm_shift()};
+P.dcRubbishPhoto=()=>{DC.rubbishPhoto=true;A.toast('Photo added');window.mount_tm_shift()};
+window.mount_tm_shift=function(){
+  const el=$('#tm-sh-body'),u=A.me(),r=effRole(),real=u.role,lim=P.limited(u),c=P.contour(u),d=pfx();P.ptr(el,'tm_shift');
+  const demo=P.demo('tm_shift',[['ok','Normal'],['evening','After 18:00'],['nogeo','Location denied'],['error','Load error'],['actfail','Action fails'],['bonus404','Bonus 404'],['dc404','Day close 404'],['dcsaveerr','Day close save 403']]);
+  const courierDemo=real==='courier'?`<div class="demo"><small>Courier</small>${[['sending','Sending'],['auto','Auto-break'],['noperm','No “always” permission'],['stopped','Stopped']].map(x=>`<button class="chip ${SH.trk===x[0]?'on':''}" onclick="PT.shTrk('${x[0]}')">${x[1]}</button>`).join('')}<button class="chip ${SH.idle?'on':''}" onclick="PT.shIdle()">Idle banner</button></div>`:'';
+  if(c==='self_employed'&&real!=='courier'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`<b>${u.n}</b> is self-employed (not a courier) – no clock strip, so Me has no “Shift & hours” row. Opened by link: the timeclock answers 403.`)+P.stt('error','Could not load the shift. Pull to try again.');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load the shift. Pull to try again.');return}
+  const onRota=u.role!=='owner'&&!(c==='worker'&&false);const code=real==='courier'?'08:00':'D';
+  const today=`<div class="blk" style="margin-top:4px"><div class="panel"><div class="flex ai-c jc-sb"><span class="caps muted">Today’s shift · Tue 20 Oct</span>${onRota?`<span class="code">${code}</span>`:''}</div>${onRota?`<div class="h3 mt8">start from 07:45 · end to 16:30</div><div class="sm soft mt4">Lead · day: Svetlana · evening: not assigned</div>`:`<div class="h3 mt8">Nothing on the rota</div><div class="sm soft mt4">You can still start a shift – managers and owners clock in too.</div>`}</div></div>`;
+  const idle=real==='courier'&&SH.idle?`<div class="idle"><div class="sm"><b>${SH.idleAuto?'Break started automatically – you were off-route for 20 min.':'You have been standing 12 min off the route. Start a break?'}</b></div>${SH.idleAuto?`<button class="btn --sm mt12" onclick="PT.shIdleAns('working')">Continue the shift</button>`:`<div class="xs soft mt4">Auto-break in <b id="pt-idle-cd">4:58</b></div><div class="flex mt12" style="gap:8px"><button class="btn --sm" onclick="PT.shIdleAns('break')">Start a break</button><button class="btn --sm --secondary" onclick="PT.shIdleAns('working')">I’m working</button></div>`}</div>`:'';
+  const big=SH.open?`<button class="btn --block --secondary bigbtn" onclick="PT.shClock('out')">End shift</button>`:`<button class="btn --block bigbtn" onclick="PT.shClock('in')">Start shift</button>`;
+  const brk=SH.open?`<div class="blk" style="margin-top:8px"><button class="btn --block --ghost" onclick="PT.shBreak()">${SH.onBreak?'End break':'Break'}</button></div>`:'';
+  const live=SH.open?`<div class="blk" style="margin-top:14px"><div class="panel"><div class="caps muted">${SH.onBreak?(SH.auto?'On an automatic break since '+SH.brkSince:'On a break since '+SH.brkSince):'Working since '+SH.sinceTxt}</div><div class="timer mt8">${fmtM(clockMins())}</div><div class="xs muted mt4">On shift today · ticks once a minute · breaks paused${SH.auto?' · location still sent':''}</div></div></div>`:'';
+  const trk=real==='courier'?`<div class="trk ${SH.trk==='noperm'?'bad':SH.trk==='stopped'?'off':''}" style="margin-top:12px"><i></i><span class="f1">Location: ${SH.trk==='sending'?'sending':SH.trk==='auto'?'sending (auto-break)':SH.trk==='noperm'?'no “Always” permission':'stopped'} · ${SH.buf} points waiting for network</span>${SH.trk==='noperm'?`<button class="btn --xs --secondary" onclick="App.toast('Opens system Settings')">Open settings</button>`:SH.trk==='stopped'&&SH.open?`<button class="btn --xs --secondary" onclick="PT.shTrk('sending')">Resume</button>`:''}</div>`:'';
+  const notice=SH.notice?`<div class="pad mt12"><div class="sm accent">${SH.notice}</div></div>`:'';
+  const geoNote=(d==='nogeo'&&SH.geoNoted)?`<div class="pad mt8"><div class="xs soft">Location is off – the shift was recorded without a location check.</div></div>`:'';
+  const todayRows=SH.entries.length||SH.open?`<div class="sec-head"><div class="h2">Today</div></div><div class="rows">${SH.entries.map(e=>`<div class="line"><span>${e.a} – ${e.b}</span><span>${fmtM(e.m)}</span></div>`).join('')}${SH.open?`<div class="line"><span>${SH.sinceTxt} – …</span><span>${fmtM(clockMins())}</span></div>`:''}<div class="line t"><span>Worked today</span><span>${fmtM(SH.entries.reduce((s,e)=>s+e.m,0)+(SH.open?clockMins():0))}</span></div><div class="line"><span>Breaks</span><span>30 m</span></div></div>`:'';
+  const cards=lim?`<div class="note">Bonus, Top 3, showcase and day close are hidden for limited accounts (seasonal, trainee) – their endpoints are closed.</div>`:`
+    ${r==='florist'?`<div class="sec-head"><div class="h2">My bonus</div><button class="textbtn" onclick="App.go('tm-mybonus')">Own page</button></div>${P.bonusCard(lensOn()?u.n:null)}<div class="sec-head"><div class="h2">Top 3</div></div>${P.ratingCard()}`:P.isAdmin(u)?`<div class="sec-head"><div class="h2">Rating</div></div>${P.ratingCard()}`:''}
+    ${r!=='courier'?`<div class="sec-head"><div class="h2">Showcase</div></div><div class="blk"><div class="panel"><div class="sm">Same card as on Today: photo of the window before opening, 2 of 3 done.</div><button class="btn --sm --secondary mt12" onclick="App.toast('Showcase card – lives on Today (TM-TODAY-023…)')">Open on Today</button></div></div><div class="sec-head"><div class="h2">Closing the day</div></div>${P.dayCloseCard()}`:''}`;
+  const earlier=SH.monthsBack?EARLIER:[];const rows=MYSH.concat(earlier);
+  const mysh=`<div class="sec-head"><div class="h2">${lensOn()?'Shifts: '+u.n:'My shifts'}</div><span class="xs muted">${SH.monthsBack?'last 2 months':'last month'}</span></div>
+    <div class="rows">${rows.map((s,i)=>`<button class="urow" onclick="${r==='florist'&&!lim?`PT.shDay(${i})`:`App.toast('Only florists see a bonus per day')`}"><span class="f1"><div class="sm">${s.d} · ${s.t}</div><div class="d">${s.st==='pending'?'Waiting for approval':s.st==='approved'?'Approved':s.st==='rejected'?'Rejected':'Open'}</div>${SH.dayOpen===i&&r==='florist'?`<div class="d" style="color:var(--ink)">Bonus that day: 11 bouquets · £3.90 · scale £1.20 × 1.0 · 1 without bonus (no photo)</div>`:''}</span><span class="sm ${s.st==='rejected'?'muted':''}">${s.h}</span></button>`).join('')}
+    <div class="line"><span>Learning · paid time</span><span>+42 m</span></div><div class="line t"><span>Total</span><span>${SH.monthsBack?'58 h 29 m':'41 h 27 m'}</span></div></div>
+    <div class="note">7 h 42 m waiting for approval – they count once Valeria approves.${r==='florist'&&!lim?' Tap a day to see its bonus.':''}</div>
+    ${SH.monthsBack?'':`<div class="blk" style="margin-top:12px"><button class="btn --secondary --block --sm" onclick="PT.shEarlier()">Show earlier</button></div>`}`;
+  el.innerHTML=demo+courierDemo+P.ptrHint()+today+idle+`<div style="height:14px"></div>`+big+brk+notice+geoNote+live+trk+todayRows+cards+mysh+(P.isMgr(u)?'':`<div class="note">Location is only checked when you clock in or out.</div>`);
+  if(SH.idle&&!SH.idleAuto)P.shCountdown();
+};
+P.shClock=k=>{const u=A.me(),real=u.role,d=pfx();SH.notice='';
+  if(d==='actfail'){SH.notice='Something went wrong. Try again.';window.mount_tm_shift();return}
+  if(k==='in'){if(!P.isMgr(u)){if(d==='nogeo'){SH.geoNoted=true;A.toast('Location off – recorded without a check')}else A.toast('Location captured · 12 m from the shop')}
+    if(real==='courier'){if(SH.trk==='noperm'){P.alert('Location in the background','To send your position during deliveries the app needs the “Always” permission. The consent screen opens.',[{l:'Later'},{l:'Open consent',primary:true,fn:()=>App.toast('/courier-location-consent – other section')}])}else{SH.trk='sending';A.toast('Tracking started')}}
+    SH.open=true;SH.since=Date.now();SH.sinceTxt=A.fmtTime?A.fmtTime(A.NOW):'11:12';A.haptic();setTimeout(()=>A.push('Shift started','Have a good day. Bonus counts from now.',{icon:'clock'}),500)}
+  else{SH.open=false;SH.onBreak=false;SH.entries.push({a:SH.sinceTxt||'11:12',b:'14:26',m:clockMins()});if(real==='courier'){SH.trk='stopped';A.toast('Tracking stopped')}else A.toast('Shift ended · no confirmation needed')}
+  window.mount_tm_shift()};
+P.shBreak=()=>{const real=A.me().role;if(pfx()==='actfail'){SH.notice='Something went wrong. Try again.';window.mount_tm_shift();return}SH.onBreak=!SH.onBreak;SH.auto=false;SH.brkSince=SH.onBreak?'14:05':null;if(real==='courier'){if(SH.onBreak){SH.trk='stopped';A.toast('Break – location paused')}else{SH.trk='sending';A.toast('Back on · location resumed')}}else A.toast(SH.onBreak?'Break started':'Break ended');window.mount_tm_shift()};
+P.shTrk=t=>{SH.trk=t;if(t==='auto'){SH.open=true;SH.since=SH.since||Date.now();SH.sinceTxt=SH.sinceTxt||'11:12';SH.onBreak=true;SH.auto=true;SH.brkSince='14:05'}window.mount_tm_shift()};
+P.shIdle=()=>{SH.idle=!SH.idle;SH.idleAuto=false;window.mount_tm_shift()};
+P.shIdleAns=a=>{if(a==='break'){SH.idle=false;SH.onBreak=true;SH.open=true;SH.since=SH.since||Date.now();SH.sinceTxt=SH.sinceTxt||'11:12';SH.brkSince='14:05';SH.trk='stopped';A.toast('Break started')}else{SH.idle=false;SH.idleAuto=false;A.toast('Noted – still working')}window.mount_tm_shift()};
+P.shCountdown=()=>{let s=298;clearInterval(SH.cdT);SH.cdT=setInterval(()=>{const e=$('#pt-idle-cd');if(!e){clearInterval(SH.cdT);return}s--;e.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s<=0){clearInterval(SH.cdT);SH.idleAuto=true;SH.onBreak=true;SH.auto=true;SH.trk='auto';window.mount_tm_shift()}},1000)};
+P.shDay=i=>{SH.dayOpen=SH.dayOpen===i?null:i;A.haptic();window.mount_tm_shift()};
+P.shEarlier=()=>{SH.monthsBack=1;A.toast('One more month loaded');window.mount_tm_shift()};
+
+/* ======================================================= TIMESHEET ======================================================= */
+const TS=P.ts={w:0,entries:[
+  {id:1,d:'Mon 19 Oct',who:'vita',a:'08:00',b:'16:12',code:'D',flags:['late 4 min'],st:'pending',type:'shift'},
+  {id:2,d:'Mon 19 Oct',who:'sofiia',a:'08:00',b:'16:00',code:'D',flags:[],st:'approved',type:'shift'},
+  {id:3,d:'Mon 19 Oct',who:'oleh',a:'09:00',b:'17:04',code:'08:00',flags:['not in the shop'],st:'pending',type:'shift'},
+  {id:4,d:'Mon 19 Oct',who:'valeria',a:'07:40',b:'',code:'',flags:['on duty'],st:'approved',type:'checkin'},
+  {id:5,d:'Tue 20 Oct',who:'kamila',a:'07:58',b:'',code:'D',flags:['not closed'],st:'open',type:'shift'},
+  {id:6,d:'Tue 20 Oct',who:'max',a:'12:00',b:'20:15',code:'',flags:['not on the rota','entered manually'],st:'pending',type:'shift',manual:true},
+  {id:7,d:'Sat 17 Oct',who:'zhadra',a:'15:00',b:'22:00',code:'L',flags:[],st:'rejected',type:'shift'}
+]};
+const WEEKS=[['19 Oct – 25 Oct','2026-10-19'],['12 Oct – 18 Oct','2026-10-12'],['26 Oct – 1 Nov','2026-10-26']];
+window.mount_tm_timesheet=function(){
+  const el=$('#tm-ts-body'),u=A.me(),d=P.d('tm_timesheet'),adm=P.isAdmin(u)&&!lensOn();P.ptr(el,'tm_timesheet');
+  const demo=P.demo('tm_timesheet',[['ok','Normal'],['error','Load error'],['err422','Server 422']]);
+  if(!canApprove()){el.innerHTML=demo+P.ptrHint()+P.lens(0,`<b>${u.n}</b> has no timeclock.approve right – the Me row is hidden; the screen itself checks nothing, the CRM answers 403.`)+P.stt('error','Could not load the timesheet.');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load the timesheet. Pull to try again.');return}
+  const wk=WEEKS[Math.abs(TS.w)%WEEKS.length];
+  const days=[...new Set(TS.entries.map(e=>e.d))];
+  const fl=f=>`<span class="${/not|late|manually/.test(f)?'bad':''}">${f}</span>`;
+  const row=e=>{const ci=e.type==='checkin';return `<div class="tsrow ${e.st==='rejected'?'rej':''}"><div class="tp"><span><b>${nm(e.who)}</b> · ${e.a}${e.b?' – '+e.b:' – …'}${e.code?` <span class="code">${e.code}</span>`:''}</span><span class="xs ${e.st==='approved'?'ok':e.st==='rejected'?'accent':'muted'}">${ci?'check-in':e.st==='approved'?'✓ approved':e.st==='rejected'?'✗ rejected':e.st==='open'?'open':'pending'}</span></div>
+    ${e.flags.length?`<div class="fl">${e.flags.map(fl).join('')}</div>`:''}
+    ${ci?'':`<div class="ac">${e.st!=='approved'&&e.b?`<button class="btn --xs" onclick="PT.tsApprove(${e.id})">Approve</button>`:''}${e.st!=='rejected'&&e.b?`<button class="btn --xs --secondary" onclick="PT.tsReject(${e.id})">Reject</button>`:''}${!e.b?`<button class="btn --xs" onclick="PT.tsClose(${e.id})">Close shift</button>`:''}${adm?`<button class="btn --xs --ghost" onclick="PT.tsEdit(${e.id})">Edit</button>`:''}</div>`}</div>`};
+  const hours=[['vita','7 h 42 m','0','0'],['sofiia','7 h 30 m','0','30 m'],['kamila','0','3 h 14 m','12 m'],['oleh','0','7 h 34 m','0'],['max','0','7 h 45 m','0']];
+  el.innerHTML=demo+P.ptrHint()+`<div class="bar" style="margin-top:8px"><button class="ib" aria-label="Previous week" onclick="PT.tsWeek(-1)">${A.icon('back')}</button><b>${wk[0]}</b><button class="ib" aria-label="Next week" onclick="PT.tsWeek(1)" style="transform:scaleX(-1)">${A.icon('back')}</button></div>
+    <div class="note">Monday to Sunday by the shop calendar · GET /timeclock/entries + /timeclock/hours.</div>
+    ${days.map(dd=>`<div class="grp">${dd}</div>${TS.entries.filter(e=>e.d===dd).map(row).join('')}`).join('')}
+    ${adm?`<div class="blk" style="margin-top:20px"><button class="btn --secondary --block --sm" onclick="PT.tsAdd()">Add a shift manually</button></div>`:`<div class="note">Editing and adding shifts – admin only.</div>`}
+    <div class="sec-head"><div class="h2">Hours this week</div></div>
+    <div class="rows">${hours.map(h=>`<div class="line"><span>${nm(h[0])}</span><span class="xs muted">${h[1]} approved · ${h[2]} pending · ${h[3]} learning</span></div>`).join('')}</div>`;
+};
+P.tsWeek=k=>{TS.w+=k;A.haptic();window.mount_tm_timesheet()};
+const tsE=id=>TS.entries.find(e=>e.id===id);
+P.tsApprove=id=>{const e=tsE(id);e.st='approved';A.haptic();A.toast(`Approved · ${nm(e.who)} – hours go to pay`);window.mount_tm_timesheet()};
+P.tsReject=id=>{const e=tsE(id);A.sheet(sheetHead('Reject this shift?')+`<div class="sh-body"><p class="soft" style="margin:0 0 14px">${nm(e.who)} · ${e.d} · ${e.a}–${e.b}. The entry stays in the list but is not counted or paid. “Approve” later undoes it.</p><div class="field"><label>Reason (optional)</label><textarea class="input" id="pt-ts-note" placeholder="e.g. not on the rota, agreed off"></textarea></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.tsRejectDo(${id})">Reject</button></div>`)};
+P.tsRejectDo=id=>{A.closeSheet();if(P.d('tm_timesheet')==='err422'){P.alert('Could not reject the shift','The CRM answered 422.',[{l:'OK',primary:true}]);return}tsE(id).st='rejected';A.toast('Rejected');window.mount_tm_timesheet()};
+P.tsClose=id=>{const e=tsE(id);A.sheet(sheetHead('Set the end time')+`<div class="sh-body"><p class="soft" style="margin:0 0 14px">${nm(e.who)} started at ${e.a}. Enter when the shift ended – it is approved at once with the note “Closed by the approver from the app”. A modal, not Alert.prompt – works on Android too.</p><div class="modal"><div class="field" style="margin:0"><label>End time (HH:MM)</label><input class="input" id="pt-ts-out" value="16:00" inputmode="numeric"></div></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.tsCloseDo(${id})">Close shift</button></div>`)};
+P.tsCloseDo=id=>{const v=($('#pt-ts-out')||{}).value||'16:00';A.closeSheet();if(!/^\d{2}:\d{2}$/.test(v)){P.alert('Check the time','Use HH:MM.',[{l:'OK',primary:true}]);return}const e=tsE(id);e.b=v;e.st='approved';e.flags=e.flags.filter(f=>f!=='not closed').concat(['closed by approver']);A.toast('Closed and approved');window.mount_tm_timesheet()};
+P.tsEdit=id=>{const e=tsE(id);A.sheet(sheetHead('Edit the entry · admin')+`<div class="sh-body"><div class="field"><label>Start</label><input class="input" id="pt-e-a" value="${e.a}"></div><div class="field"><label>End</label><input class="input" id="pt-e-b" value="${e.b||'16:00'}"></div><div class="field"><label>Break (minutes)</label><input class="input" id="pt-e-br" value="30" inputmode="numeric"></div><div class="field"><label>Reason (required)</label><input class="input" id="pt-e-n" placeholder="why the change"></div><p class="xs muted" style="margin:0">End earlier than start = night shift (ends next day). The break must be shorter than the shift; the server checks the range (422).</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.tsEditDo(${id})">Save</button></div>`,{full:true})};
+P.tsEditDo=id=>{const n=($('#pt-e-n')||{}).value||'';if(!n.trim()){A.toast('A reason is required');return}const a=$('#pt-e-a').value,b=$('#pt-e-b').value;A.closeSheet();if(P.d('tm_timesheet')==='err422'){P.alert('Could not save','The end must be later than the start, and the break shorter than the shift (422 editRange).',[{l:'OK',primary:true}]);return}const e=tsE(id);e.a=a;e.b=b;e.flags=[...new Set(e.flags.concat(['edited']))];A.toast('Saved with your note');window.mount_tm_timesheet()};
+P.tsAdd=()=>{const people=['kamila','vita','sofiia','andrii','oleh','max','zhadra'];A.sheet(sheetHead('Add a shift manually · admin')+`<div class="sh-body"><div class="caps muted" style="margin-bottom:8px">Who</div><div class="chips wrap" style="padding:0" id="pt-add-who">${people.map((p,i)=>`<button class="chip ${i===0?'on':''}" data-id="${p}" onclick="PT.tsPick(this)">${nm(p)}</button>`).join('')}</div><div class="field" style="margin-top:16px"><label>Date</label><input class="input" type="date" id="pt-a-d" value="2026-10-20"></div><div class="field"><label>Start</label><input class="input" id="pt-a-a" value="08:00"></div><div class="field"><label>End</label><input class="input" id="pt-a-b" value="16:00"></div><div class="field"><label>Break (minutes)</label><input class="input" id="pt-a-br" value="30"></div><div class="field"><label>Reason (required)</label><input class="input" id="pt-a-n" placeholder="e.g. clock-in never reached the server"></div><p class="xs muted" style="margin:0">The server refuses an overlap: “This person already has a shift in these hours”.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.tsAddDo()">Add</button></div>`,{full:true})};
+P.tsPick=b=>{document.querySelectorAll('#pt-add-who .chip').forEach(x=>x.classList.toggle('on',x===b))};
+P.tsAddDo=()=>{const who=($('#pt-add-who .chip.on')||{}).dataset.id||'kamila';const n=$('#pt-a-n').value;if(!n.trim()){A.toast('A reason is required');return}A.closeSheet();if(P.d('tm_timesheet')==='err422'){P.alert('Could not add','This person already has a shift in these hours (422 overlap).',[{l:'OK',primary:true}]);return}TS.entries.push({id:Date.now(),d:'Tue 20 Oct',who,a:$('#pt-a-a').value,b:$('#pt-a-b').value,code:'',flags:['entered manually'],st:'pending',type:'shift',manual:true});A.toast('Shift added');window.mount_tm_timesheet()};
+
+/* ======================================================= MY WEEK ======================================================= */
+window.mount_tm_myweek=function(){
+  const el=$('#tm-mw-body'),u=A.me(),d=P.d('tm_myweek'),lim=P.limited(u),c=P.contour(u);P.ptr(el,'tm_myweek');
+  const demo=P.demo('tm_myweek',[['ok','Normal'],['nogoal','No team goal'],['nopraise','No praise'],['loading','Loading'],['error','Error']]);
+  if(lim||c!=='employee'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`<b>${u.n}</b> – ${lim?'limited account (seasonal/trainee)':c.replace('_',' ')+' contour'}: the My week row is hidden in Me. Opened by link it would still load.`)}
+  else el.innerHTML='';
+  if(d==='loading'){el.innerHTML+=demo+P.ptrHint()+P.stt('loading');return}
+  if(d==='error'){el.innerHTML+=demo+P.ptrHint()+P.stt('error','Could not load your week. Pull to try again.');return}
+  el.innerHTML+=(lim||c!=='employee'?'':demo+P.ptrHint())+`
+    <div class="pad" style="padding-top:8px"><div class="caps muted">19 Oct – 25 Oct</div><div class="h2 mt8">${u.n}</div><div class="sm soft mt4">Level: Bloom · 1,240 points in total · 6 days in a row</div><div class="pillrow" style="padding:10px 0 0"><span class="pill --plain">Photo first</span><span class="pill --plain">Opening pro</span></div></div>
+    <div class="stats" style="margin-top:18px;grid-template-columns:repeat(4,1fr)"><div><b>12</b><span>Done</span></div><div><b>9</b><span>Accepted</span></div><div><b>3</b><span>Open</span></div><div><b>86</b><span>Points</span></div></div>
+    <div class="sec-head"><div class="h2">Team goal</div></div>
+    ${d==='nogoal'?`<div class="note">No goal set for this month yet.</div>`:`<div class="blk"><div class="flex jc-sb sm"><span>Bouquets photographed before packing</span><span class="muted">69 %</span></div><div class="progress mt8"><i style="width:69%"></i></div><p class="xs muted" style="margin:10px 0 0">412 of 600 bouquets · not reached yet</p></div>`}
+    <div class="sec-head"><div class="h2">Said about my work</div></div>
+    ${d==='nopraise'?`<div class="note">Nothing this week yet.</div>`:`<div class="rows">${[['“Exactly like the photo – thank you!”','Client · order 715541'],['Lovely tight spiral on 715530.','Valeria · task 103']].map(p=>`<div class="row"><span class="rt"><div class="l">${p[0]}</div><div class="d">${p[1]}</div></span></div>`).join('')}</div><div class="note">2 thank-you points received this week.</div>`}
+    <div class="note">Read-only: thanking a colleague lives on Floritta Active, not here. <button class="textbtn" onclick="App.go('tm-active')">Open Active</button></div>`;
+};
+
+/* ======================================================= NOT PAID ======================================================= */
+const UNPAID=[{code:'715612',client:'Ms Okafor',amt:8500,when:'Tue 20 Oct · 14:00–16:00',wait:48,wa:3,contacted:true,tries:2,outcome:'',link:true},{code:'715608',client:'Mr Lindqvist',amt:14000,when:'Tue 20 Oct · 17:00–19:00',wait:12,wa:0,contacted:false,tries:0,outcome:'',link:false},{code:'715590',client:'Ms Patel',amt:6000,when:'Wed 21 Oct · 10:00–12:00',wait:190,wa:5,contacted:true,tries:3,outcome:'promised by 18:00',link:false}];
+window.mount_tm_unpaid=function(){
+  const el=$('#tm-up-body'),u=A.me(),d=P.d('tm_unpaid');P.ptr(el,'tm_unpaid');
+  const demo=P.demo('tm_unpaid',[['ok','Normal'],['empty','No unpaid'],['loading','Loading'],['error','Error']]);
+  if(!canManageOrders()){el.innerHTML=demo+P.lens(0,`<b>${u.n}</b> has no orders.manage right – the screen redirects home. (Demo: redirect in 1.5 s.)`);clearTimeout(P.upT);P.upT=setTimeout(()=>{if(A.state.current==='tm-unpaid'){A.toast('Redirected home – no orders.manage');A.go('home',{},{replace:true})}},1500);return}
+  if(d==='loading'){el.innerHTML=demo+P.ptrHint()+P.stt('loading');return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load. Pull to try again.');return}
+  const list=d==='empty'?[]:UNPAID;
+  el.innerHTML=demo+P.ptrHint()+`<div class="sec-head" style="margin-top:10px"><div class="h2">Not paid</div><span class="xs muted">${list.length} · refreshes every 60 s</span></div>
+    <div class="rows">${list.length?list.map(o=>`<button class="urow" onclick="PT.upOpen('${o.code}')"><span class="f1"><div class="sm"><b>${o.code}</b> · ${o.client}</div><div class="d">${o.when} · waiting ${o.wait} min · ${o.wa} WhatsApp</div><div class="d">${o.contacted?'<span class="ok">✓ contacted</span>':'<span class="accent">not contacted</span>'} · ${o.tries} attempt${o.tries===1?'':'s'}${o.outcome?' · '+o.outcome:''}${o.link?' · <span class="pill --review">payment link pending</span>':''}</div></span><span class="sm">${P.gbp(o.amt)}</span></button>`).join(''):P.stt('empty','No unpaid orders.')}</div>
+    <div class="note">Tap an order: the “Payment” and “Not paid” cards on the order do the work – payment link, attempts, outcome.</div>`;
+};
+P.upOpen=code=>{const o=(window.ORDERS||[])[0];if(o&&document.getElementById('s-order')){A.go('order',{id:o.id})}else A.toast(`Order ${code} – /order/{id} (Work section)`)};
+
+/* ======================================================= MY BONUS ======================================================= */
+window.mount_tm_mybonus=function(){
+  const el=$('#tm-mb-body'),u=A.me(),r=effRole(),lim=P.limited(u),c=P.contour(u),d=P.d('tm_mybonus');
+  const demo=P.demo('tm_mybonus',[['ok','Normal'],['nodata','Both cards hidden']]);
+  if(r!=='florist'||lim||!(c==='employee'||c==='worker')){el.innerHTML=demo+P.lens(0,`<b>${u.n}</b>: My bonus is for florists (not limited) on the employee and worker contours – the Me row is hidden.`);return}
+  if(d==='nodata'){el.innerHTML=demo+`<div style="height:200px"></div><div class="note">Both cards are hidden (bonusEligible=false or no endpoint) – the real page stays blank under the app bar. Proposed empty state: “No bonus data yet.”</div>`;return}
+  el.innerHTML=demo+`<div class="sec-head" style="margin-top:10px"><div class="h2">My bonus</div></div>${P.bonusCard(lensOn()?u.n:null)}<div class="sec-head"><div class="h2">Top 3 florists</div></div>${P.ratingCard()}`;
+};
+
+/* ======================================================= FLORISTS' BONUSES ======================================================= */
+const FB=[{id:'svetlana',today:[1240,'7 h 30 m'],month:24600,fc:31000},{id:'kamila',today:[510,'3 h 14 m'],month:4160,fc:9800},{id:'vita',today:null,month:19800,fc:26500},{id:'sofiia',today:[330,'2 h 05 m'],month:12100,fc:17000}];
+window.mount_tm_flbonus=function(){
+  const el=$('#tm-fb-body'),u=A.me(),d=P.d('tm_flbonus');P.ptr(el,'tm_flbonus');
+  const demo=P.demo('tm_flbonus',[['ok','Normal'],['unavail','CRM unavailable'],['empty','No florists'],['loading','Loading']]);
+  if(!P.isAdmin(u)||lensOn()){el.innerHTML=demo+P.lens(0,`<b>${u.n}</b> is not a real admin – the screen redirects to Me (lens does not count). Demo: redirect in 1.5 s.`);clearTimeout(P.fbT);P.fbT=setTimeout(()=>{if(A.state.current==='tm-flbonus'){A.toast('Redirected to Me – admin only');A.go('me',{},{replace:true})}},1500);return}
+  if(d==='loading'){el.innerHTML=demo+P.ptrHint()+P.stt('loading');return}
+  if(d==='unavail'){el.innerHTML=demo+P.ptrHint()+`<div class="blk" style="margin-top:14px"><div class="panel"><div class="sm">Florists’ bonuses are not available here yet – the CRM needs an update.</div></div></div><div class="note">The Me row appears only when the overview request succeeds.</div>`;return}
+  if(d==='empty'){el.innerHTML=demo+P.ptrHint()+P.stt('empty','No florists.');return}
+  el.innerHTML=demo+P.ptrHint()+`<div class="sec-head" style="margin-top:10px"><div class="h2">Florists</div><span class="xs muted">${FB.length}</span></div><div class="rows">${FB.map(f=>`<button class="urow" onclick="App.go('tm-flbonus-one',{id:'${f.id}'})">${A.avatar(f.id,'--sm')}<span class="f1"><div class="sm"><b>${nm(f.id)}</div><div class="d">${f.today?`Today ${P.gbp(f.today[0])} · ${f.today[1]}`:'Today – shift not started'}</div><div class="d">Month ${P.gbp(f.month)} · forecast ≈ ${P.gbp(f.fc)}</div></span>${P.ic('chev','chev')}</button>`).join('')}</div><div class="note">Tap a florist to see her card exactly as she sees it – read only.</div>`;
+};
+window.mount_tm_flbonus_one=function(p){
+  const el=$('#tm-fb1-body'),id=(p&&p.id)||'svetlana',f=FB.find(x=>x.id===id);$('#tm-fb1-ttl').textContent='Bonus: '+nm(id);
+  const demo=P.demo('tm_flbonus_one',[['ok','Normal'],['bad','403 / bad id']]);
+  if(P.d('tm_flbonus_one')==='bad'){el.innerHTML=demo+`<div class="blk" style="margin-top:14px"><div class="panel"><div class="sm">This florist’s bonus is not available here yet – the CRM needs an update.</div></div></div>`;return}
+  el.innerHTML=demo+`<div style="height:8px"></div>`+P.bonusCard(nm(id),{...BON,today:f&&f.today?Math.round(f.today[0]/36):0,bonus:f&&f.today?f.today[0]:0})+`<div class="note">No actions here – only folding. The florist’s own card has the Learning link; here it is plain text.</div>`;
+};
+
+/* ======================================================= GOALS ======================================================= */
+const GO=P.go={horizon:null,plan:{period:'October – December 2026',meeting:'24 Oct',strengths:'Colour pairing; calm with clients',note:'Keep the photo-first habit – it shows in the numbers. Next: lead a Saturday opening.',
+  goals:[{id:1,t:'Build 3 funeral tributes without help',how:'Svetlana signs off each one',give:'Two practice slots a week',due:'31 Oct',st:'open',h:'month',lesson:'Funeral work basics'},{id:2,t:'Photograph every bouquet before packing',how:'100 % in the bonus card for 4 weeks',give:'Phone stand by the window',due:'31 Oct',st:'done',h:'month'},{id:3,t:'Lead a Saturday opening',how:'Opening checklist done by 8:30 twice',give:'Valeria shadows the first one',due:'20 Dec',st:'open',h:'quarter'},{id:4,t:'Learn the wedding brief form',how:'Fill one real brief',give:'',due:'15 Nov',st:'dropped',h:'quarter'}],
+  sugg:[{t:'Try the Christmas wreath workshop',why:'Wreath orders start in November and you asked for seasonal work',taken:false},{t:'Mentor Ayana on buckets',why:'Your conditioning is the cleanest this month',taken:true}]},max:5};
+window.mount_tm_goals=function(){
+  const el=$('#tm-go-body'),d=P.d('tm_goals'),pl=GO.plan;P.ptr(el,'tm_goals');
+  const demo=P.demo('tm_goals',[['ok','Normal'],['noplan','No plan (404)'],['error','Error'],['limit','5 goals – limit'],['noteamgoal','No team goal']]);
+  const home=`<div class="grp first">As shown in Learning · My goals</div>
+    ${d==='noplan'?'':`<button class="goal" style="width:calc(100% - 2*var(--gutter));text-align:left" onclick="App.toast('Opens /goals – you are here')"><div class="flex ai-c jc-sb"><span class="caps muted">Goals this month and for 3 months</span><span class="xs muted">Plan ›</span></div><div class="sm mt8">${pl.goals.filter(g=>g.st==='done').length} of ${pl.goals.filter(g=>g.st!=='dropped').length} done</div><div class="progress mt8"><i style="width:${Math.round(100*pl.goals.filter(g=>g.st==='done').length/pl.goals.filter(g=>g.st!=='dropped').length)}%"></i></div><div class="xs muted mt8">Next meeting with your mentor – ${pl.meeting}</div></button>`}
+    ${d==='noteamgoal'?'':`<div class="goal"><div class="caps muted">Team goal</div><div class="sm mt8">Bouquets photographed before packing</div><div class="progress mt8"><i style="width:69%"></i></div><div class="xs muted mt8">now 412 · goal 600 bouquets</div></div>`}
+    ${d==='noplan'&&d==='noteamgoal'?'<div class="note">Neither a plan nor a team goal – the block is hidden in Learning.</div>':''}`;
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+home+P.stt('error','Did not load. Pull down to try again.');return}
+  if(d==='noplan'){el.innerHTML=demo+P.ptrHint()+home+`<div class="sec-head"><div class="h2">My goals</div></div>`+P.stt('empty','No plan yet – your mentor writes it in the CRM.')+`<div class="note">The plan is written and edited in the CRM; here you tick goals and take suggestions.</div>`;return}
+  const cnt={month:pl.goals.filter(g=>g.h==='month').length,quarter:pl.goals.filter(g=>g.h==='quarter').length,all:pl.goals.length};
+  const hz=GO.horizon||(cnt.month?'month':cnt.quarter?'quarter':'all');
+  const list=pl.goals.filter(g=>hz==='all'||g.h===hz);
+  const openN=pl.goals.filter(g=>g.st==='open').length,limit=d==='limit'||openN>=GO.max;
+  el.innerHTML=demo+P.ptrHint()+home+`
+    <div class="pad" style="margin-top:28px"><div class="caps muted">${pl.period}</div><h1 class="h2 mt8">My goals</h1></div>
+    <div class="goal" style="margin-top:14px"><div class="sm"><b>Meeting with your mentor · ${pl.meeting}</b></div><div class="xs soft mt4">Talk through what worked.</div></div>
+    <div class="chips" style="margin-top:6px">${[['month',`Month · to 31 Oct · ${cnt.month}`],['quarter',`3 months · to 31 Dec · ${cnt.quarter}`],['all',`All · ${cnt.all}`]].map(h=>`<button class="chip ${hz===h[0]?'on':''}" onclick="PT.goHz('${h[0]}')">${h[1]}</button>`).join('')}</div>
+    <div style="height:14px"></div>
+    ${list.map(g=>`<div class="goal ${g.st==='done'?'done':''}"><div class="flex ai-c jc-sb"><span class="sm"><b>${g.t}</b></span>${g.st!=='dropped'?`<button class="ib" aria-label="More" onclick="PT.goMenu(${g.id})">${A.icon('dots')}</button>`:''}</div>
+      <div class="kv"><span>How we’ll know</span><span>${g.how}</span>${g.give?`<span>What we give</span><span>${g.give}</span>`:''}<span>Due</span><span>${g.due}</span><span>Status</span><span>${g.st==='open'?'In progress':g.st==='done'?'Done ✓':'Dropped'}</span>${g.lesson?`<span>Lesson</span><span><button class="textbtn" onclick="App.go('learn')">${g.lesson}</button></span>`:''}</div>
+      ${g.st==='dropped'?'':`<button class="btn --sm ${g.st==='done'?'--secondary':''} mt12" onclick="PT.goStatus(${g.id},'${g.st==='done'?'open':'done'}')">${g.st==='done'?'Back to in progress':'Mark as done'}</button>`}</div>`).join('')}
+    <div class="grp">My strengths</div><div class="chips wrap">${pl.strengths.split(';').map(s=>`<span class="chip">${s.trim()}</span>`).join('')}</div>
+    <div class="blk" style="margin-top:14px"><div class="panel"><div class="caps muted">Mentor’s note</div><div class="sm mt8">${pl.note}</div></div></div>
+    <div class="grp">Suggestions for your situation</div>
+    ${pl.sugg.map((s,i)=>`<div class="sugg"><div class="caps muted">Suggestion</div><div class="sm mt8"><b>${s.t}</b></div><div class="xs soft mt4">Why: ${s.why}</div>${s.taken?`<button class="btn --sm --secondary mt12" disabled>Already in the plan</button>`:limit?`<div class="xs accent mt12">Your plan already has ${GO.max} goals – finish or drop one first.</div>`:`<button class="btn --sm mt12" onclick="PT.goTake(${i})">Add to my plan</button>`}</div>`).join('')}
+    <div class="note">The plan is written and edited in the CRM; a plan re-saved on the web changes the ids – the app refetches quietly.</div>`;
+};
+P.goHz=h=>{GO.horizon=h;A.haptic();window.mount_tm_goals()};
+P.goStatus=(id,st)=>{const g=GO.plan.goals.find(x=>x.id===id);g.st=st;A.haptic();A.toast(st==='done'?'Marked as done':'Back in progress');window.mount_tm_goals()};
+P.goMenu=id=>A.sheet(sheetHead('Goal')+`<div class="sh-body" style="padding:0"><div class="rows"><button class="row" onclick="PT.goDrop(${id})">${P.ic('trash')}<span class="rt"><div class="l">Drop this goal</div><div class="d">Status “dropped”, no confirmation – as in the app</div></span></button></div></div>`);
+P.goDrop=id=>{A.closeSheet();const g=GO.plan.goals.find(x=>x.id===id);g.st='dropped';A.toast('Goal dropped');window.mount_tm_goals()};
+P.goTake=i=>{GO.plan.sugg[i].taken=true;GO.plan.goals.push({id:Date.now(),t:GO.plan.sugg[i].t,how:'To agree with your mentor',give:'',due:'31 Dec',st:'open',h:'quarter'});A.toast('Added to my plan – your mentor will confirm');window.mount_tm_goals()};
+
+/* ======================================================= FLORITTA ACTIVE ======================================================= */
+const AC=P.ac={goal:{name:'Bouquets photographed before packing',month:'October',st:'open',fund:42000,cur:412,target:600,metric:'bouquets',shares:[['svetlana',96,14400],['vita',70,10500],['kamila',58,8700],['sofiia',56,8400]]},kudos:{left:3,to:null,pts:1,note:''},lb:[['svetlana',3,'Bloom',12,96,410],['vita',2,'Bud',9,70,322],['kamila',1,'Bud',7,58,240],['sofiia',0,'Seed',5,56,190],['andrii',1,'Bud',6,44,201]]};
+window.mount_tm_active=function(){
+  const el=$('#tm-ac-body'),u=A.me(),d=P.d('tm_active'),lim=P.limited(u),mgr=P.isMgr(u),g=AC.goal,k=AC.kudos;P.ptr(el,'tm_active');
+  const demo=P.demo('tm_active',[['ok','Normal'],['nokudos','Kudos used up'],['error','Error']]);
+  if(lim){el.innerHTML=demo+P.lens(0,`<b>${u.n}</b> – limited account: Floritta Active is hidden in Me.`);return}
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load. Pull to try again.');return}
+  const pct=Math.min(100,Math.round(100*g.cur/g.target));
+  const people=STAFF.filter(s=>s.id!==u.id&&s.role!=='owner'&&!s.engagement?.match(/contractor|reserve/)).slice(0,8);
+  const left=d==='nokudos'?0:k.left;
+  el.innerHTML=demo+P.ptrHint()+`
+    <div class="sec-head" style="margin-top:10px"><div class="h2">Team goal</div></div>
+    <div class="goal"><div class="sm"><b>${g.name}</b></div><div class="xs muted mt4">${g.month} · ${g.st==='open'?'in progress':g.st==='achieved'?'achieved':'closed'} · Fund ${P.gbp(g.fund)}</div><div class="progress mt12"><i style="width:${pct}%"></i></div><div class="xs muted mt8">${g.cur} of ${g.target} ${g.metric} · ${pct} %</div>
+      <div class="caps muted" style="margin-top:14px">Fund split (preliminary)</div>${g.shares.map(s=>`<div class="line" style="padding:8px 0"><span>${nm(s[0])}</span><span class="xs muted">${s[1]} pts · ${P.gbp(s[2])}</span></div>`).join('')}
+      ${mgr&&g.st!=='closed'?`<div class="flex mt16" style="gap:8px"><button class="btn --sm --secondary" onclick="PT.acUpd()">Update progress</button><button class="btn --sm" onclick="PT.acClose()">Close the goal</button></div><div class="xs muted mt8">“Close” fixes the fund split between people – no confirmation in the app.</div>`:''}</div>
+    <div class="sec-head"><div class="h2">Say thank you</div></div>
+    <div class="goal">${left?`<div class="sm">${left} kudos left this week</div>`:`<div class="sm muted">Kudos used up – the budget renews on Monday.</div>`}
+      <div class="caps muted" style="margin-top:12px">To</div><div class="chips wrap" style="padding:0;margin-top:8px">${people.map(p=>`<button class="chip ${k.to===p.id?'on':''}" onclick="PT.acTo('${p.id}')">${p.n}</button>`).join('')}</div>
+      <div class="caps muted" style="margin-top:12px">Points</div><div class="ptsrow" style="margin-top:8px">${[1,2,3].map(n=>`<button class="chip ${k.pts===n?'on':''}" ${n>left?'disabled style="opacity:.4"':''} onclick="PT.acPts(${n})">${n}</button>`).join('')}</div>
+      <div class="field" style="margin-top:12px"><label>For what (required)</label><textarea class="input" id="pt-ac-note" placeholder="e.g. covered my lunch without being asked" oninput="PT.ac.kudos.note=this.value">${k.note}</textarea></div>
+      <button class="btn --block --sm" ${left&&k.to?'':'disabled'} onclick="PT.acSend()">Send thanks</button></div>
+    ${mgr?`<div class="sec-head"><div class="h2">Leaderboard</div><span class="xs muted">managers only</span></div><div class="rows">${AC.lb.slice().sort((a,b)=>b[4]-a[4]||b[5]-a[5]).map((r,i)=>`<button class="lb" onclick="PT.acPerson('${r[0]}')"><span class="n">${i+1}.</span>${A.avatar(r[0],'--sm')}<span class="f1"><div class="sm">${nm(r[0])} ${Array(r[1]).fill('<span class="medal" style="width:16px;height:16px;font-size:8px;margin-right:2px">★</span>').join('')}</div><div class="d">Level ${r[2]} · ${r[3]} kudos · month ${r[4]} · year ${r[5]}</div></span>${P.ic('chev','chev')}</button>`).join('')}</div><div class="note">Sorted on the client by month, then year. Tap a person to recognise or award a badge.</div>`:''}`;
+};
+P.acTo=id=>{AC.kudos.to=AC.kudos.to===id?null:id;A.haptic();window.mount_tm_active()};
+P.acPts=n=>{AC.kudos.pts=n;A.haptic();window.mount_tm_active()};
+P.acSend=()=>{const k=AC.kudos;if(!k.note.trim()){A.toast('Say for what – it is required');return}k.left-=k.pts;const to=nm(k.to);k.to=null;k.note='';k.pts=1;P.alert('Thanks sent','The server checks the budget – kudos left this week: '+k.left+'.',[{l:'OK',primary:true}]);setTimeout(()=>A.push('Thank you from '+A.me().n,'You got kudos on Floritta Active.',{icon:'star',to}),600);window.mount_tm_active()};
+P.acUpd=()=>A.sheet(sheetHead('Update progress')+`<div class="sh-body"><div class="field"><label>Current value (${AC.goal.metric})</label><input class="input" id="pt-ac-cur" type="number" min="0" value="${AC.goal.cur}"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.acUpdDo()">Save</button></div>`);
+P.acUpdDo=()=>{const v=Math.max(0,parseInt($('#pt-ac-cur').value||'0',10));A.closeSheet();AC.goal.cur=v;if(v>=AC.goal.target)AC.goal.st='achieved';P.alert('Goal updated','',[{l:'OK',primary:true}]);window.mount_tm_active()};
+P.acClose=()=>{AC.goal.st='closed';A.toast('Goal closed – fund split fixed');setTimeout(()=>A.push('Team goal closed',`${AC.goal.name} · fund ${P.gbp(AC.goal.fund)} split`,{icon:'award'}),500);window.mount_tm_active()};
+P.acPerson=id=>{AC.rp=2;AC.rr='';A.sheet(sheetHead('Recognition · '+nm(id))+`<div class="sh-body"><div class="caps muted">Points</div><div class="ptsrow" style="margin-top:8px" id="pt-rp">${[1,2,3].map(n=>`<button class="chip ${n===2?'on':''}" onclick="PT.acRp(this,${n})">${n}</button>`).join('')}</div><div class="field" style="margin-top:12px"><label>Reason (required)</label><input class="input" id="pt-rr" placeholder="e.g. saved the Saturday window"></div><button class="btn --block --sm" onclick="PT.acRecognise('${id}')">Award points</button>
+    <div class="caps muted" style="margin-top:22px">Award a badge</div><div class="chips wrap" style="padding:0;margin-top:8px">${[['photo-first','Photo first'],['opening-pro','Opening pro'],['calm-hands','Calm hands'],['route-master','Route master']].map(b=>`<button class="chip" onclick="PT.acBadge('${id}','${b[0]}')">${b[1]}</button>`).join('')}</div><div class="xs muted mt8">A tap awards straight away – no confirmation.</div></div>`,{full:true})};
+P.acRp=(b,n)=>{AC.rp=n;document.querySelectorAll('#pt-rp .chip').forEach(x=>x.classList.toggle('on',x===b))};
+P.acRecognise=id=>{const r=$('#pt-rr').value;if(!r.trim()){A.toast('A reason is required');return}A.closeSheet();const row=AC.lb.find(x=>x[0]===id);if(row){row[4]+=AC.rp;row[5]+=AC.rp}P.alert('Points awarded',`${nm(id)} · +${AC.rp}`,[{l:'OK',primary:true}]);window.mount_tm_active()};
+P.acBadge=(id,code)=>{AC.badges=AC.badges||{};const k=id+code;if(AC.badges[k]){P.alert('Badge already awarded','',[{l:'OK',primary:true}]);return}AC.badges[k]=1;const row=AC.lb.find(x=>x[0]===id);if(row)row[1]++;A.closeSheet();P.alert('Badge awarded',nm(id)+' · '+code,[{l:'OK',primary:true}]);window.mount_tm_active()};
+
+/* ======================================================= CANDIDATES ======================================================= */
+const CN=P.cn={opts:null,tried:false,d:{name:'',phone:'',email:'',other:'',roles:[],pos:'',exp:'',links:[''],fmt:[],when:'',area:'',src:'',ref:'',note:'',consent:false,how:''},sending:false};
+const OPTS={roles:['Florist','Courier','Shop assistant','Other'],exp:['None','Up to 1 year','1–3 years','3+ years'],fmt:['Full-time','Part-time','Weekends','Seasonal'],src:['Friend','Former colleague','Customer','Instagram','Other'],how:['Said yes in person','By message','By phone'],consent:'The person agrees that Floritta stores their name and contacts to consider them for work, and may be contacted about vacancies.'};
+const isRef=s=>['Friend','Former colleague'].includes(s);
+const cnProblems=()=>{const d=CN.d,p={};if(!d.name.trim())p.name='Name is required';if(d.name.length>200)p.name='Up to 200 characters';if(!d.phone&&!d.email&&!d.other)p.contact='At least one contact';if(!d.roles.length)p.roles='Choose a role';if(d.roles.includes('Other')&&!d.pos.trim())p.pos='Say which position';if(!d.consent)p.consent='Consent is required';if(!d.how)p.how='How the consent was given';if(d.note.length>2000)p.note='Up to 2,000 characters';return p};
+window.mount_tm_cand_new=function(){
+  const el=$('#tm-cn-body'),cta=$('#tm-cn-cta'),d=P.d('tm_cand_new'),D=CN.d;
+  const demo=P.demo('tm_cand_new',[['ok','Normal'],['optload','Options loading'],['opterr','Options failed'],['dup','Duplicate'],['s422','Server 422'],['offline','No connection']]);
+  cta.innerHTML='';
+  if(d==='optload'){el.innerHTML=demo+P.stt('loading');return}
+  if(d==='opterr'){el.innerHTML=demo+P.stt('error','Could not load the form. Check the connection.')+`<div class="blk"><button class="btn --secondary --block --sm" onclick="PT.setDemo('tm_cand_new','ok')">Retry</button></div>`;return}
+  const p=CN.tried?cnProblems():{};const err=k=>p[k]?`<div class="errt">${p[k]}</div>`:'';
+  const chips=(list,sel,fn,multi)=>`<div class="chips wrap">${list.map(x=>`<button class="chip ${multi?sel.includes(x):sel===x?'on':''}" onclick="${fn}('${x}')">${x}</button>`).join('')}</div>`;
+  const F=(k,l,ph,extra)=>`<div class="field"><label>${l}</label><input class="input ${p[k]?'bad':''}" value="${P.esc(D[k])}" placeholder="${ph||''}" oninput="PT.cnSet('${k}',this.value)" ${extra||''}></div>${err(k)}`;
+  el.innerHTML=demo+`<div class="note" style="padding-top:8px">Lists and the consent text come from the CRM (GET /candidates/options) – nothing is hard-coded in the app.</div>
+    <div class="grp">Who</div><div class="blk">${F('name','Name *','Full name')}
+    ${F('phone','Phone','+44 7700 900…','inputmode="tel"')}${F('email','Email','','inputmode="email"')}${F('other','Other contact','Telegram, Instagram…')}${err('contact')}</div>
+    <div class="grp">Roles *</div>${chips(OPTS.roles,D.roles,'PT.cnRole',true)}${p.roles?`<div class="errt" style="margin:8px var(--gutter) 0">${p.roles}</div>`:''}
+    ${D.roles.includes('Other')?`<div class="blk" style="margin-top:14px">${F('pos','Desired position *','')}</div>`:''}
+    <div class="grp">Experience</div>${chips(OPTS.exp,D.exp,'PT.cnExp')}
+    <div class="grp">Links · up to 3</div><div class="blk">${D.links.map((l,i)=>`<div class="field"><label>Link ${i+1}</label><input class="input" value="${P.esc(l)}" placeholder="instagram.com/… (https:// is added)" onblur="PT.cnLink(${i},this.value)"></div>`).join('')}${D.links.length<3?`<button class="textbtn" onclick="PT.cnAddLink()">Add a link</button>`:''}</div>
+    <div class="grp">Work format</div>${chips(OPTS.fmt,D.fmt,'PT.cnFmt',true)}
+    <div class="blk" style="margin-top:14px">${F('when','When available','e.g. from November, weekends')}${F('area','Area / postcode','SE1','style="text-transform:uppercase"')}</div>
+    <div class="grp">Where you met</div>${chips(OPTS.src,D.src,'PT.cnSrc')}
+    ${isRef(D.src)?`<div class="blk" style="margin-top:14px">${F('ref','Who recommended','')}</div>`:''}
+    <div class="blk" style="margin-top:14px"><div class="field"><label>Note · up to 2,000</label><textarea class="input ${p.note?'bad':''}" oninput="PT.cnSet('note',this.value)">${P.esc(D.note)}</textarea></div>${err('note')}</div>
+    <div class="grp">Consent *</div>
+    <div class="blk"><div class="panel sm soft">${OPTS.consent}</div></div>
+    <button class="ag-check ${D.consent?'on':''}" style="margin-top:14px" onclick="PT.cnConsent()"><i></i><span>The person agrees</span></button>${p.consent?`<div class="errt" style="margin:8px var(--gutter) 0">${p.consent}</div>`:''}
+    <div class="caps muted" style="margin:16px var(--gutter) 8px">How the consent was given *</div>${chips(OPTS.how,D.how,'PT.cnHow')}${p.how?`<div class="errt" style="margin:8px var(--gutter) 0">${p.how}</div>`:''}
+    ${CN.tried&&Object.keys(p).length?`<div class="blk" style="margin-top:16px"><div class="panel --accent sm">Check the marked fields.</div></div>`:''}
+    <div class="note">Someone else’s personal data – only with their consent. If the connection drops, the form stays on screen; closing the screen loses it (no offline queue).</div><div style="height:12px"></div>`;
+  cta.innerHTML=`<button class="btn --block" ${CN.sending?'disabled':''} onclick="PT.cnSubmit()">${CN.sending?'Sending…':'Add'}</button>`;
+};
+const rerender=()=>window.mount_tm_cand_new();
+P.cnSet=(k,v)=>{CN.d[k]=k==='area'?v.toUpperCase():v};
+P.cnRole=r=>{const a=CN.d.roles,i=a.indexOf(r);i<0?a.push(r):a.splice(i,1);rerender()};
+P.cnExp=v=>{CN.d.exp=v;rerender()};P.cnFmt=v=>{const a=CN.d.fmt,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1);rerender()};
+P.cnSrc=v=>{CN.d.src=v;rerender()};P.cnHow=v=>{CN.d.how=v;rerender()};
+P.cnLink=(i,v)=>{v=v.trim();if(v&&!/^https?:\/\//.test(v))v='https://'+v;CN.d.links[i]=v;rerender()};
+P.cnAddLink=()=>{if(CN.d.links.length<3)CN.d.links.push('');rerender()};
+P.cnConsent=()=>{CN.d.consent=!CN.d.consent;A.haptic();rerender()};
+P.cnSubmit=()=>{if(CN.sending)return;CN.tried=true;const p=cnProblems();if(Object.keys(p).length){rerender();A.toast('Check the marked fields');return}CN.sending=true;rerender();
+  setTimeout(()=>{CN.sending=false;const d=P.d('tm_cand_new');
+    if(d==='offline'){rerender();P.alert('Not sent','No connection. The form is kept – try again.',[{l:'OK',primary:true}]);return}
+    if(d==='s422'){rerender();P.alert('Not sent','The CRM did not accept the form: phone number is not valid (422 → bound to the field).',[{l:'OK',primary:true}]);return}
+    if(d==='dup'){P.alert('This person is already in the CRM','Not an error – nothing was duplicated.',[{l:'OK',primary:true,fn:()=>A.back('tm-schedule')}]);return}
+    P.mine.unshift({n:CN.d.name,roles:CN.d.roles.slice(),date:'20 Oct 2026',stage:'New'});P.alert('Added','The candidate is in the CRM hiring funnel.',[{l:'OK',primary:true,fn:()=>{CN.d={name:'',phone:'',email:'',other:'',roles:[],pos:'',exp:'',links:[''],fmt:[],when:'',area:'',src:'',ref:'',note:'',consent:false,how:''};CN.tried=false;A.back('tm-schedule')}}])},700)};
+P.mine=[{n:'Dilnoza R.',roles:['Florist'],date:'14 Oct 2026',stage:'Interview booked'},{n:'Tomasz W.',roles:['Courier','Other'],date:'2 Oct 2026',stage:'Screening'}];
+window.mount_tm_cand_mine=function(){
+  const el=$('#tm-cm-body'),d=P.d('tm_cand_mine');P.ptr(el,'tm_cand_mine');
+  const demo=P.demo('tm_cand_mine',[['ok','Normal'],['empty','Empty'],['error','Error'],['rawroles','Options not loaded']]);
+  if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load the list.');return}
+  const list=d==='empty'?[]:P.mine;
+  el.innerHTML=demo+P.ptrHint()+`<div class="rows" style="margin-top:12px">${list.length?list.map(c=>`<div class="urow"><span class="f1"><div class="sm"><b>${P.esc(c.n)}</b></div><div class="d">${d==='rawroles'?c.roles.map(r=>r.toLowerCase().replace(' ','_')).join(', '):c.roles.join(', ')} · ${c.date}</div></span><span class="pill --plain">${c.stage}</span></div>`).join(''):P.stt('empty','You have not added anyone yet.')}</div><div class="note">The stage label comes from the server. Until the options list loads, roles show as raw values.</div>`;
+};
+
+/* persona change re-renders the open screen */
+document.addEventListener('user',()=>{const id=A.state.current;if(/^tm-/.test(id)){const f=P.mountOf(id.replace(/-/g,'_'));if(f)f(A.state.params)}});
+})();
+</script>
