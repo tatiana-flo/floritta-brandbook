@@ -1,10 +1,276 @@
-<section class="scr" id="s-checkout" data-nav="Checkout" data-group="Checkout">
-  <div class="appbar"><button class="ib" onclick="App.back('bag')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Checkout</div><span class="caps muted" id="ck-secure" style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure</span></div>
+<style>
+/* ---- checkout · delivery details (base rules duplicated from 12-orders.html until they move here) ---- */
+#s-checkout .steps{display:grid;grid-template-columns:repeat(3,1fr);padding:0 var(--gutter) 0;background:var(--paper);z-index:5;position:relative;border-bottom:1px solid var(--hair)}
+#s-checkout .steps#ck-steps{grid-template-columns:repeat(2,1fr);gap:8px}
+#s-checkout .steps button{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);padding:6px 0 12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;transition:color var(--m-fast)}
+#s-checkout .steps button i{display:block;width:100%;height:1px;background:var(--light);transition:background var(--m-fast)}
+#s-checkout .steps button.on{color:var(--ink)}
+#s-checkout .steps button.on i,#s-checkout .steps button.done i{background:var(--ink)}
+#s-checkout .sec{padding:28px var(--gutter) 4px}
+#s-checkout .sw{display:flex;align-items:center;gap:14px;padding:12px 0}
+#s-checkout .sw .t{flex:1;font-size:15px}
+#s-checkout .sw .t small{display:block;font-size:12.5px;color:var(--grey);margin-top:2px;line-height:1.4}
+#s-checkout .pfx{position:relative}
+#s-checkout .pfx span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--grey);font-size:16px}
+#s-checkout .pfx .input{padding-left:52px}
+#s-checkout .pfx.nopfx span{display:none}
+#s-checkout .pfx.nopfx .input{padding-left:14px}
+#s-checkout .addr{border:1px solid var(--light);padding:12px 14px;display:flex;gap:12px;align-items:center;text-align:left;width:100%;margin-bottom:8px;transition:all var(--m-fast)}
+#s-checkout .addr.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+#s-checkout .addr .l{font-size:14px}
+#s-checkout .addr .d{font-size:13px;color:var(--grey)}
+#s-checkout .addr .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);min-width:48px}
+#s-checkout .days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+#s-checkout .day{border:1px solid var(--light);aspect-ratio:1/1.25;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.04em;transition:all var(--m-fast)}
+#s-checkout .day b{font-family:var(--f-display);font-size:20px;font-weight:400;color:var(--ink);letter-spacing:0;text-transform:none}
+#s-checkout .day.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+#s-checkout .day.on b{color:var(--paper)}
+#s-checkout .day[disabled]{color:var(--light);border-style:dashed}
+#s-checkout .day[disabled] b{color:var(--light);text-decoration:line-through}
+#s-checkout .wins{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+#s-checkout .wins.one{grid-template-columns:1fr}
+#s-checkout .win{border:1px solid var(--light);height:48px;font-size:13px;transition:all var(--m-fast)}
+#s-checkout .win.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+#s-checkout .cnt{font-size:12px;color:var(--grey);text-align:right;margin-top:-8px}
+#s-checkout .photo{display:flex;gap:14px;align-items:flex-start}
+#s-checkout .photo svg{width:26px;height:26px;flex:none;stroke:var(--ink);fill:none;stroke-width:1.5;margin-top:2px}
+#s-checkout .sum{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;font-variant-numeric:tabular-nums}
+#s-checkout .sum.tt{font-size:17px;font-weight:400;border-top:1px solid var(--ink);margin-top:8px;padding-top:14px}
+#s-checkout .lock{display:flex;justify-content:center;align-items:center;gap:8px;font-size:12px;color:var(--grey);padding:20px 0 8px}
+#s-checkout .lock svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5}
+/* ---- details: additions (registry 05-checkout, /checkout/details) ---- */
+#s-checkout .input.err{border-color:var(--accent)}
+#s-checkout .ferr{font-size:12px;color:var(--accent);margin-top:-8px;margin-bottom:12px;line-height:1.4}
+#s-checkout .hint{font-size:12px;color:var(--grey);margin-top:-8px;margin-bottom:12px;line-height:1.4}
+#s-checkout .src{display:inline-flex;align-items:center;height:18px;padding:0 6px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--silver);color:var(--grey);margin-left:8px;vertical-align:middle;font-weight:400}
+#s-checkout .field label{display:flex;align-items:center}
+#s-checkout .chips.sg{padding:0;margin-top:12px}
+#s-checkout .empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:80px 32px 0}
+#s-checkout .empty svg{width:48px;height:48px;stroke:var(--light);fill:none;stroke-width:1;margin-bottom:20px}
+#s-checkout .sec.err-sec{box-shadow:inset 3px 0 0 var(--accent)}
+</style>
+<section class="scr" id="s-checkout" data-nav="Checkout · details" data-group="Checkout">
+  <!-- ids: APP-CHECKOUT-001 – «Delivery details» app bar with back -->
+  <div class="appbar"><button class="ib" onclick="App.back('bag')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl">Delivery details</div><span class="caps muted" id="ck-secure" style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure</span></div>
   <div class="steps" id="ck-steps">
-    <button data-to="ck-delivery" class="on"><i></i>Delivery</button>
-    <button data-to="ck-message"><i></i>Message</button>
-    <button data-to="ck-payment"><i></i>Payment</button>
+    <button class="on" data-step="details"><i></i>1 · Details</button>
+    <button data-step="pay"><i></i>2 · Payment</button>
   </div>
+  <!-- stand-only demo switches -->
+  <div class="demo" id="ck-demo"></div>
+  <!-- ids: APP-CHECKOUT-038 – form moves up with the keyboard (KeyboardAvoidingView); swipe down hides it -->
   <div class="scr-body has-cta" id="ck-body"></div>
+  <!-- ids: APP-CHECKOUT-036 APP-CHECKOUT-037 – sticky «Continue to payment» with the estimated total; on errors: fields outlined, section marked, warning haptic, toast with the first error, scroll to its section (demo chip «Show errors») -->
+  <!-- ids: APP-CHECKOUT-039 – selection haptic on segments, days, windows, addresses, switches -->
   <div class="cta-bar" id="ck-cta"></div>
 </section>
+<script>
+(function(){
+const $=App.$,$$=App.$$;
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const WINS=[["any","Any time"],["9-13","9–13"],["13-18","13–18"],["18-23","18–23"]];
+const SUGG=["Happy birthday – with all my love","Thinking of you today","Congratulations, you did it","Just because"];
+const MSG_MAX=150,NOTE_MAX=300;
+/* saved addresses (profile.v1 on the device) – demo data */
+const SAVED=[{id:0,k:"Home",name:"Anna Petrova",phone:"7700 900123",l:"80 Willow Walk",flat:"Flat 3, blue door",town:"London",pc:"SE1 5SY",note:"Leave with concierge if out"},
+             {id:1,k:"Office",name:"Reception",phone:"7700 900789",l:"12 Bermondsey Street",flat:"",town:"London",pc:"SE1 2ER",note:""}];
+const CK=window.CKX={draft:null,D:{late:false,addresses:true,prefill:true},err:{},t:null};
+CK.SAVED=SAVED;
+function blank(){return {who:"other",name:"",phone:"",anon:false,addrId:null,pc:"",street:"",flat:"",town:"London",note:"",dayIdx:null,win:"any",msg:"",photo:true,sname:"",email:"",sphone:"",save:false,days:App.nextDays(7),src:{}}}
+function initDraft(){
+  const d=blank();
+  if(CK.D.prefill){
+    /* APP-CHECKOUT-004 – from the bouquet page / Home choice (order-choice.v1) */
+    const ch=(window.BagX&&window.BagX.choice)||{dayIdx:1,win:"any"};
+    d.dayIdx=ch.dayIdx;d.win=ch.win;d.msg="Happy birthday, Anna – with all my love";d.src.day="from the bouquet page";d.src.msg="from the bouquet page";
+    /* APP-CHECKOUT-005 – postcode from «Deliver to» on Home (home.deliver-to.v1) */
+    d.pc=App.state.user.postcode;d.src.pc="from Home";
+    /* APP-CHECKOUT-006 – sender from profile.v1 when «Save my details» was on */
+    d.sname=App.state.user.name;d.email="tatiana@example.com";d.sphone="7700 900456";d.save=true;d.src.sender="from your profile";
+    /* APP-CHECKOUT-007 – first saved address selected */
+    if(CK.D.addresses)fromAddress(d,SAVED[0]);
+  }
+  if(CK.D.late&&d.dayIdx===0)d.dayIdx=1;
+  CK.draft=d;CK.err={};
+}
+function fromAddress(d,a){d.addrId=a.id;d.name=a.name;d.phone=a.phone;d.street=a.l;d.flat=a.flat;d.town=a.town;d.pc=a.pc;d.note=a.note;d.src.addr="saved address"}
+function dayOk(i){return !(i===0&&CK.D.late)}
+function winsFor(i){return i===0?[["today","Today, by 10 pm"]]:WINS}
+function src(k){const d=CK.draft;return d.src[k]?`<span class="src">${d.src[k]}</span>`:""}
+function demo(){
+  $("#ck-demo").innerHTML=`<span class="caps muted">Demo</span>
+    <button class="chip ${CK.D.prefill?"on":""}" data-d="prefill">Prefilled</button>
+    <button class="chip ${CK.D.addresses?"on":""}" data-d="addresses">Saved addresses</button>
+    <button class="chip ${CK.D.late?"on":""}" data-d="late">After 22:00</button>
+    <button class="chip" data-d="errors">Show errors</button>`;
+  $$("#ck-demo [data-d]").forEach(b=>b.onclick=()=>{const k=b.dataset.d;
+    if(k==="errors"){CK.draft=Object.assign(blank(),{days:App.nextDays(7)});CK.draft.dayIdx=null;render();submit();return}
+    CK.D[k]=!CK.D[k];
+    if(k==="late"){/* APP-CHECKOUT-024 – clock rollover: selected day no longer available → nearest day + toast */
+      if(CK.D.late&&CK.draft.dayIdx===0){CK.draft.dayIdx=1;App.toast("The delivery day or window you chose has passed – please check it again",{ms:3200})}
+      render();return}
+    initDraft();render()});
+}
+function render(){
+  const body=$("#ck-body"),d=CK.draft,e=CK.err;demo();
+  $$("#ck-steps button").forEach(b=>{b.classList.toggle("on",b.dataset.step==="details")});
+  if(!App.state.bag.length){
+    /* APP-CHECKOUT-002 */
+    body.innerHTML=`<!-- ids: APP-CHECKOUT-002 --><div class="empty fade-up"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><div class="h2">Your bag is empty</div><p class="soft sm" style="margin:10px 0 28px">Add a bouquet to continue to delivery details.</p><button class="btn --block" onclick="App.go('bag',{},{replace:true})">Back to bag</button></div>`;
+    $("#ck-cta").innerHTML="";return;
+  }
+  const B=window.BagX;const s=B.sub(),fee=B.fee(s),tot=B.total();const n=App.bagCount();
+  const me=d.who==="me";
+  body.innerHTML=`
+  <!-- ids: APP-CHECKOUT-003 APP-CHECKOUT-004 APP-CHECKOUT-005 APP-CHECKOUT-006 APP-CHECKOUT-007 APP-CHECKOUT-008 – prefill from the draft (back from payment), bouquet-page choice, Home postcode, profile and the first saved address; every change goes to the in-memory draft and clears that field's error -->
+  <div class="pad mt4 xs muted">${CK.D.prefill?"Filled in from your last choices – check and edit anything.":"Nothing saved yet – fill in the details below."} <span class="muted">Draft kept while the app is open.</span></div>
+  <!-- ids: APP-CHECKOUT-009 APP-CHECKOUT-010 APP-CHECKOUT-011 APP-CHECKOUT-012 – recipient: Someone else / Myself; name; phone with +44 prefix (hidden when the number starts with +); anonymous sender -->
+  <div class="sec ${e.name||e.phone?"err-sec":""}" id="ck-s-rec">
+    <div class="caps muted mb8">Recipient</div>
+    <div class="seg mb16"><button data-who="other" class="${!me?"on":""}">Someone else</button><button data-who="me" class="${me?"on":""}">Myself</button></div>
+    ${me?`<p class="xs muted" style="margin:-6px 0 8px">We'll deliver to you – your phone below is used for the courier.</p>`:`
+    <div class="field"><label>Name ${src("addr")}</label><input class="input ${e.name?"err":""}" id="ck-name" value="${esc(d.name)}" placeholder="Recipient's name" data-f="name"></div>
+    ${e.name?`<div class="ferr">${e.name}</div>`:""}
+    <div class="field"><label>Phone</label><div class="pfx ${d.phone.startsWith("+")?"nopfx":""}" id="ck-pfx"><span>+44</span><input class="input ${e.phone?"err":""}" id="ck-phone" inputmode="tel" value="${esc(d.phone)}" placeholder="7700 900000" data-f="phone"></div></div>
+    ${e.phone?`<div class="ferr">${e.phone}</div>`:`<div class="hint">Only for the courier. Other country? Start with +</div>`}
+    <div class="sw"><div class="t">Anonymous sender<small>We won't reveal who sent it; the card is still delivered</small></div><button class="switch ${d.anon?"on":""}" data-sw="anon" aria-label="Anonymous sender"></button></div>`}
+  </div>
+  <!-- ids: APP-CHECKOUT-013 APP-CHECKOUT-014 APP-CHECKOUT-015 APP-CHECKOUT-016 APP-CHECKOUT-017 APP-CHECKOUT-018 APP-CHECKOUT-019 – saved addresses with a tick; «Deliver somewhere else»; postcode (upper-case, full UK format), street and number, flat / house, town (London), notes for the courier (300) -->
+  <div class="sec ${e.pc||e.street||e.town?"err-sec":""}" id="ck-s-addr">
+    <div class="caps muted mb8">Address ${src("pc")}</div>
+    ${CK.D.addresses?SAVED.map(a=>`<button class="addr ${d.addrId===a.id?"on":""}" data-addr="${a.id}"><span class="k">${a.k}</span><span class="f1"><span class="l">${a.l}${a.flat?", "+a.flat:""}</span><br><span class="d">${a.town} ${a.pc}</span></span>${d.addrId===a.id?App.icon("check").replace("<svg",'<svg style="width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:1.5"'):""}</button>`).join("")
+      +`<button class="addr ${d.addrId===null?"on":""}" data-addr="new"><span class="k">New</span><span class="f1"><span class="l">Deliver somewhere else</span></span>${App.icon("plus").replace("<svg",'<svg style="width:18px;height:18px;stroke:var(--grey);fill:none;stroke-width:1.5"')}</button>`:""}
+    <div style="display:${d.addrId===null||!CK.D.addresses?"block":"none"};margin-top:${CK.D.addresses?"12px":"0"}">
+      <div class="field"><label>Postcode</label><input class="input ${e.pc?"err":""}" id="ck-pc" value="${esc(d.pc)}" placeholder="e.g. SE1 5SY" autocapitalize="characters" autocomplete="postal-code" data-f="pc"></div>
+      ${e.pc?`<div class="ferr">${e.pc}</div>`:""}
+      <div class="field"><label>Street and number</label><input class="input ${e.street?"err":""}" id="ck-street" value="${esc(d.street)}" placeholder="80 Willow Walk" data-f="street"></div>
+      ${e.street?`<div class="ferr">${e.street}</div>`:""}
+      <div class="field"><label>Flat / house <span class="src">optional</span></label><input class="input" id="ck-flat" value="${esc(d.flat)}" placeholder="Flat 3, blue door" data-f="flat"></div>
+      <div class="field"><label>Town</label><input class="input ${e.town?"err":""}" id="ck-town" value="${esc(d.town)}" placeholder="London" data-f="town"></div>
+      ${e.town?`<div class="ferr">${e.town}</div>`:""}
+    </div>
+    <div class="field"><label>Notes for the courier <span class="src">optional</span></label><textarea class="input" id="ck-note" maxlength="${NOTE_MAX}" placeholder="Leave with concierge if out" style="min-height:72px" data-f="note">${esc(d.note)}</textarea></div>
+    <div class="cnt"><span id="ck-note-cnt">${d.note.length}</span>/${NOTE_MAX}</div>
+  </div>
+  <!-- ids: APP-CHECKOUT-020 APP-CHECKOUT-021 APP-CHECKOUT-022 APP-CHECKOUT-023 APP-CHECKOUT-024 APP-CHECKOUT-025 APP-CHECKOUT-026 – 7-day strip (Today disabled after 22:00 London, a11y «closed»); windows Any time / 9–13 / 13–18 / 18–23; today = one «Today, by 10 pm»; rollover toast; «Choose a delivery day» error; footnote -->
+  <div class="sec ${e.date?"err-sec":""}" id="ck-s-day">
+    <div class="caps muted mb8">Delivery ${src("day")}</div>
+    <div class="days">${d.days.map((x,i)=>`<button class="day ${d.dayIdx===i?"on":""}" data-day="${i}" ${dayOk(i)?"":'disabled aria-label="Today, closed"'}><span>${i===0?"Today":i===1?"Tmrw":x.label}</span><b>${x.day}</b></button>`).join("")}</div>
+    ${d.dayIdx===null?"":`<div class="wins ${d.dayIdx===0?"one":""}">${winsFor(d.dayIdx).map(([k,l])=>`<button class="win ${(d.dayIdx===0||d.win===k)?"on":""}" data-win="${k}">${l}</button>`).join("")}</div>`}
+    ${e.date?`<div class="ferr mt12" style="margin-bottom:0">${e.date}</div>`:""}
+    <p class="xs muted mt12">Same-day across London until 10 pm${CK.D.late?" · it's past 10 pm, so the next day is the earliest":""}</p>
+  </div>
+  <!-- ids: APP-CHECKOUT-027 APP-CHECKOUT-028 APP-CHECKOUT-029 – card message (150, counter), suggestion chips, photo-before-delivery switch -->
+  <div class="sec" id="ck-s-msg">
+    <div class="caps muted mb8">Card message ${src("msg")}</div>
+    <div class="field" style="margin-bottom:6px"><textarea class="input" id="ck-msg" maxlength="${MSG_MAX}" placeholder="Write something they'll keep" data-f="msg">${esc(d.msg)}</textarea></div>
+    <div class="cnt"><span id="ck-cnt">${d.msg.length}</span>/${MSG_MAX}</div>
+    <div class="chips sg">${SUGG.map(s=>`<button class="chip" data-sugg="${esc(s)}">${s}</button>`).join("")}</div>
+    <div class="sw mt12" style="align-items:flex-start"><div class="t">Send me a photo of the bouquet before it leaves<small>We photograph every bouquet before delivery and send it to the contact details below${d.photo?"":" – switched off: the florist won't send one"}</small></div><button class="switch ${d.photo?"on":""}" data-sw="photo" aria-label="Photo before delivery"></button></div>
+  </div>
+  <!-- ids: APP-CHECKOUT-030 APP-CHECKOUT-031 APP-CHECKOUT-032 – your details: name, email (spaces stripped), phone +44 (used as the recipient's phone when «Myself») -->
+  <div class="sec ${e.sname||e.email||e.sphone?"err-sec":""}" id="ck-s-you">
+    <div class="caps muted mb8">Your details ${src("sender")}</div>
+    <p class="xs muted" style="margin:-4px 0 12px">For the order confirmation and payment receipt</p>
+    <div class="field"><label>Your name</label><input class="input ${e.sname?"err":""}" id="ck-sname" value="${esc(d.sname)}" placeholder="Your name" data-f="sname"></div>
+    ${e.sname?`<div class="ferr">${e.sname}</div>`:""}
+    <div class="field"><label>Email</label><input class="input ${e.email?"err":""}" id="ck-email" type="email" inputmode="email" value="${esc(d.email)}" placeholder="you@example.com" data-f="email"></div>
+    ${e.email?`<div class="ferr">${e.email}</div>`:""}
+    <div class="field"><label>Your phone</label><div class="pfx ${d.sphone.startsWith("+")?"nopfx":""}" id="ck-spfx"><span>+44</span><input class="input ${e.sphone?"err":""}" id="ck-sphone" inputmode="tel" value="${esc(d.sphone)}" placeholder="7700 900000" data-f="sphone"></div></div>
+    ${e.sphone?`<div class="ferr">${e.sphone}</div>`:me?`<div class="hint">Also used as the recipient's phone for the courier</div>`:""}
+  </div>
+  <!-- ids: APP-CHECKOUT-033 – order summary with the same estimate as the bag -->
+  <div class="sec" id="ck-s-sum">
+    <div class="caps muted mb12">Order summary</div>
+    <div class="sum"><span class="soft">${n} item${n===1?"":"s"}</span><span></span></div>
+    ${App.state.bag.filter(B.avail).map(l=>`<div class="sum"><span class="soft">${l.qty} × ${App.product(l.id).n}<span class="muted"> · ${l.size}</span></span><span>${App.fmt(App.lineTotal(l))}</span></div>`).join("")}
+    <div class="hr" style="margin:10px 0"></div>
+    <div class="sum"><span>Subtotal</span><span>${App.fmt(s)}</span></div>
+    <div class="sum"><span>Delivery</span><span>${fee?App.fmt(fee):"Free"}</span></div>
+    ${App.state.promo?`<div class="sum ok"><span>Promo · ${esc(App.state.promo)}</span><span>At payment</span></div>`:""}
+    <div class="sum tt"><span>Estimated total</span><span>${App.fmt(tot)}</span></div>
+    <p class="xs muted mt8">You will see the final total and pay on the next, secure page.</p>
+  </div>
+  <!-- ids: APP-CHECKOUT-034 APP-CHECKOUT-035 – Optional: save my details on this phone (applied after payment); «Create an account» → floritta.uk/register in the in-app web view -->
+  <div class="sec" id="ck-s-opt" style="padding-bottom:16px">
+    <div class="caps muted mb8">Optional</div>
+    <div class="sw" style="padding-top:0"><div class="t">Save my details on this phone for next time<small>Your contact and this address stay only on this phone</small></div><button class="switch ${d.save?"on":""}" data-sw="save" aria-label="Save my details on this phone"></button></div>
+    <button class="textbtn xs" id="ck-acct" style="color:var(--grey)">Create an account</button>
+    <div class="lock">${App.icon("lock")}Payment on the secure Floritta page · Apple Pay, Google Pay, card</div>
+    <p class="xs muted tc" style="margin:0">Swipe down to hide the keyboard</p>
+  </div>`;
+  $("#ck-cta").innerHTML=`<button class="btn --block" id="ck-next" aria-label="Continue to payment, estimated total ${App.fmt(tot)}">Continue to payment <span class="btn-price">${App.fmt(tot)}</span></button>`;
+  $("#ck-next").onclick=submit;
+  bind();
+}
+function bind(){
+  const body=$("#ck-body"),d=CK.draft;
+  /* APP-CHECKOUT-008: every change → draft, clears the field's error; APP-CHECKOUT-039: selection haptic */
+  $$("[data-f]",body).forEach(i=>i.oninput=()=>{let v=i.value;const f=i.dataset.f;
+    if(f==="email")v=i.value=v.replace(/\s+/g,"");
+    if(f==="pc")v=i.value=v.toUpperCase();
+    d[f]=v;if(CK.err[f]){delete CK.err[f];i.classList.remove("err")}
+    if(f==="msg")$("#ck-cnt").textContent=v.length;if(f==="note")$("#ck-note-cnt").textContent=v.length;
+    if(f==="phone")$("#ck-pfx").classList.toggle("nopfx",v.startsWith("+"));if(f==="sphone")$("#ck-spfx").classList.toggle("nopfx",v.startsWith("+"))});
+  $$("[data-who]",body).forEach(x=>x.onclick=()=>{App.haptic();d.who=x.dataset.who;if(d.who==="me")d.anon=false;render()});
+  $$("[data-sw]",body).forEach(s=>s.onclick=()=>{const k=s.dataset.sw;d[k]=!d[k];App.haptic();
+    if(k==="photo"){render();App.toast(d.photo?"We'll send a photo before it leaves":"No photo – noted for the florist");return}
+    s.classList.toggle("on",d[k]);
+    if(k==="anon")App.toast(d.anon?"Sender hidden – the card is still delivered":"Your name goes on the order");
+    if(k==="save")App.toast(d.save?"Saved on this phone after payment":"Nothing will be saved on this phone")});
+  $$("[data-addr]",body).forEach(a=>a.onclick=()=>{App.haptic();const v=a.dataset.addr;
+    if(v==="new"){d.addrId=null;d.name="";d.phone="";d.street="";d.flat="";d.town="London";d.note="";delete d.src.addr;render();setTimeout(()=>{const p=$("#ck-pc");p&&p.focus()},60)}
+    else{fromAddress(d,SAVED.find(x=>x.id==v));delete CK.err.pc;delete CK.err.street;delete CK.err.town;render()}});
+  $$("[data-day]",body).forEach(b=>b.onclick=()=>{const i=+b.dataset.day;if(!dayOk(i))return;App.haptic();d.dayIdx=i;delete CK.err.date;
+    /* APP-CHECKOUT-022: the window stays if allowed on the new day, otherwise «any» */
+    if(!winsFor(i).some(([k])=>k===d.win))d.win="any";render()});
+  $$("[data-win]",body).forEach(w=>w.onclick=()=>{App.haptic();d.win=w.dataset.win==="today"?"any":w.dataset.win;$$("[data-win]",body).forEach(x=>x.classList.toggle("on",x===w))});
+  $$("[data-sugg]",body).forEach(c=>c.onclick=()=>{App.haptic();const t=$("#ck-msg");t.value=c.dataset.sugg;t.dispatchEvent(new Event("input"))});
+  $("#ck-acct").onclick=()=>webSheet("Create an account","floritta.uk/register");
+}
+function webSheet(title,url){
+  App.sheet(`<div class="sh-head"><div class="h3">${title}</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
+    <div class="sh-body"><div class="xs muted mb8" style="display:flex;align-items:center;gap:6px">${App.icon("lock").replace("<svg",'<svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5"')}${url} · opens inside the app</div>
+    <div class="panel" style="min-height:220px;display:flex;flex-direction:column;gap:10px"><div class="h3">Create your Floritta account</div><p class="sm soft" style="margin:0">Registration happens on the website in a web view. Your bag and this order stay on the phone either way.</p><div class="skeleton" style="height:44px"></div><div class="skeleton" style="height:44px"></div><div class="skeleton" style="height:44px"></div></div></div>
+    <div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Back to checkout</button></div>`);
+}
+function validate(){
+  const d=CK.draft,e={};
+  if(d.who==="other"){
+    if(d.name.trim().length<2)e.name="Who is it for? Add the recipient's name";
+    const ph=d.phone.replace(/[\s()-]/g,"");if(!(/^\+\d{7,15}$/.test(ph)||/^0?\d{9,10}$/.test(ph)))e.phone="Add a phone number so the courier can reach them";
+  }
+  if(!/^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i.test(d.pc.trim()))e.pc="Enter a full UK postcode, e.g. SE1 5SY";
+  if(d.street.trim().length<3)e.street="Add the street and house number";
+  if(d.town.trim().length<2)e.town="Add the town or city";
+  if(d.dayIdx===null||!dayOk(d.dayIdx))e.date="Choose a delivery day";
+  if(d.sname.trim().length<2)e.sname="Add your name";
+  if(!/^\S+@\S+\.\S+$/.test(d.email))e.email="Add an email for the order confirmation";
+  const sp=d.sphone.replace(/[\s()-]/g,"");if(!(/^\+\d{7,15}$/.test(sp)||/^0?\d{9,10}$/.test(sp)))e.sphone="Add your phone number";
+  return e;
+}
+function submit(){
+  /* APP-CHECKOUT-036 APP-CHECKOUT-037 */
+  const e=validate();CK.err=e;
+  const order=["name","phone","pc","street","town","date","sname","email","sphone"];
+  const first=order.find(k=>e[k]);
+  if(first){render();const sec={name:"ck-s-rec",phone:"ck-s-rec",pc:"ck-s-addr",street:"ck-s-addr",town:"ck-s-addr",date:"ck-s-day",sname:"ck-s-you",email:"ck-s-you",sphone:"ck-s-you"}[first];
+    const el=document.getElementById(sec);$("#ck-body").scrollTo({top:el.offsetTop-8,behavior:"smooth"});
+    App.haptic();App.toast(e[first]||"Please check the highlighted fields");return}
+  const d=CK.draft;
+  /* draft → checkoutDraft; the pay screen builds the site order from it */
+  CK.saved={...d,days:undefined,when:d.dayIdx===0?"Today":d.dayIdx===1?"Tomorrow":App.dateLabel(d.days[d.dayIdx].d),date:d.days[d.dayIdx].d,
+    window:d.dayIdx===0?"by 10 pm":d.win==="any"?"any time":(WINS.find(([k])=>k===d.win)||WINS[0])[1],
+    recipient:d.who==="me"?d.sname:d.name,rphone:d.who==="me"?d.sphone:d.phone};
+  App.haptic();App.go("ck-pay");
+}
+window.mount_checkout=function(params){
+  if(!CK.draft||!(params&&params.keep))initDraft();else CK.draft.days=App.nextDays(7);
+  render();
+  $$("#ck-steps button").forEach(b=>b.onclick=()=>{if(b.dataset.step==="pay")submit()});
+  /* APP-CHECKOUT-024 – clock re-checked every minute and on return to the app */
+  clearInterval(CK.t);CK.t=setInterval(()=>{if(App.state.current!=="checkout")return;if(!dayOk(CK.draft.dayIdx)){CK.draft.dayIdx=1;render();App.toast("The delivery day or window you chose has passed – please check it again",{ms:3200})}},60000);
+};
+document.addEventListener("screen",e=>{if(e.detail.id!=="checkout")clearInterval(CK.t)});
+})();
+</script>
