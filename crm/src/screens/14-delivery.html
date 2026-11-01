@@ -246,8 +246,8 @@ window.D14=(()=>{
   const rowTone=r=>r.tone==="risk"?"--risk":r.kind==="uber"?"--uber":r.kind==="dpd"?"--dpd":"";
 
   /* ---- sub-navigation ---- */
-  const NAVI=[["couriers-today","Couriers today",1],["delivery","Dispatch",0],["freelance","Freelance",1,"flag"],["nopod","No POD",1],["heatmap","Heatmap",1],["co2","CO₂",1],["delivery-dpd","DPD",1],["partners","Courier partners",1],["statuses","Courier statuses",1],["reliability","Reliability",1],["delivery-tracking","Tracking",0],["delivery-couriers","Couriers",1],["pay","Courier pay",1,"admin"],["delivery-idle","Courier idle",1,"admin"]];
-  const MORE=[["eta","ETA accuracy",1],["delivery-pod","Proof of delivery",0],["delivery-routes","Routes",1],["zones","Zones & rules",1],["delivery-presence","Presence",1],["consents","Geo-consents",1],["exports","Exports",1],["shipping","Shipping",1]];
+  const NAVI=[["couriers-today","Couriers today",1],["delivery","Dispatch",0],["delivery-freelance","Freelance",1,"flag"],["nopod","No POD",1],["delivery-heatmap","Heatmap",1],["delivery-co2","CO₂",1],["delivery-dpd","DPD",1],["delivery-relay","Courier partners",1],["delivery-relay","Courier statuses",1],["delivery-relay","Reliability",1],["delivery-tracking","Tracking",0],["delivery-couriers","Couriers",1],["delivery-courier-pay","Courier pay",1,"admin"],["delivery-idle","Courier idle",1,"admin"]];
+  const MORE=[["delivery-eta","ETA accuracy",1],["delivery-pod","Proof of delivery",0],["delivery-routes","Routes",1],["delivery-zones","Zones & rules",1],["delivery-presence","Presence",1],["delivery-consents","Geo-consents",1],["delivery-exports","Exports",1],["delivery-shipping","Shipping",1]];
   function navGo(id){
     if(id==="nopod"){App.toast("Orders · filter «delivered without a photo» (orders?pod=missing)");App.go("orders",{view:"nopod"});return}
     if(document.getElementById("s-"+id)){App.go(id);return}
