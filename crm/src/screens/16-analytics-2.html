@@ -1,0 +1,427 @@
+<!-- 16-analytics-2 · reports 17–31 · shared runtime A16 lives in 16-analytics.html -->
+
+<!-- ids: ANLT-156 CallAlert counters for the period · ANLT-157 Period · ANLT-158 Missed calls (night / daytime, warn) · ANLT-159 Called back % and N of M · ANLT-160 Still waiting (alert) + never returned · ANLT-161 Median time to call back · ANLT-162 scope note: only the alert queue, volume lives in Ringover · ANLT-012 «Full report» link from the Overview calls widget lands here -->
+<section class="scr an-scr" id="s-an-calls" data-nav="Calls" data-group="Analytics" data-title="Analytics" data-sub="Calls" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-calls"></div><div class="scr-body" id="b-an-calls"></div>
+</section>
+
+<!-- ids: ANLT-163 manager totals (30 days) · ANLT-164 hidden ?period – shown as an explicit selector here, note kept · ANLT-165 Chats handled, Sales via chat, Missed chats, Upsells made / missed, Conversion · ANLT-166 By manager and shift table · ANLT-167 how sale / lost is decided · ANLT-168 «No comms data yet» -->
+<section class="scr an-scr" id="s-an-comms" data-nav="Comms / Managers" data-group="Analytics" data-title="Analytics" data-sub="Comms / Managers" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-comms"></div><div class="scr-body" id="b-an-comms"></div>
+</section>
+
+<!-- ids: ANLT-169 funnel (All time default) · ANLT-170 Period · ANLT-171 Conversion, Cart abandonment, Checkout completion, Revenue / product view with formulas, «–» when base is wrong · ANLT-172 monotonicity warning · ANLT-173 Funnel stages with −N % · ANLT-174 Drop-off reasons · recommended action · share (static, from funnel_reasons) · ANLT-175 empty states -->
+<section class="scr an-scr" id="s-an-funnel" data-nav="Funnel" data-group="Analytics" data-title="Analytics" data-sub="Funnel" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-funnel"></div><div class="scr-body" id="b-an-funnel"></div>
+</section>
+
+<!-- ids: ANLT-176 whole PaymentTransaction ledger, no period · ANLT-177 Paid, Refunds, Net, Transactions · ANLT-178 By status (raw statuses labelled) · ANLT-179 Paid by month, 24 months, oldest first · ANLT-180 «No payments yet» -->
+<section class="scr an-scr" id="s-an-payments" data-nav="Payments" data-group="Analytics" data-title="Analytics" data-sub="Payments" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-payments"></div><div class="scr-body" id="b-an-payments"></div>
+</section>
+
+<!-- ids: ANLT-181 storefront ledger (read-only, no period) · ANLT-182 «Storefront ledger not connected» banner · ANLT-183 Outstanding (always warn), Holders, Earned, Redemption · ANLT-184 By type · ANLT-185 Top holders (masked) · ANLT-186 By tier (only when tiers are configured) · ANLT-187 By month · ANLT-188 «No loyalty activity yet» -->
+<section class="scr an-scr" id="s-an-loyalty" data-nav="Loyalty" data-group="Analytics" data-title="Analytics" data-sub="Loyalty" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-loyalty"></div><div class="scr-body" id="b-an-loyalty"></div>
+</section>
+
+<!-- ids: ANLT-189 language-switch clicks (POST /api/lang-stats) · ANLT-190 Period · ANLT-191 Total clicks + a card per language · ANLT-192 By day (last 90 days) stacked + AOV line · ANLT-193 By month · ANLT-194 «No language clicks yet» -->
+<section class="scr an-scr" id="s-an-languages" data-nav="Languages" data-group="Analytics" data-title="Analytics" data-sub="Languages" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-languages"></div><div class="scr-body" id="b-an-languages"></div>
+</section>
+
+<!-- ids: ANLT-195 storefront events (POST /api/site-stats) · ANLT-196 Period · ANLT-197 Product views, Add to cart, Purchases, View → cart, Cart → purchase · ANLT-198 Funnel view_item → … → purchase · ANLT-199 By day (last 90 days) + AOV line · ANLT-200 Other events · ANLT-201 «No website events yet» -->
+<section class="scr an-scr" id="s-an-website" data-nav="Website" data-group="Analytics" data-title="Analytics" data-sub="Website" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-website"></div><div class="scr-body" id="b-an-website"></div>
+</section>
+
+<!-- ids: ANLT-202 ranking from the storefront DB · ANLT-203 «Storefront not connected… saving is disabled» · ANLT-204 Products, Views, Purchases, Revenue · ANLT-205 How the score works · ANLT-206 top chips · ANLT-207 search 350 ms · ANLT-208 sort Score / Sort value / Views / Clicks / Carts / Purchases / Revenue · ANLT-209 # and Product with thumbnail, site link, category, badges · ANLT-210 metric columns · ANLT-211 Manual boost (admin) · ANLT-212 Pin (admin) · ANLT-213 Demote (admin) · ANLT-214 Save in the row → writes to the storefront and re-sorts the site · ANLT-215 pagination 25 · ANLT-216 «No products to rank yet» -->
+<section class="scr an-scr" id="s-an-popularity" data-nav="Popularity" data-group="Analytics" data-title="Analytics" data-sub="Popularity" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-popularity"></div><div class="scr-body" id="b-an-popularity"></div>
+</section>
+
+<!-- ids: ANLT-217 unpaid stats (30 days) · ANLT-218 Period incl. Quarter = last 90 days · ANLT-219 tracking-off banner · ANLT-220 Unpaid right now (live) · ANLT-221 Outcome funnel: Opened, Recovered, Lost, Recovery rate · ANLT-222 In progress, Not contacted, Avg. to contact · ANLT-223 Cases opened by day + AOV · ANLT-224 Recovered by manager with «manual» badge · ANLT-225 «No recovered orders yet» -->
+<section class="scr an-scr" id="s-an-unpaid" data-nav="Unpaid" data-group="Analytics" data-title="Analytics" data-sub="Unpaid" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-unpaid"></div><div class="scr-body" id="b-an-unpaid"></div>
+</section>
+
+<!-- ids: ANLT-226 objectives of the quarter (all if none) · ANLT-227 quarter from ?quarter – exposed as a selector · ANLT-228 Avg score, On track, At risk / off, Days left · ANLT-229 objective cards with KRs and confidence bars · ANLT-230 «N % · Check-in» for admin, «N %» for others · ANLT-231 Check-in modal: Current value, Confidence, Cancel / Save (audit okr.checkin) · ANLT-232 «No objectives this quarter» -->
+<section class="scr an-scr" id="s-an-okr" data-nav="OKR" data-group="Analytics" data-title="Analytics" data-sub="OKR" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-okr"></div><div class="scr-body" id="b-an-okr"></div>
+</section>
+
+<!-- ids: ANLT-233 feature_events (30 days) · ANLT-234 Period · ANLT-235 Feature clicks, Active users, AI sent as-is · ANLT-236 By day (last 90 days) · ANLT-237 By feature with Where from and AI outcome · ANLT-238 By employee with top features · ANLT-239 Not used in this period · ANLT-240 «No feature clicks yet» · ANLT-307 where clicks come from: server-side FeatureUsage::log + client beacon POST /feature-events -->
+<section class="scr an-scr" id="s-an-features" data-nav="Features" data-group="Analytics" data-title="Analytics" data-sub="Features" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-features"></div><div class="scr-body" id="b-an-features"></div>
+</section>
+
+<!-- ids: ANLT-241 ui_usage_events (30 days) · ANLT-242 Period keeps the account filter · ANLT-243 Account: All accounts or one employee · ANLT-244 Events, Page opens, Clicks, Active users, Sections used · ANLT-245 Activity by day · ANLT-246 Sections opened · ANLT-247 Buttons & links clicked · ANLT-248 By employee with top sections · ANLT-249 Not used in this period / every section used · ANLT-250 «No usage yet» · ANLT-308 collection: usageTracker pageview + click beacons, batches of 40 every 15 s, button label = row key -->
+<section class="scr an-scr" id="s-an-usage" data-nav="Usage" data-group="Analytics" data-title="Analytics" data-sub="Usage" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-usage"></div><div class="scr-body" id="b-an-usage"></div>
+</section>
+
+<!-- ids: ANLT-251 worktime (7 days default) · ANLT-252 Period · ANLT-253 Active hours, Talk time, Chats handled · ANLT-254 By day: activity vs call minutes · ANLT-255 By employee: Web, Mobile, Telegram, Calls, Active total, Chats, Paid chats, Upsell · ANLT-256 footnote «Only real actions count» + Outside shifts · ANLT-257 «No activity recorded yet» -->
+<section class="scr an-scr" id="s-an-worktime" data-nav="Worktime" data-group="Analytics" data-title="Analytics" data-sub="Worktime" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-worktime"></div><div class="scr-body" id="b-an-worktime"></div>
+</section>
+
+<!-- ids: ANLT-258 output, top, flow and accounting time (30 days) · ANLT-259 Period (not for Top florists) · ANLT-260 People with output, Bouquets finished, Drops delivered, Active hours · ANLT-261 tabs Everyone / Florists / Couriers / Managers · ANLT-262 Everyone columns · ANLT-263 Florists columns · ANLT-264 Couriers columns · ANLT-265 Managers columns · ANLT-266 footnote per tab · ANLT-267 «Nothing recorded yet» / «Nobody in this role has output» -->
+<!-- ids: ANLT-268 Top-N florists block with weights · ANLT-269 «Florists can't see the rating yet: N without a manager's mark» · ANLT-270 Week / Month boards with This / Last switch · ANLT-271 board columns: #, Florist, Points + formula, Bouquets by size, Made for, Speed vs team · ANLT-272 penalty columns Errors, Complaints, Rework, Late, Changes · ANLT-273 Manager's mark dropdown saves at once (also for analytics.view) · ANLT-274 Show all / Top N only · ANLT-275 Not in rating: N · ANLT-276 board totals · ANLT-309 block empty states -->
+<!-- ids: ANLT-277 Where an order waits (only with ready orders) · ANLT-278 Taken with the button, Waiting for a florist, Taken → ready, Ready → with courier (median, P75 · P90) · ANLT-279 by florist / by order type · ANLT-280 florist × bouquet value matrix with Taken, not made · ANLT-281 by bouquet value / Finished by hour · ANLT-282 Time on accounting KPIs · ANLT-283 By person · ANLT-284 By shift + «Showing the most recent N of M» · ANLT-285 accounting block states -->
+<section class="scr an-scr" id="s-an-staff" data-nav="Staff" data-group="Analytics" data-title="Analytics" data-sub="Staff" data-roles="owner manager" data-parent="analytics">
+  <div class="scr-head" id="h-an-staff"></div><div class="scr-body" id="b-an-staff"></div>
+</section>
+
+<!-- ids: ANLT-002 sidebar item «Florist bonus» for florist / manager / admin (not seasonal or trainee) · ANLT-286 week or month report · ANLT-287 florist sees only their own row and the short nav · ANLT-288 Week / Month · ANLT-289 ‹ › previous / next with window dates · ANLT-290 florist KPIs: My bouquets, My bonus (without pot share), Team pot «N/4 conditions met» · ANLT-291 manager KPIs: Bouquets ready, Ready before slot, Reworks, Team pot · ANLT-292 table columns · ANLT-293 Tier with ★ and hover text made visible · ANLT-294 Lessons overdue → no pot share · ANLT-295 Order / showcase / handed out + warn · ANLT-296 Monthly pot share column (month only) · ANLT-297 Why not? / Hide panel · ANLT-298 Weekly team pot: 4 conditions, carry-over, Payable this week · ANLT-299 Monthly team pot: 6 studio KPIs · ANLT-300 monthly metrics form (admin, prefilled) · ANLT-301 rules hint · ANLT-302 «No bouquets taken in this period yet.» · ANLT-310 date arrows computed in London time (old BST / month-overflow bug not carried over) -->
+<section class="scr an-scr" id="s-florist-bonus" data-nav="Florist bonus" data-group="Analytics" data-title="Florist bonus" data-sub="Analytics" data-parent="analytics">
+  <div class="scr-head" id="h-florist-bonus"></div><div class="scr-body" id="b-florist-bonus"></div>
+</section>
+
+<script>
+/* ===== 16-2 · Analytics reports 17–31 (demo data fictional) ===== */
+/* NB: build.py sorts 16-analytics-2 before 16-analytics, so nothing here may touch A16 at load time – page helpers live in A16B. */
+window.A16B={};
+
+/* ===== Calls ===== */
+window.mount_an_calls=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,D=X.D;const id="an-calls";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","month","prevMonth","quarter"],back:true,fresh:"Alert queue · calls:sync-alerts every 5 min"});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const missed=E?0:Math.round(X.len(id)*1.3),night=Math.round(missed*0.3),back=Math.round(missed*0.78),waiting=E?0:3;
+  let h=`<div class="grid g4">${X.kpi("Missed calls",missed,`night ${night} · daytime ${missed-night}`,missed?"--warn":"")}${X.kpi("Called back",missed?Math.round(back/missed*100)+"%":"–",`${back} of ${missed}`)}${X.kpi("Still waiting",waiting,`never returned: ${E?0:5}`,waiting?"--alert":"")}${X.kpi("Median time to call back",E?"–":"14 min",`measured ${back} of ${missed}`)}</div>`;
+  h+=X.note(`${ic("info")} Only the CRM alert queue is counted (calls:sync-alerts). Call volume, recordings and the live panel live in Ringover. The Overview widget links here with «Full report» (owner only on the current page).`,"mt16");
+  h+=X.sec("Missed by day");
+  h+=X.daily(id,X.series(id,21).map(d=>({label:d.label,m:E?0:X.ri(d.i,61,0,4),b:E?0:X.ri(d.i,62,0,3)})),[{k:"m",l:"Missed"},{k:"b",l:"Called back"}]);
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Comms / Managers ===== */
+window.mount_an_comms=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-comms";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","30d","month","prevMonth","quarter"],pnote:"current page: only via ?period= in the URL"});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const mg=E?[]:[["valeria","Morning"],["kamila","Evening"],["eliza","All"],[null,"All"]].map(([u,sh],i)=>{const chats=X.ri(i,71,60,220);const sales=Math.round(chats*(0.25+X.hsh(i,72)*0.2));return {u,sh,chats,sales,missed:X.ri(i,73,0,9),um:X.ri(i,74,2,18),ux:X.ri(i,75,0,8)}});
+  const T=k=>X.sum(mg,r=>r[k]);
+  let h=`<div class="grid g6">${X.kpi("Chats handled",X.n(T("chats")))}${X.kpi("Sales via chat",X.n(T("sales")))}${X.kpi("Missed chats",T("missed"),"",T("missed")?"--warn":"")}${X.kpi("Upsells made",T("um"))}${X.kpi("Upsells missed",T("ux"))}${X.kpi("Conversion rate",T("chats")?Math.round(T("sales")/T("chats")*100)+"%":"–")}</div>`;
+  h+=X.sec("By manager and shift");
+  h+=X.tbl([{l:"Manager",r:r=>r.u?`${A.avatar(r.u,"--s")} ${esc(A.user(r.u).n)}`:'<span class="muted">Unassigned</span>'},{l:"Shift",k:"sh"},{l:"Chats",num:true,k:"chats"},{l:"Sales",num:true,k:"sales"},{l:"Missed",num:true,k:"missed",cls:r=>r.missed>5?"neg":""},{l:"Upsells made",num:true,k:"um"},{l:"Upsells missed",num:true,k:"ux"}],mg,{empty:"No comms data yet"});
+  h+=X.note(`${ic("info")} A sale or a loss is decided by the order linked to the chat; a chat is marked green by hand only when an upsell was made. Shift window is «All» until shift matching ships.`,"mt16");
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Funnel ===== */
+window.mount_an_funnel=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-funnel";
+  X.st(id,{period:"all"});
+  X.head(id,{period:["today","7d","14d","30d","90d","180d","year","all"],demo:[["incomplete","Counters out of order"]]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const N=X.len(id);const sd=A.data.siteDaily;const k=N>=30?N/30:N/30;
+  const pv=E?0:Math.round(X.sum(sd,d=>d.pageviews)*k*0.42),cart=E?0:Math.round(X.sum(sd,d=>d.carts)*k),chk=E?0:Math.round(X.sum(sd,d=>d.checkouts)*k),paid=E?0:Math.round(X.sum(sd,d=>d.orders)*k),rev=E?0:Math.round(X.sum(sd,d=>d.revenue)*k);
+  const st=[["Product page",pv],["Add to cart",D.incomplete?pv+200:cart],["Checkout started",chk],["Paid",paid]];
+  const ratio=(a,b)=>b&&a<=b?(a/b*100).toFixed(1)+"%":"–";
+  let h=`<div class="grid g4">${X.kpi("Conversion",ratio(paid,pv),"paid ÷ product views")}${X.kpi("Cart abandonment",cart&&paid<=cart?Math.round((1-paid/cart)*100)+"%":"–","1 − paid ÷ add to cart")}${X.kpi("Checkout completion",ratio(paid,chk),"paid ÷ checkout started")}${X.kpi("Revenue / product view",pv?fmt(+(rev/pv).toFixed(2)):"–","revenue ÷ product views")}</div>`;
+  if(D.incomplete)h+=X.note(`${ic("alert")} A later step is larger than an earlier one – not every storefront event is firing; ratios above 100 % are shown as «–».`,"--warn mt16");
+  h+=X.sec("Funnel stages");
+  h+=E?X.empty("No storefront counters in this period"):`<div class="an-funnel">${st.map((x,i)=>{const p=i?st[i-1][1]:0;return `<div class="st"><span>${x[0]}</span><div class="progress"><i style="width:${X.pct(x[1],st[0][1])}%"></i></div><b class="tnum">${X.n(x[1])}</b><span class="xs ${i&&p&&x[1]<=p?"neg":"muted"}">${i?(p&&x[1]<=p?"−"+Math.round((1-x[1]/p)*100)+"%":"–"):""}</span></div>`}).join("")}</div>`;
+  h+=X.sec("Drop-off reasons",`<span class="an-hint">${ic("info")} static shares from funnel_reasons – not tied to the period</span>`);
+  const reasons=E?[]:[["Delivery fee shown late","Show the fee on the product page",31,"Delivery"],["No same-day slot left","Open the 20:00–22:00 slot on peak days",24,"Delivery"],["Card declined / 3-D Secure","Offer Apple Pay first",18,"Payments"],["Wanted to add a message, no field","Card message field in the basket",15,"Storefront"],["Price above budget","Show Standard size first",12,"Catalog"]].map(r=>({r:r[0],a:r[1],s:r[2],m:r[3]}));
+  h+=X.tbl([{l:"Reason",k:"r",cls:()=>"w"},{l:"Recommended action",k:"a",wrap:true},{l:"Module",r:r=>`<button class="link" onclick="App.toast('module_link → ${r.m} (not shown on the current page)')">${r.m}</button>`},{l:"Share",num:true,r:r=>r.s+"%"}],reasons,{empty:"No reasons configured",emptySub:"Reasons come from funnel_reasons – no editor in the CRM yet"});
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Payments ===== */
+window.mount_an_payments=function(){
+  const A=App,X=A16,$=A.$,fmt=A.fmt,D=X.D;const id="an-payments";
+  X.st(id,{});X.head(id,{fresh:"Payment ledger · all time"});X.url(id,false);if(!X.gate(id))return;
+  const E=D.empty;const paid=E?0:412680,ref=E?0:9120;
+  let h=`<div class="grid g4">${X.kpi("Paid",fmt(paid))}${X.kpi("Refunds",fmt(ref))}${X.kpi("Net",fmt(paid-ref))}${X.kpi("Transactions",X.n(E?0:5214))}</div>`;
+  const byS=E?[]:[["paid","Paid",4830,paid],["refunded","Refunded",96,ref*0.8],["partially_refunded","Partially refunded",41,ref*0.2],["failed","Failed",188,0],["pending","Pending",59,0]];
+  h+=`<div class="an-cols2 mt24"><div>${X.sec("By status")}${X.tbl([{l:"Status",r:r=>`${r[1]} <span class="muted xs">(${r[0]})</span>`},{l:"Count",num:true,r:r=>X.n(r[2])},{l:"Amount",num:true,r:r=>fmt(Math.round(r[3]))}],byS,{empty:"No payments yet"})}<div class="xs muted mt8">Raw statuses (paid, partially_refunded…) are labelled here.</div></div>`;
+  const months=E?[]:Array.from({length:24},(_,i)=>{const d=new Date(2024,9+i,1);return {m:d.toLocaleDateString("en-GB",{month:"short",year:"numeric"}),v:Math.round(9000+X.hsh(i,81)*14000*[1.4,1.9,1.6,.9,1.05,.85,.8,.75,.9,1.15,.95,1.3][d.getMonth()])}});
+  h+=`<div>${X.sec("Paid by month",`<span class="muted xs">24 months · oldest first</span>`)}${X.tbl([{l:"Month",k:"m"},{l:"Paid",num:true,r:r=>fmt(r.v)}],months,{empty:"No payments yet",h:420})}</div></div>`;
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Loyalty ===== */
+window.mount_an_loyalty=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-loyalty";
+  X.st(id,{});X.head(id,{fresh:"floritta.uk ledger · read-only",demo:[["storefront","Storefront bridge connected"],["tiers","Tiers configured"]]});X.url(id,false);if(!X.gate(id))return;
+  const E=D.empty||!D.storefront;
+  let h="";
+  if(!D.storefront)h+=X.note(`${ic("alert")} Storefront ledger not connected – showing empty figures. Set the storefront DB connection to read loyalty_transactions.`,"--warn mb16");
+  h+=`<div class="grid g4">${X.kpi("Outstanding",fmt(E?0:6420),"liability – cashback not yet spent","--warn")}${X.kpi("Holders",X.n(E?0:1184),E?"":"Avg £5.42 each")}${X.kpi("Earned",fmt(E?0:18960),E?"":"£12,540 redeemed")}${X.kpi("Redemption",E?"–":"66%","redeemed ÷ earned")}</div>`;
+  if(E){h+=X.empty("No loyalty activity yet","Cashback is earned on floritta.uk orders and spent at checkout.");$("#b-"+id).innerHTML=h;return}
+  h+=`<div class="an-cols3 mt24"><div>${X.sec("By type")}${X.tbl([{l:"Type",k:"t"},{l:"Count",num:true,k:"c"},{l:"Amount",num:true,r:r=>fmt(r.a)}],[{t:"Earned on order",c:3120,a:16840},{t:"Welcome bonus",c:412,a:2120},{t:"Redeemed at checkout",c:1980,a:12540},{t:"Expired",c:230,a:980},{t:"Adjustment by staff",c:14,a:60}])}</div>
+  <div>${X.sec("Top holders",`<span class="muted xs">masked</span>`)}${X.tbl([{l:"Customer",k:"c"},{l:"Balance",num:true,r:r=>fmt(r.b)}],[{c:"ch***@example.com",b:84},{c:"+44 7700 9***12",b:62},{c:"ol***@example.com",b:58},{c:"+44 7700 9***77",b:51},{c:"am***@example.com",b:47}])}</div>
+  <div>${D.tiers?X.sec("By tier")+X.tbl([{l:"Tier",k:"t"},{l:"From (lifetime)",num:true,r:r=>fmt(r.f)},{l:"Holders",num:true,k:"h"},{l:"Balance",num:true,r:r=>fmt(r.b)}],[{t:"Bud",f:0,h:912,b:3120},{t:"Bloom",f:250,h:214,b:2180},{t:"Bouquet",f:750,h:58,b:1120}]):X.sec("By tier")+X.note("Tiers are not configured – the block appears once levels exist.")}</div></div>`;
+  h+=X.sec("By month",`<span class="muted xs">oldest first</span>`);
+  h+=X.tbl([{l:"Month",k:"m"},{l:"Earned",num:true,r:r=>fmt(r.e)},{l:"Spent",num:true,r:r=>fmt(r.s)},{l:"Net",num:true,r:r=>X.money(r.e-r.s),cls:r=>r.e-r.s<0?"neg":""}],Array.from({length:12},(_,i)=>{const d=new Date(2025,10+i,1);const e=X.ri(i,91,900,2400),s=X.ri(i,92,600,2200);return {m:d.toLocaleDateString("en-GB",{month:"short",year:"numeric"}),e,s}}),{h:320});
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Languages ===== */
+window.mount_an_languages=function(){
+  const A=App,X=A16,$=A.$,D=X.D;const id="an-languages";
+  X.st(id,{period:"all"});
+  X.head(id,{period:["today","7d","14d","30d","90d","180d","year","all"],fresh:"POST /api/lang-stats from the site"});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const N=X.len(id);const L=[["en","English"],["uk","Ukrainian"],["ru","Russian"]];const by=L.map((l,i)=>E?0:Math.round(N*[1.6,2.9,2.1][i]));const tot=X.sum(by,x=>x);
+  let h=`<div class="grid g4">${X.kpi("Total clicks",X.n(tot),X.periodLabel(id))}${L.map((l,i)=>X.kpi(l[1]+" ("+l[0]+")",X.n(by[i]),tot?Math.round(by[i]/tot*100)+"% of clicks":"")).join("")}</div>`;
+  if(!tot){h+=X.empty("No language clicks yet","The Google Translate switcher on floritta.uk posts a click per language to /api/lang-stats.");$("#b-"+id).innerHTML=h;return}
+  h+=X.sec("By day",`<span class="muted xs">last 90 days max</span>`);
+  h+=X.daily(id,X.series(id,31).slice(-90).map(d=>({label:d.label,en:X.ri(d.i,41,0,4),uk:X.ri(d.i,42,0,6),ru:X.ri(d.i,43,0,5),aov:d.aov})),[{k:"en",l:"English"},{k:"uk",l:"Ukrainian"},{k:"ru",l:"Russian"}],{aov:true,aovLabel:"Average order · all channels"});
+  h+=X.sec("By month",`<span class="muted xs">newest first</span>`);
+  h+=X.tbl([{l:"Month",k:"m"},{l:"en",num:true,k:"en"},{l:"uk",num:true,k:"uk"},{l:"ru",num:true,k:"ru"},{l:"Total",num:true,r:r=>r.en+r.uk+r.ru}],Array.from({length:8},(_,i)=>{const d=new Date(2026,9-i,1);return {m:d.toLocaleDateString("en-GB",{month:"short",year:"numeric"}),en:X.ri(i,44,20,70),uk:X.ri(i,45,40,120),ru:X.ri(i,46,30,90)}}));
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Website ===== */
+window.mount_an_website=function(){
+  const A=App,X=A16,$=A.$,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-website";
+  X.st(id,{period:"all"});
+  X.head(id,{period:["today","7d","14d","30d","90d","180d","year","all"],fresh:"POST /api/site-stats from floritta.uk"});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const sd=A.data.siteDaily.slice(-Math.min(30,X.len(id)));const k=X.len(id)>30?X.len(id)/30:1;
+  const S=f=>E?0:Math.round(X.sum(sd,f)*k);const views=S(d=>Math.round(d.pageviews*0.45)),cart=S(d=>d.carts),chk=S(d=>d.checkouts),pay=Math.round(chk*0.82),pur=S(d=>d.orders);
+  let h=`<div class="grid g6">${X.kpi("Product views",X.n(views))}${X.kpi("Add to cart",X.n(cart))}${X.kpi("Purchases",X.n(pur),"Paid web orders (CRM)")}${X.kpi("View → cart",views?(cart/views*100).toFixed(1)+"%":"–")}${X.kpi("Cart → purchase",cart?(pur/cart*100).toFixed(1)+"%":"–")}${X.kpi("Revenue",fmt(S(d=>d.revenue)),"paid web orders")}</div>`;
+  if(!views&&!pur){h+=X.empty("No website events yet","The storefront posts view_item / add_to_cart / begin_checkout / purchase to /api/site-stats daily.");$("#b-"+id).innerHTML=h;return}
+  h+=X.sec("Funnel");
+  const st=[["view_item","Product view",views],["add_to_cart","Add to cart",cart],["begin_checkout","Checkout started",chk],["add_payment_info","Payment info",pay],["purchase","Purchase",pur]];
+  h+=`<div class="an-funnel">${st.map((x,i)=>`<div class="st"><span>${x[1]} <span class="muted xs">${x[0]}</span></span><div class="progress"><i style="width:${X.pct(x[2],st[0][2])}%"></i></div><b class="tnum">${X.n(x[2])}</b><span class="muted xs">${i?(x[0]==="purchase"?Math.round(x[2]/chk*100)+"% of begin checkout":Math.round(x[2]/st[i-1][2]*100)+"% of previous step"):""}</span></div>`).join("")}</div>`;
+  h+=X.sec("By day",`<span class="muted xs">last 90 days max</span>`);
+  h+=X.daily(id,sd.map((d,i)=>({label:A.fmtDate(d.date),v:Math.round(d.pageviews*0.45),c:d.carts,k:d.checkouts,aov:d.orders?Math.round(d.revenue/d.orders):0})),[{k:"v",l:"Product views"},{k:"c",l:"Add to cart"},{k:"k",l:"Checkout"}],{aov:true,aovLabel:"Average web order"});
+  h+=X.sec("Other events");
+  h+=X.tbl([{l:"Event",k:"e"},{l:"Count",num:true,r:r=>X.n(r.c)}],[{e:"search",c:Math.round(views*0.18)},{e:"view_cart",c:Math.round(cart*1.6)},{e:"select_promotion",c:Math.round(views*0.04)},{e:"bouquet_builder_view",c:1240},{e:"lang_switch",c:412}]);
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Popularity ===== */
+window.mount_an_popularity=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-popularity";
+  const s=X.st(id,{q:"",sort:"score",dir:"desc",page:1,edits:{},saving:{}});
+  X.head(id,{fresh:"Storefront ranking · live",demo:[["storefront","Storefront bridge connected"]]});
+  X.url(id,`q=${encodeURIComponent(s.q)}&sort=${s.sort}&dir=${s.dir}&page=${s.page}`);if(!X.gate(id))return;
+  const E=D.empty;const adm=X.admin();
+  if(!s.rows)s.rows=A.data.products.filter(p=>!p.addon).map((p,i)=>({p,views:p.stats.views30*4,clicks:Math.round(p.stats.views30*0.6),carts:p.stats.carts30*4,pur:p.stats.orders30*4,rev:p.stats.revenue30*4,boost:0,pinned:i===2,demoted:i===9,sold:p.stock===0})).map(r=>{r.score=+(r.pur*3+r.carts*1.5+r.clicks*0.4+r.views*0.1).toFixed(1);return r});
+  const rows=E?[]:s.rows.map(r=>Object.assign({},r,{sortv:+(r.score*(1+r.boost/10)+(r.pinned?10000:0)-(r.demoted?5000:0)).toFixed(1)}));
+  let h="";
+  if(!D.storefront)h+=X.note(`${ic("alert")} Storefront not connected – ranking is read from a cache and <b>saving is disabled</b>.`,"--warn mb16");
+  h+=`<div class="grid g4">${X.kpi("Products",rows.length,"Displayed on the storefront")}${X.kpi("Views",X.n(X.sum(rows,r=>r.views)))}${X.kpi("Purchases",X.n(X.sum(rows,r=>r.pur)))}${X.kpi("Revenue",fmt(X.sum(rows,r=>r.rev)),"Lifetime")}</div>`;
+  h+=`<div class="an-cols2 mt16"><div class="card --flat"><span class="caps">How the score works</span><div class="an-rule">score = purchases × 3 + carts × 1.5 + clicks × 0.4 + views × 0.1, each signal decays with a 30-day half-life. <b>Pin</b> puts the product above everything, <b>Demote</b> below everything, <b>Manual boost</b> (0…10) multiplies the score by 1 + boost ÷ 10. The site re-sorts within a minute of Save.</div></div><div><span class="caps">Top right now</span><div class="an-chip-list mt8">${rows.slice().sort((a,b)=>b.sortv-a.sortv).slice(0,6).map((r,i)=>`<span class="chip" onclick="App.go('catalog',{open:${r.p.id}})">#${i+1} ${esc(r.p.name)} <span class="n">${r.pur} sold</span></span>`).join("")||'<span class="muted sm">–</span>'}</div></div></div>`;
+  h+=`<div class="toolbar mt24"><div class="search">${ic("search")}<input placeholder="Search products by name" value="${esc(s.q)}" oninput="clearTimeout(A16.S['an-popularity']._t);A16.S['an-popularity']._t=setTimeout(()=>{A16.S['an-popularity'].q=this.value;A16.S['an-popularity'].page=1;App.remount();document.querySelector('#s-an-popularity .search input').focus()},350)"></div><span class="an-hint">350 ms · ?q= in URL</span><span class="sp"></span>${adm?`<span class="an-hint">${ic("edit")} Manual column: owner only</span>`:`<span class="an-hint">${ic("lock")} Manual boost / Pin / Demote – owner only</span>`}</div>`;
+  let f=rows.filter(r=>!s.q||r.p.name.toLowerCase().includes(s.q.toLowerCase()));
+  const key={score:"score",sortv:"sortv",views:"views",clicks:"clicks",carts:"carts",pur:"pur",rev:"rev"}[s.sort]||"score";
+  f.sort((a,b)=>(s.dir==="desc"?-1:1)*(a[key]-b[key]));
+  const PER=25,pages=Math.max(1,Math.ceil(f.length/PER)),page=Math.min(s.page,pages);
+  const so=k=>({sort:`A16B.popSort('${k}')`,sorted:s.sort===k?s.dir:""});
+  const cols=[{l:"#",num:true,r:(r,i)=>(page-1)*PER+i+1},{l:"Product",cls:()=>"w",r:r=>`<div class="row" style="gap:10px"><span class="thumb --s"><img src="${r.p.img}" alt=""></span><div style="min-width:0"><a class="link" href="https://floritta.uk/p/${r.p.sku.toLowerCase()}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(r.p.name)}</a><span class="sub">${esc(r.p.cat)} ${r.sold?'<span class="tag --accent">Sold out</span>':""}${(s.edits[r.p.id]?.pinned??r.pinned)?'<span class="tag --ink">Pinned</span>':""}${(s.edits[r.p.id]?.demoted??r.demoted)?'<span class="tag --line">Demoted</span>':""}</span></div></div>`},{l:"Score",num:true,...so("score"),r:r=>r.score},{l:"Sort value",num:true,...so("sortv"),r:r=>r.sortv},{l:"Views",num:true,...so("views"),r:r=>X.n(r.views)},{l:"Clicks",num:true,hm:true,...so("clicks"),r:r=>X.n(r.clicks)},{l:"Carts",num:true,hm:true,...so("carts"),r:r=>X.n(r.carts)},{l:"Purchases",num:true,...so("pur"),r:r=>X.n(r.pur)},{l:"Revenue",num:true,...so("rev"),r:r=>fmt(r.rev)}];
+  if(adm)cols.push({l:"Manual",r:r=>{const e=s.edits[r.p.id]||{};const boost=e.boost??r.boost,pin=e.pinned??r.pinned,dem=e.demoted??r.demoted;const dirty=s.edits[r.p.id]&&(boost!==r.boost||pin!==r.pinned||dem!==r.demoted);const sv=s.saving[r.p.id];return `<div class="row" style="gap:8px"><input class="input --n" type="number" min="0" max="10" value="${boost}" title="Manual boost 0…10" onchange="A16B.popEdit(${r.p.id},'boost',Math.max(0,Math.min(10,+this.value)))" onclick="event.stopPropagation()"><label class="check xs" onclick="event.stopPropagation()"><input type="checkbox" ${pin?"checked":""} onchange="A16B.popEdit(${r.p.id},'pinned',this.checked)"> Pin</label><label class="check xs" onclick="event.stopPropagation()"><input type="checkbox" ${dem?"checked":""} onchange="A16B.popEdit(${r.p.id},'demoted',this.checked)"> Demote</label><button class="btn --sm" ${dirty&&D.storefront&&!sv?"":"disabled"} onclick="event.stopPropagation();A16B.popSave(${r.p.id})">${sv?"Saving…":"Save"}</button></div>`}});
+  h+=X.tbl(cols,f.slice((page-1)*PER,page*PER),{empty:"No products to rank yet",h:440});
+  h+=X.pager(id,page,pages,f.length,PER,"A16B.popPage");
+  $("#b-"+id).innerHTML=h;
+};
+A16B.popSort=k=>{const s=A16.S["an-popularity"];if(s.sort===k)s.dir=s.dir==="desc"?"asc":"desc";else{s.sort=k;s.dir="desc"}s.page=1;App.remount()};
+A16B.popPage=p=>{A16.S["an-popularity"].page=p;App.remount()};
+A16B.popEdit=(pid,k,v)=>{const s=A16.S["an-popularity"];const e=s.edits[pid]||(s.edits[pid]={});e[k]=v;if(k==="pinned"&&v)e.demoted=false;if(k==="demoted"&&v)e.pinned=false;App.remount()};
+A16B.popSave=pid=>{const s=A16.S["an-popularity"];const r=s.rows.find(x=>x.p.id===pid);const e=s.edits[pid];App.confirm("Save popularity override?",`${r.p.name}: boost ${e.boost??r.boost}, ${e.pinned??r.pinned?"pinned":"not pinned"}, ${e.demoted??r.demoted?"demoted":"not demoted"}. This writes straight to the floritta.uk database (shop_products) and re-sorts the site within a minute. Audit: popularity.override.`,"Save",()=>{s.saving[pid]=true;App.remount();setTimeout(()=>{Object.assign(r,e);delete s.edits[pid];delete s.saving[pid];App.remount();App.toast("Popularity updated.")},700)})};
+
+/* ===== Unpaid ===== */
+window.mount_an_unpaid=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-unpaid";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","30d","quarter","year","all"],pnote:"Quarter = last 90 days here",demo:[["tracking","Case tracking enabled"]]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const live=E?[]:A.data.orders.filter(o=>o.paid!=="paid"&&o.chan==="Website"&&o.status!=="cancelled");
+  let h="";
+  if(!D.tracking)h+=X.note(`${ic("alert")} Case history appears once tracking is on (orders:sync-unpaid-cases every 5 min). The live snapshot below still works.`,"--warn mb16");
+  h+=`<div class="row mb8"><div class="h3">Unpaid right now</div><span class="an-hint">live snapshot – not tied to the period</span></div><div class="grid g2">${X.kpi("Unpaid orders",live.length,"website, actionable",live.length?"--alert":"")}${X.kpi("Unpaid value",fmt(X.sum(live,o=>o.total)),live.length?`<button class="textbtn" onclick="App.go('orders',{view:'unpaid'})">open the list</button>`:"",live.length?"--alert":"")}</div>`;
+  const op=E||!D.tracking?0:Math.round(X.len(id)*1.9),rec=Math.round(op*0.46),lost=Math.round(op*0.31),prog=op-rec-lost;
+  h+=`<div class="row mt24 mb8"><div class="h3">Outcome funnel</div><span class="an-hint">${X.periodLabel(id)}</span></div><div class="grid g4">${X.kpi("Opened",op)}${X.kpi("Recovered (paid)",`${rec} · ${fmt(rec*104)}`)}${X.kpi("Lost",`${lost} · ${fmt(lost*98)}`,"",lost?"--alert":"")}${X.kpi("Recovery rate",op?Math.round(rec/op*100)+"%":"–")}</div>`;
+  h+=`<div class="grid g3 mt16">${X.kpi("In progress",`${prog} · ${fmt(prog*101)}`)}${X.kpi("Not contacted",E?0:4,"no reminder, no chat",E?"":"--alert")}${X.kpi("Avg. to contact",E?"–":"3.4 h","from case opened to first message")}</div>`;
+  if(op){h+=X.sec("Cases opened by day");h+=X.daily(id,X.series(id,51).map(d=>({label:d.label,c:X.ri(d.i,52,0,5),aov:d.aov})),[{k:"c",l:"Cases"}],{aov:true})}
+  h+=X.sec("Recovered by manager");
+  const bm=op?[["valeria",14,5],["eliza",9,0],["kamila",6,2]]:[];
+  h+=bm.length?`<div class="list" style="border:1px solid var(--hair)">${bm.map(([u,r,m])=>`<div class="li" style="cursor:default">${A.avatar(u)}<div class="t"><b>${esc(A.user(u).n)}${m?` <span class="tag --line an-tip" title="counted by a manual «recovered» mark on the case">${m} manual</span>`:""}</b><small>${r} recovered · ${fmt(r*104)}${m?` · ${m} counted by a manual mark on the case`:""}</small></div></div>`).join("")}</div>`:X.empty("No recovered orders yet");
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== OKR ===== */
+window.mount_an_okr=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,D=X.D;const id="an-okr";
+  const s=X.st(id,{quarter:"2026-Q4"});
+  if(!s.obj)s.obj=[{t:"Grow repeat purchases",owner:"tatiana",krs:[{t:"Repeat buyers share",cur:31,target:40,unit:"%",conf:"on"},{t:"Subscription customers",cur:34,target:60,unit:"",conf:"risk"},{t:"Reviews requested after delivery",cur:88,target:95,unit:"%",conf:"on"}]},{t:"Deliver on time, every time",owner:"valeria",krs:[{t:"Orders inside the slot",cur:94,target:98,unit:"%",conf:"on"},{t:"Not-home cases saved without a second trip",cur:74,target:85,unit:"%",conf:"risk"},{t:"Courier cost per drop",cur:7.4,target:6.5,unit:"£",conf:"off"}]},{t:"Make the website sell itself",owner:"svetlana",krs:[{t:"Product → cart conversion",cur:6.1,target:8,unit:"%",conf:"on"},{t:"New product photos shot",cur:12,target:40,unit:"",conf:"risk"}]}];
+  X.head(id,{fresh:"Quarter from ?quarter=",controls:`<span class="an-lbl">Quarter</span><select class="select an-sel" onchange="A16.S['an-okr'].quarter=this.value;App.remount()">${["2026-Q4","2026-Q3","2026-Q2"].map(q=>`<option ${s.quarter===q?"selected":""}>${q}</option>`).join("")}</select>`});
+  X.url(id,"quarter="+s.quarter);if(!X.gate(id))return;
+  const obj=D.empty||s.quarter!=="2026-Q4"?[]:s.obj;const krs=obj.flatMap(o=>o.krs);const score=k=>Math.min(1,k.unit==="£"?k.target/k.cur:k.cur/k.target);
+  const avg=krs.length?krs.reduce((a,k)=>a+score(k),0)/krs.length:0;const on=krs.filter(k=>k.conf==="on").length;
+  let h=`<div class="grid g4">${X.kpi("Avg score",krs.length?avg.toFixed(2):"–","0…1 across key results",avg<0.7&&krs.length?"--warn":"")}${X.kpi("On track",`${on} / ${krs.length}`)}${X.kpi("At risk / off",krs.length-on,"",krs.length-on?"--warn":"")}${X.kpi("Days left","72","to 31 Dec 2026")}</div>`;
+  if(!obj.length){h+=X.empty("No objectives this quarter",s.quarter!=="2026-Q4"?"Nothing was set for "+s.quarter+" – the page would fall back to all existing objectives.":"Objectives come from the seeder for now – no editor in the CRM yet.");$("#b-"+id).innerHTML=h;return}
+  const cc={on:"--ok",risk:"--warn",off:"--accent"},cl={on:"On track",risk:"At risk",off:"Off track"};
+  h+=`<div class="an-cols2 mt24">${obj.map((o,oi)=>`<div class="an-okr"><div class="row"><span class="tag --ink">O${oi+1}</span><div class="h3" style="flex:1">${esc(o.t)}</div>${A.avatar(o.owner,"--s")}<span class="sm">${esc(A.user(o.owner).n)}</span></div>${o.krs.map((k,ki)=>{const p=Math.round(score(k)*100);return `<div class="an-kr"><div><div>${esc(k.t)}</div><div class="xs muted">${k.unit==="£"?"£"+k.cur:k.cur+k.unit} / ${k.unit==="£"?"£"+k.target:k.target+k.unit} · ${cl[k.conf]}</div></div><div class="progress ${cc[k.conf]}"><i style="width:${p}%"></i></div><div class="row" style="justify-content:flex-end;gap:8px"><b class="tnum">${p}%</b>${X.admin()?`<button class="textbtn" onclick="A16B.okrCheckin(${oi},${ki})">Check-in</button>`:""}</div></div>`}).join("")}</div>`).join("")}</div>`;
+  if(!X.admin())h+=`<div class="xs muted mt8">Weekly check-ins are the owner's – you see the percentages only.</div>`;
+  $("#b-"+id).innerHTML=h;
+};
+A16B.okrCheckin=(oi,ki)=>{const s=A16.S["an-okr"];const k=s.obj[oi].krs[ki];App.modal({title:"Check-in · "+k.t,body:`<div class="col"><div class="field"><label>Current value${k.unit?" ("+k.unit+")":""}</label><input class="input" id="okr-v" type="number" step="0.1" value="${k.cur}"></div><div class="field"><label>Confidence</label><select class="select" id="okr-c">${[["on","On track"],["risk","At risk"],["off","Off track"]].map(x=>`<option value="${x[0]}" ${k.conf===x[0]?"selected":""}>${x[1]}</option>`).join("")}</select></div><div class="field"><label>Note (optional)</label><textarea class="textarea" id="okr-n" placeholder="What moved the number this week?"></textarea></div><div class="xs muted">Creates this week's OkrCheckin, updates current value and confidence · audit okr.checkin</div></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="(()=>{const k=A16.S['an-okr'].obj[${oi}].krs[${ki}];k.cur=+document.getElementById('okr-v').value;k.conf=document.getElementById('okr-c').value;App.closeModal();App.remount();App.toast('Check-in saved')})()">Save</button>`})};
+
+/* ===== Features ===== */
+window.mount_an_features=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,D=X.D;const id="an-features";
+  X.st(id,{period:"30d"});
+  X.head(id,{period:["today","7d","14d","30d","90d","180d","year","all"],demo:[["idle","Known features without clicks"]]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const N=X.len(id);
+  const feats=E?[]:[["Print ticket","Orders · order card",Math.round(N*9.1),8,null],["AI reply draft (Flora)","Inbox",Math.round(N*6.4),4,[61,27,12]],["Card message generator","Order card",Math.round(N*2.2),5,[48,40,12]],["Generate UTM","Marketing → Placements",Math.round(N*0.4),2,null],["Delivery note PDF","Delivery",Math.round(N*3.1),3,null],["Photo → WhatsApp","Production",Math.round(N*7.8),6,null]].map(r=>({f:r[0],w:r[1],c:r[2],u:r[3],ai:r[4]}));
+  const clicks=X.sum(feats,f=>f.c);const ai=feats.filter(f=>f.ai);const asIs=ai.length?Math.round(ai.reduce((a,f)=>a+f.ai[0],0)/ai.length):0;
+  let h=`<div class="grid g3">${X.kpi("Feature clicks",X.n(clicks))}${X.kpi("Active users",E?0:9)}${X.kpi("AI sent as-is",ai.length?asIs+"%":"No AI sends yet","of Flora drafts sent without edits")}</div>`;
+  if(!clicks){h+=X.empty("No feature clicks yet","Printing, AI drafts and generators log a feature_event when used.");$("#b-"+id).innerHTML=h;return}
+  if(N>1){h+=X.sec("By day",`<span class="muted xs">last 90 days max</span>`);h+=X.daily(id,X.series(id,61).slice(-90).map(d=>({label:d.label,c:X.ri(d.i,62,8,40)})),[{k:"c",l:"Clicks"}])}
+  h+=`<div class="an-cols2 mt24"><div>${X.sec("By feature")}${X.tbl([{l:"Feature",k:"f",cls:()=>"w"},{l:"Clicks",num:true,r:r=>X.n(r.c)},{l:"Users",num:true,k:"u"},{l:"Where from",k:"w"},{l:"AI outcome",r:r=>r.ai?`${r.ai[0]}% as-is · ${r.ai[1]}% edited · ${r.ai[2]}% regenerated`:"–"}],feats)}</div>
+  <div>${X.sec("By employee")}${X.tbl([{l:"Employee",r:r=>`${A.avatar(r.u,"--s")} ${esc(A.user(r.u).n)}`},{l:"Role",r:r=>A.user(r.u).title},{l:"Total",num:true,k:"t"},{l:"Top features",k:"top",wrap:true}],[["valeria",312,"Print ticket · Flora draft · Photo → WhatsApp"],["eliza",188,"Flora draft · Card message · Print ticket"],["svetlana",96,"Photo → WhatsApp · Print ticket"],["kamila",74,"Flora draft · Delivery note"]].map(r=>({u:r[0],t:r[1],top:r[2]})))}</div></div>`;
+  if(D.idle)h+=`<div class="mt16">${X.sec("Not used in this period")}<div class="an-chip-list">${["Bulk SMS","Invoice PDF","Gift card issue"].map(f=>`<span class="chip">${f}</span>`).join("")}</div></div>`;
+  h+=X.note(`${ic("info")} <b>Where the clicks come from:</b> server-side features (print, AI drafts, generators) log a feature_event with their source in the controller; purely client-side features (e.g. Generate UTM) send a beacon to POST /feature-events (60 per minute, known keys only).`,"mt16");
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Usage ===== */
+window.mount_an_usage=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,D=X.D;const id="an-usage";
+  const s=X.st(id,{period:"30d",user:"all"});
+  X.head(id,{period:["today","7d","14d","30d","90d","180d","year","all"],pnote:"keeps the account filter",controls:`<span class="an-lbl">Account</span><select class="select an-sel" onchange="A16.S['an-usage'].user=this.value;App.remount()"><option value="all">All accounts</option>${A.data.staff.filter(x=>x.role!=="courier").map(u=>`<option value="${u.id}" ${s.user===u.id?"selected":""}>${esc(u.n)} · ${esc(u.title)}</option>`).join("")}<option value="shop" ${s.user==="shop"?"selected":""}>Shop laptop · shared</option></select>`});
+  X.url(id,"user="+s.user);if(!X.gate(id))return;
+  const E=D.empty;const N=X.len(id);const k=s.user==="all"?1:0.22;
+  const ev=E?0:Math.round(N*184*k),opens=Math.round(ev*0.38),clicks=ev-opens;
+  let h=`<div class="grid g6">${X.kpi("Events",X.n(ev))}${X.kpi("Page opens",X.n(opens))}${X.kpi("Clicks",X.n(clicks))}${X.kpi("Active users",E?0:s.user==="all"?9:1)}${X.kpi("Sections used",E?0:s.user==="all"?14:8)}<div class="kpi-card an-kpi --sm"><span class="caps">Collection</span><span class="kpi-s">15 s</span><span class="delta">pageview + click beacons, batches of 40 → POST /ui-usage</span></div></div>`;
+  if(!ev){h+=X.empty("No usage yet","usageTracker posts a pageview per Inertia visit and a click per button, link or [data-track].");$("#b-"+id).innerHTML=h;return}
+  h+=X.sec("Activity by day");h+=X.daily(id,X.series(id,71).map(d=>({label:d.label,o:Math.round(X.ri(d.i,72,40,110)*k),c:Math.round(X.ri(d.i,73,60,180)*k)})),[{k:"o",l:"Page opens"},{k:"c",l:"Clicks"}]);
+  const sec=[["/orders",Math.round(opens*0.31),8],["/today",Math.round(opens*0.18),9],["/inbox",Math.round(opens*0.14),4],["/production",Math.round(opens*0.12),6],["/delivery",Math.round(opens*0.08),3],["/stock",Math.round(opens*0.05),4],["/analytics/ceo",Math.round(opens*0.03),2]];
+  h+=`<div class="an-cols2 mt24"><div>${X.sec("Sections opened")}${X.tbl([{l:"Section",r:r=>`<code>${r[0]}</code>`},{l:"Opens",num:true,r:r=>X.n(r[1])},{l:"People",num:true,r:r=>r[2]}],sec)}</div>
+  <div>${X.sec("Buttons & links clicked",`<span class="an-hint" title="The visible label is the row key – renaming buttons in the redesign breaks the history">${ic("info")} label = row key</span>`)}${X.tbl([{l:"Control",k:"c"},{l:"Section",r:r=>`<code>${r.s}</code>`},{l:"Clicks",num:true,r:r=>X.n(r.n)},{l:"People",num:true,k:"p"}],[["Start making","/production",Math.round(clicks*0.14),6],["Send photo","/production",Math.round(clicks*0.1),6],["Mark paid","/orders",Math.round(clicks*0.06),4],["Print ticket","/orders",Math.round(clicks*0.05),5],["Reply","/inbox",Math.round(clicks*0.09),3],["Assign courier","/delivery",Math.round(clicks*0.04),3]].map(r=>({c:r[0],s:r[1],n:r[2],p:r[3]})))}</div></div>`;
+  h+=X.sec("By employee");
+  h+=X.tbl([{l:"Employee",r:r=>`${A.avatar(r.u,"--s")} ${esc(A.user(r.u).n)}`},{l:"Role",r:r=>A.user(r.u).title},{l:"Events",num:true,r:r=>X.n(r.e)},{l:"Top sections",k:"t",wrap:true}],(s.user==="all"?["valeria","eliza","svetlana","marina","kamila","tatiana"]:[s.user==="shop"?"anna":s.user]).map((u,i)=>({u,e:Math.round(ev*[0.3,0.2,0.15,0.12,0.13,0.1][i]||ev),t:"/orders · /production · /inbox · /today"})));
+  h+=`<div class="mt16">${X.sec("Not used in this period")}${D.idle?`<div class="an-chip-list">${["/team/learning","/stock/purchasing","/analytics/okr"].map(x=>`<span class="chip"><code>${x}</code></span>`).join("")}</div><div class="xs muted mt8">Sections that were opened before, but not inside this window.</div>`:`<div class="sm muted">Every section seen before was also used in this period.</div>`}</div>`;
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Worktime ===== */
+window.mount_an_worktime=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,D=X.D;const id="an-worktime";
+  X.st(id,{period:"7d"});
+  X.head(id,{period:["today","7d","14d","30d","90d"],demo:[["outside","Calls outside shifts"]]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const N=X.len(id);const hm=m=>`${Math.floor(m/60)} h ${String(m%60).padStart(2,"0")} m`;
+  const rows=E?[]:["valeria","kamila","eliza","tatiana"].map((u,i)=>{const web=Math.round(N*[310,240,290,120][i]),mob=Math.round(N*[40,70,20,90][i]),tg=Math.round(N*[25,30,45,60][i]),cn=Math.round(N*[6,4,5,2][i]),cm=cn*4;return {u,web,mob,tg,cn,cm,act:web+mob+tg+cm,chats:Math.round(N*[14,9,12,3][i]),paid:Math.round(N*[5,3,4,1][i]),uo:Math.round(N*[3,2,2,0][i]),ut:Math.round(N*[1.4,0.8,1,0][i])}});
+  let h=`<div class="grid g3">${X.kpi("Active hours",E?"–":hm(X.sum(rows,r=>r.act)),"web + mobile + Telegram + calls")}${X.kpi("Talk time",E?"–":hm(X.sum(rows,r=>r.cm)),"calls are spread by the shift rota – Ringover is one shared account")}${X.kpi("Chats handled",X.n(X.sum(rows,r=>r.chats)))}</div>`;
+  if(!rows.length){h+=X.empty("No activity recorded yet","Real actions only: page opens, clicks, mobile events, work Telegram, Ringover calls.");$("#b-"+id).innerHTML=h;return}
+  if(N>1){h+=X.sec("By day");h+=X.daily(id,X.series(id,81).map(d=>({label:d.label,a:X.ri(d.i,82,400,900),c:X.ri(d.i,83,20,90)})),[{k:"a",l:"Active minutes"},{k:"c",l:"Call minutes"}])}
+  h+=X.sec("By employee");
+  h+=X.tbl([{l:"Employee",r:r=>`${A.avatar(r.u,"--s")} ${esc(A.user(r.u).n)}`},{l:"Role",hm:true,r:r=>A.user(r.u).title},{l:"Web",num:true,r:r=>hm(r.web)},{l:"Mobile",num:true,r:r=>hm(r.mob)},{l:"Telegram",num:true,r:r=>hm(r.tg)},{l:"Calls",num:true,r:r=>`${r.cn} × ${hm(r.cm)}`},{l:"Active total",num:true,r:r=>hm(r.act)},{l:"Chats",num:true,k:"chats"},{l:"Paid chats",num:true,k:"paid"},{l:"Upsell",num:true,r:r=>`${r.uo} offered · ${Math.round(r.ut)} taken`}],rows);
+  h+=`<div class="xs muted mt8">Only real actions count – an open tab without clicks is not activity.${D.outside?" <b>Outside shifts:</b> 3 calls · 11 min – not attributed to anyone.":""}</div>`;
+  $("#b-"+id).innerHTML=h;
+};
+
+/* ===== Staff (+ Top florists, Where an order waits, Time on accounting) ===== */
+window.mount_an_staff=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="an-staff";
+  const s=X.st(id,{period:"30d",tab:"all",week:"this",month:"this",allW:false,allM:false,excl:false,marks:{}});
+  X.head(id,{period:["today","7d","30d","90d"],pnote:"Top florists keep their own windows",demo:[["unmarked","Florists without a manager's mark"],["waits","Ready orders in the period"],["many","More than 3 florists on the board"]]});
+  X.url(id);if(!X.gate(id))return;
+  const E=D.empty;const N=X.len(id);
+  const FL=A.data.staff.filter(x=>x.role==="florist"),CO=A.data.staff.filter(x=>x.role==="courier"),MG=A.data.staff.filter(x=>x.role==="manager"||x.role==="owner");
+  const people=E?[]:[...FL.map((u,i)=>({u,role:"florist",active:N*[6.2,5.8,4.1,5,3.2][i],clocked:N*[7,7,5,6,5][i],b:Math.round(N*[5.1,4.4,2.8,3.6,1.9][i]),conf:0,del:0,msg:X.ri(i,101,0,8)*N/10,calls:0,tasks:X.ri(i,102,2,9),perH:0,med:[38,44,52,47,66][i],late:[2,1,4,3,6][i],wo:[12,8,31,16,40][i]})),...CO.map((u,i)=>({u,role:"courier",active:N*[5.5,3,2][i],clocked:N*[6,4,3][i],b:0,conf:0,del:Math.round(N*[7.2,4.1,2.4][i]),msg:0,calls:X.ri(i,103,1,4)*N/5,tasks:X.ri(i,104,0,4),assigned:0,inSlot:[94,91,88][i],door:[24,31,27][i],fail:[1,0,2][i]})),...MG.map((u,i)=>({u,role:"manager",active:N*[6,5,2,3][i],clocked:N*[7,6,3,4][i],b:0,conf:Math.round(N*[9.2,6.1,1.2,4][i]),del:0,msg:Math.round(N*[14,9,3,11][i]),calls:Math.round(N*[3,2,0.5,1][i]),tasks:X.ri(i,105,1,7),paid:0,rev:0,photos:Math.round(N*[4,3,0,2][i])}))].map(r=>{r.perH=r.b&&r.active?(r.b/r.active).toFixed(2):"–";r.assigned=r.del?r.del+X.ri(1,r.u.id.length,0,3):0;r.paid=r.conf?Math.round(r.conf*0.86):0;r.rev=r.conf*104;r.points=Math.round(r.b*3+r.del*2+r.conf*1.5+r.msg*0.2+r.tasks);return r});
+  const tot=k=>Math.round(X.sum(people,r=>r[k]));const hm=h=>Math.round(h)+" h";
+  let h=`<div class="grid g4">${X.kpi("People with output",people.filter(r=>r.points>0).length)}${X.kpi("Bouquets finished",X.n(tot("b")),`${X.n(tot("conf"))} orders confirmed`)}${X.kpi("Drops delivered",X.n(tot("del")),"92% inside the slot")}${X.kpi("Active hours",hm(tot("active")))}</div>`;
+  if(!people.length){h+=X.empty("Nothing recorded yet","Output comes from order status changes, deliveries, messages, calls and tasks.");$("#b-"+id).innerHTML=h;return}
+  const tabs=[["all","Everyone"],["florist","Florists"],["courier","Couriers"],["manager","Managers"]];
+  h+=`<div class="an-tabs mt24">${tabs.map(t=>`<button class="${s.tab===t[0]?"on":""}" onclick="A16.S['an-staff'].tab='${t[0]}';App.remount()">${t[1]}<span class="n">${t[0]==="all"?people.length:people.filter(r=>r.role===t[0]).length}</span></button>`).join("")}</div>`;
+  const vis=s.tab==="all"?people:people.filter(r=>r.role===s.tab);
+  const who={l:"Employee",r:r=>`${A.avatar(r.u.id,"--s")} ${esc(r.u.n)}${r.u.on?"":' <span class="muted xs">(inactive)</span>'}`};
+  const COLS={all:[who,{l:"Role",r:r=>r.u.title},{l:"Active",num:true,r:r=>hm(r.active)},{l:"Clocked",num:true,hm:true,r:r=>hm(r.clocked)},{l:"Bouquets",num:true,k:"b"},{l:"Confirmed",num:true,k:"conf"},{l:"Delivered",num:true,k:"del"},{l:"Messages",num:true,hm:true,r:r=>Math.round(r.msg)},{l:"Calls",num:true,hm:true,r:r=>Math.round(r.calls)},{l:"Tasks closed",num:true,k:"tasks"},{l:"Points",num:true,k:"points"}],
+    florist:[who,{l:"Active",num:true,r:r=>hm(r.active)},{l:"Bouquets",num:true,k:"b"},{l:"Per active hour",num:true,k:"perH"},{l:"Median confirm → ready",num:true,r:r=>r.med+" min"},{l:"Ready after slot opened",num:true,r:r=>`<span class="${r.late?"neg":""}">${r.late} · of ${r.b}</span>`},{l:"Written off",num:true,r:r=>fmt(r.wo)},{l:"Tasks closed",num:true,k:"tasks"}],
+    courier:[who,{l:"Active",num:true,r:r=>hm(r.active)},{l:"Delivered",num:true,k:"del"},{l:"Assigned",num:true,k:"assigned"},{l:"In the slot",num:true,r:r=>`${r.inSlot}% of ${r.del}`},{l:"Shop → door",num:true,r:r=>r.door+" min"},{l:"Failed attempts",num:true,r:r=>`<span class="${r.fail?"neg":""}">${r.fail}</span>`},{l:"Tasks closed",num:true,k:"tasks"}],
+    manager:[who,{l:"Active",num:true,r:r=>hm(r.active)},{l:"Confirmed",num:true,k:"conf"},{l:"Of them paid",num:true,k:"paid"},{l:"Revenue",num:true,r:r=>fmt(r.rev)},{l:"Average order",num:true,r:r=>r.conf?fmt(Math.round(r.rev/r.conf)):"–"},{l:"Messages",num:true,r:r=>Math.round(r.msg)},{l:"Bouquet photos",num:true,k:"photos"},{l:"Calls",num:true,r:r=>Math.round(r.calls)},{l:"Tasks closed",num:true,k:"tasks"}]};
+  h+=X.tbl(COLS[s.tab],vis,{empty:"Nobody in this role has output in the period"});
+  const notes={all:"Points = bouquets × 3 + drops × 2 + confirmations × 1.5 + messages × 0.2 + tasks. People land on a tab by role or by what they produced.",florist:"Bouquets by the «Ready» status; median from the manager's confirmation to Ready; written off = stems written off under this florist's name.",courier:"In the slot = delivered before the promised slot ended; shop → door = median from pick-up to delivered.",manager:"Confirmed = orders the manager moved to Confirmed; revenue counts paid ones only."};
+  h+=`<div class="xs muted mt8">${notes[s.tab]}</div>`;
+
+  /* Top florists */
+  h+=X.sec("Top florists",`<span class="an-hint">${ic("award")} weights: Standard 1 · Deluxe 1.4 · Grand 2 pts; speed vs team ±; mark ×0.8 / ×1 / ×1.2; −1 per confirmed error, −0.5 per rework or late</span>`);
+  const unmarked=D.unmarked?FL.filter(f=>!s.marks[f.id]).map(f=>f.n):[];
+  if(unmarked.length)h+=X.note(`${ic("alert")} Florists can't see the rating yet: <b>${unmarked.length} without a manager's mark</b> – ${unmarked.join(", ")}. Owners get a push at 10:00 until every florist is marked.`,"--warn mb16");
+  const board=(key,which)=>{const win=which==="this"?(key==="week"?"13–19 Oct":"1–20 Oct"):(key==="week"?"6–12 Oct":"1–30 Sep");const TOPN=3;
+    let rows=FL.map((f,i)=>{const mark=s.marks[f.id]||"normal";const seed=i+(which==="this"?0:10)+(key==="week"?0:20);const b=[X.ri(seed,111,4,12),X.ri(seed,112,2,7),X.ri(seed,113,0,4)];const base=b[0]+b[1]*1.4+b[2]*2;const speed=X.ri(seed,114,-18,22);const err=X.ri(seed,115,0,2),disp=X.ri(seed,116,0,1),comp=X.ri(seed,117,0,1),rew=X.ri(seed,118,0,2),late=X.ri(seed,119,0,3),chg=X.ri(seed,120,0,2);const pen=err+(rew+late)*0.5;const mult=mark==="excellent"?1.2:mark==="concerns"?0.8:1;return {f,mark,b,base,speed,err,disp,comp,rew,late,chg,pen,mult,pts:+((base*(1+speed/100))*mult-pen).toFixed(1),timed:b[0]+b[1]+b[2]-X.ri(seed,121,0,2),made:["website 60% · WhatsApp 30% · shop 10%","Deliveroo 45% · website 40% · phone 15%","website 70% · Instagram 20% · shop 10%","website 55% · WhatsApp 25% · Uber Eats 20%","shop 50% · website 50%"][i]}});
+    if(!D.many)rows=rows.slice(0,3);
+    const excl=rows.filter(r=>r.mark==="excluded");rows=rows.filter(r=>r.mark!=="excluded").sort((a,b)=>b.pts-a.pts);
+    const all=key==="week"?s.allW:s.allM;const shown=all?rows:rows.slice(0,TOPN);
+    const markSel=r=>`<select class="select" style="height:28px;width:auto;min-width:130px;font-size:12px" onchange="A16B.staffMark('${r.f.id}',this.value)" title="Saves at once · PUT analytics.staff.floristMark · audit florist_rating.mark"><option value="excellent" ${r.mark==="excellent"?"selected":""}>Excellent ×1.2</option><option value="normal" ${r.mark==="normal"?"selected":""}>Normal</option><option value="concerns" ${r.mark==="concerns"?"selected":""}>Concerns ×0.8</option><option value="excluded" ${r.mark==="excluded"?"selected":""}>Not in rating</option></select>`;
+    const medal=i=>i<3?["1st","2nd","3rd"][i]:(i+1)+".";
+    let b=`<div class="card --pad0"><div class="p-head" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--hair)"><div class="h4" style="flex:1">${key==="week"?"Week":"Month"} · ${win}</div><div class="seg-ctl"><button class="${which==="this"?"on":""}" onclick="A16.S['an-staff'].${key}='this';A16.S['an-staff'].${key==="week"?"allW":"allM"}=false;App.remount()">This ${key}</button><button class="${which==="last"?"on":""}" onclick="A16.S['an-staff'].${key}='last';A16.S['an-staff'].${key==="week"?"allW":"allM"}=false;App.remount()">Last ${key}</button></div></div>`;
+    b+=X.tbl([{l:"#",r:(r,i)=>medal(i)},{l:"Florist",r:r=>`${A.avatar(r.f.id,"--s")} ${esc(r.f.n)}`},{l:"Points",num:true,r:r=>`<b>${r.pts}</b><span class="sub">${r.base.toFixed(1)} × ${(1+r.speed/100).toFixed(2)} × ${r.mult} − ${r.pen}</span>`},{l:"Bouquets",num:true,r:r=>`${r.b[0]+r.b[1]+r.b[2]}<span class="sub">S ${r.b[0]} · D ${r.b[1]} · G ${r.b[2]}</span>`},{l:"Made for",hm:true,k:"made"},{l:"Speed vs team",num:true,r:r=>`<span class="${r.speed<0?"neg":"pos"}">${r.speed>0?"+":""}${r.speed}%</span><span class="sub">${r.timed} timed</span>`},{l:"Errors",num:true,r:r=>`<span class="${r.err?"neg":""}">${r.err}</span>${r.disp?` <span class="muted an-tip" title="disputed – not yet confirmed">${r.disp}?</span>`:""}`},{l:"Complaints",num:true,k:"comp"},{l:"Rework",num:true,hm:true,k:"rew"},{l:"Late",num:true,hm:true,k:"late"},{l:"Changes",num:true,hm:true,k:"chg"},{l:"Manager's mark",r:markSel}],shown,{empty:"No bouquets finished in this window",flush:true});
+    b+=`<div class="row" style="padding:8px 14px;gap:12px;font-size:12px;color:var(--grey);flex-wrap:wrap"><span>${X.sum(rows,r=>r.b[0]+r.b[1]+r.b[2])} orders · ${X.sum(rows,r=>r.timed)} timed</span><span class="sp"></span>${rows.length>TOPN?`<button class="textbtn" onclick="A16.S['an-staff'].${key==="week"?"allW":"allM"}=${!all};App.remount()">${all?"Top 3 only":"Show all ("+rows.length+")"}</button>`:""}${excl.length?`<button class="textbtn" onclick="A16.S['an-staff'].excl=${!s.excl};App.remount()">Not in rating: ${excl.length}</button>`:""}</div>`;
+    if(s.excl&&excl.length)b+=`<div style="padding:0 14px 10px">${excl.map(r=>`<div class="row" style="gap:10px;padding:4px 0">${A.avatar(r.f.id,"--s")}<span class="sm" style="flex:1">${esc(r.f.n)} · excluded from the boards</span>${markSel(r)}</div>`).join("")}</div>`;
+    return b+`</div>`};
+  h+=`<div class="col" style="gap:16px">${board("week",s.week)}${board("month",s.month)}</div>`;
+  if(!X.admin())h+=`<div class="xs muted mt8">The mark dropdown is open to everyone who can open this page, including read-only analytics.view – the only write in Analytics without an owner gate (decide before the redesign ships).</div>`;
+
+  /* Where an order waits */
+  if(D.waits&&!E){
+    h+=X.sec("Where an order waits",`<span class="an-hint">${ic("clock")} shown only when the period has ready orders</span>`);
+    h+=`<div class="grid g4">${X.kpi("Taken with the button","71%","226 of 318 orders")}${X.kpi("Waiting for a florist","18 min","median · P75 34 · P90 61 · 226 orders")}${X.kpi("Taken → ready","42 min","median · P75 68 · P90 104 · 226 orders")}${X.kpi("Ready → with courier","26 min","median · P75 49 · P90 88 · 198 orders")}</div>`;
+    const flow=(l,rows)=>`<div>${X.sec(l)}${X.tbl([{l:"",k:"n"},{l:"Orders",num:true,k:"o"},{l:"Median",num:true,r:r=>r.m+" min"},{l:"P75",num:true,hm:true,r:r=>r.p75+" min"},{l:"P90",num:true,r:r=>r.p90+" min"}],rows,{empty:"No order in the period was taken with the button"})}</div>`;
+    h+=`<div class="an-cols2 mt16">${flow("Taken → ready, by florist",FL.map((f,i)=>({n:f.n,o:X.ri(i,131,20,70),m:[38,44,52,47,66][i],p75:[60,70,80,72,98][i],p90:[90,101,120,110,140][i]})))}${flow("Taken → ready, by order type",[{n:"Marketplaces",o:84,m:31,p75:48,p90:70},{n:"Website",o:160,m:44,p75:70,p90:108},{n:"Phone, messengers, shop",o:74,m:49,p75:76,p90:112}])}</div>`;
+    const bands=["< £60","£60–100","£100–160","£160–250","XXL £250+"];
+    h+=X.sec("Taken → ready, by florist and bouquet value");
+    h+=X.tbl([{l:"Florist",r:r=>esc(r.f.n)},{l:"Bouquets",num:true,k:"b"},...bands.map((b,bi)=>({l:b,num:true,hm:bi===4,r:r=>r.v[bi]?`${r.v[bi][0]} min<span class="sub">${r.v[bi][1]} bouquets · P75 ${r.v[bi][2]}</span>`:'<span class="muted">–</span>'})),{l:"Taken, not made",num:true,r:r=>`<span class="${r.nm?"neg":""}">${r.nm}</span>`}],FL.map((f,i)=>({f,b:X.ri(i,141,20,70),nm:X.ri(i,142,0,3),v:bands.map((_,bi)=>bi===4&&i%2?null:[X.ri(i,150+bi,22,80),X.ri(i,160+bi,1,20),X.ri(i,170+bi,40,120)])})));
+    h+=`<div class="an-cols2 mt16">${flow("Taken → ready, by bouquet value",bands.map((b,bi)=>({n:b,o:X.ri(bi,181,10,90),m:28+bi*11,p75:45+bi*14,p90:70+bi*18})))}<div>${X.sec("Finished by hour")}${X.tbl([{l:"Hour",k:"h"},{l:"Finished",num:true,k:"f"},{l:"Taken with the button",num:true,r:r=>r.t+"%"},{l:"Median",num:true,r:r=>r.m+" min"}],[9,10,11,12,13,14,15,16,17].map(hh=>({h:hh+":00",f:X.ri(hh,191,8,48),t:X.ri(hh,192,55,90),m:X.ri(hh,193,30,60)})),{h:300})}<div class="xs muted mt8">Hour = when the bouquet became Ready, London time.</div></div></div>`;
+  }else h+=`<div class="mt24">${X.sec("Where an order waits")}${X.note("Appears once the period has orders that reached Ready.")}</div>`;
+
+  /* Time on accounting */
+  h+=X.sec("Time on accounting",`<span class="an-hint">${ic("warehouse")} write-offs, counts, receipts, corrections</span>`);
+  const acts=E?0:Math.round(N*4.6);
+  if(!acts)h+=X.note(`No accounting action in this period (${Math.round(N*2.4)} shifts).`);
+  else{
+    h+=`<div class="grid g4">${X.kpi("Accounting actions",acts,`${Math.round(acts*0.5)} write-offs · ${Math.round(acts*0.1)} counts · ${Math.round(acts*0.3)} receipts · ${Math.round(acts*0.1)} corrections`)}${X.kpi("Shifts with an action",`${Math.round(N*1.3)} / ${Math.round(N*2.4)}`)}${X.kpi("Estimated accounting minutes",X.n(acts*7),"7 min per action · team median*")}${X.kpi("Activity in the Inventory section",X.n(acts*3),"page opens and clicks")}</div>`;
+    h+=X.note(`${ic("info")} ${Math.round(acts*0.04)} action(s) landed outside any completed shift and are not attributed. Cells show «not enough data yet» below 5 actions; * = estimate from the team median rather than the person's own.`,"mt8");
+    const pp=[["valeria",14,4],["svetlana",22,19],["marina",9,8],["lina",4,4],["daniel",6,1]].map(([u,sh,a],i)=>({u,sh,a,wo:Math.round(a*0.5),c:Math.round(a*0.1),rc:Math.round(a*0.3),cr:a-Math.round(a*0.5)-Math.round(a*0.1)-Math.round(a*0.3),inv:a*3,est:a<5?"not enough data yet":(a*7)+" min"+(i%2?"*":""),share:a<5?"–":Math.round(a*7/(sh*480)*100)+"%"}));
+    h+=`<div class="an-cols2 mt16"><div>${X.sec("By person")}${X.tbl([{l:"Employee",r:r=>`${A.avatar(r.u,"--s")} ${esc(A.user(r.u).n)}`},{l:"Role",hm:true,r:r=>A.user(r.u).title},{l:"Shifts",num:true,r:r=>`${r.a?Math.min(r.sh,r.a):0} / ${r.sh}`},{l:"Write-offs",num:true,hm:true,k:"wo"},{l:"Counts",num:true,hm:true,k:"c"},{l:"Receipts",num:true,hm:true,k:"rc"},{l:"Corrections",num:true,hm:true,k:"cr"},{l:"Actions",num:true,k:"a"},{l:"Inventory activity",num:true,k:"inv"},{l:"Estimate",num:true,k:"est"},{l:"Share of shift",num:true,k:"share"}],pp)}</div>
+    <div>${X.sec("By shift",`<span class="muted xs">Showing the most recent 6 of ${Math.round(N*1.3)} shifts</span>`)}${X.tbl([{l:"Date",k:"d"},{l:"Employee",r:r=>esc(A.user(r.u).n)},{l:"Shift",k:"s"},{l:"Actions",num:true,k:"a"},{l:"Inventory activity",num:true,r:r=>r.a*3},{l:"Estimate",num:true,r:r=>r.a?r.a*7+" min":"no actions"},{l:"Share of shift",num:true,r:r=>r.a?Math.round(r.a*7/540*100)+"%":"–"}],[["20 Oct","svetlana","08:00–17:00",3],["20 Oct","valeria","08:00–17:00",1],["19 Oct","marina","08:00–17:00",2],["19 Oct","lina","10:00–19:00",0],["18 Oct","svetlana","08:00–17:00",4],["18 Oct","olesya","13:00–22:00",1]].map(r=>({d:r[0],u:r[1],s:r[2],a:r[3]})))}</div></div>`;
+  }
+  $("#b-"+id).innerHTML=h;
+};
+A16B.staffMark=(fid,v)=>{A16.S["an-staff"].marks[fid]=v;App.remount();App.toast(`${App.user(fid).n} · mark saved · ${v==="excluded"?"removed from the boards":"points recalculated"}`)};
+
+/* ===== Florist bonus ===== */
+window.mount_florist_bonus=function(){
+  const A=App,X=A16,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,D=X.D;const id="florist-bonus";
+  const s=X.st(id,{period:"week",anchor:new Date(2026,9,20),why:null});
+  if(!s.metrics)s.metrics={stars:14,google:4.8,mkt:4.6};
+  const fl=X.florist();const me=A.me();
+  /* London-safe window arithmetic: shift by whole days / months on a local Date, never via toISOString (old BST bug) */
+  const monday=d=>{const x=new Date(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return x};
+  const start=s.period==="week"?monday(s.anchor):new Date(s.anchor.getFullYear(),s.anchor.getMonth(),1);
+  const end=s.period==="week"?new Date(start.getFullYear(),start.getMonth(),start.getDate()+6):new Date(start.getFullYear(),start.getMonth()+1,0);
+  const f=d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  X.head(id,{fresh:"Counts only – pays nothing",demo:[["overdue","Overdue lesson"],["warnShowcase","Suspicious showcase write-offs"],["tiers","Pay ladder set"]],controls:`<div class="seg-ctl"><button class="${s.period==="week"?"on":""}" onclick="A16.S['florist-bonus'].period='week';App.remount()">Week</button><button class="${s.period==="month"?"on":""}" onclick="A16.S['florist-bonus'].period='month';App.remount()">Month</button></div><button class="ib" title="Previous" onclick="A16B.fbShift(-1)">${ic("back")}</button><span class="sm tnum">${f(start)} – ${f(end)}</span><button class="ib" title="Next" onclick="A16B.fbShift(1)">${ic("chev")}</button><span class="an-hint" title="Arrows shift the anchor by 7 days or 1 calendar month in London time – no BST drift, no setMonth overflow">${ic("info")} ?date=${iso(s.anchor)}</span>`});
+  X.url(id,`period=${s.period}&date=${iso(s.anchor)}`);
+  const month=s.period==="month";const E=D.empty;const FL=A.data.staff.filter(x=>x.role==="florist"&&!x.staff_type);
+  const seed=s.anchor.getDate()+(month?100:0);
+  let rows=E?[]:FL.map((u,i)=>{const k=month?4.3:1;const b=Math.round(X.ri(seed,i+1,14,38)*k),nb=X.ri(seed,i+11,0,4),hours=Math.round(X.ri(seed,i+21,24,42)*k);const scale=b*1.5,dbl=X.ri(seed,i+31,0,3)*6,walk=X.ri(seed,i+41,8,30),err=X.ri(seed,i+51,0,2);const ov=D.overdue&&i===1;const pot=ov?0:Math.round(18*k);return {u,hours,b,nb,scale,dbl,walk,walkP:Math.round(b*walk/100*0.5),err,errP:err*5,tier:["T2","T3","T1","T2"][i],star:i===1,rate:[12.5,13.5,11.8,12.5][i],ov,pot,mpot:month?Math.round(26):0,osh:[`${b} / ${X.ri(seed,i+61,2,8)} / ${X.ri(seed,i+71,0,4)}`],warn:D.warnShowcase&&i===2,total:0}}).map(r=>{r.total=r.scale+r.dbl+r.walkP-r.errP+r.pot+r.mpot;return r});
+  if(fl)rows=rows.filter(r=>r.u.id===me.id);
+  const mine=rows[0];
+  let h="";
+  if(fl)h+=`<div class="grid g3">${X.kpi("My bouquets",mine?mine.b:0,"this "+s.period)}${X.kpi("My bonus",mine?fmt(mine.scale+mine.dbl+mine.walkP-mine.errP):"–","without the weekly and monthly pot share – Total in the row includes it")}${X.kpi("Team pot",fmt(E?0:72),(E?0:3)+"/4 conditions met")}</div>`;
+  else h+=`<div class="grid g4">${X.kpi("Bouquets ready",X.n(X.sum(rows,r=>r.b)))}${X.kpi("Ready before slot",E?"–":"96%","target ≥ 95%")}${X.kpi("Reworks",E?"–":"1.4%","target ≤ 2%")}${X.kpi("Team pot",fmt(E?0:72),"payable this "+s.period)}</div>`;
+  h+=X.sec(fl?"My line":"Florists");
+  h+=X.tbl([{l:"Florist",r:r=>`${A.avatar(r.u.id,"--s")} ${esc(r.u.n)}`},{l:"Hours",num:true,k:"hours"},{l:"Tier",hm:true,r:r=>D.tiers?`<span class="an-tip" title="${r.tier} · ${fmt(r.rate)}/h this month · ${r.hours} h × ${fmt(r.rate)} = ${fmt(r.hours*r.rate)}">${r.tier}${r.star?" ★":""}</span><span class="sub">${fmt(r.rate)}/h · ${fmt(r.hours*r.rate)}</span>`:"–"},{l:"Bouquets (bonus)",num:true,k:"b"},{l:"No bonus",num:true,r:r=>r.nb?`${r.nb} <button class="textbtn" onclick="A16.S['florist-bonus'].why=A16.S['florist-bonus'].why==='${r.u.id}'?null:'${r.u.id}';App.remount()">${s.why===r.u.id?"Hide":"Why not?"}</button>`:"0"},{l:"Scale",num:true,r:r=>fmt(r.scale)},{l:"Double / peak",num:true,r:r=>r.dbl?"+"+fmt(r.dbl):"–"},{l:"Walk-in %",num:true,hm:true,r:r=>`${r.walk}% · +${fmt(r.walkP)}`},{l:"Errors",num:true,r:r=>r.err?`<span class="neg">${r.err} (−${fmt(r.errP)})</span>`:"0"},{l:"Lessons",hm:true,r:r=>r.ov?'<span class="neg">overdue: 1</span>':"ok"},{l:"Order / showcase / handed out",hm:true,r:r=>`<span class="an-tip" title="orders / showcase bouquets / handed out from the showcase">${r.osh}</span>${r.warn?` <span class="accent" title="suspicious showcase write-offs">${ic("alert")}</span>`:""}`},{l:"Pot share",num:true,r:r=>r.ov?'<span class="neg xs">no pot share: overdue lesson</span>':fmt(r.pot)},...(month?[{l:"Monthly pot share",num:true,r:r=>fmt(r.mpot)}]:[]),{l:"Total",num:true,r:r=>`<b>${fmt(r.total)}</b>`}],rows,{empty:"No bouquets taken in this period yet."});
+  if(s.why){const r=rows.find(x=>x.u.id===s.why);if(r)h+=`<div class="card mt8"><span class="caps">Why ${esc(r.u.n)} earned nothing on some orders</span>${r.nb?`<div class="an-mini">${A.data.orders.slice(0,r.nb).map((o,i)=>`<div class="r"><span><button class="link" onclick="App.openOrder(${o.id})">#${o.id}</button> · ${esc(A.product(o.product).name)} ×1/1</span><b class="muted">${["ready after the slot opened","photo missing","rework after a complaint","below the minimum price"][i%4]}</b></div>`).join("")}</div>`:`<div class="sm muted">Every bouquet earned a bonus.</div>`}</div>`}
+  h+=`<div class="an-cols2 mt24"><div class="card"><span class="caps">Weekly team pot · 13–19 Oct</span><div class="row mb8"><div class="h3">${E?"–":"75%"} of the pot</div><span class="sp"></span><span class="sm">Payable this week <b>${fmt(E?0:72)}</b></span></div>${[["≥ 95% ready before the slot",true],["Reworks ≤ 2%",true],["No bouquet order without a photo",false],["Day-close checklist",null]].map(c=>`<div class="an-cond"><span class="mark ${c[1]===false?"no":"ok"}">${c[1]===false?ic("close"):ic("check")}</span><span style="flex:1">${c[0]}</span>${c[1]===null?'<span class="xs muted">not tracked yet, counted as met</span>':""}</div>`).join("")}<div class="xs muted mt8">Carried in from last week £24 · carried out to next week £0</div></div>
+  <div class="card"><span class="caps">Monthly team pot · October</span>${month?`${[["New 5-star Google reviews ≥ 12",s.metrics.stars>=12,"£40"],["Google average ≥ 4.7",s.metrics.google>=4.7,"£30"],["Marketplace rating ≥ 4.5",s.metrics.mkt>=4.5,"£30"],["On-time ≥ 95%",true,"£40"],["Order growth vs last year",true,"£40"],["No confirmed errors",false,"£40"]].map(c=>`<div class="an-cond"><span class="mark ${c[1]?"ok":"no"}">${c[1]?ic("check"):ic("close")}</span><span style="flex:1">${c[0]}</span><b class="tnum ${c[1]?"":"muted"}">${c[2]}</b></div>`).join("")}<div class="row mt8"><span class="sm">Monthly pot total</span><span class="sp"></span><b>${fmt(180)}</b></div>`:`<div class="sm muted">Switch to the <button class="textbtn" onclick="A16.S['florist-bonus'].period='month';App.remount()">Month</button> view for the six studio KPIs and the monthly pot.</div>`}</div></div>`;
+  if(month&&X.admin())h+=`<div class="card mt16"><span class="caps">Month metrics · October 2026</span><div class="row" style="gap:12px;flex-wrap:wrap;align-items:flex-end"><div class="field"><label>New 5-star reviews</label><input class="input" id="fb-stars" type="number" value="${s.metrics.stars}" style="width:120px"></div><div class="field"><label>Google average</label><input class="input" id="fb-google" type="number" step="0.1" value="${s.metrics.google}" style="width:120px"></div><div class="field"><label>Marketplace rating</label><input class="input" id="fb-mkt" type="number" step="0.1" value="${s.metrics.mkt}" style="width:120px"></div><button class="btn --sm" onclick="A16B.fbSaveMetrics()">${ic("check")} Save</button><span class="an-hint">${ic("info")} prefilled – the old form opened empty and saving blank fields wiped earlier values</span></div></div>`;
+  else if(month)h+=`<div class="xs muted mt8">Month metrics (reviews, Google average, marketplace rating) are entered by the owner.</div>`;
+  h+=X.note(`<b>Rules:</b> bonus counts from 1 Sep 2026 · double rate from the 25th bouquet in a shift · peak day = 40+ orders · lessons overdue → no pot share · walk-in bouquets add 50% of the scale.`,"mt16");
+  $("#b-"+id).innerHTML=h;
+};
+A16B.fbShift=dir=>{const s=A16.S["florist-bonus"];const d=new Date(s.anchor);if(s.period==="week")d.setDate(d.getDate()+7*dir);else{d.setDate(1);d.setMonth(d.getMonth()+dir)}s.anchor=d;s.why=null;App.remount()};
+A16B.fbSaveMetrics=()=>{const s=A16.S["florist-bonus"];const v=k=>document.getElementById("fb-"+k).value;if(v("stars")===""||v("google")===""||v("mkt")===""){App.toast("Fill every field – blanks would wipe the saved values");return}App.confirm("Save October metrics?",`5-star reviews ${v("stars")}, Google ${v("google")}, marketplace ${v("mkt")}. Overwrites this month's MonthlyStudioMetric · audit monthly_studio_metric.set.`,"Save",()=>{s.metrics={stars:+v("stars"),google:+v("google"),mkt:+v("mkt")};App.remount();App.toast("Month metrics saved")})};
+</script>

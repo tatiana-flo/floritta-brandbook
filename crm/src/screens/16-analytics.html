@@ -203,7 +203,7 @@ window.A16=(()=>{
 
   /* ---- nav (ANLT-003/004/005) ---- */
   function nav(cur){
-    if(florist())return `<div class="an-nav"><span class="g">Analytics</span><button class="on">${esc("Florist bonus")}</button><span class="an-hint">Florists see their bonus only</span></div>`;
+    if(florist())return `<div class="an-nav"><span class="g">Analytics</span><button class="on" onclick="App.go('florist-bonus')">Florist bonus</button><span class="an-hint">Florists see their bonus only</span></div>`;
     let h=`<div class="an-nav">`;
     GROUPS.forEach(([g,ids])=>{h+=`<span class="g">${g}</span>`;ids.forEach(id=>{const t=tab(id);const locked=!canRead()&&id!=="florist-bonus";h+=`<button class="${id===cur?"on":""} ${locked?"lock":""}" onclick="A16.open('${id}')" title="${locked?"403 · needs analytics.view":"/analytics/"+t[2]}">${locked?ic("lock"):""}${esc(t[1])}</button>`})});
     h+=`<span class="kbd" title="Previous / next report">[ ]</span></div>`;return h;
