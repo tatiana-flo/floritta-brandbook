@@ -1,0 +1,24 @@
+<section class="scr" id="s-category" data-tab="shop" data-nav="Category" data-group="Shop">
+  <div class="appbar">
+    <button class="ib" onclick="App.back('shop')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="f1" style="min-width:0"><div class="ttl" id="cat-title">Bouquets</div><div class="xs muted" id="cat-count" style="margin-top:4px">13 designs</div></div>
+    <button class="ib" onclick="App.go('search')" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+  </div>
+  <div class="scr-body has-tab" id="cat-body">
+    <div class="sticky">
+      <div class="tools pad">
+        <button class="tool" onclick="Shop.sortSheet()"><svg viewBox="0 0 24 24"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg><span id="cat-sort-l">Recommended</span></button>
+        <button class="tool" onclick="Shop.filterSheet()"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filter</span><i class="n" id="cat-filter-n"></i></button>
+      </div>
+      <div class="chips" id="cat-quick"></div>
+    </div>
+    <div class="chips applied" id="cat-applied"></div>
+    <div class="grid-2 mt16" id="cat-grid"></div>
+    <div class="pad mt24" id="cat-more"></div>
+    <div class="empty" id="cat-empty" hidden>
+      <div class="h2">Nothing matches just yet</div>
+      <p class="soft sm">Try fewer filters – or let Flora find something close.</p>
+      <div class="flex g8"><button class="btn --secondary --sm" onclick="Shop.clear()">Clear filters</button><button class="btn --ghost --sm" onclick="App.go('flora')">Ask Flora</button></div>
+    </div>
+  </div>
+</section>
