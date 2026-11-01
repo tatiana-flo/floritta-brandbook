@@ -1,6 +1,8 @@
-<section class="scr" id="s-tracking" data-nav="Tracking" data-group="Account">
+<!-- ids: APP-ORDERS-031 -->
+<section class="scr" id="s-tracking" data-nav="Tracking (live, proposed)" data-group="Account">
   <div class="appbar"><button class="ib" onclick="App.back('orders')" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ttl" id="t-ttl">Order #715529</div><button class="ib" onclick="App.toast('Tracking link copied')" aria-label="Share"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg></button></div>
   <div class="scr-body" id="t-body">
+    <!-- ids: APP-TRACK-004 – in the shipped app there is no courier map or ETA; this live tracking is the prototype proposal (see notes) -->
     <div class="map" id="t-map">
       <svg viewBox="0 0 400 250" preserveAspectRatio="none">
         <path class="road" d="M 46 158 C 90 150 110 110 150 100 C 200 88 230 120 275 96 C 310 78 325 72 346 66"/>
@@ -21,6 +23,7 @@
       <div class="soft sm mt8" id="t-sub"></div>
     </div>
     <div class="hr"></div>
+    <!-- ids: APP-TRACK-005 – photo step inside the timeline: today the app only promises the photo, here it is shown and approved -->
     <div class="timeline" id="t-tl"></div>
     <div id="t-done"></div>
     <div class="sec-head"><div class="h2" id="t-courier-h">Your courier</div></div>
@@ -30,13 +33,19 @@
       <div class="flex ai-c g12"><div class="av --soft" style="width:40px;height:40px;border-radius:50%;background:var(--silver);display:grid;place-items:center;font-family:var(--f-display);font-size:17px;flex:none">A</div><div class="f1"><div>Anna Whitfield</div><div class="muted sm">+44 7700 900 ··· · 14 Tanner St, SE1 3PH</div></div></div>
       <button class="btn --ghost --block mt16" onclick="App.toast('Live tracking sent to Anna by SMS')"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v8h14v-8"/></svg>Share live tracking with Anna</button>
     </div>
+    <!-- ids: APP-TRACK-001 APP-TRACK-002 -->
+    <div class="pad mt24"><div class="panel"><div class="sm">Live status</div><div class="xs muted mt4">The same status page as on floritta.uk – opens in the app.</div><button class="btn --ghost --block mt12" onclick="window.accOpenWeb('Order status','https://floritta.uk/basket/order/…')">Order status on floritta.uk</button></div></div>
+    <!-- ids: APP-ORDERS-035 APP-ORDERS-037 -->
     <div class="sec-head"><div class="h2">Order details</div></div>
     <div class="pad"><div class="acc" id="t-acc"></div></div>
+    <!-- ids: APP-ORDERS-033 -->
     <div class="pad mt24"><button class="panel --ok" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="App.go('care')">${""}<div class="f1"><div class="sm">Keep it alive · 7-day care programme</div><div class="xs muted mt4">Daily tips, +5 Petals per check-in, Caretaker badge on day 7</div></div><span class="textbtn">Start</span></button></div>
+    <!-- ids: APP-ORDERS-038 APP-ORDERS-039 APP-ORDERS-043 -->
     <div class="pad flex g10 mt24" style="gap:10px">
       <button class="btn --ghost f1" onclick="window.trkReorder()">Reorder</button>
-      <button class="btn --ghost f1" onclick="App.go('help')">Get help</button>
+      <button class="btn --ghost f1" onclick="window.accWhatsApp(document.getElementById('t-ttl').textContent.replace('Order ',''))">Get help</button>
     </div>
+    <p class="pad xs muted mt8" style="margin-bottom:0">Changes and cancellations – through Get help (WhatsApp). The order itself cannot be edited in the app.</p>
     <button class="dev" onclick="window.trkNext()">Simulate next step</button>
   </div>
 </section>
