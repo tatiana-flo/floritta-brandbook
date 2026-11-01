@@ -1,0 +1,341 @@
+<style>
+/* ===== 09 · Dashboard / Overview (scoped #s-dashboard) ===== */
+#s-dashboard .d-date{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+#s-dashboard .d-greet{font-family:var(--f-display);font-weight:300;font-size:26px;line-height:1.05}
+#s-dashboard .d-sub{font-size:13px;color:var(--graphite)}
+#s-dashboard .d-cols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start;margin-top:16px}
+#s-dashboard .d-stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+#s-dashboard .kpi-card .kpi{margin-top:2px}
+#s-dashboard .kpi-card.--hot{box-shadow:inset 0 3px 0 var(--accent)}
+#s-dashboard .kpi-card.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+#s-dashboard .kpi-card .delta{display:flex;align-items:center;gap:6px}
+#s-dashboard .panel .p-body{overflow:visible}
+#s-dashboard .panel.--hot{box-shadow:inset 0 3px 0 var(--accent)}
+#s-dashboard .p-foot{padding:8px 14px;border-top:1px solid var(--hair);font-size:12px;color:var(--grey);display:flex;gap:12px;align-items:center}
+#s-dashboard .li .ic{width:32px;height:32px;display:grid;place-items:center;background:var(--silver);color:var(--graphite);flex:none}
+#s-dashboard .li .ic.--accent{background:var(--accent-bg);color:var(--accent)}
+#s-dashboard .li .ic.--warn{background:var(--warn-bg);color:var(--warn)}
+#s-dashboard .li .acts{display:flex;gap:6px;flex:none;align-items:center}
+#s-dashboard .li.--static{cursor:default}
+#s-dashboard .li.--static:hover{background:transparent}
+#s-dashboard .d-alerts{border:1px solid var(--accent);background:var(--accent-bg);margin-bottom:16px}
+#s-dashboard .d-alerts .a-head{display:flex;align-items:center;gap:10px;padding:10px 14px;color:var(--accent)}
+#s-dashboard .d-alerts .a-head .h4{flex:1}
+#s-dashboard .d-alerts .a-sub{padding:0 14px 10px;font-size:12.5px;color:var(--accent)}
+#s-dashboard .d-alerts .list{background:var(--paper)}
+#s-dashboard .d-week{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;height:120px;align-items:end;padding:0 14px}
+#s-dashboard .d-week .c{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;height:100%;gap:4px;cursor:pointer}
+#s-dashboard .d-week .c i{display:block;background:var(--light);min-height:2px}
+#s-dashboard .d-week .c.--today i{background:var(--sel)}
+#s-dashboard .d-week .c.--future i{background:var(--hair)}
+#s-dashboard .d-week .c b{font-size:11px;font-weight:400;text-align:center;font-variant-numeric:tabular-nums;color:var(--graphite)}
+#s-dashboard .d-week svg.aov{position:absolute;left:14px;right:14px;top:0;height:100px;width:calc(100% - 28px);pointer-events:none;overflow:visible}
+#s-dashboard .d-week svg.aov path{fill:none;stroke:var(--warn);stroke-width:1.5}
+#s-dashboard .d-dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding:6px 14px 10px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);text-align:center}
+#s-dashboard .d-dow .on{color:var(--ink)}
+#s-dashboard .d-calls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+#s-dashboard .d-calls>div{padding:12px 14px;border-right:1px solid var(--hair)}
+#s-dashboard .d-calls>div:last-child{border-right:0}
+#s-dashboard .d-shift .cd{font-family:var(--f-display);font-weight:300;font-size:40px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+#s-dashboard .d-ws{border-left:3px solid transparent}
+#s-dashboard .d-ws.--accent{border-left-color:var(--accent)}
+#s-dashboard .d-ws.--warn{border-left-color:var(--warn)}
+#s-dashboard .d-qa{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px 14px}
+#s-dashboard .d-qa button{border:1px solid var(--hair);padding:12px;display:flex;flex-direction:column;gap:2px;transition:border-color var(--m-fast)}
+#s-dashboard .d-qa button:hover{border-color:var(--grey)}
+#s-dashboard .d-qa button small{font-size:12px;color:var(--grey)}
+#s-dashboard .d-zone{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:10px 14px;border-bottom:1px solid var(--hair);align-items:center}
+#s-dashboard .d-zone:last-child{border-bottom:0}
+#s-dashboard .d-zone .z-n{display:flex;gap:12px;font-size:12.5px;white-space:nowrap}
+#s-dashboard .tbl td .flor{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--grey)}
+#s-dashboard .tbl .thumb{cursor:pointer}
+#s-dashboard .role-note{font-size:12px;color:var(--grey);display:flex;align-items:center;gap:6px}
+[data-size="ipad"] #s-dashboard .d-cols{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+[data-size="ipad"] #s-dashboard .d-calls{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] #s-dashboard .d-cols{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] #s-dashboard .d-calls{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="phone"] #s-dashboard .d-hide-ph{display:none}
+[data-size="phone"] #s-dashboard .d-greet{font-size:22px}
+[data-size="phone"] #s-dashboard .list>.li{flex-wrap:wrap}
+[data-size="phone"] #s-dashboard .li .acts{width:100%;justify-content:flex-end}
+[data-size="phone"] #s-dashboard .p-head{flex-wrap:wrap}
+[data-size="phone"] #s-dashboard .scr-head .seg-ctl{display:none}
+</style>
+
+<section class="scr" id="s-dashboard" data-nav="Dashboard" data-group="Today" data-title="Overview" data-sub="Dashboard" data-roles="owner manager" data-parent="today">
+  <!-- ORDB-227 greeting + date line · ORDB-228 «+ New order» · SHEL-008 Overview item (now a Today | Overview switch) · demo-state menu for empty states -->
+  <div class="scr-head" id="d9-head"></div>
+  <div class="scr-body">
+    <!-- ORDB-229 Call back required: block + nag modal (manager) + Call now / dismiss / dismiss all (owner) -->
+    <div id="d9-alerts"></div>
+    <!-- ORDB-230 KPI cards (orders, revenue, unpaid, revenue at risk, unanswered chats, new customers 7d, low stock) · ORDB-231 Active subscriptions -->
+    <div class="grid g4" id="d9-kpis"></div>
+    <div class="d-cols">
+      <div class="d-stack">
+        <!-- ORDB-240 Needs attention (site leads, site messages, unpaid list, See all, All clear) · ORDB-241 Remind · ORDB-242 Lost · ORDB-243 Open · ORDB-237 Demo requests row · ORDB-238 Courier stops to check (owner) · SHEL-294 site leads reachable from here -->
+        <div class="panel" id="d9-needs"></div>
+        <!-- ORDB-233 Ownership zones (hidden when there are no zones) -->
+        <div id="d9-zones"></div>
+        <!-- ORDB-236 Recent orders: photo gallery + note, number → order, florist, recipient, channel, total, status, All orders -->
+        <div class="panel" id="d9-recent"></div>
+      </div>
+      <div class="d-stack">
+        <!-- ORDB-239 Shift timer: HH:MM:SS countdown every second, progress, handover, next shift, empty state -->
+        <div class="panel d-shift" id="d9-shift"></div>
+        <!-- ORDB-235 Orders this week: bars by weekday + AOV step line, tooltip, View report (owner) -->
+        <div class="panel" id="d9-week"></div>
+        <!-- ORDB-232 Platform ratings: per platform, weighted /5, Updated …, not-connected state -->
+        <div class="panel" id="d9-ratings"></div>
+        <!-- ORDB-234 Calls today (Ringover): not connected (as on prod) or Total / Answered / Missed / Miss-rate / Avg answer, Full report (owner) -->
+        <div class="panel" id="d9-calls"></div>
+        <!-- ORDB-244 Workshops · 7 days: level frame, N/M booked, Missing / Prep done, host, All workshops -->
+        <div id="d9-ws"></div>
+        <!-- ORDB-245 Activity feed (collapsed by default, Show / Hide), empty state -->
+        <div class="panel" id="d9-activity"></div>
+        <!-- ORDB-246 Quick actions: Add product, New order, Open inbox (N waiting), Broadcast -->
+        <div class="panel" id="d9-quick"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===== 09 · Dashboard / Overview – demo data (fictional) ===== */
+const D9={quiet:false,ringover:false,ratings:true,subs:true,needs:"all",actOpen:false,reminded:{},calling:{},dismissed:{},snoozeUntil:0,snoozes:0,nagSeen:false,timer:null,mountedAt:Date.now(),wsDone:{}};
+const D9_SNOOZE={minutes:10,max:2};
+const D9_ALERTS=[
+ {id:1,phone:"+44 7700 900418",who:null,at:"09:14",times:2,last:"18 min ago",night:false},
+ {id:2,cust:5009,at:"07:58",times:1,last:"2 h ago",night:false},
+ {id:3,phone:"+44 7700 900771",who:null,at:"06:41",times:1,last:"4 h ago",night:true}
+];
+const D9_LEADS=[
+ {id:61,t:"Weekly reception flowers · Shad Thames office",form:"Contact form",at:"26 min"},
+ {id:62,t:"Wedding flowers · June 2027 · 80 guests",form:"Wedding form",at:"3 h"},
+ {id:63,t:"Corporate gifting · 40 boxes for 12 Nov",form:"Corporate form",at:"5 h"}
+];
+const D9_FEEDBACK=[{id:71,t:"“Can I collect after 22:00?”",at:"1 h"},{id:72,t:"“The vase arrived chipped”",at:"2 h"}];
+const D9_DEMO=[{id:81,t:"Studio Fleur · Leeds · 2 shops",at:"yesterday"},{id:82,t:"Bloom & Co · Bristol",at:"3 h"}];
+const D9_IDLE={count:5,brk:42,days:[["Mon 19 Oct",3],["Sun 18 Oct",2]]};
+const D9_SUBS={active:34,failing:2,next:"Thu 22 Oct",rows:[["Oliver Barrington","Weekly · £45","Payment failing · card expired"],["Freya Hughes","Monthly · £65","Payment failing · insufficient funds"],["Isla Lindqvist","Weekly · £45","Next Thu 22 Oct"],["Reception · Tooley St","Weekly · £120","Next Mon 26 Oct"]]};
+const D9_RATINGS=[["Google",4.8,212,"12 min ago"],["Deliveroo",4.6,148,"1 h ago"],["Uber Eats",4.5,96,"1 h ago"],["Trustpilot",4.7,61,"3 h ago"]];
+const D9_CALLS={total:23,answered:19,missed:4,rate:17,avg:11};
+const D9_ZONES={owned:4,total:5,items:[
+ {t:"Shop floor & fridges",cat:"shop",owner:"valeria",m:"Fridge log filled 4 of 5 days",open:3,overdue:1,done:5},
+ {t:"Website & photos",cat:"website",owner:"svetlana",m:"12 autumn bouquets to shoot",open:4,overdue:0,done:2},
+ {t:"Purchasing · RFH",cat:"purchasing",owner:"tatiana",m:"Thursday order not sent yet",open:2,overdue:1,done:3},
+ {t:"Delivery & vans",cat:"delivery",owner:"daniel",m:"On time 94% this week",open:1,overdue:0,done:6},
+ {t:"Workshops",cat:"workshops",owner:null,m:"Saturday kits not prepped",open:2,overdue:0,done:0}]};
+const D9_WS=[
+ {id:1,t:"Autumn table centrepiece",when:"Thu 22 Oct · 18:30",lvl:"accent",sold:3,cap:10,missing:["host brief","candles"],host:"olesya"},
+ {id:2,t:"Wreath making",when:"Sat 24 Oct · 11:00",lvl:"warn",sold:6,cap:8,missing:["brass rings"],host:"marina"},
+ {id:3,t:"Hand-tied basics",when:"Sun 25 Oct · 14:00",lvl:"",sold:8,cap:8,missing:[],host:"svetlana"}];
+const D9_WEEK_PAST={Mon:[38,96]}; // [orders, avg order £]
+
+window.mount_dashboard=function(params){
+  const A=App,$=A.$,esc=A.esc,ic=A.icon,fmt=A.fmt,owner=A.role()==="owner";
+  const sec=document.getElementById("s-dashboard");if(!sec)return;
+  const Q=D9.quiet;
+  const today=A.data.orders.filter(o=>o.n===0&&o.status!=="cancelled");
+  const revenue=today.filter(o=>o.paid==="paid").reduce((s,o)=>s+o.total,0);
+  const unpaid=Q?[]:A.data.orders.filter(o=>o.n>=0&&o.paid!=="paid"&&o.status!=="cancelled").sort((a,b)=>new Date(b.placed)-new Date(a.placed));
+  const contacted=o=>!!D9.reminded[o.id]||o.id%3===0;
+  const notChased=unpaid.filter(o=>!contacted(o));
+  const unread=Q?0:A.data.convos.filter(c=>c.unread).length;
+  const low=A.data.inventory.filter(i=>i.qty<i.par).length;
+  const alerts=Q?[]:D9_ALERTS.filter(a=>!D9.dismissed[a.id]);
+  const leads=Q?[]:D9_LEADS, fb=Q?[]:D9_FEEDBACK, demo=Q?[]:D9_DEMO, idle=(!Q&&owner)?D9_IDLE:null;
+  const hr=A.NOW.getHours(), greet=hr<12?"Good morning":hr<18?"Good afternoon":"Good evening";
+  const dateLine=A.NOW.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
+
+  /* ---- head: ORDB-227, ORDB-228, SHEL-008 ---- */
+  $("#d9-head").innerHTML=`
+    <div style="min-width:0"><div class="d-date">${esc(dateLine)} · London</div><div class="d-greet">${greet}, ${esc(A.me().n)}</div><div class="d-sub">Here's what needs your attention today · ${A.NOW.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}</div></div>
+    <div class="sp"></div>
+    <div class="seg-ctl d-hide-ph"><button onclick="App.go('today')">${ic("today")} Today</button><button class="on" onclick="App.toast('Overview · owner and manager only')">${ic("growth")} Overview</button></div>
+    <button class="btn --ghost --sm" onclick="D9X.demoMenu(event)">${ic("columns")} Demo data</button>
+    <button class="btn --sm" onclick="App.go('order-new')">${ic("plus")} New order</button>`;
+
+  /* ---- call alerts: ORDB-229 ---- */
+  const alertRow=a=>{const c=a.cust?A.customer(a.cust):null;const st=D9.calling[a.id];
+    return `<div class="li --static"><span class="ic --accent">${ic("phone")}</span><div class="t"><b class="tnum">${esc(c?c.n+" · "+c.phone:a.phone)}</b><small>${a.night?"Night · ":""}Missed ${a.at}${a.times>1?` · called ${a.times}× – last ${a.last}`:""}</small></div>
+      <div class="acts">${st==="pending"?`<span class="xs warn">Calling…</span>`:st==="ok"?`<span class="xs ok">Started</span>`:`<button class="btn --sm --accent" onclick="D9X.call(${a.id})">${ic("phone")} Call now</button>`}
+      ${owner?`<button class="ib" title="Close without a callback" onclick="D9X.dismiss(${a.id})">${ic("trash")}</button>`:""}</div></div>`};
+  $("#d9-alerts").innerHTML=alerts.length?`<div class="d-alerts"><div class="a-head">${ic("alert")}<div class="h4">Call back required · ${alerts.length}</div>
+      ${owner?`<button class="textbtn --accent" onclick="D9X.dismissAll()">Dismiss all (${alerts.length})</button>`:`<button class="textbtn --accent" onclick="D9X.nag(true)">Show reminder</button>`}</div>
+      <div class="a-sub">${owner?"The list clears itself once a callback shows in Ringover, or once the customer has been messaged. Closing by hand is kept in stats as “dismissed by hand”.":"Cannot be dismissed – it clears itself once an outbound call to this number shows in Ringover, or once this customer has been messaged."}</div>
+      <div class="list">${alerts.map(alertRow).join("")}</div></div>`:"";
+
+  /* ---- KPIs: ORDB-230, ORDB-231 ---- */
+  const kpi=(cls,lbl,val,delta,go)=>`<div class="kpi-card ${cls}" onclick="${go}"><span class="caps">${lbl}</span><span class="kpi">${val}</span>${delta||""}</div>`;
+  const d=(dir,t)=>`<span class="delta ${dir}">${dir==="up"?"↑ ":dir==="down"?"↓ ":""}${t}</span>`;
+  const unpaidSum=unpaid.reduce((s,o)=>s+o.total,0), riskSum=notChased.reduce((s,o)=>s+o.total,0);
+  $("#d9-kpis").innerHTML=[
+    kpi("","Orders today",today.length,d("up","+12% vs last Tue"),"App.go('orders',{view:'today'})"),
+    kpi("","Revenue today",fmt(revenue),d("down","−4% vs last Tue"),"App.go('analytics')"),
+    kpi(unpaid.length?"--hot":"","Unpaid orders",unpaid.length,unpaid.length?d("",fmt(unpaidSum)):d("","Nothing unpaid"),"App.go('orders',{view:'unpaid'})"),
+    kpi(riskSum?"--hot":"","Revenue at risk",fmt(riskSum),d("",notChased.length+" unpaid, not chased"),"D9X.filter('unpaid')"),
+    kpi(unread?"--hot":"","Unanswered chats",unread,unread?d("","SLA 14m"):d("","All answered"),"App.go('inbox',{filter:'unread'})"),
+    kpi("","New customers (7d)",Q?0:9,Q?"":d("up","+20%"),"App.go('customers')"),
+    kpi(low?"--warn":"","Low-stock items",low,d("","below par"),"App.go('stock',{view:'low'})"),
+    D9.subs?kpi(D9_SUBS.failing&&!Q?"--hot":"","Active subscriptions",D9_SUBS.active,(D9_SUBS.failing&&!Q)?`<span class="delta down">${D9_SUBS.failing} payment failing</span>`:d("","next: "+D9_SUBS.next),"D9X.subs()"):""
+  ].join("");
+
+  /* ---- needs attention: ORDB-240..243, ORDB-237, ORDB-238, SHEL-294 ---- */
+  const f=D9.needs;
+  const rows=[];
+  if(f==="all"||f==="leads"){
+    if(leads.length)rows.push(`<div class="li" onclick="D9X.leads()"><span class="ic --accent">${ic("mail")}</span><div class="t"><b>${leads.length} site leads with nobody on them</b><small>oldest ${leads[leads.length-1].at} · floritta.uk forms</small></div><span class="link">Open</span></div>`);
+    if(fb.length)rows.push(`<div class="li" onclick="D9X.feedback()"><span class="ic --warn">${ic("chat")}</span><div class="t"><b>${fb.length} site messages not handled yet</b><small>oldest ${fb[fb.length-1].at} · contact form</small></div><span class="link">Open</span></div>`);
+    if(demo.length)rows.push(`<div class="li" onclick="D9X.demo()"><span class="ic">${ic("sparkle")}</span><div class="t"><b>${demo.length} new to follow up · Demo requests</b><small>Floritta One · ${esc(demo[0].t)}</small></div><span class="link">Open</span></div>`);
+  }
+  if((f==="all"||f==="delivery")&&idle)rows.push(`<div class="li --static"><span class="ic --warn">${ic("truck")}</span><div class="t"><b>${idle.count} courier stops to check</b><small>${idle.brk} min of breaks on hold · ${idle.days.map(x=>`<button class="textbtn" onclick="D9X.idle('${x[0]}')">${x[0]} · ${x[1]} to check</button>`).join(" ")}</small><small>Each automatic break and “I'm working” answer is checked before the shift is approved.</small></div><button class="btn --ghost --sm" onclick="D9X.idle('${idle.days[0][0]}')">Open</button></div>`);
+  if(f==="all"||f==="unpaid"){
+    unpaid.slice(0,f==="unpaid"?20:6).forEach(o=>{const c=A.customer(o.customer),r=D9.reminded[o.id];
+      rows.push(`<div class="li --static"><span class="ic --accent">${ic("pound")}</span><div class="t"><b>${esc(c.n)}</b><small class="tnum">#${o.id} · placed ${A.timeAgo(o.placed)} ago · ${esc(o.chan)}${o.paid==="partial"?" · deposit":""}</small></div>
+        <span class="pill ${contacted(o)?"--done":"--todo"}">${contacted(o)?"Contacted":"Not contacted"}</span><span class="tnum" style="width:56px;text-align:right">${fmt(o.total)}</span>
+        <div class="acts">${r?`<span class="xs muted">Reminded · ${r}</span>`:`<button class="btn --sm --ghost" onclick="D9X.remind(${o.id})">${ic("send")} Remind</button>`}
+        <button class="ib" title="More" onclick="D9X.unpaidMenu(event,${o.id})">${ic("dots")}</button>
+        <button class="btn --sm --secondary" onclick="App.openOrder(${o.id})">Open</button></div></div>`)});
+  }
+  const hot=unpaid.length||leads.length;
+  const chips=[["all","All",unpaid.length+leads.length+fb.length+demo.length+(idle?1:0)],["unpaid","Unpaid",unpaid.length],["leads","Leads",leads.length+fb.length+demo.length]].concat(owner?[["delivery","Delivery",idle?1:0]]:[]);
+  const sec2=$("#d9-needs");sec2.classList.toggle("--hot",!!hot);
+  sec2.innerHTML=`<div class="p-head"><div class="h4">Needs you now</div><div class="chips">${chips.map(c=>`<button class="chip ${f===c[0]?"on":""}" style="height:26px" onclick="D9X.filter('${c[0]}')">${c[1]} <span class="n">${c[2]}</span></button>`).join("")}</div>${unpaid.length?`<button class="link" onclick="App.go('orders',{view:'unpaid'})">See all (${unpaid.length})</button>`:""}</div>
+    <div class="p-body"><div class="list">${rows.join("")}</div>${(f==="all"||f==="unpaid")&&!unpaid.length?`<div class="empty">${ic("check")}<div class="h3">All clear – nothing unpaid</div><button class="btn --ghost --sm" onclick="App.go('orders')">Open orders</button></div>`:""}${(f==="leads"&&!rows.length)||(f==="delivery"&&!rows.length)?`<div class="empty">${ic("check")}<div class="h3">Nothing waiting here</div><button class="btn --ghost --sm" onclick="D9X.filter('all')">Show all</button></div>`:""}</div>`;
+
+  /* ---- zones: ORDB-233 ---- */
+  $("#d9-zones").innerHTML=Q?"":`<div class="panel"><div class="p-head"><div class="h4">Ownership zones</div><button class="link" onclick="App.go('tasks',{zones:true})">${D9_ZONES.owned} of ${D9_ZONES.total} owned →</button></div>
+    <div class="p-body">${D9_ZONES.items.map(z=>`<div class="d-zone"><div style="min-width:0"><button class="link" style="text-transform:none;letter-spacing:0;font-size:14px" onclick="App.go('tasks',{category:'${z.cat}'})">${esc(z.t)}</button>
+      <div class="xs muted mt8">${z.owner?A.avatar(z.owner,"--s")+" "+esc(A.user(z.owner).n):`<span class="accent">No owner yet</span> <button class="textbtn" onclick="D9X.ownZone('${z.cat}')">take it</button>`} · ${esc(z.m)}</div></div>
+      <div class="z-n tnum"><span class="soft">${z.open} open</span>${z.overdue?`<span class="accent">${z.overdue} overdue</span>`:""}<span class="muted">${z.done} done this week</span></div></div>`).join("")}</div></div>`;
+
+  /* ---- recent orders: ORDB-236 ---- */
+  const recent=Q?[]:A.data.orders.slice().filter(o=>o.n>=0).sort((a,b)=>new Date(b.placed)-new Date(a.placed)).slice(0,6);
+  $("#d9-recent").innerHTML=`<div class="p-head"><div class="h4">Recent orders</div><button class="link" onclick="App.go('orders')">All orders →</button></div>
+    <div class="p-body">${recent.length?`<table class="tbl"><thead><tr><th style="width:56px">Photo</th><th style="width:120px">Order</th><th>Customer</th><th class="d-hide-ph" style="width:110px">Channel</th><th class="num" style="width:80px">Total</th><th style="width:120px">Status</th></tr></thead><tbody>
+    ${recent.map(o=>{const p=A.product(o.product);return `<tr><td><div class="thumb --s" onclick="D9X.photos(${o.id})" title="All photos of the order">${o.photo?`<img src="${p.img}" alt="">`:""}</div></td>
+      <td><button class="link tnum" style="font-size:13px" onclick="App.openOrder(${o.id})">#${o.id}</button>${o.florist?`<span class="flor">${ic("production")} ${esc(A.user(o.florist).n)}</span>`:""}</td>
+      <td><span class="row" style="gap:8px"><span class="avatar --s">${esc((o.recipient||"?").replace(/^(Mrs|Ms|Mr) /,"").slice(0,2).toUpperCase())}</span>${esc(o.recipient||A.customer(o.customer).n)}</span></td>
+      <td class="d-hide-ph">${A.chanTag(o.chan)}</td><td class="num">${fmt(o.total)}</td><td>${A.orderPill(o)}</td></tr>`}).join("")}</tbody></table>`
+    :`<div class="empty">${ic("orders")}<div class="h3">No orders yet today</div><button class="btn --ghost --sm" onclick="App.go('order-new')">New order</button></div>`}</div>`;
+
+  /* ---- shift timer: ORDB-239 ---- */
+  const on=A.data.staff.filter(s=>s.on);
+  const nowMin=hr*60+A.NOW.getMinutes();
+  const toMin=s=>{const [h,m]=s.split(":").map(Number);return h*60+m};
+  const cur=Q?null:(A.data.staff.find(s=>s.id===A.me().id&&s.on)||on.find(s=>s.role==="manager"));
+  const next=A.data.staff.filter(s=>toMin(s.shift.split("–")[0])>nowMin).sort((a,b)=>toMin(a.shift.split("–")[0])-toMin(b.shift.split("–")[0]))[0];
+  if(cur){const [st,en]=cur.shift.split("–");D9.shift={start:toMin(st),end:toMin(en),endLbl:en};}else D9.shift=null;
+  $("#d9-shift").innerHTML=`<div class="p-head"><div class="h4">On shift now${cur?` · ${on.length}`:""}</div><button class="link" onclick="App.go('team')">Schedule →</button></div>
+    <div class="p-body" style="padding:14px">${cur?`<div class="caps">Current shift · ${esc(cur.n)} · ${esc(cur.shift)}</div>
+      <div class="cd mt8" id="d9-cd">--:--:--</div><div class="progress mt8"><i id="d9-pr" style="width:0"></i></div>
+      <div class="row mt8 sm"><span class="soft">until ${D9.shift.endLbl} handover</span><span class="sp"></span><span class="avatars">${on.slice(0,6).map(s=>A.avatar(s.id,"--s")).join("")}</span></div>
+      ${next?`<div class="xs muted mt8">Next shift: ${esc(next.n)} · ${next.shift.split("–")[0]}</div>`:""}`
+    :`<div class="empty" style="padding:20px">${ic("clock")}<div class="h3">No active shift now</div><button class="btn --ghost --sm" onclick="App.go('team')">Open schedule</button></div>`}</div>`;
+  D9.mountedAt=Date.now();D9.tick();
+  clearInterval(D9.timer);D9.timer=setInterval(D9.tick,1000);
+
+  /* ---- orders this week: ORDB-235 ---- */
+  const avg=a=>a.length?Math.round(a.reduce((s,o)=>s+o.total,0)/a.length):0;
+  const tom=A.data.orders.filter(o=>o.n===1);
+  const week=[["Mon",38,96,"past"],["Tue",today.length,avg(today),"today"],["Wed",tom.length,avg(tom),"future"],["Thu",3,110,"future"],["Fri",4,124,"future"],["Sat",1,140,"future"],["Sun",0,0,"future"]].map(w=>Q&&w[3]!=="past"?[w[0],0,0,w[3]]:w);
+  const mx=Math.max(...week.map(w=>w[1]),1), mxA=Math.max(...week.map(w=>w[2]),1);
+  const sum=week.reduce((s,w)=>s+w[1]*w[2],0), cnt=week.reduce((s,w)=>s+w[1],0);
+  let path="";week.forEach((w,i)=>{if(!w[1])return;const y=100-Math.round(w[2]/mxA*80);const x0=i/7*100,x1=(i+1)/7*100;path+=(path?"L":"M")+x0+" "+y+" L"+x1+" "+y+" "});
+  const best=week.slice().sort((a,b)=>b[1]-a[1])[0];
+  $("#d9-week").innerHTML=`<div class="p-head"><div class="h4">Orders this week</div><span class="xs muted tnum">${fmt(sum)} · 7 days</span>${owner?`<button class="link" onclick="App.go('analytics',{tab:'orders'})">View report →</button>`:""}</div>
+    <div class="p-body" style="padding-top:12px"><div class="d-week">${week.map(w=>`<div class="c --${w[3]}" title="${w[1]}${w[1]?" · avg "+fmt(w[2]):""}" onclick="App.toast('${w[0]} · ${w[1]} orders${w[1]?" · avg "+fmt(w[2]):""}')"><b>${w[1]}</b><i style="height:${Math.round(w[1]/mx*80)}px"></i></div>`).join("")}
+      <svg class="aov" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${path}" vector-effect="non-scaling-stroke"/></svg></div>
+      <div class="d-dow">${week.map(w=>`<span class="${w[3]==="today"?"on":""}">${w[0]}</span>`).join("")}</div></div>
+    <div class="p-foot"><span>Best day ${best[0]}</span><span>Avg order ${fmt(cnt?Math.round(sum/cnt):0)}</span><span class="sp"></span><span class="row" style="gap:6px"><svg width="16" height="6"><path d="M0 3h16" stroke="var(--warn)" stroke-width="1.5"/></svg>avg order</span></div>`;
+
+  /* ---- ratings: ORDB-232 ---- */
+  const tot=D9_RATINGS.reduce((s,r)=>s+r[2],0), wavg=D9_RATINGS.reduce((s,r)=>s+r[1]*r[2],0)/tot;
+  $("#d9-ratings").innerHTML=D9.ratings?`<div class="p-head"><div class="h4">Platform ratings</div><span class="kpi-s" style="font-size:22px">${wavg.toFixed(2)}<span class="xs muted">/5</span></span></div>
+    <div class="p-body"><div class="list">${D9_RATINGS.map(r=>`<div class="li" onclick="D9X.rating('${r[0]}')"><div class="t"><b>${r[0]}</b><small>${r[2]} reviews · synced ${r[3]}</small></div><span class="row" style="gap:4px">${ic("star")}<span class="tnum">${r[1].toFixed(1)}</span></span></div>`).join("")}</div></div>
+    <div class="p-foot">Updated 12 min ago · ${tot} reviews</div>`
+    :`<div class="p-head"><div class="h4">Platform ratings</div></div><div class="empty" style="padding:20px">${ic("star")}<div class="sm">Ratings feed not connected yet</div><button class="btn --ghost --sm" onclick="D9X.connect('ratings')">Connect</button></div>`;
+
+  /* ---- calls: ORDB-234 ---- */
+  const C=D9_CALLS;
+  $("#d9-calls").innerHTML=`<div class="p-head"><div class="h4">Calls today</div><span class="caps" style="margin:0">Ringover</span>${D9.ringover&&owner?`<button class="link" onclick="App.go('analytics',{tab:'calls'})">Full report →</button>`:""}</div>
+    ${D9.ringover?`<div class="d-calls">${[["Total",C.total,""],["Answered",C.answered,"ok"],["Missed",C.missed,"accent"],["Miss-rate",C.rate+"%",""],["Avg answer",C.avg+"s",""]].map(x=>`<div><span class="caps">${x[0]}</span><div class="kpi-s ${x[2]}">${x[1]}</div></div>`).join("")}</div>`
+    :`<div class="empty" style="padding:20px">${ic("phone")}<div class="sm">Telephony not connected yet</div><button class="btn --ghost --sm" onclick="D9X.connect('ringover')">${owner?"Connect Ringover":"Ask the owner to connect"}</button></div>`}`;
+
+  /* ---- workshops: ORDB-244 ---- */
+  $("#d9-ws").innerHTML=Q?"":`<div class="panel"><div class="p-head"><div class="h4">Workshops · 7 days</div><button class="link" onclick="App.go('workshops')">All workshops →</button></div>
+    <div class="p-body"><div class="list">${D9_WS.map(w=>{const miss=w.missing.filter(m=>!(D9.wsDone[w.id]||{})[m]);const lvl=miss.length?w.lvl:"";return `<div class="li d-ws --${lvl}" onclick="D9X.ws(${w.id})"><div class="t"><b>${esc(w.t)}</b><small>${esc(w.when)} · ${w.sold}/${w.cap} booked</small><small class="${miss.length?(lvl==="accent"?"accent":"warn"):"ok"}">${miss.length?"Missing: "+esc(miss.join(", ")):"Prep done"} · Host: ${esc(A.user(w.host).n)}</small></div>${A.icon("chev")}</div>`}).join("")}</div></div></div>`;
+
+  /* ---- activity: ORDB-245 ---- */
+  const act=Q?[]:A.data.orders.filter(o=>o.n===0&&o.log.length>1).map(o=>({id:o.id,s:o.status,at:o.log[o.log.length-1].at})).sort((a,b)=>new Date(b.at)-new Date(a.at)).slice(0,8);
+  $("#d9-activity").innerHTML=`<div class="p-head"><div class="h4">Activity <span class="muted xs">${act.length}</span></div><button class="link" onclick="D9X.toggleAct()">${D9.actOpen?"Hide":"Show"}</button></div>
+    ${D9.actOpen?`<div class="p-body">${act.length?`<div class="list">${act.map(a=>`<div class="li" onclick="App.openOrder(${a.id})"><div class="t"><b class="tnum">Order #${a.id} → ${A.STATUS_LBL[a.s]||a.s}</b></div><span class="xs muted">${A.timeAgo(a.at)}</span></div>`).join("")}</div>`:`<div class="empty" style="padding:20px">${ic("list")}<div class="sm">No status changes yet today</div><button class="btn --ghost --sm" onclick="App.go('production')">Open production</button></div>`}</div>`:""}`;
+
+  /* ---- quick actions: ORDB-246 ---- */
+  $("#d9-quick").innerHTML=`<div class="p-head"><div class="h4">Quick actions</div></div><div class="d-qa">
+    <button onclick="App.go('catalog',{new:true})"><b>${ic("plus")} Add product</b><small>to catalog</small></button>
+    <button onclick="App.go('order-new')"><b>${ic("orders")} New order</b><small>manually</small></button>
+    <button onclick="App.go('inbox')"><b>${ic("inbox")} Open inbox</b><small>${unread} waiting</small></button>
+    <button onclick="D9X.broadcast()"><b>${ic("send")} Broadcast</b><small>WhatsApp / email</small></button></div>`;
+
+  App.registerCommands([
+    {g:"Actions",t:"Open overview (dashboard)",ic:"growth",fn:()=>App.go("dashboard")},
+    {g:"Actions",t:"Call back missed numbers",ic:"phone",fn:()=>{App.go("dashboard");D9X.nag(true)}},
+    {g:"Actions",t:"Remind all unpaid, not chased",ic:"send",fn:()=>{App.go("dashboard");D9X.remindAll()}}
+  ]);
+  if(!owner&&alerts.length&&!D9.nagSeen&&Date.now()>=D9.snoozeUntil)setTimeout(()=>D9X.nag(),250);
+};
+
+D9.tick=function(){
+  if(App.state.current!=="dashboard"){clearInterval(D9.timer);return}
+  if(D9.snoozeUntil&&Date.now()>=D9.snoozeUntil&&App.role()!=="owner"&&!D9.quiet){D9.snoozeUntil=0;D9X.nag(true)}
+  const s=D9.shift,cd=document.getElementById("d9-cd");if(!s||!cd)return;
+  const now=App.NOW.getHours()*3600+App.NOW.getMinutes()*60+Math.floor((Date.now()-D9.mountedAt)/1000);
+  const left=Math.max(0,s.end*60-now),p=Math.min(100,(now-s.start*60)/((s.end-s.start)*60)*100);
+  const z=n=>String(n).padStart(2,"0");cd.textContent=z(Math.floor(left/3600))+":"+z(Math.floor(left%3600/60))+":"+z(left%60);
+  const pr=document.getElementById("d9-pr");if(pr)pr.style.width=p.toFixed(1)+"%";
+};
+
+window.D9X={
+  re(){if(App.state.current==="dashboard")window.mount_dashboard(App.state.params)},
+  filter(k){D9.needs=k;this.re()},
+  demoMenu(ev){App.pop(ev,["Demo data",
+    {t:(D9.quiet?"":"· ")+"Busy day",ic:"zap",fn:()=>{D9.quiet=false;D9.needs="all";this.re();App.toast("Busy day")}},
+    {t:(D9.quiet?"· ":"")+"Quiet day – empty states",ic:"moon",fn:()=>{D9.quiet=true;this.re();App.toast("Quiet day · empty states")}},"-",
+    {t:"Ringover · "+(D9.ringover?"connected":"not connected"),ic:"phone",fn:()=>{D9.ringover=!D9.ringover;this.re()}},
+    {t:"Ratings feed · "+(D9.ratings?"connected":"not connected"),ic:"star",fn:()=>{D9.ratings=!D9.ratings;this.re()}},
+    {t:"Site subscriptions · "+(D9.subs?"connected":"not connected"),ic:"refresh",fn:()=>{D9.subs=!D9.subs;this.re()}}])},
+  call(id){D9.calling[id]="pending";this.re();if(App.$("#modal").classList.contains("on"))this.nag(true);
+    App.toast("Call started – pick up on Ringover (it rings you first, then the customer)");
+    setTimeout(()=>{D9.calling[id]="ok";this.re()},1200);
+    setTimeout(()=>{D9.dismissed[id]=true;this.re();const m=App.$("#modal");if(m.classList.contains("on")){D9_ALERTS.some(a=>!D9.dismissed[a.id])?this.nag(true):App.closeModal()}App.toast("Callback shows in Ringover · alert cleared")},3200)},
+  dismiss(id){App.confirm("Close without a callback?","It stays in stats as “dismissed by hand”.","Close",()=>{D9.dismissed[id]=true;this.re();App.toast("Alert closed")},{danger:true})},
+  dismissAll(){const n=D9_ALERTS.filter(a=>!D9.dismissed[a.id]).length;App.confirm(`Really close ${n} without a callback?`,"Admins only. Kept in stats as “dismissed by hand”.",`Dismiss all (${n})`,()=>{D9_ALERTS.forEach(a=>D9.dismissed[a.id]=true);this.re();App.toast(n+" alerts closed")},{danger:true})},
+  nag(force){const list=D9_ALERTS.filter(a=>!D9.dismissed[a.id]);if(!list.length||D9.quiet){if(force)App.toast("No missed calls to return");return}
+    D9.nagSeen=true;const left=D9_SNOOZE.max-D9.snoozes;
+    App.modal({title:"Call back required",body:`<p class="sm">${list.length} missed ${list.length>1?"calls":"call"} not returned yet. “Call now” dials via Ringover: the team's phone rings first – pick up and it connects you to the customer.</p>
+      <div class="list" style="border:1px solid var(--hair)">${list.map(a=>{const c=a.cust?App.customer(a.cust):null;const st=D9.calling[a.id];return `<div class="li --static"><div class="t"><b class="tnum">${App.esc(c?c.n:a.phone)}</b><small>${a.night?"Night · ":""}Missed ${a.at}</small></div>${st?`<span class="xs ${st==="ok"?"ok":"warn"}">${st==="ok"?"Started":"Calling…"}</span>`:`<button class="btn --sm --accent" onclick="D9X.call(${a.id})">Call now</button>`}</div>`}).join("")}</div>
+      ${left>0?"":`<div class="note-box --accent mt16">No more snoozes – call the numbers back and the window clears itself.</div>`}`,
+      foot:left>0?`<button class="btn --secondary --sm" onclick="D9X.snooze()">Snooze ${D9_SNOOZE.minutes} min (${left} left)</button>`:`<span class="xs muted">Clears itself after the callbacks</span>`})},
+  snooze(){D9.snoozes++;D9.snoozeUntil=Date.now()+D9_SNOOZE.minutes*60000;App.closeModal();App.toast(`Snoozed ${D9_SNOOZE.minutes} min · ${D9_SNOOZE.max-D9.snoozes} left today`)},
+  remind(id){const o=App.order(id),c=App.customer(o.customer);const via=c.phone?"SMS":"email";D9.reminded[id]=via+" "+App.fmtTime(App.NOW.toISOString());o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Payment reminder · "+via});this.re();App.toast(`Reminder sent to ${c.first} · ${via} · one time only`)},
+  remindAll(){const os=App.data.orders.filter(o=>o.n>=0&&o.paid!=="paid"&&o.status!=="cancelled"&&!D9.reminded[o.id]&&o.id%3!==0);os.forEach(o=>{D9.reminded[o.id]="SMS "+App.fmtTime(App.NOW.toISOString())});this.re();App.toast(os.length?os.length+" reminders sent · SMS":"Everyone has been chased already")},
+  unpaidMenu(ev,id){App.pop(ev,["#"+id,{t:"Send payment link",ic:"link",fn:()=>App.paymentLink(id)},{t:"Mark as paid",ic:"check",fn:()=>App.markPaid(id)},"-",{t:"Lost",ic:"close",cls:"--accent",fn:()=>this.lost(id)}])},
+  lost(id){App.confirm(`Mark order #${id} as lost (customer will not pay)?`,"The order is cancelled quietly – no message goes to the customer.","Mark as lost",()=>{const o=App.order(id),prev=o.status;o.status="cancelled";o.log.push({at:App.NOW.toISOString(),who:App.me().id,t:"Marked lost · customer will not pay"});App.emit("orders",{id});App.toast(`#${id} marked as lost`,"Undo",()=>{o.status=prev;o.log.pop();App.emit("orders",{id})})},{danger:true})},
+  leads(){App.sheet({eyebrow:"floritta.uk · new",title:"Site leads",body:`<div class="list" style="border:1px solid var(--hair)">${D9_LEADS.map(l=>`<div class="li --static"><div class="t"><b>${App.esc(l.t)}</b><small>${l.form} · ${l.at} ago · nobody on it</small></div><button class="btn --sm" onclick="this.outerHTML='<span class=&quot;xs ok&quot;>Yours</span>';App.toast('Lead assigned to ${App.me().n}')">Take it</button></div>`).join("")}</div><div class="note-box mt16">Site leads are reached only from here – the sidebar has no item for them.</div>`,foot:`<span class="sp"></span><button class="btn --ghost --sm" onclick="App.go('site-leads',{status:'new'})">Open all leads</button>`})},
+  feedback(){App.sheet({eyebrow:"floritta.uk · contact form",title:"Site messages",narrow:true,body:`<div class="list" style="border:1px solid var(--hair)">${D9_FEEDBACK.map(m=>`<div class="li" onclick="App.go('inbox')"><div class="t"><b>${App.esc(m.t)}</b><small>${m.at} ago · not handled</small></div>${App.icon("chev")}</div>`).join("")}</div>`,foot:`<span class="sp"></span><button class="btn --sm" onclick="App.closeSheet();App.toast('Marked handled')">Mark all handled</button>`})},
+  demo(){App.sheet({eyebrow:"Floritta One",title:"Demo requests",narrow:true,body:`<div class="list" style="border:1px solid var(--hair)">${D9_DEMO.map(m=>`<div class="li --static"><div class="t"><b>${App.esc(m.t)}</b><small>${m.at}</small></div><button class="btn --sm --ghost" onclick="App.toast('Call booked · invite sent')">Book a call</button></div>`).join("")}</div>`,foot:`<span class="sp"></span><button class="btn --ghost --sm" onclick="App.go('demo-requests')">All requests</button>`})},
+  idle(day){App.sheet({eyebrow:"Delivery · admin",title:"Courier stops · "+day,narrow:true,body:`<p class="sm soft">Automatic breaks and “I'm working” answers waiting for a check before the shift is approved.</p><div class="list" style="border:1px solid var(--hair)">${[["daniel","12:40","14 min stop · Tower Bridge Rd"],["daniel","15:05","“I'm working” · 9 min"],["george","19:20","Break · 19 min"]].map(r=>`<div class="li --static">${App.avatar(r[0],"--s")}<div class="t"><b>${r[1]} · ${App.esc(r[2])}</b></div><button class="btn --sm --ghost" onclick="this.outerHTML='<span class=&quot;xs ok&quot;>Approved</span>'">Approve</button></div>`).join("")}</div>`,foot:`<span class="sp"></span><button class="btn --sm" onclick="App.closeSheet();App.toast('Stops checked · shift ready to approve')">Approve all</button>`})},
+  subs(){App.sheet({eyebrow:"floritta.uk",title:`Active subscriptions · ${D9_SUBS.active}`,body:`<div class="list" style="border:1px solid var(--hair)">${D9_SUBS.rows.map(r=>`<div class="li --static"><div class="t"><b>${App.esc(r[0])}</b><small>${r[1]}</small></div><span class="${r[2].startsWith("Payment")?"accent":"muted"} xs">${r[2]}</span>${r[2].startsWith("Payment")?`<button class="btn --sm --ghost" onclick="App.toast('Card update link sent')">Send card link</button>`:""}</div>`).join("")}</div>`,foot:`<span class="sp"></span><button class="btn --ghost --sm" onclick="App.go('subscriptions')">All subscriptions</button>`})},
+  rating(p){App.toast(p+" reviews · opens the platform in a new tab")},
+  connect(k){if(k==="ringover"&&App.role()!=="owner"){App.toast("Only the owner can connect telephony");return}D9[k]=true;this.re();App.toast(k==="ringover"?"Ringover connected (demo)":"Ratings feed connected (demo)")},
+  ownZone(cat){const z=D9_ZONES.items.find(x=>x.cat===cat);z.owner=App.me().id;D9_ZONES.owned++;this.re();App.toast("You own “"+z.t+"” now")},
+  photos(id){const o=App.order(id),p=App.product(o.product);if(!o.photo){App.toast("No photos yet for #"+id);return}
+    App.modal({title:"Photos · #"+id,wide:true,body:`<div class="grid g3"><div class="photo --4x5"><img src="${p.img}" alt=""></div><div class="photo --4x5"><img src="${p.img}" alt="" style="transform:scaleX(-1)"></div></div><div class="note-box mt16"><b>Note:</b> ${App.esc(o.notes||"No internal note")}</div>`})},
+  ws(id){const w=D9_WS.find(x=>x.id===id);const done=D9.wsDone[id]||(D9.wsDone[id]={});
+    App.sheet({eyebrow:"Workshop · "+w.when,title:App.esc(w.t),narrow:true,body:`<dl class="kv"><dt>Booked</dt><dd class="tnum">${w.sold} of ${w.cap}</dd><dt>Host</dt><dd>${App.avatar(w.host,"--s")} ${App.esc(App.user(w.host).n)}</dd></dl><div class="sec-head"><div class="h3">Prep</div></div>${w.missing.length?w.missing.map(m=>`<label class="check mb8"><input type="checkbox" ${done[m]?"checked":""} onchange="D9.wsDone[${id}]['${m}']=this.checked;D9X.re()"> ${App.esc(m)}</label>`).join("<br>"):`<div class="note-box --ok">Prep done</div>`}`,foot:`<span class="sp"></span><button class="btn --ghost --sm" onclick="App.go('workshops',{id:${id}})">Open workshop</button>`})},
+  toggleAct(){D9.actOpen=!D9.actOpen;this.re()},
+  broadcast(){App.modal({title:"Broadcast",body:`<div class="field"><label>Audience</label><select class="select"><option>Repeat customers · 312</option><option>VIP · 41</option><option>Corporate · 18</option></select></div><div class="field mt16"><label>Channel</label><div class="chips"><button class="chip on" onclick="this.classList.toggle('on')">WhatsApp</button><button class="chip" onclick="this.classList.toggle('on')">Email</button></div></div><div class="field mt16"><label>Message</label><textarea class="textarea">Autumn bouquets are in – same-day across SE1 until 22:00.</textarea></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('Broadcast scheduled · WhatsApp')">Schedule</button>`})}
+};
+document.addEventListener('orders',()=>{if(App.state.current==='dashboard')window.mount_dashboard(App.state.params)});
+</script>
