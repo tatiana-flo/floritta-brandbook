@@ -14,7 +14,7 @@
   --paper:#fdfdfd; --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378; --light:#cecece; --hair:#e6e6e6; --silver:#f2f2f4;
   --accent:#b4595f; --accent-dark:#9a474c; --accent-bg:#f3e1e1; --ok:#7a8a6b; --ok-bg:#eef0e9; --warn:#9a6a0a; --warn-bg:#fbf1d4;
   --paper-2:#fdfdfd; /* panel / sidebar */
-  --sel:#1e1a17; --sel-h:#5c5450; --sel-bg:#f2f2f4; --sel-ink:#1e1a17; --on-sel:#fff; /* selection / primary accent (Petal, decided 21.10.2026) */
+  --sel:#1e1a17; --sel-h:#5c5450; --sel-bg:#f2f2f4; --sel-ink:#1e1a17; --on-sel:#fff; /* selection / primary accent – Ink, as on the site (01.11.2026) */
   --f-display:"Cormorant Infant",Georgia,serif; --f-body:"Jost","Helvetica Neue",Arial,sans-serif;
   --r:0px;
   --btn-h:40px; --btn-h-s:32px; --row-h:44px; --input-h:36px; --sidebar-w:232px; --topbar-h:56px;
@@ -140,6 +140,54 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .drawer-bg{position:absolute;inset:0;background:rgba(30,26,23,.3);z-index:79;opacity:0;visibility:hidden;transition:opacity var(--m-base)}
 .drawer-bg.on{opacity:1;visibility:visible}
 
+/* ============ SHELL EXTRAS: bare screens, impersonation, topbar chips, progress, lightbox ============ */
+.app.bare{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.app.bare>.sidebar,.app.bare>.topbar,.app.bare>.drawer-bg,.app.bare>.imp-banner,.app.bare>.nav-progress{display:none}
+.imp-banner{display:none;grid-column:2;align-items:center;gap:12px;padding:0 var(--pad);height:32px;background:var(--accent);color:#fff;font-size:12.5px}
+.imp-banner .btn{--btn-h:22px;height:22px;font-size:10px;padding:0 8px;border-color:#fff;background:transparent;margin-left:auto}
+.app.imp{grid-template-rows:32px var(--topbar-h) minmax(0,1fr)}
+.app.imp>.sidebar{grid-row:1/4}.app.imp>.imp-banner{display:flex}
+.nav-progress{position:absolute;top:0;left:var(--sidebar-w);right:0;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:left;z-index:60;pointer-events:none;opacity:0}
+.nav-progress.on{animation:navp var(--m-base) var(--m-ease)}
+@keyframes navp{0%{transform:scaleX(0);opacity:1}80%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+.tb-date{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);white-space:nowrap;padding-left:14px;border-left:1px solid var(--hair);height:24px;display:inline-flex;align-items:center;gap:6px}
+.tb-date button{color:var(--accent);font-size:11px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--accent-bg)}
+.tb-chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid var(--hair);font-size:12px;color:var(--graphite);white-space:nowrap}
+.tb-chip:empty{display:none}
+.tb-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--grey);white-space:nowrap;cursor:pointer}
+.tb-live:hover{color:var(--ink)}
+.tb-live.paused .dot{background:var(--warn)}
+.ib .dot.--soft{background:var(--ok)}
+.ib.mgr{display:none}[data-role="owner"] .ib.mgr,[data-role="manager"] .ib.mgr{display:inline-flex}
+[data-size="ipad"] .tb-date,[data-size="ipad"] .tb-chip .nm,[data-size="ipad"] .tb-live{display:none}
+[data-size="phone"] .tb-date,[data-size="phone"] .tb-chip,[data-size="phone"] .tb-live{display:none}
+.sb-pin{display:flex;align-items:center;gap:8px;height:32px;padding:0 10px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);margin-top:10px;border-top:1px solid var(--hair);width:100%}
+.sb-pin:hover{color:var(--ink)}
+[data-size="ipad"] .sb-pin span{display:none}
+.sb-item .pdot{display:none}
+[data-size="ipad"] .sb-item .pdot.hot{display:block;position:absolute;top:6px;right:12px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.sb-item .ro{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);border:1px solid var(--hair);padding:0 4px;line-height:14px}
+.sb-item.on .ro{color:var(--on-sel);border-color:rgba(255,255,255,.4)}
+[data-size="ipad"] .sb-item .ro{display:none}
+.err-box{display:flex;flex-direction:column;gap:8px;padding:6px 0}
+.err-box .code{font-family:var(--f-display);font-weight:300;font-size:56px;line-height:1;color:var(--ink)}
+.alarm{display:none;align-items:center;gap:12px;padding:0 var(--pad);height:36px;background:var(--accent-bg);color:var(--accent);font-size:13px;border-bottom:1px solid var(--hair);position:absolute;left:0;right:0;top:0;z-index:40}
+.alarm.on{display:flex}
+.alarm .btn{--btn-h:24px;height:24px;font-size:10px;padding:0 8px;border-color:var(--accent);color:var(--accent);background:transparent}
+.light-box{position:absolute;inset:0;z-index:99;background:rgba(30,26,23,.8);display:none;place-items:center;align-content:center;justify-items:center;gap:12px;color:#fff;cursor:zoom-out}
+.light-box.on{display:grid}
+.light-box img.main{max-height:60%;max-width:70%;object-fit:contain;background:var(--silver)}
+.light-box .ln{background:#fbf1d4;color:#5c4a12;padding:8px 12px;font-size:13px;max-width:60%}
+.light-box .ln small{display:block;color:#8a7a3a;margin-top:2px}
+.light-box .strip{display:flex;gap:6px}.light-box .strip img{width:56px;height:70px;object-fit:cover;cursor:pointer;opacity:.6}.light-box .strip img.on{opacity:1}
+.ev-ic{width:28px;height:28px;display:grid;place-items:center;flex:none;border-left:3px solid var(--grey);background:var(--silver)}
+.ev-ic.--ok{border-color:var(--ok)}.ev-ic.--accent{border-color:var(--accent)}.ev-ic.--warn{border-color:var(--warn)}
+.adv-run{border:1px solid var(--hair);padding:10px 12px;margin-bottom:10px}
+.adv-run .stops{display:flex;flex-direction:column;gap:4px;margin-top:8px;font-size:13px}
+.adv-run .stops .st{display:flex;gap:10px;align-items:center}.adv-run .stops .st .no{width:18px;color:var(--grey);font-variant-numeric:tabular-nums}
+.modal.locked .m-bg{cursor:not-allowed}
+.sel-bar{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--grey);padding:4px 0}
+
 /* ============ TYPOGRAPHY ============ */
 .h-display{font-family:var(--f-display);font-weight:300;font-size:44px;line-height:1.02;letter-spacing:.01em;margin:0}
 .h1{font-family:var(--f-display);font-weight:300;font-size:32px;line-height:1.05;letter-spacing:.01em;margin:0}
@@ -187,18 +235,8 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .textbtn.--accent{color:var(--accent)}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
-/* ============ ACCENT VARIANTS (stand toggle, html[data-btn]) ============ */
+/* ============ ACCENT: Ink only (site palette, decided 01.11.2026) ============ */
 [data-btn="ink"]{--sel:#1e1a17;--sel-h:#5c5450;--sel-bg:#f2f2f4;--sel-ink:#1e1a17}
-[data-btn="graphite"]{--sel:#5c5450;--sel-h:#1e1a17;--sel-bg:#f2f2f4;--sel-ink:#5c5450}
-[data-btn="sage"]{--sel:#7a8a6b;--sel-h:#66765a;--sel-bg:#eef0e9;--sel-ink:#5f6d52}
-[data-btn="rose"]{--sel:#b4767c;--sel-h:#a06a77}
-[data-btn="rose2"]{--sel:#ad7076;--sel-h:#1e1a17}
-[data-btn="rose3"]{--sel:#a86f76;--sel-h:#95616a}
-[data-btn="rose4"]{--sel:#a06a77;--sel-h:#8c5c68}
-[data-btn="rose5"]{--sel:#5c5450;--sel-h:#ad7076}
-[data-btn="rose6"]{--sel:#c28186;--sel-h:#b4767c}
-[data-btn="ink"]{--sel:#1e1a17;--sel-h:#5c5450}
-[data-btn="rose8"]{--sel:#d0989d;--sel-h:#c28186}
 
 /* ============ INPUTS ============ */
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -455,22 +493,25 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
   <aside class="gutter-l">
     <img src="logo.svg" alt="Floritta" style="width:150px;margin-bottom:18px">
     <h1 class="stage-title">CRM<br>redesign</h1>
-    <p class="stage-sub">app.floritta.ai · Brandbook 2026-11 · палитра сайта · Square · desktop + iPad</p>
+    <p class="stage-sub">Brandbook 2026-11 · палитра сайта</p>
+    <!-- ids: SHEL-432 SHEL-433 SHEL-434 SHEL-435 SHEL-436 SHEL-437 SHEL-438 SHEL-439 SHEL-440 SHEL-441 SHEL-442 SHEL-443 SHEL-444 SHEL-445 SHEL-446 SHEL-447 SHEL-448 – one palette (site tokens in :root) replaces the 8 user themes, the HEX board colours and the OS-driven dark: classes; Ink is the only accent; brand fonts load in the CRM too -->
     <div class="eyebrow">Theme</div>
     <div class="seg" id="tg-theme"><button data-v="ivory" class="on">Paper</button></div>
-    <div class="eyebrow">Accent (Ink – как на сайте)</div>
-    <div class="seg" id="tg-btn" style="flex-wrap:wrap"><button data-v="ink" class="on">Ink</button><button data-v="graphite">Graphite</button><button data-v="outline">Outline</button><button data-v="sage">Sage</button><button data-v="rose">Dusty</button><button data-v="rose2">Clay</button><button data-v="rose3">Old rose</button><button data-v="rose4">Mauve</button><button data-v="rose5">Blush</button><button data-v="rose6">Canon</button><button data-v="rose7">Petal</button><button data-v="rose8">Powder</button></div>
     <div class="eyebrow">Density</div>
     <div class="seg" id="tg-density"><button data-v="comfortable" class="on">Comfortable</button><button data-v="compact">Compact</button></div>
+    <!-- ids: SHEL-039 SHEL-040 SHEL-002 – stand role switch incl. courier and the two limited florist profiles (seasonal / trainee) -->
     <div class="eyebrow">Role</div>
-    <div class="seg" id="tg-role"><button data-v="owner">Owner</button><button data-v="manager" class="on">Manager</button><button data-v="florist">Florist</button></div>
+    <div class="seg" id="tg-role" style="flex-wrap:wrap"><button data-v="owner">Owner</button><button data-v="manager" class="on">Manager</button><button data-v="florist">Florist</button><button data-v="courier">Courier</button><button data-v="seasonal">Seasonal</button><button data-v="trainee">Trainee</button></div>
+    <!-- ids: SHEL-322 SHEL-323 SHEL-326 SHEL-327 SHEL-328 SHEL-340 SHEL-361 SHEL-362 SHEL-371 SHEL-372 SHEL-374 SHEL-469 – shell demo states: global modals, banners, alarms and error overlays that only appear on a condition -->
+    <div class="eyebrow">Shell demo states</div>
+    <div class="seg" id="tg-demo" style="flex-wrap:wrap"><button data-v="alcohol">Alcohol hours</button><button data-v="forcepw">Force password</button><button data-v="consent">Courier consent</button><button data-v="imp">Impersonation</button><button data-v="flash">Server flash</button><button data-v="unpaid">Unpaid alarm</button><button data-v="403">403</button><button data-v="419">419</button><button data-v="deploy">Release reload</button><button data-v="deactivated">Deactivated</button></div>
     <div class="eyebrow">Size</div>
     <div class="seg" id="tg-size"><button data-v="desktop" class="on">MacBook 13"</button><button data-v="ipad">iPad 11"</button><button data-v="phone">Phone 390</button></div>
     <div class="eyebrow" style="margin-bottom:6px">Documents</div>
     <ul class="nav-list"><li><a href="concept.html"><button type="button"><span>Концепция (RU)</span><small>md → html</small></button></a></li><li><a href="diagrams.html"><button type="button"><span>Схемы</span><small>5 svg</small></button></a></li><li><a href="../staff/"><button type="button"><span>Staff app</span><small>эталон</small></button></a></li></ul>
     <div class="eyebrow" style="margin-bottom:6px">Screens</div>
     <ul class="nav-list" id="nav-list"></ul>
-    <p class="stage-sub" style="font-size:12px">Кликабельный прототип: заказы, производство, доставка, инбокс, склад и команда работают в JS на демо-данных. ⌘K – палитра команд.</p>
+    <p class="stage-sub" style="font-size:12px">Кликабельный прототип на демо-данных. 12 разделов в сайдбаре, вкладки внутри разделов. ⌘K – палитра команд, G + буква – переход.</p>
   </aside>
 
   <div class="frame-wrap">
@@ -481,20 +522,31 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
           <div class="app" id="app">
             <aside class="sidebar" id="sidebar">
               <div class="logo"><img src="logo.svg" alt="Floritta"></div>
-              <nav id="sb-nav"></nav>
-              <div class="sb-foot"><span class="avatar" id="sb-av">VA</span><div class="who"><b id="sb-name">Valeria</b><small id="sb-role">Manager</small></div><button class="ib" title="Settings" onclick="App.go('settings')"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button></div>
+              <nav id="sb-nav" aria-label="Main navigation"></nav>
+              <div class="sb-foot"><span class="avatar" id="sb-av">VA</span><div class="who"><b id="sb-name">Valeria</b><small id="sb-role">Manager</small></div><button class="ib" title="Settings" onclick="App.go('system-settings')"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button></div>
             </aside>
             <div class="drawer-bg" id="drawer-bg" onclick="App.drawer(false)"></div>
+            <!-- ids: SHEL-322 SHEL-467 – impersonation banner (Floritta One central admin inside a tenant): red strip above the TopBar with «Exit», writes are blocked while it is on -->
+            <div class="imp-banner" id="imp-banner"><span>You are impersonating <b>Tatiana</b> in tenant <b>floritta</b>. Read-only: changes are blocked and logged.</span><button class="btn --sm --accent" onclick="App.demoState('imp')">Exit</button></div>
+            <!-- ids: SHEL-299 SHEL-300 SHEL-301 SHEL-302 SHEL-303 SHEL-304 SHEL-305 SHEL-306 SHEL-307 SHEL-308 SHEL-309 SHEL-313 SHEL-314 SHEL-317 SHEL-320 SHEL-321 SHEL-453 SHEL-466 – TopBar: menu button (phone drawer), page title + grey sub (replaces PageHead), shop-date chip (Europe/London, board swaps it for the chosen day), On-shift chip, auto-refresh indicator, search (⌘K – typing a query + Enter goes to the orders board search), + New order, Delivery advice, Courier events, Notifications, avatar menu; the document title follows the screen (“Title · Floritta Admin”); a thin progress line runs on every navigation -->
             <header class="topbar">
-              <button class="ib menu" onclick="App.drawer(true)"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+              <button class="ib menu" aria-label="Open menu" onclick="App.drawer(true)"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
               <div class="ttl" id="tb-title">Today</div>
+              <span class="tb-date" id="tb-date" title="Today in the shop time zone (Europe/London)">Tue 20 Oct</span>
+              <span class="tb-chip" id="tb-shift" title="Managers and support on shift now"></span>
               <div class="sp"></div>
-              <button class="search" onclick="App.palette()"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>Search orders, customers, actions…</span><kbd>⌘K</kbd></button>
+              <span class="tb-live" id="tb-live" title="Auto-refresh every 60 s (paused while a form or sheet is open)" onclick="App.refreshNow()"><span class="dot --ok"></span><span id="tb-live-t">Updated 10:42</span></span>
+              <button class="search" aria-label="Search" onclick="App.palette()"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>Search orders, customers, actions…</span><kbd>⌘K</kbd></button>
               <button class="ib" id="tb-new" title="New order (N)" onclick="App.go('order-new')"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+              <button class="ib mgr" id="tb-advice" title="Delivery advice" onclick="App.advicePanel()"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg><span class="dot --soft" id="tb-advice-n"></span></button>
+              <button class="ib mgr" id="tb-courier" title="Courier events" onclick="App.courierEvents()"><svg class="i" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg><span class="dot" id="tb-courier-n"></span></button>
               <button class="ib" id="tb-bell" title="Notifications" onclick="App.notifications()"><svg class="i" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg><span class="dot" id="tb-bell-n"></span></button>
               <button class="ib" id="tb-user" title="Account" onclick="App.userMenu(event)"><span class="avatar --s" id="tb-av">VA</span></button>
             </header>
+            <div class="nav-progress" id="nav-progress"></div>
             <main class="screens" id="screens">
+            <!-- ids: SHEL-361 SHEL-362 SHEL-363 – unpaid-order alarm bar on the board: sound, system notification, blinking tab title «(N) NOT PAID»; Mute keeps the red bar but silences the rest (remembered in the browser) -->
+            <div class="alarm" id="alarm"><svg class="i" viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg><b>2 unpaid website orders</b> – contact the customer before making. <button class="btn --sm" onclick="App.go('orders',{view:'unpaid'})">Show</button><span class="sp"></span><button class="btn --sm" id="alarm-mute" onclick="App.muteAlarm()">Mute</button><button class="ib" style="width:24px;height:24px" onclick="App.demoState('unpaid')"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
 <!-- SCREENS -->
             </main>
             <div class="ov" id="ov" onclick="App.closeSheet()"></div>
@@ -502,6 +554,7 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
             <div class="modal" id="modal"><div class="m-bg" onclick="App.closeModal()"></div><div class="m-box" id="m-box"></div></div>
             <div class="palette" id="palette"><div class="pal-box"><div class="pal-in"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="pal-in" placeholder="Type an order number, a name or a command…"><span class="kbd">esc</span></div><div class="pal-list" id="pal-list"></div><div class="pal-foot"><span>↑↓ navigate</span><span>↵ open</span><span>N new order · G then O orders · / search</span></div></div></div>
             <div class="pop" id="pop"></div>
+            <div class="light-box" id="lightbox" onclick="App.closeLightbox()"></div>
             <div class="toast" id="toast"><span id="toast-t"></span><span class="ta" id="toast-a"></span></div>
             <div class="push" id="push"><div class="push-l" id="push-i"></div><div style="flex:1;min-width:0"><div class="pt"><span id="push-t"></span><small id="push-at">now</small></div><div class="pb" id="push-b"></div></div></div>
           </div>
@@ -537,7 +590,7 @@ const STAFF=[
  {id:"omar",n:"Omar",role:"courier",title:"Courier · freelance",av:"OM",shift:"14:00–22:00",on:false},
  {id:"eliza",n:"Eliza",role:"manager",title:"Assistant",av:"EL",shift:"09:00–18:00",on:true}
 ];
-const ROLE_USER={owner:"tatiana",manager:"valeria",florist:"svetlana"};
+const ROLE_USER={owner:"tatiana",manager:"valeria",florist:"svetlana",courier:"daniel",seasonal:"anna",trainee:"lina"};
 
 const PRODUCTS=(()=>{
  const imgs=["red-roses","peony-basket","pink-garden","white-spray","lilac-dream","peach-posy","belgravia","charmingly","daydream-basket","hero-basket","hero-white","pink-manifesto","pink-manifesto-2","poem-petals","powdered-rose","powdered-rose-2","veronica"];
@@ -651,20 +704,21 @@ const NOTIFS=[
  {id:1,type:"order",title:"New order · Website",body:"#"+ORDERS[25].id+" · Peach Posy · 14:00–16:00",at:T(10,31),read:false,go:["orders",{open:ORDERS[25].id}]},
  {id:2,type:"problem",title:"Delivery problem",body:"#"+ORDERS[7].id+" · recipient not answering",at:T(10,12),read:false,go:["delivery",{open:ORDERS[7].id}]},
  {id:3,type:"inbox",title:"Charlotte Whitfield · WhatsApp",body:"Yes please! And can you add a card?",at:T(10,5),read:false,go:["inbox",{id:7001}]},
- {id:4,type:"stock",title:"Low stock",body:"Peony Sarah Bernhardt · 0 stems · next RFH Sat",at:T(8,40),read:true,go:["stock",{}]},
- {id:5,type:"task",title:"Task overdue",body:"Fridge temperature log · Anna · 09:00",at:T(9,5),read:true,go:["tasks",{}]},
+ {id:4,type:"stock",title:"Low stock",body:"Peony Sarah Bernhardt · 0 stems · next RFH Sat",at:T(8,40),read:true,go:["inventory-stock",{}]},
+ {id:5,type:"task",title:"Task overdue",body:"Fridge temperature log · Anna · 09:00",at:T(9,5),read:true,go:["tasks",{view:"overdue"}]},
  {id:6,type:"pay",title:"Payment received",body:"#"+ORDERS[3].id+" · £"+ORDERS[3].total+" · Stripe",at:T(8,2),read:true,go:["orders",{open:ORDERS[3].id}]}
 ];
 
 /* ============ RUNTIME ============ */
 const App=(()=>{
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-  const state={role:"manager",theme:"ivory",density:"comfortable",size:"desktop",history:[],current:null,params:{},notifs:NOTIFS,commands:[]};
+  const state={role:"manager",access:"",theme:"ivory",density:"comfortable",size:"desktop",history:[],current:null,params:{},notifs:NOTIFS,commands:[],pinned:true,boardDate:null,forced:null,courierEvents:[],pendingTrip:false,advice:{candidates:3,dismissed:false,builtAt:"10:31"},auto:true,lastRefresh:"10:42",usage:[],worktime:{},sectionAt:0,imp:false,sharedDevice:false};
+  try{state.pinned=localStorage.getItem("floritta.sidebarPinned")!=="0"}catch(e){}
   const data={orders:ORDERS,staff:STAFF,customers:CUSTOMERS,products:PRODUCTS,convos:CONVOS,tasks:TASKS,inventory:INVENTORY,slots:SLOTS,tracking:TRACKING,siteDaily:SITE_DAILY,pages:PAGES_STATS,promos:PROMO_CODES,marketplaceDaily:MARKETPLACE_DAILY};
   const user=id=>STAFF.find(s=>s.id===id);
-  const me=()=>user(ROLE_USER[state.role]);
+  const me=()=>user(ROLE_USER[state.access||state.role]);
   const role=()=>state.role;
-  const isMgr=()=>state.role!=="florist";
+  const isMgr=()=>state.role==="owner"||state.role==="manager";
   const fmt=n=>"£"+(Math.round(n*100)/100).toLocaleString("en-GB",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
   const pad=n=>String(n).padStart(2,"0");
   const fmtTime=iso=>{const d=new Date(iso);return pad(d.getHours())+":"+pad(d.getMinutes())};
@@ -713,83 +767,131 @@ const App=(()=>{
   const avatar=(id,cls="")=>{const u=user(id);return u?`<span class="avatar ${cls}" title="${esc(u.n)}">${u.av}</span>`:`<span class="avatar ${cls}">–</span>`};
   const chanTag=c=>`<span class="tag ${c==="Deliveroo"||c==="Uber Eats"?"--line":""}">${esc(c)}</span>`;
 
-  /* ---- NAV (new IA) ---- */
-  const NAV=[
-    {g:"",items:[
-      {id:"orders",n:"Orders",ic:"orders",cnt:()=>ORDERS.filter(o=>o.n===0&&o.status!=="delivered"&&o.status!=="cancelled").length},
-      {id:"today",n:"Today",ic:"today",cnt:()=>ORDERS.filter(o=>isLate(o)&&o.status!=="delivered").length,hot:true}]},
-    {g:"Work",items:[
-      {id:"production",n:"Production",ic:"production",cnt:()=>ORDERS.filter(o=>o.n===0&&["queue","making","photo"].includes(o.status)).length},
-      {id:"delivery",n:"Delivery",ic:"delivery",roles:["owner","manager"],cnt:()=>ORDERS.filter(o=>o.n===0&&["ready","out"].includes(o.status)&&o.type==="delivery").length},
-      {id:"inbox",n:"Inbox",ic:"inbox",roles:["owner","manager"],cnt:()=>CONVOS.filter(c=>c.unread).length,hot:true},
-      {id:"customers",n:"Customers",ic:"customers",roles:["owner","manager"]}
-    ]},
-    {g:"Shop",items:[
-      {id:"catalog",n:"Catalog",ic:"catalog"},
-      {id:"stock",n:"Stock",ic:"warehouse",cnt:()=>INVENTORY.filter(i=>i.qty<i.par).length}
-    ]},
-    {g:"People",items:[
-      {id:"team",n:"Team",ic:"team"},
-      {id:"tasks",n:"Tasks",ic:"check",cnt:()=>TASKS.filter(t=>t.status!=="done"&&(t.late||new Date(t.due)<NOW)).length,hot:true},
-      {id:"learning",n:"Learning",ic:"book"}
-    ]},
-    {g:"Business",roles:["owner","manager"],items:[
-      {id:"analytics",n:"Analytics",ic:"growth",roles:["owner","manager"]},
-      {id:"growth",n:"Growth",ic:"zap",roles:["owner"]},
-      {id:"settings",n:"Settings",ic:"settings",roles:["owner"]}
-    ]}
-  ];
-  const TITLES={today:"Today",orders:"Orders","order-new":"New order",production:"Production","ready-now":"Ready now",delivery:"Delivery",inbox:"Inbox",customers:"Customers",catalog:"Catalog",stock:"Stock",purchasing:"Purchasing",team:"Team",tasks:"Tasks",learning:"Learning",growth:"Growth",analytics:"Analytics",settings:"Settings"};
-  const URLS={today:"/today",orders:"/orders","order-new":"/orders/new",production:"/production","ready-now":"/production/ready-now",delivery:"/delivery",inbox:"/inbox",customers:"/customers",catalog:"/catalog",stock:"/stock",purchasing:"/stock/purchasing",team:"/team",tasks:"/team/tasks",learning:"/team/learning",growth:"/growth",analytics:"/analytics",settings:"/settings"};
-  const screenGroup=id=>{for(const g of NAV)for(const it of g.items){if(it.id===id)return it.id}const s=document.getElementById("s-"+id);return s?.dataset.parent||id};
+  /* ---- SECTIONS · 12 sections in 5 groups (rules 01.11.2026) ---- */
+  /* ids: SHEL-001 SHEL-003 SHEL-004 SHEL-005 SHEL-006 SHEL-007 SHEL-008 SHEL-009 SHEL-010 SHEL-011 SHEL-012 SHEL-013 SHEL-014 SHEL-015 SHEL-016 SHEL-017 SHEL-018 SHEL-019 SHEL-020 SHEL-021 SHEL-022 SHEL-023 SHEL-024 SHEL-025 SHEL-026 SHEL-027 SHEL-028 SHEL-029 SHEL-030 SHEL-031 SHEL-032 SHEL-033 SHEL-034 SHEL-035 SHEL-036 SHEL-037 SHEL-038 SHEL-041 SHEL-042 SHEL-043 SHEL-044 SHEL-048 SHEL-049 SHEL-050 – the 38 old sidebar items fold into 12 sections; every old item is a tab or a view inside one of them (see notes-shell.txt) */
+  const PARENT2SEC={today:"today",orders:"orders",delivery:"delivery",inbox:"inbox",customers:"customers",catalog:"catalog",stock:"stock",team:"team",tasks:"tasks",learning:"learning",analytics:"analytics",marketing:"growth",storefront:"growth",settings:"settings"};
+  const SCREEN_SEC={"day-close":"today","production-shifts":"team",finance:"analytics","finance-cashflow":"analytics","finance-payment-links":"analytics","finance-gift-cards":"analytics","finance-refunds":"analytics","finance-problems":"analytics","finance-alcohol":"analytics","finance-refund-checks":"analytics",storefront:"growth",customers:"customers",inbox:"inbox",today:"today",orders:"orders"};
+  const FLAGS={askCrm:false,workshops:true,bouquetBuilder:true,shopFloorStock:false,sizeLadder:true,freelanceBoard:true,driverApp:true,consent:true};
+  const SEC={
+    orders:{n:"Orders",ic:"orders",home:"orders",roles:"owner manager florist",limited:"orders order-card",hint:"Board · Make · Pre-orders · Peak day · Photo check · All orders · Workshops · Builder",
+      cnt:()=>ORDERS.filter(o=>o.n===0&&!["delivered","cancelled"].includes(o.status)).length},
+    today:{n:"Today",ic:"today",home:"today",roles:"owner manager florist",hint:"Overview · Day close",hot:true,cnt:()=>ORDERS.filter(o=>isLate(o)&&o.status!=="delivered").length},
+    delivery:{n:"Delivery",ic:"delivery",home:"delivery",roles:"owner manager courier",courier:{n:"My deliveries",home:"driver-deliveries"},hint:"Dispatch · Couriers · Runs · Uber · DPD · Zones · Pay",hot:true,
+      cnt:()=>state.role==="courier"?ORDERS.filter(o=>o.n===0&&o.status==="out").length:ORDERS.filter(o=>o.n===0&&o.problem).length},
+    inbox:{n:"Inbox",ic:"inbox",home:"inbox",roles:"owner manager",hint:"Chats · Flora · Scripts · Broadcasts · Subscriptions · Forms · NPS",hot:true,cnt:()=>CONVOS.filter(c=>c.unread).length},
+    customers:{n:"Customers",ic:"customers",home:"customers",roles:"owner manager",hint:"Customers · Due to reorder · Occasions · Facts"},
+    catalog:{n:"Catalog",ic:"catalog",home:"catalog",roles:"owner manager florist",hint:"Products · Photo inbox · Categories · Reviews · Feed · Marketplaces · Ready now",cnt:()=>isMgr()?3:0},
+    stock:{n:"Stock",ic:"warehouse",home:"inventory",roles:"owner manager florist",hint:"Stock · Count · Purchasing · Losses · Recipes",cnt:()=>INVENTORY.filter(i=>i.qty<i.par).length},
+    team:{n:"Team",ic:"team",home:"team",roles:"owner manager florist courier",limited:"*",hint:"Schedule · Leave · Shifts · People · Announcements · Production shifts"},
+    tasks:{n:"Tasks",ic:"check",home:"tasks",roles:"owner manager florist courier",hint:"Today · All tasks · People · Floritta Active",hot:true,cnt:()=>TASKS.filter(t=>t.status!=="done"&&(t.late||new Date(t.due)<NOW)).length+(state.role==="courier"?0:1)},
+    learning:{n:"Learning",ic:"book",home:"learning-home",roles:"owner manager florist courier",limited:"*",hint:"My lessons · Quiz · Skill check · Buddy · Development · Mentor",cnt:()=>isMgr()?2:0},
+    analytics:{n:"Analytics",ic:"growth",home:"analytics",roles:"owner manager",hint:"31 reports · Finance"},
+    growth:{n:"Growth",ic:"zap",home:"marketing",roles:"owner",hint:"Marketing · Growth · SEO · Content · Storefront · Leads"},
+    settings:{n:"Settings",ic:"settings",home:"system-settings",roles:"owner",hint:"Shop · Team · Integrations · API · Logs · Backup · B2B · Ask the CRM"}
+  };
+  const NAV_GROUPS=[["",["orders","today"]],["Work",["delivery","inbox","customers"]],["Shop",["catalog","stock"]],["People",["team","tasks","learning"]],["Business",["analytics","growth","settings"]]];
+  const LIMITED_ACCESS_NAV=["orders","team","learning"]; // SHEL-039: florist_seasonal / florist_trainee
+  const COURIER_NAV=["delivery","team","tasks","learning"]; // SHEL-002 SHEL-045
+  const limited=()=>state.access==="seasonal"||state.access==="trainee";
+  const sectionOf=id=>{if(!id)return null;if(SCREEN_SEC[id])return SCREEN_SEC[id];if(SEC[id])return id;if(id==="florist-bonus")return canSee("analytics")?"analytics":"tasks";const s=document.getElementById("s-"+id);const p=s?.dataset.parent;return p?(PARENT2SEC[p]||p):null};
+  function canSee(sec){const d=SEC[sec];if(!d)return true;if(state.role==="courier")return COURIER_NAV.includes(sec);if(limited())return LIMITED_ACCESS_NAV.includes(sec);return d.roles.split(" ").includes(state.role)}
+  function screenAllowed(id){const s=document.getElementById("s-"+id);if(!s)return false;if(s.dataset.bare!==undefined)return true;const r=s.dataset.roles;if(r&&!r.split(/[ ,]+/).includes(state.role))return false;const sec=sectionOf(id);if(sec&&!canSee(sec))return false;if(limited()&&sec){const lim=SEC[sec].limited||"";if(lim!=="*"&&!lim.split(" ").includes(id))return false}return true}
+  const homeFor=()=>state.role==="courier"?(FLAGS.driverApp?"driver-deliveries":"team"):"orders"; // SHEL-045 SHEL-450 SHEL-456
+  /* ids: SHEL-051 … SHEL-288 live in the screens' own tab strips; the shell keeps real CRM paths for every screen (URL bar, deep links) */
+  const ALIAS={constructor:"bouquet-builder",growth:"marketing",learning:"learning-home",stock:"inventory",purchasing:"purchasing-expected",settings:"system-settings",scripts:"comms-scripts",dispatch:"delivery"};
+  const AN=["bonus","losses","channel-pnl","margin","orders","products","top-products","bouquet-builder","not-home","customers","retention","areas","events","peaks","seasonality","calls","comms","funnel","payments","loyalty","languages","website","popularity","unpaid","okr","features","usage","worktime","staff"];
+  const URLS=Object.assign({
+    today:"/today",dashboard:"/dashboard","day-close":"/day-close",
+    orders:"/orders","all-orders":"/all-orders","order-new":"/orders/new","order-create":"/orders/create","order-card":"/orders/{id}",production:"/production/board","production-preorders":"/production/preorders","production-peak-day":"/production/peak-day","production-shifts":"/production/shifts",workshops:"/workshops","workshops-form":"/workshops/create","workshops-session":"/workshops/sessions/{id}","workshops-type":"/workshops/types/{id}","bouquet-builder":"/constructor","ready-now":"/ready-now","shop-floor":"/shop-floor","bouquet-photos":"/bouquet-photos",
+    delivery:"/delivery/dispatch","couriers-today":"/delivery/couriers/today","delivery-exceptions":"/delivery/exceptions","delivery-dpd":"/delivery/dpd","delivery-tracking":"/delivery/tracking","delivery-couriers":"/delivery/couriers","delivery-idle":"/delivery/idle","delivery-pod":"/delivery/pod","delivery-routes":"/delivery/routes","delivery-route":"/delivery/routes/{id}","delivery-presence":"/delivery/presence","delivery-courier-pay":"/delivery/couriers/pay","delivery-eta":"/delivery/eta-accuracy","delivery-zones":"/delivery/zones","delivery-consents":"/delivery/consents","delivery-exports":"/delivery/exports","delivery-shipping":"/delivery/shipping","delivery-freelance":"/delivery/freelance","delivery-freelance-analytics":"/delivery/freelance/analytics","delivery-heatmap":"/delivery/heatmap","delivery-co2":"/delivery/co2","delivery-relay":"/delivery/relay/carriers",
+    "driver-deliveries":"/driver/deliveries","driver-runs":"/driver/runs","driver-run":"/driver/runs/{id}","driver-order":"/driver/orders/{id}","driver-scan":"/driver/scan","driver-consent":"/driver/consent",
+    inbox:"/comms/inbox","comms-scripts":"/comms/scripts","flora-facts":"/comms/facts","flora-autonomy":"/comms/flora/autonomy","facts-review":"/comms/facts-review",occasions:"/comms/occasions",subscriptions:"/comms/subscriptions",subscribers:"/comms/subscribers","sub-images":"/comms/subscription-images","email-templates":"/comms/email-templates","emails-log":"/comms/emails-log",broadcasts:"/comms/broadcasts",forms:"/comms/forms",feedback:"/comms/feedback",nps:"/comms/nps",
+    customers:"/comms/customers","customers-due":"/comms/customers/due","customer-form":"/comms/customers/create","customer-card":"/comms/customers/{id}",
+    catalog:"/catalog",product:"/catalog/products/{id}","catalog-intake":"/catalog/intake","catalog-categories":"/catalog/categories","catalog-parameters":"/catalog/parameters","catalog-badges":"/catalog/badges","catalog-reviews":"/catalog/reviews","catalog-feed":"/catalog/feed","catalog-mp-names":"/catalog/marketplace-titles","catalog-mp-menu":"/catalog/marketplace-menu","catalog-size-ladder":"/catalog/size-ladder","catalog-related":"/catalog/related","catalog-items":"/catalog/product-items",
+    inventory:"/inventory","inventory-stock":"/inventory/stock","inventory-item":"/inventory/items/{id}","inventory-count":"/inventory/count-today","inventory-stocktakes":"/inventory/stocktakes","inventory-stocktake-sheet":"/inventory/stocktakes/{id}","inventory-group-a":"/inventory/group-a","inventory-suggestions":"/inventory/suggestions","inventory-movements":"/inventory/movements","inventory-writeoff":"/inventory/writeoff","inventory-writeoff-review":"/inventory/writeoffs/review","inventory-writeoff-report":"/inventory/writeoffs/report","purchasing-expected":"/inventory/expected","purchasing-expected-show":"/inventory/expected/{id}","purchasing-expected-form":"/inventory/expected/create","inventory-receive":"/inventory/receive","purchasing-deliveries":"/inventory/receipts","purchasing-receipt":"/inventory/receipts/{id}","inventory-claim-form":"/inventory/claims/create","inventory-claims":"/inventory/claims","inventory-claim":"/inventory/claims/{id}","purchasing-suppliers":"/inventory/suppliers","purchasing-scorecard":"/inventory/suppliers/report","purchasing-reorder":"/inventory/reorder",recipes:"/inventory/recipes","recipes-deviations":"/inventory/recipe-deviations","recipes-photo":"/inventory/photo-corrections",
+    team:"/team/schedule","team-leave":"/team/leave","team-candidates":"/team/candidates","team-reserve":"/team/reserve","team-shifts-jobs":"/team/shifts-jobs","team-announcements":"/team/announcements","team-motivation":"/team/engagement","team-enps":"/team/enps/survey","team-people":"/team/people","team-pay-statements":"/team/pay-statements","team-hiring":"/team/hiring",
+    tasks:"/tasks","tasks-board":"/tasks/board","tasks-huddle":"/tasks/huddle","tasks-inbox":"/tasks/inbox","tasks-people":"/tasks/people","tasks-health":"/tasks/health","tasks-zones":"/tasks/zones","tasks-catalog":"/tasks/catalog","tasks-my-week":"/tasks/my-week","team-goal":"/tasks/team-goal",rewards:"/tasks/rewards",leaderboard:"/tasks/leaderboard",payroll:"/tasks/payroll",
+    "learning-home":"/learning",lesson:"/learning/{id}","quiz-day":"/learning-quiz","skill-check":"/skill-check",buddy:"/learning-buddy",development:"/development","lesson-drafts":"/learning-mentor/drafts","lesson-edit":"/learning-mentor/drafts/{id}","lesson-review":"/learning-mentor/review","training-register":"/learning-mentor/register","signed-document":"/learning-mentor/register/{id}",consents:"/learning-mentor/consents","skills-matrix":"/learning-mentor/matrix",buddies:"/learning-mentor/buddies",glossary:"/learning-mentor/glossary","glossary-edit":"/learning-mentor/glossary/{id}","glossary-additions":"/learning-mentor/glossary/suggestions","glossary-seasons":"/learning-mentor/glossary/seasons","development-plans":"/development-mentor","development-plan":"/development-mentor/{plan}",
+    analytics:"/analytics/ceo","florist-bonus":"/analytics/florist-bonus",finance:"/finance","finance-cashflow":"/finance/cashflow","finance-payment-links":"/finance/payment-links","finance-gift-cards":"/finance/gift-cards","finance-refunds":"/finance/refunds-pending","finance-problems":"/finance/problem-orders","finance-alcohol":"/finance/alcohol-log","finance-refund-checks":"/finance/refund-verifications",
+    marketing:"/marketing","mk-demo":"/demo-requests","mk-leads":"/site-leads","mk-upsell":"/growth/upsell","mk-reviews":"/growth/reviews","mk-retention":"/growth/retention","mk-automations":"/growth/automations","mk-uberads":"/growth/uber-ads","mk-promo":"/marketing/promo","mk-utm":"/marketing/utm","mk-utm-analytics":"/marketing/utm-analytics","mk-attribution":"/marketing/attribution","mk-referrals":"/marketing/referrals","mk-placements":"/marketing/placements","mk-social":"/marketing/social","mk-comments":"/marketing/social/comments","mk-studio":"/marketing/social/studio","mk-agents":"/marketing/social/agent","mk-trends":"/marketing/trends","mk-trend":"/marketing/trends/{id}","mk-trend-accounts":"/marketing/trends/accounts","mk-emails":"/marketing/emails","mk-pinterest":"/settings/integrations/pinterest",
+    storefront:"/storefront","sf-redirects":"/storefront/redirects","sf-menus":"/storefront/menus","sf-landing":"/storefront/pages","sf-site-pages":"/storefront/site-pages","sf-bulk":"/storefront/bulk","sf-news":"/storefront/news","sf-authors":"/storefront/authors","sf-faq":"/storefront/faq","sf-parameters":"/storefront/parameters","sf-reviews":"/storefront/reviews","sf-subscription":"/storefront/subscription-options","sf-forms":"/storefront/forms","sf-delivery":"/storefront/delivery","sf-subscribers":"/storefront/subscribers","sf-messages":"/storefront/feedback",
+    seo:"/seo","seo-onpage":"/seo/onpage","seo-keywords":"/seo/keywords","seo-content":"/seo/content","seo-tech":"/seo/tech","seo-local":"/seo/local","seo-geo":"/seo/geo","seo-ai":"/seo/ai-search","seo-pages":"/seo/pages","seo-links":"/seo/links","seo-brief":"/seo/brief","seo-rollout":"/seo/rollout","seo-machine":"/seo/machine","seo-gbp":"/seo/gbp",
+    content:"/content/pages","content-news":"/content/news","content-faq":"/content/faq","content-authors":"/content/authors","content-menus":"/content/menus","content-reference":"/content/reference","content-languages":"/content/languages","content-report":"/content/report",
+    "system-settings":"/settings","system-users":"/settings/team","system-integrations":"/settings/integrations","system-api":"/settings/api","system-logs":"/settings/logs","system-backup":"/settings/backup","system-import-export":"/settings/import-export","system-b2b":"/settings/b2b","ask-crm":"/ai/ask",
+    "auth-login":"/login","auth-forgot":"/forgot-password","auth-reset":"/reset-password/{token}","auth-password-change":"/password/change","public-tracking":"/t/{token}","public-redelivery":"/redelivery/{token}","one-welcome":"/one/welcome","one-suspended":"/one/suspended","one-impersonation":"/orders","one-admin-login":"/one/admin/login","one-admin-2fa":"/one/admin/2fa","one-admin-tenants":"/one/admin/tenants","one-admin-tenant":"/one/admin/tenants/{slug}","one-admin-leads":"/one/admin/leads"
+  },Object.fromEntries(AN.map(a=>["an-"+a,"/analytics/"+a])));
+  const TITLES={today:"Today",orders:"Orders","order-new":"New order",production:"Orders","ready-now":"Ready now",delivery:"Delivery",inbox:"Inbox",customers:"Customers",catalog:"Catalog",inventory:"Stock",team:"Team",tasks:"Tasks","learning-home":"Learning",marketing:"Growth",analytics:"Analytics","system-settings":"Settings"};
+  const urlOf=(id,params={})=>{let u=Object.hasOwn(URLS,id)?URLS[id]:"/"+id;u=u.replace(/\{[a-z]+\}/,m=>params.id||params.plan||params.token||m.slice(1,-1));const q=params.view?"?view="+params.view:params.q?"?q="+encodeURIComponent(params.q):params.slot?"?slot="+params.slot:"";return u+q};
+  const screenGroup=id=>sectionOf(id)||id;
   function renderSidebar(){
-    const nav=$("#sb-nav");let h="";
-    NAV.forEach(g=>{if(g.roles&&!g.roles.includes(state.role))return;const items=g.items.filter(i=>!i.roles||i.roles.includes(state.role));if(!items.length)return;if(g.g)h+=`<div class="sb-group">${g.g}</div>`;items.forEach(i=>{const c=i.cnt?i.cnt():0;h+=`<button class="sb-item ${screenGroup(state.current)===i.id?"on":""}" data-go="${i.id}" title="${i.n}">${icon(i.ic)}<span class="n">${i.n}</span><span class="cnt ${i.hot&&c?"hot":""}">${c||""}</span></button>`})});
-    nav.innerHTML=h;$$("button",nav).forEach(b=>b.onclick=()=>{go(b.dataset.go,{});drawer(false)});
+    const nav=$("#sb-nav");let h="";const cur=screenGroup(state.current);
+    NAV_GROUPS.forEach(([g,ids])=>{const items=ids.filter(canSee);if(!items.length)return;if(g)h+=`<div class="sb-group">${g}</div>`;
+      items.forEach(id=>{const d=SEC[id];const alt=state.role==="courier"&&d.courier;const n=alt?d.courier.n:d.n;const c=d.cnt?d.cnt():0;const ro=(state.role==="courier"||state.role==="florist")&&id==="team"?"read":state.access==="trainee"&&id==="orders"?"view":"";
+        h+=`<button class="sb-item ${cur===id?"on":""}" data-go="${id}" title="${n} · ${d.hint}" ${cur===id?'aria-current="page"':""}>${icon(d.ic)}<span class="n">${n}</span>${ro?`<span class="ro">${ro}</span>`:""}<span class="cnt ${d.hot&&c?"hot":""}">${c?(c>99?"99+":c):""}</span><span class="pdot ${d.hot&&c?"hot":""}"></span></button>`})});
+    h+=`<button class="sb-pin" title="Pin the menu open / collapse to icons (remembered in this browser)" onclick="App.togglePin()">${icon(state.pinned?"back":"chev")}<span>${state.pinned?"Collapse":"Pin open"}</span></button>`;
+    nav.innerHTML=h;$$("button.sb-item",nav).forEach(b=>b.onclick=()=>{const d=SEC[b.dataset.go];go(state.role==="courier"&&d.courier?d.courier.home:d.home,{});drawer(false)});
     const m=me();$("#sb-av").textContent=m.av;$("#sb-name").textContent=m.n;$("#sb-role").textContent=m.title;$("#tb-av").textContent=m.av;
-    $("#tb-bell-n").dataset.n=state.notifs.filter(n=>!n.read).length;$("#tb-bell-n").textContent=state.notifs.filter(n=>!n.read).length||"";
+    const un=state.notifs.filter(n=>!n.read).length;$("#tb-bell-n").dataset.n=un;$("#tb-bell-n").textContent=un?(un>20?"20+":un):"";
+    const ce=state.courierEvents.filter(e=>!e.seen).length;$("#tb-courier-n").dataset.n=ce;$("#tb-courier-n").textContent=ce?(ce>20?"20+":ce):"";$("#tb-courier").classList.toggle("blink",state.pendingTrip);
+    const ad=state.advice.dismissed||!state.advice.candidates?0:state.advice.candidates;$("#tb-advice-n").dataset.n=ad;$("#tb-advice-n").textContent=ad||"";
+    $("#tb-shift").innerHTML=state.role==="courier"?"":`<span class="avatars">${STAFF.filter(s=>s.on&&s.role==="manager").map(s=>avatar(s.id,"--s")).join("")}</span><span class="nm">On shift</span>`;
+    $("#tb-date").innerHTML=(state.boardDate?`${esc(state.boardDate)} <button onclick="App.boardDate(null)" title="Back to today">×</button>`:"Tue 20 Oct");
+    const sc=document.getElementById("s-"+state.current);document.title=((sc&&(sc.dataset.title||TITLES[state.current]||sc.dataset.nav))||"Floritta")+" · Floritta Admin";
   }
+  function togglePin(){state.pinned=!state.pinned;try{localStorage.setItem("floritta.sidebarPinned",state.pinned?"1":"0")}catch(e){}toast(state.pinned?"Menu pinned open":"Menu collapses to icons on iPad");renderSidebar()}
+  function boardDate(d){state.boardDate=d;renderSidebar()}
   function renderStageNav(){
     const ul=$("#nav-list");let h="",last=null;
     $$(".scr").forEach(s=>{const g=s.dataset.group||"";if(g!==last){h+=`<li class="grp">${esc(g)}</li>`;last=g}h+=`<li><button data-go="${s.id.slice(2)}" class="${s.id.slice(2)===state.current?"on":""}"><span>${esc(s.dataset.nav||s.id)}</span><small>${s.dataset.roles||""}</small></button></li>`});
     ul.innerHTML=h;$$("button",ul).forEach(b=>b.onclick=()=>go(b.dataset.go,{}));
   }
   /* ---- ROUTING ---- */
+  /* ids: SHEL-045 SHEL-046 SHEL-047 SHEL-450 SHEL-451 SHEL-319 SHEL-328 SHEL-374 – explicit section ↔ screen map (no URL-prefix guessing), role gate on every navigation, role home after sign-in, persistent shell (no re-mount of the sidebar on navigation) */
   function go(id,params={},opts={}){
+    id=ALIAS[id]||id;if(state.forced&&id!==state.forced&&!opts.force){toast(state.forced==="auth-password-change"?"Set your own password to continue.":"Sign the geo-tracking consent to continue.");id=state.forced}
     const next=document.getElementById("s-"+id);if(!next){console.warn("no screen",id);toast("Screen “"+id+"” is not in this prototype yet");return}
-    const allowed=next.dataset.roles;if(allowed&&!allowed.split(/[ ,]+/).includes(state.role)){toast("Not available for "+state.role);return}
+    if(!screenAllowed(id)){const sec=sectionOf(id);if(opts.init){go(homeFor(),{},{replace:true});return}toast(`403 · “${next.dataset.title||id}” is not available to ${roleLabel()}`);if(!state.current)go(homeFor(),{},{replace:true});return}
+    if(sheetDirty&&!opts.force){confirm("Discard unsaved changes?","The open sheet has edits that were not saved.","Discard",()=>{sheetDirty=null;go(id,params,Object.assign({},opts,{force:true}))});return}
     const cur=state.current;
-    if(cur&&cur!==id){if(!opts.replace)state.history.push([cur,state.params]);document.getElementById("s-"+cur)?.classList.remove("on")}
-    state.current=id;state.params=params||{};
+    if(cur&&cur!==id){if(!opts.replace)state.history.push([cur,state.params]);document.getElementById("s-"+cur)?.classList.remove("on");trackSection(cur)}
+    state.current=id;state.params=params||{};state.sectionAt=Date.now();
     next.classList.add("on");
+    $("#app").classList.toggle("bare",next.dataset.bare!==undefined);
     if(next.dataset.scrolltop!=="keep"){const b=next.querySelector(".scr-body");if(b&&!params.keepScroll)b.scrollTop=0}
     $("#tb-title").innerHTML=esc(next.dataset.title||TITLES[id]||next.dataset.nav||id)+(next.dataset.sub?`<small>${esc(next.dataset.sub)}</small>`:"");
-    $("#url").textContent="app.floritta.ai"+(URLS[id]||"/"+id);
-    closeSheet(true);closeModal();closePop();
+    $("#url").textContent="app.floritta.ai"+urlOf(id,state.params);
+    closeSheet(true,true);closeModal(true);closePop();closeLightbox();
+    const pr=$("#nav-progress");pr.classList.remove("on");requestAnimationFrame(()=>pr.classList.add("on"));
     const fn=window["mount_"+id.replace(/-/g,"_")];if(typeof fn==="function"){try{fn(state.params)}catch(e){console.error("mount_"+id,e)}}
-    renderSidebar();renderStageNav();
+    renderSidebar();renderStageNav();usage("nav",id);
     if(history.replaceState)history.replaceState(null,"","#"+id);
   }
-  function back(){const h=state.history.pop();if(!h){go("orders",{},{replace:true});return}go(h[0],h[1]||{},{replace:true})}
+  function back(){const h=state.history.pop();if(!h){go(homeFor(),{},{replace:true});return}go(h[0],h[1]||{},{replace:true})}
   function drawer(open){$("#sidebar").classList.toggle("open",!!open);$("#drawer-bg").classList.toggle("on",!!open)}
+  const roleLabel=()=>state.access==="seasonal"?"a seasonal florist":state.access==="trainee"?"a trainee":"a "+state.role;
   /* ---- SHEET ---- */
-  let sheetStack=[],sheetOpen=false;
+  let sheetStack=[],sheetOpen=false,sheetDirty=null;
   function sheet(o){
     const sh=$("#sheet");sh.className="sheet "+(o.cls||"")+(o.wide?" --wide":"")+(o.narrow?" --narrow":"");
     sh.innerHTML=`<div class="sh-head">${o.back?`<button class="ib" onclick="App.sheetBack()">${icon("back")}</button>`:""}<div style="flex:1;min-width:0">${o.eyebrow?`<div class="caps">${o.eyebrow}</div>`:""}<div class="h2" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${o.title||""}</div></div>${o.head||""}<button class="ib" onclick="App.closeSheet()" title="Close (esc)">${icon("close")}</button></div>${o.tabs?`<div class="sh-tabs">${o.tabs}</div>`:""}<div class="sh-body ${o.flush?"flush":""}" id="sh-body">${o.body||""}</div>${o.foot?`<div class="sh-foot">${o.foot}</div>`:""}`;
     sh.setAttribute("aria-hidden","false");sheetOpen=true;requestAnimationFrame(()=>{if(!sheetOpen)return;sh.classList.add("on");$("#ov").classList.add("on")});
     if(!o._replace||!sheetStack.length)sheetStack.push(o);else sheetStack[sheetStack.length-1]=o;
+    sheetDirty=o.dirty||null;
     if(typeof o.onMount==="function")o.onMount(sh);
     return sh;
   }
+  /* ids: SHEL-390 – sheets and modals: Esc / backdrop / × close, dirty check before closing a sheet with unsaved edits (App.markDirty / sheet.dirty) */
+  function markDirty(v){if(v===false){sheetDirty=null;return}sheetDirty=typeof v==="function"?v:()=>true}
   function sheetBack(){sheetStack.pop();const prev=sheetStack.pop();if(prev)sheet(prev);else closeSheet()}
-  function closeSheet(silent){sheetOpen=false;const sh=$("#sheet");sh.classList.remove("on");$("#ov").classList.remove("on");sh.setAttribute("aria-hidden","true");sheetStack=[];if(!silent)document.dispatchEvent(new CustomEvent("sheetclose"))}
+  function closeSheet(silent,force){if(sheetDirty&&!force&&(typeof sheetDirty!=="function"||sheetDirty())){confirm("Discard unsaved changes?","The sheet has edits that were not saved.","Discard",()=>{sheetDirty=null;closeSheet(silent,true)});return}sheetDirty=null;sheetOpen=false;const sh=$("#sheet");sh.classList.remove("on");$("#ov").classList.remove("on");sh.setAttribute("aria-hidden","true");sheetStack=[];if(!silent)document.dispatchEvent(new CustomEvent("sheetclose"))}
   /* ---- MODAL ---- */
-  function modal(o){const m=$("#modal"),b=$("#m-box");b.className="m-box "+(o.wide?"--wide":"");b.innerHTML=`<div class="m-head"><div class="h2">${o.title||""}</div></div><div class="m-body">${o.body||""}</div>${o.foot!==null?`<div class="m-foot">${o.foot||`<button class="btn --secondary --sm" onclick="App.closeModal()">Close</button>`}</div>`:""}`;m.classList.add("on");if(o.onMount)o.onMount(b)}
-  function closeModal(){$("#modal").classList.remove("on")}
+  let modalLocked=false,modalOpener=null;
+  function modal(o){const m=$("#modal"),b=$("#m-box");modalLocked=!!o.locked;m.classList.toggle("locked",modalLocked);modalOpener=document.activeElement;b.className="m-box "+(o.wide?"--wide":"");b.innerHTML=`<div class="m-head"><div class="h2">${o.title||""}</div></div><div class="m-body">${o.body||""}</div>${o.foot!==null?`<div class="m-foot">${o.foot||`<button class="btn --secondary --sm" onclick="App.closeModal()">Close</button>`}</div>`:""}`;m.classList.add("on");if(o.onMount)o.onMount(b)}
+  function closeModal(force){if(modalLocked&&force!==true){toast("Answer the courier first – confirm, change or send back the route");return}$("#modal").classList.remove("on");modalLocked=false;if(modalOpener&&modalOpener.focus)try{modalOpener.focus()}catch(e){}modalOpener=null}
   let _confirmFn=null;
-  function confirm(title,text,cta,fn,opts={}){_confirmFn=fn;modal({title,body:text,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm ${opts.danger?"--accent":""}" onclick="App._confirmGo()">${cta||"Confirm"}</button>`})}
-  function _confirmGo(){closeModal();if(_confirmFn)_confirmFn();_confirmFn=null}
+  /* ids: SHEL-391 – ConfirmDialog: danger / brand button, custom labels, required «Reason» blocks the button until filled, safeCancel swaps the buttons so a double click cannot confirm */
+  function confirm(title,text,cta,fn,opts={}){_confirmFn=fn;const reason=opts.reason?`<div class="field mt16"><label>Reason</label><input class="input" id="cf-reason" placeholder="Required" oninput="document.getElementById('cf-ok').classList.toggle('is-disabled',!this.value.trim())"></div>`:"";const ok=`<button class="btn --sm ${opts.danger?"--accent":""} ${opts.reason?"is-disabled":""}" id="cf-ok" onclick="App._confirmGo()">${cta||"Confirm"}</button>`,cancel=`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button>`;modal({title,body:text+reason,foot:opts.safeCancel?ok+cancel:cancel+ok})}
+  function _confirmGo(){const r=$("#cf-reason")?.value;closeModal();if(_confirmFn)_confirmFn(r);_confirmFn=null}
   /* ---- POPOVER ---- */
   function pop(ev,items){ev.stopPropagation();const p=$("#pop");p.innerHTML=items.map(it=>it==="-"?`<div class="sep"></div>`:typeof it==="string"?`<div class="hd">${it}</div>`:`<button class="${it.cls||""}" data-k="${it.k||""}">${it.ic?icon(it.ic):""}<span>${it.t}</span></button>`).join("");
     const wrap=$("#screen-wrap").getBoundingClientRect(),r=ev.currentTarget.getBoundingClientRect();const sc=wrap.width/$("#screen-wrap").offsetWidth;
@@ -812,10 +914,21 @@ const App=(()=>{
     sheet({title:"Notifications",narrow:true,flush:true,head:`<button class="textbtn" onclick="App.readAll()">Mark all read</button>`,body:list||`<div class="empty">${icon("bell")}<div class="h3">All quiet</div><div class="sm">Nothing needs you right now.</div></div>`,onMount:sh=>{$$(".ntf",sh).forEach(el=>el.onclick=()=>{const n=state.notifs[+el.dataset.i];n.read=true;closeSheet();if(n.go)go(n.go[0],n.go[1]||{});renderSidebar()})}});
   }
   function readAll(){state.notifs.forEach(n=>n.read=true);renderSidebar();notifications()}
-  function userMenu(ev){pop(ev,[me().n+" · "+me().title,{t:"My schedule",ic:"calendar",fn:()=>go("team",{tab:"schedule"})},{t:"My tasks",ic:"check",fn:()=>go("tasks",{mine:true})},"-",{t:state.density==="comfortable"?"Compact rows":"Comfortable rows",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")},"-",{t:"Sign out",ic:"logout",fn:()=>toast("Signed out (demo)")}])}
+  /* ids: SHEL-310 SHEL-311 SHEL-312 SHEL-313 SHEL-314 SHEL-449 – avatar menu replaces the loose TopBar controls: language EN/RU (saved to the profile), theme (one palette · Paper / Ink), density, «View as» (admin), change password, switch design (users.theme beta toggle), sign out */
+  function userMenu(ev){const m=me();pop(ev,[m.n+" · "+m.title+(state.sharedDevice?" · shared device":""),{t:"My schedule",ic:"calendar",fn:()=>go("team",{tab:"schedule"})},{t:"My tasks",ic:"check",fn:()=>go("tasks",{mine:true})},{t:"My week · Floritta Active",ic:"award",fn:()=>go("tasks-my-week")},"-",
+    {t:"Language · "+(state.lang==="ru"?"RU → EN":"EN → RU"),ic:"globe",fn:()=>{state.lang=state.lang==="ru"?"en":"ru";toast(state.lang==="ru"?"Интерфейс на русском · saved to profile (PATCH /profile/locale)":"Interface in English · saved to profile")}},
+    {t:"Theme · "+(state.theme==="ink"?"Ink → Paper":"Paper → Ink"),ic:state.theme==="ink"?"sun":"moon",fn:()=>setTheme(state.theme==="ink"?"ivory":"ink")},
+    {t:state.density==="comfortable"?"Compact rows":"Comfortable rows",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")},
+    ...(state.role==="owner"?[{t:"View as…",ic:"eye",fn:()=>modal({title:"View as",body:`<div class="sm soft">See the CRM the way a colleague sees it (right roleview.impersonate). Writes stay yours and are logged.</div><div class="chips mt16">${["manager","florist","courier","seasonal","trainee"].map(r=>`<button class="chip" onclick="App.closeModal();App.setRole('${r}')">${r[0].toUpperCase()+r.slice(1)}</button>`).join("")}</div>`})}]:[]),"-",
+    {t:"Change my password",ic:"lock",fn:()=>go("auth-password-change")},{t:"Switch design · classic",ic:"columns",fn:()=>confirm("Switch to the classic design?","Your personal toggle users.theme. The new design stays on for everyone else; you can switch back from the same menu.","Switch",()=>toast("Classic design is off in this prototype – staying on the new one"))},"-",{t:"Sign out",ic:"logout",fn:()=>{state.forced=null;go("auth-login");toast("Signed out · POST /logout")}}])}
   /* ---- COMMAND PALETTE ---- */
+  /* ids: SHEL-370 SHEL-306 SHEL-466 – ⌘K palette: go-to for all 12 sections and every tab, actions, «Change my password», «Open order card», «Sign out»; a free-text query + Enter searches the orders board (?q=) */
+  const tabCommands=()=>$$(".scr").filter(s=>s.dataset.parent&&!s.dataset.bare&&screenAllowed(s.id.slice(2))).map(s=>{const id=s.id.slice(2);const sec=sectionOf(id);return{g:"Tabs · "+(SEC[sec]?SEC[sec].n:sec),t:(s.dataset.nav||id).replace(/^[A-Za-z &]+ · /,""),ic:SEC[sec]?SEC[sec].ic:"chev",k:urlOf(id),fn:()=>go(id)}});
   const baseCommands=()=>[
-    {g:"Go to",t:"Today",ic:"today",k:"G T",fn:()=>go("today")},{g:"Go to",t:"Orders",ic:"orders",k:"G O",fn:()=>go("orders")},{g:"Go to",t:"Production board",ic:"production",k:"G P",fn:()=>go("production")},{g:"Go to",t:"Delivery dispatch",ic:"delivery",k:"G D",fn:()=>go("delivery"),mgr:true},{g:"Go to",t:"Inbox",ic:"inbox",k:"G I",fn:()=>go("inbox"),mgr:true},{g:"Go to",t:"Customers",ic:"customers",k:"G C",fn:()=>go("customers"),mgr:true},{g:"Go to",t:"Catalog",ic:"catalog",fn:()=>go("catalog")},{g:"Go to",t:"Stock",ic:"warehouse",fn:()=>go("stock")},{g:"Go to",t:"Team · schedule",ic:"team",fn:()=>go("team")},{g:"Go to",t:"Tasks",ic:"check",fn:()=>go("tasks")},{g:"Go to",t:"Learning",ic:"book",fn:()=>go("learning")},{g:"Go to",t:"Analytics",ic:"growth",k:"G A",fn:()=>go("analytics"),mgr:true},
+    ...NAV_GROUPS.flatMap(g=>g[1]).filter(canSee).map(id=>({g:"Go to",t:(state.role==="courier"&&SEC[id].courier?SEC[id].courier.n:SEC[id].n),ic:SEC[id].ic,k:"G "+{orders:"O",today:"T",delivery:"D",inbox:"I",customers:"C",catalog:"K",stock:"S",team:"E",tasks:"J",learning:"L",analytics:"A",growth:"G",settings:"Y"}[id],fn:()=>go(state.role==="courier"&&SEC[id].courier?SEC[id].courier.home:SEC[id].home)})),
+    {g:"Actions",t:"Open order card…",ic:"orders",k:"#",fn:()=>{const o=ORDERS.find(x=>x.n===0&&x.status==="making")||ORDERS[0];go("order-card",{id:o.id})}},
+    {g:"Actions",t:"Change my password",ic:"lock",fn:()=>go("auth-password-change")},{g:"Actions",t:"Sign out",ic:"logout",fn:()=>go("auth-login")},
+    {g:"Actions",t:"Refresh now",ic:"refresh",fn:()=>refreshNow()},
     {g:"Actions",t:"New order",ic:"plus",k:"N",fn:()=>go("order-new")},{g:"Actions",t:"New task",ic:"check",fn:()=>go("tasks",{new:true})},{g:"Actions",t:"Call a courier · Uber Direct",ic:"truck",fn:()=>go("delivery",{uber:true}),mgr:true},{g:"Actions",t:"Send payment link",ic:"link",fn:()=>toast("Pick an order first – open it and press Payment link")},{g:"Actions",t:"Publish a Ready-now bouquet",ic:"photo",fn:()=>go("ready-now",{new:true})},
     {g:"Preferences",t:state.density==="comfortable"?"Compact density":"Comfortable density",ic:"list",fn:()=>setDensity(state.density==="comfortable"?"compact":"comfortable")}
   ].filter(c=>!c.mgr||isMgr());
@@ -828,7 +941,8 @@ const App=(()=>{
       if(isMgr())CUSTOMERS.filter(c=>c.n.toLowerCase().includes(q)||c.phone.replace(/\s/g,"").includes(q.replace(/\s/g,""))).slice(0,4).forEach(c=>items.push({g:"Customers",t:c.n,ic:"user",k:c.phone,fn:()=>openCustomer(c.id)}));
       PRODUCTS.filter(p=>p.name.toLowerCase().includes(q)||p.sku.toLowerCase().includes(q)).slice(0,3).forEach(p=>items.push({g:"Catalog",t:p.name+" · "+fmt(p.price),ic:"catalog",fn:()=>go("catalog",{open:p.id})}));
     }
-    items=items.concat([...baseCommands(),...state.commands].filter(c=>!q||c.t.toLowerCase().includes(q)));
+    const seen=new Set();items=items.concat([...baseCommands(),...state.commands,...tabCommands()].filter(c=>(!q||c.t.toLowerCase().includes(q))&&!seen.has(c.g+c.t)&&seen.add(c.g+c.t)));
+    if(q&&!items.length)items.push({g:"Search",t:`Search the orders board for “${q}”`,ic:"search",k:"/orders?q=",fn:()=>go("orders",{q})});
     palItems=items;palIdx=0;
     let h="",g=null;items.forEach((it,i)=>{if(it.g!==g){h+=`<div class="hd">${it.g}</div>`;g=it.g}h+=`<button class="${i===0?"on":""}" data-i="${i}">${icon(it.ic||"chev")}<span>${esc(it.t)}</span>${it.k?`<span class="k">${esc(it.k)}</span>`:""}</button>`});
     $("#pal-list").innerHTML=h||`<div class="empty"><div class="sm">Nothing found for “${esc(q)}”</div></div>`;
@@ -844,32 +958,37 @@ const App=(()=>{
   document.addEventListener("keydown",e=>{
     const tag=(e.target.tagName||"").toLowerCase();const typing=tag==="input"||tag==="textarea"||tag==="select"||e.target.isContentEditable;
     if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();palette(!$("#palette").classList.contains("on"));return}
-    if(e.key==="Escape"){if($("#palette").classList.contains("on"))palette(false);else if($("#modal").classList.contains("on"))closeModal();else if($("#pop").classList.contains("on"))closePop();else if($("#sheet").classList.contains("on"))closeSheet();return}
+    /* ids: SHEL-367 SHEL-476 SHEL-369 – Esc closes the top layer only (palette → modal → popover → lightbox → sheet), not every layer at once; page hotkeys stay inside the screens */
+    if(e.key==="Escape"){if($("#palette").classList.contains("on"))palette(false);else if($("#modal").classList.contains("on"))closeModal();else if($("#pop").classList.contains("on"))closePop();else if($("#lightbox").classList.contains("on"))closeLightbox();else if($("#sheet").classList.contains("on"))closeSheet();return}
     if(typing)return;
     if(e.key==="/"){e.preventDefault();palette(true);return}
-    if(e.key.toLowerCase()==="n"&&!e.metaKey){go("order-new");return}
-    if(e.key.toLowerCase()==="g"){gPending=true;setTimeout(()=>gPending=false,800);return}
-    if(gPending){const m={t:"today",o:"orders",p:"production",d:"delivery",i:"inbox",c:"customers",s:"stock",k:"catalog",a:"analytics"}[e.key.toLowerCase()];if(m){go(m)}gPending=false}
+    if(e.key.toLowerCase()==="n"&&!e.metaKey&&!e.ctrlKey){if(state.role==="courier"||limited()){toast("New order is not available to "+roleLabel());return}go("order-new");return}
+    if(e.key.toLowerCase()==="g"){gPending=true;setTimeout(()=>gPending=false,900);return}
+    if(gPending){const m={o:"orders",t:"today",d:"delivery",i:"inbox",c:"customers",k:"catalog",s:"stock",e:"team",j:"tasks",l:"learning",a:"analytics",g:"growth",y:"settings",p:"production"}[e.key.toLowerCase()];if(m){const d=SEC[m];go(d?(state.role==="courier"&&d.courier?d.courier.home:d.home):m)}gPending=false}
   });
+  /* ids: SHEL-368 – Cmd/Ctrl+V of a screenshot anywhere on the page attaches the photo to the top open dialog (order sheet / order card), no field focus needed */
+  document.addEventListener("paste",e=>{const files=[...(e.clipboardData?.files||[])];const tag=(e.target.tagName||"").toLowerCase();if(!files.length&&(tag==="input"||tag==="textarea"))return;if(!files.length&&!e.clipboardData?.types?.includes("Files"))return;const top=$("#modal").classList.contains("on")?"the open dialog":$("#sheet").classList.contains("on")?"the open sheet":state.current==="order-card"?"order #"+(state.params.id||"")+" photos":null;if(top){toast("Photo from the clipboard attached to "+top);e.preventDefault()}else toast("Open an order first – pasted photos attach to the top open dialog")});
   document.addEventListener("click",e=>{if(!e.target.closest("#pop"))closePop()});
   /* ---- STAND TOGGLES ---- */
   function setTheme(v){state.theme=v;document.documentElement.dataset.theme=v;$$("#tg-theme button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));toast(v==="ink"?"Ink theme":"Paper theme")}
   function setDensity(v){state.density=v;document.documentElement.dataset.density=v;$$("#tg-density button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));remount()}
-  function setRole(v){state.role=v;document.documentElement.dataset.role=v;$$("#tg-role button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));const cur=state.current;const s=document.getElementById("s-"+cur);if(s&&s.dataset.roles&&!s.dataset.roles.split(/[ ,]+/).includes(v))go("today",{},{replace:true});else remount();toast(`Viewing as ${me().n} · ${me().title}`)}
+  function setRole(v){state.access=(v==="seasonal"||v==="trainee")?v:"";state.role=state.access?"florist":v;document.documentElement.dataset.role=state.role;document.documentElement.dataset.access=state.access;$$("#tg-role button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));state.forced=null;const cur=state.current;if(!cur||!screenAllowed(cur)||document.getElementById("s-"+cur)?.dataset.bare!==undefined)go(homeFor(),{},{replace:true});else remount();toast(`Viewing as ${me().n} · ${me().title}`)}
   function setSize(v){state.size=v;const sb=$("#sidebar");sb.style.transition="none";setTimeout(()=>sb.style.transition="",350);document.documentElement.dataset.size=v;$$("#tg-size button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));drawer(false);fit();remount()}
   function remount(){const cur=state.current;if(!cur)return;const fn=window["mount_"+cur.replace(/-/g,"_")];if(typeof fn==="function"){try{fn(state.params)}catch(e){console.error(e)}}renderSidebar()}
   function fit(){const wrap=$(".frame-wrap"),outer=$("#frame-outer"),br=$("#browser");const w=br.offsetWidth,h=br.offsetHeight;const avail=wrap.clientWidth;const sc=Math.min(1,avail/w);outer.style.transform=`scale(${sc})`;outer.style.width=w+"px";wrap.style.height=(h*sc)+"px";outer.style.marginLeft=Math.max(0,(avail-w*sc)/2)+"px"}
   window.addEventListener("resize",fit);
-  ["theme","density","role","size","btn"].forEach(k=>$$("#tg-"+k+" button").forEach(b=>b.onclick=()=>({theme:setTheme,density:setDensity,role:setRole,size:setSize,btn:setBtn})[k](b.dataset.v)));
-  function setBtn(v){state.btn=v;document.documentElement.dataset.btn=v;$$("#tg-btn button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));toast("Buttons · "+v)}
+  ["theme","density","role","size","demo"].forEach(k=>$$("#tg-"+k+" button").forEach(b=>b.onclick=()=>({theme:setTheme,density:setDensity,role:setRole,size:setSize,demo:demoState})[k](b.dataset.v)));
+  function setBtn(){}
   /* ---- DOMAIN MUTATIONS ---- */
   function emit(n,d){document.dispatchEvent(new CustomEvent(n,{detail:d||{}}));renderSidebar()}
-  function setOrderStatus(id,s,opts={}){const o=order(id);if(!o)return;const prev=o.status;o.status=s;if(s!=="queue"&&!o.florist&&me().role==="florist")o.florist=me().id;if(s==="making"&&!o.florist)o.florist=opts.florist||me().id;if(s==="photo")o.photo=true;if(s==="ready")o.photoSent=true;if(s==="out"&&!o.courier)o.courier=opts.courier||"daniel";if(s==="delivered")o.problem="";o.late=false;
+  /* ids: SHEL-040 SHEL-467 – trainee (and impersonation) read-only: every change answers 403 «Trainees can view the board but not change it.» */
+  const readOnly=()=>{if(state.access==="trainee"){errorPage(403,"Trainees can view the board but not change it.");return true}if(state.imp){errorPage(403,"This action is blocked during impersonation.");return true}return false};
+  function setOrderStatus(id,s,opts={}){if(readOnly())return;const o=order(id);if(!o)return;const prev=o.status;o.status=s;if(s!=="queue"&&!o.florist&&me().role==="florist")o.florist=me().id;if(s==="making"&&!o.florist)o.florist=opts.florist||me().id;if(s==="photo")o.photo=true;if(s==="ready")o.photoSent=true;if(s==="out"&&!o.courier)o.courier=opts.courier||"daniel";if(s==="delivered")o.problem="";o.late=false;
     o.log.push({at:NOW.toISOString(),who:me().id,t:"Status · "+STATUS_LBL[s]+(opts.note?" · "+opts.note:"")});emit("orders",{id,s,prev});if(!opts.silent)toast(`#${id} · ${STATUS_LBL[s]}`,"Undo",()=>{o.status=prev;o.log.pop();emit("orders",{id,s:prev})})}
-  function assignFlorist(id,f){const o=order(id);o.florist=f;if(o.status==="queue")o.status="making";o.log.push({at:NOW.toISOString(),who:me().id,t:"Assigned to "+user(f).n});emit("orders",{id});toast(`#${id} → ${user(f).n}`)}
-  function assignCourier(id,c){const o=order(id);o.courier=c;o.log.push({at:NOW.toISOString(),who:me().id,t:"Courier · "+(user(c)?user(c).n:c)});emit("orders",{id});toast(`#${id} · courier ${user(c)?user(c).n:c}`)}
-  function markPaid(id){const o=order(id);o.paid="paid";o.log.push({at:NOW.toISOString(),who:me().id,t:"Marked paid"});emit("orders",{id});toast(`#${id} · paid`)}
-  function cancelOrder(id,reason){const o=order(id);confirm("Cancel order #"+id+"?",`${customer(o.customer).n} · ${fmt(o.total)}. ${o.paid==="paid"?"A refund will be issued in Stripe.":"Nothing was charged."}`,"Cancel order",()=>{const prev=o.status;o.status="cancelled";o.log.push({at:NOW.toISOString(),who:me().id,t:"Cancelled"+(reason?" · "+reason:"")});emit("orders",{id});closeSheet();toast(`#${id} cancelled`,"Undo",()=>{o.status=prev;o.log.pop();emit("orders",{id})})},{danger:true})}
+  function assignFlorist(id,f){if(readOnly())return;const o=order(id);o.florist=f;if(o.status==="queue")o.status="making";o.log.push({at:NOW.toISOString(),who:me().id,t:"Assigned to "+user(f).n});emit("orders",{id});toast(`#${id} → ${user(f).n}`)}
+  function assignCourier(id,c){if(readOnly())return;const o=order(id);o.courier=c;o.log.push({at:NOW.toISOString(),who:me().id,t:"Courier · "+(user(c)?user(c).n:c)});emit("orders",{id});toast(`#${id} · courier ${user(c)?user(c).n:c}`)}
+  function markPaid(id){if(readOnly())return;const o=order(id);o.paid="paid";o.log.push({at:NOW.toISOString(),who:me().id,t:"Marked paid"});emit("orders",{id});toast(`#${id} · paid`)}
+  function cancelOrder(id,reason){if(readOnly())return;const o=order(id);confirm("Cancel order #"+id+"?",`${customer(o.customer).n} · ${fmt(o.total)}. ${o.paid==="paid"?"A refund will be issued in Stripe.":"Nothing was charged."}`,"Cancel order",()=>{const prev=o.status;o.status="cancelled";o.log.push({at:NOW.toISOString(),who:me().id,t:"Cancelled"+(reason?" · "+reason:"")});emit("orders",{id});closeSheet();toast(`#${id} cancelled`,"Undo",()=>{o.status=prev;o.log.pop();emit("orders",{id})})},{danger:true})}
   function addOrder(o){const id=118500+ORDERS.filter(x=>x.id>=118500).length;const full=Object.assign({id,n:0,qty:1,addons:[],status:"queue",paid:"unpaid",delivery:12,type:"delivery",slot:SLOTS[3],date:T(12,0,0),florist:null,courier:null,photo:false,photoSent:false,placed:NOW.toISOString(),notes:"",problem:"",chan:"Phone",card:"",log:[{at:NOW.toISOString(),who:me().id,t:"Order placed · "+(o.chan||"Phone")}]},o);if(!full.recipient)full.recipient=customer(full.customer).n;if(!full.addr)full.addr=customer(full.customer).addr;ORDERS.unshift(full);emit("orders",{id});return full}
   function sendPhoto(id){const o=order(id);o.photoSent=true;o.log.push({at:NOW.toISOString(),who:me().id,t:"Photo sent to customer · WhatsApp"});if(o.status==="photo")o.status="ready";emit("orders",{id});toast(`Photo sent to ${customer(o.customer).first} · WhatsApp`)}
   function paymentLink(id){const o=order(id);modal({title:"Payment link · #"+id,body:`<div class="kv"><dt>Amount</dt><dd>${fmt(o.total)}</dd><dt>Link</dt><dd><code style="font-size:12px">pay.floritta.uk/${id}</code> <button class="textbtn" onclick="App.toast('Copied')">copy</button></dd><dt>Expires</dt><dd>24 hours · Stripe</dd></div><div class="note-box mt16">The customer can pay by card, Apple Pay or Google Pay. The order stays unpaid until Stripe confirms.</div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Close</button><button class="btn --sm" onclick="App.closeModal();App.toast('Payment link sent · WhatsApp')">${icon("send")} Send via WhatsApp</button>`})}
@@ -886,7 +1005,7 @@ const App=(()=>{
       ${o.problem?`<div class="note-box --accent mb16">${icon("alert")} <b>Problem:</b> ${esc(o.problem)} <button class="textbtn --accent" style="margin-left:8px" onclick="App.order(${id}).problem='';App.emit('orders');App.openOrder(${id})">resolve</button></div>`:""}
       ${late&&o.status!=="delivered"?`<div class="note-box --accent mb16">${icon("clock")} Slot ${esc(o.slot)} ${o.status==="queue"?"starts soon and nobody has started it":"has passed"}.</div>`:""}
       <div class="row" style="align-items:flex-start;gap:16px">
-        <div class="photo --4x5" style="width:132px;flex:none">${o.photo?`<img src="${p.img}" alt="">`:`<div class="empty" style="padding:30px 8px;height:100%">${icon("photo")}<span class="xs">No photo yet</span></div>`}</div>
+        <div class="photo --4x5" style="width:132px;flex:none;cursor:zoom-in" onclick="App.lightbox(['${p.img}'],'${esc(p.name)}',${JSON.stringify(o.notes||"")},${JSON.stringify(o.notes?"RU: "+o.notes:"")})">${o.photo?`<img src="${p.img}" alt="">`:`<div class="empty" style="padding:30px 8px;height:100%">${icon("photo")}<span class="xs">No photo yet</span></div>`}</div>
         <div style="flex:1;min-width:0">
           <div class="h3">${esc(p.name)} <span class="muted sm">· ${esc(o.size)}</span></div>
           <div class="sm soft" style="margin-top:4px">${o.addons.length?o.addons.map(a=>"+ "+esc(product(a).name)).join(", "):"No add-ons"}</div>
@@ -915,7 +1034,7 @@ const App=(()=>{
     }else{
       body=`<div class="timeline">${o.log.slice().reverse().map((l,i)=>`<div class="tl ${i===0?"--on":""}">${esc(l.t)}<small>${fmtDay(l.at)} ${fmtTime(l.at)} · ${l.who==="system"?"Website":esc(user(l.who)?.n||l.who)}</small></div>`).join("")}</div>`;
     }
-    const foot=o.status==="cancelled"?`<span class="muted sm">Cancelled</span>`:`<button class="ib" title="More" onclick="App.orderMenu(event,${id})">${icon("dots")}</button>${o.photo&&!o.photoSent?`<button class="btn --ghost --sm" onclick="App.sendPhoto(${id})">${icon("send")} Send photo</button>`:""}<span class="sp"></span>${o.status==="delivered"?`<span class="pill --delivered">Delivered</span>`:next?`<button class="btn --sm" onclick="App.setOrderStatus(${id},'${next}');App.openOrder(${id},'${tab}')">${icon(next==="photo"?"photo":next==="out"?"truck":"check")} ${nextLbl}</button>`:""}`;
+    const foot=o.status==="cancelled"?`<span class="muted sm">Cancelled</span><span class="sp"></span><button class="btn --ghost --sm" onclick="App.closeSheet(true);App.go('order-card',{id:${id}})">${icon("edit")} Open card</button>`:`<button class="ib" title="More" onclick="App.orderMenu(event,${id})">${icon("dots")}</button><button class="btn --ghost --sm" title="Full order card (/orders/${id})" onclick="App.closeSheet(true);App.go('order-card',{id:${id}})">${icon("edit")} Edit order</button>${o.photo&&!o.photoSent?`<button class="btn --ghost --sm" onclick="App.sendPhoto(${id})">${icon("send")} Send photo</button>`:""}<span class="sp"></span>${o.status==="delivered"?`<span class="pill --delivered">Delivered</span>`:next?`<button class="btn --sm" onclick="App.setOrderStatus(${id},'${next}');App.openOrder(${id},'${tab}')">${icon(next==="photo"?"photo":next==="out"?"truck":"check")} ${nextLbl}</button>`:""}`;
     sheet({eyebrow:`Order #${id} · ${fmtDay(o.date)} ${o.slot}`,title:`${esc(c.n)}`,tabs,body,foot,_replace:$("#sheet").classList.contains("on")&&sheetStack.length&&sheetStack[sheetStack.length-1].eyebrow?.startsWith("Order #"+id)});
   }
   function orderMenu(ev,id){const o=order(id);pop(ev,[{t:"Send payment link",ic:"link",fn:()=>paymentLink(id)},{t:"Mark as paid",ic:"check",fn:()=>{markPaid(id);openOrder(id)}},{t:"Print ticket",ic:"printer",fn:()=>toast("Sent to printer · 1 ticket")},{t:"Duplicate order",ic:"copy",fn:()=>{const n=addOrder({customer:o.customer,product:o.product,size:o.size,total:o.total,chan:"Phone"});toast("#"+n.id+" created");openOrder(n.id)}},{t:"Report a problem",ic:"alert",fn:()=>{o.problem="Flagged by "+me().n;emit("orders");openOrder(id)}},"-",{t:"Cancel order",ic:"close",cls:"--accent",fn:()=>cancelOrder(id)}])}
@@ -931,19 +1050,89 @@ const App=(()=>{
     <div class="sec-head"><div class="h3">Address</div><button class="textbtn" onclick="App.toast('Address editing (demo)')">edit</button></div><div class="sm">${esc(c.addr)}</div>${c.note?`<div class="note-box mt8">${esc(c.note)}</div>`:""}
     <div class="sec-head"><div class="h3">Recent orders</div></div>
     ${os.length?`<div class="list" style="border:1px solid var(--hair)">${os.slice(0,5).map(o=>`<div class="li" onclick="App.openOrder(${o.id})"><div class="t"><b>#${o.id} · ${esc(product(o.product).name)}</b><small>${fmtDay(o.date)} · ${esc(o.slot)} · ${fmt(o.total)}</small></div>${orderPill(o)}</div>`).join("")}</div>`:`<div class="muted sm">No orders in this demo set.</div>`}`;
-    sheet({eyebrow:"Customer",title:esc(c.n),body,foot:`<button class="btn --ghost --sm" onclick="App.go('inbox',{customer:${id}})">${icon("chat")} Message</button><span class="sp"></span><button class="btn --sm" onclick="App.go('order-new',{customer:${id}})">${icon("plus")} New order</button>`});
+    sheet({eyebrow:"Customer",title:esc(c.n),body,foot:`<button class="btn --ghost --sm" onclick="App.go('inbox',{customer:${id}})">${icon("chat")} Message</button><button class="btn --ghost --sm" title="/comms/customers/${id}" onclick="App.closeSheet(true);App.go('customer-card',{id:${id}})">${icon("user")} Open card</button><span class="sp"></span><button class="btn --sm" onclick="App.go('order-new',{customer:${id}})">${icon("plus")} New order</button>`});
   }
+  /* ============ GLOBAL BEHAVIOUR (00-shell · Глобальное поведение) ============ */
+  /* ids: SHEL-333 SHEL-334 SHEL-335 SHEL-336 SHEL-337 SHEL-338 SHEL-339 SHEL-332 – shared props of every page: user (role, accessRole, permissions), feature flags (FLAGS), navCounts (SEC.cnt), taskHub asks, shop «today», flash, impersonation; one provider stack (state, theme, language, UI, lightbox) lives here in App */
+  /* ids: SHEL-340 SHEL-341 SHEL-342 SHEL-343 SHEL-373 SHEL-375 – server flash → toast on any screen (error wins over success over info, same message not repeated); validation errors stay next to fields; JSON widgets stop polling and show Retry */
+  let lastFlash="";
+  function flash(f){const t=f.error?["error",f.error]:f.success?["success",f.success+(f.success_count?" · "+f.success_count:"")]:f.info?["info",f.info]:null;if(!t)return;if(lastFlash===t[1])return;lastFlash=t[1];setTimeout(()=>lastFlash="",5000);toast((t[0]==="error"?"Error · ":"")+t[1],"Dismiss",()=>{})}
+  /* ids: SHEL-371 SHEL-372 SHEL-374 – 403 / 404 / 419 / 500 as a Floritta-styled overlay instead of Laravel's raw page in an Inertia modal */
+  function errorPage(code,text){const msg={403:text||"You do not have access to this page.",404:"This page does not exist or its feature flag is off.",419:"Your session expired. Sign in again to continue.",500:"Something went wrong on our side. Try again in a minute."}[code]||text;modal({title:{403:"Forbidden",404:"Not found",419:"Page expired",500:"Server error"}[code]||"Error",body:`<div class="err-box"><span class="code">${code}</span><span>${esc(msg)}</span></div>`,foot:code===419?`<button class="btn --sm" onclick="App.closeModal();App.go('auth-login')">Sign in again</button>`:`<button class="btn --secondary --sm" onclick="App.closeModal()">Close</button><button class="btn --sm" onclick="App.closeModal();App.back()">Go back</button>`})}
+  /* ids: SHEL-323 SHEL-326 SHEL-327 SHEL-328 SHEL-361 SHEL-362 SHEL-469 SHEL-468 SHEL-322 – shell demo states: Alcohol-hours modal (422 from licensing hours), forced password change, forced courier consent, deactivated user → /login, unpaid alarm bar, post-release reload, impersonation banner */
+  function demoState(v){
+    if(v==="alcohol")modal({title:"Alcohol: outside licensed hours",body:`<div class="sm soft">Orders with alcohol can only be made, handed to a courier or marked ready on the marketplace between <b>08:00 and 21:30</b> – that is the condition of our premises licence (SE1 889934). The action was refused by the server; there is no override.</div>`,foot:`<button class="btn --sm" onclick="App.closeModal()">OK, got it</button>`});
+    else if(v==="forcepw"){state.forced=state.forced==="auth-password-change"?null:"auth-password-change";if(state.forced){go("auth-password-change",{forced:true},{force:true});toast("Set your own password to continue. (every other screen redirects here)")}else{go(homeFor(),{},{force:true});toast("Password set · forced redirect off")}}
+    else if(v==="consent"){if(state.role!=="courier")setRole("courier");state.forced=state.forced==="driver-consent"?null:"driver-consent";if(state.forced){go("driver-consent",{forced:true},{force:true});toast("Courier without geo-consent can only see this screen")}else{go("driver-deliveries",{},{force:true});toast("Consent signed · courier is free to work")}}
+    else if(v==="imp"){state.imp=!state.imp;$("#app").classList.toggle("imp",state.imp);toast(state.imp?"Impersonation on · changes are blocked and logged":"Exited impersonation · POST /one/impersonate/exit")}
+    else if(v==="flash"){const n=(state.flashN=(state.flashN||0)+1)%3;flash(n===1?{success:"Order #118431 updated",success_count:3}:n===2?{error:"Stripe refused the refund – try again"}:{info:"Clock in nudge: you are on shift but not clocked in"})}
+    else if(v==="unpaid"){const a=$("#alarm");a.classList.toggle("on");if(a.classList.contains("on")){toast("Unpaid order – contact the customer (sound + system notification + blinking tab title)");document.title="(2) NOT PAID · Floritta Admin"}else renderSidebar()}
+    else if(v==="403")errorPage(403);
+    else if(v==="419")errorPage(419);
+    else if(v==="deploy"){toast("New release detected (asset version changed) – the page reloads itself: open modals close, unsaved input is lost");setTimeout(()=>{const pr=$("#nav-progress");pr.classList.remove("on");requestAnimationFrame(()=>pr.classList.add("on"));remount()},900)}
+    else if(v==="deactivated"){toast("Your account was deactivated – signed out on the next request");go("auth-login",{},{force:true})}
+    $$("#tg-demo button").forEach(b=>b.classList.toggle("on",(b.dataset.v==="imp"&&state.imp)||(b.dataset.v==="forcepw"&&state.forced==="auth-password-change")||(b.dataset.v==="consent"&&state.forced==="driver-consent")||(b.dataset.v==="unpaid"&&$("#alarm").classList.contains("on"))));
+  }
+  function muteAlarm(){state.muted=!state.muted;try{localStorage.setItem("orders_unpaid_muted",state.muted?"1":"0")}catch(e){}toast(state.muted?"Sound, system notification and tab blink are off · the red bar stays":"Unpaid alerts on");$("#alarm-mute").textContent=state.muted?"Unmute":"Mute"}
+  /* ids: SHEL-344 SHEL-345 SHEL-346 SHEL-347 SHEL-350 SHEL-351 SHEL-470 SHEL-472 SHEL-473 – Courier events bell: unread count (20+), polled every 25 s (also in a background tab, immediately on tab focus), list of the last 20 with a typed icon and colour stripe, click → order card / Couriers today / Courier idle / Dispatch; pending trip blinks the favicon; history kept across navigation (persistent shell) */
+  const EV_TYPES={picked_up:["truck","--ok","picked up"],delivered:["check","--ok","delivered"],failed:["alert","--accent","could not deliver"],noted:["chat","","left a note"],route_stop_added:["plus","","stop added to the route"],route_off_route:["route","--warn","is off the planned route"],route_no_photo:["photo","--warn","delivered without a photo"],early_delivery:["clock","--warn","delivered before the window"],idle_break:["pause","--warn","idle for 20 min (auto-break)"],heading_to_shop:["pin","","is heading to the shop"],arrived_at_shop:["pin","--ok","arrived at the shop"],route_confirm_asked:["flag","--warn","asks to confirm a route"],advisor_new:["sparkle","","new delivery advice"]};
+  (function seedEvents(){const mk=(type,who,oid,min)=>({id:state.courierEvents.length+1,type,who,order:oid,at:new Date(NOW-min*6e4).toISOString(),seen:min>40});
+    state.courierEvents=[mk("picked_up","daniel",ORDERS[7].id,4),mk("route_confirm_asked","george",null,9),mk("delivered","daniel",ORDERS[2].id,14),mk("failed","omar",ORDERS[19].id,21),mk("noted","daniel",ORDERS[8].id,33),mk("early_delivery","george",ORDERS[1].id,52),mk("idle_break","omar",null,61),mk("heading_to_shop","george",null,75),mk("advisor_new",null,null,80),mk("route_no_photo","daniel",ORDERS[4].id,110)];state.pendingTrip=true})();
+  function courierEvents(){
+    const list=state.courierEvents.slice(0,20).map((e,i)=>{const d=EV_TYPES[e.type]||["info","",e.type];const who=e.who?user(e.who).n:"Advisor";return`<div class="li" onclick="App.openEvent(${i})"><span class="ev-ic ${d[1]}">${icon(d[0])}</span><div class="t"><b>${esc(who)} ${esc(d[2])}${e.order?" · #"+e.order:""}</b><small>${e.order?esc(customer(order(e.order).customer).n)+" · "+esc(order(e.order).slot):e.type==="idle_break"?"admin only":"tap to open"}</small></div><span class="xs muted tnum">${fmtTime(e.at)}</span></div>`}).join("");
+    state.courierEvents.forEach(e=>e.seen=true);renderSidebar();
+    sheet({title:"Courier events",eyebrow:"Polled every 25 s · last 20",narrow:true,flush:true,head:state.pendingTrip?`<button class="btn --sm --accent" onclick="App.tripConfirm()">${icon("flag")} Route waiting</button>`:"",body:`<div class="list">${list||`<div class="empty">${icon("truck")}<div class="h3">No courier events yet</div></div>`}</div>`});
+  }
+  function openEvent(i){const e=state.courierEvents[i];closeSheet(true);if(e.type==="route_confirm_asked")return tripConfirm();if(e.order)return openOrder(e.order);if(e.type.startsWith("idle"))return go("delivery-idle");if(e.type==="advisor_new")return advicePanel();go("couriers-today")}
+  /* ids: SHEL-348 SHEL-349 SHEL-471 – «{courier} is ready to leave» modal: ready since, orders, total time, back at, river crossings, lateness, numbered route; Confirm route / Change route (editor) / Send back with a note (≤500); cannot be dismissed without an answer; 409 → «no longer waiting» and closes after 1.5 s */
+  function tripConfirm(mode="confirm"){
+    const stops=ORDERS.filter(o=>o.n===0&&o.status==="ready"&&o.type==="delivery").slice(0,4);
+    const route=`<div class="adv-run"><div class="row"><b>George · bike</b><span class="sp"></span><span class="xs muted">ready since 10:35 · ${stops.length} orders · 1 h 10 · back 11:50 · 1 river crossing · late total 0 min</span></div><div class="stops">${stops.map((o,i)=>`<div class="st"><span class="no">${i+1}</span><span>#${o.id} · ${esc(o.addr.split(",")[0])}</span><span class="xs muted">${esc(o.slot)}</span>${i===2?`<span class="tag --accent">late window</span>`:""}</div>`).join("")}</div></div>`;
+    const body=mode==="note"?`${route}<div class="field mt8"><label>Note to the courier (max 500)</label><textarea class="textarea" id="trip-note" maxlength="500" placeholder="e.g. swap stops 2 and 3, #${stops[1]?.id} first – the office closes at 12"></textarea></div>`:mode==="edit"?`${route}<div class="note-box mt8">Route editor: drag the stops, add from the board (route-add) or remove; the courier sees the new order on confirmation.</div><div class="btn-row mt8"><button class="chip" onclick="App.toast('Stop moved up')">↑ move #${stops[2]?.id}</button><button class="chip" onclick="App.toast('Stop added from the board')">+ add stop</button></div>`:route;
+    const foot=mode==="confirm"?`<button class="btn --ghost --sm" onclick="App.tripConfirm('note')">Send back with a note</button><button class="btn --secondary --sm" onclick="App.tripConfirm('edit')">Change route</button><button class="btn --sm" onclick="App._tripDone('confirmed')">${icon("check")} Confirm route</button>`:mode==="note"?`<button class="btn --secondary --sm" onclick="App.tripConfirm()">Cancel</button><button class="btn --sm --accent" onclick="App._tripDone('rejected')">Send back</button>`:`<button class="btn --secondary --sm" onclick="App.tripConfirm()">Back</button><button class="btn --sm" onclick="App._tripDone('confirmed')">Confirm new route</button>`;
+    modal({title:"George is ready to leave",body:`<div class="xs muted mb8">Queue: 1 more trip waiting after this one</div>${body}`,foot,wide:true,locked:true});
+  }
+  function _tripDone(r){modalLocked=false;closeModal(true);state.pendingTrip=false;renderSidebar();if(r==="confirmed"){toast("Route confirmed · POST /api/courier-trips/1/confirm");state.courierEvents.unshift({id:99,type:"picked_up",who:"george",order:ORDERS[11].id,at:NOW.toISOString(),seen:false})}else toast("Sent back to George with your note · POST /api/courier-trips/1/reject");renderSidebar()}
+  /* ids: SHEL-352 SHEL-353 SHEL-354 SHEL-355 SHEL-356 SHEL-357 SHEL-358 SHEL-359 SHEL-474 SHEL-475 – Delivery advice: compass button with candidate count (20+), advice polled every 60 s in the visible tab (toast on new advice), panel: Own / Uber summary, each courier of the shift with rota chips and runs, «Assign orders (N)» → inline confirm, Uber list with price and ETA → «Call Uber for #…?», «Assign DPD», «Will miss the window», notes, «Build advice», «Hide», out-of-date mark (>30 min), 409 / 422 answers, order codes are real links */
+  function advicePanel(){
+    const A=state.advice;const ready=ORDERS.filter(o=>o.n===0&&o.status==="ready"&&o.type==="delivery");
+    const run=(c,os,i)=>`<div class="adv-run" data-testid="advice-run"><div class="row">${avatar(c.id,"--s")}<b>${c.n}</b><span class="chip" style="height:22px;font-size:11px">${c.shift}</span>${c.on?`<span class="tag --ok">on shift</span>`:`<span class="tag --accent">not checked in</span>`}<span class="sp"></span><span class="xs muted">run ${i+1} · leave 11:05 · ${os.length} orders · slots ${os.length}/5 · back 12:10 · £${(os.length*4.2).toFixed(2)}/drop</span></div><div class="stops">${os.map((o,k)=>`<div class="st"><span class="no">${k+1}</span><button class="link" onclick="App.closeSheet(true);App.go('order-card',{id:${o.id}})" title="/orders/${o.id}">#${o.id}</button><span>${esc(o.addr.split(",")[0])}</span><span class="xs muted">${esc(o.slot)}</span>${k===1?`<span class="tag --line">bulky</span>`:""}</div>`).join("")}</div><div class="btn-row mt8"><button class="btn --sm" onclick="App.confirm('Assign to ${c.n} – orders: ${os.length}?','The run goes to the courier app at once; the board, Dispatch and the order cards refresh immediately.','Assign',()=>{${os.map(o=>`App.assignCourier(${o.id},'${c.id}');`).join("")}App.advicePanel()})">Assign orders (${os.length})</button>${i===0?`<span class="xs muted">waiting: #${ready[3]?.id||"–"} until 11:20</span>`:""}</div></div>`;
+    const uber=ready.slice(4,6).map(o=>`<div class="li"><div class="t"><b>#${o.id} · ${esc(o.addr.split(",")[0])}</b><small>Uber Direct ~£9.40 · ETA 18 min · window ${esc(o.slot)}</small></div><button class="btn --ghost --sm" ${o.id%3===0?`disabled title="Uber does not serve this address"`:`onclick="App.confirm('Call Uber for #${o.id} (${esc(o.addr.split(" SE")[1]?"SE"+o.addr.split(" SE")[1]:"SE1")})?','£9.40 · courier in ~6 min · the order is already in nobody\\'s run.','Call Uber',()=>{App.assignCourier(${o.id},'Uber Direct');App.advicePanel()})"`}>Call Uber</button></div>`).join("");
+    const body=A.candidates===0?`<div class="empty">${icon("check")}<div class="h3">Every delivery order is covered</div></div>`:!A.builtAt?`<div class="empty">${icon("sparkle")}<div class="h3">No advice yet</div><div class="sm">Press Build advice.</div></div>`:`
+      <div class="row mb16" data-testid="advice-summary"><span class="kpi-s">${ready.length-2} own</span><span class="muted">·</span><span class="kpi-s">2 Uber</span><span class="muted">·</span><span class="kpi-s">1 DPD</span><span class="sp"></span><span class="xs ${A.stale?"accent":"muted"}">built ${A.builtAt}${A.stale?" · out of date – build it again":""}${A.dismissed?" · dismissed":""}</span></div>
+      ${A.atRisk?`<div class="note-box --accent mb16" data-testid="advice-at-risk">${icon("clock")} Will miss the window: #${ready[2]?.id} (${ready[2]?.slot}) – call Uber or move it to run 1.</div>`:""}
+      ${run(user("daniel"),ready.slice(0,3),0)}${run(user("george"),ready.slice(3,4),1)}
+      <div class="sec-head"><div class="h3">Uber Direct</div></div><div class="list" style="border:1px solid var(--hair)">${uber||`<div class="li"><span class="muted sm">No Uber candidates</span></div>`}</div>
+      <div class="sec-head"><div class="h3">Outside London</div></div><div class="list" style="border:1px solid var(--hair)"><div class="li"><div class="t"><b>#${ORDERS[33].id} · Brighton BN1</b><small>DPD Next Day · label ready to print</small></div><button class="btn --ghost --sm" onclick="App.toast('DPD shipment created for #${ORDERS[33].id}')">Assign DPD</button></div></div>
+      <div class="note-box mt16">Recommendation for Couriers today: Omar's shift starts 14:00 – two 16:00–18:00 orders can wait for him instead of Uber (saves £18.80).</div>`;
+    sheet({title:"Delivery advice",eyebrow:"Advisor · polled every 60 s",wide:true,head:`<button class="btn --ghost --sm" onclick="App.state.advice.dismissed=true;App.renderSidebar();App.closeSheet();App.toast('Advice hidden until the next build')">Hide</button><button class="btn --sm" onclick="App.state.advice={candidates:3,dismissed:false,builtAt:'10:43',atRisk:true};App.renderSidebar();App.advicePanel();App.toast('Delivery advice: 3 orders')">${icon("refresh")} Build advice</button>`,body});
+  }
+  /* ids: SHEL-364 SHEL-365 SHEL-366 SHEL-360 SHEL-477 – auto-refresh every 60 s (partial reload, skipped while a sheet / modal / form is open), immediate refresh after a courier assignment, delivery screens poll faster (Tracking 15 s, Presence 20 s, Couriers today 30 s), «On shift» chip every 5 min; failed JSON calls retry 3× and refetch on window focus */
+  function autoTick(){const busy=$("#sheet").classList.contains("on")||$("#modal").classList.contains("on")||state.current==="order-new"||state.current==="order-create";$("#tb-live").classList.toggle("paused",busy||!state.auto);if(busy||!state.auto)return;refreshNow(true)}
+  function refreshNow(silent){const d=new Date();state.lastRefresh=pad(d.getHours())+":"+pad(d.getMinutes());$("#tb-live-t").textContent="Updated "+state.lastRefresh;if(!silent){remount();toast("Refreshed · partial reload of the current screen")}else renderSidebar()}
+  document.addEventListener("orders",e=>{if(e.detail&&e.detail.id&&order(e.detail.id)?.courier)$("#tb-live-t").textContent="Updated now"});
+  /* ids: SHEL-399 SHEL-400 – Lightbox: any thumbnail opens the photo over the page, all photos of the order in a strip, internal note (yellow) with its Russian translation, click or Esc closes */
+  function lightbox(srcs,alt,note,noteRu){const l=$("#lightbox");const list=Array.isArray(srcs)?srcs:[srcs];l.innerHTML=`<img class="main" src="${list[0]}" alt="${esc(alt||"")}" data-testid="lightbox-images">${list.length>1?`<div class="strip">${list.map((s,i)=>`<img src="${s}" class="${i?"":"on"}" onclick="event.stopPropagation();this.parentNode.previousElementSibling.src=this.src;[...this.parentNode.children].forEach(x=>x.classList.toggle('on',x===this))">`).join("")}</div>`:""}${note?`<div class="ln" data-testid="lightbox-note" onclick="event.stopPropagation()">${esc(note)}${noteRu?`<small data-testid="lightbox-note-ru">${esc(noteRu)}</small>`:""}</div>`:""}`;l.classList.add("on")}
+  function closeLightbox(){$("#lightbox").classList.remove("on")}
+  document.addEventListener("click",e=>{const t=e.target.closest(".thumb img,.photo img");if(t&&!e.target.closest("[onclick]")&&!e.defaultPrevented){lightbox([t.src],t.alt)}},true);
+  /* ids: SHEL-376 SHEL-377 SHEL-378 SHEL-379 SHEL-380 – telemetry: on shared devices every navigation and button click is logged (label only) in batches for Analytics → Usage; time per section for Analytics → Worktime; feature beacons; CSP (own scripts/fonts only); driver screens show shop-zone time */
+  function usage(kind,label){if(!state.sharedDevice&&kind!=="nav")return;state.usage.push({kind,label,at:Date.now()});if(state.usage.length>=40){state.usage=[];}}
+  document.addEventListener("click",e=>{const b=e.target.closest("button,a");if(!b||!state.sharedDevice)return;usage("click",b.dataset.track||b.getAttribute("aria-label")||b.textContent.trim().slice(0,40)||b.title)});
+  function trackSection(id){const sec=sectionOf(id)||"other";const dt=Date.now()-(state.sectionAt||Date.now());state.worktime[sec]=(state.worktime[sec]||0)+dt}
+  function worktime(){return Object.entries(state.worktime).map(([k,v])=>k+" "+Math.round(v/1000)+"s").join(" · ")||"–"}
   /* ---- INIT ---- */
   function init(){
     fit();renderStageNav();
     const h=(location.hash||"").slice(1);
-    go(h&&document.getElementById("s-"+h)?h:"orders",{},{replace:true});
+    go(h&&document.getElementById("s-"+h)?h:homeFor(),{},{replace:true,init:true});
     document.fonts&&document.fonts.ready.then(fit);
+    setInterval(autoTick,60000);
   }
   window.addEventListener("DOMContentLoaded",init);
   return {$,$$,state,data,NOW,T,user,me,role,isMgr,fmt,fmtTime,fmtDay,fmtDate,timeAgo,isLate,customer,product,order,esc,icon,pill,orderPill,avatar,chanTag,STATUS_LBL,NEXT,ORDER_STATUSES,SLOTS,
     go,back,drawer,sheet,sheetBack,closeSheet,modal,closeModal,confirm,_confirmGo,pop,closePop,toast,push,notifications,readAll,userMenu,palette,registerCommands,
-    setTheme,setDensity,setRole,setSize,setBtn,fit,remount,renderSidebar,emit,setOrderStatus,assignFlorist,assignCourier,markPaid,cancelOrder,addOrder,sendPhoto,paymentLink,openOrder,orderMenu,pickFlorist,pickCourier,openCustomer};
+    setTheme,setDensity,setRole,setSize,setBtn,fit,remount,renderSidebar,emit,setOrderStatus,assignFlorist,assignCourier,markPaid,cancelOrder,addOrder,sendPhoto,paymentLink,openOrder,orderMenu,pickFlorist,pickCourier,openCustomer,
+    SEC,sectionOf,canSee,screenAllowed,urlOf,FLAGS,limited,togglePin,boardDate,markDirty,demoState,errorPage,flash,courierEvents,tripConfirm,advicePanel,refreshNow,lightbox,closeLightbox,usage,worktime,muteAlarm,openEvent,_tripDone,access:()=>state.access};
 })();
 window.App=App;
 </script>
