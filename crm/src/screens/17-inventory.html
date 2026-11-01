@@ -1,0 +1,694 @@
+<style>
+/* ===== 17 · Inventory – stock, counts, losses (scoped .inv-scr) ===== */
+.inv-scr .inv-nav{display:flex;gap:0;border-bottom:1px solid var(--hair);padding:0 var(--pad);flex:none;overflow-x:auto;scrollbar-width:none;align-items:stretch}
+.inv-scr .inv-nav::-webkit-scrollbar{display:none}
+.inv-scr .inv-nav .grp{display:flex;align-items:center;gap:0;padding-right:16px;margin-right:16px;border-right:1px solid var(--hair)}
+.inv-scr .inv-nav .grp:last-of-type{border-right:0}
+.inv-scr .inv-nav .grp .g{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);padding-right:10px;white-space:nowrap}
+.inv-scr .inv-nav button{height:40px;padding:0 10px;font-size:12.5px;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.inv-scr .inv-nav button.on{color:var(--ink);border-bottom-color:var(--sel)}
+.inv-scr .inv-nav button:hover:not(.on){color:var(--ink)}
+.inv-scr .inv-nav button .n{font-size:10.5px;color:var(--grey);font-variant-numeric:tabular-nums}
+.inv-scr .inv-nav button .n.hot{color:var(--accent)}
+.inv-scr .inv-nav .sp{flex:1}
+.inv-scr .inv-nav .demo{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);padding:0 0 0 12px;white-space:nowrap}
+.inv-scr .inv-nav .demo:hover{color:var(--ink)}
+.inv-scr .scr-head .sub{font-size:13px;color:var(--grey)}
+.inv-scr .scr-head .h2{white-space:nowrap}
+.inv-scr .kpi-card .kpi-s{margin-top:2px}
+.inv-scr .kpi-card.--warn{box-shadow:inset 0 3px 0 var(--warn)}
+.inv-scr .kpi-card.--accent{box-shadow:inset 0 3px 0 var(--accent)}
+.inv-scr .kpi-card .delta{font-size:12px;color:var(--grey)}
+.inv-scr .tbl tr.--accent td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.inv-scr .tbl tr.--warn td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+.inv-scr .tbl td.it{display:flex;align-items:center;gap:10px;height:var(--row-h)}
+.inv-scr .tbl td.it .t{min-width:0}
+.inv-scr .tbl td.it .t b{display:block;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inv-scr .tbl td.it .t small{display:block;font-size:11.5px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inv-scr .tbl td .input{height:30px;width:88px;padding:0 8px}
+.inv-scr .tbl td .select{height:30px;padding:0 26px 0 8px;width:auto;max-width:220px}
+.inv-scr .badge-a{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid var(--ink);font-size:10px;font-weight:500;flex:none;cursor:help}
+.inv-scr .two{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start}
+.inv-scr .two.--eq{grid-template-columns:repeat(2,minmax(0,1fr))}
+.inv-scr .stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.inv-scr .panel .p-body{overflow:visible}
+.inv-scr .panel .p-foot{padding:8px 14px;border-top:1px solid var(--hair);font-size:12px;color:var(--grey);display:flex;gap:12px;align-items:center}
+.inv-scr .mv{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--hair);font-size:13px}
+.inv-scr .mv:last-child{border-bottom:0}
+.inv-scr .mv .q{margin-left:auto;font-variant-numeric:tabular-nums}
+.inv-scr .mv .q.--ok{color:var(--ok)}.inv-scr .mv .q.--accent{color:var(--accent)}
+.inv-scr .note-box.--info{background:var(--silver)}
+.inv-scr .count-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 44px 120px;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--hair)}
+.inv-scr .count-row:last-child{border-bottom:0}
+.inv-scr .count-row .hint{grid-column:1/-1;font-size:12.5px;color:var(--graphite);padding-left:54px}
+.inv-scr .count-row .input{height:44px;font-size:18px;text-align:right;font-variant-numeric:tabular-nums}
+.inv-scr .count-row .ib.cam{width:44px;height:44px;border:1px solid var(--light)}
+.inv-scr .sticky-bar{position:sticky;top:0;z-index:3;background:var(--paper);border:1px solid var(--hair);padding:10px 14px;display:flex;align-items:center;gap:14px;margin-bottom:12px;font-size:13px}
+.inv-scr .form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 16px}
+.inv-scr .form-grid .--2{grid-column:span 2}.inv-scr .form-grid .--4{grid-column:1/-1}
+.inv-scr .lines .tbl td{padding:4px 8px}
+.inv-scr .lines .tbl td .input{width:100%}
+.inv-scr .lines .tbl td .select{max-width:none;width:100%}
+.inv-scr .totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.inv-scr .totals .kpi-card{cursor:default}
+.inv-scr .wo-card{border:1px solid var(--hair);display:flex;gap:14px;padding:14px}
+.inv-scr .wo-card.--rejected{opacity:.75}
+.inv-scr .wo-card .ph{width:84px;height:84px;flex:none;background:var(--silver);display:grid;place-items:center;color:var(--grey);font-size:11px;text-align:center;cursor:pointer}
+.inv-scr .wo-card .ph img{width:100%;height:100%;object-fit:cover}
+.inv-scr .wo-card .acts{display:flex;gap:8px;flex-direction:column;flex:none;align-items:flex-end}
+.inv-scr .light{display:inline-flex;align-items:center;gap:6px;font-size:12px}
+.inv-scr .light::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.inv-scr .light.--watch::before{background:var(--warn)}.inv-scr .light.--alarm::before{background:var(--accent)}
+.inv-scr .share{display:flex;align-items:center;gap:8px}
+.inv-scr .share .progress{flex:1;min-width:60px}
+.inv-scr .role-note{font-size:12px;color:var(--grey);display:inline-flex;align-items:center;gap:6px}
+.inv-scr .err-box{border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);padding:10px 14px;font-size:13px;margin-bottom:12px;display:flex;gap:10px;align-items:center}
+.inv-scr .sug{border:1px solid var(--hair);padding:14px;display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px}
+.inv-scr .sug .ph{width:84px;height:84px;background:var(--silver);overflow:hidden}
+.inv-scr .sug .ph img{width:100%;height:100%;object-fit:cover}
+.inv-scr .sug .cand{display:flex;gap:6px;flex-wrap:wrap}
+.inv-scr .hint-row{font-size:12px;color:var(--grey);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.inv-scr .kbd{vertical-align:middle}
+[data-size="ipad"] .inv-scr .two{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+[data-size="ipad"] .inv-scr .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-size="ipad"] .inv-scr .count-row{grid-template-columns:minmax(0,1fr) 130px 44px 110px}
+[data-size="phone"] .inv-scr .two,[data-size="phone"] .inv-scr .two.--eq,[data-size="phone"] .inv-scr .totals{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .inv-scr .form-grid{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .inv-scr .form-grid .--2{grid-column:auto}
+[data-size="phone"] .inv-scr .count-row{grid-template-columns:minmax(0,1fr) 44px;gap:8px}
+[data-size="phone"] .inv-scr .count-row .input{grid-column:1/2}
+[data-size="phone"] .inv-scr .count-row .hint{padding-left:0}
+[data-size="phone"] .inv-scr .inv-nav{padding:0 12px}
+[data-size="phone"] .inv-scr .scr-head .btn span.t{display:none}
+</style>
+
+<!-- ids: INVT-001 INVT-003 INVT-004 INVT-005 INVT-006 INVT-007 INVT-008 INVT-009 INVT-319 — section nav strip (grouped tabs filtered by permission, exact-match highlight), toasts as feedback, searchable item picker in every form -->
+<section class="scr inv-scr" id="s-inventory" data-nav="Inventory · Overview" data-group="Catalog & Stock" data-title="Inventory" data-sub="Stock overview" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <!-- ids: INVT-010 INVT-002 INVT-022 -->
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-035 INVT-036 INVT-037 INVT-038 INVT-039 INVT-040 INVT-041 INVT-048 INVT-049 INVT-050 INVT-051 INVT-052 INVT-053 INVT-054 INVT-055 INVT-056 INVT-057 INVT-058 INVT-059 INVT-060 INVT-061 INVT-062 INVT-063 INVT-064 INVT-065 INVT-066 INVT-067 INVT-068 INVT-321 — Stock levels -->
+<section class="scr inv-scr" id="s-inventory-stock" data-nav="Stock levels" data-group="Catalog & Stock" data-title="Inventory" data-sub="Stock levels" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-069 INVT-070 INVT-071 INVT-072 INVT-073 INVT-074 INVT-075 INVT-076 INVT-077 INVT-078 INVT-079 INVT-080 INVT-081 INVT-082 INVT-083 INVT-084 INVT-085 INVT-086 INVT-087 INVT-088 INVT-089 INVT-090 INVT-091 INVT-092 INVT-093 INVT-094 INVT-095 INVT-096 INVT-097 INVT-322 INVT-323 — Item card, Edit item, pack size, QR label sheet -->
+<section class="scr inv-scr" id="s-inventory-item" data-nav="Item card" data-group="Catalog & Stock" data-title="Inventory" data-sub="Item" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-098 INVT-099 INVT-100 INVT-101 INVT-102 INVT-103 INVT-104 INVT-324 INVT-011 — Count today (cycle count, photo estimate) -->
+<section class="scr inv-scr" id="s-inventory-count" data-nav="Count today" data-group="Catalog & Stock" data-title="Inventory" data-sub="Count today" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-105 INVT-106 INVT-107 INVT-108 INVT-109 INVT-110 — Stocktakes list + New stocktake modal -->
+<section class="scr inv-scr" id="s-inventory-stocktakes" data-nav="Stocktakes" data-group="Catalog & Stock" data-title="Inventory" data-sub="Stocktakes" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-111 INVT-112 INVT-113 INVT-114 INVT-115 INVT-116 INVT-117 INVT-118 INVT-119 INVT-120 INVT-121 INVT-122 INVT-325 — Stocktake sheet -->
+<section class="scr inv-scr" id="s-inventory-stocktake-sheet" data-nav="Stocktake sheet" data-group="Catalog & Stock" data-title="Inventory" data-sub="Stocktake" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-123 INVT-124 INVT-125 INVT-126 INVT-127 INVT-128 INVT-129 INVT-130 INVT-131 — Group A (owner only) -->
+<section class="scr inv-scr" id="s-inventory-group-a" data-nav="Group A" data-group="Catalog & Stock" data-title="Inventory" data-sub="Group A" data-roles="owner" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-132 INVT-133 INVT-134 INVT-135 INVT-136 INVT-137 INVT-138 INVT-139 INVT-140 INVT-141 — Suggested items from the shift -->
+<section class="scr inv-scr" id="s-inventory-suggestions" data-nav="Suggested items" data-group="Catalog & Stock" data-title="Inventory" data-sub="Suggested items" data-roles="owner manager" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-259 INVT-260 INVT-261 INVT-262 INVT-263 INVT-264 INVT-033 — Movements log -->
+<section class="scr inv-scr" id="s-inventory-movements" data-nav="Movements" data-group="Catalog & Stock" data-title="Inventory" data-sub="Movements" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-207 INVT-208 INVT-209 INVT-210 INVT-211 INVT-212 INVT-213 INVT-214 INVT-215 — Write-off form + losses panel -->
+<section class="scr inv-scr" id="s-inventory-writeoff" data-nav="Write-off" data-group="Catalog & Stock" data-title="Inventory" data-sub="Write-off" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-225 INVT-226 INVT-227 INVT-228 INVT-229 INVT-230 INVT-231 INVT-334 — Write-off review -->
+<section class="scr inv-scr" id="s-inventory-writeoff-review" data-nav="Write-off review" data-group="Catalog & Stock" data-title="Inventory" data-sub="Write-off review" data-roles="owner manager" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+
+<!-- ids: INVT-216 INVT-217 INVT-218 INVT-219 INVT-220 INVT-221 INVT-222 INVT-223 INVT-224 INVT-034 — Write-off report (shrinkage) -->
+<section class="scr inv-scr" id="s-inventory-writeoff-report" data-nav="Write-off report" data-group="Catalog & Stock" data-title="Inventory" data-sub="Write-off report" data-roles="owner manager" data-parent="stock">
+  <div class="inv-nav" data-inv-nav></div>
+  <div class="scr-head" data-inv-head></div>
+  <div class="scr-body" data-inv-body></div>
+</section>
+<script>
+/* ===== 17 · Inventory – shared runtime + fictional demo data (INV) ===== */
+const INV=(()=>{
+  const A=App,esc=s=>A.esc(s),ic=n=>A.icon(n);
+  /* demo switches (flags / configs that change the screens) */
+  const demo={colors:true,landed:true,photoCorr:true,writeoffLive:false,importMode:"expected",photoCount:true,groupA:true,shopFloor:false,shrink:true,claimQueued:true,busy:false};
+  const can=()=>({view:true,count:true,manage:A.isMgr(),cost:A.role()==="owner"});
+  const D=(d,h=10,m=0)=>{const x=new Date(A.NOW);x.setDate(x.getDate()+d);x.setHours(h,m,0,0);return x.toISOString()};
+  const fd=iso=>iso?new Date(iso).toLocaleDateString("en-GB",{day:"numeric",month:"short"}):"–";
+  const fdt=iso=>iso?fd(iso)+" "+A.fmtTime(iso):"–";
+  const days=iso=>Math.round((new Date(iso).setHours(0,0,0,0)-new Date(A.NOW).setHours(0,0,0,0))/864e5);
+  const money=n=>A.fmt(Math.round(n*100)/100);
+  const pct=n=>(Math.round(n*10)/10)+"%";
+  /* ---- items: App.data.inventory enriched ---- */
+  const CATS=["Roses","Roses","Peonies","Garden roses","Hydrangea","Greenery","Greenery","Lisianthus","Ranunculus","Tulips","Wrap","Ribbon","Vases","Foam","Boxes","Helium","Latex balloons"];
+  const RU=["Роза Ред Наоми","Роза Квиксенд","Пион Сара Бернар","Роза Джульетта","Гортензия белая","Эвкалипт","Рускус","Лизиантус белый","Ранункулюс","Тюльпан белый","Бумага айвори","Лента атлас","Ваза цилиндр","Оазис","Коробка большая","Гелий","Шар латекс 12\""];
+  const COLORS=[["red","Red"],["pink","Pink"],["white","White"],["peach","Peach"],["lilac","Lilac"],["green","Green"],["mixed","Mixed"]];
+  const items=A.data.inventory.map((r,i)=>{const flower=i<10;const sl=flower?[7,7,5,6,8,12,12,8,6,5][i]:null;
+    const fresh=flower&&r.qty>0?D([3,1,0,5,-1,6,4,2,1,0][i]):null;
+    return Object.assign({},r,{cat:CATS[i],ru:RU[i],sku:(flower?"AP-":"M-")+(flower?1001+i*7:400100+i),min:r.par,reserved:flower?[24,8,0,6,2,0,0,10,5,0][i]:[0,0,2,0,1,0,20][i-10]||0,
+      shelf:sl,fresh,groupA:[0,1,3,5,6,7].includes(i),counted:[0,1,3].includes(i)?{who:"svetlana",at:D(0,8,40)}:[5,6,7,11].includes(i)?{who:"marina",at:D(-2,9,5)}:null,
+      constructor:[0,1,3,4,7].includes(i),color:flower?["red","pink","pink","peach","white","green","green","white","mixed","white"][i]:null,
+      pack:flower?[20,20,10,12,10,null,null,10,10,50][i]:1,packAsking:i===5||i===6,retail:Math.round(r.cost*3.2*100)/100,displayName:i===0?"Red Naomi rose":"",keywords:i===0?"роза, троянда, красная":"",
+      balloon:i===16?{size:12,shape:1,inCard:1,litres:14.2,byHand:false,estimate:false}:null,
+      batches:flower&&r.qty>0?[{at:D(-4),fresh:D([2,1,0,4,-1,5,3,1,0,0][i]),left:Math.round(r.qty*.4),cost:r.cost},{at:D(-1),fresh:fresh,left:r.qty-Math.round(r.qty*.4),cost:r.cost*1.05}]:[],
+      movements:[]});});
+  const item=id=>items.find(i=>i.id===Number(id));
+  const avail=i=>i.qty-i.reserved;
+  const status=i=>i.qty<=0?"out":i.qty<i.min?"low":"in";
+  const statusTag=i=>{const s=status(i);return `<span class="tag ${s==="out"?"--accent":s==="low"?"":"--ok"}">${s==="out"?"Out":s==="low"?"Low":"In stock"}</span>`};
+  const freshCell=i=>{if(!i.fresh)return `<span class="muted">–</span>`;const d=days(i.fresh);const t=d<0?`${-d} d overdue`:d===0?"Today":`${d} d`;return `<span class="${d<0?"accent":d<=1?"warn":""}">${fd(i.fresh)} · ${t}</span>`};
+  const countedStamp=i=>i.counted?`Counted: ${esc(A.user(i.counted.who).n)} · ${days(i.counted.at)===0?A.fmtTime(i.counted.at):fd(i.counted.at)}`:"Never counted";
+  const img=i=>`<span class="thumb --s">${i.cat==="Helium"?"":`<img src="img/${["red-roses","powdered-rose","peony-basket","pink-garden","white-spray","lilac-dream","peach-posy","hero-white","pink-manifesto","white-spray","addon-card","addon-card","addon-vase","addon-berries","addon-choc","addon-balloon","addon-balloon"][items.indexOf(i)]||"red-roses"}.webp" alt="">`}</span>`;
+  const itemCell=(i,sub)=>`<td class="it">${img(i)}<div class="t"><b><a href="#" onclick="event.preventDefault();App.go('inventory-item',{id:${i.id}})">${esc(i.name)}</a>${i.groupA?` <span class="badge-a" title="Group A – counted often">A</span>`:""}</b><small>${sub||`${esc(i.ru)} · ${i.sku} · ${i.unit}`}</small></div></td>`;
+  /* searchable item picker (INVT-319 fix) */
+  const picker=(name,val,extra="")=>`<select class="select" name="${name}" ${extra}><option value="">Pick a stock item…</option>${items.map(i=>`<option value="${i.id}" ${Number(val)===i.id?"selected":""}>${esc(i.name)} (${i.unit}) · ${avail(i)} avail</option>`).join("")}</select>`;
+  /* ---- suppliers (fictional) ---- */
+  const suppliers=[
+    {id:1,n:"Dutch Clock Flowers",contact:"Jeroen · +31 20 000 0000",cats:"Roses, Peonies, Greenery",st:"active",active:true,email:"claims@example.nl",cc:"buyer@floritta.example",lang:"NL",deadline:24,portal:"",acct:"51410",autoSend:true,terms:"Tue / Thu / Sat before 07:00",late:"5% of the invoice per 2 h late",policy:"return",notes:"",spend30:4120,deliveries30:11},
+    {id:2,n:"Kent Growers Co-op",contact:"Sally · +44 7700 900231",cats:"Tulips, Ranunculus, Hydrangea",st:"seasonal",active:true,email:"",cc:"",lang:"EN",deadline:48,portal:"portal.example.com",acct:"",autoSend:false,terms:"Wed",late:"",policy:"keep",notes:"Portal only – file claims on their portal",spend30:860,deliveries30:3},
+    {id:3,n:"Bermondsey Sundries",contact:"Tom · +44 7700 900412",cats:"Wrap, Ribbon, Boxes, Vases",st:"active",active:true,email:"hello@example.co.uk",cc:"",lang:"EN",deadline:72,portal:"",acct:"FLO-22",autoSend:true,terms:"Next day",late:"",policy:"destroy",notes:"",spend30:640,deliveries30:2},
+    {id:4,n:"Gas & Balloon Co",contact:"Priya · +44 7700 900518",cats:"Helium, Balloons",st:"active",active:true,email:"",cc:"",lang:"EN",deadline:24,portal:"",acct:"",autoSend:true,terms:"Monthly cylinder swap",late:"",policy:"keep",notes:"No claims e-mail yet",spend30:310,deliveries30:1}];
+  const supplier=id=>suppliers.find(s=>s.id===Number(id));
+  /* ---- purchase orders (expected deliveries) ---- */
+  const PO_ST={draft:"Draft",ordered:"Ordered",transit:"In transit",partial:"Partly received",received:"Received",cancelled:"Cancelled"};
+  const pos=[
+    {id:1,code:"PO-2610-07",sup:1,st:"received",expected:D(-5,7),ordered:D(-7),note:"morning",ref:"RFH 884120",cur:"GBP",lines:[{item:401,qty:200,cost:1.05,rcv:200},{item:402,qty:100,cost:.92,rcv:100},{item:406,qty:20,cost:2.7,rcv:20}],locked:true},
+    {id:2,code:"PO-2610-11",sup:3,st:"cancelled",expected:D(-3,12),ordered:D(-4),note:"",ref:"",cur:"GBP",lines:[{item:415,qty:20,cost:2.8,rcv:0}],locked:false},
+    {id:3,code:"PO-2610-14",sup:1,st:"partial",expected:D(-2,7),ordered:D(-4),note:"before 12:00",ref:"RFH 884977",cur:"EUR",lines:[{item:404,qty:60,cost:2.0,rcv:36},{item:405,qty:30,cost:3.1,rcv:30},{item:408,qty:80,cost:1.3,rcv:0}],locked:true},
+    {id:4,code:"PO-2610-19",sup:1,st:"transit",expected:D(0,7),ordered:D(-2),note:"morning · Thursday clock",ref:"RFH 885301",cur:"EUR",lines:[{item:403,qty:40,cost:2.3,rcv:0},{item:401,qty:120,cost:1.1,rcv:0},{item:407,qty:15,cost:2.1,rcv:0},{item:null,name:"Rose Explorer 70cm",qty:50,cost:1.4,rcv:0}],locked:false},
+    {id:5,code:"PO-2610-21",sup:2,st:"ordered",expected:D(1,9),ordered:D(-1),note:"",ref:"",cur:"GBP",lines:[{item:410,qty:150,cost:.55,rcv:0},{item:409,qty:60,cost:1.15,rcv:0}],locked:false},
+    {id:6,code:"PO-2610-22",sup:4,st:"draft",expected:D(4,10),ordered:null,note:"cylinder swap",ref:"",cur:"GBP",lines:[{item:416,qty:3000,cost:.058,rcv:0}],locked:false}];
+  const po=id=>pos.find(p=>p.id===Number(id));
+  const poTotal=p=>p.lines.reduce((s,l)=>s+l.qty*l.cost,0);
+  /* ---- receipts (deliveries) ---- */
+  const receipts=[
+    {id:51,code:"RCPT-51",sup:1,inv:"INV-77120",at:D(-5,7,20),po:1,cur:"GBP",rate:null,freight:38,levies:9.5,packaging:4,fees:2.1,freightEst:false,lines:[{item:401,qty:200,cost:1.05,fresh:D(2)},{item:402,qty:100,cost:.92,fresh:D(1)},{item:406,qty:20,cost:2.7,fresh:D(6)}]},
+    {id:52,code:"RCPT-52",sup:1,inv:"INV-77304",at:D(-2,9,45),po:3,cur:"EUR",rate:.853,rateAt:D(-2),freight:41,levies:8.2,packaging:4,fees:2.4,freightEst:true,lines:[{item:404,qty:36,cost:2.0,fresh:D(5)},{item:405,qty:30,cost:3.1,fresh:D(-1)}]},
+    {id:53,code:"RCPT-53",sup:3,inv:"BS-1092",at:D(-6,14,0),po:null,cur:"GBP",rate:null,freight:0,levies:0,packaging:0,fees:0,freightEst:false,lines:[{item:411,qty:100,cost:.34,fresh:null},{item:412,qty:50,cost:.19,fresh:null}]},
+    {id:54,code:"RCPT-54",sup:2,inv:"KG-0211",at:D(-9,8,10),po:null,cur:"GBP",rate:null,freight:12,levies:0,packaging:0,fees:0,freightEst:false,lines:[{item:409,qty:60,cost:1.15,fresh:D(-3)},{item:410,qty:100,cost:.58,fresh:D(-4)}]},
+    {id:55,code:"RCPT-55",sup:4,inv:"GB-5571",at:D(-14,11,0),po:null,cur:"GBP",rate:null,freight:0,levies:0,packaging:0,fees:0,freightEst:false,lines:[{item:416,qty:2500,cost:.06,fresh:null},{item:417,qty:200,cost:.11,fresh:null}]}];
+  const receipt=id=>receipts.find(r=>r.id===Number(id));
+  const rcptClock=r=>r.lines.reduce((s,l)=>s+l.qty*l.cost,0);
+  const rcptOver=r=>r.freight+r.levies+r.packaging+r.fees;
+  /* ---- supplier claims ---- */
+  const CL_ST={draft:"Draft",queued:"Queued",sent:"Sent",send_failed:"Send failed",acknowledged:"Supplier replied",accepted:"Accepted",partially_accepted:"Partially accepted",rejected:"Rejected",refunded:"Refunded",closed:"Closed",expired:"Expired"};
+  const CL_CLS={draft:"",queued:"--queue",sent:"--out",send_failed:"--late",acknowledged:"--photo",accepted:"--ready",partially_accepted:"--photo",rejected:"--late",refunded:"--ready",closed:"--plain",expired:"--late"};
+  const claims=[
+    {id:91,code:"CLM-0091",sup:1,by:"svetlana",at:D(0,9,58),mode:"defect",reason:"quality",reasonText:"Heads drooping on arrival, 14 of 60",st:"queued",sendAfter:new Date(A.NOW.getTime()+3*60*1000+12000).toISOString(),claimed:28,accepted:0,refunded:0,markdown:0,receipt:52,lines:[{item:404,qty:14,cost:2.0,disp:"writeoff",md:null}],photos:2,events:[{at:D(0,9,58),t:"Claim created",who:"svetlana",note:"Quality · write off"},{at:D(0,9,58),t:"Warning shown",who:"system",note:"5-minute cancel window"}]},
+    {id:90,code:"CLM-0090",sup:1,by:"marina",at:D(-2,10,30),mode:"late",reason:"late",reasonText:"Delivered 2h 40m after the promised day",st:"sent",sendAfter:null,claimed:34.4,accepted:0,refunded:0,markdown:0,receipt:52,lines:[],photos:1,events:[{at:D(-2,10,30),t:"Claim created",who:"marina",note:"Late"},{at:D(-2,10,35),t:"Sent to supplier",who:"system",note:"claims@example.nl · NL"},{at:D(-1,9,0),t:"Reminder sent",who:"system",note:"3 days without an answer"}]},
+    {id:88,code:"CLM-0088",sup:1,by:"valeria",at:D(-6,8,15),mode:"defect",reason:"damaged",reasonText:"Box crushed, stems snapped",st:"acknowledged",sendAfter:null,claimed:52.5,accepted:0,refunded:0,markdown:18,receipt:51,lines:[{item:402,qty:30,cost:.92,disp:"markdown",md:1.4}],photos:3,events:[{at:D(-6,8,15),t:"Claim created",who:"valeria",note:"Damaged · markdown & resell"},{at:D(-6,8,20),t:"Sent to supplier",who:"system",note:""},{at:D(-4,11,2),t:"Supplier replied",who:"valeria",note:"Will credit on the next invoice"}]},
+    {id:85,code:"CLM-0085",sup:2,by:"svetlana",at:D(-11,9,0),mode:"defect",reason:"short",reasonText:"20 tulips short",st:"send_failed",sendAfter:null,claimed:11.6,accepted:0,refunded:0,markdown:0,receipt:54,lines:[{item:410,qty:20,cost:.58,disp:"hold",md:null}],photos:0,events:[{at:D(-11,9,0),t:"Claim created",who:"svetlana",note:""},{at:D(-11,9,5),t:"Delivery failed",who:"system",note:"Portal only – file through the supplier portal"}]},
+    {id:82,code:"CLM-0082",sup:1,by:"marina",at:D(-19,8,40),mode:"defect",reason:"wrong",reasonText:"Quicksand delivered instead of Juliet",st:"partially_accepted",sendAfter:null,claimed:84,accepted:60,refunded:0,markdown:0,receipt:51,lines:[{item:404,qty:40,cost:2.1,disp:"return",md:null}],photos:2,events:[{at:D(-19,8,40),t:"Claim created",who:"marina",note:""},{at:D(-19,8,45),t:"Sent to supplier",who:"system",note:""},{at:D(-16,10,0),t:"Supplier replied",who:"valeria",note:""},{at:D(-15,10,0),t:"Amount recognised",who:"tatiana",note:"£60 of £84 – freight not credited"},{at:D(-1,8,0),t:"Refund overdue – manager notified",who:"system",note:"Task created in Tasks"}]},
+    {id:79,code:"CLM-0079",sup:3,by:"valeria",at:D(-28,15,0),mode:"defect",reason:"damaged",reasonText:"Vases chipped",st:"refunded",sendAfter:null,claimed:27,accepted:27,refunded:27,markdown:0,receipt:53,lines:[{item:413,qty:6,cost:4.5,disp:"writeoff",md:null}],photos:1,events:[{at:D(-28,15,0),t:"Claim created",who:"valeria",note:""},{at:D(-28,15,5),t:"Sent to supplier",who:"system",note:""},{at:D(-26,9,0),t:"Supplier replied",who:"valeria",note:""},{at:D(-26,9,5),t:"Amount recognised",who:"tatiana",note:"£27"},{at:D(-20,9,0),t:"Money received",who:"tatiana",note:"Credit note CN-118"}]}];
+  const claim=id=>claims.find(c=>c.id===Number(id));
+  const daysSilent=c=>["sent","acknowledged"].includes(c.st)?Math.max(0,-days(c.at)):null;
+  /* ---- write-offs ---- */
+  const WO_REASONS=[["wilted","Wilted"],["defect","Defect"],["damage","Damage"],["expired","Expired"],["missort","Missort"],["other","Other"]];
+  const writeoffs=[
+    {id:71,at:D(0,8,30),reason:"wilted",by:"anna",photo:"peach-posy",note:"Back of fridge 2",lines:[{item:409,qty:12}],checked:null,rejected:null},
+    {id:70,at:D(-1,18,10),reason:"expired",by:"lina",photo:null,note:"",lines:[{item:405,qty:4},{item:408,qty:10}],checked:null,rejected:null},
+    {id:69,at:D(-2,9,5),reason:"damage",by:"marina",photo:"white-spray",note:"Dropped the bucket",lines:[{item:404,qty:6}],checked:{who:"valeria",at:D(-2,12,0)},rejected:null},
+    {id:68,at:D(-4,17,40),reason:"other",by:"olesya",photo:null,note:"Used for the window display",lines:[{item:401,qty:30}],checked:null,rejected:{who:"valeria",at:D(-3,9,0),why:"Display stems are booked as internal use, not a write-off"}},
+    {id:67,at:D(-6,8,50),reason:"wilted",by:"svetlana",photo:"lilac-dream",note:"",lines:[{item:402,qty:18}],checked:{who:"tatiana",at:D(-5,8,0)},rejected:null},
+    {id:66,at:D(-9,19,0),reason:"missort",by:"anna",photo:null,note:"Counted twice on Monday",lines:[{item:410,qty:25}],checked:null,rejected:null},
+    {id:65,at:D(-6,8,15),reason:"supplier_claim",by:"valeria",photo:null,note:"CLM-0088",lines:[{item:402,qty:30}],checked:null,rejected:null}];
+  const woValue=w=>w.lines.reduce((s,l)=>s+l.qty*(item(l.item)?.cost||0),0);
+  /* ---- movements log ---- */
+  const MV_TYPES=[["receipt","Receipt"],["sale","Sale"],["adjustment","Adjustment"],["writeoff","Write-off"],["transfer","transfer"],["return","return"],["markdown","Markdown"]];
+  const movements=[];let seed=7;const rr=(a,b)=>{seed=(seed*9301+49297)%233280;return a+Math.floor(seed/233280*(b-a+1))};
+  for(let k=0;k<64;k++){const it=items[rr(0,16)];const t=["sale","sale","sale","receipt","adjustment","writeoff","sale","markdown"][rr(0,7)];const q=t==="receipt"?rr(20,200):t==="adjustment"?rr(-6,6):-rr(1,24);movements.push({id:9001+k,at:D(-Math.floor(k/5),rr(7,21),rr(0,59)),item:it.id,type:t,qty:q,ref:t==="sale"?"Order#"+(118420+rr(0,40)):t==="receipt"?"Receipt#"+rr(51,55):t==="writeoff"?"Writeoff#"+rr(65,71):t==="markdown"?"Claim#"+rr(79,91):"Stocktake#"+rr(11,14),cost:it.cost,note:t==="adjustment"?"Cycle count":""})}
+  movements.sort((a,b)=>new Date(b.at)-new Date(a.at));
+  items.forEach(i=>i.movements=movements.filter(m=>m.item===i.id));
+  /* ---- stocktakes ---- */
+  const stocktakes=[
+    {id:14,code:"ST-0014",at:D(0,8,0),scope:"groupA",owner:"svetlana",st:"in_progress",lines:items.filter(i=>i.groupA).map((i,k)=>({item:i.id,sys:i.qty,counted:k<3?i.qty+[-4,0,2][k]:null,by:k<3?"svetlana":null,at:k<3?D(0,8,20+k*4):null}))},
+    {id:13,code:"ST-0013",at:D(-3,16,0),scope:"sample",owner:null,st:"done",lines:[{item:409,sys:50,counted:45,by:"lina",at:D(-3,16,30)},{item:411,sys:120,counted:120,by:"lina",at:D(-3,16,40)},{item:413,sys:9,counted:7,by:"lina",at:D(-3,16,45)}]},
+    {id:12,code:"ST-0012",at:D(-10,9,0),scope:"category",cat:"Greenery",owner:"marina",st:"abandoned",lines:[{item:406,sys:16,counted:null},{item:407,sys:10,counted:null}]},
+    {id:11,code:"ST-0011",at:D(-30,9,0),scope:"full",owner:"valeria",st:"done",lines:items.map(i=>({item:i.id,sys:i.qty,counted:i.qty,by:"valeria",at:D(-30,12,0)}))}];
+  const stocktake=id=>stocktakes.find(s=>s.id===Number(id));
+  const ST_SCOPE={groupA:"Group A",full:"Full",category:"Category",sample:"Sample (weighted)"};
+  const ST_ST={in_progress:"In progress",done:"Done",abandoned:"Closed, not applied"};
+  /* ---- suggestions from the app ---- */
+  const suggestions=[{id:31,name:"Hypericum red",count:40,by:"anna",at:D(0,8,12),note:"Came with the Thursday clock, no card",photo:"addon-berries",status:"open"},{id:32,name:"Gyp white",count:12,by:"lina",at:D(-1,17,40),note:"",photo:"white-spray",status:"open"}];
+  const answered=[{name:"Eucalyptus populus",by:"marina",st:"Linked",item:406,why:"",who:"valeria",at:D(-2)},{name:"Craspedia",by:"anna",st:"Added as new",item:408,why:"",who:"valeria",at:D(-5)},{name:"Blue rose spray",by:"lina",st:"Turned down",item:null,why:"Dyed stems – we don't stock them",who:"tatiana",at:D(-9)}];
+  /* ---- restock requests ---- */
+  const requests=[{id:41,item:403,qty:40,when:"Today",by:"svetlana",at:D(0,7,50),note:"Two weddings Sat",st:"new",seen:false},{id:42,item:416,qty:null,when:"This week",by:"anna",at:D(-1,16,0),note:"",st:"new",seen:false},{id:43,item:412,qty:30,when:"Tomorrow",by:"marina",at:D(-2,10,0),note:"",st:"ordered",seen:true,stNote:"Ordered from Bermondsey Sundries"},{id:44,item:402,qty:50,when:"Today",by:"lina",at:D(-4,9,0),note:"",st:"rejected",seen:true,stNote:"Clock on Thursday already covers it"}];
+  /* ---- reorder rules ---- */
+  const rules=[{item:403,point:40,qty:40,sup:1},{item:401,point:120,qty:100,sup:1},{item:410,point:100,qty:150,sup:2},{item:413,point:10,qty:12,sup:3},{item:415,point:8,qty:10,sup:3},{item:407,point:8,qty:10,sup:1}];
+  const shortfall=i=>Math.max(0,-(i.qty-i.reserved));
+  /* ---- recipes ---- */
+  const BOM_MAP={"Rose Red Naomi 60cm":401,"Eucalyptus cinerea":406,"Ruscus":407,"Wrap · ivory":411,"Ribbon · satin":412,"Mixed stems":409,"Foliage":406,"Base":414};
+  const recipes=A.data.products.filter(p=>!p.addon).map((p,k)=>({id:p.id,name:p.name,price:p.price,variant:"Standard",lines:k===4?[]:p.bom.map(b=>({item:BOM_MAP[b[0]]||401,qty:b[1]})),reviewed:k%3===0?{who:"tatiana",at:D(-k-1)}:null}));
+  const recipe=id=>recipes.find(r=>r.id===Number(id));
+  const rcCost=r=>r.lines.reduce((s,l)=>s+l.qty*(item(l.item)?.cost||0),0);
+  const rcMargin=r=>r.lines.length?(1-rcCost(r)/(r.price/1.2))*100:null;
+  const rcBuild=r=>r.lines.length?Math.min(...r.lines.map(l=>Math.floor(Math.max(0,avail(item(l.item)))/l.qty))):null;
+  /* ---- helium settings ---- */
+  const helium={price:0.0603,unit:"litre",markupBalloon:2.4,markupHelium:3,lost:8,spoiled:3,savedAt:D(-12)};
+  /* ---- nav strip ---- */
+  const NAVG=[
+    {g:"Stock",t:[["inventory","Overview"],["inventory-stock","Stock levels"],["inventory-count","Count today",()=>{const g=items.filter(i=>i.groupA);const c=g.filter(i=>i.counted&&days(i.counted.at)===0).length;return demo.groupA&&c<g.length?g.length-c:0}],["inventory-stocktakes","Stocktakes"],["inventory-movements","Movements"],["inventory-group-a","Group A",null,"cost"]]},
+    {g:"Purchasing",t:[["purchasing-expected","Expected",()=>pos.filter(p=>["ordered","transit"].includes(p.st)&&days(p.expected)<=0).length],["inventory-receive","Receive",null,"manage"],["purchasing-deliveries","Deliveries",null,"manage"],["purchasing-reorder","Reorder",()=>requests.filter(r=>r.st==="new").length,"manage"],["purchasing-suppliers","Suppliers",null,"manage"],["purchasing-scorecard","Supplier scorecard",null,"manage"],["inventory-suggestions","Suggested items",()=>suggestions.filter(s=>s.status==="open").length,"manage"]]},
+    {g:"Losses",t:[["inventory-writeoff","Write-off"],["inventory-writeoff-review","Write-off review",()=>writeoffs.filter(w=>!w.checked&&!w.rejected&&w.reason!=="supplier_claim").length,"manage"],["inventory-writeoff-report","Write-off report",null,"manage"],["inventory-claims","Claims",()=>claims.filter(c=>["send_failed","partially_accepted"].includes(c.st)).length]]},
+    {g:"Recipes",t:[["recipes","Recipes",null,"manage"],["recipes-deviations","Recipe deviations",null,"manage"],["recipes-photo","Photo corrections",null,"manage"]]}];
+  const PARENT={"inventory-item":"inventory-stock","inventory-stocktake-sheet":"inventory-stocktakes","purchasing-expected-show":"purchasing-expected","purchasing-expected-form":"purchasing-expected","purchasing-receipt":"purchasing-deliveries","inventory-claim":"inventory-claims","inventory-claim-form":"inventory-claims"};
+  function nav(cur){const c=can();const on=PARENT[cur]||cur;
+    return NAVG.map(g=>{const tabs=g.t.filter(t=>!t[3]||c[t[3]]);if(!tabs.length)return"";return `<div class="grp"><span class="g">${g.g}</span>${tabs.map(t=>{const n=t[2]?t[2]():0;return `<button class="${t[0]===on?"on":""}" onclick="App.go('${t[0]}')">${t[1]}${n?`<span class="n ${t[0].includes("claims")||t[0].includes("expected")?"hot":""}">${n}</span>`:""}</button>`}).join("")}</div>`}).join("")+`<span class="sp"></span><button class="demo" onclick="INV.demoMenu(event)">${ic("columns")} Demo state</button>`}
+  function head(id,title,sub,actions){const s=document.getElementById("s-"+id);if(!s)return;s.querySelector("[data-inv-nav]").innerHTML=nav(id);s.querySelector("[data-inv-head]").innerHTML=`<div style="min-width:0"><div class="h2">${title}</div>${sub?`<div class="sub">${sub}</div>`:""}</div><div class="sp"></div>${actions||""}`}
+  const body=id=>document.getElementById("s-"+id).querySelector("[data-inv-body]");
+  const remount=()=>A.remount();
+  function demoMenu(ev){const b=v=>v?"check":"minus";A.pop(ev,["Demo state – flags & configs",
+    {t:"Colour dictionary (StorefrontBridge)",ic:b(demo.colors),fn:()=>{demo.colors=!demo.colors;remount()}},
+    {t:"INVENTORY_LANDED_COST",ic:b(demo.landed),fn:()=>{demo.landed=!demo.landed;remount()}},
+    {t:"INVENTORY_PHOTO_CORRECTION_ENABLED",ic:b(demo.photoCorr),fn:()=>{demo.photoCorr=!demo.photoCorr;remount()}},
+    {t:"Live write-off on «ready»",ic:b(demo.writeoffLive),fn:()=>{demo.writeoffLive=!demo.writeoffLive;remount()}},
+    {t:"Floriday import → "+(demo.importMode==="expected"?"Expected (default)":"Receipt"),ic:"refresh",fn:()=>{demo.importMode=demo.importMode==="expected"?"receipt":"expected";remount()}},
+    {t:"Photo stem count configured",ic:b(demo.photoCount),fn:()=>{demo.photoCount=!demo.photoCount;remount()}},
+    {t:"Group A saved",ic:b(demo.groupA),fn:()=>{demo.groupA=!demo.groupA;remount()}},
+    {t:"Shop floor stock feature",ic:b(demo.shopFloor),fn:()=>{demo.shopFloor=!demo.shopFloor;remount()}},
+    {t:"Shrinkage data present",ic:b(demo.shrink),fn:()=>{demo.shrink=!demo.shrink;remount()}},
+    {t:"Show a request in flight (busy)",ic:b(demo.busy),fn:()=>{demo.busy=!demo.busy;remount()}},
+    "-",{t:"Empty everything (empty states)",ic:"trash",fn:()=>{demo.empty=!demo.empty;remount()}}])}
+  const empty=(icn,t,act)=>`<div class="empty">${ic(icn)}<div class="h3">${t}</div>${act||""}</div>`;
+  const roleNote=t=>`<span class="role-note">${ic("lock")} ${t}</span>`;
+  /* page-level error box (redesign note: validation errors need a home) */
+  const errBox=t=>`<div class="err-box">${ic("alert")}<span>${t}</span></div>`;
+  const addMovement=(it,type,qty,ref,note)=>{const m={id:9100+movements.length,at:A.NOW.toISOString(),item:it.id,type,qty,ref,cost:it.cost,note:note||""};movements.unshift(m);it.movements.unshift(m);it.qty+=qty};
+  return {demo,can,D,fd,fdt,days,money,pct,items,item,avail,status,statusTag,freshCell,countedStamp,img,itemCell,picker,COLORS,suppliers,supplier,PO_ST,pos,po,poTotal,receipts,receipt,rcptClock,rcptOver,CL_ST,CL_CLS,claims,claim,daysSilent,WO_REASONS,writeoffs,woValue,MV_TYPES,movements,stocktakes,stocktake,ST_SCOPE,ST_ST,suggestions,answered,requests,rules,shortfall,recipes,recipe,rcCost,rcMargin,rcBuild,helium,nav,head,body,remount,demoMenu,empty,roleNote,errBox,addMovement,esc,ic};
+})();
+window.INV=INV;
+</script>
+<script>
+/* ===== 17 · Overview · Stock levels · Item card ===== */
+(()=>{
+const A=App,I=INV,esc=A.esc,ic=A.icon,$=A.$;
+const S17={stockView:"all",q:"",cat:"",sel:new Set(),adding:false,color:"",pack:"",mvType:"",mvQ:"",mvPage:1,hints:{}};
+window.S17=S17;
+
+/* ---------- OVERVIEW (s-inventory) ---------- */
+window.mount_inventory=function(params){
+  const c=I.can(),E=I.demo.empty;
+  const items=E?[]:I.items;
+  const gA=items.filter(i=>i.groupA),counted=gA.filter(i=>i.counted&&I.days(i.counted.at)===0).length;
+  const low=items.filter(i=>I.status(i)==="low"),out=items.filter(i=>I.status(i)==="out");
+  const expiring=items.filter(i=>i.fresh&&I.days(i.fresh)<=3&&I.avail(i)>0).flatMap(i=>(i.batches.length?i.batches:[{fresh:i.fresh,left:i.qty,cost:i.cost}]).map((b,k)=>({i,b,first:k===0&&i.batches.length>1}))).filter(x=>I.days(x.b.fresh)<=3).sort((a,b)=>new Date(a.b.fresh)-new Date(b.b.fresh));
+  const lastChance=expiring.filter(x=>I.days(x.b.fresh)>=1&&I.days(x.b.fresh)<=2).length;
+  const risk=expiring.reduce((s,x)=>s+x.b.left*x.b.cost,0),riskQty=expiring.reduce((s,x)=>s+x.b.left,0);
+  const value=items.reduce((s,i)=>s+i.qty*i.cost,0);
+  const woWeek=I.writeoffs.filter(w=>I.days(w.at)>=-7&&!w.rejected).reduce((s,w)=>s+I.woValue(w),0);
+  const forecast=items.filter(i=>i.cat!=="Helium").map((i,k)=>{const per=[22,9,0,5,3,1.5,1,7,8,14,6,3,.5,2,.4,0,9][I.items.indexOf(i)]||0;const cover=per?I.avail(i)/per:null;return{i,per,cover,run:cover!=null?I.D(Math.floor(cover)):null,sugg:Math.max(0,Math.round(per*14-I.avail(i)))}}).filter(f=>f.per>0).sort((a,b)=>a.cover-b.cover);
+  const runout=forecast.filter(f=>f.cover<=7).length;
+  /* ids: INVT-010 INVT-002 INVT-022 INVT-007 */
+  I.head("inventory","Stock overview",`${items.length} stock levels · ${new Set(items.map(i=>i.cat)).size} categories`,
+    `${I.demo.shopFloor?`<button class="btn --ghost --sm" onclick="App.go('stock')">${ic("eye")} <span class="t">Shop floor stock</span></button>`:""}<button class="btn --ghost --sm" onclick="App.go('production')">${ic("production")} <span class="t">Production board</span></button>${expiring.length?`<button class="btn --sm" onclick="App.go('ready-now',{new:true})">${ic("sparkle")} <span class="t">Make a Ready-now bouquet from these</span></button>`:""}`);
+  const kpi=(t,v,sub,go,cls)=>`<div class="kpi-card ${cls||""}" onclick="${go}"><span class="caps">${t}</span><span class="kpi-s tnum">${v}</span><span class="delta">${sub}</span></div>`;
+  I.body("inventory").innerHTML=`
+  <!-- ids: INVT-011 INVT-012 INVT-013 INVT-014 INVT-015 INVT-034 -->
+  <div class="grid ${c.cost?"g6":"g4"}">
+    ${I.demo.groupA?kpi("Count today",`${counted} / ${gA.length}`,"group A, 5–8 items","App.go('inventory-count')",counted<gA.length?"--warn":""):kpi("Count today","–","Group A not saved yet","App.go('inventory-count')")}
+    ${c.cost?kpi("Stock value",I.money(value),"at cost","App.go('inventory-stock')"):""}
+    ${kpi("Low items",low.length,"need reorder","App.go('inventory-stock',{status:'low'})",low.length?"--warn":"")}
+    ${kpi("Out of stock",out.length,"",`App.go('inventory-stock',{status:'out'})`,out.length?"--accent":"")}
+    ${kpi("Expiring soon",expiring.length,"sell these first","document.getElementById('inv-expiring').scrollIntoView({behavior:'smooth'})",expiring.length?"--accent":"")}
+    ${c.cost?kpi("Write-offs (week)",I.money(woWeek),"at cost · was sent by the server, never drawn","App.go('inventory-writeoff-report')"):""}
+  </div>
+  <div class="two mt16">
+    <div class="stack">
+      <!-- ids: INVT-016 INVT-017 INVT-018 INVT-019 INVT-020 INVT-021 INVT-023 INVT-024 INVT-025 -->
+      <div class="panel" id="inv-expiring"><div class="p-head"><div class="h4">Expiring soon</div>${lastChance?`<span class="tag">${lastChance} last chance (1–2 days)</span>`:""}<span class="tag ${expiring.length?"--accent":"--ok"}">${expiring.length?(c.cost?I.money(risk)+" at risk":riskQty+" at risk"):"All fresh"}</span></div>
+      <div class="p-body">${expiring.length?`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Item</th><th class="num">Available</th><th>Fresh until</th><th>Left</th>${c.cost?`<th class="num">Value</th>`:""}</tr></thead><tbody>
+        ${expiring.map(x=>{const d=I.days(x.b.fresh);const lc=d>=1&&d<=2;return `<tr class="r ${d<0?"--accent":lc?"--warn":""}" onclick="App.go('inventory-item',{id:${x.i.id}})">${I.itemCell(x.i)}<td class="num">${x.b.left} ${x.i.unit}</td><td>${I.fd(x.b.fresh)}${x.first?` <span class="tag --line">Use this batch first</span>`:""}</td><td class="${d<0?"accent":d<=1?"warn":""}">${d<0?`${-d} d overdue`:d===0?"Today":`${d} d`}${lc?` <span class="tag">Last chance</span>`:""}</td>${c.cost?`<td class="num">${I.money(x.b.left*x.b.cost)}</td>`:""}</tr>`}).join("")}
+        </tbody></table></div>`:I.empty("check","Nothing is close to its freshness date")}</div></div>
+      <!-- ids: INVT-026 INVT-027 INVT-028 INVT-320 -->
+      <div class="panel"><div class="p-head"><div class="h4">Demand forecast</div><span class="muted xs">28-day average · suggested for 14 days</span><span class="tag ${runout?"--accent":"--ok"}">${runout?`${runout} run out within 7 days`:"Nothing runs out within 7 days"}</span></div>
+      <div class="p-body">${forecast.length?`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Item</th><th class="num">Per day</th><th class="num">Available</th><th class="num">Days cover</th><th>Run-out</th><th class="num">Suggested</th></tr></thead><tbody>
+        ${forecast.map(f=>`<tr class="r" onclick="App.go('inventory-item',{id:${f.i.id}})">${I.itemCell(f.i,`${f.i.cat} · now clickable (was plain text)`)}<td class="num">${f.per}</td><td class="num">${I.avail(f.i)}</td><td class="num ${f.cover<=7?"accent":f.cover<=14?"warn":""}">${Math.round(f.cover*10)/10}</td><td>${I.fd(f.run)}</td><td class="num">${f.sugg||"–"}</td></tr>`).join("")}</tbody></table></div>`:I.empty("growth","Not enough sales history yet to forecast")}</div></div>
+    </div>
+    <div class="stack">
+      <!-- ids: INVT-029 INVT-030 INVT-031 -->
+      <div class="panel"><div class="p-head"><div class="h4">Needs attention</div><button class="textbtn" onclick="App.go('inventory-stock')">All stock →</button></div>
+      <div class="p-body">${(out.length||low.length)?`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Item</th><th class="num">Avail.</th><th class="num">Min</th><th>Status</th></tr></thead><tbody>${[...out,...low].sort((a,b)=>I.avail(a)-I.avail(b)).map(i=>`<tr class="r ${I.status(i)==="out"?"--accent":""}" onclick="App.go('inventory-item',{id:${i.id}})">${I.itemCell(i,i.cat)}<td class="num">${I.avail(i)}</td><td class="num">${i.min}</td><td>${I.statusTag(i)}</td></tr>`).join("")}</tbody></table></div>`:I.empty("check","All stock is healthy")}</div></div>
+      <!-- ids: INVT-032 INVT-033 -->
+      <div class="panel"><div class="p-head"><div class="h4">Recent movements</div><button class="textbtn" onclick="App.go('inventory-movements')">Full log →</button></div>
+      <div class="p-body">${E?I.empty("list","No movements"):I.movements.slice(0,6).map(m=>`<div class="mv"><span class="tag ${m.type==="writeoff"?"--accent":""}">${esc(I.MV_TYPES.find(t=>t[0]===m.type)[1])}</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(I.item(m.item).name)}</span><span class="q ${m.qty>0?"--ok":"--accent"}">${m.qty>0?"+":""}${m.qty}</span><span class="muted xs tnum">${I.fd(m.at)}</span></div>`).join("")}</div></div>
+      <!-- ids: INVT-009 --><div class="note-box --info xs">Every action here answers with a toast (success / info / error) – the only feedback channel in the old CRM. In the redesign, errors without a field also get the page-level box.</div>
+    </div>
+  </div>`;
+  A.registerCommands([{g:"Inventory",t:"Open stock levels",ic:"warehouse",fn:()=>A.go("inventory-stock")},{g:"Inventory",t:"Count today",ic:"check",fn:()=>A.go("inventory-count")},{g:"Inventory",t:"Receive a delivery",ic:"box",fn:()=>A.go("inventory-receive")},{g:"Inventory",t:"Write off stock",ic:"trash",fn:()=>A.go("inventory-writeoff")}]);
+};
+
+/* ---------- STOCK LEVELS (s-inventory-stock) ---------- */
+const STATUSES=[["","All"],["in_stock","In stock"],["low","Low"],["out","Out"],["expiring","Expiring soon"],["no_price","No purchase price"],["uncounted_today","Not counted today"],["group_a","Group A (counted often)"],["in_constructor","In the builder"],["no_color","No colour"],["pack_unset","Waiting for pack size"]];
+window.mount_inventory_stock=function(params){
+  const c=I.can();if(params&&params.status!==undefined&&!params._used){S17.stockView=params.status;params._used=true}
+  const E=I.demo.empty;const all=E?[]:I.items;
+  const q=S17.q.toLowerCase().trim();
+  let list=all.filter(i=>!q||[i.name,i.ru,i.sku,i.cat,i.keywords].join(" ").toLowerCase().includes(q)).filter(i=>!S17.cat||i.cat===S17.cat);
+  const v=S17.stockView;list=list.filter(i=>{switch(v){case"in_stock":return I.status(i)==="in";case"low":return I.status(i)==="low";case"out":return I.status(i)==="out";case"expiring":return i.fresh&&I.days(i.fresh)<=3;case"no_price":return !i.cost;case"uncounted_today":return !(i.counted&&I.days(i.counted.at)===0);case"group_a":return i.groupA;case"in_constructor":return i.constructor;case"no_color":return !i.color&&i.cat!=="Helium";case"pack_unset":return i.packAsking;default:return true}});
+  const cats=[...new Set(all.map(i=>i.cat))];
+  const n=S17.sel.size;
+  /* ids: INVT-035 INVT-036 INVT-037 INVT-038 INVT-040 INVT-041 */
+  I.head("inventory-stock","Stock levels",`${all.length} items · reserve is excluded from Available`,
+    `<button class="btn --ghost --sm" onclick="App.toast('Export CSV · whole shelf, ${c.cost?"with cost columns":"no cost columns"} · opens in a new tab')">${ic("download")} <span class="t">Export CSV</span></button>
+     ${c.cost?`<button class="btn --ghost --sm" onclick="S17X.wholesale()">${ic("pound")} <span class="t">Wholesale price list</span></button>`:""}
+     ${c.manage?`<button class="btn --ghost --sm" aria-expanded="${S17.adding}" onclick="S17.adding=!S17.adding;App.remount()">${ic("plus")} <span class="t">Item</span></button><button class="btn --ghost --sm" onclick="App.go('inventory-receive')">${ic("box")} <span class="t">Receive</span></button><button class="btn --sm" onclick="App.go('inventory-stocktakes')">${ic("check")} <span class="t">Start stocktake</span></button>`:""}`);
+  const he=I.helium;
+  I.body("inventory-stock").innerHTML=`
+  ${S17.adding&&c.manage?`<!-- ids: INVT-039 --><div class="card mb16"><div class="caps">New item</div><div class="form-grid"><div class="field"><label>Name (EN) *</label><input class="input" id="ni-name" placeholder="Rose Explorer 70cm"></div><div class="field"><label>Name (RU)</label><input class="input" placeholder="Роза Эксплорер"></div><div class="field"><label>SKU</label><input class="input" placeholder="empty – generated M-XXXXXX"></div><div class="field"><label>Category</label><select class="select">${cats.map(x=>`<option>${x}</option>`).join("")}</select></div><div class="field"><label>Unit</label><input class="input" value="pcs"></div>${c.cost?`<div class="field"><label>Cost / unit</label><input class="input" placeholder="0.00"></div>`:`<div class="field"><label>Cost / unit</label><div class="role-note" style="height:36px">${ic("lock")} admin only</div></div>`}<div class="field --2" style="justify-content:flex-end"><div class="btn-row"><button class="btn --sm" onclick="S17X.createItem()">Create item</button><button class="btn --ghost --sm" onclick="S17.adding=false;App.remount()">Cancel</button></div></div></div></div>`:""}
+  ${c.cost?`<!-- ids: INVT-042 INVT-043 INVT-044 INVT-045 INVT-046 INVT-047 --><div class="grid g2 mb16"><div class="card"><div class="row"><span class="caps" style="margin:0;flex:1">Helium price</span><button class="textbtn" onclick="S17X.heliumForm()">Change</button></div><div class="row mt8" style="gap:24px;flex-wrap:wrap"><div><div class="kpi-s tnum">£${he.price.toFixed(4)}<span class="sm muted"> / L</span></div><div class="xs muted">£${(he.price*1000).toFixed(2)} / m³ · £${(he.price*28.317).toFixed(3)} / cu ft</div></div><div class="xs soft">Markup on balloon ×${he.markupBalloon} · on helium ×${he.markupHelium}<br>Gas lost ${he.lost}% · balloons spoiled ${he.spoiled}% · multiplier ×${(1/(1-he.lost/100)/(1-he.spoiled/100)).toFixed(3)}</div></div><div class="xs mt8 ${he.savedAt?"muted":"warn"}">${he.savedAt?"Price saved on "+I.fd(he.savedAt):"Not confirmed yet – save the price once"}</div></div>
+   <div class="card"><span class="caps">Helium by the cubic inch</span><div class="row" style="gap:24px;flex-wrap:wrap"><div><div class="kpi-s tnum">${(he.price/61.024*1.12*100).toFixed(2)}p</div><div class="xs muted">cost per cu in (with losses)</div></div><div><div class="kpi-s tnum">${(he.price/61.024*1.12*he.markupHelium*100).toFixed(2)}p</div><div class="xs muted">shelf price per cu in</div></div><div><div class="kpi-s tnum">£${(he.price*he.markupHelium*1.12).toFixed(3)}</div><div class="xs muted">shelf price per litre · cube of the diameter</div></div></div>
+   <div class="row mt8" style="gap:8px;flex-wrap:wrap;align-items:flex-end"><div class="field" style="width:90px"><label>Diameter, in</label><input class="input" id="hq-d" value="18" oninput="S17X.hq()"></div><div class="field" style="width:90px"><label>Shape factor</label><input class="input" id="hq-s" value="0.52" oninput="S17X.hq()"></div><div class="field" style="width:90px"><label>In the card</label><input class="input" id="hq-n" value="1" oninput="S17X.hq()"></div><div class="sm" id="hq-out" aria-live="polite"></div></div>
+   <div class="xs muted mt8" title="hover a size for litres">Shelf price by size: ${[9,11,12,18,24,36].map(s=>`<span title="${(Math.pow(s,3)*0.52/61.024).toFixed(1)} L">${s}" £${(Math.pow(s,3)*0.52/61.024*he.price*he.markupHelium*1.12).toFixed(2)}</span>`).join(" · ")}</div></div></div>`:""}
+  <!-- ids: INVT-048 INVT-049 INVT-050 INVT-051 -->
+  <div class="toolbar"><div class="search">${ic("search")}<input placeholder="Search EN / RU / synonyms / SKU / category" value="${esc(S17.q)}" onkeydown="if(event.key==='Enter'){S17.q=this.value;App.remount()}" onchange="S17.q=this.value"></div>
+    <select class="select" style="width:170px" onchange="S17.cat=this.value;App.remount()"><option value="">All categories</option>${cats.map(x=>`<option ${S17.cat===x?"selected":""}>${x}</option>`).join("")}</select>
+    <select class="select" style="width:220px" onchange="S17.stockView=this.value;App.remount()">${STATUSES.filter(s=>s[0]!=="no_color"||I.demo.colors).map(s=>`<option value="${s[0]}" ${v===s[0]?"selected":""}>${s[1]}</option>`).join("")}</select>
+    <button class="btn --ghost --sm" onclick="S17.q=document.querySelector('#s-inventory-stock .search input').value;App.remount()">Apply</button><span class="muted xs">filters write to the URL · ?status=${v||"all"}</span></div>
+  ${c.manage&&list.length?`<!-- ids: INVT-061 INVT-062 INVT-063 INVT-064 INVT-065 INVT-066 INVT-321 --><div class="row mb8" style="gap:12px;flex-wrap:wrap"><label class="check"><input type="checkbox" ${n&&n===list.length?"checked":""} onchange="S17X.toggleAll(${JSON.stringify(list.map(i=>i.id))})"> Select all visible (${list.length})</label><span class="muted xs">bulk actions take up to 200 ids – over that the server says so here, not silently</span></div>
+  ${n?`<div class="bulk"><b>${n} selected</b><button class="btn" onclick="S17X.bulk('builder',true)">Open ${n} to the builder</button><button class="btn" onclick="S17X.bulk('builder',false)">Close ${n}</button>${I.demo.colors?`<select class="select" style="width:150px;height:30px" onchange="S17.color=this.value"><option value="">Not classified</option>${I.COLORS.map(x=>`<option value="${x[0]}" ${S17.color===x[0]?"selected":""}>${x[1]}</option>`).join("")}</select><button class="btn" onclick="S17X.bulk('color')">Set colour on ${n}</button>`:""}<input class="input" style="width:90px;height:30px" placeholder="stems" value="${esc(S17.pack)}" oninput="S17.pack=this.value"><button class="btn" ${Number(S17.pack)>=1?"":"disabled"} onclick="S17X.bulk('pack')">Set pack size on ${n}</button><button class="textbtn x" onclick="S17.sel.clear();App.remount()">Clear selection</button></div><div class="note-box --warn xs mb8">Pack size multiplies on hand, reserved and min, divides cost, landed and retail, and writes an adjustment per item – all in one transaction.</div>`:""}`:""}
+  <!-- ids: INVT-052 INVT-053 INVT-054 INVT-055 INVT-056 INVT-057 INVT-058 INVT-059 INVT-060 INVT-067 INVT-068 -->
+  <div class="tbl-wrap"><table class="tbl"><thead><tr>${c.manage?`<th class="chk"></th>`:""}<th>Item</th><th>Category</th><th class="num">On hand</th><th class="num">Reserved</th><th class="num">Available</th><th class="num">Min</th><th class="num">Stands</th>${I.demo.colors?`<th>Colour</th>`:""}<th>With helium</th><th>Fresh until</th><th>In the builder</th><th class="num">In a pack</th><th>Status</th></tr></thead><tbody>
+  ${list.length?list.map(i=>`<tr class="r ${I.status(i)==="out"?"--accent":""}">${c.manage?`<td class="chk"><label class="check"><input type="checkbox" ${S17.sel.has(i.id)?"checked":""} onchange="S17X.sel(${i.id},this.checked)"></label></td>`:""}${I.itemCell(i,`${esc(i.ru)} · ${i.sku} · ${i.unit} · <span class="${i.counted?"":"warn"}">${I.countedStamp(i)}</span>`)}<td>${i.cat}</td><td class="num">${i.qty}</td><td class="num">${i.reserved}</td><td class="num"><b>${I.avail(i)}</b></td><td class="num">${i.min}</td><td class="num">${i.shelf??"–"}</td>${I.demo.colors?`<td>${i.color?I.COLORS.find(x=>x[0]===i.color)[1]:"–"}</td>`:""}<td>${i.balloon?(i.balloon.litres?`£${(i.retail+i.balloon.litres*I.helium.price*I.helium.markupHelium).toFixed(2)} · ${i.balloon.litres} L`:`<span class="warn" title="Inflated size unknown – set it on the card">size?</span>`):"–"}</td><td>${I.freshCell(i)}</td><td>${i.constructor?`<span class="tag --ok">Open</span>`:"–"}</td><td class="num">${i.packAsking?`<span class="tag" title="The name says ‘bunch’ but the pack size is not set">asking</span>`:i.pack||"–"}</td><td>${I.statusTag(i)}</td></tr>`).join(""):`<tr><td colspan="14">${I.empty("warehouse","No items")}</td></tr>`}
+  </tbody></table></div>`;
+  if(c.cost)S17X.hq();
+};
+
+/* ---------- ITEM CARD (s-inventory-item) ---------- */
+window.mount_inventory_item=function(params){
+  const c=I.can();const i=I.item(params&&params.id)||I.items[0];S17.item=i.id;
+  const isBalloon=i.cat.includes("balloon")||i.cat==="Latex balloons";
+  const used=I.recipes.filter(r=>r.lines.some(l=>l.item===i.id));
+  const reserved=A.data.orders.filter(o=>o.n>=0&&!["delivered","cancelled"].includes(o.status)).slice(0,i.reserved?3:0);
+  /* ids: INVT-069 INVT-070 INVT-071 INVT-072 INVT-073 */
+  I.head("inventory-item",`${esc(i.name)}`,`${esc(i.ru)} · ${i.sku} · ${i.cat} · ${i.unit} · ${I.countedStamp(i)}`,
+    `${I.statusTag(i)}<button class="btn --ghost --sm" onclick="S17X.label([${i.id}])">${ic("printer")} <span class="t">Print QR</span></button>${c.manage?`<button class="btn --ghost --sm" onclick="S17X.editItem(${i.id})">${ic("edit")} <span class="t">Edit item</span></button><button class="btn --ghost --sm" onclick="App.go('inventory-receive',{item:${i.id}})">${ic("box")} <span class="t">Receive</span></button>`:""}<button class="btn --sm" onclick="App.go('inventory-writeoff',{item:${i.id}})">${ic("trash")} <span class="t">Write-off</span></button>`);
+  const kp=(t,v,s,cls)=>`<div class="kpi-card ${cls||""}" style="cursor:default"><span class="caps">${t}</span><span class="kpi-s tnum">${v}</span><span class="delta">${s||""}</span></div>`;
+  I.body("inventory-item").innerHTML=`
+  <div class="row mb16" style="gap:16px;align-items:flex-start"><span class="thumb --l">${I.img(i).replace('--s','--l')}</span><div class="sp"></div></div>
+  <!-- ids: INVT-074 INVT-075 INVT-076 -->
+  <div class="grid ${c.cost?"g6":"g4"}">${kp("On hand",i.qty+" "+i.unit)}${kp("Reserved",i.reserved,"in open orders")}${kp("Available",I.avail(i),"",I.avail(i)<=0?"--accent":I.avail(i)<i.min?"--warn":"")}${c.cost?kp("Purchase price",I.money(i.cost),"what we pay per "+i.unit):""}${kp("Retail price",I.money(i.retail),"including VAT 20%"+(c.cost?" · £"+(i.retail/1.2).toFixed(2)+" ex VAT":""))}${c.cost?kp("Stock value",I.money(i.qty*i.cost),"at cost"):""}</div>
+  ${!c.manage?`<div class="mt8">${I.roleNote("Write-off from the card was manager-only in the old CRM although a florist can write off via the tab – here the button is open for everyone (decision for Tatiana)")}</div>`:""}
+  ${isBalloon?`<!-- ids: INVT-077 INVT-078 --><div class="grid g2 mt16"><div class="card"><span class="caps">Balloon with helium</span><dl class="kv">${c.cost?`<dt>Landed cost</dt><dd>${I.money(i.cost)}</dd>`:""}<dt>Retail without helium</dt><dd>${I.money(i.retail)}</dd><dt>Helium</dt><dd>${i.balloon.litres} L${c.cost?` · gas ${I.money(i.balloon.litres*I.helium.price*1.12)}`:""} · adds ${I.money(i.balloon.litres*I.helium.price*I.helium.markupHelium)} to the price</dd><dt>Retail with helium</dt><dd><b>${I.money(i.retail+i.balloon.litres*I.helium.price*I.helium.markupHelium)}</b> <span class="xs ${i.balloon.estimate?"warn":"muted"}">${i.balloon.byHand?"litres by hand":i.balloon.estimate?"estimate ±30 % – size unknown":"from inflated size "+i.balloon.size+'"'}</span></dd></dl></div><div class="card"><span class="caps">Helium by the cubic inch</span><div class="row" style="gap:8px;flex-wrap:wrap;align-items:flex-end"><div class="field" style="width:90px"><label>Diameter</label><input class="input" id="hq-d" value="${i.balloon.size}" oninput="S17X.hq()"></div><div class="field" style="width:90px"><label>Shape</label><input class="input" id="hq-s" value="0.52" oninput="S17X.hq()"></div><div class="field" style="width:80px"><label>In card</label><input class="input" id="hq-n" value="1" oninput="S17X.hq()"></div><div class="sm" id="hq-out" aria-live="polite"></div></div>${c.cost?"":`<div class="xs muted mt8">Gas cost hidden – admin only</div>`}</div></div>`:""}
+  <div class="two mt16">
+    <div class="stack">
+      <!-- ids: INVT-084 INVT-322 -->
+      <div class="panel"><div class="p-head"><div class="h4">Reserved for orders</div></div><div class="p-body">${reserved.length?`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Order</th><th>Fulfil</th><th>Status</th><th class="num">Qty</th></tr></thead><tbody>${reserved.map((o,k)=>`<tr class="r" onclick="App.openOrder(${o.id})"><td>#${o.id}</td><td>${o.date?A.fmtDay(o.date)+" · "+o.slot:"no date yet"}</td><td>${A.orderPill(o)}</td><td class="num">× ${[12,8,4][k]}</td></tr>`).join("")}</tbody></table></div>`:I.empty("orders","No open order is holding this item")}</div></div>
+      <!-- ids: INVT-086 -->
+      <div class="panel"><div class="p-head"><div class="h4">Batches</div><span class="muted xs">open deliveries · FEFO</span></div><div class="p-body">${i.batches.length?`<div class="tbl-wrap --flush"><table class="tbl"><thead><tr><th>Received</th><th>Fresh until</th><th class="num">Left</th>${c.cost?`<th class="num">Batch price</th>`:""}</tr></thead><tbody>${i.batches.map((b,k)=>`<tr><td>${I.fd(b.at)}${k===0?` <span class="tag --line">Use this one first</span>`:""}</td><td class="${b.fresh&&I.days(b.fresh)<0?"accent":""}">${b.fresh?I.fd(b.fresh):"no date"}</td><td class="num">${b.left}</td>${c.cost?`<td class="num">${I.money(b.cost)}</td>`:""}</tr>`).join("")}</tbody></table></div>`:I.empty("box","No batch-tracked delivery yet – receive one to start FEFO")}</div></div>
+      <!-- ids: INVT-085 INVT-322 -->
+      <div class="panel"><div class="p-head"><div class="h4">Movement history</div><span class="muted xs">last 50 · note shown (was hidden)</span></div><div class="p-body">${i.movements.length?i.movements.slice(0,8).map(m=>`<div class="mv"><span class="muted xs tnum">${I.fdt(m.at)}</span><span class="tag">${I.MV_TYPES.find(t=>t[0]===m.type)[1]}</span><span class="xs muted">${esc(m.note||m.ref)}</span><span class="q ${m.qty>0?"--ok":"--accent"}">${m.qty>0?"+":""}${m.qty}</span></div>`).join(""):I.empty("list","No movements")}</div></div>
+    </div>
+    <div class="stack">
+      <!-- ids: INVT-079 INVT-080 INVT-081 INVT-082 -->
+      <div class="card"><span class="caps">Details</span><dl class="kv"><dt>Category</dt><dd>${i.cat}</dd><dt>Unit</dt><dd>${i.unit}</dd><dt>Stems per pack</dt><dd>${i.pack||"–"} ${c.manage?`<button class="textbtn" onclick="S17X.packModal(${i.id})">change</button>`:""}</dd><dt>Min level</dt><dd>${i.min}</dd><dt>Status</dt><dd>${I.statusTag(i)}</dd><dt>Fresh until</dt><dd>${I.freshCell(i)}</dd><dt>Stands</dt><dd>${i.shelf?i.shelf+" days":"no shelf life"}</dd>${i.displayName?`<dt>Name on the site</dt><dd>${esc(i.displayName)}</dd>`:""}${i.keywords?`<dt>Search keywords</dt><dd>${esc(i.keywords)}</dd>`:""}${I.demo.colors?`<dt>Colour</dt><dd>${i.color?I.COLORS.find(x=>x[0]===i.color)[1]:"Not classified"}</dd>`:""}<dt>In the builder</dt><dd>${i.constructor?"Sold by the stem":"Not sold by the stem"}</dd></dl></div>
+      <!-- ids: INVT-083 -->
+      <div class="panel"><div class="p-head"><div class="h4">Used in</div></div><div class="p-body">${used.length?used.map(r=>`<div class="mv" style="cursor:pointer" onclick="App.go('recipes',{variant:${r.id}})"><span>${esc(r.name)} – ${r.variant}</span><span class="q">× ${r.lines.find(l=>l.item===i.id).qty}</span></div>`).join(""):I.empty("catalog","Not used in any recipe")}</div></div>
+      <!-- ids: INVT-096 INVT-097 -->
+      <div class="card --flat"><span class="caps">QR label</span><div class="sm">QR = this card's address · scanned by the tablet camera at the shelf. Printed labels keep working only while the URL stays the same.</div><div class="btn-row mt8"><button class="btn --ghost --sm" onclick="S17X.label([${i.id}])">${ic("printer")} Print 1 label</button><button class="btn --ghost --sm" onclick="S17X.label(INV.items.filter(x=>x.groupA).map(x=>x.id))">${ic("printer")} Group A sheet</button></div></div>
+    </div>
+  </div>`;
+  if(isBalloon)S17X.hq();
+};
+
+/* ---------- actions shared by the three screens ---------- */
+window.S17X={
+  hq(){const d=+($("#hq-d")?.value||0),s=+($("#hq-s")?.value||.52),n=+($("#hq-n")?.value||1);const L=Math.pow(d,3)*s/61.024*n;const out=$("#hq-out");if(!out)return;out.innerHTML=`<b class="tnum">${L.toFixed(1)} L</b>${I.can().cost?` · gas cost ${I.money(L*I.helium.price*1.12)}`:""} · shelf ${I.money(L*I.helium.price*I.helium.markupHelium*1.12)}`},
+  wholesale(){A.modal({title:"Wholesale price list",body:`<p class="sm">Cost × markup, no cost column, SKU prefix AP- only. Empty = default markup (×1.6), comma is read as a point. Clamped to 1.1–3.0.</p><div class="field"><label>Markup</label><input class="input" id="ws-m" placeholder="1.6"></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="App.closeModal();App.toast('Wholesale CSV · markup ×'+(document.getElementById('ws-m').value.replace(',','.')||'1.6')+' · opens in a new tab')">Open CSV</button>`})},
+  heliumForm(){const h=I.helium;A.modal({title:"Helium price",body:`<div class="grid g2"><div class="field"><label>Helium price, £</label><input class="input" id="he-p" value="${h.price}"></div><div class="field"><label>Unit</label><select class="select" id="he-u" onchange="S17X.heUnit(this.value)"><option value="litre" selected>litre</option><option value="m3">cubic metre</option><option value="cuft">cubic foot</option></select></div><div class="field"><label>Markup on balloon</label><input class="input" id="he-mb" value="${h.markupBalloon}"></div><div class="field"><label>Markup on helium</label><input class="input" id="he-mh" value="${h.markupHelium}"></div><div class="field"><label>Gas lost, %</label><input class="input" id="he-l" value="${h.lost}"></div><div class="field"><label>Balloons spoiled, %</label><input class="input" id="he-s" value="${h.spoiled}"></div></div><p class="xs muted">Changing the unit converts the typed amount – it never reinterprets the number. Every balloon price with helium is recalculated on next open.</p>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S17X.heSave()">Save</button>`})},
+  heUnit(u){const p=$("#he-p");const cur=p.dataset.u||"litre";const toL={litre:1,m3:1/1000,cuft:1/28.317};const v=+p.value*toL[cur];p.value=(v/toL[u]).toPrecision(4);p.dataset.u=u},
+  heSave(){const p=$("#he-p"),u=p.dataset.u||"litre";const toL={litre:1,m3:1/1000,cuft:1/28.317};const v=+p.value*toL[u];if(!(v>0)){A.toast("Save is disabled – check the values");return}Object.assign(I.helium,{price:v,markupBalloon:+$("#he-mb").value,markupHelium:+$("#he-mh").value,lost:+$("#he-l").value,spoiled:+$("#he-s").value,savedAt:A.NOW.toISOString()});A.closeModal();A.toast("Helium price saved · balloon prices recalculated");A.remount()},
+  createItem(){const n=$("#ni-name").value.trim();if(!n){A.toast("Name (EN) is required");return}const it=Object.assign({},I.items[12],{id:420+I.items.length,name:n,ru:"",sku:"M-"+(400200+I.items.length),qty:0,reserved:0,min:0,fresh:null,shelf:null,counted:null,groupA:false,batches:[],movements:[],constructor:false,color:null,pack:1,packAsking:false,balloon:null,cat:"Vases"});I.items.push(it);S17.adding=false;A.toast("Item created · stock 0");A.go("inventory-item",{id:it.id})},
+  sel(id,on){on?S17.sel.add(id):S17.sel.delete(id);A.remount()},
+  toggleAll(ids){if(S17.sel.size===ids.length)S17.sel.clear();else ids.forEach(x=>S17.sel.add(x));A.remount()},
+  bulk(kind,v){const ids=[...S17.sel];if(ids.length>200){I.body("inventory-stock").insertAdjacentHTML("afterbegin",I.errBox("Up to 200 items per bulk action – you selected "+ids.length));return}
+    if(kind==="builder"){ids.forEach(x=>I.item(x).constructor=v);A.toast(`${v?"Opened":"Closed"} ${ids.length} in the builder`)}
+    if(kind==="color"){ids.forEach(x=>I.item(x).color=S17.color||null);A.toast(`Colour ${S17.color||"cleared"} on ${ids.length} – site filter updated`)}
+    if(kind==="pack"){A.confirm("Set pack size on "+ids.length+"?",`Stems in a pack: ${S17.pack}. On hand, reserved and min are multiplied, cost / landed / retail divided; an adjustment goes to the log for each item. One transaction, idempotent.`,"Set pack size",()=>{ids.forEach(x=>{const it=I.item(x);const k=+S17.pack;it.qty*=k;it.reserved*=k;it.min*=k;it.cost/=k;it.retail/=k;it.pack=k;it.packAsking=false;I.addMovement(it,"adjustment",0,"PackSize","Pack size ×"+k)});S17.sel.clear();A.toast("Pack size set on "+ids.length);A.remount()});return}
+    S17.sel.clear();A.remount()},
+  label(ids){if(!ids.length){A.modal({title:"Nothing to print",body:"Group A is empty – the sheet answers 404 instead of blank paper."});return}A.modal({title:`QR labels · ${ids.length}`,wide:true,body:`<div class="grid g3">${ids.slice(0,9).map(x=>{const it=I.item(x);return `<div class="card" style="text-align:center"><div style="width:72px;height:72px;margin:0 auto 8px;background:repeating-conic-gradient(var(--ink) 0 25%,var(--paper) 0 50%) 0 0/12px 12px"></div><b class="sm">${esc(it.name)}</b><div class="xs muted">${it.sku} · ${it.unit}</div></div>`}).join("")}</div>${ids.length>9?`<p class="xs muted">… and ${ids.length-9} more</p>`:""}`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Close</button><button class="btn --sm" onclick="App.closeModal();App.toast('Print ${ids.length} labels · sent to printer')">${ic("printer")} Print ${ids.length} labels</button>`})},
+  editItem(id){const i=I.item(id),c=I.can();const isB=i.cat.includes("balloon");A.modal({title:"Edit item",wide:true,body:`<div class="form-grid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="field"><label>Name (EN) *</label><input class="input" id="ei-n" value="${esc(i.name)}"></div><div class="field"><label>Name (RU)</label><input class="input" value="${esc(i.ru)}"></div><div class="field"><label>Name on the site (EN) · ≤120</label><input class="input" value="${esc(i.displayName)}" maxlength="120"></div><div class="field"><label>Search keywords</label><input class="input" value="${esc(i.keywords)}" placeholder="RU / UA / KZ synonyms, jargon"></div><div class="field"><label>SKU *</label><input class="input" value="${i.sku}"></div><div class="field"><label>Category</label><select class="select"><option>${i.cat}</option><option>Roses</option><option>Greenery</option><option>Foil balloons</option><option>Latex balloons</option></select></div><div class="field"><label>Unit</label><input class="input" value="${i.unit}"></div><div class="field"><label>Min level</label><input class="input" value="${i.min}"></div>${c.cost?`<div class="field"><label>Purchase price, excluding VAT</label><input class="input" value="${i.cost}"></div>`:`<div class="field"><label>Purchase price</label><div class="role-note" style="height:36px">${ic("lock")} admin only – the server drops ‘cost’ from your request so it cannot zero the price</div></div>`}<div class="field"><label>Retail price (incl. VAT)</label><input class="input" id="ei-r" value="${i.retail}" placeholder="empty or 0 = no price → derived from cost"></div><div class="field"><label>Fresh until</label><input class="input" value="${i.fresh?I.fd(i.fresh):""}" placeholder="empty = none"></div><div class="field"><label>Stands, days (1–365)</label><input class="input" value="${i.shelf??""}" placeholder="empty = no shelf life (null, not 0)"></div>${I.demo.colors?`<div class="field"><label>Colour</label><select class="select"><option>Not classified</option>${I.COLORS.map(x=>`<option ${i.color===x[0]?"selected":""}>${x[1]}</option>`).join("")}</select></div>`:""}<div class="field"><label>Sell by the stem in the builder</label><label class="check"><span class="switch ${i.constructor?"on":""}" onclick="this.classList.toggle('on')"></span> opens the item in the bouquet builder on the site</label></div>${isB?`<div class="field"><label>Inflated size, inches</label><input class="input" value="${i.balloon.size}"></div><div class="field"><label>Shape factor</label><input class="input" value="${i.balloon.shape}"></div><div class="field"><label>Balloons in the card</label><input class="input" value="${i.balloon.inCard}"></div><div class="field"><label>Helium litres (by hand)</label><input class="input" value="${i.balloon.litres}"></div><div class="field"><label>Estimate ±30 %</label><label class="check"><span class="switch ${i.balloon.estimate?"on":""}" onclick="this.classList.toggle('on')"></span> when the size is unknown</label></div>`:""}</div><p class="xs muted mt8">Retail price feeds the stem price in the site builder and order lines. SKU prefix filters the wholesale list and prints on labels. <span class="kbd">esc</span> closes.</p>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="(function(){const it=INV.item(${id});it.name=document.getElementById('ei-n').value||it.name;const r=document.getElementById('ei-r').value;it.retail=r&&+r>0?+r:Math.round(it.cost*3.2*100)/100;App.closeModal();App.toast('Item saved'+(r&&+r>0?'':' · retail price empty → derived from cost'));App.remount()})()">Save</button>`})},
+  packModal(id){const i=I.item(id);A.modal({title:"Stems in one supplier pack",body:`<div class="field"><label>Stems (1–1000)</label><input class="input" id="pk" value="${i.pack||1}" oninput="S17X.packPrev(${id})"></div><div class="sm mt8" id="pk-prev"></div><p class="xs muted">The on-hand count and prices are converted to single stems; an adjustment is written to the movement log. Idempotent. <span class="kbd">esc</span> closes.</p>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" onclick="S17X.packSave(${id})">Save</button>`});S17X.packPrev(id)},
+  packPrev(id){const i=I.item(id),k=Math.max(1,Math.min(1000,+$("#pk").value||1));$("#pk-prev").innerHTML=`On hand <b class="tnum">${i.qty} → ${i.qty*k}</b> · Retail price <b class="tnum">${I.money(i.retail)} → ${I.money(i.retail/k)}</b>`},
+  packSave(id){const i=I.item(id),k=Math.max(1,Math.min(1000,+$("#pk").value||1));i.qty*=k;i.reserved*=k;i.min*=k;i.cost/=k;i.retail/=k;i.pack=k;i.packAsking=false;I.addMovement(i,"adjustment",0,"PackSize","Pack size ×"+k);A.closeModal();A.toast("Pack size saved · adjustment in the log");A.remount()}
+};
+document.addEventListener("inv",()=>{const c=A.state.current;if(["inventory","inventory-stock","inventory-item"].includes(c))A.remount()});
+})();
+</script>
+<script>
+/* ===== 17 · Count today · Stocktakes · Group A · Suggestions · Movements ===== */
+(()=>{
+const A=App,I=INV,esc=A.esc,ic=A.icon,$=A.$;
+const S=window.S17;S.gA=null;S.onlyDiff=false;S.stLines={};
+
+/* ---------- COUNT TODAY ---------- */
+window.mount_inventory_count=function(){
+  const c=I.can();const g=I.demo.empty?[]:I.items.filter(i=>i.groupA);const done=g.filter(i=>i.counted&&I.days(i.counted.at)===0).length;
+  /* ids: INVT-098 INVT-011 */
+  I.head("inventory-count","Count today",`${done} of ${g.length} counted · ${A.NOW.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}`,`<span class="hint-row">${ic("info")} 5–8 items of group A picked by the system: most money moved, longest since the last count.</span>`);
+  I.body("inventory-count").innerHTML=!I.demo.groupA?`<!-- ids: INVT-099 -->${I.empty("lock","Group A is not saved yet – an admin marks it on Inventory → Group A.",`<button class="btn --sm" onclick="App.go('inventory-group-a')">Open Group A</button>`)}`:!g.length?I.empty("check","Nothing to count today – come back tomorrow"):`
+  <!-- ids: INVT-100 INVT-101 INVT-102 INVT-103 INVT-104 INVT-324 -->
+  <div class="card --pad0">${g.map(i=>{const today=i.counted&&I.days(i.counted.at)===0;const h=S.hints[i.id];return `<div class="count-row" data-id="${i.id}">
+    <div class="row" style="gap:10px;min-width:0">${I.img(i)}<div style="min-width:0"><b>${esc(i.name)}</b> ${today?`<span class="tag --ok">Counted today</span>`:""}<div class="xs muted">${esc(i.ru)} · ${i.sku} · ${i.unit} · ${I.countedStamp(i)}</div></div></div>
+    <input class="input" placeholder="On shelf" inputmode="numeric" title="The system count is deliberately not shown – type what is on the shelf" value="${h&&h.val!=null?h.val:""}" oninput="S17.hints[${i.id}]=Object.assign(S17.hints[${i.id}]||{},{val:this.value});this.closest('.count-row').querySelector('.save').disabled=!this.value||INV.demo.busy">
+    <button class="ib cam" title="From photo – rear camera on the phone; Claude estimates the stems" onclick="S17Y.photo(${i.id})">${ic("photo")}</button>
+    <button class="btn --sm save" ${(!h||h.val==null||h.val==="")||I.demo.busy?"disabled":""} onclick="S17Y.count(${i.id})">${I.demo.busy?"Saving…":"Save"}</button>
+    ${h&&h.text?`<div class="hint ${h.err?"accent":""}">${h.text}</div>`:""}</div>`}).join("")}</div>
+  <p class="xs muted mt8">${I.roleNote("Saving one row locks Save on every row until the request returns ("+(I.demo.busy?"on":"off")+" in Demo state). The photo hint stays after saving.")}</p>`;
+};
+window.S17Y={
+  count(id){const i=I.item(id);const v=+S.hints[id].val;const diff=v-i.qty;i.qty=v;i.counted={who:A.me().id,at:A.NOW.toISOString()};I.addMovement(i,"adjustment",0,"CycleCount","Cycle count");i.qty=v;S.hints[id].val="";A.toast(`Counted ${i.name}: ${v} (difference ${diff>=0?"+":""}${diff})`);A.remount()},
+  photo(id){if(!I.demo.photoCount){S.hints[id]={text:"Could not read the photo – count by hand. (503 – photo counting is not configured)",err:true};A.remount();return}S.hints[id]={text:"Reading…"};A.remount();setTimeout(()=>{const i=I.item(id);const est=Math.max(0,i.qty+(id%3)-1);S.hints[id]={val:est,text:`From the photo – ${["sure","estimate","rough guess"][id%3]}: ${["stems clearly visible","bucket half hidden","stems overlap at the back"][id%3]}. Check it, then Save.`};A.remount()},900)}
+};
+
+/* ---------- STOCKTAKES LIST ---------- */
+window.mount_inventory_stocktakes=function(){
+  const c=I.can();const list=I.demo.empty?[]:I.stocktakes;
+  /* ids: INVT-105 INVT-041 */
+  I.head("inventory-stocktakes","Stocktakes",`${list.length} sheets · the sheet snapshots stock when it opens`,`<button class="btn --sm" onclick="S17Z.newSheet()">${ic("plus")} <span class="t">New stocktake</span></button>`);
+  const varCount=s=>s.lines.filter(l=>l.counted!=null&&l.counted!==l.sys).length;
+  const varVal=s=>s.lines.reduce((t,l)=>t+(l.counted!=null?(l.counted-l.sys)*I.item(l.item).cost:0),0);
+  I.body("inventory-stocktakes").innerHTML=`<!-- ids: INVT-107 INVT-108 INVT-109 --><div class="tbl-wrap"><table class="tbl"><thead><tr><th>No.</th><th>Date</th><th>Scope</th><th>Owner</th><th class="num">Items</th><th class="num">Counted</th><th class="num">Variances</th><th class="num">Δ value</th><th>Status</th></tr></thead><tbody>
+  ${list.length?list.map(s=>`<tr class="r" onclick="App.go('inventory-stocktake-sheet',{id:${s.id}})"><td><b>${s.code}</b></td><td>${I.fdt(s.at)}</td><td>${I.ST_SCOPE[s.scope]}${s.cat?" · "+s.cat:""}</td><td>${s.owner?A.avatar(s.owner,"--s")+" "+A.user(s.owner).n:"Pool (anyone on shift)"}</td><td class="num">${s.lines.length}</td><td class="num">${s.lines.filter(l=>l.counted!=null).length} / ${s.lines.length}</td><td class="num">${varCount(s)}</td><td class="num ${varVal(s)<0?"accent":""}">${c.cost?I.money(varVal(s)):"–"}</td><td>${A.pill(s.st==="in_progress"?"doing":s.st==="done"?"done":"cancelled",I.ST_ST[s.st])}</td></tr>`).join(""):`<tr><td colspan="9">${I.empty("check","No stocktakes",`<button class="btn --sm" onclick="S17Z.newSheet()">New stocktake</button>`)}</td></tr>`}</tbody></table></div>`;
+};
+window.S17Z={
+  newSheet(){const g=I.items.filter(i=>i.groupA);A.modal({title:"New stocktake",body:`<!-- ids: INVT-106 INVT-110 --><div class="field"><label>Scope</label><div class="col">${I.demo.groupA?`<label class="check"><input type="radio" name="sc" value="groupA" checked> Group A – ${g.length} items, counted often</label>`:""}<label class="check"><input type="radio" name="sc" value="full" ${I.demo.groupA?"":"checked"}> Full</label><label class="check"><input type="radio" name="sc" value="category" onchange="document.getElementById('sc-cat').style.display='';document.getElementById('sc-start').disabled=!document.getElementById('sc-cat').value"> Category</label><label class="check"><input type="radio" name="sc" value="sample"> Sample (weighted)</label></div></div><div class="field mt8" id="sc-cat-w"><select class="select" id="sc-cat" style="display:none" onchange="document.getElementById('sc-start').disabled=!this.value"><option value="">Pick a category…</option>${[...new Set(I.items.map(i=>i.cat))].map(x=>`<option>${x}</option>`).join("")}</select></div><p class="xs muted">The sheet snapshots today's stock and opens right away. <span class="kbd">esc</span> closes. Server needs inventory.count.</p>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm" id="sc-start" onclick="S17Z.create()">Start</button>`});
+    document.querySelectorAll('input[name=sc]').forEach(r=>r.addEventListener('change',()=>{const cat=$("#sc-cat");if(r.value!=="category"){cat.style.display="none";$("#sc-start").disabled=false}}))},
+  create(){const sc=document.querySelector('input[name=sc]:checked').value;const cat=$("#sc-cat").value;const src=sc==="groupA"?I.items.filter(i=>i.groupA):sc==="category"?I.items.filter(i=>i.cat===cat):sc==="sample"?I.items.filter((i,k)=>k%4===0):I.items;const s={id:I.stocktakes[0].id+1,code:"ST-00"+(I.stocktakes[0].id+1),at:A.NOW.toISOString(),scope:sc,cat:sc==="category"?cat:null,owner:sc==="sample"?null:A.me().id,st:"in_progress",lines:src.map(i=>({item:i.id,sys:i.qty,counted:null}))};I.stocktakes.unshift(s);A.closeModal();A.toast(s.code+" created · "+s.lines.length+" lines");A.go("inventory-stocktake-sheet",{id:s.id})}
+};
+
+/* ---------- STOCKTAKE SHEET ---------- */
+window.mount_inventory_stocktake_sheet=function(params){
+  const c=I.can();const s=I.stocktake(params&&params.id)||I.stocktakes[0];S.st=s.id;const open=s.st==="in_progress";
+  const draft=S.stLines[s.id]||(S.stLines[s.id]=s.lines.map(l=>({counted:l.counted})));
+  const lines=s.lines.map((l,k)=>Object.assign({},l,{counted:draft[k].counted,k}));
+  const v=l=>l.counted==null?null:l.counted-l.sys;
+  const shown=S.onlyDiff?lines.filter(l=>v(l)!=null&&v(l)!==0):lines;
+  const nVar=lines.filter(l=>v(l)).length,sumQ=lines.reduce((t,l)=>t+(v(l)||0),0),sumV=lines.reduce((t,l)=>t+(v(l)||0)*I.item(l.item).cost,0);
+  const counted=lines.filter(l=>l.counted!=null).length;const dirty=lines.some((l,k)=>l.counted!==s.lines[k].counted);
+  /* ids: INVT-111 INVT-112 INVT-113 INVT-121 */
+  I.head("inventory-stocktake-sheet",`Stocktake ${s.code}`,`${I.ST_SCOPE[s.scope]}${s.cat?" · "+s.cat:""} · opened ${I.fdt(s.at)} · ${s.owner?A.user(s.owner).n:"Pool"}`,
+    `${A.pill(open?"doing":s.st==="done"?"done":"cancelled",I.ST_ST[s.st])}<button class="btn --ghost --sm" onclick="App.go('inventory-stocktakes')">${ic("back")} <span class="t">All sheets</span></button><label class="check sm"><input type="checkbox" ${S.onlyDiff?"checked":""} onchange="S17.onlyDiff=this.checked;App.remount()"> Only differences</label>${open?`<button class="btn --ghost --sm" onclick="S17W.zero()">${ic("minus")} <span class="t">Zero counts</span></button>`:""}`);
+  I.body("inventory-stocktake-sheet").innerHTML=`
+  ${dirty&&open?`<!-- ids: INVT-325 --><div class="note-box --warn mb8">Unsaved numbers – they live only on this page until «Save draft». Leaving the sheet now asks first (the old CRM lost them silently).</div>`:""}
+  <!-- ids: INVT-114 INVT-115 INVT-116 INVT-117 INVT-122 -->
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item · unit</th><th class="num">System</th><th class="num">Counted</th><th class="num">Variance</th>${c.cost?`<th class="num">Δ value</th>`:""}</tr></thead><tbody>
+  ${shown.length?shown.map(l=>{const i=I.item(l.item);const d=v(l);return `<tr>${I.itemCell(i,`${i.unit}${l.by?` · ${A.user(l.by).n} · ${I.fdt(l.at)}`:""}`)}<td class="num">${l.sys}</td><td class="num"><input class="input" style="text-align:right" ${open?"":"disabled"} value="${l.counted??""}" placeholder="–" inputmode="numeric" onchange="S17W.set(${s.id},${l.k},this.value)"></td><td class="num ${d>0?"ok":d<0?"accent":""}">${d==null?"–":(d>0?"+":"")+d}</td>${c.cost?`<td class="num ${d<0?"accent":""}">${d==null?"–":I.money(d*i.cost)}</td>`:""}</tr>`}).join(""):`<tr><td colspan="5">${I.empty("filter","No rows – the «Only differences» filter left nothing")}</td></tr>`}
+  </tbody><tfoot><tr><td>${lines.length} rows · ${nVar} with variance</td><td></td><td class="num">${counted} counted</td><td class="num">${sumQ>0?"+":""}${sumQ}</td>${c.cost?`<td class="num">${I.money(sumV)}</td>`:""}</tr></tfoot></table></div>
+  ${open?`<!-- ids: INVT-118 INVT-119 INVT-120 --><div class="sticky-foot"><button class="btn --ghost --sm" onclick="S17W.draft(${s.id})">Save draft</button><span class="xs muted">server needs inventory.count</span><span class="sp"></span>${c.manage?`<button class="btn --ghost --sm" onclick="S17W.abandon(${s.id})">Close without applying</button><button class="btn --sm" ${counted?"":"disabled"} onclick="S17W.apply(${s.id})">${nVar?"Apply adjustments":"Close – everything matched"}</button>`:I.roleNote("Apply and close – manager+")}</div>`:`<p class="xs muted mt8">Closed sheet – fields locked, no actions.</p>`}`;
+};
+window.S17W={
+  set(id,k,val){S.stLines[id][k].counted=val===""?null:Math.max(0,+val);A.remount()},
+  zero(){const d=S.stLines[S.st];d.forEach(x=>x.counted=0);A.toast("All rows set to 0 on this page – Apply would write everything off");A.remount()},
+  draft(id){const s=I.stocktake(id);if(s.st!=="in_progress"){A.toast("Sheet already applied");return}s.lines.forEach((l,k)=>{const v=S.stLines[id][k].counted;if(v!==l.counted){l.counted=v;l.by=A.me().id;l.at=A.NOW.toISOString()}});A.toast("Draft saved");A.remount()},
+  abandon(id){A.confirm("Close this sheet without applying anything?","Nothing is booked, the sheet becomes «Closed, not applied» and frees the next sample check.","Close sheet",()=>{I.stocktake(id).st="abandoned";A.toast("Sheet closed, nothing applied");A.remount()},{danger:true})},
+  apply(id){const s=I.stocktake(id);S17W.draft(id);const n=s.lines.filter(l=>l.counted!=null&&l.counted!==l.sys).length;A.confirm(n?`Apply ${n} adjustments?`:"Close – everything matched?",n?"Adjustment movements for every variance; on hand shifts by the difference; the sheet closes. Draft is saved first (two requests in the old CRM).":"No variances – the sheet just closes.","Apply",()=>{s.lines.forEach(l=>{if(l.counted!=null&&l.counted!==l.sys){const i=I.item(l.item);I.addMovement(i,"adjustment",l.counted-l.sys,s.code,"Stocktake")}});s.st="done";A.toast(s.code+" applied");A.remount()})}
+};
+
+/* ---------- GROUP A (owner) ---------- */
+window.mount_inventory_group_a=function(){
+  const rows=(I.demo.empty?[]:I.items.filter(i=>i.cat!=="Helium")).map(i=>({i,money:Math.round(i.cost*[1700,900,300,600,200,160,90,560,480,520,80,30,60,40,50,0,300][I.items.indexOf(i)]||0)})).sort((a,b)=>b.money-a.money);
+  const total=rows.reduce((s,r)=>s+r.money,0);let cum=0;rows.forEach(r=>{cum+=r.money;r.share=total?r.money/total*100:0;r.cum=total?cum/total*100:0});
+  const sugg=new Set();let acc=0;for(const r of rows){if(acc/total<.8&&r.money>0){sugg.add(r.i.id);acc+=r.money}}
+  const savedSet=new Set(I.items.filter(i=>i.groupA).map(i=>i.id));
+  if(!S.gA)S.gA=new Set(I.demo.groupA?savedSet:sugg);
+  const ticked=rows.filter(r=>S.gA.has(r.i.id));const tickedShare=ticked.reduce((s,r)=>s+r.share,0);
+  const dirty=[...S.gA].sort().join()!==[...savedSet].sort().join();
+  /* ids: INVT-123 INVT-125 INVT-126 INVT-127 */
+  I.head("inventory-group-a","Group A",`Last 90 days · ${rows.length} items · ${rows.filter(r=>r.money).length} moved money, ${rows.filter(r=>!r.money).length} did not · tick where the money curve flattens – first ${sugg.size} = 80 %`,
+    `<button class="btn --ghost --sm" ${I.demo.groupA?"":"disabled"} onclick="S17X.label([...INV.items.filter(x=>x.groupA).map(x=>x.id)])">${ic("printer")} <span class="t">Print QR sheet</span></button><button class="btn --ghost --sm" onclick="S17.gA=new Set(${JSON.stringify([...sugg])});App.remount()">Suggest: first ${sugg.size} = 80 %</button><button class="btn --ghost --sm" ${I.demo.groupA&&dirty?"":"disabled"} onclick="S17.gA=null;App.remount()">Back to saved</button>`);
+  I.body("inventory-group-a").innerHTML=`
+  <!-- ids: INVT-124 INVT-128 INVT-130 --><div class="sticky-bar"><b>Ticked: ${ticked.length}</b><span class="muted">· ${Math.round(tickedShare)}% of the money</span><span class="muted">· in the group now: ${savedSet.size}</span>${dirty?`<span class="accent">Not saved</span>`:""}<span class="sp"></span><button class="btn --sm" ${dirty&&ticked.length?"":"disabled"} onclick="S17V.saveGroup()">Save group A (${ticked.length})</button></div>
+  <!-- ids: INVT-129 INVT-131 --><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="chk"></th><th>#</th><th>Item</th><th>Ranked by</th><th class="num">Money</th><th class="num">Share</th><th class="num">Cumulative</th><th class="num">On hand</th><th>Saved</th></tr></thead><tbody>
+  ${rows.length?rows.map((r,k)=>`<tr class="r"><td class="chk"><label class="check"><input type="checkbox" ${S.gA.has(r.i.id)?"checked":""} onchange="this.checked?S17.gA.add(${r.i.id}):S17.gA.delete(${r.i.id});App.remount()"></label></td><td class="num">${k+1}</td>${I.itemCell(r.i,`${r.i.sku} · ${r.i.cat}`)}<td>${r.money?(k%4===1?"Bought":"Sold + written off"):"No money"}</td><td class="num">${I.money(r.money)}</td><td class="num">${I.pct(r.share)}</td><td class="num">${I.pct(r.cum)}</td><td class="num">${r.i.qty}</td><td>${savedSet.has(r.i.id)?`<span class="tag --ink">In group A</span>`:""}</td></tr>`).join(""):`<tr><td colspan="9">${I.empty("pound","No stock moved money in the window")}</td></tr>`}</tbody></table></div>`;
+};
+window.S17V={saveGroup(){const n=S.gA.size;if(n<1||n>200){A.toast("Group A needs 1–200 items");return}I.items.forEach(i=>i.groupA=S.gA.has(i.id));I.demo.groupA=true;A.toast(`Group A saved · ${n} items · Count today, stocktake «Group A», Stock filter and the app follow`);A.remount()}};
+
+/* ---------- SUGGESTIONS ---------- */
+window.mount_inventory_suggestions=function(){
+  const open=I.demo.empty?[]:I.suggestions.filter(s=>s.status==="open");
+  /* ids: INVT-132 */
+  I.head("inventory-suggestions","Suggested items",`Waiting: ${open.length} · a florist on shift suggested an item from the app instead of creating it – link it, add it or turn it down`);
+  I.body("inventory-suggestions").innerHTML=`${S.sugErr?`<!-- ids: INVT-133 -->${I.errBox(S.sugErr)}`:""}
+  <!-- ids: INVT-134 INVT-135 INVT-136 INVT-137 INVT-138 INVT-139 INVT-141 -->
+  ${open.length?`<div class="grid g2">${open.map(s=>{const cands=I.items.filter(i=>i.cat!=="Helium").slice(s.id%5,s.id%5+4);return `<div class="sug"><div class="ph"><img src="img/${s.photo}.webp" alt=""></div><div class="col"><div><b>«${esc(s.name)}»</b> · counted ${s.count} · ${A.avatar(s.by,"--s")} ${A.user(s.by).n} · ${A.timeAgo(s.at)}${s.note?`<div class="xs muted">«${esc(s.note)}»</div>`:""}</div>
+    <div class="caps">Already in stock?</div><div class="cand">${cands.map(i=>`<button class="chip" onclick="S17U.link(${s.id},${i.id})">${esc(i.name)} (${i.sku})</button>`).join("")}</div>
+    <div class="row"><input class="input" style="width:140px" placeholder="SKU" id="sku-${s.id}" oninput="this.nextElementSibling.disabled=!this.value"><button class="btn --ghost --sm" disabled onclick="S17U.linkSku(${s.id})">Link</button><span class="xs muted">made today → the author's count books as a shelf count</span></div>
+    <div class="row"><input class="input" style="flex:1" value="${esc(s.name)}" id="nn-${s.id}" oninput="this.nextElementSibling.disabled=!this.value"><button class="btn --sm" onclick="S17U.create(${s.id})">Add as new</button><button class="btn --ghost --sm" onclick="S17U.reject(${s.id})">Turn down</button></div></div></div>`}).join("")}</div>`:I.empty("check","Nothing is waiting.")}
+  <!-- ids: INVT-140 --><div class="sec-head"><div class="h3">Answered in the last 14 days</div></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Suggested</th><th>By</th><th>Answer</th><th>Item</th><th>Reason</th><th>Answered by</th></tr></thead><tbody>${I.answered.map(a=>`<tr><td>${esc(a.name)}</td><td>${A.user(a.by).n}</td><td><span class="tag ${a.st==="Turned down"?"--accent":a.st==="Linked"?"":"--ok"}">${a.st}</span></td><td>${a.item?`<a class="link" href="#" onclick="event.preventDefault();App.go('inventory-item',{id:${a.item}})">${esc(I.item(a.item).name)}</a>`:"–"}</td><td class="wrap">${esc(a.why)||"–"}</td><td>${A.user(a.who).n} · ${I.fd(a.at)}</td></tr>`).join("")}</tbody></table></div>`;
+};
+window.S17U={
+  _done(id,st,item,why){const s=I.suggestions.find(x=>x.id===id);s.status="done";I.answered.unshift({name:s.name,by:s.by,st,item,why:why||"",who:A.me().id,at:A.NOW.toISOString()});A.remount()},
+  link(id,itemId){const s=I.suggestions.find(x=>x.id===id);const i=I.item(itemId);const today=I.days(s.at)===0;if(today){i.qty=s.count;i.counted={who:s.by,at:s.at}}S17U._done(id,"Linked",itemId);A.toast(`Linked to ${i.name}${today?" · "+s.count+" booked as today's shelf count":""}`)},
+  linkSku(id){const sku=$("#sku-"+id).value.trim();const i=I.items.find(x=>x.sku.toLowerCase()===sku.toLowerCase());if(!i){S.sugErr="No item with SKU "+sku;A.remount();setTimeout(()=>{S.sugErr=null},3000);return}S17U.link(id,i.id)},
+  create(id){const s=I.suggestions.find(x=>x.id===id);const n=$("#nn-"+id).value.trim();const it=Object.assign({},I.items[8],{id:420+I.items.length,name:n,ru:"",sku:"M-"+(400300+I.items.length),qty:s.count,reserved:0,min:0,fresh:null,counted:{who:s.by,at:s.at},groupA:false,batches:[],movements:[],constructor:false,color:null,pack:1,packAsking:false,balloon:null,cat:"Roses"});I.items.push(it);I.addMovement(it,"adjustment",0,"Suggestion#"+id,"Opening count from the app");it.qty=s.count;S17U._done(id,"Added as new",it.id);A.toast(`${n} created · stock ${s.count} · photo from the suggestion`)},
+  reject(id){A.modal({title:"Turn down",body:`<div class="field"><label>Why? The florist will read this.</label><textarea class="textarea" id="rj" oninput="document.getElementById('rj-ok').disabled=!this.value.trim()"></textarea></div>`,foot:`<button class="btn --secondary --sm" onclick="App.closeModal()">Cancel</button><button class="btn --sm --accent" id="rj-ok" disabled onclick="S17U._done(${id},'Turned down',null,document.getElementById('rj').value);App.closeModal();App.toast('Turned down · the author sees the reason in the app')">Turn down</button>`})}
+};
+
+/* ---------- MOVEMENTS ---------- */
+window.mount_inventory_movements=function(){
+  const c=I.can();const q=S.mvQ.toLowerCase();let list=I.demo.empty?[]:I.movements.filter(m=>{const i=I.item(m.item);return (!q||i.name.toLowerCase().includes(q)||i.sku.toLowerCase().includes(q))&&(!S.mvType||m.type===S.mvType)});
+  const per=12,pages=Math.max(1,Math.ceil(list.length/per));S.mvPage=Math.min(S.mvPage,pages);const page=list.slice((S.mvPage-1)*per,S.mvPage*per);
+  /* ids: INVT-259 INVT-260 INVT-263 */
+  I.head("inventory-movements","Movements",`${list.length} entries · append-only log · search by EN name and SKU only (RU / synonyms not indexed here)`);
+  I.body("inventory-movements").innerHTML=`<div class="toolbar"><div class="search">${ic("search")}<input placeholder="Item name (EN) or SKU" value="${esc(S.mvQ)}" onkeydown="if(event.key==='Enter'){S17.mvQ=this.value;S17.mvPage=1;App.remount()}" onchange="S17.mvQ=this.value"></div><select class="select" style="width:170px" onchange="S17.mvType=this.value;S17.mvPage=1;App.remount()"><option value="">All types</option>${I.MV_TYPES.map(t=>`<option value="${t[0]}" ${S.mvType===t[0]?"selected":""}>${t[1]}${["transfer","return"].includes(t[0])?" (no translation)":""}</option>`).join("")}</select><button class="btn --ghost --sm" onclick="S17.mvQ=document.querySelector('#s-inventory-movements .search input').value;App.remount()">Apply</button><span class="muted xs">?type=${S.mvType||"all"}&page=${S.mvPage}</span></div>
+  <!-- ids: INVT-261 INVT-262 INVT-264 --><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Item</th><th>Type</th><th class="num">Qty</th><th>Reference</th>${c.cost?`<th class="num">Unit cost, ex VAT</th>`:""}</tr></thead><tbody>
+  ${page.length?page.map(m=>{const i=I.item(m.item);return `<tr class="r" onclick="App.go('inventory-item',{id:${i.id}})"><td class="tnum">${I.fdt(m.at)}</td>${I.itemCell(i,i.sku)}<td><span class="tag ${m.type==="writeoff"?"--accent":m.type==="receipt"?"--ok":""}">${I.MV_TYPES.find(t=>t[0]===m.type)[1]}</span></td><td class="num ${m.qty>0?"ok":m.qty<0?"accent":""}">${m.qty>0?"+":""}${m.qty}</td><td class="muted">${esc(m.ref)}</td>${c.cost?`<td class="num">${I.money(m.cost)}</td>`:""}</tr>`}).join(""):`<tr><td colspan="6">${I.empty("list","No movements")}</td></tr>`}</tbody></table></div>
+  <div class="row mt8"><span class="xs muted">50 per page on the server · page ${S.mvPage} of ${pages}</span><span class="sp"></span><button class="btn --ghost --sm" ${S.mvPage>1?"":"disabled"} onclick="S17.mvPage--;App.remount()">${ic("back")}</button><button class="btn --ghost --sm" ${S.mvPage<pages?"":"disabled"} onclick="S17.mvPage++;App.remount()">${ic("chev")}</button></div>`;
+};
+document.addEventListener("inv",()=>{const c=A.state.current;if(["inventory-count","inventory-stocktakes","inventory-stocktake-sheet","inventory-group-a","inventory-suggestions","inventory-movements"].includes(c))A.remount()});
+})();
+</script>
+<script>
+/* ===== 17 · Write-off · Write-off review · Write-off report ===== */
+(()=>{
+const A=App,I=INV,esc=A.esc,ic=A.icon,$=A.$;
+const S=window.S17;S.wo={reason:"wilted",lines:[{item:"",qty:""}],date:"",comment:"",confirm:false};S.woTab="todo";S.rejecting=null;
+const MAX=2000;
+
+/* ---------- WRITE-OFF FORM ---------- */
+window.mount_inventory_writeoff=function(params){
+  const c=I.can();const w=S.wo;if(params&&params.item&&!params._used){w.lines=[{item:params.item,qty:""}];params._used=true}
+  const lines=w.lines.map(l=>({...l,it:I.item(l.item),q:+l.qty||0}));
+  const total=lines.reduce((s,l)=>s+(l.it?l.q*l.it.cost:0),0);
+  const overdrawn=lines.filter(l=>l.it&&l.q>l.it.qty),absurd=lines.some(l=>l.q>l.it?.qty*20&&l.q>100);
+  const needsConfirm=lines.some(l=>l.q>MAX);
+  const valid=lines.length&&lines.every(l=>l.it&&l.q>=1)&&(!needsConfirm||w.confirm);
+  /* ids: INVT-207 INVT-208 */
+  I.head("inventory-writeoff","Write-off","Three taps: reason · item · quantity. Booked at once, checked afterwards in Write-off review.");
+  const wk=I.writeoffs.filter(x=>I.days(x.at)>=-28&&!x.rejected&&x.reason!=="supplier_claim");
+  const byReason=I.WO_REASONS.map(r=>({r,v:wk.filter(x=>x.reason===r[0]).reduce((s,x)=>s+I.woValue(x),0),n:wk.filter(x=>x.reason===r[0]).length})).filter(x=>x.n);
+  const tot=byReason.reduce((s,x)=>s+x.v,0);
+  const weeks=[0,1,2,3].map(k=>wk.filter(x=>I.days(x.at)<=-k*7&&I.days(x.at)>-(k+1)*7).reduce((s,x)=>s+I.woValue(x),0));
+  const worst={};wk.forEach(x=>x.lines.forEach(l=>{worst[l.item]=(worst[l.item]||0)+l.qty*I.item(l.item).cost}));
+  I.body("inventory-writeoff").innerHTML=`<div class="two">
+  <div class="stack"><div class="card">
+    <div class="field"><label>Reason</label><div class="chips">${I.WO_REASONS.map(r=>`<button class="chip ${w.reason===r[0]?"on":""}" onclick="S17.wo.reason='${r[0]}';App.remount()">${r[1]}</button>`).join("")}</div></div>
+    <div class="grid g2 mt16"><div class="field"><label>Date</label><input class="input" placeholder="empty – today, London" value="${esc(w.date)}" onchange="S17.wo.date=this.value"></div><div class="field"><label>Comment</label><input class="input" value="${esc(w.comment)}" onchange="S17.wo.comment=this.value" placeholder="Back of fridge 2"></div></div>
+    <!-- ids: INVT-209 INVT-210 INVT-211 INVT-212 INVT-319 -->
+    <div class="lines mt16"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th class="num">On hand</th><th class="num">Write-off qty</th>${c.cost?`<th class="num">Δ value</th>`:""}<th></th></tr></thead><tbody>
+    ${lines.map((l,k)=>`<tr><td>${I.picker("it"+k,l.item,`onchange="S17.wo.lines[${k}].item=this.value;App.remount()"`)}</td><td class="num">${l.it?l.it.qty+" "+l.it.unit:"–"}</td><td class="num"><input class="input" style="text-align:right" inputmode="numeric" value="${esc(l.qty)}" onchange="S17.wo.lines[${k}].qty=this.value;App.remount()"></td>${c.cost?`<td class="num accent">${l.it&&l.q?"−"+I.money(l.q*l.it.cost):"–"}</td>`:""}<td><button class="ib" ${lines.length>1?"":"disabled"} onclick="S17.wo.lines.splice(${k},1);App.remount()">${ic("close")}</button></td></tr>`).join("")}
+    </tbody>${c.cost?`<tfoot><tr><td colspan="3" class="num">Total</td><td class="num accent">−${I.money(total)}</td><td></td></tr></tfoot>`:""}</table></div></div>
+    <div class="row mt8"><button class="btn --ghost --sm" onclick="S17.wo.lines.push({item:'',qty:''});App.remount()">${ic("plus")} Add item</button><span class="sp"></span></div>
+    ${overdrawn.length&&!absurd?`<div class="note-box --warn mt8">${overdrawn.map(l=>`Stock of ${esc(l.it.name)} goes to ${l.it.qty-l.q} – the count is out, book it anyway.`).join("<br>")}</div>`:""}
+    ${needsConfirm?`<label class="check mt8"><input type="checkbox" ${w.confirm?"checked":""} onchange="S17.wo.confirm=this.checked;App.remount()"> More than ${MAX} in one line – I have checked the quantity</label>`:""}
+    <!-- ids: INVT-213 INVT-215 --><div class="row mt16"><button class="btn" ${valid?"":"disabled"} onclick="S17T.book()">${ic("trash")} Write off</button><span class="xs muted">Photo is attached only from the app – it shows up in Write-off review.</span></div>
+  </div></div>
+  <!-- ids: INVT-214 -->
+  ${c.cost?`<div class="stack"><div class="panel"><div class="p-head"><div class="h4">Losses, last 4 weeks</div><span class="kpi-s tnum accent">${I.money(tot)}</span></div><div class="p-body" style="padding:12px 14px">${wk.length?`<div class="caps">By reason</div>${byReason.sort((a,b)=>b.v-a.v).map(x=>`<div class="share sm"><span style="width:70px">${x.r[1]}</span><span class="muted xs" style="width:84px">${x.n} · ${I.money(x.v)}</span><span class="progress"><i style="width:${tot?x.v/tot*100:0}%"></i></span><span class="xs tnum" style="width:36px;text-align:right">${Math.round(tot?x.v/tot*100:0)}%</span></div>`).join("")}
+    <div class="caps mt16">Week by week</div><div class="bar" style="height:40px">${weeks.reverse().map((v,k)=>`<i class="${k===3?"on":""}" style="height:${Math.max(4,v/Math.max(...weeks,1)*40)}px" title="${I.money(v)}"></i>`).join("")}</div>
+    <div class="caps mt16">Worst items</div>${Object.entries(worst).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,v])=>`<div class="mv"><span>${esc(I.item(id).name)}</span><span class="q --accent">${I.money(v)}</span></div>`).join("")}`:I.empty("check","No write-offs booked in this window")}</div></div></div>`:`<div class="stack"><div class="note-box --info">${I.roleNote("Losses panel – admin only (purchase-cost money)")}</div></div>`}
+  </div>`;
+};
+window.S17T={book(){const w=S.wo;const lines=w.lines.map(l=>({it:I.item(l.item),q:+l.qty}));const wo={id:I.writeoffs[0].id+1,at:A.NOW.toISOString(),reason:w.reason,by:A.me().id,photo:null,note:w.comment,lines:lines.map(l=>({item:l.it.id,qty:l.q})),checked:null,rejected:null};I.writeoffs.unshift(wo);lines.forEach(l=>I.addMovement(l.it,"writeoff",-l.q,"Writeoff#"+wo.id,w.reason));S.wo={reason:"wilted",lines:[{item:"",qty:""}],date:"",comment:"",confirm:false};A.toast(`Written off · ${lines.length} line${lines.length>1?"s":""} · goes to Write-off review`);A.remount()}};
+
+/* ---------- WRITE-OFF REVIEW ---------- */
+window.mount_inventory_writeoff_review=function(params){
+  const c=I.can();if(params&&params.status&&!params._used){S.woTab=params.status;params._used=true}
+  const all=(I.demo.empty?[]:I.writeoffs).filter(w=>w.reason!=="supplier_claim"&&I.days(w.at)>=-14);
+  const list=all.filter(w=>S.woTab==="todo"?!w.checked&&!w.rejected:S.woTab==="rejected"?w.rejected:true);
+  /* ids: INVT-225 INVT-226 */
+  I.head("inventory-writeoff-review","Write-off review","Last 14 days · supplier-claim write-offs are checked inside the claim, not here");
+  I.body("inventory-writeoff-review").innerHTML=`<div class="views">${[["todo","To check",all.filter(w=>!w.checked&&!w.rejected).length],["rejected","Rejected",all.filter(w=>w.rejected).length],["all","All",all.length]].map(t=>`<button class="${S.woTab===t[0]?"on":""}" onclick="S17.woTab='${t[0]}';S17.rejecting=null;App.remount()">${t[1]}<span class="n">${t[2]}</span></button>`).join("")}<span class="sp"></span><span class="xs muted" style="align-self:center">?status=${S.woTab}</span></div>
+  <!-- ids: INVT-227 INVT-228 INVT-229 INVT-230 INVT-231 INVT-334 -->
+  ${list.length?`<div class="grid g2">${list.map(w=>{const open=!w.checked&&!w.rejected;const busy=I.demo.busy&&S.busyId===w.id;return `<div class="wo-card ${w.rejected?"--rejected":""}"><div class="ph" onclick="${w.photo?`App.modal({title:'Photo · full size',wide:true,body:'<div class=\\'photo --4x5\\' style=\\'max-width:360px;margin:0 auto\\'><img src=\\'img/${w.photo}.webp\\'></div>'})`:"App.toast('No photo – web write-offs have none')"}">${w.photo?`<img src="img/${w.photo}.webp" alt="">`:"no photo"}</div>
+    <div style="flex:1;min-width:0"><div class="row" style="gap:8px;flex-wrap:wrap"><b>${I.fdt(w.at)}</b><span class="tag">${I.WO_REASONS.find(r=>r[0]===w.reason)[1]}</span><span class="muted sm">by ${A.user(w.by).n}</span>${w.rejected?`<span class="tag --accent">taken back</span>`:""}${c.cost?`<span class="sm tnum" style="margin-left:auto">${I.money(I.woValue(w))}</span>`:""}</div>
+    <div class="sm mt8">${w.lines.map(l=>`${esc(I.item(l.item).name)} – ${l.qty} ${I.item(l.item).unit}`).join("<br>")}</div>${w.note?`<div class="xs muted mt8">«${esc(w.note)}»</div>`:""}
+    ${w.checked?`<div class="xs ok mt8">checked by ${A.user(w.checked.who).n} · ${I.fdt(w.checked.at)}</div>`:""}${w.rejected?`<div class="xs accent mt8">rejected by ${A.user(w.rejected.who).n}: ${esc(w.rejected.why)}</div>`:""}
+    ${S.rejecting===w.id?`<div class="mt8"><div class="field"><label>Why (the author sees it in the log)</label><textarea class="textarea" id="rj-${w.id}" oninput="document.getElementById('rjb-${w.id}').disabled=!this.value.trim()"></textarea></div><div class="btn-row mt8"><button class="btn --sm --accent" id="rjb-${w.id}" disabled onclick="S17R.reject(${w.id})">Reject and return the stock</button><button class="btn --ghost --sm" onclick="S17.rejecting=null;App.remount()">Cancel</button></div></div>`:""}</div>
+    ${open?`<div class="acts"><button class="btn --sm" ${busy?"disabled":""} onclick="S17R.check(${w.id})">${busy?"…":"Checked"}</button><button class="btn --ghost --sm" onclick="S17.rejecting=${w.id};App.remount()">Reject</button></div>`:""}</div>`}).join("")}</div><p class="xs muted mt8">Buttons lock while the request runs; each card keeps its own reason text (old CRM shared one field and allowed double clicks).</p>`:I.empty("check","Nothing to check")}`;
+};
+window.S17R={
+  check(id){const w=I.writeoffs.find(x=>x.id===id);S.busyId=id;w.checked={who:A.me().id,at:A.NOW.toISOString()};A.toast("Checked");A.remount()},
+  reject(id){const w=I.writeoffs.find(x=>x.id===id);const why=$("#rj-"+id).value.trim();w.rejected={who:A.me().id,at:A.NOW.toISOString(),why};w.lines.forEach(l=>I.addMovement(I.item(l.item),"adjustment",l.qty,"Writeoff#"+id,"Rejected write-off returned"));S.rejecting=null;A.toast("Rejected · stock returned · out of the losses");A.remount()}
+};
+
+/* ---------- WRITE-OFF REPORT ---------- */
+window.mount_inventory_writeoff_report=function(){
+  const c=I.can();
+  I.head("inventory-writeoff-report","Write-off report","Shrinkage: reason × item × week, written off as a share of what was received, against the target corridors");
+  const B=I.body("inventory-writeoff-report");
+  /* ids: INVT-216 */
+  if(!c.cost){B.innerHTML=I.empty("lock","Purchase-cost money is admin-only – ask an admin to open this report.",`<button class="btn --ghost --sm" onclick="App.toast('Ask Tatiana – inventory.cost can be granted per person in Settings → Team')">Ask an admin</button>`);return}
+  const has=I.demo.shrink&&!I.demo.empty;
+  const rec=has?I.receipts.filter(r=>I.days(r.at)>=-28):[];const recV=rec.reduce((s,r)=>s+I.rcptClock(r),0);
+  const wo=has?I.writeoffs.filter(w=>I.days(w.at)>=-28&&!w.rejected&&w.reason!=="supplier_claim"):[];const woV=wo.reduce((s,w)=>s+I.woValue(w),0);
+  const claimMinor=has?I.claims.filter(cl=>cl.st!=="draft"&&cl.lines.some(l=>["writeoff","markdown"].includes(l.disp))).reduce((s,cl)=>s+cl.lines.filter(l=>["writeoff","markdown"].includes(l.disp)).reduce((t,l)=>t+l.qty*l.cost,0),0):0;
+  const sh=recV?woV/recV*100:null;const light=p=>p==null?"":p<=10?"":p<=15?"--watch":"--alarm";const lbl=p=>p==null?"–":p<=10?"Normal":p<=15?"Watch":"Alarm";
+  const w7=I.writeoffs.filter(w=>I.days(w.at)>=-7&&!w.rejected&&w.reason!=="supplier_claim").reduce((s,w)=>s+I.woValue(w),0),r7=I.receipts.filter(r=>I.days(r.at)>=-7).reduce((s,r)=>s+I.rcptClock(r),0);
+  const byItem={};wo.forEach(w=>w.lines.forEach(l=>{const k=l.item;byItem[k]=byItem[k]||{q:0,v:0,reasons:{}};byItem[k].q+=l.qty;byItem[k].v+=l.qty*I.item(k).cost;byItem[k].reasons[w.reason]=(byItem[k].reasons[w.reason]||0)+l.qty*I.item(k).cost}));
+  const worst=Object.entries(byItem).sort((a,b)=>b[1].v-a[1].v);const topShare=worst.length&&woV?worst[0][1].v/woV*100:0;
+  const card=(t,p,r,w)=>`<div class="kpi-card" style="cursor:default"><span class="caps">${t}</span><span class="kpi-s tnum ${p==null?"muted":p<=10?"ok":p<=15?"warn":"accent"}">${p==null?"–":I.pct(p)}</span><span class="delta">Received, at cost ${I.money(r)} · Written off, at cost ${I.money(w)}${p!=null&&topShare>50&&t.startsWith("Rolling")?`<br><span class="warn">One item alone is ${Math.round(topShare)}% of this</span>`:""}</span></div>`;
+  const cats=[...new Set(I.items.map(i=>i.cat))].filter(x=>x!=="Helium");
+  B.innerHTML=`${!has?`<!-- ids: INVT-217 --><div class="note-box --warn mb16">No real write-offs booked yet – this report fills in on its own as the shift books write-offs and deliveries.</div>`:""}
+  <!-- ids: INVT-218 INVT-219 --><div class="grid g2">${card("Rolling 4 weeks",has?sh:null,recV,woV)}${card("Last 7 days",has&&r7?w7/r7*100:null,r7,w7)}</div>
+  <p class="xs muted mt8">Target corridors: overall 5–10 %, Greenery 2–5 %. ${claimMinor?`Plus ${I.money(claimMinor)} from supplier-claim dispositions (write off / markdown) – counted in the claim, not here.`:""} ${!rec.length?"No receipts in this window – shares cannot be computed.":""}</p>
+  <div class="grid g2 mt16">
+    <!-- ids: INVT-220 INVT-224 --><div class="panel"><div class="p-head"><div class="h4">By reason (rolling 4 weeks)</div></div><div class="p-body">${wo.length?`<table class="tbl"><thead><tr><th>Reason</th><th class="num">Qty</th><th class="num">At cost</th><th class="num">Share</th></tr></thead><tbody>${I.WO_REASONS.map(r=>{const ws=wo.filter(w=>w.reason===r[0]);if(!ws.length)return"";const v=ws.reduce((s,w)=>s+I.woValue(w),0),q=ws.reduce((s,w)=>s+w.lines.reduce((t,l)=>t+l.qty,0),0);return `<tr><td>${r[1]}</td><td class="num">${q}</td><td class="num">${I.money(v)}</td><td class="num">${I.pct(v/woV*100)}</td></tr>`}).join("")}</tbody></table>`:I.empty("list","No write-offs in the window")}</div></div>
+    <!-- ids: INVT-221 --><div class="panel"><div class="p-head"><div class="h4">By week</div><span class="xs muted">8 weeks</span></div><div class="p-body">${has?`<table class="tbl"><thead><tr><th>Week</th><th class="num">Received</th><th class="num">Written off</th><th class="num">Shrinkage</th><th>Light</th></tr></thead><tbody>${[0,1,2,3,4,5,6,7].map(k=>{const r=I.receipts.filter(x=>I.days(x.at)<=-k*7&&I.days(x.at)>-(k+1)*7).reduce((s,x)=>s+I.rcptClock(x),0);const w=I.writeoffs.filter(x=>I.days(x.at)<=-k*7&&I.days(x.at)>-(k+1)*7&&!x.rejected&&x.reason!=="supplier_claim").reduce((s,x)=>s+I.woValue(x),0);const p=r?w/r*100:null;return `<tr><td>${I.fd(I.D(-k*7-6))} – ${I.fd(I.D(-k*7))}</td><td class="num">${I.money(r)}</td><td class="num">${I.money(w)}</td><td class="num" title="${p==null?"no receipts this week":""}">${p==null?"–":I.pct(p)}</td><td><span class="light ${light(p)}">${lbl(p)}</span></td></tr>`}).join("")}</tbody></table>`:I.empty("list","No weeks with data")}</div></div>
+    <!-- ids: INVT-222 --><div class="panel"><div class="p-head"><div class="h4">By category</div></div><div class="p-body">${has?`<table class="tbl"><thead><tr><th>Category</th><th class="num">Received</th><th class="num">Written off</th><th class="num">Shrinkage</th><th>Target</th><th>Light</th></tr></thead><tbody>${cats.map(ct=>{const r=rec.reduce((s,x)=>s+x.lines.filter(l=>I.item(l.item).cat===ct).reduce((t,l)=>t+l.qty*l.cost,0),0);const w=wo.reduce((s,x)=>s+x.lines.filter(l=>I.item(l.item).cat===ct).reduce((t,l)=>t+l.qty*I.item(l.item).cost,0),0);if(!r&&!w)return"";const p=r?w/r*100:null;const tg=ct==="Greenery"?"2–5 %":["Roses","Peonies","Garden roses","Hydrangea","Lisianthus","Ranunculus","Tulips"].includes(ct)?"5–10 %":"no target set";return `<tr><td>${ct}</td><td class="num">${I.money(r)}</td><td class="num">${I.money(w)}</td><td class="num">${p==null?"–":I.pct(p)}</td><td class="muted">${tg}</td><td><span class="light ${light(p)}">${lbl(p)}</span></td></tr>`}).join("")}</tbody></table>`:I.empty("list","No categories with data")}</div></div>
+    <!-- ids: INVT-223 --><div class="panel"><div class="p-head"><div class="h4">Worst items</div></div><div class="p-body">${worst.length?`<table class="tbl"><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">At cost</th><th class="num">Received</th><th class="num">Own %</th><th>Reasons</th></tr></thead><tbody>${worst.slice(0,6).map(([id,x])=>{const i=I.item(id);const r=rec.reduce((s,rc)=>s+rc.lines.filter(l=>l.item===i.id).reduce((t,l)=>t+l.qty*l.cost,0),0);return `<tr class="r" onclick="App.go('inventory-item',{id:${i.id}})">${I.itemCell(i,`${i.sku} · ${i.cat}`)}<td class="num">${x.q}</td><td class="num">${I.money(x.v)}</td><td class="num">${I.money(r)}</td><td class="num">${r?I.pct(x.v/r*100):"–"}</td><td class="xs muted">${Object.entries(x.reasons).map(([k,v])=>`${I.WO_REASONS.find(rr=>rr[0]===k)?.[1]||k} (${I.money(v)})`).join(", ")}</td></tr>`}).join("")}</tbody></table>`:I.empty("list","No items written off")}</div></div>
+  </div>`;
+};
+document.addEventListener("inv",()=>{const c=A.state.current;if(["inventory-writeoff","inventory-writeoff-review","inventory-writeoff-report"].includes(c))A.remount()});
+})();
+</script>
