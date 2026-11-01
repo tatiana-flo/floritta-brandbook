@@ -14,6 +14,7 @@
 .dr-scr .kpi-card.--hot{box-shadow:inset 0 3px 0 var(--accent)}
 .dr-scr .kpi-card .kpi-s{margin-top:2px}
 .dr-scr .tbl td.wrap{white-space:normal;line-height:1.3}
+#s-delivery-freelance .tbl td{max-width:none}
 .dr-scr .tbl tr.r.--linked td{background:var(--sel-bg);box-shadow:inset 3px 0 0 var(--sel)}
 .dr-scr .tbl tr.drawer td{height:auto;padding:16px 12px 18px;white-space:normal;background:var(--paper-2);max-width:none}
 #s-delivery-freelance .tbl th.c-name{width:230px}
@@ -192,7 +193,7 @@ window.DRX={
     const jobs=DR.flags.empty?[]:DR_JOBS.filter(j=>["open","assigned","picked_up"].includes(j.status));
     if(!jobs.length)return this.empty("truck","No open or assigned freelance jobs right now","Jobs are published by the 15-minute cron once a delivery is ready for the board");
     /* ids: DLRS-016 DLRS-017 DLRS-018 DLRS-019 DLRS-020 DLRS-021 DLRS-022 DLRS-023 DLRS-024 */
-    return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Order</th><th>Slot</th><th>Area</th><th class="num">Distance</th><th class="num">Pay</th><th>Status</th><th>Applications</th><th>Actions</th></tr></thead><tbody>
+    return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th style="width:150px">Order</th><th style="width:110px">Slot</th><th style="width:140px">Area</th><th class="num" style="width:80px">Distance</th><th class="num" style="width:70px">Pay</th><th style="width:170px">Status</th><th>Applications</th><th style="width:220px">Actions</th></tr></thead><tbody>
     ${jobs.map(j=>{const o=App.order(j.order);const pending=j.apps.filter(a=>a.s==="pending");
       const apps=j.apps.length?`<div class="dr-apps">${j.apps.map(a=>`<span class="ap"><span>${E(DR_CN(a.c))}</span><span class="tag ${a.s==="confirmed"?"--okl":a.s==="pending"?"--warn":a.s==="lost"||a.s==="declined"?"--acc":""}">${this.appSt[a.s]}</span>${a.s==="pending"&&manual?`<button class="textbtn" onclick="DRX.flConfirm('${j.id}','${a.c}')">Confirm</button><button class="textbtn --accent" onclick="DRX.flDecline('${j.id}','${a.c}')">Decline</button>`:""}</span>`).join("")}</div>`:`<span class="muted sm">No applications yet</span>`;
       const acts=j.status==="open"?`<button class="btn --ghost --sm" onclick="DRX.flUnpublish('${j.id}')">Take off the board</button>`:`<span class="btn-row"><button class="btn --ghost --sm" onclick="DRX.flRemove('${j.id}')">Remove courier</button><button class="btn --ghost --sm" onclick="DRX.flReturned('${j.id}')">Returned to studio</button></span>`;
