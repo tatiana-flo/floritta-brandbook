@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fdfdfd">
+<title>Kassa – брендбук приложения</title>
+<meta name="description" content="Кликабельный прототип мобильного приложения Kassa (бухгалтерия Floritta) в палитре сайта floritta.uk. Все данные вымышленные.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* Токены = брендбук сайта (site/index.html): палитра floritta.uk, квадратные углы, без теней у карточек. */
+:root{
+  --paper:#fdfdfd; --silver:#f2f2f4; --hair:#e6e6e6; --light:#cecece;
+  --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378;
+  --accent:#b4595f; --accent-bg:#f3e1e1; --ok:#7a8a6b; --ok-bg:#eef0e9;
+  --f-display:"Cormorant Infant",Georgia,serif; --f-body:"Jost","Helvetica Neue",Arial,sans-serif;
+  --ls-btn:.12em; --ls-caps:.04em; --ls-eyebrow:.14em;
+  --m-fast:180ms; --m-base:320ms; --m-ease:cubic-bezier(.22,1,.36,1);
+  --gutter:16px; --tab-h:64px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:#ececee;color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;font-weight:300;-webkit-font-smoothing:antialiased}
+b,strong{font-weight:400}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+input,textarea{font:inherit;color:inherit}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ===== стенд: слева экраны, в центре телефон, справа заметки ===== */
+.stage{min-height:100%;display:grid;grid-template-columns:1fr 430px 1fr;align-items:start;gap:40px;padding:40px 24px}
+.gutter-l{justify-self:end;width:100%;max-width:290px;padding-top:12px}
+.gutter-r{justify-self:start;width:100%;max-width:390px;padding-top:12px}
+.phone{position:relative;width:430px;height:900px;background:#141210;border-radius:52px;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,.3),inset 0 0 0 2px #2b2724;flex:none}
+.screen-wrap{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--paper)}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#141210;border-radius:20px;z-index:80;pointer-events:none}
+.statusbar{position:absolute;top:0;left:0;right:0;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-size:15px;font-weight:400;z-index:75;pointer-events:none}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;background:var(--ink);border-radius:3px;z-index:80;pointer-events:none}
+.stage-title{font-family:var(--f-display);font-weight:300;font-size:44px;line-height:1.02;letter-spacing:var(--ls-caps);text-transform:uppercase;margin:0 0 10px}
+.stage-sub{color:var(--graphite);font-size:14px;margin:0 0 22px}
+.eyebrow{display:block;font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);font-weight:400}
+.nav-list{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:1px}
+.nav-list button{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 12px;font-size:14px;transition:background var(--m-fast)}
+.nav-list button:hover{background:var(--silver)}
+.nav-list button.on{background:var(--ink);color:var(--paper)}
+.nav-list small{opacity:.55;font-size:12px}
+.notes{font-size:13.5px;color:var(--graphite);line-height:1.5}
+.notes h4{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);font-weight:400;margin:22px 0 8px}
+.notes ul{padding-left:16px;margin:0}
+.notes li{margin:0 0 5px}
+.notes li b{color:var(--ink)}
+.notes .scr-note{border-left:1px solid var(--hair);padding:2px 0 2px 12px;margin:0 0 10px;transition:border-color var(--m-fast)}
+.notes .scr-note.on{border-color:var(--ink)}
+.notes .scr-note.on h5{color:var(--ink)}
+.notes h5{margin:0 0 4px;font-size:13px;font-weight:400;color:var(--graphite);letter-spacing:.06em;text-transform:uppercase}
+.notes code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--silver);padding:1px 4px}
+.cur-box{border:1px solid var(--hair);background:var(--paper);padding:14px 16px;margin-bottom:6px}
+.cur-box .t{font-family:var(--f-display);font-size:26px;line-height:1.05;text-transform:uppercase;letter-spacing:var(--ls-caps)}
+@media (max-width:1100px){.stage{grid-template-columns:1fr;justify-items:center}.gutter-l,.gutter-r{max-width:430px;justify-self:center}}
+@media (max-width:520px){
+  body{background:var(--paper)}
+  .stage{display:block;padding:0}
+  .gutter-l,.gutter-r{display:none}
+  .phone{width:100%;height:100dvh;border-radius:0;padding:0;box-shadow:none}
+  .screen-wrap{border-radius:0}
+  .notch,.statusbar,.homebar{display:none}
+}
+
+/* ===== приложение ===== */
+.app{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper)}
+.view{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding:58px var(--gutter) calc(var(--tab-h) + 40px);opacity:1;transition:opacity var(--m-base) var(--m-ease),transform var(--m-base) var(--m-ease)}
+.view::-webkit-scrollbar{display:none}
+.view.enter{opacity:0;transform:translateX(16px)}
+.view.no-tab{padding-bottom:40px}
+@media (max-width:520px){.view{padding-top:16px}}
+.back{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:400;letter-spacing:var(--ls-btn);text-transform:uppercase;color:var(--graphite);margin:4px 0 8px;padding:6px 0}
+.back:hover{color:var(--ink)}
+.h1{font-family:var(--f-display);font-weight:300;font-size:36px;line-height:1.04;letter-spacing:var(--ls-caps);text-transform:uppercase;margin:4px 0 2px}
+.h1row{display:flex;align-items:center;gap:10px}
+.mark{width:26px;height:26px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:18px;line-height:1;margin-top:4px}
+.sub{color:var(--grey);font-size:13px;margin:0 0 8px}
+.card{display:block;width:100%;background:var(--paper);border:1px solid var(--hair);padding:14px;margin-top:10px;text-align:left}
+button.card{transition:background var(--m-fast),border-color var(--m-fast)}
+button.card:hover{border-color:var(--light)}
+button.card:active{background:var(--silver)}
+.card.--silver{background:var(--silver);border-color:var(--silver)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.b{font-weight:400;font-size:15px;color:var(--ink)}
+.mute{color:var(--grey);font-size:13px}
+.soft{color:var(--graphite)}
+.big{font-family:var(--f-display);font-weight:300;font-size:40px;line-height:1.05;letter-spacing:.02em;margin:4px 0 2px;font-variant-numeric:lining-nums tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+.acc{color:var(--accent)}.okc{color:var(--ok)}
+.mt4{margin-top:4px}.mt6{margin-top:6px}.mt8{margin-top:8px}.mt10{margin-top:10px}.mt14{margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border:1px solid var(--light);background:var(--paper);color:var(--graphite);font-size:11px;font-weight:400;line-height:1;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex:none}
+.chip.--ok::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.chip.--n{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.chip.--on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.bar{height:4px;background:var(--silver);margin:10px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink)}
+.bar.--w i{background:var(--accent)}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--hair);font-size:14px;width:100%;text-align:left}
+.kv:last-child{border-bottom:0}
+.kv .k{flex:1;color:var(--ink)}
+.kv .v{color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.kv.--bold .k,.kv.--bold .v{font-weight:400}
+.kv.--bold{border-bottom-color:var(--light)}
+button.kv:hover .k{color:var(--graphite)}
+.kv .chev{color:var(--grey)}
+.kv .ki{display:inline-flex;align-items:center;gap:10px}
+.seg{display:flex;border:1px solid var(--light);margin-top:10px}
+.seg button{flex:1;padding:8px 4px;font-size:12px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:var(--graphite);transition:background var(--m-fast),color var(--m-fast)}
+.seg button+button{border-left:1px solid var(--light)}
+.seg button.on{background:var(--ink);color:var(--paper)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.wrap{display:flex;flex-wrap:wrap;gap:6px}
+.pick{height:32px;padding:0 12px;border:1px solid var(--light);font-size:13px;color:var(--ink);white-space:nowrap;transition:all var(--m-fast)}
+.pick:hover{border-color:var(--ink)}
+.pick.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.agent{background:var(--silver);padding:11px 12px;margin-top:10px;font-size:13.5px;color:var(--ink)}
+.agent b{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--graphite);margin-right:6px}
+.empty{background:var(--silver);padding:12px 14px;margin-top:10px;font-size:13.5px;color:var(--graphite)}
+.bars{display:flex;align-items:flex-end;gap:5px;margin-top:10px}
+.bars .c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.bars .c i{display:block;width:100%;background:var(--ink)}
+.bars .c i.neg{background:var(--accent)}
+.bars .c i.fade{opacity:.28}
+.bars .c span{font-size:10px;color:var(--grey);margin-top:3px}
+.search{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--light);margin-top:12px;padding:0 2px}
+.search:focus-within{border-color:var(--ink)}
+.search input{flex:1;border:0;background:transparent;height:40px;outline:0;font-size:15px}
+.search input::placeholder,.field::placeholder{color:var(--grey)}
+.txl{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+.txl:hover .tn{color:var(--graphite)}
+.txl .ic{width:38px;height:38px;background:var(--silver);display:flex;align-items:center;justify-content:center;flex:none;color:var(--graphite)}
+.txl .tn{font-weight:400;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.txl .tm{color:var(--grey);font-size:12.5px}
+.txl .ta{font-size:11px;color:var(--grey)}
+.txl .r{text-align:right;max-width:140px;flex:none}
+.txl .am{font-weight:400;font-variant-numeric:tabular-nums}
+.txl .am.pos{color:var(--ok)}
+.txl .cat{font-size:11.5px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f1{flex:1;min-width:0}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;padding:0 18px;border:1px solid var(--ink);background:transparent;color:var(--ink);font-size:12.5px;font-weight:400;letter-spacing:var(--ls-btn);text-transform:uppercase;text-align:center;transition:background var(--m-fast),color var(--m-fast),border-color var(--m-fast)}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.--primary{background:var(--ink);color:var(--paper)}
+.btn.--primary:hover{background:var(--graphite);border-color:var(--graphite)}
+.btn.--ghost{border-color:var(--hair);color:var(--graphite)}
+.btn.--ghost:hover{background:var(--silver);color:var(--ink)}
+.btn.--sm{height:40px;font-size:11.5px;padding:0 10px}
+.btn:disabled,.btn:disabled:hover{background:transparent;border-color:var(--light);color:var(--grey);cursor:default}
+.btn.--primary:disabled{background:var(--light);border-color:var(--light);color:var(--paper)}
+.btns{display:flex;gap:6px;margin-top:8px}
+.field{width:100%;height:46px;border:0;border-bottom:1px solid var(--light);background:transparent;outline:0;font-size:15px;padding:0;margin-top:8px}
+.field:focus{border-color:var(--ink)}
+textarea.field{height:auto;min-height:74px;padding-top:10px;resize:none}
+.label{display:block;font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);font-weight:400;margin:18px 0 8px}
+.ready{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 10px;font-size:12.5px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-bg)}
+.ready.--ok{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+.doc{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:7px 0;border-bottom:1px solid var(--hair)}
+.hist{font-size:12px;color:var(--grey);margin-top:3px}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;margin-top:7px;background:var(--ok)}
+.dot.--y{background:var(--light)}.dot.--r{background:var(--accent)}
+.check{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--hair);width:100%;font-size:15px}
+.box{width:18px;height:18px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+.box svg{width:14px;height:14px;stroke:var(--paper);stroke-width:2;fill:none;opacity:0}
+.check.on .box{background:var(--ink)}
+.check.on .box svg{opacity:1}
+.cmt{border:1px solid var(--hair);padding:10px 12px;margin-top:8px}
+.send{display:flex;gap:8px;align-items:flex-end;margin-top:12px}
+.send .field{margin:0;min-height:44px;height:44px}
+.send .btn{width:48px;height:44px;padding:0;flex:none}
+.textlink{font-size:12px;font-weight:400;letter-spacing:var(--ls-btn);text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:3px}
+
+/* таб-бар: 6 вкладок, как в App.tsx */
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:calc(var(--tab-h) + 18px);padding-bottom:18px;display:grid;grid-template-columns:repeat(6,1fr);background:rgba(253,253,253,.96);border-top:1px solid var(--hair);z-index:40;transition:transform var(--m-base) var(--m-ease)}
+.tabbar.hide{transform:translateY(110%)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);font-weight:400;text-align:center}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--ink)}
+.tab.on svg{stroke-width:1.9}
+@media (max-width:520px){.tabbar{height:calc(var(--tab-h) + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px)}}
+
+/* шторка (pageSheet) и тост */
+.scrim{position:absolute;inset:0;background:rgba(30,26,23,.32);opacity:0;visibility:hidden;transition:opacity var(--m-base),visibility 0s linear var(--m-base);z-index:60}
+.scrim.on{opacity:1;visibility:visible;transition-delay:0s}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:93%;background:var(--paper);border-top:1px solid var(--hair);transform:translateY(102%);transition:transform var(--m-base) var(--m-ease);z-index:70;display:flex;flex-direction:column}
+.sheet.on{transform:none}
+.sheet .grab{width:36px;height:4px;background:var(--light);margin:8px auto 0;flex:none}
+.sheet-in{flex:1;overflow-y:auto;padding:12px var(--gutter) 40px;scrollbar-width:none}
+.sheet-in::-webkit-scrollbar{display:none}
+.toast{position:absolute;left:var(--gutter);right:var(--gutter);bottom:calc(var(--tab-h) + 30px);background:var(--ink);color:var(--paper);padding:12px 14px;font-size:13.5px;z-index:90;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity var(--m-fast),transform var(--m-fast)}
+.toast.on{opacity:1;transform:none}
+
+/* вход */
+.login{display:flex;flex-direction:column;justify-content:center;min-height:100%;padding:0 8px}
+.login .logo{width:150px;margin-bottom:28px}
+.err{font-size:13px;color:var(--accent);margin-top:10px;border-left:1px solid var(--accent);padding-left:10px}
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="gutter-l">
+    <img src="logo.svg" alt="Floritta" style="width:160px;margin-bottom:22px">
+    <h1 class="stage-title">Kassa</h1>
+    <p class="stage-sub">Мобильная бухгалтерия Floritta · iOS / Android · палитра сайта floritta.uk · квадратные углы. Кликабельный прототип, данные вымышленные.</p>
+    <span class="eyebrow" style="margin-bottom:8px">Экраны</span>
+    <ul class="nav-list" id="nav-list"></ul>
+    <p class="stage-sub" style="font-size:12px">Каждый экран открывается и по адресу: <code style="font-size:11px">#tx</code>, <code style="font-size:11px">#txcard</code>, <code style="font-size:11px">#tax</code>… На телефоне – во весь экран.</p>
+  </aside>
+
+  <div class="phone">
+    <div class="screen-wrap">
+      <div class="notch"></div>
+      <div class="statusbar"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" fill="#1e1a17"/><rect x="5" y="5" width="3" height="7" fill="#1e1a17"/><rect x="10" y="2" width="3" height="10" fill="#1e1a17"/><rect x="15" y="0" width="3" height="12" fill="#1e1a17"/></svg><svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#1e1a17"/><rect x="2" y="2" width="17" height="8" rx="1.5" fill="#1e1a17"/><rect x="23.5" y="3.5" width="2" height="5" rx="1" fill="#1e1a17"/></svg></span></div>
+      <div class="app">
+        <div class="view" id="view"></div>
+        <nav class="tabbar" id="tabbar"></nav>
+        <div class="scrim" id="scrim" onclick="App.closeSheet()"></div>
+        <div class="sheet" id="sheet"><div class="grab"></div><div class="sheet-in" id="sheet-in"></div></div>
+        <div class="toast" id="toast"></div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <aside class="gutter-r notes" id="notes"></aside>
+</div>
+
+<script>
+/* =====================================================================
+   Kassa – прототип. Экраны и тексты сняты с кода tatiana-flo/kassa (app/App.tsx, app/src/**).
+   Все цифры, контрагенты, люди и банки ВЫМЫШЛЕННЫЕ – репозиторий публичный.
+   ===================================================================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- иконки (inline SVG, stroke 1.5) ---------- */
+const P={
+  home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',
+  tx:'<path d="M7 20V4M3 8l4-4 4 4"/><path d="M17 4v16M13 16l4 4 4-4"/>',
+  cash:'<rect x="3" y="6" width="18" height="13"/><path d="M3 10h18M16 15h2"/>',
+  pay:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5c2.3 0 4 1.5 4.5 4"/>',
+  tasks:'<rect x="4" y="4" width="16" height="16"/><path d="M8 12l3 3 5-6"/>',
+  more:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+  back:'<path d="M15 5l-7 7 7 7"/>',
+  chev:'<path d="M9 5l7 7-7 7"/>',
+  search:'<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  camera:'<path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  image:'<rect x="4" y="5" width="16" height="14"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/>',
+  clip:'<path d="M20 11.5l-7.8 7.8a5 5 0 0 1-7-7L13 4.5a3.3 3.3 0 0 1 4.7 4.7l-7.8 7.8a1.7 1.7 0 0 1-2.4-2.4L14.8 7.3"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  in:'<path d="M17 7L7 17M7 9v8h8"/>',
+  receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  chart:'<path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+  plan:'<rect x="4" y="4" width="16" height="16"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+  bank:'<path d="M3 9l9-5 9 5"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>',
+  shield:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+  send:'<path d="M12 19V5M6 11l6-6 6 6"/>',
+  comment:'<path d="M4 5h16v11H9l-5 4z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  out:'<path d="M14 4h6v16h-6"/><path d="M10 8l-4 4 4 4M6 12h10"/>'
+};
+const ic=(n,cls="i")=>`<svg class="${cls}" viewBox="0 0 24 24">${P[n]}</svg>`;
+
+/* ---------- язык (в прототипе переведены вкладки и заголовки экранов) ---------- */
+const DICT={'Главная':['Головна','Home'],'Операции':['Операції','Transactions'],'Касса':['Каса','Cash'],'Выплаты':['Виплати','Payouts'],'Задачи':['Задачі','Tasks'],'Ещё':['Ще','More'],
+  'Выплаты людям':['Виплати людям','Payouts to people'],'События':['Події','Events'],'План расходов':['План витрат','Spending plan'],'Налоги':['Податки','Taxes'],'Документы':['Документи','Documents'],'Проверка HMRC':['Перевірка HMRC','HMRC audit'],'‹ Назад':['‹ Назад','‹ Back'],'Новая задача':['Нове завдання','New task']};
+let lang='ru';
+const t=s=>lang==='ru'||!DICT[s]?s:DICT[s][lang==='uk'?0:1];
+
+/* ---------- формат ---------- */
+const SYM={GBP:'£',USD:'$',EUR:'€'};
+const money=(v,signed=false,cur='GBP',dec=0)=>{if(v==null||isNaN(v))return'–';const s=Math.abs(v).toLocaleString('ru-RU',{minimumFractionDigits:dec,maximumFractionDigits:dec});const c=SYM[cur]??cur+' ';return v<0?`−${c}${s}`:`${signed&&v>0?'+':''}${c}${s}`};
+const pct=v=>(v==null||!isFinite(v))?'–':`${(v*100).toFixed(1).replace('.',',')} %`;
+const dm=d=>`${d.slice(8,10)}.${d.slice(5,7)}`;
+const MONTHS=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+const mlabel=ym=>`${MONTHS[+ym.slice(5,7)-1]} ${ym.slice(2,4)}`;
+
+/* ---------- справочники = server/app/categories.py ---------- */
+const TYPES={income:'Доход',expense:'Расход',transfer:'Перевод'};
+const CATS={
+  income:[['sales_site','Продажи – сайт'],['sales_uber','Продажи – Uber Eats'],['sales_deliveroo','Продажи – Deliveroo'],['sales_justeat','Продажи – Just Eat'],['sales_shop','Продажи – магазин'],['sales_b2b','Опт / B2B'],['supplier_refund','Возврат от поставщика']],
+  expense:[['flowers','Закупка цветов и зелени'],['balloons','Шары и гелий'],['packaging','Упаковка и расходники'],['delivery','Доставка и курьеры'],['florists','Субподряд – флористы'],['rent','Аренда и коммуналка'],['office','Офис и магазин'],['marketing','Реклама и маркетинг'],['it','IT и подписки'],['payroll','Зарплата и PAYE'],['fees','Комиссии и банк'],['taxes','Налоги и сборы'],['professional','Бухгалтер и юристы'],['other','Прочее']],
+  transfer:[['own_accounts','Между своими счетами'],['fx','Обмен валюты'],['payout','Выплата Stripe / маркетплейса']]
+};
+const VAT=[['20','20 %'],['0','0 %'],['exempt','без НДС'],['rc','reverse charge'],['none','не облагается / перевод']];
+const RND=[['uk','R&D – подрядчик в UK'],['abroad','R&D – подрядчик за границей'],['cloud','R&D – облака, ИИ, софт, данные']];
+const catLabel=c=>{for(const k in CATS){const f=CATS[k].find(x=>x[0]===c);if(f)return f[1]}return''};
+
+/* ---------- демо-данные (вымышленные) ---------- */
+const ME={name:'Владелец (демо)',email:'owner@example.com',role:'owner'};
+const S={
+  limit:100, review:true, evWho:'', evKind:'', txFilter:'todo', q:'', account:'', period:'', rnd:'', payTab:'self', pnlTab:'months', taskScope:'for_me',
+  loginError:false, ruleFor:{}
+};
+const ACCOUNTS=[
+  {name:'Bank A · основной',balance:18420,currency:'GBP',real:true},
+  {name:'Bank A · резерв НДС',balance:6000,currency:'GBP',real:true},
+  {name:'Bank B · бизнес',balance:2310,currency:'GBP',real:true},
+  {name:'Карта C',balance:-1240,currency:'GBP',real:true},
+  {name:'Bank D · USD',balance:860,currency:'USD',real:true},
+  {name:'Платежи E · транзит',balance:3150,currency:'GBP',real:false},
+  {name:'Bank F · старый фид',balance:540,currency:'GBP',real:false}
+];
+const doc=(f,src)=>({id:Math.random().toString(36).slice(2),filename:f,source:src});
+const TXS=[
+  {id:1,date:'2026-10-31',amount:-486.40,account:'Bank A',counterparty:'Flower Wholesale Demo',kind:'expense',category:'flowers',purpose:'',vat:'20',status:'needs_approval',proposed_by:'rule',needs_doc:true,documents:[],last:null,xero:''},
+  {id:2,date:'2026-10-31',amount:1284.00,account:'Bank A',counterparty:'Выплата сайта (демо)',kind:'transfer',category:'payout',purpose:'выплата продаж сайта за неделю',vat:'none',status:'posted',proposed_by:'rule',needs_doc:false,documents:[],last:{who:'Агент',action:'разнесено в Xero',at:'31.10 10:05'},xero:'строка выписки разнесена'},
+  {id:3,date:'2026-10-30',amount:-92.15,account:'Bank A',counterparty:'Packaging Demo Co',kind:'expense',category:'packaging',purpose:'',vat:'20',status:'todo',proposed_by:'rule',needs_doc:true,documents:[doc('INV-1042.pdf','billing_mail')],last:{who:'Агент',action:'инвойс с billing@',at:'30.10 18:20'},xero:''},
+  {id:4,date:'2026-10-30',amount:-38.00,account:'Карта C',counterparty:'Cloud Hosting Demo',kind:'expense',category:'it',purpose:'',vat:'',status:'todo',proposed_by:'',needs_doc:true,documents:[],rnd:'',rnd_hint:true,last:null,xero:''},
+  {id:5,date:'2026-10-30',amount:-64.00,account:'Bank A',counterparty:'Courier Demo',kind:'expense',category:'',purpose:'',vat:'',status:'todo',proposed_by:'',needs_doc:true,documents:[],last:null,xero:''},
+  {id:6,date:'2026-10-29',amount:-210.00,account:'Bank A',counterparty:'Флорист А. (самозанятая)',kind:'expense',category:'florists',purpose:'смены 20–26.10',vat:'none',status:'needs_approval',proposed_by:'rule',needs_doc:true,documents:[],last:null,xero:''},
+  {id:7,date:'2026-10-29',amount:-2400.00,account:'Bank B',counterparty:'Studio Rent Demo',kind:'expense',category:'rent',purpose:'аренда студии, ноябрь',vat:'exempt',status:'posted',proposed_by:'rule',needs_doc:true,documents:[doc('rent-nov.pdf','xero')],last:{who:'Владелец',action:'утвердил(а)',at:'29.10 09:12'},xero:'разнесено, вложение в Xero'},
+  {id:8,date:'2026-10-28',amount:742.30,account:'Bank A',counterparty:'Маркетплейс A · выплата',kind:'transfer',category:'payout',purpose:'выплата за неделю за вычетом комиссии',vat:'none',status:'posted',proposed_by:'rule',needs_doc:false,documents:[],last:{who:'Агент',action:'разнесено в Xero',at:'28.10 11:40'},xero:'строка выписки разнесена'},
+  {id:9,date:'2026-10-28',amount:-150.00,account:'Карта C',counterparty:'Ads Demo',kind:'expense',category:'marketing',purpose:'реклама, октябрь',vat:'rc',status:'posted',proposed_by:'rule',needs_doc:true,documents:[doc('ads-oct.pdf','upload')],last:{who:'Менеджер',action:'приложил(а) чек',at:'28.10 16:03'},xero:''},
+  {id:10,date:'2026-10-27',amount:-126.00,account:'Bank A',counterparty:'Balloon Gas Demo',kind:'expense',category:'balloons',purpose:'',vat:'20',status:'todo',proposed_by:'rule',needs_doc:true,documents:[],last:null,xero:''},
+  {id:11,date:'2026-10-27',amount:318.50,account:'Bank A',counterparty:'Терминал магазина',kind:'income',category:'sales_shop',purpose:'продажи в магазине за день',vat:'20',status:'todo',proposed_by:'rule',needs_doc:false,documents:[],last:null,xero:''},
+  {id:12,date:'2026-10-26',amount:-18.00,account:'Карта C',counterparty:'AI Tools Demo',kind:'expense',category:'it',purpose:'подписка, разработка CRM',vat:'rc',status:'posted',proposed_by:'rule',needs_doc:true,documents:[doc('receipt-ai.pdf','billing_mail')],rnd:'cloud',last:{who:'Агент',action:'разнесено в Xero',at:'26.10 08:30'},xero:''},
+  {id:13,date:'2026-10-25',amount:-12.50,account:'Bank A',counterparty:'Комиссия банка',kind:'expense',category:'fees',purpose:'комиссия за обслуживание',vat:'exempt',status:'posted',proposed_by:'rule',needs_doc:false,documents:[],last:{who:'Агент',action:'разнесено в Xero',at:'25.10 07:55'},xero:''},
+  {id:14,date:'2026-10-24',amount:-46.20,account:'Bank A',counterparty:'Office Supplies Demo',kind:'expense',category:'office',purpose:'бумага и картриджи',vat:'20',status:'posted',proposed_by:'',needs_doc:true,documents:[doc('receipt_14.jpg','camera')],last:{who:'Менеджер',action:'приложил(а) чек',at:'24.10 13:44'},xero:''},
+  {id:15,date:'2026-10-24',amount:-1000.00,account:'Bank A',counterparty:'Bank A · резерв НДС',kind:'transfer',category:'own_accounts',purpose:'резерв под НДС',vat:'none',status:'posted',proposed_by:'rule',needs_doc:false,documents:[],last:{who:'Владелец',action:'утвердил(а)',at:'24.10 10:00'},xero:''}
+];
+TXS.forEach(x=>{x.currency='GBP';x.rnd=x.rnd||'';x.hist=[];if(x.proposed_by)x.hist.push(`${dm(x.date)} 07:00 · Агент предложил категорию «${catLabel(x.category)}»`);if(x.last)x.hist.push(`${x.last.at} · ${x.last.who} ${x.last.action}`)});
+const tx=id=>TXS.find(x=>x.id===id);
+const toPost=()=>TXS.filter(x=>x.status!=='posted');
+const noDoc=()=>TXS.filter(x=>x.needs_doc&&!x.documents.length&&x.amount<0);
+
+const PNL=[
+  ['2026-05',38000,12400,2900,9800,8600],['2026-06',41500,13200,3100,10400,8900],['2026-07',36200,11900,2800,9600,8300],
+  ['2026-08',33800,11200,2700,9100,8200],['2026-09',29000,11800,2600,9300,8400],['2026-10',27500,12100,2700,9500,8600]
+].map(([month,income,goods,delivery,subcontract,opex_other])=>{const gross=income-goods-delivery,working=gross-subcontract;return{month,income,goods,delivery,gross,subcontract,working,opex_other,net:working-opex_other,groups:{'Аренда и коммуналка':3200,'Реклама и маркетинг':2000,'IT и подписки':900}}});
+const INCOMPLETE=new Set(['2026-09','2026-10']);
+const CHANNELS=[['Сайт',61200,[9800,8400,7900]],['Маркетплейс A',48300,[8100,7700,7200]],['Маркетплейс B',27600,[4600,4300,4100]],['Магазин',21900,[3600,3500,3700]],['Опт / B2B',12400,[2200,1800,2600]],['Маркетплейс C',8700,[1400,1300,1500]]];
+const DAILY=[['2026-10-22',1420],['2026-10-23',1880],['2026-10-24',2210],['2026-10-25',2640],['2026-10-26',1310],['2026-10-27',1190],['2026-10-28',1760],['2026-10-29',1530],['2026-10-30',2080],['2026-10-31',2470],['2026-11-01',640]];
+const TAX={vat_forecast:'£4 860',vat_reserve:'£6 000',ct_fy26:9400,agent_mode:'до £100 агент проводит сам',
+  deadlines:[['07.12 НДС','НДС за квартал авг–окт','бухгалтер'],['19.11','FPS / RTI за октябрь','бухгалтер'],['22.11','PAYE + NIC в HMRC','вы'],['28.11','Оплата аренды','вы'],['01.02.2027','Налог на прибыль за год','бухгалтер']],
+  quality:[['green','Банки сходятся с Xero','Остатки по счетам Bank A и Bank B совпадают с выписками на 31.10.'],['yellow','Продажи с сайта разнесены не полностью','Сентябрь и октябрь: часть выплат ещё не сведена с заказами – НДС вырастет.'],['red','Два месяца без сведения бухгалтером','До сведения цифра прибыли за сен–окт ненадёжна.']],
+  decisions:[['Резерв НДС','Перевести на резервный счёт ещё £1 000 до 07.12?'],['Статус исполнителя','Один исполнитель работает 5 дней в неделю – обсудить с бухгалтером, самозанятый ли он.']]};
+const READY={total:412,ready_pct:72,with_document:338,with_category:371,with_purpose:302,people_without_act:3};
+const RNDX=[['2026/27',6,1140],['2025/26',41,8920]];
+
+let EVENTS=[
+  {id:1,at:'01.11 08:10',who:'Агент',kind:'xero',text:'разнёс строку выписки в Xero: выплата сайта · +£1 284',tx:2,needs_review:true,reviewed_by:''},
+  {id:2,at:'31.10 18:22',who:'Агент',kind:'docs',text:'нашёл инвойс с billing@ и приложил к Packaging Demo Co · £92',tx:3,needs_review:true,reviewed_by:''},
+  {id:3,at:'29.10 09:12',who:'Владелец',kind:'approve',text:'утвердил(а) Studio Rent Demo · £2 400',tx:7,needs_review:true,reviewed_by:''},
+  {id:4,at:'28.10 16:03',who:'Менеджер',kind:'docs',text:'приложил(а) чек к Ads Demo · £150',tx:9,needs_review:false,reviewed_by:'Бухгалтер'},
+  {id:5,at:'28.10 11:40',who:'Агент',kind:'xero',text:'черновик bill в Xero к инвойсу Packaging Demo Co',tx:3,needs_review:false,reviewed_by:'Бухгалтер'},
+  {id:6,at:'24.10 13:44',who:'Менеджер',kind:'docs',text:'сфотографировал(а) чек Office Supplies Demo · £46',tx:14,needs_review:false,reviewed_by:''}
+];
+
+const PEOPLE=[{id:1,name:'Бухгалтер (демо)',role:'Бухгалтер'},{id:2,name:'Менеджер (демо)',role:'Менеджер'},{id:3,name:'Флорист А.',role:'Флорист'},{id:4,name:'Курьер Б.',role:'Курьер'},{id:5,name:'Админ (демо)',role:'Администратор'}];
+const STATUS={todo:'К выполнению',doing:'В работе',review:'На проверке',done:'Готово',cancelled:'Отменена'};
+let TASKS=[
+  {id:1,title:'Найти чек за гелий 27.10',body:'Balloon Gas Demo · £126 – без документа, больше £100. Фото или PDF прямо в карточку операции.',board:'todo',priority:'normal',due:'2026-11-03T18:00',creator:'Бухгалтер (демо)',assignees:['Владелец (демо)'],scope:'for_me',comments:[]},
+  {id:2,title:'Подписать акт self-billing для Флориста А.',body:'Выплата 29.10 · £210. Без акта выплата не готова к проверке HMRC.',board:'doing',priority:'urgent',due:'2026-10-31T18:00',creator:'Бухгалтер (демо)',assignees:['Владелец (демо)'],scope:'for_me',comments:[{by:'Бухгалтер (демо)',at:'30.10 15:20',body:'Шаблон акта – во вложении к задаче в CRM.'}]},
+  {id:3,title:'Сверить выплату маркетплейса за октябрь',body:'Сумма выплаты против заказов за период, комиссия отдельной строкой.',board:'review',priority:'normal',due:'2026-11-05T18:00',creator:'Владелец (демо)',assignees:['Бухгалтер (демо)'],scope:'from_me',comments:[{by:'Бухгалтер (демо)',at:'31.10 17:02',body:'Сверила, расхождение £0. Отчёт приложила в CRM.'}]},
+  {id:4,title:'Загрузить выписку Bank D за сентябрь',body:'',board:'done',priority:'normal',due:'2026-10-10T18:00',creator:'Бухгалтер (демо)',assignees:['Владелец (демо)'],scope:'done',comments:[]}
+];
+const NOW=new Date('2026-11-01T09:41');
+const overdue=x=>x.due&&new Date(x.due)<NOW&&x.board!=='done'&&x.board!=='cancelled';
+const fmtDue=iso=>{const d=new Date(iso);return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
+
+/* ---------- кирпичики (повторяют app/src/ui.tsx) ---------- */
+const chip=(txt,tone)=>`<span class="chip ${tone==='ok'?'--ok':tone==='n'?'--n':''}">${txt}</span>`;
+const kv=(k,v,o={})=>`<${o.go?'button':'div'} class="kv ${o.bold?'--bold':''}" ${o.go?`onclick="${o.go}"`:''}><span class="k">${k}</span><span class="v ${o.tone==='neg'?'acc':o.tone==='pos'?'okc':''}">${v}</span></${o.go?'button':'div'}>`;
+const seg=(items,val,fn)=>`<div class="seg">${items.map(([k,l])=>`<button class="${k===val?'on':''}" onclick="${fn}('${k}')">${l}</button>`).join('')}</div>`;
+const bar=(v,w)=>`<div class="bar ${w?'--w':''}"><i style="width:${Math.max(0,Math.min(100,v*100))}%"></i></div>`;
+const agent=html=>`<div class="agent"><b>Агент</b>${html}</div>`;
+const empty=html=>`<div class="empty">${html}</div>`;
+const bars=(data,h=90)=>{const m=Math.max(1,...data.map(d=>Math.abs(d.v)));return `<div class="bars" style="height:${h+18}px">${data.map(d=>`<div class="c"><i class="${d.v<0?'neg':''} ${d.f?'fade':''}" style="height:${Math.max(2,Math.abs(d.v)/m*h)}px"></i><span>${d.l}</span></div>`).join('')}</div>`};
+const head=(title,sub,o={})=>`${o.back?`<button class="back" onclick="App.back()">${ic('back','i')} ${t('‹ Назад').replace('‹ ','')}</button>`:''}${o.mark?`<div class="h1row"><span class="mark">K</span><h1 class="h1">${title}</h1></div>`:`<h1 class="h1">${title}</h1>`}${sub?`<p class="sub">${sub}</p>`:''}`;
+const ACT={'утвердил(а)':1};
+const txLine=x=>`<button class="txl" onclick="App.openTx(${x.id})"><span class="ic">${ic(x.amount>0?'in':'receipt')}</span><span class="f1"><div class="tn">${esc(x.counterparty)}</div><div class="tm">${dm(x.date)} · ${x.account}${x.status==='posted'?' · проведено':x.status==='needs_approval'?' · <span class="acc">ваше «да»</span>':''}</div>${x.last?`<div class="ta">${x.last.action} · ${x.last.who} · ${x.last.at}</div>`:''}</span><span class="r"><div class="am ${x.amount>0?'pos':''}">${money(x.amount,true)}</div><div class="cat">${catLabel(x.category)||'без категории'}</div></span></button>`;
+
+/* ---------- экраны ---------- */
+const R={};
+R.login=()=>`<div class="login">
+  <img class="logo" src="logo.svg" alt="Floritta">
+  <span class="eyebrow">Floritta · бухгалтерия</span>
+  <h1 class="h1" style="font-size:52px;margin-top:6px">Kassa</h1>
+  <p class="soft" style="font-size:14px;margin:6px 0 18px">Войдите учёткой CRM Floritta – той же, что в Floritta Team.</p>
+  <input class="field" id="lg-email" type="email" placeholder="Email" value="${S.loginError?'courier@example.com':''}" autocomplete="off">
+  <input class="field" id="lg-pass" type="password" placeholder="Пароль" onkeydown="if(event.key==='Enter')App.login()">
+  ${S.loginError?`<div class="err">У этой учётки нет доступа к Kassa – попросите владельца выдать право «Kassa (бухгалтерия)».</div>`:''}
+  <button class="btn --primary mt14" style="margin-top:22px" onclick="App.login()">Войти</button>
+  <p class="mute" style="margin-top:14px;font-size:12px">Демо: любой email и пароль. Email со словом «courier» – учётка без права Kassa.</p>
+</div>`;
+R['login-denied']=()=>{S.loginError=true;return R.login()};
+
+R.home=()=>{
+  const full=PNL.filter(m=>!INCOMPLETE.has(m.month));const sum=k=>full.reduce((a,m)=>a+m[k],0);
+  const real=ACCOUNTS.filter(a=>a.real&&a.currency==='GBP'&&a.balance>0).sort((a,b)=>b.balance-a.balance).slice(0,3);
+  const nd=noDoc(),over=nd.filter(x=>x.amount<=-100);const n=toPost().length;
+  const week=DAILY.slice(-7).reduce((a,d)=>a+d[1],0);
+  return `${head('Kassa','воскресенье, 1 ноября',{mark:true})}
+  <button class="card" onclick="App.tab('cash')"><div class="mute">Деньги на счетах (реальные)</div><div class="big">${money(26170)}</div><div class="mute">${real.map(a=>`${a.name} ${money(a.balance)}`).join(' · ')}</div></button>
+  <button class="card" onclick="App.tab('tx')"><div class="row"><span class="b">К разноске</span>${chip(`${n} операций`,n?'n':'ok')}</div><div class="mute mt6">агент проводит сам в пределах порога, остальное ждёт вашего «да»</div></button>
+  <button class="card" onclick="App.go('docs')"><div class="row"><span class="b">Чеки и счета</span>${chip(`${nd.length} без чека`)}</div><div class="mute mt6">без документа больше £100: ${over.length} на ${money(-over.reduce((a,x)=>a+x.amount,0))}</div></button>
+  <button class="card" onclick="App.go('audit')"><div class="row"><span class="b">Готовность к проверке HMRC</span>${chip(`${READY.ready_pct} %`,READY.ready_pct>=80?'ok':'')}</div>${bar(READY.ready_pct/100)}<div class="mute">у каждой операции: документ, категория, НДС, назначение</div></button>
+  <button class="card" onclick="App.go('tax')"><div class="row"><span class="b">НДС за квартал</span>${chip('07.12')}</div><div class="big">${TAX.vat_forecast}</div><div class="mute">резерв ${TAX.vat_reserve} · сумма вырастет, пока разносятся продажи</div></button>
+  <button class="card" onclick="App.go('pnl')"><div class="row"><span class="b">P&amp;L · ${mlabel(full[0].month)} – ${mlabel(full[full.length-1].month)}</span>${chip(`маржа ${pct(sum('working')/sum('income'))}`,'ok')}</div><div class="mute mt6">выручка ${money(sum('income'))} · чистая ${money(sum('net'),true)} · ${[...INCOMPLETE].map(mlabel).join(', ')} – книги неполные</div></button>
+  <div class="card"><div class="mute">Поступления по дням (все каналы)</div>${bars(DAILY.map((d,i)=>({l:d[0].slice(8,10),v:d[1],f:i===DAILY.length-1})))}<div class="mute mt6">последние 7 дней: ${money(week)} · по выпискам в Xero</div></div>
+  <button style="display:block;width:100%" onclick="App.go('tax')">${agent(`режим «${S.limit===0?'всё подтверждаю сама':`до £${S.limit} агент проводит сам`}». Решений за вами: ${TAX.decisions.length} – раздел «Ещё → Налоги».`)}</button>`;
+};
+
+const since=p=>{if(!p)return'';const d=new Date(NOW);if(p==='month')d.setDate(1);else d.setDate(d.getDate()-Number(p));return d.toISOString().slice(0,10)};
+const ACC_F=[['','Все счета'],['Bank A','Bank A'],['Bank B','Bank B'],['Карта C','Карта C'],['Bank D','Bank D']];
+const PER_F=[['','За всё время'],['7','7 дней'],['30','30 дней'],['month','Этот месяц']];
+const RND_F=[['','Все расходы'],['any','R&D']];
+function txFound(){
+  const q=S.q.trim().toLowerCase();const from=since(S.period);
+  return TXS.filter(x=>(S.txFilter==='all'||(S.txFilter==='posted'?x.status==='posted':x.status!=='posted'))
+    &&(!S.account||x.account===S.account)&&(!from||x.date>=from)&&(!S.rnd||x.rnd)
+    &&(!q||x.counterparty.toLowerCase().includes(q)||String(Math.abs(x.amount)).includes(q.replace(',','.').replace('£',''))||dm(x.date).includes(q)||catLabel(x.category).toLowerCase().includes(q)));
+}
+const chipsRow=(items,val,key)=>`<div class="chips">${items.map(([k,l])=>`<button class="pick ${val===k?'on':''}" onclick="App.set('${key}','${k}')">${l}</button>`).join('')}</div>`;
+R.tx=()=>{const list=txFound();const searching=S.q||S.account||S.period||S.rnd;
+  return `${head(t('Операции'),'из банков и Xero, без ручного ввода')}
+  ${seg([['todo','К разноске'],['posted','Проведено'],['all','Все']],S.txFilter,"App.setTx")}
+  <label class="search">${ic('search')}<input id="tx-q" value="${esc(S.q)}" placeholder="Поставщик, сумма, дата 30.10" oninput="App.search(this.value)" autocomplete="off">${S.q?`<button onclick="App.search('',true)" aria-label="Очистить">${ic('x')}</button>`:''}</label>
+  ${chipsRow(ACC_F,S.account,'account')}${chipsRow(PER_F,S.period,'period')}${chipsRow(RND_F,S.rnd,'rnd')}
+  ${searching?`<div class="mute mt6">Найдено: ${list.length}</div>`:''}
+  <div id="tx-list" class="mt8">${list.length?list.map(txLine).join(''):`<div class="mute" style="text-align:center;margin-top:30px">${searching?'Ничего не нашлось':'Пусто – всё разнесено'}</div>`}</div>`;
+};
+
+R.cash=()=>{const real=ACCOUNTS.filter(a=>a.real).sort((a,b)=>b.balance-a.balance),other=ACCOUNTS.filter(a=>!a.real);
+  return `${head(t('Касса'),'деньги сегодня и что впереди')}
+  <div class="card"><div class="mute">Реальные деньги сейчас</div><div class="big">${money(26170)}</div>${real.map(a=>kv(a.balance<0?`${a.name} · долг по карте`:a.name,money(a.balance,false,a.currency),{tone:a.balance<0?'neg':''})).join('')}</div>
+  <div class="card"><div class="b">Не считаем в реальные деньги</div><div class="mute mt4">фиды стоят или это транзитные счета – остаток в Xero не равен банку</div>${other.map(a=>kv(a.name,money(a.balance,false,a.currency))).join('')}</div>
+  <div class="card"><div class="b">Обязательства и сроки</div>${TAX.deadlines.map(d=>kv(`${d[0].split(' ')[0]} · ${d[1]}`,`<span class="mute">${d[2]}</span>`)).join('')}</div>
+  ${empty('Прогноз кассы на 13 недель и предупреждения «денег не хватит» включатся, когда подключим банки напрямую: нужны операции за сегодня, а не выписки в Xero раз в неделю.')}`;
+};
+
+R.pay=()=>{const people=TXS.filter(x=>x.amount<0&&['florists','delivery'].includes(x.category));
+  let h=`${head(t('Выплаты людям'),'самозанятые (self-billing) и сотрудники (PAYE)')}${seg([['self','Самозанятые'],['emp','Сотрудники'],['how','Как устроено']],S.payTab,"App.setPay")}`;
+  if(S.payTab==='self')h+=`<div class="card"><div class="b">Субподряд по месяцам (Xero)</div>${bars(PNL.map(m=>({l:MONTHS[+m.month.slice(5)-1],v:m.subcontract})))}<div class="mute mt6">флористы и курьеры: ${PNL.slice(-3).map(m=>`${mlabel(m.month)} ${money(m.subcontract)}`).join(' · ')}</div></div>
+    <div class="card"><div class="b">Последние выплаты</div>${people.map(x=>kv(`${dm(x.date)} · ${esc(x.counterparty)}`,money(x.amount),{tone:x.documents.length?'':'neg',go:`App.openTx(${x.id})`})).join('')}<div class="mute mt6">красным – без акта self-billing, для HMRC это риск</div></div>
+    ${empty('Пакет выплат на неделю (часы и заказы из CRM → сумма по ставке → акт на каждого → «Утвердить») включится после выпуска служебного токена CRM «buh». Деньги приложение не двигает: переводы подтверждаете вы в банке.')}`;
+  if(S.payTab==='emp')h+=`<div class="card"><div class="b">Зарплата и PAYE (Xero)</div><div class="mute mt4">нет разнесённых выплат</div></div>
+    <div class="card"><div class="b">Календарь</div>${kv('последний рабочий день месяца','зарплата сотрудникам')}${kv('до 19-го','FPS / RTI от бухгалтера')}${kv('22-е','PAYE + NIC в HMRC')}${kv('апрель','P60 всем сотрудникам')}</div>
+    ${empty('Расчёт payslips делает бухгалтер; сверку payslips с переводами и напоминания включу вместе с банками напрямую.')}`;
+  if(S.payTab==='how')h+=`<div class="card"><div class="b">Сотрудник (employee)</div><div class="mute mt4">Трудовой договор, PAYE. Платим нетто по payslip, налог и NI удерживаем и платим в HMRC 22-го, пенсия auto-enrolment, отпускные, минимальная ставка.</div></div>
+    <div class="card"><div class="b">Самозанятый (self-employed)</div><div class="mute mt4">Договор на услуги + акт self-billing на каждую выплату. Платим брутто, налоги человек платит сам. Чтобы HMRC не признал его сотрудником: свой UTR, право отказаться от смены, свой инструмент. Без UTR и акта выплата не готова к проверке.</div></div>
+    <div class="card"><div class="b">Что остаётся за вами</div><div class="mute mt4">Утвердить пакет и подтвердить переводы в банке. Спорный статус человека – решение с бухгалтером.</div></div>`;
+  return h;
+};
+
+R.tasks=()=>{const list=TASKS.filter(x=>S.taskScope==='done'?x.board==='done':x.scope===S.taskScope&&x.board!=='done');
+  return `${head(t('Задачи'),'общие с CRM и Floritta Team')}${seg([['for_me','Мне'],['from_me','От меня'],['done','Готово']],S.taskScope,"App.setScope")}
+  <button class="btn --primary mt10" onclick="App.go('task-new')">${ic('plus')} Новая задача</button>
+  ${list.length?list.map(x=>`<button class="card" onclick="App.go('task',{id:${x.id}})"><div class="row"><span class="b f1">${x.title}</span>${chip(STATUS[x.board],x.board==='done'?'ok':overdue(x)?'n':'')}</div><div class="mute mt4">${S.taskScope==='from_me'?`→ ${x.assignees.join(', ')||'без исполнителя'}`:`от ${x.creator}`}${x.due?` · срок ${fmtDue(x.due)}`:''}${x.priority==='urgent'?' · <span class="acc">срочно</span>':''}${x.comments.length?` · ${x.comments.length} комм.`:''}</div></button>`).join(''):empty(S.taskScope==='for_me'?'Вам задач нет.':S.taskScope==='from_me'?'Вы пока никому не ставили задач.':'Готовых задач пока нет.')}`;
+};
+
+R.more=()=>{const review=EVENTS.filter(e=>e.needs_review).length;
+  const row=(icon,label,v,go)=>`<button class="kv" onclick="${go}"><span class="k ki">${ic(icon)}${label}</span><span class="v">${v}</span></button>`;
+  return `${head(t('Ещё'),'отчёты, налоги, документы, проверка')}
+  <div class="card">${row('clock','События – кто что сделал',review?chip(`${review} проверить`):ic('chev'),"App.go('events')")}${row('chart','P&amp;L – прибыль, маржа, каналы',ic('chev'),"App.go('pnl')")}${row('plan','План расходов',ic('chev'),"App.go('budget')")}${row('bank','Налоги и сроки',ic('chev'),"App.go('tax')")}${row('receipt','Документы и чеки',chip(`${noDoc().length} без чека`,'n'),"App.go('docs')")}${row('shield','Готовность к проверке HMRC',chip(`${READY.ready_pct} %`),"App.go('audit')")}</div>
+  <div class="card"><div class="b">R&amp;D – расходы под налоговую льготу</div><div class="mute mt4" style="margin-bottom:6px">Метка в карточке операции. База – сумма с учётом доли: подрядчик в UK 65 %, за границей 0, облака и софт 100 %.</div>${RNDX.map(r=>kv(`${r[0]} · ${r[1]} операций`,money(r[2]))).join('')}</div>
+  <div class="card"><div class="b">Кто проводит операции</div><div class="mute mt4">Агент разносит по правилам и проводит сам только в пределах порога; остальное ждёт вашего «да». «Всё сама» – агент только предлагает.</div>${seg([['0','Всё сама'],['100','до £100'],['250','до £250']],String(S.limit),"App.setMode")}<div class="mute mt6" id="mode-note">Сейчас: ${S.limit===0?'всё подтверждаю сама':`до £${S.limit} агент проводит сам`}. Платежи людям, зарплаты и курьерские счета – всегда вручную.</div></div>
+  <div class="card"><div class="b">Язык</div>${seg([['ru','Русский'],['uk','Українська'],['en','English']],lang,"App.setLang")}</div>
+  <div class="card"><div class="b">Источники</div>${kv('Xero','операции и отчёты')}${kv('Bank A, платежи сайта','напрямую, каждые 15 минут')}${kv('Bank B, Карта C','Open Banking')}${kv('Bank D (валюта)','остаток – напрямую, операции – выписка раз в месяц')}${kv('Терминал магазина','сверка и канал продажи')}${kv('Курьерская служба','счета с billing@, 2-го числа')}${kv('CRM (часы, заказы)','токен только на чтение')}</div>
+  <div class="card"><div class="b">Учётка</div>${kv(ME.name,ME.role==='accountant'?'бухгалтер · только чтение':'')}<button class="kv" onclick="App.logout()"><span class="k ki">${ic('out')}Выйти</span><span class="v">${ic('chev')}</span></button></div>
+  <div class="mute mt10">Kassa v0.3 · данные Xero обновляет агент бухгалтерии</div>`;
+};
+
+R.events=()=>{const ev=EVENTS.filter(e=>(!S.review||e.needs_review)&&(!S.evWho||(S.evWho==='agent'?e.who==='Агент':e.who!=='Агент'))&&(!S.evKind||e.kind===S.evKind));const n=EVENTS.filter(e=>e.needs_review).length;
+  return `${head(t('События'),'кто что сделал в бухгалтерии и что проверить',{back:1})}
+  ${seg([['1',`Проверить${n?` · ${n}`:''}`],['0','Все события']],S.review?'1':'0',"App.setReview")}${seg([['','Все'],['agent','Агент'],['people','Люди']],S.evWho,"App.setWho")}${seg([['','Всё'],['approve','Разноска'],['docs','Чеки'],['xero','Xero']],S.evKind,"App.setKind")}
+  ${ev.length?ev.map(e=>`<div class="card" style="cursor:pointer" onclick="App.openTx(${e.tx})"><div style="font-size:14.5px"><b>${e.who}</b> ${e.text}</div><div class="row mt6"><span class="mute" style="font-size:12px">${e.at}${e.reviewed_by?` · проверил(а) ${e.reviewed_by}`:''}</span>${e.needs_review?`<button class="chip --on" onclick="event.stopPropagation();App.mark(${e.id})">Проверено ${ic('check','i').replace('class="i"','class="i" style="width:12px;height:12px"')}</button>`:e.reviewed_by?`<button class="mute" style="font-size:12px" onclick="event.stopPropagation();App.mark(${e.id})">снять отметку</button>`:''}</div></div>`).join(''):empty(S.review?'Проверять нечего – всё отмечено.':'Событий за 30 дней нет.')}`;
+};
+
+function pnlBlock(title,ms,ok){const s=k=>ms.reduce((a,m)=>a+m[k],0);const inc=s('income');const g={};ms.forEach(m=>Object.entries(m.groups).forEach(([k,v])=>g[k]=(g[k]||0)+v));const other=s('opex_other')-Object.values(g).reduce((a,v)=>a+v,0);
+  return `<div class="card"><div class="row"><span class="b">${title}</span>${chip(ok?'книги полные':'книги неполные',ok?'ok':'n')}</div>
+  ${kv('Выручка',money(inc),{bold:1})}${kv('− Товар (цветы, упаковка, газ)',money(s('goods')))}${kv('− Доставка (прямые)',money(s('delivery')))}${kv(`= Валовая прибыль · ${pct(s('gross')/inc)}`,money(s('gross')),{bold:1})}${kv('− Субподряд (флористы, курьеры)',money(s('subcontract')))}${kv(`= Рабочая маржа · ${pct(s('working')/inc)}`,money(s('working')),{bold:1})}${Object.entries(g).map(([k,v])=>kv(`− ${k}`,money(v))).join('')}${kv('− Прочие расходы',money(other))}${kv(`= Чистая прибыль · ${pct(s('net')/inc)}`,money(s('net'),true),{bold:1,tone:s('net')<0?'neg':'pos'})}</div>`}
+R.pnl=()=>{const full=PNL.filter(m=>!INCOMPLETE.has(m.month)),part=PNL.filter(m=>INCOMPLETE.has(m.month));
+  let h=`${head('P&amp;L','финансовый год с 1 мая · данные Xero',{back:1})}${seg([['months','По месяцам'],['channels','По каналам']],S.pnlTab,"App.setPnl")}`;
+  if(S.pnlTab==='months')h+=`<div class="card"><div class="b">Чистая прибыль по месяцам</div>${bars(PNL.map(m=>({l:MONTHS[+m.month.slice(5)-1],v:m.net,f:INCOMPLETE.has(m.month)})))}<div class="mute mt6">${PNL.map(m=>`${MONTHS[+m.month.slice(5)-1]} ${money(m.net,true)}`).join(' · ')}</div></div>
+    ${pnlBlock(`${mlabel(full[0].month)} – ${mlabel(full[full.length-1].month)}`,full,true)}${pnlBlock(`${mlabel(part[0].month)} – ${mlabel(part[part.length-1].month)}`,part,false)}
+    <div class="mute mt6">Убыток за неполные месяцы – это неразнесённые продажи с сайта, а не реальный минус. Настоящая цифра – после сведения бухгалтером.</div>`;
+  else{const tot=CHANNELS.reduce((a,c)=>a+c[1],0);h+=`<div class="card"><div class="b">Поступления по каналам с 1 мая</div><div class="mute mt4">что пришло на счета: маркетплейсы – за вычетом комиссии</div>${CHANNELS.map(c=>`<div style="padding:9px 0;border-bottom:1px solid var(--hair)"><div class="row"><span class="f1">${c[0]}</span><span class="num" style="font-weight:400">${money(c[1])}</span><span class="mute num" style="width:58px;text-align:right">${pct(c[1]/tot)}</span></div><div class="mute">авг ${money(c[2][0])} · сен ${money(c[2][1])} · окт ${money(c[2][2])}</div></div>`).join('')}</div>`}
+  return h;
+};
+
+R.budget=()=>{const base=PNL.filter(m=>!INCOMPLETE.has(m.month)),cur=PNL[PNL.length-1];const passed=1;
+  const avg=f=>base.reduce((a,m)=>a+f(m),0)/base.length;
+  const lines=[['Закупка цветов, упаковка, газ',m=>m.goods],['Доставка (прямые)',m=>m.delivery],['Субподряд – флористы, курьеры',m=>m.subcontract],...Object.keys(cur.groups).map(g=>[g,m=>m.groups[g]])].map(([n,f])=>[n,avg(f),f(cur)]);
+  const plan=lines.reduce((a,l)=>a+l[1],0),fact=lines.reduce((a,l)=>a+l[2],0);
+  return `${head(t('План расходов'),`${mlabel(cur.month)} · план = среднее за ${base.map(m=>MONTHS[+m.month.slice(5)-1]).join(', ')}`,{back:1})}
+  <div class="card"><div class="row"><span class="b">Расходы месяца</span><span class="big" style="font-size:32px">${money(fact)}</span></div><div class="mute">план ${money(plan)} · прошло 100 % месяца, потрачено по Xero ${Math.round(fact/plan*100)} %</div>${bar(fact/plan)}</div>
+  <div class="card">${lines.map(([n,p,f])=>{const over=p>0&&f/p>passed*1.15;return `<div style="padding:8px 0;border-bottom:1px solid var(--hair)"><div class="row"><span class="f1">${n}</span><span class="num ${over?'acc':''}" style="font-weight:400">${money(f)}</span><span class="mute num">&nbsp;/ ${money(p)}</span></div>${bar(p?f/p:0,over)}</div>`}).join('')}</div>
+  ${empty('Факт этого месяца занижен: книги разнесены не полностью. Когда подключим банки напрямую, факт будет считаться по операциям в день траты.')}
+  ${empty('Регулярные платежи, план закупок от заказов CRM и согласование трат больше £100 до оплаты – следующим шагом, после банков и токена CRM.')}`;
+};
+
+R.tax=()=>`${head(t('Налоги'),'НДС, налог на прибыль, сроки',{back:1})}
+  <div class="card"><div class="row"><span class="b">НДС за квартал (кассовый метод)</span>${chip('к 07.12')}</div><div class="big">${TAX.vat_forecast}</div><div class="mute">резерв ${TAX.vat_reserve}. Цифра вырастет: продажи с сайта за последние месяцы разнесены не полностью.</div></div>
+  <div class="card"><div class="row"><span class="b">Налог на прибыль</span>${chip('к 01.02.2027')}</div>${kv('За год до 30.04.2026 (расчёт бухгалтера)',money(TAX.ct_fy26),{bold:1})}<div class="mute mt6">По сырым книгам Xero выходит больше – запрошена расшифровка корректировок у бухгалтера.</div></div>
+  <div class="card"><div class="b">Календарь</div>${TAX.deadlines.map(d=>kv(`${d[0].split(' ')[0]} · ${d[1]}`,`<span class="mute">${d[2]}</span>`)).join('')}</div>
+  <div class="card"><div class="b">Можно ли верить цифрам</div>${TAX.quality.map(q=>`<div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--hair)"><span class="dot ${q[0]==='red'?'--r':q[0]==='yellow'?'--y':''}"></span><div class="f1"><div style="font-weight:400">${q[1]}</div><div class="mute mt4">${q[2]}</div></div></div>`).join('')}</div>
+  <div class="card"><div class="b acc">Решения за вами</div>${TAX.decisions.map((q,i)=>`<button class="kv" onclick="App.decide(${i})"><span class="k"><span style="font-weight:400">${q[0]}</span><br><span class="mute">${q[1]}</span></span><span class="v">${ic('chev')}</span></button>`).join('')}</div>`;
+
+R.docs=()=>{const m=noDoc();const recent=TXS.filter(x=>x.documents.length);
+  return `${head(t('Документы'),'чеки и счета к операциям',{back:1})}
+  <div class="card"><div class="row"><span class="b">Без документа</span>${chip(String(m.length),'n')}</div><div class="mute mt4">нажмите операцию → «Снять чек» или «чека не будет»</div>${m.map(txLine).join('')}</div>
+  <div class="card"><div class="b">Последние прикреплённые</div>${recent.map(x=>`<div class="doc">${ic('clip')}<span class="f1">${esc(x.counterparty)} · ${money(x.amount)}<br><span class="mute">${x.documents.map(d=>d.source==='xero'?'вложение в Xero':d.source==='camera'?'фото чека':d.filename).join(', ')}</span></span></div>`).join('')}</div>`;
+};
+
+R.audit=()=>{const p=n=>`${n} · ${Math.round(n*100/READY.total)} %`;const m=noDoc().filter(x=>x.amount<=-100);
+  return `${head(t('Проверка HMRC'),'чтобы письмо налоговой не было стрессом',{back:1})}
+  <div class="card"><div class="row"><span class="b">Готовность</span><span class="big">${READY.ready_pct} %</span></div>${bar(READY.ready_pct/100)}
+  ${kv('Операций в Kassa (с 1 мая)',READY.total)}${kv('с документом или «не нужен»',p(READY.with_document))}${kv('с категорией и НДС',p(READY.with_category))}${kv('с назначением «для чего»',p(READY.with_purpose))}${kv('без документа, больше £100',`${m.length} · ${money(-m.reduce((a,x)=>a+x.amount,0))}`,{tone:'neg'})}${kv('выплаты людям без акта',READY.people_without_act,{tone:'neg'})}</div>
+  <div class="card"><div class="b">Закрыть в первую очередь – крупные без документа</div>${m.sort((a,b)=>a.amount-b.amount).map(txLine).join('')}</div>
+  ${empty('Хранить нужно 6 лет с конца отчётного года. Каждое изменение в Kassa записано: кто, когда, что было до; ничего не удаляется. Папка для инспектора за период (выписки, документы, реестр) – следующим шагом.')}`;
+};
+
+/* ---------- шторки: карточка операции, задача, новая задача ---------- */
+let D=null; // черновик карточки операции
+function txCard(){
+  const x=tx(D.id);const locked=x.status==='posted';const needApproval=x.amount<0&&Math.abs(x.amount)>S.limit&&x.status!=='posted';
+  const hasDoc=!D.needs_doc||D.documents.length>0;
+  const missing=[!hasDoc&&'документ',!D.category&&'категория',!D.vat&&'НДС',D.purpose.trim().length<3&&'назначение'].filter(Boolean);
+  const can=D.category&&D.vat;
+  const pk=(items,val,fn)=>`<div class="wrap">${items.map(([k,l])=>`<button class="pick ${val===k?'on':''}" onclick="${fn}('${k}')">${l}</button>`).join('')}</div>`;
+  return `<div class="row" style="align-items:flex-start"><div class="f1"><div class="mute">${dm(x.date)}.${x.date.slice(0,4)} · ${x.account}</div><div style="font-size:19px;font-weight:400;line-height:1.25">${esc(x.counterparty)}</div></div><div class="big ${x.amount>0?'okc':''}" style="font-size:30px;margin:0">${money(x.amount,false,'GBP',2)}</div></div>
+  ${x.proposed_by?agent(`${x.proposed_by==='rule'?'по правилу разноски':x.proposed_by}${needApproval?(S.limit===0?' · вы подтверждаете всё сами':` · больше £${S.limit} – нужно ваше «да»`):''}`):''}
+  ${x.xero?`<div class="agent"><b>Xero</b>${x.xero}</div>`:''}
+  ${x.hist.length?`<div class="mt14"><div class="b" style="font-size:13px">История</div>${x.hist.map(h=>`<div class="hist">${h}</div>`).join('')}</div>`:''}
+  ${locked?`<div class="empty">Операция проведена – меняется только метка R&amp;D.</div>`:''}
+  <span class="label">Тип</span>${seg(Object.entries(TYPES),D.kind,'App.dKind')}
+  <span class="label">Категория – для чего</span>${pk(CATS[D.kind],D.category,'App.dCat')}
+  <span class="label">Назначение (своими словами)</span><input class="field" style="margin-top:0" value="${esc(D.purpose)}" placeholder="например: розы для свадьбы 25.10, заказ №00000" oninput="App.dPurpose(this.value)">
+  <span class="label">НДС</span>${pk(VAT,D.vat,'App.dVat')}
+  ${x.amount<0?`<span class="label">R&amp;D – разработка своего софта (налоговая льгота)</span>${x.rnd_hint&&!D.rnd?`<div class="mute" style="margin-bottom:6px">Похоже на расход на разработку – поставить метку?</div>`:''}${pk(RND,D.rnd,'App.dRnd')}`:''}
+  <span class="label">Чек или счёт</span>
+  ${D.documents.map(d=>`<div class="doc">${ic('clip')}<span class="f1">${d.filename} · <span class="mute">${d.source==='camera'?'фото':d.source==='billing_mail'?'из billing@':'файл'}</span></span></div>`).join('')}
+  <div class="btns"><button class="btn --sm" onclick="App.shoot(true)">${ic('camera')} Снять чек</button><button class="btn --sm" onclick="App.shoot(false)">${ic('image')} Из фото</button><button class="btn --sm ${!D.needs_doc?'--primary':''}" onclick="App.dNoDoc()">чека не будет</button></div>
+  <div id="ready" class="ready ${missing.length?'':'--ok'}">${missing.length?`к проверке не хватает: ${missing.join(', ')}`:`${ic('check','i').replace('class="i"','class="i" style="width:14px;height:14px"')} готово к проверке HMRC`}</div>
+  ${locked?`<button class="btn --primary mt14" style="margin-top:18px" onclick="App.closeSheet()">Закрыть</button>`:`
+  <button class="btn --primary" style="margin-top:18px" ${can?'':'disabled'} onclick="App.save(true)">Провести${needApproval?(S.limit===0?' (подтверждаю)':` (больше £${S.limit} – подтверждаю)`):''}</button>
+  <div class="mute" style="text-align:center;margin-top:6px;font-size:12px">после «Провести» агент сам разнесёт строку выписки в Xero и приложит чек</div>
+  <button class="btn mt8" ${can?'':'disabled'} onclick="App.save(true,true)">Всегда так разносить «${esc(x.counterparty)}»</button>
+  <button class="btn --ghost mt8" onclick="App.save(false)">Сохранить без проведения</button>
+  <button class="btn --ghost mt8" onclick="App.closeSheet()">Закрыть</button>`}`;
+}
+function taskCard(id){const x=TASKS.find(t=>t.id===id);const mine=x.scope==='for_me';
+  const can={start:mine&&x.board==='todo',done:mine&&(x.board==='todo'||x.board==='doing'),approve:!mine&&x.board==='review',reopen:!mine&&(x.board==='review'||x.board==='done')};
+  return `<button class="back" onclick="App.closeSheet()">${ic('back')} Назад</button>
+  <div style="font-family:var(--f-display);font-size:28px;line-height:1.1;text-transform:uppercase;letter-spacing:.03em;margin-top:4px">${x.title}</div>
+  <div class="row mt8" style="justify-content:flex-start">${chip(STATUS[x.board],x.board==='done'?'ok':overdue(x)?'n':'')}${x.priority==='urgent'?chip('срочно','n'):''}${x.due?`<span class="mute">срок ${fmtDue(x.due)}</span>`:''}</div>
+  <div class="card"><div class="mute">Поставил: ${x.creator}</div><div class="mute mt4">Исполнители: ${x.assignees.join(', ')||'никого'}</div>${x.body?`<div class="mt10" style="font-size:15px">${x.body}</div>`:''}</div>
+  <div class="btns" style="margin-top:12px">${can.start?`<button class="btn" onclick="App.tAct(${id},'start')">Взять в работу</button>`:''}${can.done?`<button class="btn --primary" onclick="App.tAct(${id},'done')">Готово</button>`:''}${can.approve?`<button class="btn --primary" onclick="App.tAct(${id},'approve')">Принять</button>`:''}${can.reopen?`<button class="btn" onclick="App.tAct(${id},'reopen')">Вернуть</button>`:''}</div>
+  <div class="b mt14" style="margin-top:20px">Обсуждение</div>
+  ${x.comments.length?x.comments.map(c=>`<div class="cmt"><div class="mute">${c.by} · ${c.at}</div><div class="mt4" style="font-size:14.5px">${esc(c.body)}</div></div>`).join(''):`<div class="mute mt6">Пока ничего.</div>`}
+  <div class="send"><textarea class="field" id="tk-text" placeholder="Написать…"></textarea><button class="btn --primary" onclick="App.tComment(${id})" aria-label="Отправить">${ic('send')}</button></div>
+  <div class="mute mt14">Задача видна и в CRM, и в Floritta Team.</div>`;
+}
+let NT=null;
+function newTask(){
+  const q=NT.find.trim().toLowerCase();const list=PEOPLE.filter(p=>!q||p.name.toLowerCase().includes(q)||p.role.toLowerCase().includes(q));
+  return `<div class="row"><button class="textlink" onclick="App.closeSheet()">Отмена</button><button class="textlink" onclick="App.ntSave()">Поставить</button></div>
+  <div style="font-family:var(--f-display);font-size:30px;text-transform:uppercase;letter-spacing:.04em;margin-top:14px">${t('Новая задача')}</div>
+  <input class="field" id="nt-title" value="${esc(NT.title)}" placeholder="Что сделать" oninput="NT.title=this.value">
+  <textarea class="field" id="nt-body" placeholder="Подробности (необязательно)" oninput="NT.body=this.value">${esc(NT.body)}</textarea>
+  <span class="label">Срок</span>${seg([['','Без срока'],['1','Завтра'],['3','3 дня'],['7','Неделя']],NT.due,'App.ntDue')}
+  <button class="check ${NT.urgent?'on':''}" style="border:0;margin-top:6px" onclick="NT.urgent=!NT.urgent;App.redrawSheet()"><span class="box">${ic('check','')}</span>Срочно</button>
+  <span class="label">Кому${NT.who.length?` · ${NT.who.length}`:''}</span>
+  <input class="field" style="margin-top:0" value="${esc(NT.find)}" placeholder="Найти по имени" oninput="App.ntFind(this.value)" id="nt-find">
+  ${list.map(p=>`<button class="check ${NT.who.includes(p.id)?'on':''}" onclick="App.ntWho(${p.id})"><span class="box">${ic('check','')}</span><span class="f1">${p.name}</span><span class="mute">${p.role}</span></button>`).join('')}`;
+}
+
+/* ---------- навигация (как App.go в staff/) ---------- */
+const SCREENS=[
+  ['Вход','login','Вход учёткой CRM'],['Вход','login-denied','Вход · нет доступа к Kassa'],
+  ['Вкладки','home','Главная'],['Вкладки','tx','Операции'],['Вкладки','cash','Касса'],['Вкладки','pay','Выплаты'],['Вкладки','tasks','Задачи'],['Вкладки','more','Ещё'],
+  ['Ещё →','events','События'],['Ещё →','pnl','P&L'],['Ещё →','budget','План расходов'],['Ещё →','tax','Налоги и сроки'],['Ещё →','docs','Документы и чеки'],['Ещё →','audit','Проверка HMRC'],
+  ['Шторки','txcard','Карточка операции'],['Шторки','task','Задача'],['Шторки','task-new','Новая задача']
+];
+const TABS=[['home','home','Главная'],['tx','tx','Операции'],['cash','cash','Касса'],['pay','pay','Выплаты'],['tasks','tasks','Задачи'],['more','more','Ещё']];
+const SUB_PARENT={events:'more',pnl:'more',budget:'more',tax:'more',docs:'more',audit:'more'};
+const App=(()=>{
+  const st={cur:null,tab:'home',hist:[],sheet:null};
+  let toastT,searchT;
+  function render(){
+    const v=$('#view');v.innerHTML=R[st.cur]();
+    const noTab=st.cur.startsWith('login');v.classList.toggle('no-tab',noTab);$('#tabbar').classList.toggle('hide',noTab);
+    $('#tabbar').innerHTML=TABS.map(([k,i,l])=>`<button class="tab ${st.tab===k&&!SUB_PARENT[st.cur]?'on':''}" onclick="App.tab('${k}')">${ic(i,'')}<span>${t(l)}</span></button>`).join('');
+  }
+  function mark(id){document.querySelectorAll('#nav-list button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));document.querySelectorAll('.scr-note').forEach(n=>n.classList.toggle('on',n.dataset.s===id));const c=NOTES_CUR[id];$('#cur-t').textContent=c?c[0]:'';$('#cur-d').innerHTML=c?c[1]:''}
+  function go(id,p={},o={}){
+    if(id==='txcard'){if(!['tx','docs','audit','events','pay'].includes(st.cur))go('tx',{},{quiet:1});return openTx(p.id||1)}
+    if(id==='task'){if(st.cur!=='tasks')go('tasks',{},{quiet:1});return openSheet('task',p.id||TASKS[1].id)}
+    if(id==='task-new'){if(st.cur!=='tasks')go('tasks',{},{quiet:1});NT={title:'',body:'',due:'',urgent:false,who:[],find:''};return openSheet('task-new')}
+    if(!R[id])return console.warn('нет экрана',id);
+    closeSheet(true);
+    if(id==='login')S.loginError=false;
+    if(st.cur&&st.cur!==id&&!o.replace)st.hist.push(st.cur);
+    st.cur=id;if(TABS.some(x=>x[0]===id))st.tab=id;
+    const v=$('#view');v.classList.add('enter');render();v.scrollTop=0;requestAnimationFrame(()=>requestAnimationFrame(()=>v.classList.remove('enter')));
+    if(!o.quiet){mark(id);history.replaceState(null,'','#'+id)}
+  }
+  function back(){const prev=st.hist.pop()||SUB_PARENT[st.cur]||'home';go(prev,{},{replace:1})}
+  function tab(k){st.hist=[];go(k)}
+  function openSheet(kind,id){st.sheet={kind,id};redrawSheet();$('#sheet').classList.add('on');$('#scrim').classList.add('on');$('#sheet-in').scrollTop=0;mark(kind);history.replaceState(null,'','#'+kind)}
+  function redrawSheet(){if(!st.sheet)return;const sc=$('#sheet-in').scrollTop;const k=st.sheet.kind;$('#sheet-in').innerHTML=k==='txcard'?txCard():k==='task'?taskCard(st.sheet.id):newTask();$('#sheet-in').scrollTop=sc}
+  function closeSheet(silent){if(!st.sheet)return;st.sheet=null;$('#sheet').classList.remove('on');$('#scrim').classList.remove('on');if(!silent){render();mark(st.cur);history.replaceState(null,'','#'+st.cur)}}
+  function toast(msg,ms){const el=$('#toast');el.innerHTML=msg;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),ms||2600)}
+  function openTx(id){if(!id)return;const x=tx(id);D={id,kind:x.kind||(x.amount>0?'income':'expense'),category:x.category||'',purpose:x.purpose||'',vat:x.vat||'',needs_doc:x.needs_doc,documents:[...x.documents],rnd:x.rnd||''};openSheet('txcard',id)}
+  const locked=()=>tx(D.id).status==='posted';
+  const guard=()=>{if(locked()){toast('У проведённой операции меняется только метка R&amp;D');return true}return false};
+  return {go,back,tab,toast,openTx,closeSheet,redrawSheet,
+    login(){const e=($('#lg-email')||{}).value||'';const p=($('#lg-pass')||{}).value||'';if(!e.trim()||!p){toast('Введите email и пароль');return}if(/courier/i.test(e)){S.loginError=true;render();return}S.loginError=false;st.hist=[];go('home')},
+    logout(){st.hist=[];go('login');toast('Вы вышли – токен CRM удалён с устройства')},
+    set(k,v){S[k]=v;render()},
+    setTx(k){S.txFilter=k;render()},
+    search(v,clear){S.q=v;clearTimeout(searchT);if(clear){render();return}searchT=setTimeout(()=>{const pos=$('#tx-q').selectionStart;render();const i=$('#tx-q');i.focus();i.setSelectionRange(pos,pos)},300)},
+    setPay(k){S.payTab=k;render()},setPnl(k){S.pnlTab=k;render()},setScope(k){S.taskScope=k;render()},
+    setReview(k){S.review=k==='1';render()},setWho(k){S.evWho=k;render()},setKind(k){S.evKind=k;render()},
+    mark(id){const e=EVENTS.find(x=>x.id===id);if(e.needs_review){e.needs_review=false;e.reviewed_by=ME.name}else{e.needs_review=true;e.reviewed_by=''}render();toast(e.needs_review?'Отметка снята':'Отмечено: проверено')},
+    setMode(k){S.limit=+k;render();toast(`Сохранено: ${S.limit===0?'всё подтверждаю сама':`до £${S.limit} агент проводит сам`}`)},
+    setLang(k){lang=k;render();toast(k==='ru'?'Язык: русский':k==='uk'?'Мова: українська · в прототипі перекладено вкладки й заголовки':'Language: English · tabs and titles are translated in the prototype',3400)},
+    decide(i){toast(`«${TAX.decisions[i][0]}» – решение остаётся за вами: агент ничего не делает без вашего «да»`,3400)},
+    dKind(k){if(guard())return;D.kind=k;D.category='';redrawSheet()},
+    dCat(k){if(guard())return;D.category=k;redrawSheet()},
+    dVat(k){if(guard())return;D.vat=k;redrawSheet()},
+    dPurpose(v){D.purpose=v;const el=$('#ready');const hasDoc=!D.needs_doc||D.documents.length>0;const miss=[!hasDoc&&'документ',!D.category&&'категория',!D.vat&&'НДС',v.trim().length<3&&'назначение'].filter(Boolean);el.className='ready '+(miss.length?'':'--ok');el.innerHTML=miss.length?`к проверке не хватает: ${miss.join(', ')}`:'готово к проверке HMRC'},
+    dRnd(k){const x=tx(D.id);D.rnd=D.rnd===k?'':k;if(locked()){x.rnd=D.rnd;toast(D.rnd?'Метка R&amp;D сохранена':'Метка R&amp;D снята')}redrawSheet()},
+    dNoDoc(){if(guard())return;D.needs_doc=!D.needs_doc;redrawSheet()},
+    shoot(cam){if(guard())return;const f=cam?`receipt_${D.id}.jpg`:`IMG_${4000+D.id}.jpg`;D.documents.push(doc(f,cam?'camera':'upload'));const x=tx(D.id);x.documents=[...D.documents];x.hist.push(`01.11 09:41 · ${ME.name} приложил(а) чек`);x.last={who:'Владелец',action:'приложил(а) чек',at:'01.11 09:41'};redrawSheet();toast(cam?'Чек сфотографирован и загружен':'Фото из галереи загружено')},
+    save(post,always){const x=tx(D.id);Object.assign(x,{kind:D.kind,category:D.category,purpose:D.purpose,vat:D.vat,needs_doc:D.needs_doc,documents:D.documents,rnd:D.rnd});
+      if(post){x.status='posted';x.last={who:'Владелец',action:'утвердил(а)',at:'01.11 09:41'};x.hist.push(`01.11 09:41 · ${ME.name} утвердил(а)`);x.xero='агент разнесёт строку выписки и приложит чек';EVENTS.unshift({id:Date.now(),at:'01.11 09:41',who:'Владелец',kind:'approve',text:`утвердил(а) ${x.counterparty} · ${money(x.amount)}`,tx:x.id,needs_review:true,reviewed_by:''})}
+      else x.hist.push(`01.11 09:41 · ${ME.name} изменил(а)`);
+      closeSheet();toast(post?(always?`Проведено. Новое правило: «${esc(x.counterparty)}» всегда так`:'Проведено – агент разнесёт строку выписки в Xero'):'Сохранено без проведения',3000)},
+    tAct(id,verb){const x=TASKS.find(t=>t.id===id);
+      if(verb==='start'){x.board='doing';toast('Взято в работу – автор увидит в CRM')}
+      if(verb==='done'){const note=($('#tk-text')||{}).value||'';if(note.trim())x.comments.push({by:ME.name,at:'01.11 09:41',body:note.trim()});x.board='done';x.scope='done';toast('Готово – задача закрыта')}
+      if(verb==='approve'){x.board='done';x.scope='done';toast('Принято')}
+      if(verb==='reopen'){const r=($('#tk-text')||{}).value.trim()||'Нужно доработать';x.comments.push({by:ME.name,at:'01.11 09:41',body:`Вернула в работу: ${r}`});x.board='doing';x.scope='from_me';toast('Возвращено в работу')}
+      redrawSheet()},
+    tComment(id){const el=$('#tk-text');const b=el.value.trim();if(!b)return;TASKS.find(t=>t.id===id).comments.push({by:ME.name,at:'01.11 09:41',body:b});redrawSheet();toast('Комментарий отправлен')},
+    ntDue(k){NT.due=k;redrawSheet()},
+    ntFind(v){NT.find=v;redrawSheet();const i=$('#nt-find');i.focus();i.setSelectionRange(v.length,v.length)},
+    ntWho(id){NT.who=NT.who.includes(id)?NT.who.filter(x=>x!==id):[...NT.who,id];redrawSheet()},
+    ntSave(){if(!NT.title.trim()||!NT.who.length){toast('Нужно название и хотя бы один исполнитель');return}
+      const due=NT.due?(()=>{const d=new Date(NOW);d.setDate(d.getDate()+ +NT.due);d.setHours(18,0,0,0);return d.toISOString().slice(0,16)})():null;
+      TASKS.unshift({id:Date.now(),title:NT.title.trim(),body:NT.body.trim(),board:'todo',priority:NT.urgent?'urgent':'normal',due,creator:ME.name,assignees:PEOPLE.filter(p=>NT.who.includes(p.id)).map(p=>p.name),scope:'from_me',comments:[]});
+      S.taskScope='from_me';closeSheet();toast('Задача поставлена – видна в CRM и Floritta Team')},
+    _st:st
+  };
+})();
+
+/* ---------- заметки справа: что умеет каждый экран и откуда ---------- */
+const NOTES=[
+  ['login','Вход','app/src/screens/Login.tsx, session.tsx',['Email и пароль учёткой CRM (та же, что в Floritta Team)','Enter в поле пароля = «Войти»','Проверка права «Kassa (бухгалтерия)»: нет права – вход отклонён с объяснением','Токен хранится на устройстве, при запуске сессия восстанавливается']],
+  ['home','Главная','screens/Home.tsx',['Деньги на счетах (реальные) + три крупных счёта → Касса','К разноске: число операций → Операции','Чеки и счета: без чека и сумма без документа больше £100 → Документы','Готовность к проверке HMRC, полоса → Проверка HMRC','НДС за квартал, ближайший срок, резерв → Налоги','P&L за полные месяцы, маржа, пометка неполных книг → P&L','Поступления по дням, 11 столбиков, сумма за 7 дней','Строка агента: режим проведения и сколько решений за вами']],
+  ['tx','Операции','screens/TxList.tsx',['Фильтр: К разноске / Проведено / Все','Поиск по мере ввода: поставщик, сумма, дата 30.10','Быстрые фильтры: счёт, период (7 / 30 дней / этот месяц), только R&D','«Найдено: N» при поиске; пустое состояние','Строка операции: контрагент, дата, счёт, статус, последнее действие, сумма, категория → карточка']],
+  ['txcard','Карточка операции','app/src/TxCard.tsx + History',['Предложение агента и порог «нужно ваше «да»»','Состояние в Xero и история: кто предложил, утвердил, приложил чек','Тип: доход / расход / перевод (меняет список категорий)','Категория – по списку server/app/categories.py','Назначение своими словами','НДС: 20 % / 0 % / без НДС / reverse charge / не облагается','Метка R&D (3 вида) и подсказка «похоже на разработку»; у проведённой меняется только она','Чек: снять камерой, из фото, «чека не будет»','Плашка «готово к проверке HMRC» / чего не хватает','Провести (с подтверждением сверх порога), «Всегда так разносить», сохранить без проведения, закрыть']],
+  ['cash','Касса','screens/Cash.tsx',['Реальные деньги сейчас и остаток по каждому счёту, долг по карте отдельно','Счета, которые не считаем (транзит, стоящие фиды)','Обязательства и сроки','Плашка: прогноз на 13 недель – после прямого подключения банков']],
+  ['pay','Выплаты','screens/Pay.tsx',['Самозанятые: субподряд по месяцам, последние выплаты, без акта – выделено','Сотрудники: зарплата и PAYE, календарь (зарплата, FPS/RTI, PAYE+NIC 22-го, P60)','Как устроено: employee против self-employed, что остаётся за вами','Деньги приложение не двигает – переводы подтверждаются в банке']],
+  ['tasks','Задачи','screens/Tasks.tsx, tasks.ts',['Мне / От меня / Готово – общая доска с CRM и Floritta Team','Статус, срок, просрочка, срочность, число комментариев','«Новая задача» → шторка']],
+  ['task','Задача','Tasks.tsx · TaskDetail',['Кто поставил, исполнители, описание','Взять в работу / Готово (с заметкой) / Принять / Вернуть (с причиной)','Обсуждение и отправка комментария','Автор видит «увидел» – отметка seen при открытии']],
+  ['task-new','Новая задача','Tasks.tsx · NewTask',['Что сделать, подробности','Срок: без срока / завтра / 3 дня / неделя (к 18:00)','Срочно','Кому: поиск по имени и роли, несколько исполнителей','Проверка: нужно название и хотя бы один исполнитель']],
+  ['more','Ещё','screens/More.tsx',['Разделы: События (с числом «проверить»), P&L, План расходов, Налоги, Документы (без чека), Готовность HMRC','R&D: база льготы за текущий и прошлый финансовый год','Кто проводит операции: всё сама / до £100 / до £250 – меняет порог в карточке','Язык: русский / украинский / английский','Источники данных и как часто обновляются','Учётка и «Выйти», версия']],
+  ['events','События','screens/Events.tsx',['Проверить / Все события','Кто: все / агент / люди; что: разноска / чеки / Xero','«Проверено» и «снять отметку» – для бухгалтера','Нажатие на событие открывает операцию']],
+  ['pnl','P&L','screens/Pnl.tsx',['По месяцам: чистая прибыль столбиками, неполные месяцы бледнее','Блок полных и блок неполных месяцев: выручка → валовая → рабочая маржа → чистая','По каналам: поступления с 1 мая, доля, последние 3 месяца']],
+  ['budget','План расходов','screens/Budget.tsx',['План = среднее за полные месяцы','Расходы месяца против плана, полоса','Строки по статьям, перерасход выделен','Плашки о том, что включится позже']],
+  ['tax','Налоги и сроки','screens/Tax.tsx',['НДС за квартал (кассовый метод) и резерв','Налог на прибыль за прошлый год','Календарь сроков','Можно ли верить цифрам: зелёный / жёлтый / красный','Решения за вами']],
+  ['docs','Документы и чеки','screens/Docs.tsx',['Без документа: счётчик и список → карточка','Последние прикреплённые и откуда (фото, Xero, файл)']],
+  ['audit','Проверка HMRC','screens/Audit.tsx',['Готовность в % и разбивка: документ, категория и НДС, назначение','Без документа больше £100, выплаты людям без акта','Крупные без документа – закрыть первыми','Правило хранения 6 лет, журнал изменений']]
+];
+const NOTES_CUR={};NOTES.forEach(n=>NOTES_CUR[n[0]]=[n[1],`<div class="mute" style="margin-top:4px">${n[2]}</div>`]);NOTES_CUR['login-denied']=NOTES_CUR.login;
+function renderSide(){
+  let g='';$('#nav-list').innerHTML=SCREENS.map(([grp,id,name])=>{const h=grp!==g?`<li style="margin:${g?'12px':'0'} 0 4px"><span class="eyebrow" style="font-size:11px">${grp}</span></li>`:'';g=grp;return `${h}<li><button data-s="${id}" onclick="App.go('${id}')"><span>${name}</span><small>#${id}</small></button></li>`}).join('');
+  const total=NOTES.reduce((a,n)=>a+n[3].length,0);
+  $('#notes').innerHTML=`<div class="cur-box"><span class="eyebrow">Сейчас открыт</span><div class="t" id="cur-t"></div><div id="cur-d"></div></div>
+  <h4>Что и откуда</h4><p style="margin:0">Экраны, подписи и логика сняты с кода <code>tatiana-flo/kassa</code> (<code>app/App.tsx</code>, <code>app/src/**</code>, категории и НДС – <code>server/app/categories.py</code>). Стиль – брендбук сайта: фон #FDFDFD, подложка #F2F2F4, линии #E6E6E6, ink #1E1A17, акцент #B4595F только для ошибок, просрочек и расхождений, ok #7A8A6B; Cormorant Infant 300 заглавными, Jost 300/400; радиус 0, без теней у карточек.</p>
+  <h4>Функции по экранам · ${total}</h4>
+  ${NOTES.map(([id,name,src,f])=>`<div class="scr-note" data-s="${id}"><h5>${name}</h5><ul>${f.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}
+  <h4>Чего нет в коде</h4><ul>
+  <li><b>Данные</b> – все суммы, контрагенты, люди и счета вымышленные («Bank A», «Demo Co»); реальных цифр Floritta, HMRC и VAT здесь нет.</li>
+  <li><b>Эмодзи</b> в коде (вкладки, кнопки «Снять чек», «Провести») заменены на SVG-иконки и текст – по правилам бренда.</li>
+  <li><b>«Вход · нет доступа»</b> – отдельный пункт стенда, в коде это та же форма с текстом ошибки; в тексте ошибки вместо имени – «владельца».</li>
+  <li><b>Язык</b> – в прототипе переводятся только вкладки и заголовки; в приложении – весь интерфейс (i18n.tsx).</li>
+  <li><b>Источники</b> в «Ещё» и счета в фильтрах названы общими словами; в коде – конкретные банки и сервисы.</li>
+  <li><b>Pull-to-refresh</b> есть на каждом экране приложения; в стенде данные статичные, обновлять нечего.</li>
+  </ul>
+  <h4>Что меняется против приложения сейчас</h4><ul>
+  <li><b>Палитра</b>: бежевая Kassa (#f7f5f0, коричневый акцент #7a5a3a, зелёные чипы) → палитра сайта; основная кнопка – ink.</li>
+  <li><b>Форма</b>: скругления 12–16 px и капсулы чипов → квадратные углы, рамка 1 px.</li>
+  <li><b>Шрифты</b>: системный жирный → Cormorant Infant для заголовков и крупных цифр, Jost для текста.</li>
+  <li><b>Цвет статусов</b>: жёлтый «warn» уходит; риск и просрочка – акцент, норма – ok-точка.</li></ul>`;
+}
+
+renderSide();
+const start=(location.hash||'').slice(1);
+App.go('home',{},{quiet:1});App._st.hist=[];
+const valid=SCREENS.map(s=>s[1]);
+App.go(valid.includes(start)?start:'home',{},{replace:1});
+window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);const sh=App._st.sheet;if(valid.includes(id)&&id!==(sh?sh.kind:App._st.cur))App.go(id)});
+</script>
+</body>
+</html>
