@@ -715,9 +715,10 @@ const App=(()=>{
 
   /* ---- NAV (new IA) ---- */
   const NAV=[
-    {g:"",items:[{id:"today",n:"Today",ic:"today",cnt:()=>ORDERS.filter(o=>isLate(o)&&o.status!=="delivered").length,hot:true}]},
-    {g:"Work",items:[
+    {g:"",items:[
       {id:"orders",n:"Orders",ic:"orders",cnt:()=>ORDERS.filter(o=>o.n===0&&o.status!=="delivered"&&o.status!=="cancelled").length},
+      {id:"today",n:"Today",ic:"today",cnt:()=>ORDERS.filter(o=>isLate(o)&&o.status!=="delivered").length,hot:true}]},
+    {g:"Work",items:[
       {id:"production",n:"Production",ic:"production",cnt:()=>ORDERS.filter(o=>o.n===0&&["queue","making","photo"].includes(o.status)).length},
       {id:"delivery",n:"Delivery",ic:"delivery",roles:["owner","manager"],cnt:()=>ORDERS.filter(o=>o.n===0&&["ready","out"].includes(o.status)&&o.type==="delivery").length},
       {id:"inbox",n:"Inbox",ic:"inbox",roles:["owner","manager"],cnt:()=>CONVOS.filter(c=>c.unread).length,hot:true},
@@ -769,7 +770,7 @@ const App=(()=>{
     renderSidebar();renderStageNav();
     if(history.replaceState)history.replaceState(null,"","#"+id);
   }
-  function back(){const h=state.history.pop();if(!h){go("today",{},{replace:true});return}go(h[0],h[1]||{},{replace:true})}
+  function back(){const h=state.history.pop();if(!h){go("orders",{},{replace:true});return}go(h[0],h[1]||{},{replace:true})}
   function drawer(open){$("#sidebar").classList.toggle("open",!!open);$("#drawer-bg").classList.toggle("on",!!open)}
   /* ---- SHEET ---- */
   let sheetStack=[],sheetOpen=false;
@@ -936,7 +937,7 @@ const App=(()=>{
   function init(){
     fit();renderStageNav();
     const h=(location.hash||"").slice(1);
-    go(h&&document.getElementById("s-"+h)?h:"today",{},{replace:true});
+    go(h&&document.getElementById("s-"+h)?h:"orders",{},{replace:true});
     document.fonts&&document.fonts.ready.then(fit);
   }
   window.addEventListener("DOMContentLoaded",init);
