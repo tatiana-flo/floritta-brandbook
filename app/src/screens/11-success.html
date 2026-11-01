@@ -1,3 +1,98 @@
+<style>
+/* ---- success (base rules duplicated from 12-orders.html until they move here) ---- */
+#s-success .scr-body{padding:calc(70px + var(--safe-t)) var(--gutter) 40px}
+#s-success .mark{width:88px;height:88px;margin:0 0 28px}
+#s-success .mark rect{stroke:var(--light);stroke-width:1;fill:none}
+#s-success .mark path{stroke:var(--ink);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:sudraw .9s var(--m-ease) .35s forwards}
+@keyframes sudraw{to{stroke-dashoffset:0}}
+#s-success .nxt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}
+#s-success .nxt>div{border:1px solid var(--hair);padding:14px 10px 12px;font-size:12px;line-height:1.35;color:var(--graphite)}
+#s-success .nxt svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5;margin-bottom:10px}
+#s-success .nxt b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:4px;font-weight:400}
+#s-success .dl{display:flex;justify-content:space-between;font-size:14px;padding:10px 0;border-bottom:1px solid var(--hair)}
+#s-success .dl span:last-child{text-align:right;color:var(--ink)}
+#s-success .dl span:first-child{color:var(--grey)}
+/* ---- success: additions (registry 05-checkout, /checkout/success) ---- */
+#s-success .statusfill{position:absolute;left:0;right:0;top:0;height:calc(54px + var(--safe-t));background:var(--paper);z-index:4}
+#s-success .demo{position:absolute;left:0;right:0;top:calc(54px + var(--safe-t));z-index:5}
+#s-success .scr-body.has-demo{padding-top:calc(110px + var(--safe-t))}
+#s-success .acct{position:relative;padding-right:44px}
+#s-success .acct .x{position:absolute;right:4px;top:4px;color:var(--grey)}
+#s-success .fin{font-size:12px;color:var(--grey);text-align:center;margin-top:24px;line-height:1.5}
+</style>
 <section class="scr" id="s-success" data-nav="Order placed" data-group="Checkout">
-  <div class="scr-body" id="su-body"></div>
+  <!-- ids: APP-SUCCESS-014 – paper-coloured fill under the status bar, content never slides under the clock -->
+  <div class="statusfill"></div>
+  <!-- stand-only demo switches; «Open again» = ids: APP-SUCCESS-015 (same code opened again shows the same data while the order is in orders.v1) -->
+  <div class="demo" id="su-demo"></div>
+  <!-- ids: APP-SUCCESS-012 – Android back → Home, iOS swipe-back disabled (no back button on this screen) -->
+  <div class="scr-body has-demo" id="su-body"></div>
 </section>
+<script>
+(function(){
+const $=App.$,$$=App.$$;
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+/* checkout.account-offer.v1 on the device – last 50 dismissed order codes */
+const SU=window.SuccessX={dismissed:new Set(),D:{missing:false,webcode:false}};
+function demo(){
+  $("#su-demo").innerHTML=`<span class="caps muted">Demo</span><button class="chip ${SU.D.missing?"on":""}" data-d="missing">Order not found</button><button class="chip ${SU.D.webcode?"on":""}" data-d="webcode">Number not read (web-…)</button><button class="chip" data-d="again">Open again</button>`;
+  $$("#su-demo [data-d]").forEach(b=>b.onclick=()=>{const k=b.dataset.d;if(k==="again"){/* APP-SUCCESS-015 */App.toast("Same order, read again from orders.v1 on this phone");render();return}SU.D[k]=!SU.D[k];render()});
+}
+function order(){
+  let o=App.state.order;
+  if(!o){o={id:"#715529",code:"715529",total:84.99,subtotal:79,fee:4.99,dateLabel:"Tomorrow",window:"any time",recipient:"Anna",postcode:"SE1 5SY",address:"80 Willow Walk, Flat 3, London SE1 5SY",lines:[],photo:true,sender:App.state.user.name,email:"tatiana@example.com",saved:true,pay:"card"}}
+  if(SU.D.webcode)o={...o,code:"web-7f3a9c2e",id:"web-7f3a9c2e"};
+  return o;
+}
+function render(){
+  demo();const body=$("#su-body");
+  const o=SU.D.missing?null:order();
+  const real=o&&/^\d{5,6}$/.test(o.code||"");
+  const offer=o&&!SU.dismissed.has(o.code);
+  body.innerHTML=`
+    <!-- ids: APP-SUCCESS-001 – fade-in, big tick in a frame, «Thank you» -->
+    <svg class="mark" viewBox="0 0 88 88"><rect x=".5" y=".5" width="87" height="87"/><path d="M27 45l11 11 23-25"/></svg>
+    <div class="h1 fade-up">Thank you</div>
+    ${o?`<!-- ids: APP-SUCCESS-002 APP-SUCCESS-003 – «Your order #N is with our florists.» only for a real 5–6-digit number; «{When}, {window} to {recipient}, {postcode}.» -->
+    <p class="soft fade-up" style="margin:14px 0 0;animation-delay:.1s">${real?`Your order <b>#${esc(o.code)}</b> is with our florists.`:"Your order is with our florists."}${o.recipient?` ${esc(o.dateLabel)}, ${esc(o.window)} to ${esc(o.recipient)}, ${esc(o.postcode)}.`:""}</p>`
+    :`<!-- ids: APP-SUCCESS-004 – order not found in orders.v1 -->
+    <p class="soft fade-up" style="margin:14px 0 0;animation-delay:.1s">Your order is confirmed – the details are in your email.</p>`}
+    <!-- ids: APP-SUCCESS-005 – photo promise block (shown even when the photo switch was off – see notes) -->
+    <div class="panel --ok mt24 fade-up" style="animation-delay:.2s;display:flex;gap:12px;align-items:center">${App.icon("camera").replace("<svg",'<svg style="width:22px;height:22px;stroke:var(--ok);fill:none;stroke-width:1.5;flex:none"')}<div class="f1"><div class="sm">We'll send a photo of the bouquet before it leaves the shop</div><div class="xs muted mt4">Sent to the contact details you gave us${o&&o.photo===false?" · you switched the photo off at checkout":""}</div></div></div>
+    <!-- ids: APP-SUCCESS-006 – what happens next -->
+    <div class="nxt fade-up" style="animation-delay:.3s">
+      <div>${App.icon("flower")}<b>Next</b>A florist hand-ties your bouquet</div>
+      <div>${App.icon("camera")}<b>Then</b>Photo of the bouquet before it leaves</div>
+      <div>${App.icon("truck")}<b>After</b>Courier on the way – tracking link by email and text</div>
+    </div>
+    ${o?`<!-- ids: APP-SUCCESS-007 – summary: Order #, Delivery, To, Total (site total or the app estimate) -->
+    <div class="mt24 fade-up" style="animation-delay:.35s">
+      <div class="dl"><span>Order</span><span>${real?"#"+esc(o.code):"Number in your email"}</span></div>
+      <div class="dl"><span>Delivery</span><span>${esc(o.dateLabel)}, ${esc(o.window)}</span></div>
+      <div class="dl"><span>To</span><span>${esc(o.recipient)}${o.address?`<br><span class="muted xs">${esc(o.address)}</span>`:""}</span></div>
+      <div class="dl"><span>Total</span><span>${App.fmt(o.total||0)}${o.promo&&o.discount?`<br><span class="muted xs">incl. ${esc(o.promo)} −${App.fmt(o.discount)}</span>`:""}</span></div>
+      ${real?`<div class="dl"><span>Petals</span><span class="ok">+50 for this order</span></div>`:`<div class="dl"><span>Petals</span><span class="muted">Added once the order number is known</span></div>`}
+      ${o.saved?`<div class="dl"><span>Your details</span><span class="muted xs">Saved on this phone for next time</span></div>`:""}
+    </div>
+    <!-- ids: APP-SUCCESS-008 – Track order → the order screen in the app -->
+    <div class="mt32 fade-up" style="animation-delay:.4s">
+      <button class="btn --block" onclick="App.go('tracking',{id:'${esc(o.id)}'})">Track order</button>
+      <!-- ids: APP-SUCCESS-011 -->
+      <button class="btn --secondary --block mt12" onclick="App.tab('home')">Back to home</button>
+    </div>`
+    :`<div class="mt32 fade-up" style="animation-delay:.4s"><!-- ids: APP-SUCCESS-011 --><button class="btn --block" onclick="App.tab('home')">Back to home</button></div>`}
+    ${offer?`<!-- ids: APP-SUCCESS-009 APP-SUCCESS-010 APP-SUCCESS-016 – soft account offer (orders live only on this phone) → floritta.uk/register in the web view; «Not now» hides it for this order for good -->
+    <div class="panel mt24 fade-up acct" id="su-acct" style="animation-delay:.45s"><button class="ib x" id="su-acct-no" aria-label="Not now">${App.icon("close")}</button><div class="sm">Create an account to see orders on every device</div><div class="xs muted mt4">Optional – your order is placed either way. Right now it is saved on this phone only.</div>
+      <button class="btn --secondary --sm mt12" id="su-acct-yes">Create an account</button></div>`:""}
+    <!-- ids: APP-SUCCESS-013 -->
+    <div class="fin">Confirmation sent to ${o&&o.email?esc(o.email):"your email"} · Floritta, 80 Willow Walk, London SE1 5SY</div>`;
+  const p=body.querySelector(".mark path");p.style.animation="none";void p.offsetWidth;p.style.animation="";
+  if(offer){$("#su-acct-no").onclick=()=>{SU.dismissed.add(o.code);App.haptic();$("#su-acct").remove();App.toast("Hidden for this order · saved on this phone")};
+    $("#su-acct-yes").onclick=()=>App.sheet(`<div class="sh-head"><div class="h3">Create an account</div><button class="ib" onclick="App.closeSheet()" aria-label="Close">${App.icon("close")}</button></div>
+      <div class="sh-body"><div class="xs muted mb8" style="display:flex;align-items:center;gap:6px">${App.icon("lock").replace("<svg",'<svg style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5"')}floritta.uk/register · opens inside the app</div>
+      <div class="panel" style="min-height:200px;display:flex;flex-direction:column;gap:10px"><div class="h3">Create your Floritta account</div><p class="sm soft" style="margin:0">Registration happens on the website. Past orders from this phone are not transferred automatically.</p><div class="skeleton" style="height:44px"></div><div class="skeleton" style="height:44px"></div></div></div>
+      <div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Not now</button></div>`)}
+}
+window.mount_success=function(){render()};
+})();
+</script>
