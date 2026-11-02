@@ -2155,7 +2155,7 @@ window.mount_stop=function(p){
   const code=(p&&p.code&&RT.find(q=>q.code===p.code))?p.code:next.code;
   const x=stopInfo(code), o=x.o, r=x.r, i=RT.indexOf(r), cour=rk()==='courier', done=r.status==='done';
   const pod=POD[code]||(r.pod?{img:r.pod}:null), L=seed(o);
-  $('sp-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('work')">${I('back')}</button><div class="ttl">Stop ${i+1} of ${RT.length}</div><button class="ib" aria-label="Order" onclick="App.go('order',{code:'${code}'})">${I('box')}</button>`;
+  $('sp-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('work')">${I('back')}</button><div class="ttl">Stop ${i+1} of ${RT.length}</div><span class="ib" aria-hidden="true"></span>`;
   const status=done?`<span class="pill --done">Delivered ${L.delivered||''}</span>`:r.returned?`<span class="pill --late">No answer · returning</span>`:r.status==='next'?'<span class="pill --doing">Next stop</span>':'<span class="pill --todo">Later</span>';
   const inShop=!done&&o.status!=='out'?`<div class="pad mt16"><div class="panel --warn"><div class="flex ai-c jc-sb"><b>Still in the shop</b>${A.opill(o.status)}</div><div class="sm soft mt4">${o.status==='ready'?'It is ready – collect it from the shelf by the door.':'Do not leave until it says Ready.'}</div>${cour&&o.status==='ready'?`<button class="btn --sm mt12" onclick="WK.out('${code}')">Picked up</button>`:''}</div></div>`:'';
   const podBox=pod?`<div class="wk-pod has"><img src="${pod.img}" alt="Proof of delivery">${cour&&!done?`<button class="btn --paper --xs rt" onclick="WK.pod('${code}')">Retake</button>`:''}</div>`
@@ -2167,7 +2167,7 @@ window.mount_stop=function(p){
     <div class="pad mt16"><div class="flex ai-c jc-sb"><span class="caps muted">${shortArea(r.area)}${r.area.match(/[A-Z]{1,2}\d+$/)?' '+r.area.match(/[A-Z]{1,2}\d+$/)[0]:''}</span>${status}</div>
       <h1 class="h1 mt8">${x.addr}</h1>
       <div class="sm soft mt8">Window ${o.window} · ETA ${r.eta} · ${r.km} km</div></div>
-    <div class="wk-3"><a class="btn --secondary --sm" target="_blank" rel="noopener" href="${mapsUrl(code)}">${I('route')} Navigate</a><button class="btn --ghost --sm" onclick="WK.callRecipient('${code}')">${I('phone')} Call</button><button class="btn --ghost --sm" onclick="App.go('order',{code:'${code}'})">${I('box')} Order</button></div>
+    <div class="wk-3 --two"><a class="btn --secondary --sm" target="_blank" rel="noopener" href="${mapsUrl(code)}">${I('route')} Navigate</a><button class="btn --ghost --sm" onclick="WK.callRecipient('${code}')">${I('phone')} Call</button></div>
     ${inShop}
     ${sec('Recipient')}<div class="pad"><div class="wk-rec"><span class="avatar">${x.who.split(' ').map(s=>s[0]).join('').slice(0,2)}</span><span class="f1"><b>${x.who}</b><span class="xs muted">${x.tel}</span></span><button class="ib" aria-label="Call" onclick="WK.callRecipient('${code}')">${I('phone')}</button></div>
       ${x.note?`<div class="panel --warn mt12"><div class="caps muted">Note for the courier</div><div class="sm mt4">${x.note}</div></div>`:''}
