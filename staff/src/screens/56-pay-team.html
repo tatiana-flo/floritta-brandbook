@@ -176,7 +176,7 @@ window.mount_pay_wk=function(p){
       <div class="line"><span>Holiday · 12.07 %<span class="sub">value comes from the CRM</span></span><span>${P.gbp(x.hol)}</span></div>
       <div class="line t"><span>Total</span><span>${P.gbp(x.total)}</span></div>
     </div>
-    <div class="note">Rows are not tappable. Questions about a shift – ask Valeria.</div>`;
+    <div class="note">Rows are not tappable. Questions about a shift – ask Vanessa.</div>`;
 };
 
 /* ======================================================= STATEMENTS ======================================================= */
@@ -345,7 +345,7 @@ window.mount_pay_offers=function(){
   if(c!=='worker'&&c!=='reserve'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`You are <b>${u.n}</b> · ${c.replace('_',' ')}. Offers load only for casual workers (and the reserve, embedded in its Work).`)+P.stt('error','Could not load the shifts. Pull to try again.');return}
   if(d==='loading'){el.innerHTML=demo+P.ptrHint()+P.stt('loading');return}
   if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load the shifts. Pull to try again.');return}
-  const O=P.offers,rate='£13.21/h';
+  const O=P.offers,rate='£13.00/h';
   const mine=O.filter(o=>o.mine&&o.st!=='cancelled'),open=d==='empty'?[]:O.filter(o=>!o.mine&&!o.skipped&&o.st!=='cancelled'),skipped=O.filter(o=>o.skipped&&!o.mine),canc=O.filter(o=>o.mine&&o.st==='cancelled');
   const left=o=>o.spots-o.taken;
   const card=o=>{const pill=o.mine?(o.st==='cancelled'?'<span class="pill --late">Cancelled</span>':'<span class="pill --done">Yours</span>'):(o.st==='full'?'<span class="pill --plain">Full</span>':`<span class="pill --todo">${left(o)} place${left(o)===1?'':'s'} left</span>`);

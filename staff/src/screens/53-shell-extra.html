@@ -182,7 +182,7 @@ SHX.signIn=()=>{if(!(L.email.trim()&&L.pw)||L.busy)return;A.haptic();L.busy=true
       if(S().classic){A.go("sh-classic",{});return}
       A.go("home",{})},1500)},700)};
 SHX.code=()=>{if(document.getElementById("s-rs-code")){A.go("rs-code",{});return}
-  A.sheet(`<div class="sh-head"><div class="h3">Enter your code</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 10px">Invited through “Work with us”? The code from the email signs you in as reserve; then you set your own password.</p><div class="field"><label>Code</label><input class="input" id="shl-code" placeholder="FLO-2748" autocapitalize="characters"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.setUser('lina',{silent:true});SH.state.mustChangePassword=true;App.go('sh-password',{forced:true,reserve:true})">Continue</button></div>`)};
+  A.sheet(`<div class="sh-head"><div class="h3">Enter your code</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 10px">Invited through “Work with us”? The code from the email signs you in as reserve; then you set your own password.</p><div class="field"><label>Code</label><input class="input" id="shl-code" placeholder="FLO-2748" autocapitalize="characters"></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.setUser('lola',{silent:true});SH.state.mustChangePassword=true;App.go('sh-password',{forced:true,reserve:true})">Continue</button></div>`)};
 window.mount_sh_login=function(){rLogin()};
 
 /* ================= FORGOT ================= */
@@ -247,11 +247,11 @@ function rStart(){const s=S();const me=A.me();const courier=me.role==="courier";
   ${step(2,"Session from the device","Token and profile come from the keychain first, then a fresh profile from the server. Offline – you work from the saved copy. 401 – you are signed out.",`<span class="flex g6" style="flex-wrap:wrap"><button class="btn --xs --secondary" onclick="App.go('splash');setTimeout(()=>SP.cold('offline'),300)">Offline start</button><button class="btn --xs --secondary" onclick="SHX.drop('401 from the server')">Token revoked</button></span>`)}
   ${step(3,"Phone registered for pushes","After sign-in the app asks for notification permission and sends this phone’s token to the CRM.",`<button class="btn --xs --secondary" onclick="App.go('sh-push')">Notifications</button>`)}
   ${step(4,"Gate · temporary password","With a temporary password or a reserve code only Change password opens.",`<button class="btn --xs --secondary" onclick="SH.state.mustChangePassword=true;App.go('sh-password',{forced:true})">Try the gate</button>`)}
-  ${step(5,"Gate · courier location consent","A courier without a signed consent is moved to the consent screen; the new design is removed from the stack until it is signed.",`<button class="btn --xs --secondary" onclick="${courier?"SH.goOr('cr-consent',{},'Opens Courier location consent (Courier section)')":"App.toast('Only for couriers – switch to Andrii to see it')"}">${courier?"Open consent":"Couriers only"}</button>`)}
+  ${step(5,"Gate · courier location consent","A courier without a signed consent is moved to the consent screen; the new design is removed from the stack until it is signed.",`<button class="btn --xs --secondary" onclick="${courier?"SH.goOr('cr-consent',{},'Opens Courier location consent (Courier section)')":"App.toast('Only for couriers – switch to Anton to see it')"}">${courier?"Open consent":"Couriers only"}</button>`)}
   ${step(6,"Freelance → own app","The freelance role never sees the staff screens; it gets the courier marketplace app.",`<button class="btn --xs --secondary" onclick="App.go('fl-welcome')">Freelance app</button>`)}
   ${step(7,"New design or classic","The new design mounts unless this phone is on the temporary classic view. Shared screens (order, task, delivery, chat, stock, announcements, timesheet, bonus) work in both and return “home” to the right one.",`<span class="flex g6" style="flex-wrap:wrap"><button class="btn --xs ${s.classic?"--secondary":""}" onclick="SHX.classic(false)">New design</button><button class="btn --xs ${s.classic?"":"--secondary"}" onclick="SHX.classic(true)">Classic view</button></span>`)}
   ${step(8,"Tapped push waits for the stack","A push tapped while the app was closed opens its screen as soon as the protected stack is mounted; a push received while open only refreshes data.",`<button class="btn --xs --secondary" onclick="App.toast('Cold start from a push…');setTimeout(()=>App.go('task',{id:106}),1200)">Launch from a push</button>`)}
-  ${step(9,"Courier tracking check","On every launch the app checks whether background location should be on: on shift and on a trip → on, otherwise off. Follows the real role, not a lens.",`<div class="note" style="padding:8px 0 0">${courier?(A.state.clockedIn?"Andrii: on shift, trip open → tracking on":"Not on shift → tracking off"):"Not a courier → nothing to reconcile"}</div>`)}
+  ${step(9,"Courier tracking check","On every launch the app checks whether background location should be on: on shift and on a trip → on, otherwise off. Follows the real role, not a lens.",`<div class="note" style="padding:8px 0 0">${courier?(A.state.clockedIn?"Anton: on shift, trip open → tracking on":"Not on shift → tracking off"):"Not a courier → nothing to reconcile"}</div>`)}
   ${grp("Session drops are reported with a reason")}<div class="chips"><button class="chip" onclick="SHX.drop('401 from the server')">401</button><button class="chip" onclick="SHX.drop('keychain unreadable')">Keychain unreadable</button><button class="chip" onclick="SHX.drop('no token')">No token</button><button class="chip" onclick="SHX.drop('offline start without a cached profile')">Offline, no cache</button></div>
   <div class="note">Each reason is one event in the crash reporter, so sign-outs that nobody asked for can be counted.</div>
   ${grp("Which navigator is on screen")}${kv("Mounted now",s.classic?"classic (a)":"new design (b)")}${kv("Home for shared screens",s.classic?"/ · More for Me, /shift, /deliveries":"/b · /b/me, /b/shift, /b/work?view=deliveries")}${kv("Pushes route by","the mounted navigator; default is the new design")}`};
@@ -319,18 +319,18 @@ const PUSH=[
  {t:"idle",title:"Are you still working?",body:"No movement for 12 minutes",go:["home",{}],where:"Today – idle banner (courier)",fresh:"courier idle, timeclock, inbox",courier:true},
  {t:"inventory",title:"Stock count due",body:"Roses · fridge 2 · by 15:00",go:["work",{view:"stock"}],where:"Work → Stock",fresh:"inbox"},
  {t:"trip",title:"Route changed",body:"Stops reordered · 4 left",go:["route",{}],where:"Work → Deliveries (Route)",fresh:"deliveries, inbox · reordered shows a toast"},
- {t:"trip_confirm",title:"Confirm your trip",body:"Valeria built a route for you · 4 stops",go:["route",{}],where:"Work → Deliveries",fresh:"pending trips, deliveries, inbox"},
+ {t:"trip_confirm",title:"Confirm your trip",body:"Vanessa built a route for you · 4 stops",go:["route",{}],where:"Work → Deliveries",fresh:"pending trips, deliveries, inbox"},
  {t:"queue",title:"Queue changed",body:"715623 Lilac daydream is yours · 17:00–20:00",go:["work",{view:"orders",tab:"mine"}],where:"Work → Orders → Mine",fresh:"inbox"},
  {t:"contractor_job",title:"New job",body:"Wedding arch · Sat 24 Oct · £180",go:["work",{view:"jobs"}],where:"Work → Jobs",fresh:"inbox"},
  {t:"learning",title:"3-minute lesson",body:"Same-day until 10 pm – what to tell clients",go:["lesson",{id:1}],where:"Learn (lesson_due / review_due open the lesson)",fresh:"learning, inbox"},
- {t:"notifications",title:"Kamila mentioned you",body:"In the team chat · “ribbon drawer”",go:["inbox",{}],where:"Inbox",fresh:"inbox"},
+ {t:"notifications",title:"Katrina mentioned you",body:"In the team chat · “ribbon drawer”",go:["inbox",{}],where:"Inbox",fresh:"inbox"},
  {t:"order",title:"Order 715602",body:"Vase colour confirmed: smoked",go:["order",{code:"715602"}],where:"Order card (shared screen)",fresh:"inbox"},
  {t:"delivery",title:"Delivery 715619",body:"Recipient asks to leave with the concierge",go:["stop",{code:"715619"}],where:"Delivery (shared screen)",fresh:"inbox"},
  {t:"comms",title:"New message · Mrs Harper",body:"“Is the vase clear or smoked?”",go:["inbox",{}],where:"Chat (shared screen)",fresh:"inbox"},
- {t:"task",title:"New task · Valeria",body:"Halloween window display · due Fri 18:00",go:["task",{id:106}],where:"Task (shared screen)",fresh:"inbox"},
+ {t:"task",title:"New task · Vanessa",body:"Halloween window display · due Fri 18:00",go:["task",{id:106}],where:"Task (shared screen)",fresh:"inbox"},
  {t:"announcement",title:"Announcement · Tatiana",body:"Same-day cut-off is now 10 pm",go:["announcement",{id:1}],where:"Announcement (shared screen)",fresh:"announcements, inbox"},
  {t:"stocktake",title:"Stocktake started",body:"Fridge 1 · 24 lines",go:null,where:"Stocktake (shared screen, Stock section)",fresh:"inbox"},
- {t:"purchase_order",title:"Delivery arrived",body:"RFH · 6 boxes to check",go:null,where:"Stock delivery (shared screen, Stock section)",fresh:"inbox"},
+ {t:"purchase_order",title:"Delivery arrived",body:"DFA · 6 boxes to check",go:null,where:"Stock delivery (shared screen, Stock section)",fresh:"inbox"},
  {t:"claim",title:"Claim opened",body:"Quicksand roses · 2 boxes bruised",go:null,where:"Claim (shared screen, Stock section)",fresh:"inbox"}
 ];
 let N={nav:"b",perm:null};
@@ -363,13 +363,13 @@ function rLenses(){const s=S();
   if(!window.SH.isAdmin()){$("#shz-body").innerHTML=`<div class="lock"><div class="panel"><div class="h3">Lenses are for admins</div><p class="sm soft" style="margin:8px 0 16px">An admin can switch the app version, look through a role or a contour and fall back to the classic view. A stale lens value on a shared phone does nothing for anyone else.</p><button class="btn --sm" onclick="App.setUser('tatiana');App.go('sh-lenses')">View as Tatiana · admin</button></div></div>`;return}
   const chips=(items,cur,fn)=>`<div class="chips">${items.map(i=>`<button class="chip ${cur===i[0]?"on":""}" onclick="${fn}('${i[0]}')">${i[1]}</button>`).join("")}</div>`;
   const u=window.SH.realUser();
-  $("#shz-body").innerHTML=`<div class="card" style="margin-top:16px"><div class="h3">${u.n}</div><div class="d">tatiana@floritta.uk · admin${s.viewAs?` · viewing as ${s.viewAs}`:""} · workspace ${s.workspace||"floritta"}</div></div>
+  $("#shz-body").innerHTML=`<div class="card" style="margin-top:16px"><div class="h3">${u.n}</div><div class="d">tatiana@example.com · admin${s.viewAs?` · viewing as ${s.viewAs}`:""} · workspace ${s.workspace||"floritta"}</div></div>
   ${grp("App version · on the server")}
   ${chips([["a","A · one contour"],["b","B · contours on"]],s.variant,"SHX.variant")}
   <div class="note" style="padding-top:0">Everything except an explicit B counts as A: all staff in the employee contour. B turns on worker / self-employed contours and the contour lens. Saved to the CRM for you; the navigator rebuilds without a restart. In a dev build an environment variable can force it; releases ignore it.</div>
   <div class="chips"><button class="chip" onclick="SHX.variantFail()">Demo · server refuses</button></div>
   ${grp("Contour lens · this phone only")}
-  ${s.variant==="b"?chips([["","Off"],["employee","Employee"],["worker","Worker"],["self_employed","Self-employed"]],s.contourLens||"","SHX.contour")+`<div class="note" style="padding-top:0">Applies at once, screens re-render in place – the tabs are not remounted, Me stays open. Reserve ignores it. Non-admins ignore it. In this prototype the lens moves the tab bar and the clock strip; the contour panels follow the persona (Zhadra · worker, Mira · self-employed, Lina · reserve).</div>`:`<div class="note">Switch to version B to use the contour lens.</div>`}
+  ${s.variant==="b"?chips([["","Off"],["employee","Employee"],["worker","Worker"],["self_employed","Self-employed"]],s.contourLens||"","SHX.contour")+`<div class="note" style="padding-top:0">Applies at once, screens re-render in place – the tabs are not remounted, Me stays open. Reserve ignores it. Non-admins ignore it. In this prototype the lens moves the tab bar and the clock strip; the contour panels follow the persona (Zhanna · worker, Mina · self-employed, Lola · reserve).</div>`:`<div class="note">Switch to version B to use the contour lens.</div>`}
   ${grp("View as · role")}
   ${chips([["admin","Admin"],["manager","Manager"],["florist","Florist"],["courier","Courier"]],s.viewAs||"admin","SHX.viewRole")}
   <div class="note" style="padding-top:0">Changes what tabs, cards and buttons you see – not your rights on the server and not background location. Tabs remount for the role. A banner stays on top until “Back”.</div>
@@ -407,8 +407,8 @@ function rTabs(){const SH_=window.SH;const me=A.me();const c=SH_.contour();const
   ${kv("Contour lens","re-renders in place, Me stays open")}
   ${kv("Look","caps labels 10.5 px Jost · active ink, inactive grey · hairline on top · no system font scaling · Android height 64")}
   ${grp("Hidden tab by link")}
-  ${row("route","Open Tasks as a courier","A hidden tab is still reachable by link or push: Tasks sends a courier back to Today; self-employed and limited can open it.","App.setUser('andrii',{silent:true});App.go('tasks')")}
-  ${row("route","Open Tasks as self-employed","Opens – only the tab is hidden","App.setUser('mira',{silent:true});App.go('tasks')")}`};
+  ${row("route","Open Tasks as a courier","A hidden tab is still reachable by link or push: Tasks sends a courier back to Today; self-employed and limited can open it.","App.setUser('anton',{silent:true});App.go('tasks')")}
+  ${row("route","Open Tasks as self-employed","Opens – only the tab is hidden","App.setUser('mina',{silent:true});App.go('tasks')")}`};
 window.mount_sh_tabs=function(){rTabs()};
 
 /* ================= CLASSIC VIEW ================= */

@@ -577,62 +577,8 @@ html[data-style="glass"] .push{border-radius:22px}html[data-style="glass"] .push
   </div>
 
   <aside class="gutter-r notes" id="notes">
-<h4>Что это</h4>
-<ul>
-<li>Редизайн <b>Floritta Team</b> в стиле брендбука (Ivory, square, Cormorant + Jost). Два фокуса: <b>задачи</b> (меньше пересказов менеджера) и <b>обучение</b> (3 минуты в смену, оплачиваемое время).</li>
-<li>Слева переключатель персон: Kamila (флорист), Andrii (курьер), Valeria (менеджер), Ayana (стажёр). У каждой свой Today и свои действия. Данные примерные, бэкенда нет.</li>
-</ul>
-<h4>Было → стало</h4>
-<ul>
-<li><b>Навигация</b> – у менеджера до 8–9 табов и «Ещё» на 12 пунктов → 5 табов: <b>Today / Tasks / Work / Learn / Me</b>. Заказы, маршрут и очередь живут в Work, смена и график – в Me.</li>
-<li><b>Главная</b> – сетка модулей → лента «сейчас / дальше»: что горит, что сделать в смену, урок дня, мои заказы (Target myDay). У менеджера – «Needs attention».</li>
-<li><b>Уведомления</b> – плоский поток пушей → приоритетные (срочная задача, просрочка, «Понял») + дайджест в начале смены + тишина вне смены. Появляется inbox: сейчас центра уведомлений нет.</li>
-<li><b>Вид</b> – системные шрифты, радиусы 8–16, эмодзи → square, Ivory, тонкие линии. Единые токены с сайтом и клиентским приложением.</li>
-</ul>
-<h4>Задачи – что берём у кого</h4>
-<ul>
-<li><b>Trello</b> – чеклист с исполнителем и сроком на пункт, «Your items» со всех досок.</li>
-<li><b>Jolt</b> – фото как условие закрытия (переключатель «Require photo»).</li>
-<li><b>Connecteam</b> – петля «назначено → увидел → сделал»: в задаче строка «Seen by Kamila 9:34», обсуждение в карточке, не в чате.</li>
-<li><b>7shifts / Zenput</b> – просрочка краснеет, менеджеру пуш, потом авто-напоминание. Пороги 15 / 45 мин – на согласование.</li>
-<li><b>Deputy</b> – экран менеджера «Needs attention» плюс сводка (открыто, на проверке, просрочено).</li>
-<li><b>Blink</b> – объявление с «Acknowledge» и списком тех, кто не подтвердил, кнопка «Remind the rest».</li>
-<li><b>Linear</b> – приоритетный inbox отдельно от «остального».</li>
-<li><b>Уже есть в CRM</b> – Task, TaskTemplate, ProjectBoard (колонки queue / doing / review / done), пул задач, несколько исполнителей, push по задачам, возврат менеджером. Это <b>апгрейд, не новая система</b>: добавляем доску для всех видов задач, чеклист с исполнителем, ленту объявлений и приоритеты пушей.</li>
-</ul>
-<h4>Обучение – что берём у кого</h4>
-<ul>
-<li><b>Axonify</b> – урок 3–5 минут сразу после чек-ина, карточка «Start 3-min lesson» на Today.</li>
-<li><b>Brain Boost</b> – интервальные повторы. В CRM уже есть: +1 / +3 / +7 / +30 дней, в приложении это «Review 5 cards».</li>
-<li><b>Duolingo</b> – недельный streak с заморозкой (смены плавают, дневной не годится).</li>
-<li><b>Apple Fitness</b> – кольцо недели: 3 урока + 1 практика.</li>
-<li><b>Lessonly</b> – практика на реальном заказе и sign-off наставника. В CRM уже есть LearningBuddy (чекпоинты 1 / 3 / 7 / 14) и тип observation.</li>
-<li><b>Допуски</b> – матрица станций уже есть на вебе (Matrix); в приложении «Certificates» показывает срок и «expires in N days».</li>
-<li><b>Добавляем</b> – богатое тело урока (фото, видео; сейчас только текст), push-тип learning (сейчас напоминания только в Telegram), кольцо недели, сертификат.</li>
-</ul>
-<h4>Нативные фишки</h4>
-<ul>
-<li><b>Live Activity</b> – маршрут курьера (время до точки, потом номер заказа) и таймер смены на экране блокировки.</li>
-<li><b>Виджеты</b> – «Следующая задача» и «Урок дня» на главном экране.</li>
-<li><b>Liquid Glass</b> – только на навигации (таб-бар, CTA, шторки, тосты), контент матовый. Переключатель стиля слева.</li>
-<li><b>Хаптика</b> – смена статуса, «Done», завершение урока. Pull-to-refresh везде.</li>
-</ul>
-<h4>Что НЕ меняем</h4>
-<ul>
-<li><b>API и данные CRM</b> – модели, права, крон остаются. Нужны только мелкие добавления: approve / reopen / порядок доски в mobile API, push-категории.</li>
-<li><b>OTA-совместимость</b> – сначала чистый JS и экраны (уходит по OTA без новой сборки). Всё нативное (Live Activity, виджеты, react-native-svg для колец) – одним билдом, когда экраны утверждены.</li>
-<li><b>Правила</b> – обучение остаётся оплачиваемым, фото букета до упаковки остаётся, роли и доступы без изменений.</li>
-</ul>
-<h4>Открытые вопросы для Tatiana</h4>
-<ul>
-<li><b>Объявления с «Понял»</b> – обязательные для всех или только для выбранных ролей и зон?</li>
-<li><b>Эскалация просрочки</b> – через 15 мин напоминание исполнителю, через 45 мин пуш менеджеру. Подходит?</li>
-<li><b>Лидерборд или командная цель?</b> Предлагаю командную цель смены и личное кольцо, без рейтинга (лидерборды демотивируют нижнюю часть).</li>
-<li><b>Недельный streak</b> – включаем, с одной заморозкой в месяц?</li>
-<li><b>Live Activity</b> требует новой нативной сборки (не по OTA). Делаем отдельным релизом после экранов?</li>
-</ul>
-
-  <!-- NOTES -->
+<div style="padding:16px;font:300 13px/1.5 Jost,sans-serif;color:#8b8378">Рабочие заметки команды вынесены из публичного репозитория.</div>
+<!-- NOTES -->
 </aside>
 </div>
 
@@ -640,52 +586,52 @@ html[data-style="glass"] .push{border-radius:22px}html[data-style="glass"] .push
 /* ============ DATA (demo, Tuesday 20 Oct 2026, Europe/London) ============ */
 window.STAFF=[
  {id:"tatiana",n:"Tatiana",role:"owner",title:"Owner",initials:"TS"},
- {id:"valeria",n:"Valeria",role:"manager",title:"Manager",initials:"VA",onShift:true},
- {id:"sasha",n:"Sasha",role:"manager",title:"Manager",initials:"SA"},
- {id:"svetlana",n:"Svetlana",role:"florist",title:"Head florist",initials:"SV",onShift:true,since:"2021"},
- {id:"kamila",n:"Kamila",role:"florist",title:"Florist",initials:"KA",onShift:true,since:"2024"},
- {id:"vita",n:"Vita",role:"florist",title:"Florist",initials:"VI",onShift:true,since:"2023"},
- {id:"sofiia",n:"Sofiia",role:"florist",title:"Florist",initials:"SO",since:"2025"},
- {id:"zhadra",n:"Zhadra",role:"florist",title:"Seasonal florist",staff_type:"seasonal",initials:"ZH"},
- {id:"ayana",n:"Ayana",role:"florist",title:"Trainee florist",staff_type:"trainee",initials:"AY",onShift:true,since:"2026"},
- {id:"andrii",n:"Andrii",role:"courier",title:"Courier",initials:"AN",onShift:true},
- {id:"oleh",n:"Oleh",role:"courier",title:"Courier",initials:"OL",onShift:true},
- {id:"max",n:"Max",role:"courier",title:"Seasonal courier",staff_type:"seasonal",initials:"MX"}
+ {id:"vanessa",n:"Vanessa",role:"manager",title:"Manager",initials:"VA",onShift:true},
+ {id:"sabrina",n:"Sabrina",role:"manager",title:"Manager",initials:"SA"},
+ {id:"sylvia",n:"Sylvia",role:"florist",title:"Head florist",initials:"SV",onShift:true,since:"2021"},
+ {id:"katrina",n:"Katrina",role:"florist",title:"Florist",initials:"KA",onShift:true,since:"2024"},
+ {id:"vicky",n:"Vicky",role:"florist",title:"Florist",initials:"VI",onShift:true,since:"2023"},
+ {id:"sonia",n:"Sonia",role:"florist",title:"Florist",initials:"SO",since:"2025"},
+ {id:"zhanna",n:"Zhanna",role:"florist",title:"Seasonal florist",staff_type:"seasonal",initials:"ZH"},
+ {id:"ayla",n:"Ayla",role:"florist",title:"Trainee florist",staff_type:"trainee",initials:"AY",onShift:true,since:"2026"},
+ {id:"anton",n:"Anton",role:"courier",title:"Courier",initials:"AN",onShift:true},
+ {id:"ollie",n:"Ollie",role:"courier",title:"Courier",initials:"OL",onShift:true},
+ {id:"max",n:"Milo",role:"courier",title:"Seasonal courier",staff_type:"seasonal",initials:"MX"}
 ];
-window.PERSONAS=[{id:"kamila",label:"Florist · staff"},{id:"andrii",label:"Courier · staff"},{id:"valeria",label:"Manager"},{id:"ayana",label:"Trainee"}];
+window.PERSONAS=[{id:"katrina",label:"Florist · staff"},{id:"anton",label:"Courier · staff"},{id:"vanessa",label:"Manager"},{id:"ayla",label:"Trainee"}];
 const T=(h,m=0,dayOffset=0)=>{const d=new Date(2026,9,20,h,m);d.setDate(d.getDate()+dayOffset);return d.toISOString()};
 window.TASKS=[
- {id:101,title:"Opening checklist – shop floor",desc:"Daily opening routine before 8:30. Tick each step; the fridge temperature needs a number in the comment.",assignee:"kamila",by:"valeria",status:"done",due:T(8,30),repeat:"Every day · 8:30",tags:["shop"],checklist:[{t:"Lights, music, door sign",d:true},{t:"Fridge temperature logged",d:true},{t:"Buckets: fresh water + Chrysal",d:true},{t:"Till float counted",d:true},{t:"Pavement display out",d:true}],comments:[{by:"kamila",t:"Fridge 4 °C",at:T(8,21)}],doneAt:T(8,22)},
- {id:102,title:"Photograph 12 new autumn bouquets for the site",desc:"White backdrop by the window, 4:5 crop, two angles each. Upload to the Autumn collection folder.",assignee:"svetlana",by:"tatiana",status:"doing",due:T(16,0),photo:true,tags:["website"],checklist:[{t:"Peach garden posy",d:true},{t:"Pink manifesto",d:true},{t:"Lilac daydream",d:true},{t:"Powdered rose",d:true},{t:"Belgravia rosettes",d:true},{t:"White spray roses",d:false},{t:"Charmingly pink & red",d:false},{t:"Pink garden elegance",d:false},{t:"Veronica spray",d:false},{t:"Red roses ×20",d:false},{t:"Peony basket",d:false},{t:"Daydream basket",d:false}],comments:[{by:"tatiana",t:"Light is best 11–14, don't leave it for the evening please",at:T(9,2)}]},
- {id:103,title:"Condition today's RFH roses (6 boxes)",desc:"Strip, cut at 45°, into Chrysal. Photo of the buckets when done.",assignee:"vita",by:"sasha",status:"review",due:T(11,0),photo:true,tags:["stock"],checklist:[{t:"Unpack & count vs delivery note",d:true},{t:"Strip and cut",d:true},{t:"Buckets labelled by variety",d:true}],comments:[{by:"vita",t:"Done, 2 boxes of Quicksand slightly bruised – photo attached",at:T(10,48),photo:"img/powdered-rose-2.webp"}],submittedAt:T(10,48)},
- {id:104,title:"Call Mrs Harper about 715602 – vase colour",desc:"She asked for a vase but didn't pick a colour. Clear or smoked? Update the order note.",assignee:"sasha",by:"valeria",status:"todo",due:T(12,0),order:"715602",tags:["client"],checklist:[],comments:[]},
- {id:105,title:"Restock ribbons, card envelopes, tissue",desc:"Check the drawer under the wrapping station, write what's below 20 pcs.",assignee:"sofiia",by:"valeria",status:"todo",due:T(12,0,1),tags:["stock"],checklist:[{t:"Ivory satin ribbon 25 mm",d:false},{t:"Envelopes A6",d:false},{t:"Tissue – blush, ivory",d:false}],comments:[]},
- {id:106,title:"Halloween window display",desc:"Dark dahlias, dried grasses, black ribbon. Reference photos in the comment. Finish by Thursday evening.",assignee:"kamila",also:["svetlana"],by:"tatiana",status:"todo",due:T(18,0,3),photo:true,tags:["shop","season"],checklist:[{t:"Order dried grasses (Tue)",d:true},{t:"Clear the window + clean glass",d:false},{t:"Build the display",d:false},{t:"Photo for Instagram",d:false}],comments:[{by:"tatiana",t:"Keep it elegant – no plastic pumpkins",at:T(9,30)}]},
- {id:107,title:"Return empty RFH buckets to the van",desc:"Driver comes 14:00–14:30. Count them and write the number here.",assignee:"andrii",by:"sasha",status:"todo",due:T(14,0),tags:["delivery"],checklist:[],comments:[]},
- {id:108,title:"Closing checklist",desc:"Everything off, fridge closed, cash in the safe, alarm on.",assignee:"zhadra",by:"valeria",status:"todo",due:T(22,0),repeat:"Every day · 22:00",tags:["shop"],checklist:[{t:"Buckets topped up",d:false},{t:"Fridge closed, temp logged",d:false},{t:"Till Z-report, cash to safe",d:false},{t:"Bins out",d:false},{t:"Alarm on, door locked",d:false}],comments:[]},
- {id:109,title:"Stock cards: retail price now includes VAT",desc:"Re-print the 8 cards on the stock wall from the CRM template.",assignee:"vita",by:"valeria",status:"done",due:T(18,0,-1),tags:["shop"],checklist:[],comments:[{by:"valeria",t:"Checked – all good, thank you",at:T(18,40,-1)}],doneAt:T(17,55,-1),checkedAt:T(18,40,-1)},
- {id:110,title:"Mentor Ayana: hand-tied spiral (sign-off)",desc:"Watch her build a 20-stem spiral on a real order. Sign off in the lesson when she's ready.",assignee:"svetlana",by:"valeria",status:"doing",due:T(17,0,2),lesson:3,tags:["training"],checklist:[{t:"Demo once on a Deluxe",d:true},{t:"She builds 2 under supervision",d:false},{t:"Sign-off in Learn",d:false}],comments:[]},
- {id:111,title:"Collect helium balloons – Party Co, SE16",desc:"Paid. Collection ref 4471. Bring before 15:00 for order 715611.",assignee:"andrii",by:"sasha",status:"done",due:T(15,0),order:"715611",tags:["delivery"],checklist:[],comments:[],doneAt:T(13,10)},
- {id:112,title:"Proof-of-delivery photo missing – 715588",desc:"Yesterday's drop to Chelsea has no photo. Add a note of where it was left.",assignee:"oleh",by:"valeria",status:"todo",due:T(13,0),order:"715588",urgent:true,tags:["delivery"],checklist:[],comments:[]},
- {id:113,title:"Marketplace tablets: accept within 2 minutes",desc:"Deliveroo & Uber Eats tablets – accept new orders within 2 min, otherwise the order auto-rejects and we lose the slot.",assignee:"kamila",by:"valeria",status:"doing",due:T(20,0),repeat:"Every shift",tags:["shop","marketplaces"],checklist:[],comments:[]}
+ {id:101,title:"Opening checklist – shop floor",desc:"Daily opening routine before 8:30. Tick each step; the fridge temperature needs a number in the comment.",assignee:"katrina",by:"vanessa",status:"done",due:T(8,30),repeat:"Every day · 8:30",tags:["shop"],checklist:[{t:"Lights, music, door sign",d:true},{t:"Fridge temperature logged",d:true},{t:"Buckets: fresh water + Chrysal",d:true},{t:"Till float counted",d:true},{t:"Pavement display out",d:true}],comments:[{by:"katrina",t:"Fridge 4 °C",at:T(8,21)}],doneAt:T(8,22)},
+ {id:102,title:"Photograph 12 new autumn bouquets for the site",desc:"White backdrop by the window, 4:5 crop, two angles each. Upload to the Autumn collection folder.",assignee:"sylvia",by:"tatiana",status:"doing",due:T(16,0),photo:true,tags:["website"],checklist:[{t:"Peach garden posy",d:true},{t:"Pink manifesto",d:true},{t:"Lilac daydream",d:true},{t:"Powdered rose",d:true},{t:"Belgravia rosettes",d:true},{t:"White spray roses",d:false},{t:"Charmingly pink & red",d:false},{t:"Pink garden elegance",d:false},{t:"Veronica spray",d:false},{t:"Red roses ×20",d:false},{t:"Peony basket",d:false},{t:"Daydream basket",d:false}],comments:[{by:"tatiana",t:"Light is best 11–14, don't leave it for the evening please",at:T(9,2)}]},
+ {id:103,title:"Condition today's DFA roses (6 boxes)",desc:"Strip, cut at 45°, into Chrysal. Photo of the buckets when done.",assignee:"vicky",by:"sabrina",status:"review",due:T(11,0),photo:true,tags:["stock"],checklist:[{t:"Unpack & count vs delivery note",d:true},{t:"Strip and cut",d:true},{t:"Buckets labelled by variety",d:true}],comments:[{by:"vicky",t:"Done, 2 boxes of Quicksand slightly bruised – photo attached",at:T(10,48),photo:"img/powdered-rose-2.webp"}],submittedAt:T(10,48)},
+ {id:104,title:"Call Mrs Harper about 715602 – vase colour",desc:"She asked for a vase but didn't pick a colour. Clear or smoked? Update the order note.",assignee:"sabrina",by:"vanessa",status:"todo",due:T(12,0),order:"715602",tags:["client"],checklist:[],comments:[]},
+ {id:105,title:"Restock ribbons, card envelopes, tissue",desc:"Check the drawer under the wrapping station, write what's below 20 pcs.",assignee:"sonia",by:"vanessa",status:"todo",due:T(12,0,1),tags:["stock"],checklist:[{t:"Ivory satin ribbon 25 mm",d:false},{t:"Envelopes A6",d:false},{t:"Tissue – blush, ivory",d:false}],comments:[]},
+ {id:106,title:"Halloween window display",desc:"Dark dahlias, dried grasses, black ribbon. Reference photos in the comment. Finish by Thursday evening.",assignee:"katrina",also:["sylvia"],by:"tatiana",status:"todo",due:T(18,0,3),photo:true,tags:["shop","season"],checklist:[{t:"Order dried grasses (Tue)",d:true},{t:"Clear the window + clean glass",d:false},{t:"Build the display",d:false},{t:"Photo for Instagram",d:false}],comments:[{by:"tatiana",t:"Keep it elegant – no plastic pumpkins",at:T(9,30)}]},
+ {id:107,title:"Return empty DFA buckets to the van",desc:"Driver comes 14:00–14:30. Count them and write the number here.",assignee:"anton",by:"sabrina",status:"todo",due:T(14,0),tags:["delivery"],checklist:[],comments:[]},
+ {id:108,title:"Closing checklist",desc:"Everything off, fridge closed, cash in the safe, alarm on.",assignee:"zhanna",by:"vanessa",status:"todo",due:T(22,0),repeat:"Every day · 22:00",tags:["shop"],checklist:[{t:"Buckets topped up",d:false},{t:"Fridge closed, temp logged",d:false},{t:"Till Z-report, cash to safe",d:false},{t:"Bins out",d:false},{t:"Alarm on, door locked",d:false}],comments:[]},
+ {id:109,title:"Stock cards: retail price now includes VAT",desc:"Re-print the 8 cards on the stock wall from the CRM template.",assignee:"vicky",by:"vanessa",status:"done",due:T(18,0,-1),tags:["shop"],checklist:[],comments:[{by:"vanessa",t:"Checked – all good, thank you",at:T(18,40,-1)}],doneAt:T(17,55,-1),checkedAt:T(18,40,-1)},
+ {id:110,title:"Mentor Ayla: hand-tied spiral (sign-off)",desc:"Watch her build a 20-stem spiral on a real order. Sign off in the lesson when she's ready.",assignee:"sylvia",by:"vanessa",status:"doing",due:T(17,0,2),lesson:3,tags:["training"],checklist:[{t:"Demo once on a Deluxe",d:true},{t:"She builds 2 under supervision",d:false},{t:"Sign-off in Learn",d:false}],comments:[]},
+ {id:111,title:"Collect helium balloons – Party Co, SE16",desc:"Paid. Collection ref 4471. Bring before 15:00 for order 715611.",assignee:"anton",by:"sabrina",status:"done",due:T(15,0),order:"715611",tags:["delivery"],checklist:[],comments:[],doneAt:T(13,10)},
+ {id:112,title:"Proof-of-delivery photo missing – 715588",desc:"Yesterday's drop to Chelsea has no photo. Add a note of where it was left.",assignee:"ollie",by:"vanessa",status:"todo",due:T(13,0),order:"715588",urgent:true,tags:["delivery"],checklist:[],comments:[]},
+ {id:113,title:"Marketplace tablets: accept within 2 minutes",desc:"Deliveroo & Uber Eats tablets – accept new orders within 2 min, otherwise the order auto-rejects and we lose the slot.",assignee:"katrina",by:"vanessa",status:"doing",due:T(20,0),repeat:"Every shift",tags:["shop","marketplaces"],checklist:[],comments:[]}
 ];
 window.TEMPLATES=[
  {id:"open",title:"Opening checklist",n:5,repeat:"Every day · 8:30",role:"florist"},
  {id:"close",title:"Closing checklist",n:5,repeat:"Every day · 22:00",role:"florist"},
- {id:"rfh",title:"Condition flower delivery",n:3,repeat:"Tue · Thu · Sat",role:"florist",photo:true},
+ {id:"dfa",title:"Condition flower delivery",n:3,repeat:"Tue · Thu · Sat",role:"florist",photo:true},
  {id:"window",title:"Seasonal window display",n:4,repeat:"On demand",role:"florist",photo:true},
  {id:"van",title:"Van check & fuel",n:4,repeat:"Every Monday",role:"courier"},
  {id:"photos",title:"Product photos for the site",n:12,repeat:"On demand",role:"florist",photo:true}
 ];
 window.ANNOUNCEMENTS=[
  {id:1,title:"Same-day cut-off is now 10 pm",body:"From today we take same-day orders until 22:00. Last production slot 21:15, last courier leaves 21:30. Scripts in Learn are updated – please read the 3-minute lesson.",by:"tatiana",at:T(8,5),ack:false,lesson:1},
- {id:2,title:"Halloween collection is live",body:"Dark dahlias, dried grasses, black ribbon. Window display on Thursday. If a client asks – it's in Occasions → Halloween.",by:"valeria",at:T(9,15,-1),ack:true},
- {id:3,title:"RFH delivery moves to Tue / Thu / Sat",body:"Conditioning tasks will appear on those mornings automatically.",by:"sasha",at:T(17,0,-3),ack:true}
+ {id:2,title:"Halloween collection is live",body:"Dark dahlias, dried grasses, black ribbon. Window display on Thursday. If a client asks – it's in Occasions → Halloween.",by:"vanessa",at:T(9,15,-1),ack:true},
+ {id:3,title:"DFA delivery moves to Tue / Thu / Sat",body:"Conditioning tasks will appear on those mornings automatically.",by:"sabrina",at:T(17,0,-3),ack:true}
 ];
 window.LESSONS=[
  {id:1,title:"Same-day until 10 pm – what to tell clients",cat:"floristry/handover",path:"handover",mins:3,type:"steps",status:"new",progress:0,due:T(22,0),cover:"img/peach-posy.webp",roles:["florist","manager"],steps:["Cut-off is 22:00 for same-day. Say it as a promise, not a condition: “We can still deliver today – until 10 pm.”","Last production slot 21:15. After that offer tomorrow 8–11 with a complimentary card.","If the client hesitates: the photo of the bouquet is sent before it leaves the shop – mention it, it closes most doubts.","Marketplace tablets: accept within 2 minutes, otherwise the slot is lost."],quiz:[{q:"A client calls at 21:40 and wants delivery tonight. What do you say?",a:["Sorry, we closed at 9.","We can still deliver today until 10 pm – let me check the slot.","Only tomorrow, sorry."],ok:1},{q:"When is the last production slot for same-day?",a:["20:00","21:15","22:00"],ok:1}]},
  {id:2,title:"Photo before packing – the Floritta standard",cat:"floristry/handover",path:"handover",mins:3,type:"steps",status:"started",progress:.6,cover:"img/white-spray.webp",roles:["florist"],steps:["Daylight by the window, white backdrop, no shadows across the flowers.","Two photos: full bouquet + detail of the focal flower.","Check the card and the add-ons are in frame when the client paid for them.","Tap “Photo taken” on the order – the client gets it automatically."],quiz:[{q:"How many photos minimum?",a:["One","Two","Five"],ok:1}]},
- {id:3,title:"Hand-tied spiral technique",cat:"floristry",path:"floristry",mins:6,type:"video",status:"started",progress:.4,cover:"img/pink-manifesto.webp",roles:["florist"],mentor:"svetlana",steps:["Hold the binding point low; every stem goes in at the same angle.","Turn the bouquet, don't move your hand.","Greenery frames, it never hides the focal flowers.","Tie with raffia first, ribbon after."],quiz:[{q:"Where is the binding point?",a:["High under the heads","Low, one hand-width below the heads","Anywhere"],ok:1}],practice:"Build 2 spirals on real Deluxe orders under Svetlana's eye"},
+ {id:3,title:"Hand-tied spiral technique",cat:"floristry",path:"floristry",mins:6,type:"video",status:"started",progress:.4,cover:"img/pink-manifesto.webp",roles:["florist"],mentor:"sylvia",steps:["Hold the binding point low; every stem goes in at the same angle.","Turn the bouquet, don't move your hand.","Greenery frames, it never hides the focal flowers.","Tie with raffia first, ribbon after."],quiz:[{q:"Where is the binding point?",a:["High under the heads","Low, one hand-width below the heads","Anywhere"],ok:1}],practice:"Build 2 spirals on real Deluxe orders under Sylvia's eye"},
  {id:4,title:"Alcohol with gifts – Challenge 25",cat:"compliance",path:"base",mins:4,type:"steps",status:"done",progress:1,cover:"img/addon-choc.webp",roles:["florist","courier","manager"],certificate:true,doneAt:T(10,0,-12),steps:["If they look under 25 – ask for ID.","Accepted ID: passport, driving licence, PASS card.","No ID – no alcohol, log the refusal."],quiz:[{q:"Accepted ID?",a:["Student card","PASS card","Bank card"],ok:1}]},
  {id:5,title:"Pet-safe & allergy-aware flowers",cat:"compliance",path:"base",mins:3,type:"steps",status:"review",progress:1,cover:"img/belgravia.webp",roles:["florist","manager"],reviewDue:T(12,0),doneAt:T(12,0,-30),steps:["Lilies are toxic to cats – never in a “pet-friendly” bouquet.","Pet-friendly tag = roses, snapdragons, sunflowers, orchids.","If unsure – ask, don't guess."],quiz:[{q:"Which flower is toxic to cats?",a:["Rose","Lily","Sunflower"],ok:1}]},
  {id:6,title:"Conditioning roses",cat:"floristry",path:"floristry",mins:4,type:"steps",status:"done",progress:1,cover:"img/powdered-rose.webp",roles:["florist"],doneAt:T(9,0,-20),steps:["Strip leaves below the water line.","Cut 2 cm at 45° under water.","Chrysal – one sachet per bucket."],quiz:[{q:"Cut angle?",a:["90°","45°","Any"],ok:1}]},
@@ -709,13 +655,13 @@ window.REVIEW_CARDS=[
  {q:"Challenge 25 – accepted ID",a:"Passport, driving licence, PASS card"}
 ];
 window.ORDERS=[
- {code:"715602",n:"Pink manifesto",size:"Deluxe",img:"img/pink-manifesto.webp",window:"14:00–17:00",area:"Chelsea SW3",status:"making",florist:"kamila",courier:"andrii",addons:["Glass vase","Handwritten card"],note:"Vase colour TBC – see task",client:"Mrs Harper",price:129},
- {code:"715611",n:"Happy Birthday balloons + Peach posy",size:"Standard",img:"img/peach-posy.webp",window:"15:00–18:00",area:"Bermondsey SE1",status:"queue",florist:null,courier:"andrii",addons:["Balloons ×5","Lindt truffles"],note:"Balloons collected 13:10",client:"James O.",price:94},
- {code:"715619",n:"White spray roses in ivory wrap",size:"Grand",img:"img/white-spray.webp",window:"12:00–15:00",area:"Battersea SW11",status:"photo",florist:"vita",courier:"oleh",addons:["Handwritten card"],note:"Pet-friendly – no lilies",client:"Anna K.",price:110},
- {code:"715588",n:"20 velvety red roses",size:"Standard",img:"img/red-roses.webp",window:"Yesterday 18:00–21:00",area:"Chelsea SW3",status:"delivered",florist:"svetlana",courier:"oleh",addons:[],note:"POD photo missing",client:"Daniel R.",price:89},
+ {code:"715602",n:"Pink manifesto",size:"Deluxe",img:"img/pink-manifesto.webp",window:"14:00–17:00",area:"Chelsea SW3",status:"making",florist:"katrina",courier:"anton",addons:["Glass vase","Handwritten card"],note:"Vase colour TBC – see task",client:"Mrs Harper",price:129},
+ {code:"715611",n:"Happy Birthday balloons + Peach posy",size:"Standard",img:"img/peach-posy.webp",window:"15:00–18:00",area:"Bermondsey SE1",status:"queue",florist:null,courier:"anton",addons:["Balloons ×5","Lindt truffles"],note:"Balloons collected 13:10",client:"James O.",price:94},
+ {code:"715619",n:"White spray roses in ivory wrap",size:"Grand",img:"img/white-spray.webp",window:"12:00–15:00",area:"Battersea SW11",status:"photo",florist:"vicky",courier:"ollie",addons:["Handwritten card"],note:"Pet-friendly – no lilies",client:"Anna K.",price:110},
+ {code:"715588",n:"20 velvety red roses",size:"Standard",img:"img/red-roses.webp",window:"Yesterday 18:00–21:00",area:"Chelsea SW3",status:"delivered",florist:"sylvia",courier:"ollie",addons:[],note:"POD photo missing",client:"Daniel R.",price:89},
  {code:"715623",n:"Lilac daydream",size:"Standard",img:"img/lilac-dream.webp",window:"17:00–20:00",area:"Clapham SW4",status:"queue",florist:null,courier:null,addons:["Ferrero Rocher"],note:"",client:"Sophie L.",price:90},
- {code:"715627",n:"Rose-tinted daydream basket",size:"One size",img:"img/daydream-basket.webp",window:"18:00–21:00",area:"Kensington W8",status:"queue",florist:"svetlana",courier:null,addons:["Handwritten card"],note:"Anonymous sender",client:"—",price:199},
- {code:"715598",n:"Belgravia petite rosettes",size:"Petite",img:"img/belgravia.webp",window:"11:00–14:00",area:"Pimlico SW1",status:"out",florist:"kamila",courier:"andrii",addons:[],note:"Leave with concierge if out",client:"Ms Patel",price:45},
+ {code:"715627",n:"Rose-tinted daydream basket",size:"One size",img:"img/daydream-basket.webp",window:"18:00–21:00",area:"Kensington W8",status:"queue",florist:"sylvia",courier:null,addons:["Handwritten card"],note:"Anonymous sender",client:"—",price:199},
+ {code:"715598",n:"Belgravia petite rosettes",size:"Petite",img:"img/belgravia.webp",window:"11:00–14:00",area:"Pimlico SW1",status:"out",florist:"katrina",courier:"anton",addons:[],note:"Leave with concierge if out",client:"Ms Patel",price:45},
  {code:"715631",n:"Peony roses elegance basket",size:"One size",img:"img/peony-basket.webp",window:"Tomorrow 8:00–11:00",area:"Bermondsey SE16",status:"queue",florist:null,courier:null,addons:["Clear vase"],note:"Hospital – ward 4, no lilies",client:"Mark T.",price:149}
 ];
 window.ROUTE=[
@@ -724,14 +670,14 @@ window.ROUTE=[
  {code:"715602",area:"Chelsea SW3",addr:"6 Markham Sq",eta:"14:20",status:"todo",km:1.9},
  {code:"715611",area:"Bermondsey SE1",addr:"Back to shop · collect",eta:"15:05",status:"todo",km:5.6}
 ];
-window.SCHEDULE=[{d:"Mon 19",s:"8:00–16:00",me:true,who:["kamila","vita","andrii"]},{d:"Tue 20",s:"8:00–16:00",me:true,today:true,who:["kamila","svetlana","vita","ayana","andrii","oleh"]},{d:"Wed 21",s:"Off",me:false,who:["svetlana","sofiia","oleh"]},{d:"Thu 22",s:"12:00–22:00",me:true,who:["kamila","svetlana","zhadra","andrii","max"]},{d:"Fri 23",s:"12:00–22:00",me:true,who:["kamila","vita","sofiia","andrii","oleh"]},{d:"Sat 24",s:"8:00–16:00",me:true,who:["kamila","svetlana","zhadra","max","oleh"]},{d:"Sun 25",s:"Off",me:false,who:["vita","sofiia","andrii"]}];
+window.SCHEDULE=[{d:"Mon 19",s:"8:00–16:00",me:true,who:["katrina","vicky","anton"]},{d:"Tue 20",s:"8:00–16:00",me:true,today:true,who:["katrina","sylvia","vicky","ayla","anton","ollie"]},{d:"Wed 21",s:"Off",me:false,who:["sylvia","sonia","ollie"]},{d:"Thu 22",s:"12:00–22:00",me:true,who:["katrina","sylvia","zhanna","anton","max"]},{d:"Fri 23",s:"12:00–22:00",me:true,who:["katrina","vicky","sonia","anton","ollie"]},{d:"Sat 24",s:"8:00–16:00",me:true,who:["katrina","sylvia","zhanna","max","ollie"]},{d:"Sun 25",s:"Off",me:false,who:["vicky","sonia","anton"]}];
 
 /* ============ APP RUNTIME ============ */
 const App=(()=>{
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
   const NOW=new Date(2026,9,20,11,12);
-  const state={me:"kamila",history:[],current:null,params:{},clockedIn:true,clockInAt:T(7,58),streak:6,notifs:[
-    {id:1,type:"task",title:"New task from Valeria",body:"Halloween window display · due Thu 18:00",at:T(9,31),read:false,go:["task",{id:106}]},
+  const state={me:"katrina",history:[],current:null,params:{},clockedIn:true,clockInAt:T(7,58),streak:6,notifs:[
+    {id:1,type:"task",title:"New task from Vanessa",body:"Halloween window display · due Thu 18:00",at:T(9,31),read:false,go:["task",{id:106}]},
     {id:2,type:"ann",title:"Announcement · Tatiana",body:"Same-day cut-off is now 10 pm – please acknowledge",at:T(8,5),read:false,go:["announcement",{id:1}]},
     {id:3,type:"learn",title:"3-minute lesson due today",body:"Same-day until 10 pm – what to tell clients",at:T(8,6),read:false,go:["lesson",{id:1}]},
     {id:4,type:"task",title:"Comment on your task",body:"Tatiana: Light is best 11–14…",at:T(9,2),read:true,go:["task",{id:102}]},
@@ -948,41 +894,41 @@ const NOTIFS={};
   const k=A.state.notifs;
   if(!k.some(n=>n.id===6)){
     k.push(
-      {id:6,type:"task",title:"Task checked",body:"Valeria: Opening checklist – all good, thank you",at:T(8,40),read:true,go:["task",{id:101}]},
-      {id:7,type:"ann",title:"Announcement · Valeria",body:"Halloween collection is live",at:T(9,15,-1),read:true,go:["announcement",{id:2}]},
+      {id:6,type:"task",title:"Task checked",body:"Vanessa: Opening checklist – all good, thank you",at:T(8,40),read:true,go:["task",{id:101}]},
+      {id:7,type:"ann",title:"Announcement · Vanessa",body:"Halloween collection is live",at:T(9,15,-1),read:true,go:["announcement",{id:2}]},
       {id:8,type:"learn",title:"Certificate added",body:"Challenge 25 · valid until Oct 2027",at:T(10,0,-12),read:true,go:["certificates",{}]},
       {id:9,type:"task",title:"Thank you from Tatiana",body:"The window photos are already on the site",at:T(18,10,-2),read:true,go:["task",{id:102}]}
     );
   }
-  NOTIFS.kamila=k;
-  NOTIFS.valeria=[
-    {id:1,type:"task",title:"Vita sent a task to check",body:"Condition today's RFH roses (6 boxes) · photo attached",at:T(10,48),read:false,go:["task",{id:103}]},
-    {id:2,type:"task",title:"Urgent · Oleh",body:"Proof-of-delivery photo missing – 715588 · due 13:00",at:T(9,40),read:false,go:["task",{id:112}]},
+  NOTIFS.katrina=k;
+  NOTIFS.vanessa=[
+    {id:1,type:"task",title:"Vicky sent a task to check",body:"Condition today's DFA roses (6 boxes) · photo attached",at:T(10,48),read:false,go:["task",{id:103}]},
+    {id:2,type:"task",title:"Urgent · Ollie",body:"Proof-of-delivery photo missing – 715588 · due 13:00",at:T(9,40),read:false,go:["task",{id:112}]},
     {id:3,type:"ann",title:"Acknowledgements · Same-day cut-off",body:"3 of 11 acknowledged · 4 on shift still waiting",at:T(9,0),read:false,go:["announcement",{id:1}]},
     {id:4,type:"shift",title:"Everyone scheduled has clocked in",body:"6 on shift · first clock-in 7:41",at:T(8,30),read:true,go:["team",{}]},
-    {id:5,type:"task",title:"Kamila finished a task",body:"Opening checklist – shop floor",at:T(8,22),read:true,go:["task",{id:101}]},
-    {id:6,type:"learn",title:"Ayana · day-7 check-in",body:"Mentor sign-off is due Thursday",at:T(17,30,-1),read:true,go:["mentor",{}]},
+    {id:5,type:"task",title:"Katrina finished a task",body:"Opening checklist – shop floor",at:T(8,22),read:true,go:["task",{id:101}]},
+    {id:6,type:"learn",title:"Ayla · day-7 check-in",body:"Mentor sign-off is due Thursday",at:T(17,30,-1),read:true,go:["mentor",{}]},
     {id:7,type:"ann",title:"Everyone acknowledged",body:"Halloween collection is live · 11 of 11",at:T(15,0,-1),read:true,go:["announcement",{id:2}]}
   ];
-  NOTIFS.andrii=[
+  NOTIFS.anton=[
     {id:1,type:"task",title:"Route updated",body:"Next: 715619 · Battersea · ETA 12:25",at:T(11,5),read:false,go:["route",{}]},
-    {id:2,type:"task",title:"New task from Sasha",body:"Return empty RFH buckets to the van · due 14:00",at:T(9,10),read:false,go:["task",{id:107}]},
+    {id:2,type:"task",title:"New task from Sabrina",body:"Return empty DFA buckets to the van · due 14:00",at:T(9,10),read:false,go:["task",{id:107}]},
     {id:3,type:"ann",title:"Announcement · Tatiana",body:"Same-day cut-off is now 10 pm – last courier leaves 21:30",at:T(8,5),read:false,go:["announcement",{id:1}]},
     {id:4,type:"learn",title:"3-minute lesson",body:"Proof of delivery: photo & note",at:T(8,6),read:false,go:["lesson",{id:8}]},
     {id:5,type:"shift",title:"Shift tomorrow",body:"Wed 21 · Off. Thu 12:00–22:00",at:T(20,0,-1),read:true,go:["schedule",{}]},
-    {id:6,type:"task",title:"Task closed",body:"Collect helium balloons – Party Co · checked by Sasha",at:T(13,40,-1),read:true,go:["task",{id:111}]}
+    {id:6,type:"task",title:"Task closed",body:"Collect helium balloons – Party Co · checked by Sabrina",at:T(13,40,-1),read:true,go:["task",{id:111}]}
   ];
-  NOTIFS.ayana=[
+  NOTIFS.ayla=[
     {id:1,type:"learn",title:"Today's lesson · 3 min",body:"Same-day until 10 pm – what to tell clients",at:T(8,6),read:false,go:["lesson",{id:1}]},
     {id:2,type:"ann",title:"Announcement · Tatiana",body:"Same-day cut-off is now 10 pm – please acknowledge",at:T(8,5),read:false,go:["announcement",{id:1}]},
-    {id:3,type:"learn",title:"Svetlana will watch your spiral",body:"Practice on real orders · Thursday 17:00",at:T(16,20,-1),read:false,go:["mentor",{}]},
+    {id:3,type:"learn",title:"Sylvia will watch your spiral",body:"Practice on real orders · Thursday 17:00",at:T(16,20,-1),read:false,go:["mentor",{}]},
     {id:4,type:"learn",title:"Lesson in progress",body:"Photo before packing – the Floritta standard · 60%",at:T(15,10,-1),read:true,go:["lesson",{id:2}]},
-    {id:5,type:"ann",title:"Announcement · Valeria",body:"Halloween collection is live",at:T(9,15,-1),read:true,go:["announcement",{id:2}]},
-    {id:6,type:"shift",title:"Welcome to Floritta Team",body:"Your buddy is Svetlana. First check-in on day 7.",at:T(8,0,-7),read:true,go:["mentor",{}]}
+    {id:5,type:"ann",title:"Announcement · Vanessa",body:"Halloween collection is live",at:T(9,15,-1),read:true,go:["announcement",{id:2}]},
+    {id:6,type:"shift",title:"Welcome to Floritta Team",body:"Your buddy is Sylvia. First check-in on day 7.",at:T(8,0,-7),read:true,go:["mentor",{}]}
   ];
 })();
 function ensureNotifs(){
-  const want=NOTIFS[A.state.me]||NOTIFS.kamila;
+  const want=NOTIFS[A.state.me]||NOTIFS.katrina;
   if(A.state.notifs!==want){A.state.notifs=want;A.renderBadges()}
 }
 
@@ -992,7 +938,7 @@ const REMINDED={};
 function seedAck(){
   ANNOUNCEMENTS.forEach(a=>{
     if(ACK_BY[a.id])return;
-    if(a.id===1)ACK_BY[1]=[{id:"valeria",at:T(8,12)},{id:"svetlana",at:T(8,20)},{id:"vita",at:T(8,34)}];
+    if(a.id===1)ACK_BY[1]=[{id:"vanessa",at:T(8,12)},{id:"sylvia",at:T(8,20)},{id:"vicky",at:T(8,34)}];
     else if(a.id===2||a.id===3){const off=a.id===2?-1:-3;ACK_BY[a.id]=STAFF.filter(s=>s.id!==a.by).map((s,i)=>({id:s.id,at:T(9+Math.floor(i/3),(i*17)%60,off)}))}
     else ACK_BY[a.id]=[{id:a.by,at:a.at}];
   });
@@ -1005,10 +951,10 @@ const unacked=()=>{seedAck();return ANNOUNCEMENTS.filter(a=>!acked(a)).sort((x,y
 const FACTS={
   1:[["Same-day cut-off","22:00"],["Last production slot","21:15"],["Last courier leaves","21:30"]],
   2:[["Window display","Thursday"],["Where in the CRM","Occasions → Halloween"]],
-  3:[["RFH delivery days","Tue · Thu · Sat"],["Conditioning task","Created at 7:30"]]
+  3:[["DFA delivery days","Tue · Thu · Sat"],["Conditioning task","Created at 7:30"]]
 };
-const SINCE={valeria:"7:41",svetlana:"7:55",kamila:"7:58",vita:"8:02",ayana:"8:04",andrii:"7:50",oleh:"7:58"};
-const MORE={1:"Questions? Ask Valeria or Sasha on shift."};
+const SINCE={vanessa:"7:41",sylvia:"7:55",katrina:"7:58",vicky:"8:02",ayla:"8:04",anton:"7:50",ollie:"7:58"};
+const MORE={1:"Questions? Ask Vanessa or Sabrina on shift."};
 
 /* ====== shared helpers ====== */
 function greet(){const h=NOW.getHours();return h<12?"Good morning":h<18?"Good afternoon":"Good evening"}
@@ -1025,7 +971,7 @@ function nowTasks(list,keepReview){
     .sort((a,b)=>(A.isLate(b)-A.isLate(a))||(new Date(a.due)-new Date(b.due)));
 }
 function weekDone(){
-  const base={kamila:2,ayana:1,andrii:2}[A.state.me]||1;
+  const base={katrina:2,ayla:1,anton:2}[A.state.me]||1;
   const today=LESSONS.filter(l=>l.status==="done"&&l.doneAt&&new Date(l.doneAt).toDateString()===NOW.toDateString()).length;
   return Math.min(3,base+today);
 }
@@ -1066,7 +1012,7 @@ function teamRow(managerView){
 /* week ring */
 function weekBlock(){
   const d=weekDone(),pr=0,tot=4,pct=(d+pr)/tot;
-  const prLine=isTr()?"Practice: 2 spirals with Svetlana":"Practice: 1 bouquet technique";
+  const prLine=isTr()?"Practice: 2 spirals with Sylvia":"Practice: 1 bouquet technique";
   return `${head("This week")}<button class="td-week" onclick="App.tab('learn')">${A.ring(pct,60,pct>=1?"--ok":"")}<span class="f1"><span class="h3" style="display:block">3 lessons + 1 practice</span><span class="xs muted" style="display:block;margin-top:4px">${d} of 3 lessons done · practice not started</span><span class="xs muted" style="display:block">${prLine}</span></span>${A.icon("chev").replace("<svg",'<svg class="chev"')}</button>`;
 }
 /* later rows */
@@ -1089,7 +1035,7 @@ function laterRows(){
 }
 function caughtUp(){return `<div class="td-caught">${ic("check",22,"color:var(--ok)")}<div><div class="h4">You're all caught up</div><div class="sm muted">Nothing is waiting for you right now.</div></div></div>`}
 
-/* ====== HOME: florist (Kamila, default) ====== */
+/* ====== HOME: florist (Katrina, default) ====== */
 function homeFlorist(){
   const tasks=nowTasks(A.myTasks());
   const anns=unacked();
@@ -1108,7 +1054,7 @@ function homeFlorist(){
   return h;
 }
 
-/* ====== HOME: manager (Valeria) ====== */
+/* ====== HOME: manager (Vanessa) ====== */
 function homeManager(){
   seedAck();
   const todayOrders=ORDERS.filter(o=>!/^(Yesterday|Tomorrow)/.test(o.window));
@@ -1138,7 +1084,7 @@ function homeManager(){
   return h;
 }
 
-/* ====== HOME: courier (Andrii) ====== */
+/* ====== HOME: courier (Anton) ====== */
 function homeCourier(){
   const left=ROUTE.filter(r=>r.status!=="done");
   const done=ROUTE.length-left.length;
@@ -1168,25 +1114,25 @@ function homeCourier(){
   return h;
 }
 
-/* ====== HOME: trainee (Ayana) – lesson first ====== */
+/* ====== HOME: trainee (Ayla) – lesson first ====== */
 function homeTrainee(){
   const les=pickLesson();
   const anns=unacked();
   const cont=LESSONS.filter(l=>l.status==="started"&&l.roles.includes("florist")&&(!les||l.id!==les.id));
   const watch=ORDERS.filter(o=>["making","photo"].includes(o.status)).slice(0,2);
   const mine=nowTasks(A.myTasks());
-  let h=hello("Week 2 · your buddy is Svetlana.")+shiftPanel();
+  let h=hello("Week 2 · your buddy is Sylvia.")+shiftPanel();
   if(les){
     h+=head("Today's lesson",`<span class="caps muted">${les.mins} min · paid</span>`)+
     `<div class="pad"><button class="banner td-hero" onclick="App.go('lesson',{id:${les.id}})"><img src="${les.cover}" alt=""><span class="ov"></span><span class="tx"><span class="caps" style="opacity:.85;display:block">${les.status==="started"?"Continue":"New"} · Steps + quiz</span><span class="h2" style="display:block;margin-top:6px;color:#fff">${les.title}</span><span class="btn --paper --sm">${les.status==="started"?"Continue lesson":`Start ${les.mins}-min lesson`}</span></span></button></div>`;
   }
-  h+=head("Your week")+`<button class="td-week" onclick="App.go('mentor')">${A.ring(weekDone()/4,60)}<span class="f1"><span class="h3" style="display:block">3 lessons + 1 practice</span><span class="xs muted" style="display:block;margin-top:4px">${weekDone()} of 3 lessons done</span><span class="xs muted" style="display:block">Practice: build 2 spirals with Svetlana</span></span>${A.icon("chev").replace("<svg",'<svg class="chev"')}</button>
-  <button class="row" onclick="App.go('mentor')" style="margin-top:12px;border-top:1px solid var(--hair)">${A.avatar("svetlana","")}<span class="rt"><span class="l" style="display:block">Your buddy · Svetlana</span><span class="d" style="display:block">Check-in day 7 · Thursday 17:00</span></span>${A.icon("chev").replace("<svg",'<svg class="chev"')}</button>`;
+  h+=head("Your week")+`<button class="td-week" onclick="App.go('mentor')">${A.ring(weekDone()/4,60)}<span class="f1"><span class="h3" style="display:block">3 lessons + 1 practice</span><span class="xs muted" style="display:block;margin-top:4px">${weekDone()} of 3 lessons done</span><span class="xs muted" style="display:block">Practice: build 2 spirals with Sylvia</span></span>${A.icon("chev").replace("<svg",'<svg class="chev"')}</button>
+  <button class="row" onclick="App.go('mentor')" style="margin-top:12px;border-top:1px solid var(--hair)">${A.avatar("sylvia","")}<span class="rt"><span class="l" style="display:block">Your buddy · Sylvia</span><span class="d" style="display:block">Check-in day 7 · Thursday 17:00</span></span>${A.icon("chev").replace("<svg",'<svg class="chev"')}</button>`;
   if(anns.length)h+=head("Announcement")+annCard(anns[0],anns.length>1?anns.length-1:0);
   if(cont.length)h+=head("Continue learning")+`<div class="pad">${cont.map(A.lessonCard).join("")}</div>`;
   h+=head("Watch & learn",`<button class="link" onclick="App.tab('work')">Orders</button>`);
   h+=`<div class="td-mut" style="margin:-4px var(--gutter) 8px">Orders are read-only for trainees – see how the team builds them.</div>`+watch.map(A.orderCard).join("");
-  h+=head("Your tasks")+(mine.length?`<div class="tlist">${mine.map(t=>A.taskCard(t,{who:false})).join("")}</div>`:`<div class="td-empty">No tasks yet. Svetlana or Valeria will assign you some – they appear here.</div>`);
+  h+=head("Your tasks")+(mine.length?`<div class="tlist">${mine.map(t=>A.taskCard(t,{who:false})).join("")}</div>`:`<div class="td-empty">No tasks yet. Sylvia or Vanessa will assign you some – they appear here.</div>`);
   h+=teamRow(false)+laterRows();
   return h;
 }
@@ -1345,7 +1291,7 @@ window.TD={
     A.sheet(`<div class="sh-head"><div class="h3">Who's on · ${on.length}</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body">${on.map(s=>`<div class="td-who">${A.avatar(s,"--shift")}<div><div style="font-size:15px;line-height:1.2">${s.n}</div><div class="xs muted">${s.title}</div></div><span class="st">since ${s.id===A.state.me?A.fmtTime(A.state.clockInAt):(SINCE[s.id]||"8:00")}</span></div>`).join("")}<div class="caps muted" style="margin:18px 0 4px">Off today · ${off.length}</div>${off.map(s=>`<div class="td-who">${A.avatar(s,"")}<div><div style="font-size:15px;line-height:1.2;color:var(--graphite)">${s.n}</div><div class="xs muted">${s.title}</div></div></div>`).join("")}</div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet();App.go('schedule')">Open schedule</button><button class="btn" onclick="App.closeSheet();App.go('team')">Team load</button></div>`);
   },
   announce(){
-    A.sheet(`<div class="sh-head"><div class="h3">New announcement</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><div class="field"><label>Title</label><input class="input" id="td-at" placeholder="e.g. RFH delivery is late today" maxlength="70"></div><div class="field"><label>Message</label><textarea class="input" id="td-ab" rows="4" placeholder="What changes, from when, what to do."></textarea></div><div class="td-sw"><span>Ask everyone to acknowledge<small>You see who has read it</small></span><button class="switch on" id="td-sw1" aria-label="Ask to acknowledge"></button></div><div class="td-sw"><span>Send as push now<small>Quiet-hours rules still apply</small></span><button class="switch on" id="td-sw2" aria-label="Send as push"></button></div><div class="chips" style="padding:14px 0 0"><button class="chip on" data-aud="Everyone">Everyone</button><button class="chip" data-aud="Florists">Florists</button><button class="chip" data-aud="Couriers">Couriers</button></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="td-send">Send</button></div>`,{onOpen(root){
+    A.sheet(`<div class="sh-head"><div class="h3">New announcement</div><button class="ib" aria-label="Close" onclick="App.closeSheet()">${A.icon("close")}</button></div><div class="sh-body"><div class="field"><label>Title</label><input class="input" id="td-at" placeholder="e.g. DFA delivery is late today" maxlength="70"></div><div class="field"><label>Message</label><textarea class="input" id="td-ab" rows="4" placeholder="What changes, from when, what to do."></textarea></div><div class="td-sw"><span>Ask everyone to acknowledge<small>You see who has read it</small></span><button class="switch on" id="td-sw1" aria-label="Ask to acknowledge"></button></div><div class="td-sw"><span>Send as push now<small>Quiet-hours rules still apply</small></span><button class="switch on" id="td-sw2" aria-label="Send as push"></button></div><div class="chips" style="padding:14px 0 0"><button class="chip on" data-aud="Everyone">Everyone</button><button class="chip" data-aud="Florists">Florists</button><button class="chip" data-aud="Couriers">Couriers</button></div></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="td-send">Send</button></div>`,{onOpen(root){
       root.querySelectorAll(".switch").forEach(s=>s.onclick=()=>s.classList.toggle("on"));
       let aud="Everyone";
       root.querySelectorAll("[data-aud]").forEach(c=>c.onclick=()=>{root.querySelectorAll("[data-aud]").forEach(x=>x.classList.remove("on"));c.classList.add("on");aud=c.dataset.aud});
@@ -1396,17 +1342,17 @@ const SHIFT_END=new Date(A.T(16,0));
 
 const TAGL={shop:'Shop floor',stock:'Stock',delivery:'Delivery',website:'Website',season:'Seasonal',client:'Client',training:'Training',marketplaces:'Marketplaces'};
 const ZONES=[['shop','Shop floor'],['stock','Stock'],['delivery','Delivery'],['website','Website']];
-const REPEATS=['','Every shift','Every day','Mon to Fri','Every Monday','Tue · Thu · Sat (RFH days)'];
+const REPEATS=['','Every shift','Every day','Mon to Fri','Every Monday','Tue · Thu · Sat (DFA days)'];
 const STEPS={
  open:['Lights, music, door sign','Fridge temperature logged','Buckets: fresh water + Chrysal','Till float counted','Pavement display out'],
  close:['Buckets topped up','Fridge closed, temp logged','Till Z-report, cash to safe','Bins out','Alarm on, door locked'],
- rfh:['Unpack & count vs delivery note','Strip and cut','Buckets labelled by variety'],
+ dfa:['Unpack & count vs delivery note','Strip and cut','Buckets labelled by variety'],
  window:['Order dried grasses','Clear the window + clean glass','Build the display','Photo for Instagram'],
  van:['Tyres and lights','Fuel above a quarter','Buckets strapped, rack clear','Parking permit in the door pocket'],
  photos:['Peach garden posy','Pink manifesto','Lilac daydream','Powdered rose','Belgravia rosettes','White spray roses','Charmingly pink & red','Pink garden elegance','Veronica spray','Red roses x20','Peony basket','Daydream basket']
 };
-const TPL_DUE={open:[8,30,1],close:[22,0,0],rfh:[9,0,2],window:[18,0,3],van:[9,0,6],photos:[16,0,0]};
-const TPL_ZONE={open:'shop',close:'shop',rfh:'stock',window:'shop',van:'delivery',photos:'website'};
+const TPL_DUE={open:[8,30,1],close:[22,0,0],dfa:[9,0,2],window:[18,0,3],van:[9,0,6],photos:[16,0,0]};
+const TPL_ZONE={open:'shop',close:'shop',dfa:'stock',window:'shop',van:'delivery',photos:'website'};
 const POOL=[
  {id:'p1',title:'Wipe down and re-stack the wrapping station',mins:15,role:'any',zone:'shop'},
  {id:'p2',title:'Refill ties, raffia and floral tape under the till',mins:20,role:'florist',zone:'stock'},
@@ -1499,7 +1445,7 @@ function mineHtml(){
   }
   const parts=[['Overdue',b.late,'--late'],['This shift',b.shift,''],['Today',b.today,''],['Later',b.later,''],['Waiting for check',b.waiting,''],['Done today',b.done,'']];
   parts.forEach(([lab,arr,cls])=>{if(arr.length){any=true;h+=sec(lab,arr,cls,false)}});
-  if(A.isTrainee()&&l.some(t=>(t.tags||[]).includes('training'))){h+=`<div class="pad mt16"><div class="panel"><div class="caps muted">Your practice</div><div class="sm soft mt4">Svetlana is your buddy for the spiral task. You can follow it and write to her in the discussion.</div></div></div>`}
+  if(A.isTrainee()&&l.some(t=>(t.tags||[]).includes('training'))){h+=`<div class="pad mt16"><div class="panel"><div class="caps muted">Your practice</div><div class="sm soft mt4">Sylvia is your buddy for the spiral task. You can follow it and write to her in the discussion.</div></div></div>`}
   if(!any){h+=`<div class="tk-big pad">${A.icon('checksq')}<div class="h2">All clear</div><p class="soft" style="margin:8px 0 18px">Nothing is waiting for you right now. Take something from the pool, or enjoy the quiet.</p>${poolFor().length?`<button class="btn --secondary --sm" onclick="TSK.setView('pool')">Open the pool</button>`:''}</div>`}
   else if(poolFor().length){h+=`<div style="margin-top:28px"><button class="row" style="border-top:1px solid var(--hair)" onclick="TSK.setView('pool')">${ric('users')}<div class="rt"><div class="l">Take something from the pool</div><div class="d">${poolFor().length} open to anyone this shift</div></div>${A.icon('chev').replace('<svg','<svg class="chev"')}</button></div>`}
   return h;
@@ -1547,7 +1493,7 @@ function poolHtml(){
   let h=`<div class="pad mt24"><div class="flex ai-c jc-sb g12"><div class="h2">Open to anyone</div>${mgr?`<button class="btn --xs --ghost" onclick="App.go('task-new',{assignee:'pool'})">Add</button>`:''}</div><p class="sm soft" style="margin:8px 0 16px">${mgr?'Tasks without an owner. Assign one, or leave it for whoever has a free moment.':'Take what you can finish this shift. The manager sees it on the board straight away.'}</p></div>`;
   if(!l.length)h+=`<div class="tk-empty">The pool is empty. Nice.</div>`;
   else h+=`<div class="tlist">${l.map(p=>`<div class="tk-pool"><div class="f1"><div class="tt">${esc(p.title)}</div><div class="tm"><span>${ic('timer')} ${p.mins} min</span><span>${ic('tag')} ${TAGL[p.zone]||p.zone}</span>${p.photo?`<span>${ic('camera')} Photo proof</span>`:''}</div></div><button class="btn --xs" onclick="TSK.${mgr?'poolAssign':'take'}('${p.id}')">${mgr?'Assign':'Take'}</button></div>`).join('')}</div>`;
-  h+=`<div style="margin-top:28px"><button class="row" style="border-top:1px solid var(--hair)" onclick="App.go('templates')">${ric('layers')}<div class="rt"><div class="l">Routines and templates</div><div class="d">Opening, closing, RFH conditioning, van check</div></div>${A.icon('chev').replace('<svg','<svg class="chev"')}</button></div>`;
+  h+=`<div style="margin-top:28px"><button class="row" style="border-top:1px solid var(--hair)" onclick="App.go('templates')">${ric('layers')}<div class="rt"><div class="l">Routines and templates</div><div class="d">Opening, closing, DFA conditioning, van check</div></div>${A.icon('chev').replace('<svg','<svg class="chev"')}</button></div>`;
   return h;
 }
 
@@ -1752,7 +1698,7 @@ function rTeam(){
   const el=$('#tm-in');if(!el)return;
   if(!isMgr()){
     $('#tm-ttl').textContent='Team';
-    el.innerHTML=`<div class="tk-lock"><div class="panel"><div class="h3">Team load is for managers</div><p class="sm soft" style="margin:8px 0 16px">Managers see who is on shift, how many tasks each person has open, and who is overloaded.</p><button class="btn --sm" onclick="App.setUser('valeria')">View as Valeria · manager</button></div></div>`;return;
+    el.innerHTML=`<div class="tk-lock"><div class="panel"><div class="h3">Team load is for managers</div><p class="sm soft" style="margin:8px 0 16px">Managers see who is on shift, how many tasks each person has open, and who is overloaded.</p><button class="btn --sm" onclick="App.setUser('vanessa')">View as Vanessa · manager</button></div></div>`;return;
   }
   if(teamSel&&A.user(teamSel)){personView(el);return}
   $('#tm-ttl').textContent='Team';
@@ -1800,7 +1746,7 @@ function rTpls(){
 window.mount_templates=function(){tplF=isMgr()?'all':(A.role()==='courier'?'courier':'florist');rTpls()};
 function tplTask(tp,assignee){
   const d=TPL_DUE[tp.id]||[16,0,0];
-  return A.addTask({title:tp.title,assignee,by:isMgr()?A.me().id:'valeria',due:A.T(d[0],d[1],d[2]),photo:tp.photo||undefined,repeat:tp.repeat&&tp.repeat!=='On demand'?tp.repeat:undefined,checklist:(STEPS[tp.id]||[]).map(x=>({t:x,d:false})),tags:[TPL_ZONE[tp.id]||'shop'],assignedAt:NOWI()});
+  return A.addTask({title:tp.title,assignee,by:isMgr()?A.me().id:'vanessa',due:A.T(d[0],d[1],d[2]),photo:tp.photo||undefined,repeat:tp.repeat&&tp.repeat!=='On demand'?tp.repeat:undefined,checklist:(STEPS[tp.id]||[]).map(x=>({t:x,d:false})),tags:[TPL_ZONE[tp.id]||'shop'],assignedAt:NOWI()});
 }
 
 /* =====================================================================
@@ -1823,7 +1769,7 @@ const TSK=window.TSK={
   },
   take(pid){
     const i=POOL.findIndex(p=>p.id===pid);if(i<0)return;const p=POOL[i];
-    const t=A.addTask({title:p.title,assignee:A.me().id,by:'valeria',due:A.T(16,0),photo:p.photo||undefined,tags:[p.zone],desc:'From the pool · about '+p.mins+' minutes.',assignedAt:NOWI()});
+    const t=A.addTask({title:p.title,assignee:A.me().id,by:'vanessa',due:A.T(16,0),photo:p.photo||undefined,tags:[p.zone],desc:'From the pool · about '+p.mins+' minutes.',assignedAt:NOWI()});
     SEEN[t.id]=NOWI();POOL.splice(i,1);A.go('task',{id:t.id});
   },
   poolAssign(pid){
@@ -1945,11 +1891,11 @@ const isMgr=()=>rk()==='manager';
 const W={rk:null,chip:'all'}, RS={started:false}, TICK={}, POD={}, LOG={};
 const ADDIMG=[[/vase/i,'img/addon-vase.webp'],[/card/i,'img/addon-card.webp'],[/balloon/i,'img/addon-balloon.webp'],[/lindt|truffle|choc/i,'img/addon-choc.webp'],[/ferrero/i,'img/addon-ferrero.webp'],[/bear/i,'img/addon-bear.webp'],[/berr/i,'img/addon-berries.webp']];
 const addImg=n=>{const x=ADDIMG.find(a=>a[0].test(n));return x?x[1]:'img/addon-card.webp'};
-const STOPX={'715598':{who:'Ms Patel',tel:'+44 7700 900214',note:'Leave with the concierge if she is out.'},'715619':{who:'Marta K.',tel:'+44 7700 900418',note:'Flat 4B, ring twice. A dog at home – the bouquet is pet-safe.'},'715602':{who:'Olivia Bennett',tel:'+44 7700 900356',note:'Gate code is on the card inside the wrap.'},'715611':{who:'Peter O.',tel:'+44 7700 900127',addr:'Via the shop · 31 Tanner St',note:'Balloons ×5 – keep them upright in the van.'}};
+const STOPX={'715598':{who:'Ms Patel',tel:'+44 7700 900214',note:'Leave with the concierge if she is out.'},'715619':{who:'Mabel K.',tel:'+44 7700 900418',note:'Flat 4B, ring twice. A dog at home – the bouquet is pet-safe.'},'715602':{who:'Olivia Bennett',tel:'+44 7700 900356',note:'Gate code is on the card inside the wrap.'},'715611':{who:'Peter O.',tel:'+44 7700 900127',addr:'Via the shop · 31 Tanner St',note:'Balloons ×5 – keep them upright in the van.'}};
 const SHOP_Q='80 Willow Walk, London SE1 5SY';
 
-/* ---- data hygiene: make ORDERS agree with ROUTE (route = Andrii) ---- */
-RT.forEach(r=>{const o=A.order(r.code);if(!o)return;o.courier='andrii';if(r.status==='done'&&o.status!=='delivered')o.status='delivered'});
+/* ---- data hygiene: make ORDERS agree with ROUTE (route = Anton) ---- */
+RT.forEach(r=>{const o=A.order(r.code);if(!o)return;o.courier='anton';if(r.status==='done'&&o.status!=='delivered')o.status='delivered'});
 
 function seed(o){
   if(LOG[o.code])return LOG[o.code];
@@ -2011,7 +1957,7 @@ function vCourier(){
       <div class="wk-3"><a class="btn --secondary --sm" target="_blank" rel="noopener" href="${mapsUrl(ni.code)}">${I('route')} Navigate</a><button class="btn --ghost --sm" onclick="WK.callRecipient('${ni.code}')">${I('phone')} Call</button><button class="btn --sm" onclick="App.go('stop',{code:'${ni.code}',pod:1})">${I('check')} Delivered</button></div>
       ${no&&no.status!=='out'&&no.status!=='ready'?`<div class="pad mt12"><div class="panel --warn sm" style="padding:12px 14px"><b>${ni.code} is still in the shop</b> · ${A.opill(no.status)}<div class="xs soft mt4">Wait for Ready before you leave.</div></div></div>`:''}`;
   }else{
-    head=`<div class="pad mt16"><div class="panel --ok"><div class="h3">Route complete</div><div class="sm soft mt4">${total} drops · ${km} km. Thank you, Andrii.</div></div></div>`;
+    head=`<div class="pad mt16"><div class="panel --ok"><div class="h3">Route complete</div><div class="sm soft mt4">${total} drops · ${km} km. Thank you, Anton.</div></div></div>`;
   }
   const stops=RT.map((r,i)=>{const o=A.order(r.code)||{},L=o.code?seed(o):{};const st=r.status;const x2=STOPX[r.code]||{};
     return `<button class="wk-st ${st}" onclick="App.go('stop',{code:'${r.code}'})"><span class="ix">${st==='done'?I('check'):i+1}</span><span class="f1"><div class="tt">${r.code} · ${shortArea(r.area)}</div><div class="dd">${x2.addr||r.addr}${st==='done'?' · Delivered '+(L.delivered||''):' · '+r.km+' km'}</div>${st!=='done'&&o.status?`<div class="mt8">${A.opill(o.status)}${r.returned?' <span class="pill --late">Returning</span>':''}</div>`:''}</span><span class="eta">${st==='done'?'':r.eta}</span></button>`}).join('');
@@ -2041,7 +1987,7 @@ function vTrainee(){
   const l=ORD.filter(active).sort((a,b)=>ws(a)-ws(b));
   return {title:'Orders',ibs:IB.who,
     body:`<div class="wk-sub-t">${todayStr()} · read only</div>
-      <div class="pad mt16"><div class="panel"><div class="h4">You are watching today</div><div class="sm soft mt4">Florists change order status. Stand next to Svetlana and follow one order from queue to photo.</div></div></div>
+      <div class="pad mt16"><div class="panel"><div class="h4">You are watching today</div><div class="sm soft mt4">Florists change order status. Stand next to Sylvia and follow one order from queue to photo.</div></div></div>
       ${sec('In the shop',l.length)}${l.map(o=>row(o)).join('')}
       ${sec('Learn the standard')}<div class="pad">${A.lessonCard(A.lesson(2))}</div>`};
 }
@@ -2114,7 +2060,7 @@ window.mount_order=function(p){
     ${sec('Status')}<div class="pad"><div class="timeline">${tl}</div></div>
     <div class="pad mt16"><div class="wk-kv"><span>Window</span><span>${o.window}</span></div><div class="wk-kv"><span>Area</span><span>${o.area}</span></div><div class="wk-kv"><span>Ordered by</span><span>${o.client==='—'?'Anonymous':o.client}</span></div>${mgr?`<div class="wk-kv"><span>Value</span><span>£${o.price}</span></div>`:''}</div>
     ${rows.length?`${sec('Tasks and links')}<div class="pad">${rows.join('')}</div>`:''}
-    ${ro?`<div class="pad mt24"><div class="panel"><div class="sm soft">Read only for trainees. Ask Svetlana if you want to try this step.</div></div></div>`:''}
+    ${ro?`<div class="pad mt24"><div class="panel"><div class="sm soft">Read only for trainees. Ask Sylvia if you want to try this step.</div></div></div>`:''}
     <div style="height:24px"></div>`;
   const b=$('od-body');b.classList.toggle('has-cta',!!cta);
   const c=$('od-cta');c.innerHTML=cta;c.style.display=cta?'':'none';
@@ -2132,7 +2078,7 @@ function routeMap(){
 window.mount_route=function(){
   const r=rk(), cour=r==='courier', total=RT.length, done=RT.filter(q=>q.status==='done').length, next=RT.find(q=>q.status==='next');
   const km=RT.reduce((s,q)=>s+q.km,0).toFixed(1);
-  $('rt-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('work')">${I('back')}</button><div class="ttl">${cour?'Route':'Andrii’s route'}</div><button class="ib" aria-label="Call the shop" onclick="App.toast('Calling the shop · +44 20 7946 0123')">${I('phone')}</button>`;
+  $('rt-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('work')">${I('back')}</button><div class="ttl">${cour?'Route':'Anton’s route'}</div><button class="ib" aria-label="Call the shop" onclick="App.toast('Calling the shop · +44 20 7946 0123')">${I('phone')}</button>`;
   const steps=RT.map((q,i)=>{const o=A.order(q.code)||{},L=o.code?seed(o):{},x=STOPX[q.code]||{};const st=q.status==='done'?'done':q.status==='next'?'now':'todo';
     return `<div class="tl-step ${st}" onclick="App.go('stop',{code:'${q.code}'})"><div class="ind"><i>${st==='done'?I('check'):st==='now'?'<span class="wk-dot"></span>':'<span class="xs">'+(i+1)+'</span>'}</i></div><div><div class="tl-t">${q.code} · ${shortArea(q.area)}</div><div class="tl-d">${x.addr||q.addr} · ${q.km} km${q.status==='done'?'<br>Delivered '+(L.delivered||''):''}${q.status!=='done'&&o.status?'<div class="mt8">'+A.opill(o.status)+(q.returned?' <span class="pill --late">Returning</span>':'')+'</div>':''}</div>${q.status!=='done'?`<span class="eta">${q.eta}</span>`:''}</div></div>`}).join('');
   const x=next?STOPX[next.code]||{}:{};
@@ -2141,11 +2087,11 @@ window.mount_route=function(){
     <div class="stats" style="margin-top:16px"><div><b>${total}</b><span>Drops</span></div><div><b>${done}</b><span>Delivered</span></div><div><b>${km}</b><span>Kilometres</span></div></div>
     <div class="pad mt24"><div class="map wk-map">${routeMap()}<span class="wk-map-cap">Map preview · tap a pin</span></div></div>
     ${sec('Stops',done+'/'+total)}<div class="pad"><div class="timeline">${steps}</div></div>
-    ${cour?`<div class="pad mt16"><div class="xs muted">Add or reorder stops? Ask the shop – Valeria sets the order of drops.</div></div>`:''}
+    ${cour?`<div class="pad mt16"><div class="xs muted">Add or reorder stops? Ask the shop – Vanessa sets the order of drops.</div></div>`:''}
     <div style="height:24px"></div>`;
   let cta='';
   if(cour&&next)cta=RS.started?`<a class="btn" target="_blank" rel="noopener" href="${mapsUrl(next.code)}">${I('route')} Navigate to ${next.code}</a>`:`<button class="btn" onclick="WK.startRoute()">${I('route')} Start route</button>`;
-  else if(!cour)cta=`<button class="btn" onclick="App.toast('Calling Andrii · +44 7700 900555')">${I('phone')} Call Andrii</button>`;
+  else if(!cour)cta=`<button class="btn" onclick="App.toast('Calling Anton · +44 7700 900555')">${I('phone')} Call Anton</button>`;
   const b=$('rt-body');b.classList.toggle('has-cta',!!cta);const c=$('rt-cta');c.innerHTML=cta;c.style.display=cta?'':'none';
 };
 
@@ -2186,9 +2132,9 @@ const WK=window.WK={
   chip(k){W.chip=k;remount()},
   tick(code,i){const t=TICK[code]=TICK[code]||[];t[i]=!t[i];A.haptic();remount()},
   start(code){const o=A.order(code);setStatus(code,'making',{florist:o.florist||A.state.me});A.haptic();A.toast('Started · '+code+' is in the making')},
-  take(code){A.closeSheet();patch(code,{florist:A.state.me});A.toast(code+' is yours');setTimeout(()=>A.push('Order taken',nm(A.state.me)+' took '+code+' · '+A.order(code).n,{icon:'flower',to:'Valeria'}),700);A.go('order',{code:code})},
+  take(code){A.closeSheet();patch(code,{florist:A.state.me});A.toast(code+' is yours');setTimeout(()=>A.push('Order taken',nm(A.state.me)+' took '+code+' · '+A.order(code).n,{icon:'flower',to:'Vanessa'}),700);A.go('order',{code:code})},
   takeNext(){const o=nextFree();if(!o)return;
-    A.sheet(sh('Next in line',`<div class="flex g12"><img class="wk-th" src="${o.img}" alt=""><div class="f1"><div class="h4">${o.n}</div><div class="xs muted mt4">${o.size} · ${o.window} · ${o.area}</div><div class="mt8">${A.opill(o.status)}</div></div></div>${o.note?`<div class="panel --warn mt16"><div class="caps muted">Client note</div><div class="sm mt4">${o.note}</div></div>`:''}${o.addons.length?`<p class="sm soft mt16" style="margin-bottom:0">Add-ons: ${o.addons.join(' · ')}</p>`:''}<p class="xs muted mt12" style="margin-bottom:0">Valeria sees who took it. You can start making on the next screen.</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Not now</button><button class="btn" onclick="WK.take('${o.code}')">Take order</button>`))},
+    A.sheet(sh('Next in line',`<div class="flex g12"><img class="wk-th" src="${o.img}" alt=""><div class="f1"><div class="h4">${o.n}</div><div class="xs muted mt4">${o.size} · ${o.window} · ${o.area}</div><div class="mt8">${A.opill(o.status)}</div></div></div>${o.note?`<div class="panel --warn mt16"><div class="caps muted">Client note</div><div class="sm mt4">${o.note}</div></div>`:''}${o.addons.length?`<p class="sm soft mt16" style="margin-bottom:0">Add-ons: ${o.addons.join(' · ')}</p>`:''}<p class="xs muted mt12" style="margin-bottom:0">Vanessa sees who took it. You can start making on the next screen.</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Not now</button><button class="btn" onclick="WK.take('${o.code}')">Take order</button>`))},
   assign(code,kind){
     const o=A.order(code);kind=kind||'florist';
     const list=ST.filter(u=>u.role===kind&&u.staff_type!=='trainee').sort((a,b)=>(b.onShift?1:0)-(a.onShift?1:0));
@@ -2199,16 +2145,16 @@ const WK=window.WK={
   doAssign(code,kind,id){A.closeSheet();const o=A.order(code);const p={};p[kind]=id;patch(code,p);A.toast('Assigned to '+nm(id));setTimeout(()=>A.push(kind==='florist'?'New order for you':'New drop for you',code+' · '+o.n+' · '+o.window,{icon:kind==='florist'?'flower':'truck',to:nm(id)}),700)},
   who(){
     const fl=ST.filter(u=>u.role==='florist'&&u.onShift), co=ST.filter(u=>u.role==='courier'&&u.onShift);
-    const line=(u,k)=>{const l=(k==='f'?loadF:loadC)(u.id);const t=u.staff_type==='trainee'?'Shadowing Svetlana · watch and learn':l.length?l.map(o=>`${o.status==='making'?'Making':o.status==='photo'?'Photo':o.status==='ready'?'Ready':o.status==='out'?'On the road':'Next'} ${o.code}`).join(' · '):(k==='f'?'Free – take the next order':'No drops right now');
+    const line=(u,k)=>{const l=(k==='f'?loadF:loadC)(u.id);const t=u.staff_type==='trainee'?'Shadowing Sylvia · watch and learn':l.length?l.map(o=>`${o.status==='making'?'Making':o.status==='photo'?'Photo':o.status==='ready'?'Ready':o.status==='out'?'On the road':'Next'} ${o.code}`).join(' · '):(k==='f'?'Free – take the next order':'No drops right now');
       return `<div class="wk-pick" style="cursor:default">${A.avatar(u,'--shift')}<span class="f1"><b class="h4">${u.n}${u.id===A.state.me?' (you)':''}</b><span class="xs">${t}</span></span></div>`};
     A.sheet(sh('Who does what',`<div class="caps muted" style="margin:0 0 4px">Florists</div>${fl.map(u=>line(u,'f')).join('')}<div class="caps muted" style="margin:20px 0 4px">Couriers</div>${co.map(u=>line(u,'c')).join('')}`,`<button class="btn --secondary" onclick="App.closeSheet()">Close</button>`),{full:true});
   },
   menu(code){const ro=rk()==='trainee';
-    A.sheet(sh('Order '+code,`${ro?'':`<button class="wk-act" onclick="App.closeSheet();App.go('task-new',{order:'${code}'})">${I('plus')}<span><div class="t">Create task from this order</div></span></button>`}${isMgr()?`<button class="wk-act" onclick="App.closeSheet();WK.assign('${code}','florist')">${I('users')}<span><div class="t">Reassign florist</div></span></button>`:''}<button class="wk-act" onclick="App.closeSheet();App.toast('Order number copied')">${I('clip')}<span><div class="t">Copy order number</div></span></button><button class="wk-act" onclick="App.closeSheet();App.toast('Valeria has been told about the problem')">${I('flag')}<span><div class="t">Report a problem</div><div class="d">Valeria is notified straight away</div></span></button>`))},
+    A.sheet(sh('Order '+code,`${ro?'':`<button class="wk-act" onclick="App.closeSheet();App.go('task-new',{order:'${code}'})">${I('plus')}<span><div class="t">Create task from this order</div></span></button>`}${isMgr()?`<button class="wk-act" onclick="App.closeSheet();WK.assign('${code}','florist')">${I('users')}<span><div class="t">Reassign florist</div></span></button>`:''}<button class="wk-act" onclick="App.closeSheet();App.toast('Order number copied')">${I('clip')}<span><div class="t">Copy order number</div></span></button><button class="wk-act" onclick="App.closeSheet();App.toast('Vanessa has been told about the problem')">${I('flag')}<span><div class="t">Report a problem</div><div class="d">Vanessa is notified straight away</div></span></button>`))},
   photo(code){const o=A.order(code);
     camera({title:'Photo before packing',img:o.img,shots:['Full bouquet','Focal detail'],hint:['Daylight by the window · white backdrop','Close on the focal flower'],crops:['background-size:cover;background-position:center','background-size:230%;background-position:58% 38%'],note:o.addons.length?'In frame: '+o.addons.join(' · '):'',cta:'Use photos',done(){A.closeSheet();setStatus(code,'photo');A.toast('Photos saved · the client receives them',{img:o.img})}});
   },
-  ready(code){const o=A.order(code);setStatus(code,'ready');A.haptic();A.toast('Marked ready');setTimeout(()=>A.push(o.courier?'Order ready for pick-up':'Ready – needs a courier',code+' · '+o.n+(o.courier?'':' · nobody assigned'),{icon:o.courier?'truck':'zap',to:o.courier?nm(o.courier):'Valeria'}),700)},
+  ready(code){const o=A.order(code);setStatus(code,'ready');A.haptic();A.toast('Marked ready');setTimeout(()=>A.push(o.courier?'Order ready for pick-up':'Ready – needs a courier',code+' · '+o.n+(o.courier?'':' · nobody assigned'),{icon:o.courier?'truck':'zap',to:o.courier?nm(o.courier):'Vanessa'}),700)},
   out(code){const o=A.order(code);if(!o.courier&&rk()!=='courier'){WK.assign(code,'courier');return}
     setStatus(code,'out',o.courier?{}:{courier:A.state.me});A.haptic();A.toast('Out for delivery · '+code);setTimeout(()=>A.push('Order picked up',code+' left the shop with '+nm(o.courier),{icon:'truck',to:'Shop'}),700)},
   startRoute(){RS.started=true;const n=RT.find(q=>q.status==='next');A.haptic();A.toast('Route started · live on your lock screen');if(n)setTimeout(()=>A.push('Route started','Next: '+n.code+' · '+shortArea(n.area)+' · '+n.eta,{icon:'route',to:'Shop'}),700);remount()},
@@ -2227,10 +2173,10 @@ const WK=window.WK={
   },
   noAnswer(code){const x=stopInfo(code);
     const opt=(ic,t,d,fn)=>`<button class="wk-pick" onclick="${fn}">${I(ic)}<span class="f1" style="order:-1;margin-left:0"><b class="h4" style="font-weight:400">${t}</b><span class="xs">${d}</span></span></button>`;
-    A.sheet(sh('No answer',`<p class="sm soft" style="margin:0 0 4px">Try in this order. Never leave a bouquet outside in the rain.</p>${opt('phone','Call the recipient',x.who+' · '+x.tel,`App.closeSheet();WK.callRecipient('${code}')`)}${opt('phone','Call the shop','Valeria will check the order note',`App.closeSheet();App.toast('Calling the shop · +44 20 7946 0123')`)}${opt('users','Leave with a neighbour','Name and flat number go in the note',`WK.neighbour('${code}')`)}${opt('arrow','Bring it back to the shop','The shop is told straight away',`WK.bringBack('${code}')`)}`));
+    A.sheet(sh('No answer',`<p class="sm soft" style="margin:0 0 4px">Try in this order. Never leave a bouquet outside in the rain.</p>${opt('phone','Call the recipient',x.who+' · '+x.tel,`App.closeSheet();WK.callRecipient('${code}')`)}${opt('phone','Call the shop','Vanessa will check the order note',`App.closeSheet();App.toast('Calling the shop · +44 20 7946 0123')`)}${opt('users','Leave with a neighbour','Name and flat number go in the note',`WK.neighbour('${code}')`)}${opt('arrow','Bring it back to the shop','The shop is told straight away',`WK.bringBack('${code}')`)}`));
   },
   neighbour(code){A.closeSheet();POD[code]=Object.assign(POD[code]||{},{note:'Left with neighbour – name and flat: '});remount();A.toast('Add the name and flat, then the photo');setTimeout(()=>{const e=$('sp-note');if(e){e.focus({preventScroll:true});e.setSelectionRange(e.value.length,e.value.length)}},420)},
-  bringBack(code){const x=stopInfo(code);A.closeSheet();x.r.returned=true;A.haptic();A.toast('Shop told · bring it back');setTimeout(()=>A.push('No answer · '+code,shortArea(x.r.area)+' · Andrii is coming back with it',{icon:'flag',to:'Valeria'}),700);remount()},
+  bringBack(code){const x=stopInfo(code);A.closeSheet();x.r.returned=true;A.haptic();A.toast('Shop told · bring it back');setTimeout(()=>A.push('No answer · '+code,shortArea(x.r.area)+' · Anton is coming back with it',{icon:'flag',to:'Vanessa'}),700);remount()},
   callCourier(code){
     const oo=code&&A.order(code);
     if(oo&&oo.courier){A.haptic();A.toast('Calling '+nm(oo.courier)+' · +44 7700 900555');return}
@@ -2243,7 +2189,7 @@ const WK=window.WK={
     if(CC.order){const o=A.order(CC.order);if(!o.courier)patch(CC.order,{courier:c.id})}
     A.haptic();A.toast(c.n+' is called to the shop');
     const o=CC.order?A.order(CC.order):null;
-    setTimeout(()=>A.push('Come to the shop · '+CC.reason,(o?o.code+' · '+shortArea(o.area)+' · '+o.window:'Valeria needs you at the shop'),{icon:'truck',to:c.n}),700);}
+    setTimeout(()=>A.push('Come to the shop · '+CC.reason,(o?o.code+' · '+shortArea(o.area)+' · '+o.window:'Vanessa needs you at the shop'),{icon:'truck',to:c.n}),700);}
 };
 const CC={courier:null,order:null,reason:'Extra drop'};
 function callHtml(){
@@ -2289,7 +2235,7 @@ const mine=()=>LESSONS.filter(l=>l.roles.includes(R()));
 const openL=()=>mine().filter(l=>l.status!=='done');
 const pathOf=id=>PATHS.find(p=>p.id===id);
 const pName=id=>(pathOf(id)||{}).title||'';
-const canSign=()=>A.me().id==='svetlana'||R()==='manager';
+const canSign=()=>A.me().id==='sylvia'||R()==='manager';
 const refresh=()=>{const c=A.state.current,f=window['mount_'+c.replace(/-/g,'_')];if(f)f(A.state.params)};
 const lc=l=>A.lessonCard(l).replace('<span>Mentor sign-off</span>',L.signoff[l.id]==='requested'?A.pill('review','To check'):'<span>Mentor sign-off</span>');
 const MON=new Date(2026,9,19);
@@ -2338,15 +2284,15 @@ return `${valid} valid${due?` · ${due} review due today`:''}${R()==='courier'?'
 }
 function teamBlock(){
 const req=L.signoff[3]==='requested', signed=L.signoff[3]==='signed';
-const row=`<button class="row" onclick="App.go('mentor')">${A.avatar('ayana','')}<div class="rt"><div class="l">Ayana · Hand-tied spiral</div><div class="d">${signed?'Signed off':req?'Asked for your sign-off':'Practice in progress · buddy day 7'}</div></div>${req?A.pill('review','To check'):signed?A.pill('done','Signed'):A.pill('doing','Practice')}${chev}</button>`;
+const row=`<button class="row" onclick="App.go('mentor')">${A.avatar('ayla','')}<div class="rt"><div class="l">Ayla · Hand-tied spiral</div><div class="d">${signed?'Signed off':req?'Asked for your sign-off':'Practice in progress · buddy day 7'}</div></div>${req?A.pill('review','To check'):signed?A.pill('done','Signed'):A.pill('doing','Practice')}${chev}</button>`;
 if(R()!=='manager')return `<div class="sec-head"><div class="h2">Waiting for you</div></div>${row}`;
 return `<div class="sec-head"><div class="h2">Team learning</div></div>
 <div class="stats"><div><b>64<small>%</small></b><span>Week goal avg</span></div><div><b>5<small> / 9</small></b><span>Read cut-off</span></div><div><b>${req?1:0}</b><span>Sign-offs waiting</span></div></div>
-<button class="row" style="margin-top:12px;border-top:1px solid var(--hair)" onclick="LR.remind()">${rico('bell')}<div class="rt"><div class="l">4 haven't done “Same-day until 10 pm”</div><div class="d">Vita, Sofiia, Ayana, Andrii</div></div><span class="lr-link">Remind</span></button>${row}`;
+<button class="row" style="margin-top:12px;border-top:1px solid var(--hair)" onclick="LR.remind()">${rico('bell')}<div class="rt"><div class="l">4 haven't done “Same-day until 10 pm”</div><div class="d">Vicky, Sonia, Ayla, Anton</div></div><span class="lr-link">Remind</span></button>${row}`;
 }
 function buddyBlock(){
 const signed=L.signoff[3]==='signed';
-return `<div class="sec-head"><div class="h2">Your buddy</div></div><button class="lr-bud" onclick="App.go('mentor')"><span class="avatars">${A.avatar('svetlana','--lg')}${A.avatar('ayana','--lg')}</span><div class="f1"><div class="h4">Svetlana · check-in day 7</div><div class="sm soft mt4">${signed?'Spiral signed off. Day 14 next':L.signoff[3]==='requested'?'Waiting for Svetlana to sign off':'Practice: build 2 spirals on real orders'}</div></div>${chev}</button>`;
+return `<div class="sec-head"><div class="h2">Your buddy</div></div><button class="lr-bud" onclick="App.go('mentor')"><span class="avatars">${A.avatar('sylvia','--lg')}${A.avatar('ayla','--lg')}</span><div class="f1"><div class="h4">Sylvia · check-in day 7</div><div class="sm soft mt4">${signed?'Spiral signed off. Day 14 next':L.signoff[3]==='requested'?'Waiting for Sylvia to sign off':'Practice: build 2 spirals on real orders'}</div></div>${chev}</button>`;
 }
 window.mount_learn=function(){
 const nl=nowLesson(), wl=wkLessons(), wp=wkPractice(), pct=wkPct(), done=mine().filter(l=>l.status==='done');
@@ -2368,7 +2314,7 @@ if(done.length)h+=`<div class="pad mt32"><div class="acc"><details><summary>Done
 h+='<div style="height:8px"></div>';
 $('#lr-home').innerHTML=h;
 };
-L.remind=function(){A.toast('Reminder sent to 4 people');setTimeout(()=>A.push('3-minute lesson due today','Same-day until 10 pm – what to tell clients',{icon:'book',to:'Vita',go:['lesson',{id:1}]}),600)};
+L.remind=function(){A.toast('Reminder sent to 4 people');setTimeout(()=>A.push('3-minute lesson due today','Same-day until 10 pm – what to tell clients',{icon:'book',to:'Vicky',go:['lesson',{id:1}]}),600)};
 document.addEventListener('learn',()=>{if(A.state.current==='learn')window.mount_learn()});
 document.addEventListener('ann',()=>{if(A.state.current==='learn')window.mount_learn()});
 document.addEventListener('user',()=>{if(A.state.current==='learn')window.mount_learn()});
@@ -2465,7 +2411,7 @@ const l=A.lesson(S.id);
 A.sheet(`<div class="sh-head"><div class="h3">${l.title}</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body">
 <button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();LR.reread()">${rico('book')}<div class="rt"><div class="l">Start from the beginning</div></div></button>
 <button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();App.toast('Opened on the shop screen')">${rico('globe')}<div class="rt"><div class="l">Open on the shop screen</div><div class="d">QR code for the wrapping desk</div></div></button>
-<button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();App.toast('Question sent to Valeria')">${rico('chat')}<div class="rt"><div class="l">Ask a question about this</div><div class="d">Goes to your manager, not the group chat</div></div></button></div>`);
+<button class="row" style="padding-left:0;padding-right:0" onclick="App.closeSheet();App.toast('Question sent to Vanessa')">${rico('chat')}<div class="rt"><div class="l">Ask a question about this</div><div class="d">Goes to your manager, not the group chat</div></div></button></div>`);
 };
 (function(){let sx=0,sy=0;const el=$('#ls-body');
 el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
@@ -2579,14 +2525,14 @@ const {R,sic,rico,chev,canSign,lc,pName,fmtD,refresh}=L;
 const segs=(on,tot)=>Array.from({length:tot},(_,i)=>`<i class="${i<on?'on':''}"></i>`).join('');
 const rowS='padding-left:var(--gutter);padding-right:var(--gutter)';
 const STN=[{k:'photo',n:'Photo station',d:'Photo before packing, white backdrop'},{k:'ready',n:'Ready-now',d:'Bouquets made while the client waits'},{k:'spiral',n:'Hand-tied spiral',d:'Spiral build on a real order'}];
-const CLR={kamila:{photo:90,ready:18},svetlana:{photo:200,ready:120,spiral:300},vita:{photo:45,ready:60,spiral:150},sofiia:{photo:30,ready:7,spiral:80},ayana:{},valeria:{photo:300,ready:300,spiral:300},tatiana:{photo:300,ready:300,spiral:300}};
+const CLR={katrina:{photo:90,ready:18},sylvia:{photo:200,ready:120,spiral:300},vicky:{photo:45,ready:60,spiral:150},sonia:{photo:30,ready:7,spiral:80},ayla:{},vanessa:{photo:300,ready:300,spiral:300},tatiana:{photo:300,ready:300,spiral:300}};
 function clr(pid,k){
 const v=(CLR[pid]||{})[k];
-if(k==='spiral'&&(pid==='kamila'||pid==='ayana')){
+if(k==='spiral'&&(pid==='katrina'||pid==='ayla')){
 const s=L.signoff[3];
 if(s==='signed')return{s:'ok',d:365};
 if(s==='requested')return{s:'pend'};
-return pid==='kamila'?{s:'exp',d:-12}:{s:'none'};
+return pid==='katrina'?{s:'exp',d:-12}:{s:'none'};
 }
 if(v==null)return{s:'none'};
 return v<=30?{s:'soon',d:v}:{s:'ok',d:v};
@@ -2602,7 +2548,7 @@ const me=A.me(), list=L.mine().filter(l=>l.path==='base'), courier=R()==='courie
 const rows=courier?clrCourier():STN.map(s=>({n:s.n,d:s.d,st:clr(me.id,s.k),k:s.k}));
 const warn=rows.filter(r=>r.st.s==='soon'||r.st.s==='exp');
 let h='';
-if(warn.length)h+=`<div class="pad"><div class="panel --warn"><div class="flex ai-c g8"><span style="color:var(--warn)">${sic('clock',18)}</span><b class="h4">${warn.map(r=>r.n+(r.st.s==='exp'?' expired':' expires in '+r.st.d+' days')).join(' · ')}</b></div><div class="sm soft mt8">Renew it before it lapses – a short re-check with ${courier?'Valeria':'Svetlana'}.</div></div></div>`;
+if(warn.length)h+=`<div class="pad"><div class="panel --warn"><div class="flex ai-c g8"><span style="color:var(--warn)">${sic('clock',18)}</span><b class="h4">${warn.map(r=>r.n+(r.st.s==='exp'?' expired':' expires in '+r.st.d+' days')).join(' · ')}</b></div><div class="sm soft mt8">Renew it before it lapses – a short re-check with ${courier?'Vanessa':'Sylvia'}.</div></div></div>`;
 h+=`<div class="sec-head" style="margin-top:${warn.length?32:8}px"><div class="h2">Your certificates</div></div>`;
 h+=list.map(l=>{const rv=l.status==='review', d=certDate(l), vt=new Date(d);vt.setFullYear(vt.getFullYear()+1);
 return `<div class="lr-cert ${rv?'due':''}"><span class="seal">${ic('award')}</span><div class="f1"><div class="h4">${certName(l)}</div><div class="sm muted mt4">${certSub(l)}${rv?`Passed ${fmtD(l.doneAt)} · review due today`:`Issued ${fmtD(l.doneAt)} · valid to ${vt.toLocaleDateString('en-GB',{month:'short',year:'numeric'})}`}</div></div>${rv?`<button class="btn --xs" onclick="App.go('quiz',{id:${l.id},fresh:true,recheck:true})">Start</button>`:`<button class="lr-link" onclick="LR.viewCert(${l.id})">View</button>`}</div>`}).join('')||'<div class="pad"><div class="panel">No certificates for your role yet.</div></div>';
@@ -2610,14 +2556,14 @@ h+=`<div class="sec-head"><div class="h2">${courier?'Clearances':'Station cleara
 h+=rows.map(r=>{const st=r.st, act=st.s==='soon'?`<button class="btn --xs --secondary" onclick="LR.recheck('${r.n}')">Book re-check</button>`:st.s==='exp'?`<button class="btn --xs" onclick="App.go('lesson',{id:3})">Renew</button>`:st.s==='none'&&r.lesson?`<button class="btn --xs" onclick="App.go('lesson',{id:${r.lesson}})">Start</button>`:st.s==='none'&&r.k==='spiral'?`<button class="btn --xs --secondary" onclick="App.go('mentor')">Practice</button>`:st.s==='pend'?`<button class="lr-link" onclick="App.go('mentor')">Open</button>`:'';
 return `<div class="row"><div class="rt"><div class="l">${r.n}</div><div class="d">${r.d}</div><div class="mt8 flex ai-c g8">${stPill(st)}<span class="xs muted">${stText(st).replace('Cleared · ','')}</span></div></div>${act}</div>`}).join('');
 if(R()==='manager'){
-const ppl=['svetlana','kamila','vita','sofiia','ayana'];
+const ppl=['sylvia','katrina','vicky','sonia','ayla'];
 const cell=c=>c.s==='ok'?`<div class="c-ok">${c.d} d</div>`:c.s==='soon'?`<div class="c-soon">${c.d} d</div>`:c.s==='exp'?`<div class="c-exp">Expired</div>`:c.s==='pend'?`<div class="c-pend">Sign-off</div>`:`<div class="c-none">–</div>`;
 h+=`<div class="sec-head"><div class="h2">Team matrix</div></div><div class="lr-mx"><div class="h">Florist</div><div class="h">Photo</div><div class="h">Ready-now</div><div class="h">Spiral</div>${ppl.map(p=>`<div class="nm">${A.avatar(p,'--sm')}<span>${A.user(p).n}</span></div>${cell(clr(p,'photo'))}${cell(clr(p,'ready'))}${cell(clr(p,'spiral'))}`).join('')}</div><div class="xs muted pad mt12">Days until the clearance expires. Highlighted: under 30 days or expired.</div>`;
 }
 h+='<div style="height:12px"></div>';
 $('#lr-certs').innerHTML=h;
 };
-L.recheck=function(n){A.toast(`Re-check requested · ${n}`);setTimeout(()=>A.push('Re-check requested',`${A.me().n} · ${n} – pick a slot this week`,{icon:'calendar',to:'Svetlana'}),600)};
+L.recheck=function(n){A.toast(`Re-check requested · ${n}`);setTimeout(()=>A.push('Re-check requested',`${A.me().n} · ${n} – pick a slot this week`,{icon:'calendar',to:'Sylvia'}),600)};
 L.viewCert=function(id){
 const l=A.lesson(id), d=certDate(l), vt=new Date(d);vt.setFullYear(vt.getFullYear()+1);
 A.sheet(`<div class="sh-head"><div class="h3">Certificate</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body">
@@ -2626,13 +2572,13 @@ A.sheet(`<div class="sh-head"><div class="h3">Certificate</div><button class="ib
 };
 document.addEventListener('learn',()=>{if(A.state.current==='certificates')window.mount_certificates()});
 document.addEventListener('user',()=>{if(A.state.current==='certificates')window.mount_certificates()});
-const CP=[{d:1,date:'13 Oct',t:'Welcome and safety',x:'Shop tour, who is who, fire safety and first aid.'},{d:3,date:'15 Oct',t:'Conditioning and standards',x:'Roses in Chrysal, the photo-before-packing standard.'},{d:7,date:'20 Oct',t:'First supervised builds',x:'Two hand-tied spirals on real orders, with Svetlana beside you.'},{d:14,date:'27 Oct',t:'Solo on a Standard',x:'Ready-now orders on your own. Review with Valeria.'}];
+const CP=[{d:1,date:'13 Oct',t:'Welcome and safety',x:'Shop tour, who is who, fire safety and first aid.'},{d:3,date:'15 Oct',t:'Conditioning and standards',x:'Roses in Chrysal, the photo-before-packing standard.'},{d:7,date:'20 Oct',t:'First supervised builds',x:'Two hand-tied spirals on real orders, with Sylvia beside you.'},{d:14,date:'27 Oct',t:'Solo on a Standard',x:'Ready-now orders on your own. Review with Vanessa.'}];
 window.mount_mentor=function(){
-const me=A.me(), mentee=me.id==='ayana', signer=canSign(), t=A.task(110), signed=L.signoff[3]==='signed', req=L.signoff[3]==='requested';
+const me=A.me(), mentee=me.id==='ayla', signer=canSign(), t=A.task(110), signed=L.signoff[3]==='signed', req=L.signoff[3]==='requested';
 const cl=(t&&t.checklist)||[], dn=cl.filter(c=>c.d).length;
 const day=signed?14:7;
-const who=mentee?'Your buddy is Svetlana':signer?'You are Ayana’s buddy':'Svetlana and Ayana';
-let h=`<div class="flex ai-c" style="gap:18px;padding:8px var(--gutter) 0"><span class="avatars">${A.avatar('svetlana','--lg')}${A.avatar('ayana','--lg')}</span><div class="f1"><div class="caps muted">Buddy pair · since 13 Oct</div><div class="h2 mt4">${who}</div></div></div>
+const who=mentee?'Your buddy is Sylvia':signer?'You are Ayla’s buddy':'Sylvia and Ayla';
+let h=`<div class="flex ai-c" style="gap:18px;padding:8px var(--gutter) 0"><span class="avatars">${A.avatar('sylvia','--lg')}${A.avatar('ayla','--lg')}</span><div class="f1"><div class="caps muted">Buddy pair · since 13 Oct</div><div class="h2 mt4">${who}</div></div></div>
 <div class="stats" style="margin-top:28px"><div><b>${signed?14:7}<small> / 14</small></b><span>Day</span></div><div><b>${signed?2:1}<small> / 4</small></b><span>Check-ins</span></div><div><b>${signed?3:dn}<small> / 3</small></b><span>Practice steps</span></div></div>
 <div class="sec-head"><div class="h2">First 14 days</div></div><div class="timeline pad">`;
 h+=CP.map(c=>{const st=c.d<7||(c.d===7&&signed)?'done':(c.d===7||(c.d===14&&signed))?'now':'todo';
@@ -2640,40 +2586,40 @@ let extra='';
 if(c.d===7){
 extra=`<div class="lr-cp"><div class="caps muted">Practice on real orders</div><div class="h3 mt4">Build 2 spirals on real orders</div><div class="sm soft mt4">Linked to task #110 · lesson “Hand-tied spiral technique”</div>
 <div class="mt12">${cl.map((c2,i)=>`<button class="check ${c2.d?'on':''}" ${signer&&!signed?`onclick="App.toggleCheck(110,${i})"`:'style="cursor:default"'}><span class="cb">${ic('check')}</span><span class="ct">${c2.t}</span></button>`).join('')}</div>
-<div class="flex ai-c g8 mt12">${signed?A.pill('done','Signed off'):req?A.pill('review','To check'):A.pill('doing','Practice')}<span class="xs muted">${signed?`by ${L.signBy||'Svetlana'} · 20 Oct 11:12`:req?'Waiting for Svetlana':'Not asked yet'}</span><button class="lr-link" style="margin-left:auto" onclick="App.go('task',{id:110})">Open task</button></div></div>`;
+<div class="flex ai-c g8 mt12">${signed?A.pill('done','Signed off'):req?A.pill('review','To check'):A.pill('doing','Practice')}<span class="xs muted">${signed?`by ${L.signBy||'Sylvia'} · 20 Oct 11:12`:req?'Waiting for Sylvia':'Not asked yet'}</span><button class="lr-link" style="margin-left:auto" onclick="App.go('task',{id:110})">Open task</button></div></div>`;
 }
 return `<div class="tl-step ${st}"><div class="ind"><i>${st==='done'?ic('check'):`<span style="font-size:11px">${c.d}</span>`}</i></div><div><div class="tl-t">Day ${c.d} · ${c.t}${st==='now'?` <span class="pill --doing" style="margin-left:6px">Now</span>`:''}</div><div class="tl-d">${c.date} · ${c.x}</div>${extra}</div></div>`}).join('');
-h+=`</div><div class="sec-head"><div class="h2">Notes from Svetlana</div></div><div class="pad"><div class="cmt">${A.avatar('svetlana','--sm')}<div class="cb-b"><div class="cb-h"><b>Svetlana</b><span>Mon 11:40</span></div><div class="cb-t">Good tension on the binding point. Keep every stem at the same angle and turn the bouquet, not your hand.</div></div></div>
-<div class="cmt">${A.avatar('svetlana','--sm')}<div class="cb-b"><div class="cb-h"><b>Svetlana</b><span>Tue 8:50</span></div><div class="cb-t">Roses conditioned well. Next: greenery frames, never hides the focal flowers.</div></div></div></div>
-<div class="pad mt16"><button class="btn --ghost --block" onclick="LR.askBuddy()">${ic('chat')} ${mentee?'Message Svetlana':'Message Ayana'}</button></div><div style="height:100px"></div>`;
+h+=`</div><div class="sec-head"><div class="h2">Notes from Sylvia</div></div><div class="pad"><div class="cmt">${A.avatar('sylvia','--sm')}<div class="cb-b"><div class="cb-h"><b>Sylvia</b><span>Mon 11:40</span></div><div class="cb-t">Good tension on the binding point. Keep every stem at the same angle and turn the bouquet, not your hand.</div></div></div>
+<div class="cmt">${A.avatar('sylvia','--sm')}<div class="cb-b"><div class="cb-h"><b>Sylvia</b><span>Tue 8:50</span></div><div class="cb-t">Roses conditioned well. Next: greenery frames, never hides the focal flowers.</div></div></div></div>
+<div class="pad mt16"><button class="btn --ghost --block" onclick="LR.askBuddy()">${ic('chat')} ${mentee?'Message Sylvia':'Message Ayla'}</button></div><div style="height:100px"></div>`;
 $('#mn-body').innerHTML=h;
 const cta=$('#mn-cta'), body=$('#mn-body');
 let c='';
-if(mentee&&!signed&&!req)c=`<button class="btn" onclick="LR.mAsk()">${ic('send')} Ask Svetlana to sign off</button>`;
-else if(mentee&&req)c=`<button class="btn --secondary" disabled>Waiting for Svetlana</button>`;
+if(mentee&&!signed&&!req)c=`<button class="btn" onclick="LR.mAsk()">${ic('send')} Ask Sylvia to sign off</button>`;
+else if(mentee&&req)c=`<button class="btn --secondary" disabled>Waiting for Sylvia</button>`;
 else if(signer&&!signed)c=`<button class="btn" onclick="LR.signSheet()">${ic('award')} Sign off Hand-tied spiral</button>`;
 cta.style.display=c?'':'none';cta.innerHTML=c;body.classList.toggle('has-cta',!!c);
 };
-L.askBuddy=function(){const mentee=A.me().id==='ayana';A.toast(`Message sent to ${mentee?'Svetlana':'Ayana'}`)};
+L.askBuddy=function(){const mentee=A.me().id==='ayla';A.toast(`Message sent to ${mentee?'Sylvia':'Ayla'}`)};
 L.mAsk=function(){L.askSign(3)};
 L.signSheet=function(){
 const lv=[['more','Needs more practice','Another supervised build first'],['good','Good','Ready for orders with a check'],['solo','Ready to work solo','Can build spirals unsupervised']];
 A.sheet(`<div class="sh-head"><div class="h3">Sign off · Hand-tied spiral</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body">
-<p class="soft sm" style="margin:0 0 8px">Ayana built 2 spirals on real orders (715602, 715627) with you beside her.</p>
+<p class="soft sm" style="margin:0 0 8px">Ayla built 2 spirals on real orders (715602, 715627) with you beside her.</p>
 <div id="sg-lv">${lv.map((x,i)=>`<button class="radio ${i===2?'on':''}" data-v="${x[0]}"><span class="rd"></span><span class="f1"><span class="h4">${x[1]}</span><br><span class="sm muted">${x[2]}</span></span></button>`).join('')}</div>
-<div class="field mt16"><label>Note for Ayana (optional)</label><textarea class="input" rows="2" placeholder="What went well, what to repeat…"></textarea></div></div>
+<div class="field mt16"><label>Note for Ayla (optional)</label><textarea class="input" rows="2" placeholder="What went well, what to repeat…"></textarea></div></div>
 <div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="sg-ok">Confirm</button></div>`,{onOpen:r=>{
 $$('#sg-lv .radio',r).forEach(b=>b.onclick=()=>{$$('#sg-lv .radio',r).forEach(x=>x.classList.toggle('on',x===b));A.haptic()});
 $('#sg-ok',r).onclick=()=>{const v=$('#sg-lv .radio.on',r).dataset.v;A.closeSheet();L.doSign(v)}}});
 };
 L.doSign=function(v){
 const me=A.me();
-if(v==='more'){L.signoff[3]=undefined;A.toast('Feedback sent to Ayana');setTimeout(()=>A.push('Svetlana: one more build',`${me.n} asked for another supervised spiral`,{icon:'chat',to:'Ayana'}),600);refresh();return}
+if(v==='more'){L.signoff[3]=undefined;A.toast('Feedback sent to Ayla');setTimeout(()=>A.push('Sylvia: one more build',`${me.n} asked for another supervised spiral`,{icon:'chat',to:'Ayla'}),600);refresh();return}
 L.signoff[3]='signed';L.signBy=me.n;L.signLevel=v;
 const t=A.task(110);if(t){t.checklist.forEach(c=>c.d=true);A.setTaskStatus(110,'done',{silent:true})}
 A.completeLesson(3,1);
-A.toast('Signed off · Ayana’s practice is complete');
-setTimeout(()=>A.push('Hand-tied spiral signed off',`${me.n} confirmed your practice. Day 14 is next`,{icon:'award',to:'Ayana',go:['certificates',{}]}),700);
+A.toast('Signed off · Ayla’s practice is complete');
+setTimeout(()=>A.push('Hand-tied spiral signed off',`${me.n} confirmed your practice. Day 14 is next`,{icon:'award',to:'Ayla',go:['certificates',{}]}),700);
 refresh();
 };
 document.addEventListener('tasks',()=>{if(A.state.current==='mentor')window.mount_mentor()});
@@ -2771,14 +2717,14 @@ const S=window.ME5={
   onBreak:false,
   sel:TODAY,
   swaps:{},
-  swapReq:[{a:'vita',b:'sofiia',day:'Fri 23',hrs:'12:00–22:00'}],
+  swapReq:[{a:'vicky',b:'sonia',day:'Fri 23',hrs:'12:00–22:00'}],
   lang:'en',
   prefs:{level:'priority',quiet:true,urgent:true,digest:true,sound:true,haptics:true,face:true},
   realAdmin:null,
   leave:{type:'Holiday',from:'2026-11-09',to:'2026-11-11',note:''},
-  leaves:[{id:1,type:'Holiday',from:'2026-08-14',to:'2026-08-18',status:'approved',by:'Valeria'}],
-  leavePending:[{id:11,who:'sofiia',type:'Holiday',from:'2026-11-02',to:'2026-11-04'},{id:12,who:'max',type:'Day off',from:'2026-10-26',to:'2026-10-26'}],
-  approve:[{id:1,who:'vita',day:'Mon 19',hrs:'8:00–16:12',d:'+12 min vs rota'},{id:2,who:'sofiia',day:'Mon 19',hrs:'8:00–16:00',d:'matches rota'},{id:3,who:'oleh',day:'Mon 19',hrs:'9:00–17:04',d:'+4 min vs rota'}],
+  leaves:[{id:1,type:'Holiday',from:'2026-08-14',to:'2026-08-18',status:'approved',by:'Vanessa'}],
+  leavePending:[{id:11,who:'sonia',type:'Holiday',from:'2026-11-02',to:'2026-11-04'},{id:12,who:'max',type:'Day off',from:'2026-10-26',to:'2026-10-26'}],
+  approve:[{id:1,who:'vicky',day:'Mon 19',hrs:'8:00–16:12',d:'+12 min vs rota'},{id:2,who:'sonia',day:'Mon 19',hrs:'8:00–16:00',d:'matches rota'},{id:3,who:'ollie',day:'Mon 19',hrs:'9:00–17:04',d:'+4 min vs rota'}],
   thanks:{who:null},
   lastClocked:A.state.clockedIn
 };
@@ -2796,17 +2742,17 @@ const dm=d=>d.getDate()+' '+MON[d.getMonth()];
 const rng=(a,b)=>{const x=iso2(a),y=iso2(b);return x.getTime()===y.getTime()?dm(x):(x.getMonth()===y.getMonth()?x.getDate()+'–'+dm(y):dm(x)+' – '+dm(y))};
 const adminRole=()=>{const r=A.role();return r==='manager'||r==='owner'};
 
-/* ---------- rota model (SCHEDULE is Kamila's week; everybody else derived) ---------- */
+/* ---------- rota model (SCHEDULE is Katrina's week; everybody else derived) ---------- */
 const LATE=[3,4],OFFD=[2,6];
 function shiftOf(id,i){
   const d=SCHEDULE[i],u=A.user(id);if(!u)return'Off';
-  if(id==='kamila')return d.s;
+  if(id==='katrina')return d.s;
   if(u.role==='owner')return'Off';
-  if(u.role==='manager'){const days=id==='valeria'?[0,1,2,3,4]:[2,5,6];return days.includes(i)?'8:00–17:00':'Off'}
-  const on=d.who.includes(id)||(id==='ayana'&&[1,3,4].includes(i));
+  if(u.role==='manager'){const days=id==='vanessa'?[0,1,2,3,4]:[2,5,6];return days.includes(i)?'8:00–17:00':'Off'}
+  const on=d.who.includes(id)||(id==='ayla'&&[1,3,4].includes(i));
   if(!on)return'Off';
   if(u.role==='courier')return LATE.includes(i)?'13:00–21:30':'8:00–16:00';
-  if(id==='ayana')return i===TODAY?'8:00–16:00':'10:00–16:00';
+  if(id==='ayla')return i===TODAY?'8:00–16:00':'10:00–16:00';
   return LATE.includes(i)?'12:00–22:00':(OFFD.includes(i)?'9:00–17:00':'8:00–16:00');
 }
 const NW={
@@ -2890,7 +2836,7 @@ window.mount_me=function(){
   const u=A.me(),r=A.role(),el=$('#me-body'),owner=r==='owner',adm=adminRole();
   const clocked=A.state.clockedIn,brk=S.onBreak,kind=kindOf(u.id);
   const today=shiftOf(u.id,TODAY),planned=weekPlanned(u.id),done=weekDone(u.id);
-  const since=u.staff_type==='trainee'?'Joined 13 Oct · day 7 of 14':u.staff_type==='seasonal'?'Joined this autumn':'With Floritta since '+(u.since||{tatiana:'2019',valeria:'2021',sasha:'2023',andrii:'2024',oleh:'2025'}[u.id]||'2024');
+  const since=u.staff_type==='trainee'?'Joined 13 Oct · day 7 of 14':u.staff_type==='seasonal'?'Joined this autumn':'With Floritta since '+(u.since||{tatiana:'2019',vanessa:'2021',sabrina:'2023',anton:'2024',ollie:'2025'}[u.id]||'2024');
   const via=(S.realAdmin&&S.realAdmin!==u.id)?`<div class="panel --warn blk" style="margin-top:20px;display:flex;align-items:center;gap:12px"><div class="f1"><div class="sm"><b>Viewing as ${u.n}</b></div><div class="xs soft">${u.title} · you only look, nothing is saved</div></div><button class="btn --xs --secondary" onclick="ME5.backToAdmin()">Back to ${A.user(S.realAdmin).n}</button></div>`:'';
   /* shift block */
   let shift='';
@@ -2944,7 +2890,7 @@ window.mount_me=function(){
   </div>`;
   el.innerHTML=`${via}
     <div class="prof" style="margin-top:${via?'20px':'6px'}">${A.avatar(u.id,'--xl')}<div class="f1"><h1 class="nm">${u.n}</h1><div class="tt">${u.title}</div><div class="tt xs muted">${since}</div></div></div>
-    <div class="pillrow" style="padding:14px var(--gutter) 0">${roleName(u).toLowerCase()===u.title.toLowerCase()?'':`<span class="pill --plain">${roleName(u)}</span>`}${u.staff_type==='trainee'?'<span class="pill --plain">Buddy · Svetlana</span>':''}<span class="pill --plain">${zoneOf(u)}</span></div>
+    <div class="pillrow" style="padding:14px var(--gutter) 0">${roleName(u).toLowerCase()===u.title.toLowerCase()?'':`<span class="pill --plain">${roleName(u)}</span>`}${u.staff_type==='trainee'?'<span class="pill --plain">Buddy · Sylvia</span>':''}<span class="pill --plain">${zoneOf(u)}</span></div>
     ${shift}${week}${work}${prefs}${support}
     <div class="note tc" style="padding:28px var(--gutter) 8px">Floritta Team · prototype · times are London</div>`;
   A.renderBadges();
@@ -2955,15 +2901,15 @@ function swapKey(w,i){return w+'-'+i}
 function drawDay(){
   const i=S.sel,d=SCHEDULE[i],u=A.me(),sh=shiftOf(u.id,i),mine=sh!=='Off',adm=adminRole();
   const past=i<TODAY,today=i===TODAY,ids=whoOn(i),sw=S.swaps[swapKey(0,i)];
-  const notes=[];if([1,3,5].includes(i))notes.push('RFH flowers arrive 7:30');if(i===5)notes.push('Clocks go back tonight (02:00)');if(i===6)notes.push('Clocks went back at 02:00');
+  const notes=[];if([1,3,5].includes(i))notes.push('DFA flowers arrive 7:30');if(i===5)notes.push('Clocks go back tonight (02:00)');if(i===6)notes.push('Clocks went back at 02:00');
   let mineBlk='';
-  if(u.role==='owner'){mineBlk=`<div class="panel blk"><div class="caps muted">Owner</div><div class="sm soft mt8">No fixed shifts. Valeria and Sasha cover the shop.</div></div>`}
+  if(u.role==='owner'){mineBlk=`<div class="panel blk"><div class="caps muted">Owner</div><div class="sm soft mt8">No fixed shifts. Vanessa and Sabrina cover the shop.</div></div>`}
   else if(mine){
     const pill=sw?'<span class="pill --review">Swap requested</span>':today?(A.state.clockedIn?'<span class="pill --done">On shift</span>':'<span class="pill --todo">Planned</span>'):past?'<span class="pill --plain">Worked</span>':'<span class="pill --todo">Planned</span>';
     let act='';
     if(adm)act='';
     else if(sw)act=`<div class="flex ai-c jc-sb mt12"><span class="sm soft">Waiting for ${A.user(sw.to).n} to accept</span><button class="textbtn" onclick="ME5.swapCancel('${swapKey(0,i)}')">Cancel</button></div>`;
-    else if(past||today)act=`<div class="xs muted mt12">${past?'This shift is done.':'Already started – ask Valeria if you need to leave early.'}</div>`;
+    else if(past||today)act=`<div class="xs muted mt12">${past?'This shift is done.':'Already started – ask Vanessa if you need to leave early.'}</div>`;
     else act=`<button class="btn --secondary --sm mt16" onclick="ME5.swap(${i},0)">${A.icon('swap')} Swap shift</button>`;
     mineBlk=`<div class="panel mshift blk"><div class="flex ai-c jc-sb"><span class="caps muted">My shift</span>${pill}</div><div class="hrs">${sh}</div><div class="sm soft">${durS(paid(sh))} paid · 30 min unpaid break · ${zoneOf(u)}</div>${act}</div>`;
   }else mineBlk=`<div class="panel blk"><div class="caps muted">My shift</div><div class="h3 mt8">Day off</div><div class="sm soft mt4">Nothing planned. Enjoy it.</div></div>`;
@@ -3006,7 +2952,7 @@ S.swap=function(i,w){
   A.sheet(`<div class="sh-head"><div class="h3">Swap shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div>
     <div class="sh-body me5-sh"><div class="sm soft">${dayLabel(w,i)} · ${hrs}</div><div class="caps muted" style="margin:18px 0 2px">Who could take it?</div>${rows||'<p class="sm muted">Nobody to ask in your group.</p>'}
     <div class="field" style="margin-top:18px"><label>Note (optional)</label><textarea class="input" id="sw-note" placeholder="e.g. dentist appointment"></textarea></div>
-    <p class="xs muted" style="margin:0">They accept in the app, then Valeria approves. Until then the shift stays yours.</p></div>
+    <p class="xs muted" style="margin:0">They accept in the app, then Vanessa approves. Until then the shift stays yours.</p></div>
     <div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" id="sw-go" disabled onclick="ME5.swapSend(${i},${w})">Send request</button></div>`,{full:true});
 };
 S.swPick=function(b){$$('.me5-sh .radio').forEach(x=>x.classList.toggle('on',x===b));const g=$('#sw-go');if(g)g.disabled=false;A.haptic()};
@@ -3033,7 +2979,7 @@ window.mount_timeclock=function(p){
   if(clocked&&!S.onBreak)steps+=`<div class="tl-step now"><div class="ind"><i>${A.icon('clock')}</i></div><div><div class="tl-t"><b>${tm(now())}</b> &nbsp;On shift</div><div class="tl-d">${dur(sessMin())} so far</div></div></div>`;
   if(pr&&clocked)steps+=`<div class="tl-step todo"><div class="ind"><i>${A.icon('logout')}</i></div><div><div class="tl-t"><b>${endOf(today)}</b> &nbsp;Planned end</div><div class="tl-d">We ask “Still on shift?” 30 min later if you forget</div></div></div>`;
   const wk=weekDone(u.id);
-  const weeks=[['Week 43 · 19–25 Oct','In progress',wk,'review'],['Week 42 · 12–18 Oct','Approved by Valeria',2370,'done'],['Week 41 · 5–11 Oct','Approved by Valeria',2460,'done'],['1–4 Oct','Approved by Valeria',1530,'done']].map(w=>`<div class="row st"><span class="rt"><div class="l">${w[0]}</div><div class="d">${w[1]}</div></span><span class="val" style="color:var(--ink)">${durS(w[2])}</span></div>`).join('');
+  const weeks=[['Week 43 · 19–25 Oct','In progress',wk,'review'],['Week 42 · 12–18 Oct','Approved by Vanessa',2370,'done'],['Week 41 · 5–11 Oct','Approved by Vanessa',2460,'done'],['1–4 Oct','Approved by Vanessa',1530,'done']].map(w=>`<div class="row st"><span class="rt"><div class="l">${w[0]}</div><div class="d">${w[1]}</div></span><span class="val" style="color:var(--ink)">${durS(w[2])}</span></div>`).join('');
   const appr=adm?`<div class="grp">To approve · ${S.approve.length}</div>`+(S.approve.length?S.approve.map((a,k)=>`<div class="appr">${A.avatar(a.who,'--sm')}<div class="f1"><div class="sm"><b>${A.user(a.who).n}</b> · ${a.day}</div><div class="xs muted">${a.hrs} · ${a.d}</div></div><button class="btn --xs" onclick="ME5.approveOne(${k})">Approve</button></div>`).join('')+`<div class="blk" style="margin-top:14px"><button class="btn --secondary --block --sm" onclick="ME5.approveAll()">Approve all ${S.approve.length}</button></div>`:`<div class="note" style="padding-top:0">Everything is approved. Thank you.</div>`):'';
   el.innerHTML=`<div class="sec-head" style="margin-top:8px"><div class="h2">Today</div><span class="xs muted">Tue 20 Oct</span></div>
     ${owner?`<div class="note" style="padding-top:0">Owners don't clock in. Below: the team's time sheet.</div>`:`<div class="stats"><div><b>${durS(paidToday())}</b><span>Paid</span></div><div><b>${dur(breakMin()).replace(' min','')}</b><span>Break (min)</span></div><div><b>${pr?short(today):'–'}</b><span>Rota</span></div></div>
@@ -3046,7 +2992,7 @@ window.mount_timeclock=function(p){
     <div class="note">Breaks are unpaid; learning minutes are counted as paid time. Approved weeks go to payroll.</div>
     <div class="grp">Reminders</div>
     <div class="blk"><div class="panel"><div class="h4">Still on shift?</div><p class="sm soft" style="margin:6px 0 14px">If you are still clocked in 30 minutes after your shift should have ended, we send this. One tap clocks you out at the right time.</p><button class="btn --secondary --sm" onclick="ME5.stillPush()">${A.icon('bell')} Show me the notification</button></div></div>
-    <div class="rows" style="margin-top:20px;border-top:1px solid var(--hair)"><button class="row" onclick="ME5.fixEntry()">${ic('edit','ic')}<span class="rt"><div class="l">Forgot to clock in or out?</div><div class="d">Ask ${adm?'for a correction':'Valeria to correct it'}</div></span>${ic('chev','chev')}</button></div>`;
+    <div class="rows" style="margin-top:20px;border-top:1px solid var(--hair)"><button class="row" onclick="ME5.fixEntry()">${ic('edit','ic')}<span class="rt"><div class="l">Forgot to clock in or out?</div><div class="d">Ask ${adm?'for a correction':'Vanessa to correct it'}</div></span>${ic('chev','chev')}</button></div>`;
   /* cta */
   const cta=$('#tc-cta');
   if(owner){cta.innerHTML=`<button class="btn --block" onclick="App.back('me')">Done</button>`}
@@ -3063,27 +3009,27 @@ S.stillSheet=function(){
 S.approveOne=function(k){const a=S.approve.splice(k,1)[0];A.toast(`Approved · ${A.user(a.who).n}, ${a.day}`);window.mount_timeclock()};
 S.approveAll=function(){const n=S.approve.length;S.approve=[];A.toast(`${n} entries approved`);window.mount_timeclock()};
 S.fixEntry=function(){
-  A.sheet(`<div class="sh-head"><div class="h3">Correct a time entry</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>What happened?</label><textarea class="input" id="fx-t" placeholder="e.g. Forgot to clock out on Mon – I left at 16:05"></textarea></div><p class="xs muted" style="margin:0">Valeria gets this with the date and your times. You'll see the corrected entry here.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Sent to Valeria')">Send</button></div>`);
+  A.sheet(`<div class="sh-head"><div class="h3">Correct a time entry</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>What happened?</label><textarea class="input" id="fx-t" placeholder="e.g. Forgot to clock out on Mon – I left at 16:05"></textarea></div><p class="xs muted" style="margin:0">Vanessa gets this with the date and your times. You'll see the corrected entry here.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Sent to Vanessa')">Send</button></div>`);
 };
 
 /* ================================================================== BONUS */
-const BOARD=[['svetlana',24],['vita',21],['sofiia',18]];
-const COUNTS={svetlana:24,vita:21,sofiia:18,kamila:17,zhadra:9,ayana:7};
-const MONTH={svetlana:112,vita:98,sofiia:81,kamila:76,zhadra:31,ayana:0};
+const BOARD=[['sylvia',24],['vicky',21],['sonia',18]];
+const COUNTS={sylvia:24,vicky:21,sonia:18,katrina:17,zhanna:9,ayla:7};
+const MONTH={sylvia:112,vicky:98,sonia:81,katrina:76,zhanna:31,ayla:0};
 window.mount_bonus=function(){
   const u=A.me(),kind=kindOf(u.id),el=$('#bn-body');
   $('#bn-ttl').textContent=kind==='trainee'?'Progress':kind==='courier'?'Drops & kudos':kind==='manager'||kind==='owner'?'Team bonus':'Bonus & progress';
   const img=(f)=>`img/${f}.webp`;
   const K={
-    florist:[{i:'powdered-rose',f:'Client · order 715541',t:`“Exactly like the photo – thank you, ${u.n}!”`,a:'Mon 19'},{i:'veronica',f:'Valeria',t:'Lovely tight spiral on 715530. Thank you.',a:'Mon 19'},{i:'pink-garden',f:'Svetlana',t:'Thanks for covering the tablets at lunch.',a:'Sat 17'}],
-    trainee:[{i:'peach-posy',f:'Svetlana · your buddy',t:'Clean stem cut and a tidy tie. Day 7 and it shows.',a:'Mon 19'},{i:'white-spray',f:'Vita',t:'Thank you for the buckets – all labelled.',a:'Sun 18'}],
-    courier:[{i:'belgravia',f:'Ms Patel · order 715598',t:'“Thank you for leaving it with the concierge.”',a:'Mon 19'},{i:'red-roses',f:'Valeria',t:'14 drops on Saturday, all with photos. Thank you.',a:'Sun 18'}]
+    florist:[{i:'powdered-rose',f:'Client · order 715541',t:`“Exactly like the photo – thank you, ${u.n}!”`,a:'Mon 19'},{i:'veronica',f:'Vanessa',t:'Lovely tight spiral on 715530. Thank you.',a:'Mon 19'},{i:'pink-garden',f:'Sylvia',t:'Thanks for covering the tablets at lunch.',a:'Sat 17'}],
+    trainee:[{i:'peach-posy',f:'Sylvia · your buddy',t:'Clean stem cut and a tidy tie. Day 7 and it shows.',a:'Mon 19'},{i:'white-spray',f:'Vicky',t:'Thank you for the buckets – all labelled.',a:'Sun 18'}],
+    courier:[{i:'belgravia',f:'Ms Patel · order 715598',t:'“Thank you for leaving it with the concierge.”',a:'Mon 19'},{i:'red-roses',f:'Vanessa',t:'14 drops on Saturday, all with photos. Thank you.',a:'Sun 18'}]
   };
   const kudos=(list,title)=>`<div class="sec-head"><div class="h2">${title||'Thank-yous'}</div></div><div class="rows" style="border-top:1px solid var(--hair)">${list.map(k=>`<div class="kudo"><img src="${img(k.i)}" alt=""><div class="f1"><div class="kf">${k.f.toUpperCase()} · ${k.a}</div><div class="kt">${k.t}</div></div></div>`).join('')}</div>
     <div class="blk" style="margin-top:16px"><button class="btn --secondary --block --sm" onclick="ME5.thank()">${A.icon('send')} Thank a colleague</button></div>`;
   let h='';
   if(kind==='trainee'){
-    h=`<div class="hero">${A.ring(.5,92)}<div class="f1"><div class="caps muted">Your 14 days</div><div class="h2 mt4">Day 7 of 14</div><div class="sm soft mt4">Next check-in with Svetlana on day 14</div></div></div>
+    h=`<div class="hero">${A.ring(.5,92)}<div class="f1"><div class="caps muted">Your 14 days</div><div class="h2 mt4">Day 7 of 14</div><div class="sm soft mt4">Next check-in with Sylvia on day 14</div></div></div>
       <div class="stats" style="margin-top:24px"><div><b>7</b><span>Practice builds</span></div><div><b>0/2</b><span>Spirals signed off</span></div><div><b>4/8</b><span>Lessons</span></div></div>
       <div class="blk" style="margin-top:16px"><button class="btn --block" onclick="App.go('mentor')">Open mentor plan</button></div>
       <div class="note">Bonus starts after your sign-off. Until then every practice build counts towards the sign-off, not towards a number.</div>
@@ -3131,12 +3077,12 @@ function leftDays(){const pend=S.leaves.filter(l=>l.status==='requested'&&l.type
 function sumHtml(){
   const c=leaveCalc();if(!c.ok)return `<div class="sm accent">The end date must be the same day or after the start.</div>`;
   const L=leftDays();
-  return `<div class="flex jc-sb sm"><span>${c.days} day${c.days>1?'s':''} · ${rng(S.leave.from,S.leave.to)}</span>${S.leave.type==='Holiday'?`<span class="muted">${L.left-c.days} left after</span>`:''}</div>${c.peak?`<div class="panel --warn mt12"><div class="sm"><b>Christmas peak, 10–24 Dec</b></div><div class="xs soft mt4">Leave in these weeks needs Tatiana's OK too. Tell Valeria early.</div></div>`:''}${S.leave.type==='Sick'?`<div class="xs soft mt12">Sick today? Please also call the shop before your shift starts.</div>`:''}`;
+  return `<div class="flex jc-sb sm"><span>${c.days} day${c.days>1?'s':''} · ${rng(S.leave.from,S.leave.to)}</span>${S.leave.type==='Holiday'?`<span class="muted">${L.left-c.days} left after</span>`:''}</div>${c.peak?`<div class="panel --warn mt12"><div class="sm"><b>Christmas peak, 10–24 Dec</b></div><div class="xs soft mt4">Leave in these weeks needs Tatiana's OK too. Tell Vanessa early.</div></div>`:''}${S.leave.type==='Sick'?`<div class="xs soft mt12">Sick today? Please also call the shop before your shift starts.</div>`:''}`;
 }
 window.mount_leave=function(){
   const u=A.me(),adm=adminRole(),el=$('#lv-body'),L=leftDays();
   const pend=adm&&S.leavePending.length?`<div class="grp first">Waiting for you · ${S.leavePending.length}</div>`+S.leavePending.map((r,k)=>`<div class="req">${A.avatar(r.who,'--sm')}<div class="f1"><div class="l"><b>${A.user(r.who).n}</b> · ${r.type}</div><div class="d">${rng(r.from,r.to)}</div></div><button class="btn --xs --secondary" onclick="ME5.leaveDecide(${k},false)">Decline</button><button class="btn --xs" onclick="ME5.leaveDecide(${k},true)">Approve</button></div>`).join('')+`<div style="height:8px"></div>`:'';
-  const mine=S.leaves.slice().reverse().map(l=>`<div class="req"><div class="f1"><div class="l">${l.type} · ${rng(l.from,l.to)}</div><div class="d">${l.status==='approved'?'Approved by '+l.by:l.status==='requested'?'Sent to Valeria':'Declined'}</div></div><span class="pill ${l.status==='approved'?'--done':l.status==='requested'?'--review':'--late'}">${cap(l.status)}</span>${l.status==='requested'?`<button class="ib" aria-label="Cancel request" onclick="ME5.leaveCancel(${l.id})">${A.icon('trash')}</button>`:''}</div>`).join('');
+  const mine=S.leaves.slice().reverse().map(l=>`<div class="req"><div class="f1"><div class="l">${l.type} · ${rng(l.from,l.to)}</div><div class="d">${l.status==='approved'?'Approved by '+l.by:l.status==='requested'?'Sent to Vanessa':'Declined'}</div></div><span class="pill ${l.status==='approved'?'--done':l.status==='requested'?'--review':'--late'}">${cap(l.status)}</span>${l.status==='requested'?`<button class="ib" aria-label="Cancel request" onclick="ME5.leaveCancel(${l.id})">${A.icon('trash')}</button>`:''}</div>`).join('');
   el.innerHTML=`${pend}
     <div class="grp ${adm&&S.leavePending.length?'':'first'}">Time off</div>
     <div class="blk"><div class="flex jc-sb ai-c"><div><div class="big" style="font-size:44px">${L.left}</div><div class="xs muted mt4">of 28 holiday days left${L.pend?` · ${L.pend} requested`:''}</div></div>
@@ -3146,7 +3092,7 @@ window.mount_leave=function(){
       <div class="seg" id="lv-type">${['Holiday','Day off','Sick'].map(t=>`<button class="${S.leave.type===t?'on':''}" onclick="ME5.leaveType('${t}')">${t}</button>`).join('')}</div>
       <div class="dates mt16"><div class="field" style="margin:0"><label>From</label><input class="input" type="date" id="lv-from" value="${S.leave.from}" min="2026-10-20" oninput="ME5.leaveUpd()"></div><div class="field" style="margin:0"><label>To</label><input class="input" type="date" id="lv-to" value="${S.leave.to}" min="2026-10-20" oninput="ME5.leaveUpd()"></div></div>
       <div id="lv-sum" class="mt16">${sumHtml()}</div>
-      <div class="field mt16"><label>Note for Valeria (optional)</label><textarea class="input" id="lv-note" placeholder="e.g. family wedding" oninput="ME5.leaveUpd()">${S.leave.note}</textarea></div>
+      <div class="field mt16"><label>Note for Vanessa (optional)</label><textarea class="input" id="lv-note" placeholder="e.g. family wedding" oninput="ME5.leaveUpd()">${S.leave.note}</textarea></div>
     </div>
     <div class="grp">Your requests</div>
     <div class="rows">${mine||'<div class="note" style="padding-top:12px">No requests yet.</div>'}</div>
@@ -3162,12 +3108,12 @@ S.leaveUpd=function(quiet){
 };
 S.leaveSend=function(){
   const c=leaveCalc();if(!c.ok)return;const u=A.me();
-  S.leaves.push({id:Date.now()%1e6,type:S.leave.type,from:S.leave.from,to:S.leave.to,status:'requested',by:'Valeria'});
-  A.haptic();A.toast('Request sent to Valeria');
-  setTimeout(()=>A.push('Leave request · '+u.n,`${S.leave.type}, ${rng(S.leave.from,S.leave.to)} (${c.days} day${c.days>1?'s':''})`,{icon:'calendar',to:'Valeria'}),800);
+  S.leaves.push({id:Date.now()%1e6,type:S.leave.type,from:S.leave.from,to:S.leave.to,status:'requested',by:'Vanessa'});
+  A.haptic();A.toast('Request sent to Vanessa');
+  setTimeout(()=>A.push('Leave request · '+u.n,`${S.leave.type}, ${rng(S.leave.from,S.leave.to)} (${c.days} day${c.days>1?'s':''})`,{icon:'calendar',to:'Vanessa'}),800);
   S.leave.note='';window.mount_leave();$('#lv-body').scrollTop=9999;
 };
-S.leaveCancel=function(id){A.confirm('Cancel this request?','Valeria will no longer see it.','Cancel request',()=>{S.leaves=S.leaves.filter(l=>l.id!==id);A.toast('Request cancelled');window.mount_leave()})};
+S.leaveCancel=function(id){A.confirm('Cancel this request?','Vanessa will no longer see it.','Cancel request',()=>{S.leaves=S.leaves.filter(l=>l.id!==id);A.toast('Request cancelled');window.mount_leave()})};
 S.leaveDecide=function(k,ok){const r=S.leavePending.splice(k,1)[0];A.toast(`${A.user(r.who).n} · ${ok?'approved':'declined'}`);setTimeout(()=>A.push(ok?'Leave approved':'Leave declined',`${r.type}, ${rng(r.from,r.to)}`,{icon:ok?'check':'close',to:A.user(r.who).n}),700);window.mount_leave()};
 
 /* ================================================================ SETTINGS */
@@ -3219,25 +3165,25 @@ S.digestPush=function(){const u=A.me();A.push('Your shift digest',`${A.openTasks
 window.mount_help=function(){
   const u=A.me(),r=A.role(),el=$('#hp-body');
   const open=A.NOW.getHours()>=8&&A.NOW.getHours()<22;
-  const people=[['valeria','Manager · on shift','valeria'],['sasha','Manager · off today','sasha'],['tatiana','Owner · urgent only','tatiana']].filter(x=>x[0]!==u.id);
+  const people=[['vanessa','Manager · on shift','vanessa'],['sabrina','Manager · off today','sabrina'],['tatiana','Owner · urgent only','tatiana']].filter(x=>x[0]!==u.id);
   const FAQ=[
-    ['How tasks work',`<p>Valeria, Sasha or Tatiana can give you a task. It appears in <b>Tasks → Mine</b>. Tap <b>Start</b> when you begin, tick the checklist, then <b>Send to check</b>.</p><p>Your manager sees when you have opened it. Overdue tasks turn red and are flagged to them – no need to remind anyone.</p>`],
+    ['How tasks work',`<p>Vanessa, Sabrina or Tatiana can give you a task. It appears in <b>Tasks → Mine</b>. Tap <b>Start</b> when you begin, tick the checklist, then <b>Send to check</b>.</p><p>Your manager sees when you have opened it. Overdue tasks turn red and are flagged to them – no need to remind anyone.</p>`],
     ['Photo proof',`<p>Some tasks need a photo before they can be sent to check: conditioning, window displays, unpacked boxes. Take it in daylight, flat, whole subject in frame.</p><p>Every order needs a photo of the bouquet before packing – the client receives it automatically.</p>`],
     ['Paid learning',`<p>Learning is paid working time. Do your 3-minute lesson during the shift. The minutes appear on your time sheet as <b>paid learning</b> – no separate clocking.</p>`],
-    ['Who to call',`<p><b>Order or client question:</b> the shop. <b>Courier running late:</b> shop first, then the client. <b>Out of hours and urgent:</b> Valeria, then Tatiana. <b>Injury or fire:</b> 999 first.</p>`],
+    ['Who to call',`<p><b>Order or client question:</b> the shop. <b>Courier running late:</b> shop first, then the client. <b>Out of hours and urgent:</b> Vanessa, then Tatiana. <b>Injury or fire:</b> 999 first.</p>`],
     ['Clocking in and breaks',`<p>Clock in when you arrive – the app checks that you are at the shop (within 150 m). Start a break from <b>Me</b>; breaks are unpaid.</p><p>If you forget to clock out, we ask “Still on shift?” 30 minutes after your shift should have ended.</p>`],
-    ['Swapping a shift',`<p><b>Me → Schedule</b>, pick the day, then <b>Swap shift</b>. Choose a colleague who is off that day. They accept in the app and Valeria approves.</p>`],
+    ['Swapping a shift',`<p><b>Me → Schedule</b>, pick the day, then <b>Swap shift</b>. Choose a colleague who is off that day. They accept in the app and Vanessa approves.</p>`],
     ['Notifications and quiet hours',`<p>By default you only get priority notifications and nothing between shifts. A short digest arrives when your shift starts. Change it in <b>Me → Settings</b>.</p>`]
   ];
   if(r==='courier')FAQ.splice(2,0,['Proof of delivery',`<p>Photo of the bouquet at the door (or with the neighbour) plus a note of where it was left. No photo means we cannot answer “where are my flowers?”.</p><p>Nobody answers? Use <b>No answer</b> on the stop – we call the client for you.</p>`]);
   if(r==='manager'||r==='owner')FAQ.splice(2,0,['Approving time and leave',`<p>Entries and requests waiting for you are on <b>Me → Time sheet</b> and <b>Me → Leave request</b>. Approve one by one or approve a whole week.</p>`]);
-  if(u.staff_type==='trainee')FAQ.splice(2,0,['Your buddy and sign-off',`<p>Svetlana is your buddy for 14 days. She signs off each practice build in the app. Ask her any time – there are no silly questions.</p>`]);
+  if(u.staff_type==='trainee')FAQ.splice(2,0,['Your buddy and sign-off',`<p>Sylvia is your buddy for 14 days. She signs off each practice build in the app. Ask her any time – there are no silly questions.</p>`]);
   const contact=people.map(x=>`<div class="row st">${A.avatar(x[0])}<span class="rt"><div class="l">${A.user(x[0]).n}</div><div class="d">${x[1]}</div></span><button class="btn --xs --secondary" onclick="App.toast('Calling ${A.user(x[0]).n}…')">${A.icon('phone')} Call</button></div>`).join('');
   el.innerHTML=`<div class="blk" style="margin-top:8px"><div class="panel --ink call"><div class="caps" style="opacity:.7">${open?'Open now · until 22:00':'Closed · opens 8:00'}</div><div class="h2 mt8">Need someone now?</div><p class="sm" style="margin:8px 0 18px;opacity:.8">The shop picks up fast. 80 Willow Walk, Bermondsey SE1.</p><button class="btn --paper --block" onclick="App.toast('Calling the shop…')">${A.icon('phone')} Call the shop</button></div></div>
     <div class="grp">Who to call</div><div class="rows">${contact}</div>
     <div class="grp">Answers</div>
     <div class="blk"><div class="search">${A.icon('search')}<input id="hp-q" placeholder="Search help" oninput="ME5.faq()"></div></div>
-    <div class="acc-w" style="margin-top:14px"><div class="acc" id="hp-acc">${FAQ.map((f,i)=>`<details ${i===0?'open':''}><summary>${f[0]}</summary><div class="acc-b">${f[1]}</div></details>`).join('')}</div><div id="hp-none" class="soft sm" style="display:none;padding:16px 0">No answer for that. Ask Valeria, she will add it.</div></div>
+    <div class="acc-w" style="margin-top:14px"><div class="acc" id="hp-acc">${FAQ.map((f,i)=>`<details ${i===0?'open':''}><summary>${f[0]}</summary><div class="acc-b">${f[1]}</div></details>`).join('')}</div><div id="hp-none" class="soft sm" style="display:none;padding:16px 0">No answer for that. Ask Vanessa, she will add it.</div></div>
     <div class="grp">Something not working?</div>
     <div class="rows"><button class="row" onclick="ME5.report()">${ic('chat','ic')}<span class="rt"><div class="l">Tell the tech team</div><div class="d">A bug, a wrong word, an idea – we read everything</div></span>${ic('chev','chev')}</button></div>
     <div class="note tc" style="padding-top:24px">Floritta Team · prototype · London time</div>`;
@@ -3281,9 +3227,9 @@ S.report=function(){
   const A=window.App;const W={};window.WK=W;
   /* ---- data ---- */
   STAFF.forEach(s=>{s.engagement=(s.staff_type==='seasonal')?'worker':'employee'});
-  const z=STAFF.find(s=>s.id==='zhadra');z.title='Florist · casual';z.rate=13.21;
+  const z=STAFF.find(s=>s.id==='zhanna');z.title='Florist · casual';z.rate=13.00;
   const mx=STAFF.find(s=>s.id==='max');mx.title='Courier · casual';mx.rate=15.50;
-  if(window.PERSONAS&&!PERSONAS.find(p=>p.id==='zhadra'))PERSONAS.unshift({id:'zhadra',label:'Worker · casual'});
+  if(window.PERSONAS&&!PERSONAS.find(p=>p.id==='zhanna'))PERSONAS.unshift({id:'zhanna',label:'Worker · casual'});
   const isWorker=u=>(u||A.me()).engagement==='worker';
   const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
@@ -3343,7 +3289,7 @@ S.report=function(){
   W.skip=id=>{const o=W.offers.find(x=>x.id===id);o.status='skipped';A.haptic();A.toast('Skipped – no effect on future offers');window.mount_schedule()};
   W.unskip=id=>{const o=W.offers.find(x=>x.id===id);o.status='open';window.mount_schedule()};
   W.release=id=>{const o=W.offers.find(x=>x.id===id);
-    A.sheet(`<div class="sh-head"><div class="h3">Release this shift?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(o.off)} · ${o.hrs}. It goes back to the open list. No fee, no rating, no effect on what we offer you next. The shift and the time you released it stay in your record, like every shift. We ask for 24 h notice when you can – or pass it to a colleague who wants it.</p><div class="caps muted" style="margin:18px 0 6px">Offer it to a colleague</div><button class="radio" onclick="App.closeSheet();App.toast('Offered to Max – he gets one push');WK.releaseDo(${o.id},'max')"><span class="rd"></span><span class="f1"><span class="sm">Max</span> <span class="xs muted">· casual courier, free that day</span></span></button></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();WK.releaseDo(${o.id})">Release to the board</button></div>`)};
+    A.sheet(`<div class="sh-head"><div class="h3">Release this shift?</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="soft" style="margin:0">${lab(o.off)} · ${o.hrs}. It goes back to the open list. No fee, no rating, no effect on what we offer you next. The shift and the time you released it stay in your record, like every shift. We ask for 24 h notice when you can – or pass it to a colleague who wants it.</p><div class="caps muted" style="margin:18px 0 6px">Offer it to a colleague</div><button class="radio" onclick="App.closeSheet();App.toast('Offered to Milo – he gets one push');WK.releaseDo(${o.id},'max')"><span class="rd"></span><span class="f1"><span class="sm">Milo</span> <span class="xs muted">· casual courier, free that day</span></span></button></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn" onclick="App.closeSheet();WK.releaseDo(${o.id})">Release to the board</button></div>`)};
   W.releaseDo=(id,to)=>{const o=W.offers.find(x=>x.id===id);o.status='open';o.taken--;if(to){o.note='Offered to '+to.charAt(0).toUpperCase()+to.slice(1)+' first'}else{const soon=o.off<=1;if(soon){o.note='Urgent · +£1/h';o.pub=1}A.toast('Released – shift is open again')}window.mount_schedule()};
 
   /* ---- Guaranteed-hours offer (ERA 2025, from 2027) ---- */
@@ -3373,7 +3319,7 @@ S.report=function(){
 
   /* ---- Pay statement: hours × rate, learning, bonus share, rolled-up holiday 12.07 % ---- */
   window.mount_pay=function(){
-    const u=A.me(),el=document.getElementById('pay-body'),rate=u.rate||13.21;
+    const u=A.me(),el=document.getElementById('pay-body'),rate=u.rate||13.00;
     const hrs=21.5,learn=0.5,bonus=9.90,pot=4.20;
     const base=hrs*rate,learnP=learn*rate,sub=base+learnP+bonus+pot,tot=sub;const holAcc=Math.round((hrs+learn)*0.1207),holBank=61,holCap=196;
     el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">Week 42 · 12–18 Oct</div><h1 class="h1 mt8">${fmtGBP(tot)}</h1><div class="sm soft mt4">Paid Fri 23 Oct · PAYE</div></div>
@@ -3437,12 +3383,12 @@ S.report=function(){
   const origSplash=window.mount_splash;
   window.mount_splash=function(){origSplash();const u=A.me();if(isWorker(u)){document.getElementById('sp-eyebrow').textContent='Floritta Team · casual worker';document.querySelector('.sp-lead').textContent='Open shifts, your hours and lessons – nothing you have to do.'}};
 
-  /* ---- Manager: open shifts board inside Schedule (View as Valeria) ---- */
+  /* ---- Manager: open shifts board inside Schedule (View as Vanessa) ---- */
   const origSchedule2=window.mount_schedule;
   window.mount_schedule=function(p){origSchedule2(p);const u=A.me();if(isWorker(u)||!(u.role==='manager'||u.role==='owner'))return;
     const el=document.getElementById('sch-body');const open=W.offers.filter(o=>o.status!=='cancelled');
-    const rows=open.map(o=>`<div class="appr"><div class="f1"><div class="sm"><b>${lab(o.off)}</b> · ${o.hrs} · ${o.place}</div><div class="xs muted">${o.taken}/${o.spots} taken${o.status==='accepted'?' · Zhadra':''} · published ${o.pub} h ago${o.pub<W.notice?' · <span class="accent">under notice</span>':''}</div></div><button class="btn --xs --secondary" onclick="App.toast('Cancelled – workers get one push; nothing is paid or deducted')">Cancel</button></div>`).join('');
-    const box=document.createElement('div');box.innerHTML=`<div class="grp first">Open shifts for casual workers · ${open.length}</div>${rows}<div class="blk" style="margin:12px 0 8px"><button class="btn --secondary --block --sm" onclick="WK.publish()">Publish a shift</button></div><div class="note" style="padding-top:0">Casual workers pick from this list. You can't assign them – only publish and wait.</div><div class="grp">Agreements ending soon</div><div class="appr"><div class="f1"><div class="sm"><b>Max</b> · casual courier · ends 15 Dec 2026</div><div class="xs muted">Decide by 1 Dec: extend, let it end, or offer a contract</div></div><button class="btn --xs --secondary" onclick="App.toast('Reminder set for 1 Dec')">Remind me</button></div><div class="appr"><div class="f1"><div class="sm"><b>Zhadra</b> · casual florist · ends 15 Mar 2027</div><div class="xs muted">Decide by 1 Mar</div></div></div>`;
+    const rows=open.map(o=>`<div class="appr"><div class="f1"><div class="sm"><b>${lab(o.off)}</b> · ${o.hrs} · ${o.place}</div><div class="xs muted">${o.taken}/${o.spots} taken${o.status==='accepted'?' · Zhanna':''} · published ${o.pub} h ago${o.pub<W.notice?' · <span class="accent">under notice</span>':''}</div></div><button class="btn --xs --secondary" onclick="App.toast('Cancelled – workers get one push; nothing is paid or deducted')">Cancel</button></div>`).join('');
+    const box=document.createElement('div');box.innerHTML=`<div class="grp first">Open shifts for casual workers · ${open.length}</div>${rows}<div class="blk" style="margin:12px 0 8px"><button class="btn --secondary --block --sm" onclick="WK.publish()">Publish a shift</button></div><div class="note" style="padding-top:0">Casual workers pick from this list. You can't assign them – only publish and wait.</div><div class="grp">Agreements ending soon</div><div class="appr"><div class="f1"><div class="sm"><b>Milo</b> · casual courier · ends 15 Dec 2026</div><div class="xs muted">Decide by 1 Dec: extend, let it end, or offer a contract</div></div><button class="btn --xs --secondary" onclick="App.toast('Reminder set for 1 Dec')">Remind me</button></div><div class="appr"><div class="f1"><div class="sm"><b>Zhanna</b> · casual florist · ends 15 Mar 2027</div><div class="xs muted">Decide by 1 Mar</div></div></div>`;
     el.insertBefore(box,el.firstChild);
   };
   W.publish=()=>A.sheet(`<div class="sh-head"><div class="h3">Publish a shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Day</label><input class="input" value="Sat 31 Oct"></div><div class="field"><label>Hours</label><input class="input" value="12:00–20:00"></div><div class="field"><label>Places</label><input class="input" value="2"></div><div class="field"><label>Note</label><input class="input" placeholder="e.g. Halloween – busy day"></div><p class="xs muted" style="margin:0">Starts in 11 days – well over the ${W.notice} h notice. Workers get one push; no reminders.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="App.closeSheet();App.toast('Published to 2 casual florists')">Publish</button></div>`);
@@ -3450,15 +3396,8 @@ S.report=function(){
   /* ---- gutter notes + nav ---- */
   const nav=document.getElementById('nav-list');
   if(nav){['guaranteed','pay'].forEach(id=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.go('${id}')"><span>${id==='pay'?'Pay statement':'Guaranteed hours'}</span><small>worker</small></button>`;nav.appendChild(li)});
-    const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур worker (копия прототипа, 21.10)</h4><ul>
-      <li><b>Zhadra</b> – casual worker. Войти как она: «View as» в Me или персона слева.</li>
-      <li><b>Shift offers</b> вместо Schedule: студия публикует, worker берёт или пропускает. Пропуск и отказ ничего не записывают.</li>
-      <li><b>Guaranteed hours</b> – предложение по 12 неделям (ERA 2025, с 2027). «Нет» ничего не меняет.</li>
-      <li><b>Pay statement</b> – часы × ставка ≥ £12.71, обучение оплачено, PAYE; отпуск копится в часах (12,07 %, потолок 28 дней) и платится при взятии.</li>
-      <li><b>Внутри смены</b> всё как у всех: clock-in, задачи, уроки, бонус. Отличие только между сменами.</li>
-      <li><b>Менеджер</b> (View as Valeria → Schedule) видит доску открытых смен и может только публиковать, не назначать.</li>
-      <li><b>Срок договора</b> – «My agreement» в Me (worker и self-employed) с датой окончания; у менеджера в Schedule – «Agreements ending soon» с датой решения за 2 недели.</li><li><b>My agreement</b> – краткое содержание договора, галочка «прочитала», подпись пальцем (Clear / Sign), после подписи – дата, версия, картинка подписи. У Zhadra не подписан (на Today – напоминание), у Dana подписан на бумаге (скан от HR).</li><li>Исходный index.html не изменён.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
-  /* ---- start as Zhadra ---- */
+    const n=document.createElement('div');n.className='notes';n.innerHTML=``;nav.parentNode.insertBefore(n,nav.nextSibling)}
+  /* ---- start as Zhanna ---- */
   A.state.clockedIn=false; /* стенд стартует с персоны по умолчанию */
   document.title='Floritta Staff — worker contour (copy)';
   if(A.state.current){A.go(A.state.current,{},{replace:true})}
@@ -3479,7 +3418,7 @@ S.report=function(){
 <script>
 (function(){
   const A=window.App;const C={};window.CT=C;
-  STAFF.push({id:'dana',n:'Dana',role:'courier',title:'Courier · self-employed',initials:'DA',engagement:'contractor'});
+  STAFF.push({id:'devon',n:'Devon',role:'courier',title:'Courier · self-employed',initials:'DA',engagement:'contractor'});
   const isCtr=u=>(u||A.me()).engagement==='contractor';
   const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const dOf=off=>{const d=new Date(2026,9,20);d.setDate(d.getDate()+off);return d};
@@ -3575,7 +3514,7 @@ S.report=function(){
   window.mount_home=function(){if(!isCtr())return origHome();
     const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
     const mine=C.jobs.filter(j=>j.status==='mine'&&j.off===0);
-    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Dana</h1><div class="sm soft mt4">${mine.length?`${mine.length} job today · collect ${mine[0].pickup}`:'No jobs taken today'}</div></div>
+    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Devon</h1><div class="sm soft mt4">${mine.length?`${mine.length} job today · collect ${mine[0].pickup}`:'No jobs taken today'}</div></div>
       ${board()}`;
   };
   window.mount_me=function(){if(!isCtr())return origMe();
@@ -3604,9 +3543,9 @@ S.report=function(){
   const origWork=window.mount_work;window.mount_work=function(p){if(!isCtr())return origWork&&origWork(p);A.go('jobs',{},{replace:true})};
   const origSplash=window.mount_splash;window.mount_splash=function(){origSplash();if(isCtr()){document.getElementById('sp-eyebrow').textContent='Floritta Jobs · self-employed';document.querySelector('.sp-lead').textContent='Jobs with a fixed fee. Take what suits you.'}};
   /* persona + nav */
-  const pe=document.getElementById('persona');if(pe&&!pe.querySelector('[data-id="dana"]')){const u=A.user('dana');const b=document.createElement('button');b.dataset.id='dana';b.innerHTML=`${A.avatar(u,'--sm')}<span>${u.n}</span><small>Courier · self-employed</small>`;b.onclick=()=>A.setUser('dana');pe.insertBefore(b,pe.children[1]||null)}
-  const nav=document.getElementById('nav-list');if(nav){[['jobs','Jobs board'],['statements','Statements & invoices'],['bizprofile','Business profile'],['taxstatus','Tax & status']].forEach(([id,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.setUser('dana');App.go('${id}')"><span>${l}</span><small>self-employed</small></button>`;nav.appendChild(li)});
-    const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Контур self-employed (Dana)</h4><ul><li><b>Jobs board</b> – работы с фиксированной ценой за задачу; Apply / Withdraw без последствий.</li><li><b>Send a substitute</b> – без нашего разрешения, только 18+ и проверка права на работу (закон).</li><li><b>Statements & invoices</b> – gross, без вычетов, без holiday pay; можно слать свой счёт.</li><li><b>Business profile</b> – добровольно, раз в квартал: UTR, другие клиенты, страховка.</li><li>Нет смен, роты, задач, уроков и табеля. Три вкладки вместо пяти.</li></ul>`;nav.parentNode.insertBefore(n,nav.nextSibling)}
+  const pe=document.getElementById('persona');if(pe&&!pe.querySelector('[data-id="devon"]')){const u=A.user('devon');const b=document.createElement('button');b.dataset.id='devon';b.innerHTML=`${A.avatar(u,'--sm')}<span>${u.n}</span><small>Courier · self-employed</small>`;b.onclick=()=>A.setUser('devon');pe.insertBefore(b,pe.children[1]||null)}
+  const nav=document.getElementById('nav-list');if(nav){[['jobs','Jobs board'],['statements','Statements & invoices'],['bizprofile','Business profile'],['taxstatus','Tax & status']].forEach(([id,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button" data-screen="${id}" onclick="App.setUser('devon');App.go('${id}')"><span>${l}</span><small>self-employed</small></button>`;nav.appendChild(li)});
+    const n=document.createElement('div');n.className='notes';n.innerHTML=``;nav.parentNode.insertBefore(n,nav.nextSibling)}
   tabs();
 })();
 </script>
@@ -3630,7 +3569,7 @@ S.report=function(){
   G.docs={
     worker:{title:'Casual Worker Agreement',ver:'v1.0',from:'1 Nov 2026',to:'15 Mar 2027',signed:null,
       terms:[['Your status','casual worker – not an employee, not self-employed'],['Work','we publish shifts; you take the ones you want. No obligation either way between shifts'],['Pay','hourly rate per hour worked (never below £12.71) + bouquet bonus, weekly, through PAYE'],['Holiday','12.07 % of your hours builds up, up to 28 days a year; paid when you take it'],['Sick pay, pension','Statutory Sick Pay; workplace pension if you qualify'],['Inside a shift','studio standards, clock-in, tasks and lessons apply like for everyone'],['Ending','either of us, in writing; this agreement ends on 15 Mar 2027 unless renewed']]},
-    contractor:{title:'Services Agreement',ver:'v1.0',from:'3 Oct 2026',to:'30 Sep 2027',signed:{via:'paper',at:'3 Oct 2026, 11:05',by:'HR · Sasha',img:null},
+    contractor:{title:'Services Agreement',ver:'v1.0',from:'3 Oct 2026',to:'30 Sep 2027',signed:{via:'paper',at:'3 Oct 2026, 11:05',by:'HR · Sabrina',img:null},
       terms:[['Your status','self-employed – you run your own business'],['Jobs','fixed fee per job, shown before you apply; apply or withdraw freely before collection'],['Substitute','you may send someone else (18+, right to work checked)'],['Other clients','you may work for anyone'],['Pay','weekly statement or your own invoice, gross – you handle your own tax'],['Not included','holiday pay, sick pay, pension'],['Ending','either of us, 7 days in writing; ends 30 Sep 2027 unless renewed']]}
   };
   const kind=()=>{const u=A.me();return u.engagement==='contractor'?'contractor':u.engagement==='worker'?'worker':null};
@@ -3736,11 +3675,11 @@ S.report=function(){
 (function(){
   const A=window.App;const R={};window.RS=R;
   /* ---- people ---- */
-  STAFF.push({id:'lina',n:'Lina',role:'florist',title:'Florist · in the reserve',initials:'LI',engagement:'reserve'});
-  STAFF.push({id:'mira',n:'Mira',role:'florist',title:'Florist · self-employed',initials:'MI',engagement:'contractor'});
-  if(window.PERSONAS){PERSONAS.splice(1,0,{id:'lina',label:'Reserve · new'},{id:'mira',label:'Florist · self-employed'})}
+  STAFF.push({id:'lola',n:'Lola',role:'florist',title:'Florist · in the reserve',initials:'LI',engagement:'reserve'});
+  STAFF.push({id:'mina',n:'Mina',role:'florist',title:'Florist · self-employed',initials:'MI',engagement:'contractor'});
+  if(window.PERSONAS){PERSONAS.splice(1,0,{id:'lola',label:'Reserve · new'},{id:'mina',label:'Florist · self-employed'})}
   const isRes=u=>(u||A.me()).engagement==='reserve';
-  const isMira=u=>(u||A.me()).id==='mira';
+  const isMira=u=>(u||A.me()).id==='mina';
   const isMgr=u=>(u||A.me()).role==='manager';
   const gbp=n=>'£'+n.toFixed(0);
   const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -3748,7 +3687,7 @@ S.report=function(){
   const lab=off=>{const d=dOf(off);return `${DAYS[(d.getDay()+6)%7]} ${d.getDate()} ${['Oct','Nov'][d.getMonth()-9]}`};
   const ic=(n,c)=>A.icon(n).replace('<svg',`<svg class="${c||'ic'}"`);
 
-  /* ---- onboarding state for Lina (came from the Work with us form) ---- */
+  /* ---- onboarding state for Lola (came from the Work with us form) ---- */
   R.ob={
     paths:{shifts:false,jobs:false},
     rtw:'todo',            /* todo → sent → checked */
@@ -3760,7 +3699,7 @@ S.report=function(){
     return [
       {k:'details',l:'Your details',d:'From your application: SE16 · weddings, hand-tied · weekends',done:true,fn:"RS.details()"},
       {k:'paths',l:'How you\'d like to work',d:any?[p.shifts?'Shifts at the studio':null,p.jobs?'Event & wedding jobs':null].filter(Boolean).join(' + '):'Shifts, jobs, or both',done:any,fn:"App.go('rs-paths')"},
-      {k:'rtw',l:'Right to work',d:o.rtw==='checked'?'Checked on GOV.UK · 22 Oct · by Valeria':o.rtw==='sent'?'Share code sent · we check within 24 h':'Share code from GOV.UK, or your UK / Irish passport',done:o.rtw==='checked',wait:o.rtw==='sent',fn:"App.go('rs-rtw')"},
+      {k:'rtw',l:'Right to work',d:o.rtw==='checked'?'Checked on GOV.UK · 22 Oct · by Vanessa':o.rtw==='sent'?'Share code sent · we check within 24 h':'Share code from GOV.UK, or your UK / Irish passport',done:o.rtw==='checked',wait:o.rtw==='sent',fn:"App.go('rs-rtw')"},
       {k:'pay',l:'Pay details',d:o.pay?'Bank · NI number saved':p.jobs&&!p.shifts?'Bank account · UTR optional':'Bank account · National Insurance number',done:o.pay,fn:"RS.paySheet()"},
       {k:'sign',l:p.shifts&&p.jobs?'Sign your two agreements':'Sign your agreement',d:!any?'After you choose how to work':[p.shifts?`Casual Worker Agreement${o.signed.worker?' ✓':''}`:null,p.jobs?`Florist Services Agreement${o.signed.contractor?' ✓':''}`:null].filter(Boolean).join(' · '),done:any&&(!p.shifts||o.signed.worker)&&(!p.jobs||o.signed.contractor),off:!any,fn:any?"RS.signSheet()":""},
       {k:'lessons',l:'Two short lessons',d:p.shifts?'Studio safety 6 min · Our standards 8 min · paid with your first shift':'Only for studio shifts – jobs come with their own brief',done:o.lessons||(any&&!p.shifts),off:!p.shifts,fn:p.shifts?"RS.lessons()":""}
@@ -3779,9 +3718,9 @@ S.report=function(){
   window.mount_rs_email=function(){
     document.getElementById('rs-email-body').innerHTML=`<div class="rs-note" style="padding-top:8px">Sent from CRM when a manager presses <b>Invite to reserve</b> on a Work-with-us application. One email, no follow-up chasers.</div>
       <div class="rs-mail">
-        <div class="hdr"><b>Floritta Studio</b><br>To: Lina K.<br>Subject: <b>You're in the Floritta reserve</b></div>
+        <div class="hdr"><b>Floritta Studio</b><br>To: Lola K.<br>Subject: <b>You're in the Floritta reserve</b></div>
         <div class="bd">
-          <p>Hi Lina,</p>
+          <p>Hi Lola,</p>
           <p>Thank you for applying through <i>Work with us</i>. We loved your wedding work and would like to keep you in our reserve of florists.</p>
           <p><b>How it works.</b> Download the Floritta Team app and join with your code. When we have an open shift at the studio or a wedding or event job, it comes to your phone. You take what suits you and ignore the rest – no obligation either way.</p>
           <div class="caps muted" style="margin-top:16px">Your code · valid 14 days</div>
@@ -3812,7 +3751,7 @@ S.report=function(){
   window.mount_rs_rtw=function(){
     const st=R.ob.rtw,el=document.getElementById('rs-rtw-body'),cta=document.getElementById('rs-rtw-cta');
     if(st!=='todo'){
-      el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">${st==='checked'?'Done':'Sent 22 Oct, 10:14'}</div><h1 class="h2 mt8">${st==='checked'?'Right to work checked':'We\'re checking'}</h1><p class="soft" style="margin:10px 0 0">${st==='checked'?'Checked on GOV.UK by Valeria on 22 Oct. Nothing else to do. If your permission has an end date, we\'ll remind you a month before.':'A manager checks your share code on GOV.UK, usually the same day. You\'ll get a notification.'}</p></div>
+      el.innerHTML=`<div class="pad" style="padding-top:8px"><div class="caps muted">${st==='checked'?'Done':'Sent 22 Oct, 10:14'}</div><h1 class="h2 mt8">${st==='checked'?'Right to work checked':'We\'re checking'}</h1><p class="soft" style="margin:10px 0 0">${st==='checked'?'Checked on GOV.UK by Vanessa on 22 Oct. Nothing else to do. If your permission has an end date, we\'ll remind you a month before.':'A manager checks your share code on GOV.UK, usually the same day. You\'ll get a notification.'}</p></div>
         <div class="rs-grp">What we keep</div><div class="wk-kv --info"><span>Record</span><span>the GOV.UK result page, date and who checked</span><span>How long</span><span>while you work with us + 2 years, then deleted</span></div>`;
       cta.innerHTML=st==='sent'?`<button class="btn --block --secondary" onclick="RS.rtwDemo()">Demo: manager checks it</button>`:`<button class="btn --block" onclick="App.back('home')">Done</button>`;
       return;
@@ -3829,8 +3768,8 @@ S.report=function(){
   R.rtwSend=()=>{R.ob.rtw='sent';A.haptic();A.toast('Sent – we check within 24 h');window.mount_rs_rtw()};
   R.rtwDemo=()=>{R.ob.rtw='checked';A.push('Right to work checked','You\'re one step from your first offer',{icon:'check'});window.mount_rs_rtw()};
 
-  R.details=()=>A.sheet(`<div class="sh-head"><div class="h3">Your details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">From your Work-with-us application on 19 Oct. Edit anything.</p><div class="field"><label>Name</label><input class="input" value="Lina K."></div><div class="field"><label>Phone</label><input class="input" value="+44 7··· ··· 412"></div><div class="field"><label>Area</label><input class="input" value="SE16"></div><div class="field"><label>Skills</label><input class="input" value="weddings, hand-tied"></div><div class="field"><label>Usually free</label><input class="input" value="weekends, Mon"></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Saved')">Save</button></div>`);
-  R.paySheet=()=>{const p=R.ob.paths,jobsOnly=p.jobs&&!p.shifts;A.sheet(`<div class="sh-head"><div class="h3">Pay details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Account name</label><input class="input" value="Lina K."></div><div class="field"><label>Sort code · account</label><input class="input" value="04-00-04 · 1234····"></div>${jobsOnly?'':'<div class="field"><label>National Insurance number</label><input class="input" value="QQ 12 34 56 C"></div>'}${p.jobs?'<div class="field"><label>UTR (optional, for jobs)</label><input class="input" placeholder="10 digits"></div>':''}<p class="xs muted" style="margin:0">${p.shifts?'Shifts are paid through PAYE – we need your NI number. ':''}${p.jobs?'Jobs are paid gross – you handle your own tax.':''}</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.ob.pay=true;App.toast('Saved');window.mount_home()">Save</button></div>`)};
+  R.details=()=>A.sheet(`<div class="sh-head"><div class="h3">Your details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">From your Work-with-us application on 19 Oct. Edit anything.</p><div class="field"><label>Name</label><input class="input" value="Lola K."></div><div class="field"><label>Phone</label><input class="input" value="+44 7··· ··· 412"></div><div class="field"><label>Area</label><input class="input" value="SE16"></div><div class="field"><label>Skills</label><input class="input" value="weddings, hand-tied"></div><div class="field"><label>Usually free</label><input class="input" value="weekends, Mon"></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Saved')">Save</button></div>`);
+  R.paySheet=()=>{const p=R.ob.paths,jobsOnly=p.jobs&&!p.shifts;A.sheet(`<div class="sh-head"><div class="h3">Pay details</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Account name</label><input class="input" value="Lola K."></div><div class="field"><label>Sort code · account</label><input class="input" value="04-00-04 · 1234····"></div>${jobsOnly?'':'<div class="field"><label>National Insurance number</label><input class="input" value="QQ 12 34 56 C"></div>'}${p.jobs?'<div class="field"><label>UTR (optional, for jobs)</label><input class="input" placeholder="10 digits"></div>':''}<p class="xs muted" style="margin:0">${p.shifts?'Shifts are paid through PAYE – we need your NI number. ':''}${p.jobs?'Jobs are paid gross – you handle your own tax.':''}</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.ob.pay=true;App.toast('Saved');window.mount_home()">Save</button></div>`)};
   R.signSheet=()=>{const p=R.ob.paths,s=R.ob.signed;
     const doc=(k,t,v,terms)=>`<div class="panel" style="margin-bottom:12px"><div class="flex ai-c jc-sb"><div class="h4">${t}</div>${s[k]?'<span class="pill --done">Signed</span>':''}</div><div class="xs muted mt4">${v}</div><div class="wk-kv --info" style="margin:12px 0 0">${terms.map(x=>`<span>${x[0]}</span><span>${x[1]}</span>`).join('')}</div>${s[k]?'':`<button class="btn --sm mt16" onclick="RS.sign('${k}')">Read and sign</button>`}</div>`;
     A.sheet(`<div class="sh-head"><div class="h3">Your agreement${p.shifts&&p.jobs?'s':''}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body">
@@ -3840,7 +3779,7 @@ S.report=function(){
   R.sign=k=>{R.ob.signed[k]=true;A.haptic();A.toast('Signed – copy saved in My agreement');R.signSheet();window.mount_home()};
   R.lessons=()=>{R.ob.lessons=true;A.toast('Lessons done – paid at your hourly rate with your first shift');window.mount_home()};
 
-  /* Lina – Today = onboarding checklist, then «you're in» */
+  /* Lola – Today = onboarding checklist, then «you're in» */
   const origHome=window.mount_home;
   window.mount_home=function(){
     if(!isRes()){origHome();if(isMgr())R.mgrPanel();return}
@@ -3849,20 +3788,20 @@ S.report=function(){
     const list=st.map((s,i)=>`<button class="rs-step${s.done?' done':''}${s.wait?' wait':''}${s.off?' off':''}" ${s.fn?`onclick="${s.fn}"`:''}><span class="n">${s.done?A.icon('check'):i+1}</span><span class="f1"><div class="l">${s.l}</div><div class="d">${s.d}</div></span><span class="s">${s.done?'Done':s.wait?'Checking':s.off?'':'To do'}</span></button>`).join('');
     const p=R.ob.paths;
     document.getElementById('td-body').innerHTML=ready()
-      ?`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve</div><h1 class="h1 mt8">You're in, Lina</h1><p class="soft" style="margin:10px 0 0">${p.shifts?'Open shifts':''}${p.shifts&&p.jobs?' and ':''}${p.jobs?'event jobs':''} will come to this phone. Take what suits you – nothing is expected of you, and passing is never recorded.</p></div>
+      ?`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve</div><h1 class="h1 mt8">You're in, Lola</h1><p class="soft" style="margin:10px 0 0">${p.shifts?'Open shifts':''}${p.shifts&&p.jobs?' and ':''}${p.jobs?'event jobs':''} will come to this phone. Take what suits you – nothing is expected of you, and passing is never recorded.</p></div>
         <div class="rs-grp">Alerts</div><div class="wk-kv --info"><span>When</span><span>as soon as something matches · quiet 21:00–08:00</span><span>How many</span><span>max 6 a day</span><span>Matches</span><span>your area (SE16 + 5 km), weekends, Mon</span></div>
         <div class="blk" style="margin-top:16px"><button class="btn --block" onclick="RS.samplePush()">Show a sample offer</button></div>
         <div class="rs-note">Your first ${p.shifts?'shift':'job'} opens the rest of the app${p.shifts?' – Today, tasks and lessons, like for the whole team':''}.</div>`
-      :`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve · joined with FLR-7Q4K</div><h1 class="h1 mt8">Hello, Lina</h1><p class="soft" style="margin:10px 0 0">A few steps and we can start sending you offers. About 10 minutes.</p></div>
+      :`<div class="pad" style="padding-top:4px"><div class="caps muted">Floritta reserve · joined with FLR-7Q4K</div><h1 class="h1 mt8">Hello, Lola</h1><p class="soft" style="margin:10px 0 0">A few steps and we can start sending you offers. About 10 minutes.</p></div>
         <div class="rs-bar"><i style="width:${Math.round(done/act.length*100)}%"></i></div>
         <div class="sm soft" style="padding:8px var(--gutter) 14px">${done} of ${act.length} done</div>
         <div class="rs-steps">${list}</div>
         <div class="rs-note">Changed your mind? <button class="textbtn" onclick="RS.leave()">Leave the reserve</button> – we delete your application.</div>`;
   };
-  R.samplePush=()=>{const p=R.ob.paths;if(p.shifts)A.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h + bonus · Take or skip',{icon:'calendar'});else A.push('New job · £420','Sat 24 Oct · wedding, Chelsea · arch + 8 centrepieces',{icon:'calendar'})};
+  R.samplePush=()=>{const p=R.ob.paths;if(p.shifts)A.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.00/h + bonus · Take or skip',{icon:'calendar'});else A.push('New job · £420','Sat 24 Oct · wedding, Chelsea · arch + 8 centrepieces',{icon:'calendar'})};
   R.leave=()=>A.confirm('Leave the reserve?','We delete your application and this account. No more emails or alerts. You can apply again any time on floritta.uk.','Leave and delete',()=>A.toast('Deleted – demo'));
 
-  /* Lina – Me: short, no team sections */
+  /* Lola – Me: short, no team sections */
   const origMe=window.mount_me;
   window.mount_me=function(){if(!isRes())return origMe();
     const u=A.me(),el=document.getElementById('me-body');
@@ -3883,11 +3822,11 @@ S.report=function(){
   const tabs=()=>{const r=isRes();document.querySelectorAll('#tabbar .tab').forEach(t=>{const k=t.dataset.tab;t.classList.toggle('rs-hide',r&&(k==='tasks'||k==='learn'||k==='work'))});if(r)document.getElementById('tabbar').style.gridTemplateColumns='repeat(2,1fr)'};
   document.addEventListener('user',tabs);
   const origSplash=window.mount_splash;window.mount_splash=function(){origSplash();if(!isRes())return;
-    document.getElementById('sp-eyebrow').textContent='Floritta reserve';document.getElementById('sp-title').innerHTML='Welcome,<br>Lina.';document.querySelector('.sp-lead').textContent='Open shifts and event jobs, straight to your phone.';
-    const b=document.getElementById('sp-face');b.innerHTML='Join with invite code';b.onclick=()=>A.sheet(`<div class="sh-head"><div class="h3">Join the reserve</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Invite code from your email</label><input class="input" value="FLR-7Q4K"></div><div class="field"><label>Email</label><input class="input" value="lina.k@····.com"></div><p class="xs muted" style="margin:0">The code links this app to your application – no forms twice. Then Face ID or a PIN.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.go('home');App.state.history=[]">Continue</button></div>`);
+    document.getElementById('sp-eyebrow').textContent='Floritta reserve';document.getElementById('sp-title').innerHTML='Welcome,<br>Lola.';document.querySelector('.sp-lead').textContent='Open shifts and event jobs, straight to your phone.';
+    const b=document.getElementById('sp-face');b.innerHTML='Join with invite code';b.onclick=()=>A.sheet(`<div class="sh-head"><div class="h3">Join the reserve</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Invite code from your email</label><input class="input" value="FLR-7Q4K"></div><div class="field"><label>Email</label><input class="input" value="lola.k@····.com"></div><p class="xs muted" style="margin:0">The code links this app to your application – no forms twice. Then Face ID or a PIN.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.go('home');App.state.history=[]">Continue</button></div>`);
     const pin=document.getElementById('sp-pin');if(pin)pin.textContent='See the invite email';pin.onclick=()=>A.go('rs-email')};
 
-  /* ---- Mira – self-employed florist: whole jobs for a fixed fee ---- */
+  /* ---- Mina – self-employed florist: whole jobs for a fixed fee ---- */
   R.jobs=[
     {id:31,off:0,title:'Restaurant install · Mayfair W1',what:'6 large urns + bar garland, brief & mood board attached',when:'15:00–18:00',fee:140,mat:'flowers supplied by Floritta, your tools',status:'mine'},
     {id:32,off:4,title:'Wedding · Chelsea Old Town Hall',what:'ceremony arch + 8 table centrepieces',when:'set up 07:30–10:30',fee:420,mat:'flowers to the client\'s order, collected from SE1',status:'open'},
@@ -3930,7 +3869,7 @@ S.report=function(){
   const prevHome=window.mount_home;window.mount_home=function(){if(!isMira())return prevHome();
     const root=document.getElementById('s-home');document.getElementById('td-av').innerHTML=A.avatar(A.state.me,'--sm');const bell=root.querySelector('.td-bell');if(bell)bell.innerHTML=A.icon('bell');
     const t=R.jobs.filter(j=>j.status==='mine'&&j.off===0);
-    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Mira</h1><div class="sm soft mt4">${t.length?`Today: ${t[0].title} · ${t[0].when}`:'No jobs today'}</div></div>${fboard()}`};
+    document.getElementById('td-body').innerHTML=`<div class="pad" style="padding-top:4px"><div class="caps muted">Tuesday 20 October</div><h1 class="h1 mt8">Hello, Mina</h1><div class="sm soft mt4">${t.length?`Today: ${t[0].title} · ${t[0].when}`:'No jobs today'}</div></div>${fboard()}`};
   const prevMe=window.mount_me;window.mount_me=function(){if(!isMira())return prevMe();
     const u=A.me(),el=document.getElementById('me-body');
     const Rw=(i,l,d,v,fn)=>`<button class="row" onclick="${fn}">${ic(i)}<span class="rt"><div class="l">${l}</div>${d?`<div class="d">${d}</div>`:''}</span>${v?`<span class="val">${v}</span>`:''}${ic('chev','chev')}</button>`;
@@ -3954,14 +3893,14 @@ S.report=function(){
 
   /* ---- manager: Reserve – invite, check right to work, offer shifts and jobs ---- */
   R.people=[
-    {n:'Lina K.',sk:'weddings, hand-tied',paths:['Shifts','Jobs'],st:'rtw',at:'share code sent 22 Oct'},
+    {n:'Lola K.',sk:'weddings, hand-tied',paths:['Shifts','Jobs'],st:'rtw',at:'share code sent 22 Oct'},
     {n:'Olena M.',sk:'retail, hand-tied',paths:['Shifts'],st:'ready',at:'ready since 14 Oct'},
     {n:'Priya S.',sk:'installations',paths:['Jobs'],st:'ready',at:'ready since 9 Oct'},
     {n:'Tom R.',sk:'funeral, retail',paths:['Shifts'],st:'onb',at:'3 of 5 steps'},
     {n:'Aigerim B.',sk:'weddings',paths:[],st:'invited',at:'invited 20 Oct · not opened the app'},
     {n:'Chloe D.',sk:'hand-tied',paths:['Shifts','Jobs'],st:'ready',at:'ready since 2 Oct'}
   ];
-  R.pool=[{n:'Sofia P.',sk:'weddings',d:'applied 18 Oct'},{n:'Marta L.',sk:'retail',d:'applied 17 Oct'},{n:'Ben H.',sk:'installations',d:'applied 12 Oct'}];
+  R.pool=[{n:'Sonia P.',sk:'weddings',d:'applied 18 Oct'},{n:'Mabel L.',sk:'retail',d:'applied 17 Oct'},{n:'Ben H.',sk:'installations',d:'applied 12 Oct'}];
   const stPill={rtw:'<span class="pill --urgent">RTW to check</span>',ready:'<span class="pill --done">Ready</span>',onb:'<span class="pill --doing">Onboarding</span>',invited:'<span class="pill --todo">Invited</span>'};
   window.mount_reserve=function(){
     const P=R.people,cnt=s=>P.filter(p=>p.st===s).length,rtw=P.filter(p=>p.st==='rtw');
@@ -3975,23 +3914,17 @@ S.report=function(){
       <div class="blk" style="display:grid;gap:8px"><button class="btn --block" onclick="RS.inviteSheet()">Invite from applications</button><button class="btn --block --secondary" onclick="RS.offerSheet()">Offer an open shift</button><button class="btn --block --secondary" onclick="RS.jobSheet()">Post an event job</button></div>`;
   };
   R.rtwCheck=n=>A.sheet(`<div class="sh-head"><div class="h3">Right to work · ${n}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 14px">Open GOV.UK «View a job applicant's right to work», enter share code W3K 9PL 2XQ and date of birth, compare the photo with the person.</p><button class="radio"><span class="f1">Unlimited right to work</span></button><button class="radio"><span class="f1">Time-limited – until <input class="input" style="height:36px;width:130px;display:inline-block" placeholder="dd/mm/yyyy"></span></button><button class="radio"><span class="f1">No right to work – do not offer anything</span></button><div class="field mt16"><label>GOV.UK result (PDF)</label><button class="btn --secondary --sm" onclick="App.toast('Upload – demo')">Attach</button></div><p class="xs muted" style="margin:0">Saved with your name and the time. Kept while they work with us + 2 years.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.rtwDone('${n}')">Save check</button></div>`,{full:true});
-  R.rtwDone=n=>{const p=R.people.find(x=>x.n===n);p.st='onb';p.at='right to work checked 22 Oct · by Valeria';if(n==='Lina K.')R.ob.rtw='checked';A.toast('Recorded');window.mount_reserve()};
+  R.rtwDone=n=>{const p=R.people.find(x=>x.n===n);p.st='onb';p.at='right to work checked 22 Oct · by Vanessa';if(n==='Lola K.')R.ob.rtw='checked';A.toast('Recorded');window.mount_reserve()};
   R.inviteSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Invite to the reserve</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 6px">Applications from Work with us, florists only. Same button in CRM → Candidates.</p>${R.pool.map(c=>`<button class="ag-check on" style="margin:12px 0 0" onclick="this.classList.toggle('on')"><i></i><span><b>${c.n}</b> · ${c.sk} · ${c.d}</span></button>`).join('')}<div class="blk" style="padding:0;margin-top:18px"><button class="btn --ghost --sm" onclick="App.closeSheet();App.go('rs-email')">Preview the email</button></div></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();RS.inviteDo()">Send ${R.pool.length} invites</button></div>`,{full:true});
   R.inviteDo=()=>{R.pool.forEach(c=>R.people.push({n:c.n,sk:c.sk,paths:[],st:'invited',at:'invited 22 Oct'}));R.pool=[];A.toast('Invites sent – each gets a code valid 14 days');window.mount_reserve()};
-  R.offerSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Offer an open shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Shift</label><input class="input" value="Sat 24 Oct · 08:00–15:00 · SE1 studio"></div><div class="field"><label>Places</label><input class="input" value="2"></div><div class="field"><label>Rate</label><input class="input" value="£13.21/h + bouquet bonus"></div><div class="field"><label>Who gets the alert</label><input class="input" value="Ready for shifts · ${R.people.filter(p=>p.st==='ready'&&p.paths.includes('Shifts')).length} people · area & days match"></div><div class="rs-warn">Published 43 h before the start – under our 48 h notice. Fine for an extra shift; from 2027 the law sets the notice, so the app keeps when each offer went out.</div><p class="xs muted" style="margin:12px 0 0">First to take it gets it. You publish – you never assign a reserve florist to a shift.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent');App.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h',{icon:'calendar',to:'reserve'})">Send offer</button></div>`,{full:true});
+  R.offerSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Offer an open shift</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Shift</label><input class="input" value="Sat 24 Oct · 08:00–15:00 · SE1 studio"></div><div class="field"><label>Places</label><input class="input" value="2"></div><div class="field"><label>Rate</label><input class="input" value="£13.00/h + bouquet bonus"></div><div class="field"><label>Who gets the alert</label><input class="input" value="Ready for shifts · ${R.people.filter(p=>p.st==='ready'&&p.paths.includes('Shifts')).length} people · area & days match"></div><div class="rs-warn">Published 43 h before the start – under our 48 h notice. Fine for an extra shift; from 2027 the law sets the notice, so the app keeps when each offer went out.</div><p class="xs muted" style="margin:12px 0 0">First to take it gets it. You publish – you never assign a reserve florist to a shift.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Sent');App.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.00/h',{icon:'calendar',to:'reserve'})">Send offer</button></div>`,{full:true});
   R.jobSheet=()=>A.sheet(`<div class="sh-head"><div class="h3">Post an event job</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div><div class="sh-body"><div class="field"><label>Job</label><input class="input" value="Wedding · Chelsea Old Town Hall"></div><div class="field"><label>The result</label><input class="input" value="ceremony arch + 8 table centrepieces"></div><div class="field"><label>Fixed fee</label><input class="input" value="£420"></div><div class="field"><label>Brief</label><input class="input" value="palette, 3 photos, no lilies"></div><div class="field"><label>Who gets the alert</label><input class="input" value="Ready for jobs · ${R.people.filter(p=>p.st==='ready'&&p.paths.includes('Jobs')).length} people"></div><p class="xs muted" style="margin:0">A job is a result for a fee – never hours, a rate or a time to be at the studio. If it needs to be done in our studio under a manager, it's a shift, not a job.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet();App.toast('Posted');App.push('New job · £420','Sat 24 Oct · wedding, Chelsea',{icon:'calendar',to:'reserve'})">Post job</button></div>`,{full:true});
   R.mgrPanel=()=>{const body=document.getElementById('td-body');if(!body)return;const n=R.people.filter(p=>p.st==='rtw').length;const b=document.createElement('div');b.className='panel blk';b.style.margin='0 var(--gutter) 14px';
     b.innerHTML=`<div class="caps muted">Reserve</div><div class="h3 mt8">${n?`${n} right-to-work check${n>1?'s':''} waiting`:'Reserve is up to date'}</div><div class="sm soft mt4">${R.people.filter(p=>p.st==='ready').length} florists ready · ${R.pool.length} new applications to invite</div><button class="btn --sm mt16" onclick="App.go('reserve')">Open reserve</button>`;
     body.insertBefore(b,body.firstChild)};
 
   /* ---- notes for the build (sidebar) ---- */
-  const nav=document.getElementById('nav-list');if(nav){const n=document.createElement('div');n.className='notes';n.innerHTML=`<h4>Резерв и заказы для флористов (22.10)</h4><ul>
-    <li><b>Только добавлено</b> – прежние экраны, персоны и функции не менялись. Новые экраны – группа «Reserve» в списке слева.</li>
-    <li><b>Lina</b> (Reserve · new) – пришла из формы Work with us. Splash → «Join with invite code» → Today = 6 шагов: данные из анкеты, выбор пути (смены / заказы / оба), right to work (share code или паспорт UK/IE), банк и NI, договор(ы), 2 урока (только для смен, оплачиваются). Готово → «You're in», дальше push.</li>
-    <li><b>Invite email · preview</b> – письмо из CRM по кнопке «Invite to reserve»: код на 14 дней, ссылки на сторы, «Remove me from the reserve».</li>
-    <li><b>Mira</b> (Florist · s-e) – заказы целиком за фиксированную цену: свадьба, инсталляция, мастер-класс, партия у себя. Brief описывает результат, не процесс. Можно прислать другого флориста. Нет смен, clock-in, задач, уроков, рейтингов.</li>
-    <li><b>Reserve · manager</b> (Valeria, плашка на Today) – воронка, очередь проверок right to work с записью «кто и когда проверил», приглашение из анкет, «Offer an open shift» (только публиковать, не назначать; предупреждение при уведомлении &lt; 48 ч), «Post an event job». Нарочно без процента принятия и рейтингов.</li>
-    <li>ТЗ: волт Floritta_Brain_Main/Юридическое/Резерв_флористов_ТЗ_2026-10-22.md</li></ul>`;nav.parentNode.appendChild(n)}
+  const nav=document.getElementById('nav-list');if(nav){const n=document.createElement('div');n.className='notes';n.innerHTML=``;nav.parentNode.appendChild(n)}
 })();
 </script>
 
@@ -4076,32 +4009,7 @@ S.report=function(){
   const A=window.App;
   STAFF.push({id:'sam',n:'Sam',role:'courier',title:'Freelance courier · self-employed',initials:'SK',engagement:'freelance'});
   PERSONAS.push({id:'sam',label:'Freelance courier · self-employed'});
-const NOTES={
- 'fl-welcome':['Вход в приложение','<ul><li>Один экран для всех: сотрудник студии входит как раньше, новый курьер жмёт <b>Become a Floritta courier</b>.</li><li>Кнопка показывается только в воркспейсе Floritta.</li><li>«I already use the Telegram bot» – связка с ботом, без второй регистрации.</li></ul><h4>Статус</h4><ul><li>Нет слов shift / job / employee. «Deliveries», «request».</li></ul>'],
- 'fl-signin':['Вход','<ul><li>Общий вход CRM, новая роль freelance.</li><li>Роль <code>freelance</code> → приложение показывает только 5 вкладок курьера, ни одного экрана сотрудника.</li><li>Восстановление пароля – уже есть.</li></ul>'],
- 'fl-su1':['Регистрация · 1','<ul><li>Почта + пароль (решение 22.10).</li><li>Новая точка CRM новая точка API приложения в CRM: создаёт пользователя с ролью freelance и курьера, сразу выдаёт токен.</li><li>Почту подтверждаем ссылкой – иначе не восстановить пароль.</li></ul>'],
- 'fl-su2':['Регистрация · 2','<ul><li>Те же поля, что в боте: имя, телефон, транспорт, домашний посткод.</li><li>Car – с подсказкой про Hire &amp; Reward: заявку CRM пустит только после отметки менеджера о страховке.</li></ul>'],
- 'fl-su3':['Право на работу','<ul><li>Share code + дата рождения (18+) – как в боте, проверяет менеджер на gov.uk.</li><li>С 01.10.2026 проверка обязательна для платформ (BSAI Act 2025 s.48).</li><li>Британский / ирландский паспорт – share code нет, менеджер смотрит паспорт.</li></ul>'],
- 'fl-su4':['Как это работает','<ul><li>Короткая выжимка договора самозанятого: выбор, другие заказчики, замена, оплата за доставку, свои налоги.</li><li>Галочка согласия – с датой и версией договора в CRM.</li></ul><h4>Почему</h4><ul><li>Риск статуса worker (Uber v Aslam): экран прямо говорит, что контроля и штрафов нет.</li></ul>'],
- 'fl-pending':['Ждёт проверки','<ul><li>Менеджеру – карточка «🆕 New freelancer» на дашборде CRM.</li><li>Доска видна сразу, «Request» объясняет, почему пока нельзя (переключатель слева «Ждёт проверки»).</li><li>Пуш, когда менеджер нажал Verify.</li></ul>'],
- 'fl-link':['Связка с ботом','<ul><li>Разовый перенос регистрации из бота (единственное, что разрешено правилом): код из бота → почта и пароль в приложении.</li><li>После переноса приложение с ботом никак не связано: заказы, деньги и сообщения – только через CRM.</li></ul>'],
- 'fl-board':['Доступные доставки','<ul><li>новая точка API приложения в CRM</li><li>Карточка как в боте: слот, район, км, оплата, Peak / Hard window / 18+.</li><li>Фильтры: по маршрутам, по районам, «забрать сейчас».</li><li>Чёрная плашка – «рядом со студией» (геозона 2 мили вместо живой геопозиции Telegram).</li></ul>'],
- 'fl-dlv':['Карточка доставки','<ul><li>Точный адрес – только после подтверждения, телефон – только после забора (как в боте).</li><li>новая точка API приложения в CRM; ответы CRM показываются текстом: не проверен, алкоголь без обучения, лимит £99 для новичка.</li><li>Withdraw без последствий – прямо на экране.</li></ul>'],
- 'fl-mine':['Мои доставки','<ul><li>новая точка API приложения в CRM.</li><li>Активная – сверху чёрной плашкой; ниже – ждут подтверждения студии и выполненные за неделю.</li><li>Возврат в студию – отдельной строкой с оплатой +50 %.</li></ul>'],
- 'fl-run':['Доставка в работе','<ul><li>Шаги: I\'m on my way → Picked up (фото) → Delivered (фото). Нажимайте кнопки – шаги двигаются.</li><li>PIN выключен с 25.09 – не спрашиваем; код готов, если CRM снова включит.</li><li>Алкоголь: перед фото – вопрос про документ или отказ с причиной.</li><li>«Problem with delivery» – 4 причины, как в боте, + пятая «I can’t continue – I’ll bring it back».</li><li><b>Отказ после забора</b>: Withdraw исчезает после фото забора (CRM тоже не даёт). Остаётся «Problem with delivery» → менеджер звонит и решает: вернуть в студию или передать другому курьеру. Решение Tatiana 23.10: если курьер сам не может продолжить – платим 50 % ставки за возврат (при отказе получателя у двери – полная ставка + 50 %).</li><li>Фото – через очередь офлайн приложения: уйдёт, когда появится сеть.</li></ul>'],
- 'fl-done':['Вручено','<ul><li>Сумма сразу в неделю.</li><li>Фото уходит заказчику с сообщением о доставке (как сейчас).</li></ul>'],
- 'fl-way':['Куда едешь?','<ul><li>новая точка API приложения в CRM: откуда (геопозиция или посткод) → куда → транспорт → доставки с крюком и оплатой.</li><li>Навигация – только ссылкой в Google Maps, свой навигатор не строим.</li></ul>'],
- 'fl-saved':['Маршруты и районы','<ul><li>новая точка API приложения в CRM, до 3 маршрутов; <code>/areas</code> – outcode.</li><li>По ним CRM шлёт пуши о новых доставках в приложение.</li></ul>'],
- 'fl-earn':['Заработок','<ul><li>новая точка API приложения в CRM, новая точка API приложения в CRM</li><li>Неделя / месяц / не выплачено, последняя выплата, счёт – последние 4 цифры.</li><li>Слово «Earnings», не «Pay» и не «Salary».</li></ul>'],
- 'fl-stmt':['Недельная выписка','<ul><li>FS-YYYY-Www-NNNN, как в CRM (договор п. 6.4) – инвойсы не собираем.</li><li>«All correct» / «Something is wrong» → вопрос менеджеру выплат (Саша).</li></ul>'],
- 'fl-bank':['Реквизиты','<ul><li>новая точка API приложения в CRM.</li><li>После сохранения номер скрыт, в логи не пишется.</li></ul>'],
- 'fl-tax':['Налоги и статус','<ul><li>Тот же экран, что в боте: self-employed, trading allowance £1 000, отчётность платформ в HMRC.</li><li>Перед отправкой в магазины – прогон текстов через скилл legal.</li></ul>'],
- 'fl-me':['Профиль','<ul><li>Открывается кружком с инициалами справа вверху.</li><li>Без рейтинга курьера на экране (риск статуса).</li><li>«Delete account» – обязательна для Apple (5.1.1(v)), если аккаунт создаётся в приложении.</li></ul>'],
- 'fl-notif':['Уведомления','<ul><li><code>push_mode</code>: районы и маршруты / районы / маршруты / выкл. – как в боте.</li><li>Тихие часы 21–08, не больше 6 в день – настройка CRM.</li><li>«Near the studio» – системная геозона: батарею почти не ест, точку не храним; нужно согласие на геопозицию в фоне.</li></ul>'],
- 'fl-alco':['Обучение по алкоголю','<ul><li>6 экранов правил + 8 вопросов, тот же <code>training.VERSION</code>, что в боте.</li><li>Лицензия 889934, усл. 342 – действует 6 месяцев.</li><li>Нажмите ответ – покажется пояснение.</li></ul>'],
- 'fl-studio':['Студия – вкладка внизу','<ul><li>По просьбе Tatiana 23.10: связь со студией всегда под рукой – отдельная вкладка в нижнем меню, красная точка = непрочитанный ответ.</li><li>Профиль переехал в кружок с инициалами справа вверху на каждой вкладке (Apple советует не больше 5 вкладок).</li><li>Сообщение приходит менеджерам во Входящие CRM (не в Telegram), ответ менеджера – сюда пушем.</li><li>Текст и фото; голосовые – позже.</li></ul>'],
- 'fl-delete':['Удаление аккаунта','<ul><li>Новая точка CRM: выключить вход, отозвать токены, стереть всё лишнее.</li><li>Храним по закону: запись проверки права на работу – 2 года, выписки и выплаты – 6 лет.</li><li>Без этого экрана Apple приложение не пропустит.</li></ul>']
-};
+const NOTES={};
 const BOARD=[
  {when:'Today · 17:00–19:00',where:'Battersea SW11',pay:'£9',km:'6.4 km',t:'28 min',tags:['<span class="tag --sale">Peak</span>','<span class="tag --ink">Hard window</span>'],img:'peach-posy'},
  {when:'Today · 18:00–20:00',where:'Vauxhall SW8',pay:'£7',km:'3.1 km',t:'15 min',tags:['<span class="tag">On your route</span>'],img:'red-roses'},
@@ -4113,7 +4021,7 @@ const BOARD=[
     sheet(id){const el=document.getElementById('fl-sh-'+id);if(!el)return;A.sheet(el.innerHTML)},
     setV(v){this.v=v;document.querySelectorAll('#fl-vt button').forEach(b=>b.classList.toggle('on',+b.dataset.v===v));this.render()},
     push(kind){
-      const P={route:['New delivery on your route','Battersea SW11 · today 17:00–19:00 · £9 · +6 min','fl-dlv','route'],confirm:['The studio confirmed','Battersea SW11 by 19:00 – pick up from 16:30','fl-run','check'],near:['You are 0.7 mi from the studio','3 deliveries ready to pick up now · from £7','fl-board','pin'],reply:['Studio (Kamila)','No problem, the bouquet will be at the front desk.','fl-studio','chat']}[kind];
+      const P={route:['New delivery on your route','Battersea SW11 · today 17:00–19:00 · £9 · +6 min','fl-dlv','route'],confirm:['The studio confirmed','Battersea SW11 by 19:00 – pick up from 16:30','fl-run','check'],near:['You are 0.7 mi from the studio','3 deliveries ready to pick up now · from £7','fl-board','pin'],reply:['Studio (Katrina)','No problem, the bouquet will be at the front desk.','fl-studio','chat']}[kind];
       if(A.state.me!=='sam')A.setUser('sam',{silent:true});
       A.push(P[0],P[1],{icon:P[3],go:[P[2],{}]});
     },
@@ -4250,11 +4158,10 @@ const BOARD=[
   while(extra.firstChild)app.appendChild(extra.firstChild);
   const notes=document.getElementById('notes');
   if(notes){const n=document.createElement('div');n.id='fl-notes';n.className='notes';
-    n.innerHTML=`<h4>Курьер-фрилансер (Sam)</h4><div style="border:2px solid var(--accent);padding:12px 14px;margin:0 0 14px"><div class="caps" style="color:var(--accent);margin-bottom:6px">Правило · Tatiana 23.10</div><ul style="margin:0;padding-left:16px"><li>БОТ ФРИЛАНСЕРОВ (@floritta_freelance_bot) И ФРИЛАНСЕР-КУРЬЕР В ПРИЛОЖЕНИИ – ДВЕ НЕЗАВИСИМЫЕ КОДОВЫЕ ВЕТКИ. ОНИ НИКАК НЕ СВЯЗАНЫ МЕЖДУ СОБОЙ.</li><li>ПРИЛОЖЕНИЕ НЕ ЗАВИСИТ ОТ БОТА: НЕ ВЫЗЫВАЕТ ЕГО, НЕ ПОЛЬЗУЕТСЯ ЕГО API В CRM (/api/v1/freelance/*), ЕГО ТОКЕНАМИ, ТЕКСТАМИ, ЧАТАМИ TELEGRAM И ЕГО КОДОМ.</li><li>КОД ФРИЛАНСЕРА-КУРЬЕРА ДЛЯ ПРИЛОЖЕНИЯ ПИШЕТСЯ ЗАНОВО – И В ПРИЛОЖЕНИИ, И В CRM. ЗАКАЗЫ ФРИЛАНСЕРАМ ПРИЛОЖЕНИЯ ВЫДАЮТСЯ С ДАШБОРДА CRM.</li><li>РАЗРЕШЕНО ТОЛЬКО ОДНО: КУРЬЕР, КОТОРЫЙ ЗАРЕГИСТРИРОВАЛСЯ В БОТЕ, МОЖЕТ ОДИН РАЗ ПЕРЕНЕСТИ СВОЮ РЕГИСТРАЦИЮ В ПРИЛОЖЕНИЕ. ПОСЛЕ ПЕРЕНОСА – НИКАКОЙ СВЯЗИ С БОТОМ.</li></ul></div><div class="fl-ctl" id="fl-vt"><button data-v="1" class="on">Проверен</button><button data-v="0">Ждёт проверки</button></div>
+    n.innerHTML=`<div class="fl-ctl" id="fl-vt"><button data-v="1" class="on">Проверен</button><button data-v="0">Ждёт проверки</button></div>
       <div style="margin:6px 0 4px" class="eyebrow">Показать пуш</div>
       <button class="fl-push" onclick="FL.push('route')">Новая доставка по маршруту</button><button class="fl-push" onclick="FL.push('confirm')">Студия подтвердила</button><button class="fl-push" onclick="FL.push('near')">Рядом со студией</button><button class="fl-push" onclick="FL.push('reply')">Ответ студии</button>
-      <div id="fl-notes-body" style="margin-top:22px"></div>
-      <h4>Отдельная роль</h4><ul><li><b>Sam</b> – self-employed <b>курьер</b>: видит только доставки на доске, точный адрес – после подтверждения студией, телефон получателя – после забора. Не видит заказы целиком, клиентов, склад, задачи и обучение сотрудников.</li><li><b>Sam ≠ Dana</b> (решение Tatiana 23.10): Dana – наш постоянный самозанятый курьер по договору (на год, своя машина, Hire &amp; Reward, инвойсы); Sam – фрилансер с доски из бота: по пути, пешком / велосипед / транспорт, £7–11 за доставку. Это две разные роли, не сводить.</li><li>Mira – самозанятая флористка, у неё свой доступ к заказу (бриф целиком).</li></ul>`;
+      <div id="fl-notes-body" style="margin-top:22px"></div>`;
     notes.insertBefore(n,notes.firstChild);
     n.querySelectorAll('#fl-vt button').forEach(b=>b.onclick=()=>FL.setV(+b.dataset.v))}
   /* small interactions */

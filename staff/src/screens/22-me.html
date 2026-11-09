@@ -44,7 +44,7 @@ window.mount_me=function(){
   const owner=r==='owner',mgr=isMgr(),lim=limited(u),ctr=c==='contractor',wk=c==='worker',ok=ME.crm==='ok';
   /* header: role + contour pills (TM-ME-003, TM-ME-042) */
   const pills=el.querySelector('.pillrow');
-  if(pills){const roleP=`<span class="pill --plain">${r==='owner'?'Admin':r.charAt(0).toUpperCase()+r.slice(1)}</span>`;pills.innerHTML=roleP+(ME.contours?`<span class="pill --plain">${CONTOUR[c]}</span>`:'')+(u.staff_type==='trainee'?'<span class="pill --plain">Buddy · Svetlana</span>':'');
+  if(pills){const roleP=`<span class="pill --plain">${r==='owner'?'Admin':r.charAt(0).toUpperCase()+r.slice(1)}</span>`;pills.innerHTML=roleP+(ME.contours?`<span class="pill --plain">${CONTOUR[c]}</span>`:'')+(u.staff_type==='trainee'?'<span class="pill --plain">Buddy · Sylvia</span>':'');
     const tt=el.querySelector('.prof .tt');if(tt)tt.textContent=`${u.title} · ${ME.contours?CONTOUR[c]:'role only'}`}
   /* admin block – only the real admin (TM-ME-004..007) */
   if(owner&&!(window.ME5&&ME5.realAdmin)){
@@ -93,8 +93,8 @@ window.mount_me=function(){
   if(note)note.insertAdjacentHTML('beforebegin',`<div class="demo"><span>Demo · CRM</span><div class="seg"><button class="${ok?'on':''}" onclick="MEX.setCrm('ok')">Answered</button><button class="${!ok?'on':''}" onclick="MEX.setCrm('silent')">Silent</button></div></div><div class="note" style="padding-top:10px">No pull-to-refresh here – rows refresh when you come back to the app. Rows with numbers appear only after the CRM answers; a CRM without that module shows no row at all.</div>`);
   A.renderBadges();
 };
-ME.lensRole=k=>{ME.lens.role=k;if(!k){ME5.backToAdmin&&ME5.backToAdmin();window.mount_me();return}A.toast('Lens: '+k+' · tabs rebuilt, account stays admin');ME5.viewAs(k==='florist'?'kamila':'andrii')};
-ME.lensContour=k=>{ME.lens.contour=k;if(!k){ME5.backToAdmin&&ME5.backToAdmin();window.mount_me();return}A.toast('Contour lens: '+k+' · saved on this phone');ME5.viewAs({employee:'kamila',worker:'zhadra',contractor:'mira',reserve:'lina'}[k])};
+ME.lensRole=k=>{ME.lens.role=k;if(!k){ME5.backToAdmin&&ME5.backToAdmin();window.mount_me();return}A.toast('Lens: '+k+' · tabs rebuilt, account stays admin');ME5.viewAs(k==='florist'?'katrina':'anton')};
+ME.lensContour=k=>{ME.lens.contour=k;if(!k){ME5.backToAdmin&&ME5.backToAdmin();window.mount_me();return}A.toast('Contour lens: '+k+' · saved on this phone');ME5.viewAs({employee:'katrina',worker:'zhanna',contractor:'mina',reserve:'lola'}[k])};
 ME.toggleContours=b=>{b.classList.add('busy');setTimeout(()=>{if(Math.random()<0.12){b.classList.remove('busy');A.toast('Could not switch – try again');return}ME.contours=!ME.contours;A.haptic();A.toast(ME.contours?'Contours on – version B':'Contours off – version A, employee only');window.mount_me()},700)};
 ME.jaMode=m=>{ME.ja.mode=m;A.haptic();A.toast(m==='off'?'Job alerts off':'Job alerts on');window.mount_me()};
 ME.jaQuiet=b=>{if(b.dataset.busy)return;b.dataset.busy='1';ME.ja.quiet=!ME.ja.quiet;b.classList.toggle('on',ME.ja.quiet);setTimeout(()=>{delete b.dataset.busy;A.toast(ME.ja.quiet?'Quiet 21:00–08:00':'Alerts at any hour')},400)};

@@ -46,7 +46,7 @@
 - Kanban – `.kanban > .kcol > .k-head + .k-body > .kcard`. Перетаскивание не нужно: кнопка «→ next» на карточке / в шторке.
 - Пустые состояния – `.empty` с иконкой, заголовком и одним действием.
 - Просрочка/проблема – `--accent` (только для этого), готово – `--ok`, на проверке – `--warn`.
-- Всё время – Europe/London, слоты из `App.SLOTS`. Магазин 80 Willow Walk, Bermondsey SE1 5SY, 8:00–22:00, same-day до 22:00. Маркетплейсы Deliveroo и Uber Eats. Цветы RFH вт/чт/сб. Бухгалтерия Xero.
+- Всё время – Europe/London, слоты из `App.SLOTS`. Магазин 80 Willow Walk, Bermondsey SE1 5SY, 8:00–22:00, same-day до 22:00. Маркетплейсы Deliveroo и Uber Eats. Цветы DFA вт/чт/сб. Бухгалтерия Xero.
 
 ## Нарезка экранов по файлам
 
@@ -72,8 +72,8 @@
 
 ### 06-catalog.html · порт 8716 · группа «Catalog & Stock»
 - `s-catalog` (все роли; флорист – только чтение и состав). Сетка/таблица товаров (сегмент), фото 4:5, название, категория, цена, размеры, активен (switch), остаток. Клик → шторка товара: фото, цены по размерам (inline-редактирование), состав букета (BOM) таблицей «стебель · кол-во · себестоимость», итог себестоимости и маржи, «Duplicate», «Hide from site». Params `{open:id}`.
-- `s-stock` (все роли). Склад: таблица `App.data.inventory` – позиция, ед., остаток, par, следующая поставка, себестоимость; строка ниже par – accent; виды All · Low · Flowers · Sundries · Helium. Кнопки «Receive delivery» (модалка: RFH поставка вт/чт/сб – список позиций с кол-вом, «Receive all» → увеличивает qty, toast), «Write-off» (модалка причина), «Stocktake» (режим инлайн-ввода факта по строкам, «Apply»). Блок «Shop floor» – что на витрине сейчас (3–5 позиций, read-only для флориста).
-- `s-purchasing` (owner, manager; `data-parent="stock"`). Закупки: заказы RFH по дням (Tue/Thu/Sat) со статусами Draft / Sent / Confirmed / Received, строки позиций, сумма; «New order from low stock» – собирает позиции ниже par.
+- `s-stock` (все роли). Склад: таблица `App.data.inventory` – позиция, ед., остаток, par, следующая поставка, себестоимость; строка ниже par – accent; виды All · Low · Flowers · Sundries · Helium. Кнопки «Receive delivery» (модалка: DFA поставка вт/чт/сб – список позиций с кол-вом, «Receive all» → увеличивает qty, toast), «Write-off» (модалка причина), «Stocktake» (режим инлайн-ввода факта по строкам, «Apply»). Блок «Shop floor» – что на витрине сейчас (3–5 позиций, read-only для флориста).
+- `s-purchasing` (owner, manager; `data-parent="stock"`). Закупки: заказы DFA по дням (Tue/Thu/Sat) со статусами Draft / Sent / Confirmed / Received, строки позиций, сумма; «New order from low stock» – собирает позиции ниже par.
 
 ### 07-team.html · порт 8717 · группа «Team & Business»
 - `s-team` (все роли). Вкладки (сегмент) Schedule · Timesheet · Bonus. Schedule – недельная сетка сотрудники × дни с сменами (`T7_SHIFTS`), клик по ячейке – поповер (shift / off / swap); две сетки часов: флористы 08–17 / 13–22, линия 10–19. Timesheet – табель на утверждение (менеджер: «Approve all»). Bonus – командный котёл и личная строка (флорист видит только свою).

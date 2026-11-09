@@ -150,11 +150,11 @@ CM.state={filter:'all',q:'',mode:'live',net:'ok',more:false,tools:false,qr:false
 const CH={whatsapp:'WA',instagram:'IG',telegram:'TG',messenger:'MS',sms:'SMS',email:'@'};
 CM.convs=[
  {id:1,ch:'whatsapp',name:'Eleanor Harper',phone:'+44 7700 900412',email:'eleanor.h@example.com',user:'',note:'Orders for her mum every birthday · likes peach tones',customer:true,pinned:true,tag:'olive',last:'Perfect. And could it arrive before 2 pm?',at:T(11,3),waiting:T(11,3),unread:2,draftReady:true,lane:'managers',assigned:null,order:{id:'715602',status:'In production'}},
- {id:2,ch:'instagram',name:'',user:'@rosie.blooms',phone:'',email:'',note:'',pinned:false,tag:null,last:'Do you deliver to Clapham on Sundays?',at:T(11,10),waiting:T(11,10),unread:0,attention:true,lane:'managers',assigned:'valeria'},
- {id:3,ch:'telegram',name:'Daniel Okafor',phone:'+44 7700 900188',email:'',user:'@dokafor',note:'',pinned:false,tag:null,last:'Thanks, I will wait for your call after two.',at:T(10,22),waiting:null,unread:0,unresolved:'delivery time',followUp:'call back after 14:00',lane:'managers',assigned:'sasha'},
+ {id:2,ch:'instagram',name:'',user:'@rosie.blooms',phone:'',email:'',note:'',pinned:false,tag:null,last:'Do you deliver to Clapham on Sundays?',at:T(11,10),waiting:T(11,10),unread:0,attention:true,lane:'managers',assigned:'vanessa'},
+ {id:3,ch:'telegram',name:'Daniel Okafor',phone:'+44 7700 900188',email:'',user:'@dokafor',note:'',pinned:false,tag:null,last:'Thanks, I will wait for your call after two.',at:T(10,22),waiting:null,unread:0,unresolved:'delivery time',followUp:'call back after 14:00',lane:'managers',assigned:'sabrina'},
  {id:4,ch:'sms',name:'',phone:'+44 7700 900321',email:'',user:'',note:'',pinned:false,tag:null,last:'Hi, is the shop open on Sunday?',at:T(10,58),waiting:T(10,58),unread:1,lane:'support',assigned:null},
- {id:5,ch:'messenger',name:'Priya Nair',phone:'+44 7700 900277',email:'priya.n@example.com',user:'',note:'Corporate · monthly office flowers',customer:true,pinned:false,tag:'danger',last:'You: Invoice sent – thank you, Priya.',at:T(9,40),waiting:null,unread:0,lane:'managers',assigned:'valeria'},
- {id:6,ch:'email',name:'James Whitfield',phone:'',email:'james.w@example.com',user:'',note:'',pinned:false,tag:'warning',last:'You: Your wreath order is confirmed for 18 Dec.',at:T(16,5,-1),waiting:null,unread:0,lane:'support',assigned:'sasha'}
+ {id:5,ch:'messenger',name:'Priya Nair',phone:'+44 7700 900277',email:'priya.n@example.com',user:'',note:'Corporate · monthly office flowers',customer:true,pinned:false,tag:'danger',last:'You: Invoice sent – thank you, Priya.',at:T(9,40),waiting:null,unread:0,lane:'managers',assigned:'vanessa'},
+ {id:6,ch:'email',name:'James Whitfield',phone:'',email:'james.w@example.com',user:'',note:'',pinned:false,tag:'warning',last:'You: Your wreath order is confirmed for 18 Dec.',at:T(16,5,-1),waiting:null,unread:0,lane:'support',assigned:'sabrina'}
 ];
 CM.msgs={1:[
  {id:1,dir:'in',t:"Hi! It's about order 715602 – the vase. Can I have the smoked one instead of clear?",at:T(10,58)},
@@ -165,7 +165,7 @@ CM.msgs={1:[
  {id:6,dir:'in',t:'',deleted:true,at:T(11,5)},
  {id:7,dir:'out',t:"Yes – your delivery is booked for the 12:00–14:00 slot, so it will be with your mum before 2 pm.",at:T(11,6),origin:'flora_draft',flora:true,draft:true}
 ]};
-CM.thread={1:{suggested:"Yes – your delivery is booked for the 12:00–14:00 slot, so it will be with your mum before 2 pm.",suggestedDecision:'d-501',note:{t:'Client asked twice about timing – confirm the 12–14 slot with Andrii before replying.',p:'attention'},orderDraft:{status:'needs',missing:['Recipient phone','Card text confirmed'],lines:[['Pink Manifesto · Deluxe','£85.00'],['Vase · smoked glass','£18.00']],total:'£103.00',when:'Tue 20 Oct · 12:00–14:00',where:'14 Elm Grove, SW11 (fictional)',to:'Margaret Harper',card:'Happy birthday, Mum – love E.',buyer:'Eleanor Harper',note:'—',paymentLinkSent:false},consent:{whatsapp:true,sms:false,email:true},calls:[{k:'Outgoing',t:'Today 09:12',d:'2 min 10 s'},{k:'Incoming',t:'Yesterday 18:40',d:'Missed'},{k:'Incoming',t:'Fri 17 Oct',d:'Voicemail · 0:41'}]},
+CM.thread={1:{suggested:"Yes – your delivery is booked for the 12:00–14:00 slot, so it will be with your mum before 2 pm.",suggestedDecision:'d-501',note:{t:'Client asked twice about timing – confirm the 12–14 slot with Anton before replying.',p:'attention'},orderDraft:{status:'needs',missing:['Recipient phone','Card text confirmed'],lines:[['Pink Manifesto · Deluxe','£85.00'],['Vase · smoked glass','£18.00']],total:'£103.00',when:'Tue 20 Oct · 12:00–14:00',where:'14 Elm Grove, SW11 (fictional)',to:'Margaret Harper',card:'Happy birthday, Mum – love E.',buyer:'Eleanor Harper',note:'—',paymentLinkSent:false},consent:{whatsapp:true,sms:false,email:true},calls:[{k:'Outgoing',t:'Today 09:12',d:'2 min 10 s'},{k:'Incoming',t:'Yesterday 18:40',d:'Missed'},{k:'Incoming',t:'Fri 17 Oct',d:'Voicemail · 0:41'}]},
  3:{suggested:'',note:null,orderDraft:null,consent:{whatsapp:true,sms:true,email:false},calls:[{k:'Outgoing',t:'Today 10:20',d:'1 min 05 s'}]}};
 CM.QR=['Thank you for your order – it is in production.','Your courier is on the way, ETA within the hour.','We are open Mon–Sat 8:00–22:00, Sunday 9:00–18:00.','Could you share the delivery postcode, please?'];
 const TAGC={olive:'var(--ok)',danger:'var(--accent)',warning:'var(--warn)'};
@@ -219,7 +219,7 @@ CM.open=id=>{A.go('cm-chat',{id})};
 
 /* =============================================== CHAT */
 const conv=()=>CM.convs.find(c=>c.id===+(A.state.params&&A.state.params.id||1))||CM.convs[0];
-function caption(m){if(!m.origin)return 'Sent by hand · '+(A.user('valeria').n);return {flora_auto:'Flora · sent automatically',flora_draft:'Flora · draft',flora_edit:'Flora · edited by '+A.user('valeria').n,auto:'Automatic message'}[m.origin]||''}
+function caption(m){if(!m.origin)return 'Sent by hand · '+(A.user('vanessa').n);return {flora_auto:'Flora · sent automatically',flora_draft:'Flora · draft',flora_edit:'Flora · edited by '+A.user('vanessa').n,auto:'Automatic message'}[m.origin]||''}
 const MEDIA={image:'Photo',audio:'Voice message',video:'Video',document:'Document'};
 function msg(m,c){
   if(m.deleted)return `<div class="m ${m.dir}"><div class="bub" style="opacity:.6">Message deleted</div><div class="meta">${tm(m.at)}</div></div>`;
@@ -348,9 +348,9 @@ CM.ncSend=()=>{const n=CM.nc;n.busy=true;window.mount_cm_new();setTimeout(()=>{n
 /* =============================================== ANNOUNCEMENTS LIST */
 CM.anns={mode:'live'};
 /* local extra announcements (no acknowledgement needed) – kept out of window.ANNOUNCEMENTS so Today is unaffected */
-CM.annExtra=[{id:41,title:'Fridge deep clean on Friday – move your buckets by 7:30',body:'Vita and Sofiia clean the cold room on Friday 24 Oct from 7:30. Please take your conditioned stock to the back-shop fridge the evening before. No reply needed.',by:'valeria',at:T(14,30,-2),req:false,roles:['florist']}];
+CM.annExtra=[{id:41,title:'Fridge deep clean on Friday – move your buckets by 7:30',body:'Vicky and Sonia clean the cold room on Friday 24 Oct from 7:30. Please take your conditioned stock to the back-shop fridge the evening before. No reply needed.',by:'vanessa',at:T(14,30,-2),req:false,roles:['florist']}];
 function seedAck(){window.ACK_BY=window.ACK_BY||{};ANNOUNCEMENTS.forEach(a=>{if(ACK_BY[a.id])return;
-  if(a.id===1)ACK_BY[1]=[{id:'valeria',at:T(8,12)},{id:'svetlana',at:T(8,20)},{id:'vita',at:T(8,34)}];
+  if(a.id===1)ACK_BY[1]=[{id:'vanessa',at:T(8,12)},{id:'sylvia',at:T(8,20)},{id:'vicky',at:T(8,34)}];
   else if(a.id===2||a.id===3){const off=a.id===2?-1:-3;ACK_BY[a.id]=STAFF.filter(s=>s.id!==a.by).map((s,i)=>({id:s.id,at:T(9+Math.floor(i/3),(i*17)%60,off)}))}
   else ACK_BY[a.id]=[{id:a.by,at:a.at}]})}
 const ackRec=(a,uid=A.state.me)=>a.by===uid?{at:a.at}:(ACK_BY[a.id]||[]).find(x=>x.id===uid);
@@ -369,7 +369,7 @@ window.mount_cm_anns=function(){const el=$('#cma-body'),mg=isMgr(),st=CM.anns;
   if(st.mode==='error')body=`<div class="empty">Couldn't load announcements.<br><button class="btn --secondary --sm" style="margin-top:14px" onclick="CM.annRefresh()">Try again</button></div>`;
   else if(st.mode==='na')body=`<div class="empty">Announcements are not available on this CRM yet.</div>`;
   else if(st.mode==='empty')body=`<div class="empty">No announcements yet.</div>`;
-  else body=list.map(row).join('')+`<button class="arow" onclick="App.go('announcement',{id:99})"><div class="t soft">Archived: Easter opening hours</div><div class="by">Sasha · Apr 2026 · removed from the list</div><div class="bd"><span class="xs muted">Demo: opens the “not found” state</span></div></button>`;
+  else body=list.map(row).join('')+`<button class="arow" onclick="App.go('announcement',{id:99})"><div class="t soft">Archived: Easter opening hours</div><div class="by">Sabrina · Apr 2026 · removed from the list</div><div class="bd"><span class="xs muted">Demo: opens the “not found” state</span></div></button>`;
   el.innerHTML=`<!-- ids: TM-ANN-010 -->
     <div class="demo"><span>Demo</span><div class="seg"><button class="${st.mode==='live'?'on':''}" onclick="CM.annMode('live')">Live</button><button class="${st.mode==='empty'?'on':''}" onclick="CM.annMode('empty')">Empty</button><button class="${st.mode==='error'?'on':''}" onclick="CM.annMode('error')">Error</button><button class="${st.mode==='na'?'on':''}" onclick="CM.annMode('na')">No module</button></div></div>
     <!-- ids: TM-ANN-002 TM-ANN-003 TM-ANN-004 -->

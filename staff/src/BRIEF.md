@@ -20,7 +20,7 @@ window.mount_<id с _ вместо ->=function(params){ … };
 
 ## Рантайм `window.App` (шелл)
 - Состояние: `App.state.{me, current, params, history}`; `App.NOW` (вт 20 окт 2026, 11:12, London), `App.T(h,m,dayOffset)`.
-- Люди: `App.user(id)`, `App.me()`, `App.role()` → `owner|manager|florist|courier`, `App.isTrainee()`, `App.setUser(id)`; персоны стенда – `window.PERSONAS` (Zhadra · casual worker, Lina · reserve, Mira · self-employed florist, Kamila · florist, Andrii · courier, Valeria · manager, Ayana · trainee, Dana · self-employed courier, Sam · freelance, Tatiana · admin/owner). Контур – поле `engagement` у `window.STAFF[i]` (employee / worker / contractor / reserve).
+- Люди: `App.user(id)`, `App.me()`, `App.role()` → `owner|manager|florist|courier`, `App.isTrainee()`, `App.setUser(id)`; персоны стенда – `window.PERSONAS` (Zhanna · casual worker, Lola · reserve, Mina · self-employed florist, Katrina · florist, Anton · courier, Vanessa · manager, Ayla · trainee, Devon · self-employed courier, Sam · freelance, Tatiana · admin/owner). Контур – поле `engagement` у `window.STAFF[i]` (employee / worker / contractor / reserve).
 - Данные: `window.STAFF, TASKS, ORDERS, SCHEDULE, LESSONS, ANNOUNCEMENTS, TEMPLATES, ROUTE, PATHS, REVIEW_CARDS, FL`. Свои демо-данные – только внутри своего `<script>` с префиксом файла (`const T55_…`).
 - Формат: `App.fmt(n)` → `£12`, `fmtTime, fmtDay, fmtDue, isLate, timeAgo, nextDays`.
 - Вёрстка: `App.icon(name)` (inline SVG stroke 1.5; список в шелле), `App.avatar(user,'--sm|--lg')`, `App.pill(status)`, `App.opill(order)`, `App.ring(pct)`, `App.taskCard(t)`, `App.lessonCard(l)`, `App.orderCard(o)`.

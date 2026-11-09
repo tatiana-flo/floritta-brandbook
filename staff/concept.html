@@ -15,7 +15,7 @@ pre.mermaid{background:transparent;padding:0}
 <nav class="nav"><a href="index.html">Прототип</a><a href="diagrams.html">Схемы</a><a href="concept.html">Концепция</a></nav>
 <h1 id="floritta-team">Концепция Floritta Team – редизайн приложения для сотрудников</h1>
 <p>Дата: 20.10.2026. Для: Tatiana, Лиза. Статус: предложение к обсуждению. Схемы – в файле <code>Схема_Floritta_Team_2026-10-20.html</code> рядом; Mermaid-версии двух схем – в конце этого документа.</p>
-<div style="border:2px solid var(--accent);padding:16px 20px;margin:24px 0 8px"><p style="margin:0 0 8px;color:var(--accent);font-weight:500;letter-spacing:.06em">ПРАВИЛО (TATIANA, 23.10.2026)</p><ul style="margin:0;padding-left:18px"><li>БОТ ФРИЛАНСЕРОВ (@floritta_freelance_bot) И ФРИЛАНСЕР-КУРЬЕР В ПРИЛОЖЕНИИ – ДВЕ НЕЗАВИСИМЫЕ КОДОВЫЕ ВЕТКИ. ОНИ НИКАК НЕ СВЯЗАНЫ МЕЖДУ СОБОЙ.</li>
+<div style="border:2px solid var(--accent);padding:16px 20px;margin:24px 0 8px"><p style="margin:0 0 8px;color:var(--accent);font-weight:500;letter-spacing:.06em">ПРАВИЛО (TATIANA, 23.10.2026)</p><ul style="margin:0;padding-left:18px"><li>БОТ ФРИЛАНСЕРОВ (@example_bot) И ФРИЛАНСЕР-КУРЬЕР В ПРИЛОЖЕНИИ – ДВЕ НЕЗАВИСИМЫЕ КОДОВЫЕ ВЕТКИ. ОНИ НИКАК НЕ СВЯЗАНЫ МЕЖДУ СОБОЙ.</li>
 <li>ПРИЛОЖЕНИЕ НЕ ЗАВИСИТ ОТ БОТА: НЕ ВЫЗЫВАЕТ ЕГО, НЕ ПОЛЬЗУЕТСЯ ЕГО API В CRM (/api/v1/freelance/*), ЕГО ТОКЕНАМИ, ТЕКСТАМИ, ЧАТАМИ TELEGRAM И ЕГО КОДОМ.</li>
 <li>КОД ФРИЛАНСЕРА-КУРЬЕРА ДЛЯ ПРИЛОЖЕНИЯ ПИШЕТСЯ ЗАНОВО – И В ПРИЛОЖЕНИИ, И В CRM. ЗАКАЗЫ ФРИЛАНСЕРАМ ПРИЛОЖЕНИЯ ВЫДАЮТСЯ С ДАШБОРДА CRM.</li>
 <li>РАЗРЕШЕНО ТОЛЬКО ОДНО: КУРЬЕР, КОТОРЫЙ ЗАРЕГИСТРИРОВАЛСЯ В БОТЕ, МОЖЕТ ОДИН РАЗ ПЕРЕНЕСТИ СВОЮ РЕГИСТРАЦИЮ В ПРИЛОЖЕНИЕ. ПОСЛЕ ПЕРЕНОСА – НИКАКОЙ СВЯЗИ С БОТОМ.</li></ul></div>
@@ -203,7 +203,7 @@ pre.mermaid{background:transparent;padding:0}
 </tr>
 </tbody>
 </table>
-<p>Задачи с <code>requires_review = false</code> (например, «Вернуть вёдра RFH в фургон») закрываются в Done сразу по «Mark as done».</p>
+<p>Задачи с <code>requires_review = false</code> (например, «Вернуть вёдра DFA в фургон») закрываются в Done сразу по «Mark as done».</p>
 <h3 id="_3">Доска</h3>
 <p>Одна доска для всех видов задач, не только project: колонки To do / Doing / Review / Done, порядок – <code>board_position</code> (эндпоинт <code>PUT /tasks/board/order</code> уже есть в вебе, выносим в API). Менеджер видит всех с фильтром по человеку (ряд аватаров), сотрудник – своё. Pool – отдельный сегмент (есть <code>scope=pool</code>). Застой 7 / 14 дней подсвечиваем, как в ProjectBoard.</p>
 <h3 id="_4">Шаблоны и повторы</h3>
@@ -234,7 +234,7 @@ pre.mermaid{background:transparent;padding:0}
 <tr>
 <td>Исполнитель открыл задачу (seen_at)</td>
 <td>менеджеру</td>
-<td>без push – строка «Seen by Kamila 9:34» в карточке</td>
+<td>без push – строка «Seen by Katrina 9:34» в карточке</td>
 <td>–</td>
 </tr>
 <tr>

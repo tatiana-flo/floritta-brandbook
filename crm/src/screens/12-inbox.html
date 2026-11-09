@@ -218,17 +218,17 @@ const CALLS={7001:[["in","3:12",A().T(9,30,-1)],["missed","–",A().T(14,5,-3)]]
 function seed(){
  convos().forEach((c,i)=>{if(c.x)return;const u=cu(c);
   c.x={lane:i===4||i===6?"support":"managers",status:"open",pinned:i===0,colour:i===1?"upsell":i===5?"nosale":null,unresolved:i===7?"cancellation":i===5?"address":null,followUp:i===3?{reason:"quote",at:A().T(9,0,-1),remind:null}:null,draft:i===1?c.flora:null,answered:false,username:c.chan==="Instagram"?"@"+u.first.toLowerCase()+".blooms":null,note:i===2?"Prefers WhatsApp after 18:00":"",order:c.order||null,hidden:false,orderDraft:i===1?{status:"collecting",items:[["Garden Rose Basket · Deluxe",1,"£110"]],when:"Fri 24 Oct · 10:00–12:00",where:"",recipient:"Mum – Mrs "+u.n.split(" ")[1],card:"",buyer:u.n,notes:"",missing:["delivery address","card message"],paySent:false}:null,payLinks:i===0?[{amt:92,at:A().T(9,50),paid:true}]:[],consent:{wa:true,sms:null,email:i%2?false:true},suggestedNote:i===5?{kind:"escalation",p:"urgent",t:"Customer changed the address after dispatch – courier is already out. Call Daniel."}:i===3?{kind:"flora",p:"attention",t:"Office flowers lead – £65/week, Mondays. Worth a proper quote."}:null,noReply:false,mu:false};
-  c.msgs.forEach((m,k)=>{m.origin=m.me?(k===1&&i===0?"flora_auto":i===2?"flora_sent":"manual"):null;m.who=m.me?(i===1?"eliza":"valeria"):null;m.tick=m.me?(k===c.msgs.length-1?"delivered":"read"):null;m.id=c.id*10+k});
+  c.msgs.forEach((m,k)=>{m.origin=m.me?(k===1&&i===0?"flora_auto":i===2?"flora_sent":"manual"):null;m.who=m.me?(i===1?"elise":"vanessa"):null;m.tick=m.me?(k===c.msgs.length-1?"delivered":"read"):null;m.id=c.id*10+k});
   if(i===0){c.msgs.splice(1,0,{id:c.id*10+9,at:A().T(8,52),me:false,t:"Here's the card she liked last year",type:"image",img:A().product(101).img});c.msgs.push({id:c.id*10+8,at:A().T(10,12),me:false,t:"",type:"audio",dur:"0:14",transcript:"And please no lilies, she is allergic. Thank you!"},{id:c.id*10+7,at:A().T(10,14),me:false,t:"",type:"location",loc:"Flat 4, 12 Long Lane, SE1"});c.msgs[2].reaction="🙏"}
   if(i===3){c.msgs.unshift({id:c.id*10+9,at:A().T(8,10),me:false,t:"",type:"story_reply",story:"Peony Monday"})}
   if(i===1){c.msgs[0].forwarded="Oliver Barrington";c.msgs[1].quoteOf="Hello, I'd like to order the Peony Basket…";c.msgs[1].edited=true;c.msgs.push({id:c.id*10+8,at:A().T(9,41),me:false,t:"Ok, let me think about it",deleted:true})}
-  if(i===5){c.msgs.push({id:c.id*10+8,at:A().T(10,30),me:true,t:"Updated to Flat 12 – the courier has been told.",origin:"flora_edited",who:"valeria",tick:"sent",decision:"d-77"})}
+  if(i===5){c.msgs.push({id:c.id*10+8,at:A().T(10,30),me:true,t:"Updated to Flat 12 – the courier has been told.",origin:"flora_edited",who:"vanessa",tick:"sent",decision:"d-77"})}
   if(i===2){c.msgs[1].decision="d-42";c.msgs[1].origin="flora_sent"}
   c.msgs.forEach((m,k)=>{m.at=A().T(8,20+k*9+i*3)});if(c.msgs.length)c.last=c.msgs[c.msgs.length-1].at;
  });
 }
 const lanesOf=()=>{const all=convos().filter(c=>!c.x.hidden);return{managers:all.filter(c=>c.x.lane==="managers"),support:all.filter(c=>c.x.lane==="support")}};
-const seesAll=()=>A().role()==="owner"||A().me().id!=="kamila"; // CMIN-021: manager/owner outside a pure Support group sees every chat on Managers → All
+const seesAll=()=>A().role()==="owner"||A().me().id!=="katrina"; // CMIN-021: manager/owner outside a pure Support group sees every chat on Managers → All
 function statusOf(c){return{waiting:isWaiting(c),unresolved:!!c.x.unresolved,draft:!!c.x.draft&&isWaiting(c),follow:!!c.x.followUp}}
 function filtered(){
  const me=A().me();let list=convos().filter(c=>!c.x.hidden);
@@ -269,7 +269,7 @@ function renderBanners(){
  const unpaid=A().data.orders.filter(o=>o.paid!=="paid"&&o.status!=="cancelled").sort((x,y)=>new Date(x.placed)-new Date(y.placed)).slice(0,50);
  const total=unpaid.reduce((s,o)=>s+o.total,0);
  let h="";
- if(st.demo.imp)h+=`<div class="bn --imp">${ic("eye")} You are viewing the CRM as Valeria (impersonation) <span class="sp"></span><button class="textbtn" onclick="T12.demoSet('imp',false)">Stop</button></div>`;
+ if(st.demo.imp)h+=`<div class="bn --imp">${ic("eye")} You are viewing the CRM as Vanessa (impersonation) <span class="sp"></span><button class="textbtn" onclick="T12.demoSet('imp',false)">Stop</button></div>`;
  if(st.demo.floraOff)h+=`<div class="bn --warn">${ic("pause")} <b>Flora is switched off</b> · by Tatiana, today 08:15 · “Peak week – managers answer by hand” <span class="sp"></span><button class="textbtn" onclick="App.go('flora-autonomy')">Details</button></div>`;
  if(unpaid.length)h+=`<div class="bn --accent" style="cursor:pointer" onclick="T12.toggleUnpaid()">${ic("pound")} <b>Unpaid orders: ${unpaid.length}</b> · ${A().fmt(total)} <span class="xs" style="opacity:.8">counted on page load · the list below is live</span><span class="sp"></span>${ic(st.unpaidOpen?"minus":"down")}</div>`;
  if(st.unpaidOpen&&unpaid.length)h+=`<div class="bn-list"><table class="tbl"><thead><tr><th>Order</th><th>Customer</th><th class="num">Amount</th><th>Age</th><th></th></tr></thead><tbody>${unpaid.map(o=>{const d=Math.round((A().NOW-new Date(o.placed))/864e5);const chat=convos().find(c=>c.customer===o.customer);return`<tr><td><button class="link" onclick="App.openOrder(${o.id})">#${o.id}</button></td><td>${esc(A().customer(o.customer).n)}</td><td class="num">${A().fmt(o.total)}</td><td class="${d>=2?"accent":""}">${d}d</td><td>${chat?`<button class="textbtn" onclick="T12.open(${chat.id})">${ic("chat")} Chat</button>`:`<span class="xs muted">no chat found</span>`} <button class="textbtn" style="margin-left:8px" onclick="App.openOrder(${o.id})">Order</button></td></tr>`}).join("")}</tbody></table></div>`;

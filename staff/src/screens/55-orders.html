@@ -184,7 +184,7 @@ OB.input=v=>{clearTimeout(qTimer);qTimer=setTimeout(()=>{OB.q=v.trim();OB.render
 OB.toggleSearch=()=>{OB.search=!OB.search;if(!OB.search){OB.q=''}OB.render();if(OB.search){const i=$('ob-q');if(i)i.focus()}};
 OB.refresh=()=>{A.toast('Board and dashboard refreshed');OB.render()};
 OB.ack=()=>{OB.ackQueue=true;O5().orders.forEach(o=>{if(o.queue&&o.queue.changed==='removed')o.queue=null;else if(o.queue)o.queue.changed=null});A.toast('Queue changes acknowledged');OB.render()};
-OB.pushQueue=()=>A.push('Queue changed','Valeria moved #715611 to №2 in your queue',{icon:'list',go:['ord-board',{tab:'mine'}]});
+OB.pushQueue=()=>A.push('Queue changed','Vanessa moved #715611 to №2 in your queue',{icon:'list',go:['ord-board',{tab:'mine'}]});
 OB.brokenLink=()=>App.go('order',{code:'NaN'});
 window.mount_ord_board=function(p){
   const O=O5(),R=O.roles(),me=A.me();
@@ -246,7 +246,7 @@ let D=freshDraft();
 const total=()=>D.items.reduce((s,i)=>s+i.qty*i.price,0);
 window.mount_ord_new=function(p){const O=O5(),R=O.roles();if(p&&p.fresh)D=freshDraft();
   if(R.courier){$('on-body').innerHTML=`<div class="o5-empty mt24"><b>Couriers do not create orders</b>There is no way in from your screens.</div>`;$('on-cta').innerHTML=`<button class="btn --secondary" onclick="App.back('route')">Back</button>`;return}
-  if(R.trainee){$('on-body').innerHTML=`<!-- ids: TM-ORDER-067 --><div class="o5-empty mt24"><b>Trainees cannot create orders</b>The “+” is hidden for you on the board – ask Svetlana or a manager.</div>`;$('on-cta').innerHTML=`<button class="btn --secondary" onclick="App.back('ord-board')">Back</button>`;return}
+  if(R.trainee){$('on-body').innerHTML=`<!-- ids: TM-ORDER-067 --><div class="o5-empty mt24"><b>Trainees cannot create orders</b>The “+” is hidden for you on the board – ask Sylvia or a manager.</div>`;$('on-cta').innerHTML=`<button class="btn --secondary" onclick="App.back('ord-board')">Back</button>`;return}
   ON.render()};
 ON.set=(k,v)=>{D[k]=v;D.err=''};
 ON.setR=(k,v)=>{ON.set(k,v);ON.render()};

@@ -135,7 +135,7 @@ window.mount_stop=function(p){
   const demo=cour?`<div class="cr-demo-row"><div class="cr-note" style="margin-bottom:8px">Demo · CRM answers</div><div class="cr-chipw"><button class="chip" onclick="CR.stopActions.demo('full')">Outbox full</button><button class="chip" onclick="CR.stopActions.demo('age')">422 age_check_required</button><button class="chip" onclick="CR.stopActions.demo('pickup')">422 pickup_required</button><button class="chip" onclick="CR.stopActions.demo('reject')">Rejected by CRM</button><button class="chip" onclick="CR.stopActions.demo('otherDevice')">POD from another device</button><button class="chip" onclick="App.go('stop',{code:'abc'})">Broken link</button></div></div>`:'';
   body.innerHTML=`${alc}${addr}${acts}${instr}${result}${noteWait}${rec}${notes}${steps}${demo}<div style="height:24px"></div>`;
   let c='';
-  if(!cour)c=`<button class="btn --secondary" onclick="App.setUser('andrii')">View as Andrii</button>`;
+  if(!cour)c=`<button class="btn --secondary" onclick="App.setUser('anton')">View as Anton</button>`;
   else c=`<button class="btn --ghost" onclick="CR.stopActions.managerNote('${s.code}')">${I('chat')} Message the manager</button>`;
   cta.innerHTML=c;cta.style.display=c?'':'none';body.classList.toggle('has-cta',!!c);
 };
@@ -152,8 +152,8 @@ C.stopActions={
   call(code){const s=C.stop(code);A.haptic();A.toast(`Calling ${s.who} · ${telDigits(s.tel)}`)},
   anInput(v){S.anText=v},
   saveNote(code){const t=S.anText.trim();if(!t){A.toast('Write or dictate the note first');return}
-    const l=C.addrNotes[code]=C.addrNotes[code]||[];if(l.some(n=>n.text===t&&n.by==='Andrii')){A.toast('Already saved today');S.anText='';C.remount();return}
-    l.push({id:Date.now(),by:'Andrii',at:'Today '+stamp(),text:t,thisHouse:true,canDelete:true});S.anText='';A.toast('Note saved – the next courier will see it.');C.remount()},
+    const l=C.addrNotes[code]=C.addrNotes[code]||[];if(l.some(n=>n.text===t&&n.by==='Anton')){A.toast('Already saved today');S.anText='';C.remount();return}
+    l.push({id:Date.now(),by:'Anton',at:'Today '+stamp(),text:t,thisHouse:true,canDelete:true});S.anText='';A.toast('Note saved – the next courier will see it.');C.remount()},
   delNote(code,id){A.confirm('Delete this note?','Nobody will see it again.','Delete',()=>{C.addrNotes[code]=(C.addrNotes[code]||[]).filter(n=>n.id!==id);A.toast('Note deleted');C.remount()})},
   dictate(code){let sec=0;
     A.sheet(sh('Dictate',`<div class="cr-alert"><div class="h3"><span class="cr-rec-dot"></span>Recording</div><p>Say it – Russian, English or Ukrainian. Up to 60 seconds, it stops by itself.</p><div class="h1 mt16" id="sp-rec">0:00</div></div>`,`<button class="btn --secondary" onclick="clearInterval(CR._rec);App.closeSheet()">Cancel</button><button class="btn" onclick="CR.stopActions.dictateStop('${code}')">Stop and save</button>`));
@@ -161,7 +161,7 @@ C.stopActions={
   dictateStop(code){clearInterval(C._rec);A.sheet(`<div class="sh-body cr-alert"><span class="cr-spin"></span><p class="mt8">Turning speech into text…</p></div>`);
     setTimeout(()=>{A.closeSheet();S.anText='Gate code 4471, the bell is on the left pillar.';A.toast('Transcribed – check and save');C.remount()},900)},
   pickup(code){const s=C.stop(code);
-    if(C.demo.viewAs){A.confirm('You are viewing as Andrii','“Picked up” sends the customer a message. Continue?','Continue',()=>{C.demo.viewAs=false;C.stopActions.pickup(code);C.demo.viewAs=true});return}
+    if(C.demo.viewAs){A.confirm('You are viewing as Anton','“Picked up” sends the customer a message. Continue?','Continue',()=>{C.demo.viewAs=false;C.stopActions.pickup(code);C.demo.viewAs=true});return}
     if(s.readyState!=='ready'){alert('Order not ready for pickup',`${s.readyState==='not_started'?'The florist has not marked it Ready yet.':'There is no finished-bouquet photo yet.'} Ask the florist, then tap “Picked up” again.`);return}
     s.pickedUpAt=stamp();A.haptic();A.toast('Picked up · '+s.pickedUpAt+' on record');C.remount()},
   fail(code){const s=C.stop(code);S.failReason=null;S.failNote='';
@@ -170,13 +170,13 @@ C.stopActions={
   failPick(r){S.failReason=r;$('sheet-inner').innerHTML=C._failHtml()},
   failNoteInput(v){S.failNote=v.slice(0,500)},
   failSave(code){const s=C.stop(code);A.closeSheet();s.failure={reason:S.failReason,label:FAIL.find(f=>f[0]===S.failReason)[1],note:S.failNote.trim(),at:stamp()};A.haptic();
-    alert('Saved','Saved. The manager will arrange the next step.','OK',"App.back('route')");setTimeout(()=>A.push('Not delivered · #'+code,s.failure.label+(s.failure.note?' · “'+s.failure.note+'”':''),{icon:'flag',to:'Valeria'}),900);C.remount()},
+    alert('Saved','Saved. The manager will arrange the next step.','OK',"App.back('route')");setTimeout(()=>A.push('Not delivered · #'+code,s.failure.label+(s.failure.note?' · “'+s.failure.note+'”':''),{icon:'flag',to:'Vanessa'}),900);C.remount()},
   managerNote(code){S.mgrText='';
     A.sheet(sh('Message the manager',`<div class="field"><label>Message</label><textarea class="cr-ta" maxlength="500" placeholder="e.g. the gate code does not work, asked to come after 6" oninput="CR.stopActions.mgrInput(this.value)"></textarea></div><p class="xs muted" style="margin:0">Sends a push to the managers. The same text twice in a day is not repeated.</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="CR.stopActions.mgrSend('${code}')">Send</button>`))},
   mgrInput(v){S.mgrText=v.slice(0,500)},
   mgrSend(code){const t=(S.mgrText||'').trim();if(!t){A.toast('Write the message first');return}A.closeSheet();
     if(C.demo.offline){C.outbox.push({code,kind:'note',status:'queued',text:t,at:stamp(),ownerId:A.state.me});alert('Saved on the phone','No connection. The message is saved and will be sent as soon as the CRM is reachable.');C.remount();return}
-    A.toast('Sent to the manager.');setTimeout(()=>A.push('Andrii · #'+code,t,{icon:'chat',to:'Valeria'}),700)},
+    A.toast('Sent to the manager.');setTimeout(()=>A.push('Anton · #'+code,t,{icon:'chat',to:'Vanessa'}),700)},
   resend(code){const o=C.waiting(code);if(!o)return;
     if(C.demo.offline){alert('Still no connection','The delivery stays saved on the phone and goes by itself when the CRM is reachable.');return}
     C.outbox=C.outbox.filter(x=>x!==o);finishDeliver(code,o.payload,true)},
@@ -193,7 +193,7 @@ C.stopActions={
 const F={code:null,age:null,handover:null,amend:false};
 C.flow={
   start(code){const s=C.stop(code);F.code=code;F.age=null;F.handover=null;F.amend=false;
-    if(C.demo.viewAs&&!F.guarded){A.confirm('You are viewing as Andrii','“Delivered” sends the customer a message. Continue?','Continue',()=>{F.guarded=true;C.flow.start(code)});return}
+    if(C.demo.viewAs&&!F.guarded){A.confirm('You are viewing as Anton','“Delivered” sends the customer a message. Continue?','Continue',()=>{F.guarded=true;C.flow.start(code)});return}
     F.guarded=false;
     if((s.isAlcohol||s.ageRestricted)&&!s.ageVerifiedAt)C.flow.ageCheck(code);else C.flow.handover(code)},
   ageCheck(code,opts={}){F.code=code;F.amend=!!opts.amend;F.age={id:null,year:''};F.refuse=null;
@@ -210,7 +210,7 @@ C.flow={
     C._refHtml=html;A.sheet(html(),{full:true})},
   refusePick(r){F.refuse=r;$('sheet-inner').innerHTML=C._refHtml()},
   refuseSave(code){const s=C.stop(code);A.closeSheet();s.failure={reason:'refused',label:'Recipient refused · age refusal',note:REFUSE.find(r=>r[0]===F.refuse)[1],at:stamp(),ageRefusal:F.refuse};A.haptic();
-    alert('Refusal recorded','Refusal recorded. Bring the order back to the shop.','OK',"App.back('route')");setTimeout(()=>A.push('Alcohol refusal · #'+code,s.failure.note+' · goes into the refusals register',{icon:'flag',to:'Valeria'}),900);C.remount()},
+    alert('Refusal recorded','Refusal recorded. Bring the order back to the shop.','OK',"App.back('route')");setTimeout(()=>A.push('Alcohol refusal · #'+code,s.failure.note+' · goes into the refusals register',{icon:'flag',to:'Vanessa'}),900);C.remount()},
   handover(code){const s=C.stop(code);F.handover={kind:'recipient',name:'',note:''};const restricted=s.isAlcohol||s.ageRestricted;
     const html=()=>{const h=F.handover;const kinds=KINDS.filter(k=>!(restricted&&UNATTENDED.includes(k[0])));
       return sh('Who did you hand it to?',`${restricted?`<div class="panel --accent" style="padding:10px 12px;margin-bottom:8px"><div class="xs" style="color:var(--accent)">Alcohol / 18+: hand to an adult only – no door or safe-place drop.</div></div>`:''}${kinds.map(k=>`<button class="cr-idrow ${h.kind===k[0]?'on':''}" onclick="CR.flow.hoPick('${k[0]}')"><span class="rd"></span>${k[1]}</button>`).join('')}${NEEDS_NAME.includes(h.kind)?`<div class="field" style="margin:14px 0 0"><label>Name of the person who took it (optional)</label><input class="input" maxlength="120" placeholder="e.g. Mrs Smith, flat 3" value="${h.name}" oninput="CR.flow.hoName(this.value)"></div>`:''}<div class="field" style="margin:14px 0 0"><label>Note for the manager (optional)</label><input class="input" maxlength="300" placeholder="e.g. left behind the planter" value="${h.note}" oninput="CR.flow.hoNote(this.value)"></div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="CR.flow.camera('${code}')">${I('camera')} Take the photo</button>`)};

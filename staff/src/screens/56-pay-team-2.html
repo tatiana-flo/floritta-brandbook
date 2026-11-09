@@ -160,9 +160,9 @@ const canManageOrders=()=>P.isMgr();
 const sheetHead=(t)=>`<div class="sh-head"><div class="h3">${t}</div><button class="ib" onclick="App.closeSheet()">${A.icon('close')}</button></div>`;
 
 /* ======================================================= SCHEDULE ======================================================= */
-const GROUPS=[{k:'florists',l:'Florists',ids:['svetlana','kamila','vita','sofiia','zhadra','ayana','mira']},{k:'managers',l:'Managers',ids:['valeria','sasha']},{k:'support',l:'Support',ids:[]},{k:'couriers',l:'Couriers',ids:['andrii','oleh','max']}];
+const GROUPS=[{k:'florists',l:'Florists',ids:['sylvia','katrina','vicky','sonia','zhanna','ayla','mina']},{k:'managers',l:'Managers',ids:['vanessa','sabrina']},{k:'support',l:'Support',ids:[]},{k:'couriers',l:'Couriers',ids:['anton','ollie','max']}];
 const MONTHS=[['2026-09','September 2026',30,2],['2026-10','October 2026',31,4],['2026-11','November 2026',30,0]]; /* key,label,days,weekday of the 1st (0=Mon) */
-const S=P.sch={mi:1,mode:'month',day:20,edits:{},leads:{'svetlana-2026-10-20':1,'vita-2026-10-22':1,'svetlana-2026-10-24':1}};
+const S=P.sch={mi:1,mode:'month',day:20,edits:{},leads:{'sylvia-2026-10-20':1,'vicky-2026-10-22':1,'sylvia-2026-10-24':1}};
 const codeOf=(id,mi,d)=>{const k=id+'-'+MONTHS[mi][0]+'-'+d;if(k in S.edits)return S.edits[k];const g=GROUPS.find(g=>g.ids.includes(id));if(!g)return '';const i=g.ids.indexOf(id);const x=(d+i*2+mi)%7;if(g.k==='couriers')return x>=5?'H':(x%2?'08:00':'12:00');if(g.k==='managers')return x>=5?'H':'D';return x>=5?'H':(x%3===0?'L':'D')};
 const isWe=(mi,d)=>((MONTHS[mi][3]+d-1)%7)>=5;
 const dow=(mi,d)=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][(MONTHS[mi][3]+d-1)%7];
@@ -211,7 +211,7 @@ const BON={today:14,bonus:510,toDouble:6,week:3180,pot:42000,potOk:3,potN:4,over
   pay:{today:{rate:1321,h:7.5,bonus:510},month:{h:112,base:147952,bonus:4160},forecast:{amt:198000,by:'rota',hint:'3 h more to reach the next step'}},
   credited:[{o:'715541',amt:150,lines:['Scale £1.20 × 1.25','Strawberries +£0.30']},{o:'715530',amt:120,lines:['Scale £1.20']},{o:'715498',amt:240,lines:['Scale £1.20 × 2 (balloons)','Walk-in 3 % (£0.00)','Penalty −£0.00']}],
   without:[{o:'715512',why:'no photo before dispatch'},{o:'715507',why:'£0 order (collaboration)'}]};
-const RATING={week:['svetlana','vita','sofiia'],month:null,pending:['sofiia','ayana']};
+const RATING={week:['sylvia','vicky','sonia'],month:null,pending:['sonia','ayla']};
 const DC=P.dc={flowers:true,shortage:false,packaging:false,photo:false,rubbish:null,rubbishAt:null,rubbishPhoto:false};
 const MYSH=[{d:'Mon 19 Oct',t:'08:00–16:12',h:'7 h 42 m',st:'pending'},{d:'Sat 17 Oct',t:'08:00–16:00',h:'7 h 30 m',st:'approved'},{d:'Fri 16 Oct',t:'12:00–22:05',h:'9 h 35 m',st:'approved'},{d:'Thu 15 Oct',t:'12:00–21:40',h:'9 h 10 m',st:'rejected'},{d:'Tue 13 Oct',t:'08:00–16:00',h:'7 h 30 m',st:'approved'}];
 const EARLIER=[{d:'Sat 26 Sep',t:'08:00–16:00',h:'7 h 30 m',st:'approved'},{d:'Thu 24 Sep',t:'12:00–22:00',h:'9 h 30 m',st:'approved'}];
@@ -259,7 +259,7 @@ window.mount_tm_shift=function(){
   if(c==='self_employed'&&real!=='courier'){el.innerHTML=demo+P.ptrHint()+P.lens(0,`<b>${u.n}</b> is self-employed (not a courier) – no clock strip, so Me has no “Shift & hours” row. Opened by link: the timeclock answers 403.`)+P.stt('error','Could not load the shift. Pull to try again.');return}
   if(d==='error'){el.innerHTML=demo+P.ptrHint()+P.stt('error','Could not load the shift. Pull to try again.');return}
   const onRota=u.role!=='owner'&&!(c==='worker'&&false);const code=real==='courier'?'08:00':'D';
-  const today=`<div class="blk" style="margin-top:4px"><div class="panel"><div class="flex ai-c jc-sb"><span class="caps muted">Today’s shift · Tue 20 Oct</span>${onRota?`<span class="code">${code}</span>`:''}</div>${onRota?`<div class="h3 mt8">start from 07:45 · end to 16:30</div><div class="sm soft mt4">Lead · day: Svetlana · evening: not assigned</div>`:`<div class="h3 mt8">Nothing on the rota</div><div class="sm soft mt4">You can still start a shift – managers and owners clock in too.</div>`}</div></div>`;
+  const today=`<div class="blk" style="margin-top:4px"><div class="panel"><div class="flex ai-c jc-sb"><span class="caps muted">Today’s shift · Tue 20 Oct</span>${onRota?`<span class="code">${code}</span>`:''}</div>${onRota?`<div class="h3 mt8">start from 07:45 · end to 16:30</div><div class="sm soft mt4">Lead · day: Sylvia · evening: not assigned</div>`:`<div class="h3 mt8">Nothing on the rota</div><div class="sm soft mt4">You can still start a shift – managers and owners clock in too.</div>`}</div></div>`;
   const idle=real==='courier'&&SH.idle?`<div class="idle"><div class="sm"><b>${SH.idleAuto?'Break started automatically – you were off-route for 20 min.':'You have been standing 12 min off the route. Start a break?'}</b></div>${SH.idleAuto?`<button class="btn --sm mt12" onclick="PT.shIdleAns('working')">Continue the shift</button>`:`<div class="xs soft mt4">Auto-break in <b id="pt-idle-cd">4:58</b></div><div class="flex mt12" style="gap:8px"><button class="btn --sm" onclick="PT.shIdleAns('break')">Start a break</button><button class="btn --sm --secondary" onclick="PT.shIdleAns('working')">I’m working</button></div>`}</div>`:'';
   const big=SH.open?`<button class="btn --block --secondary bigbtn" onclick="PT.shClock('out')">End shift</button>`:`<button class="btn --block bigbtn" onclick="PT.shClock('in')">Start shift</button>`;
   const brk=SH.open?`<div class="blk" style="margin-top:8px"><button class="btn --block --ghost" onclick="PT.shBreak()">${SH.onBreak?'End break':'Break'}</button></div>`:'';
@@ -275,7 +275,7 @@ window.mount_tm_shift=function(){
   const mysh=`<div class="sec-head"><div class="h2">${lensOn()?'Shifts: '+u.n:'My shifts'}</div><span class="xs muted">${SH.monthsBack?'last 2 months':'last month'}</span></div>
     <div class="rows">${rows.map((s,i)=>`<button class="urow" onclick="${r==='florist'&&!lim?`PT.shDay(${i})`:`App.toast('Only florists see a bonus per day')`}"><span class="f1"><div class="sm">${s.d} · ${s.t}</div><div class="d">${s.st==='pending'?'Waiting for approval':s.st==='approved'?'Approved':s.st==='rejected'?'Rejected':'Open'}</div>${SH.dayOpen===i&&r==='florist'?`<div class="d" style="color:var(--ink)">Bonus that day: 11 bouquets · £3.90 · scale £1.20 × 1.0 · 1 without bonus (no photo)</div>`:''}</span><span class="sm ${s.st==='rejected'?'muted':''}">${s.h}</span></button>`).join('')}
     <div class="line"><span>Learning · paid time</span><span>+42 m</span></div><div class="line t"><span>Total</span><span>${SH.monthsBack?'58 h 29 m':'41 h 27 m'}</span></div></div>
-    <div class="note">7 h 42 m waiting for approval – they count once Valeria approves.${r==='florist'&&!lim?' Tap a day to see its bonus.':''}</div>
+    <div class="note">7 h 42 m waiting for approval – they count once Vanessa approves.${r==='florist'&&!lim?' Tap a day to see its bonus.':''}</div>
     ${SH.monthsBack?'':`<div class="blk" style="margin-top:12px"><button class="btn --secondary --block --sm" onclick="PT.shEarlier()">Show earlier</button></div>`}`;
   el.innerHTML=demo+courierDemo+P.ptrHint()+today+idle+`<div style="height:14px"></div>`+big+brk+notice+geoNote+live+trk+todayRows+cards+mysh+(P.isMgr(u)?'':`<div class="note">Location is only checked when you clock in or out.</div>`);
   if(SH.idle&&!SH.idleAuto)P.shCountdown();
@@ -297,13 +297,13 @@ P.shEarlier=()=>{SH.monthsBack=1;A.toast('One more month loaded');window.mount_t
 
 /* ======================================================= TIMESHEET ======================================================= */
 const TS=P.ts={w:0,entries:[
-  {id:1,d:'Mon 19 Oct',who:'vita',a:'08:00',b:'16:12',code:'D',flags:['late 4 min'],st:'pending',type:'shift'},
-  {id:2,d:'Mon 19 Oct',who:'sofiia',a:'08:00',b:'16:00',code:'D',flags:[],st:'approved',type:'shift'},
-  {id:3,d:'Mon 19 Oct',who:'oleh',a:'09:00',b:'17:04',code:'08:00',flags:['not in the shop'],st:'pending',type:'shift'},
-  {id:4,d:'Mon 19 Oct',who:'valeria',a:'07:40',b:'',code:'',flags:['on duty'],st:'approved',type:'checkin'},
-  {id:5,d:'Tue 20 Oct',who:'kamila',a:'07:58',b:'',code:'D',flags:['not closed'],st:'open',type:'shift'},
+  {id:1,d:'Mon 19 Oct',who:'vicky',a:'08:00',b:'16:12',code:'D',flags:['late 4 min'],st:'pending',type:'shift'},
+  {id:2,d:'Mon 19 Oct',who:'sonia',a:'08:00',b:'16:00',code:'D',flags:[],st:'approved',type:'shift'},
+  {id:3,d:'Mon 19 Oct',who:'ollie',a:'09:00',b:'17:04',code:'08:00',flags:['not in the shop'],st:'pending',type:'shift'},
+  {id:4,d:'Mon 19 Oct',who:'vanessa',a:'07:40',b:'',code:'',flags:['on duty'],st:'approved',type:'checkin'},
+  {id:5,d:'Tue 20 Oct',who:'katrina',a:'07:58',b:'',code:'D',flags:['not closed'],st:'open',type:'shift'},
   {id:6,d:'Tue 20 Oct',who:'max',a:'12:00',b:'20:15',code:'',flags:['not on the rota','entered manually'],st:'pending',type:'shift',manual:true},
-  {id:7,d:'Sat 17 Oct',who:'zhadra',a:'15:00',b:'22:00',code:'L',flags:[],st:'rejected',type:'shift'}
+  {id:7,d:'Sat 17 Oct',who:'zhanna',a:'15:00',b:'22:00',code:'L',flags:[],st:'rejected',type:'shift'}
 ]};
 const WEEKS=[['19 Oct – 25 Oct','2026-10-19'],['12 Oct – 18 Oct','2026-10-12'],['26 Oct – 1 Nov','2026-10-26']];
 window.mount_tm_timesheet=function(){
@@ -317,7 +317,7 @@ window.mount_tm_timesheet=function(){
   const row=e=>{const ci=e.type==='checkin';return `<div class="tsrow ${e.st==='rejected'?'rej':''}"><div class="tp"><span><b>${nm(e.who)}</b> · ${e.a}${e.b?' – '+e.b:' – …'}${e.code?` <span class="code">${e.code}</span>`:''}</span><span class="xs ${e.st==='approved'?'ok':e.st==='rejected'?'accent':'muted'}">${ci?'check-in':e.st==='approved'?'✓ approved':e.st==='rejected'?'✗ rejected':e.st==='open'?'open':'pending'}</span></div>
     ${e.flags.length?`<div class="fl">${e.flags.map(fl).join('')}</div>`:''}
     ${ci?'':`<div class="ac">${e.st!=='approved'&&e.b?`<button class="btn --xs" onclick="PT.tsApprove(${e.id})">Approve</button>`:''}${e.st!=='rejected'&&e.b?`<button class="btn --xs --secondary" onclick="PT.tsReject(${e.id})">Reject</button>`:''}${!e.b?`<button class="btn --xs" onclick="PT.tsClose(${e.id})">Close shift</button>`:''}${adm?`<button class="btn --xs --ghost" onclick="PT.tsEdit(${e.id})">Edit</button>`:''}</div>`}</div>`};
-  const hours=[['vita','7 h 42 m','0','0'],['sofiia','7 h 30 m','0','30 m'],['kamila','0','3 h 14 m','12 m'],['oleh','0','7 h 34 m','0'],['max','0','7 h 45 m','0']];
+  const hours=[['vicky','7 h 42 m','0','0'],['sonia','7 h 30 m','0','30 m'],['katrina','0','3 h 14 m','12 m'],['ollie','0','7 h 34 m','0'],['max','0','7 h 45 m','0']];
   el.innerHTML=demo+P.ptrHint()+`<div class="bar" style="margin-top:8px"><button class="ib" aria-label="Previous week" onclick="PT.tsWeek(-1)">${A.icon('back')}</button><b>${wk[0]}</b><button class="ib" aria-label="Next week" onclick="PT.tsWeek(1)" style="transform:scaleX(-1)">${A.icon('back')}</button></div>
     <div class="note">Monday to Sunday by the shop calendar · GET /timeclock/entries + /timeclock/hours.</div>
     ${days.map(dd=>`<div class="grp">${dd}</div>${TS.entries.filter(e=>e.d===dd).map(row).join('')}`).join('')}
@@ -334,9 +334,9 @@ P.tsClose=id=>{const e=tsE(id);A.sheet(sheetHead('Set the end time')+`<div class
 P.tsCloseDo=id=>{const v=($('#pt-ts-out')||{}).value||'16:00';A.closeSheet();if(!/^\d{2}:\d{2}$/.test(v)){P.alert('Check the time','Use HH:MM.',[{l:'OK',primary:true}]);return}const e=tsE(id);e.b=v;e.st='approved';e.flags=e.flags.filter(f=>f!=='not closed').concat(['closed by approver']);A.toast('Closed and approved');window.mount_tm_timesheet()};
 P.tsEdit=id=>{const e=tsE(id);A.sheet(sheetHead('Edit the entry · admin')+`<div class="sh-body"><div class="field"><label>Start</label><input class="input" id="pt-e-a" value="${e.a}"></div><div class="field"><label>End</label><input class="input" id="pt-e-b" value="${e.b||'16:00'}"></div><div class="field"><label>Break (minutes)</label><input class="input" id="pt-e-br" value="30" inputmode="numeric"></div><div class="field"><label>Reason (required)</label><input class="input" id="pt-e-n" placeholder="why the change"></div><p class="xs muted" style="margin:0">End earlier than start = night shift (ends next day). The break must be shorter than the shift; the server checks the range (422).</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.tsEditDo(${id})">Save</button></div>`,{full:true})};
 P.tsEditDo=id=>{const n=($('#pt-e-n')||{}).value||'';if(!n.trim()){A.toast('A reason is required');return}const a=$('#pt-e-a').value,b=$('#pt-e-b').value;A.closeSheet();if(P.d('tm_timesheet')==='err422'){P.alert('Could not save','The end must be later than the start, and the break shorter than the shift (422 editRange).',[{l:'OK',primary:true}]);return}const e=tsE(id);e.a=a;e.b=b;e.flags=[...new Set(e.flags.concat(['edited']))];A.toast('Saved with your note');window.mount_tm_timesheet()};
-P.tsAdd=()=>{const people=['kamila','vita','sofiia','andrii','oleh','max','zhadra'];A.sheet(sheetHead('Add a shift manually · admin')+`<div class="sh-body"><div class="caps muted" style="margin-bottom:8px">Who</div><div class="chips wrap" style="padding:0" id="pt-add-who">${people.map((p,i)=>`<button class="chip ${i===0?'on':''}" data-id="${p}" onclick="PT.tsPick(this)">${nm(p)}</button>`).join('')}</div><div class="field" style="margin-top:16px"><label>Date</label><input class="input" type="date" id="pt-a-d" value="2026-10-20"></div><div class="field"><label>Start</label><input class="input" id="pt-a-a" value="08:00"></div><div class="field"><label>End</label><input class="input" id="pt-a-b" value="16:00"></div><div class="field"><label>Break (minutes)</label><input class="input" id="pt-a-br" value="30"></div><div class="field"><label>Reason (required)</label><input class="input" id="pt-a-n" placeholder="e.g. clock-in never reached the server"></div><p class="xs muted" style="margin:0">The server refuses an overlap: “This person already has a shift in these hours”.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.tsAddDo()">Add</button></div>`,{full:true})};
+P.tsAdd=()=>{const people=['katrina','vicky','sonia','anton','ollie','max','zhanna'];A.sheet(sheetHead('Add a shift manually · admin')+`<div class="sh-body"><div class="caps muted" style="margin-bottom:8px">Who</div><div class="chips wrap" style="padding:0" id="pt-add-who">${people.map((p,i)=>`<button class="chip ${i===0?'on':''}" data-id="${p}" onclick="PT.tsPick(this)">${nm(p)}</button>`).join('')}</div><div class="field" style="margin-top:16px"><label>Date</label><input class="input" type="date" id="pt-a-d" value="2026-10-20"></div><div class="field"><label>Start</label><input class="input" id="pt-a-a" value="08:00"></div><div class="field"><label>End</label><input class="input" id="pt-a-b" value="16:00"></div><div class="field"><label>Break (minutes)</label><input class="input" id="pt-a-br" value="30"></div><div class="field"><label>Reason (required)</label><input class="input" id="pt-a-n" placeholder="e.g. clock-in never reached the server"></div><p class="xs muted" style="margin:0">The server refuses an overlap: “This person already has a shift in these hours”.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Cancel</button><button class="btn" onclick="PT.tsAddDo()">Add</button></div>`,{full:true})};
 P.tsPick=b=>{document.querySelectorAll('#pt-add-who .chip').forEach(x=>x.classList.toggle('on',x===b))};
-P.tsAddDo=()=>{const who=($('#pt-add-who .chip.on')||{}).dataset.id||'kamila';const n=$('#pt-a-n').value;if(!n.trim()){A.toast('A reason is required');return}A.closeSheet();if(P.d('tm_timesheet')==='err422'){P.alert('Could not add','This person already has a shift in these hours (422 overlap).',[{l:'OK',primary:true}]);return}TS.entries.push({id:Date.now(),d:'Tue 20 Oct',who,a:$('#pt-a-a').value,b:$('#pt-a-b').value,code:'',flags:['entered manually'],st:'pending',type:'shift',manual:true});A.toast('Shift added');window.mount_tm_timesheet()};
+P.tsAddDo=()=>{const who=($('#pt-add-who .chip.on')||{}).dataset.id||'katrina';const n=$('#pt-a-n').value;if(!n.trim()){A.toast('A reason is required');return}A.closeSheet();if(P.d('tm_timesheet')==='err422'){P.alert('Could not add','This person already has a shift in these hours (422 overlap).',[{l:'OK',primary:true}]);return}TS.entries.push({id:Date.now(),d:'Tue 20 Oct',who,a:$('#pt-a-a').value,b:$('#pt-a-b').value,code:'',flags:['entered manually'],st:'pending',type:'shift',manual:true});A.toast('Shift added');window.mount_tm_timesheet()};
 
 /* ======================================================= MY WEEK ======================================================= */
 window.mount_tm_myweek=function(){
@@ -352,7 +352,7 @@ window.mount_tm_myweek=function(){
     <div class="sec-head"><div class="h2">Team goal</div></div>
     ${d==='nogoal'?`<div class="note">No goal set for this month yet.</div>`:`<div class="blk"><div class="flex jc-sb sm"><span>Bouquets photographed before packing</span><span class="muted">69 %</span></div><div class="progress mt8"><i style="width:69%"></i></div><p class="xs muted" style="margin:10px 0 0">412 of 600 bouquets · not reached yet</p></div>`}
     <div class="sec-head"><div class="h2">Said about my work</div></div>
-    ${d==='nopraise'?`<div class="note">Nothing this week yet.</div>`:`<div class="rows">${[['“Exactly like the photo – thank you!”','Client · order 715541'],['Lovely tight spiral on 715530.','Valeria · task 103']].map(p=>`<div class="row"><span class="rt"><div class="l">${p[0]}</div><div class="d">${p[1]}</div></span></div>`).join('')}</div><div class="note">2 thank-you points received this week.</div>`}
+    ${d==='nopraise'?`<div class="note">Nothing this week yet.</div>`:`<div class="rows">${[['“Exactly like the photo – thank you!”','Client · order 715541'],['Lovely tight spiral on 715530.','Vanessa · task 103']].map(p=>`<div class="row"><span class="rt"><div class="l">${p[0]}</div><div class="d">${p[1]}</div></span></div>`).join('')}</div><div class="note">2 thank-you points received this week.</div>`}
     <div class="note">Read-only: thanking a colleague lives on Floritta Active, not here. <button class="textbtn" onclick="App.go('tm-active')">Open Active</button></div>`;
 };
 
@@ -381,7 +381,7 @@ window.mount_tm_mybonus=function(){
 };
 
 /* ======================================================= FLORISTS' BONUSES ======================================================= */
-const FB=[{id:'svetlana',today:[1240,'7 h 30 m'],month:24600,fc:31000},{id:'kamila',today:[510,'3 h 14 m'],month:4160,fc:9800},{id:'vita',today:null,month:19800,fc:26500},{id:'sofiia',today:[330,'2 h 05 m'],month:12100,fc:17000}];
+const FB=[{id:'sylvia',today:[1240,'7 h 30 m'],month:24600,fc:31000},{id:'katrina',today:[510,'3 h 14 m'],month:4160,fc:9800},{id:'vicky',today:null,month:19800,fc:26500},{id:'sonia',today:[330,'2 h 05 m'],month:12100,fc:17000}];
 window.mount_tm_flbonus=function(){
   const el=$('#tm-fb-body'),u=A.me(),d=P.d('tm_flbonus');P.ptr(el,'tm_flbonus');
   const demo=P.demo('tm_flbonus',[['ok','Normal'],['unavail','CRM unavailable'],['empty','No florists'],['loading','Loading']]);
@@ -392,7 +392,7 @@ window.mount_tm_flbonus=function(){
   el.innerHTML=demo+P.ptrHint()+`<div class="sec-head" style="margin-top:10px"><div class="h2">Florists</div><span class="xs muted">${FB.length}</span></div><div class="rows">${FB.map(f=>`<button class="urow" onclick="App.go('tm-flbonus-one',{id:'${f.id}'})">${A.avatar(f.id,'--sm')}<span class="f1"><div class="sm"><b>${nm(f.id)}</div><div class="d">${f.today?`Today ${P.gbp(f.today[0])} · ${f.today[1]}`:'Today – shift not started'}</div><div class="d">Month ${P.gbp(f.month)} · forecast ≈ ${P.gbp(f.fc)}</div></span>${P.ic('chev','chev')}</button>`).join('')}</div><div class="note">Tap a florist to see her card exactly as she sees it – read only.</div>`;
 };
 window.mount_tm_flbonus_one=function(p){
-  const el=$('#tm-fb1-body'),id=(p&&p.id)||'svetlana',f=FB.find(x=>x.id===id);$('#tm-fb1-ttl').textContent='Bonus: '+nm(id);
+  const el=$('#tm-fb1-body'),id=(p&&p.id)||'sylvia',f=FB.find(x=>x.id===id);$('#tm-fb1-ttl').textContent='Bonus: '+nm(id);
   const demo=P.demo('tm_flbonus_one',[['ok','Normal'],['bad','403 / bad id']]);
   if(P.d('tm_flbonus_one')==='bad'){el.innerHTML=demo+`<div class="blk" style="margin-top:14px"><div class="panel"><div class="sm">This florist’s bonus is not available here yet – the CRM needs an update.</div></div></div>`;return}
   el.innerHTML=demo+`<div style="height:8px"></div>`+P.bonusCard(nm(id),{...BON,today:f&&f.today?Math.round(f.today[0]/36):0,bonus:f&&f.today?f.today[0]:0})+`<div class="note">No actions here – only folding. The florist’s own card has the Learning link; here it is plain text.</div>`;
@@ -400,8 +400,8 @@ window.mount_tm_flbonus_one=function(p){
 
 /* ======================================================= GOALS ======================================================= */
 const GO=P.go={horizon:null,plan:{period:'October – December 2026',meeting:'24 Oct',strengths:'Colour pairing; calm with clients',note:'Keep the photo-first habit – it shows in the numbers. Next: lead a Saturday opening.',
-  goals:[{id:1,t:'Build 3 funeral tributes without help',how:'Svetlana signs off each one',give:'Two practice slots a week',due:'31 Oct',st:'open',h:'month',lesson:'Funeral work basics'},{id:2,t:'Photograph every bouquet before packing',how:'100 % in the bonus card for 4 weeks',give:'Phone stand by the window',due:'31 Oct',st:'done',h:'month'},{id:3,t:'Lead a Saturday opening',how:'Opening checklist done by 8:30 twice',give:'Valeria shadows the first one',due:'20 Dec',st:'open',h:'quarter'},{id:4,t:'Learn the wedding brief form',how:'Fill one real brief',give:'',due:'15 Nov',st:'dropped',h:'quarter'}],
-  sugg:[{t:'Try the Christmas wreath workshop',why:'Wreath orders start in November and you asked for seasonal work',taken:false},{t:'Mentor Ayana on buckets',why:'Your conditioning is the cleanest this month',taken:true}]},max:5};
+  goals:[{id:1,t:'Build 3 funeral tributes without help',how:'Sylvia signs off each one',give:'Two practice slots a week',due:'31 Oct',st:'open',h:'month',lesson:'Funeral work basics'},{id:2,t:'Photograph every bouquet before packing',how:'100 % in the bonus card for 4 weeks',give:'Phone stand by the window',due:'31 Oct',st:'done',h:'month'},{id:3,t:'Lead a Saturday opening',how:'Opening checklist done by 8:30 twice',give:'Vanessa shadows the first one',due:'20 Dec',st:'open',h:'quarter'},{id:4,t:'Learn the wedding brief form',how:'Fill one real brief',give:'',due:'15 Nov',st:'dropped',h:'quarter'}],
+  sugg:[{t:'Try the Christmas wreath workshop',why:'Wreath orders start in November and you asked for seasonal work',taken:false},{t:'Mentor Ayla on buckets',why:'Your conditioning is the cleanest this month',taken:true}]},max:5};
 window.mount_tm_goals=function(){
   const el=$('#tm-go-body'),d=P.d('tm_goals'),pl=GO.plan;P.ptr(el,'tm_goals');
   const demo=P.demo('tm_goals',[['ok','Normal'],['noplan','No plan (404)'],['error','Error'],['limit','5 goals – limit'],['noteamgoal','No team goal']]);
@@ -436,7 +436,7 @@ P.goDrop=id=>{A.closeSheet();const g=GO.plan.goals.find(x=>x.id===id);g.st='drop
 P.goTake=i=>{GO.plan.sugg[i].taken=true;GO.plan.goals.push({id:Date.now(),t:GO.plan.sugg[i].t,how:'To agree with your mentor',give:'',due:'31 Dec',st:'open',h:'quarter'});A.toast('Added to my plan – your mentor will confirm');window.mount_tm_goals()};
 
 /* ======================================================= FLORITTA ACTIVE ======================================================= */
-const AC=P.ac={goal:{name:'Bouquets photographed before packing',month:'October',st:'open',fund:42000,cur:412,target:600,metric:'bouquets',shares:[['svetlana',96,14400],['vita',70,10500],['kamila',58,8700],['sofiia',56,8400]]},kudos:{left:3,to:null,pts:1,note:''},lb:[['svetlana',3,'Bloom',12,96,410],['vita',2,'Bud',9,70,322],['kamila',1,'Bud',7,58,240],['sofiia',0,'Seed',5,56,190],['andrii',1,'Bud',6,44,201]]};
+const AC=P.ac={goal:{name:'Bouquets photographed before packing',month:'October',st:'open',fund:42000,cur:412,target:600,metric:'bouquets',shares:[['sylvia',96,14400],['vicky',70,10500],['katrina',58,8700],['sonia',56,8400]]},kudos:{left:3,to:null,pts:1,note:''},lb:[['sylvia',3,'Bloom',12,96,410],['vicky',2,'Bud',9,70,322],['katrina',1,'Bud',7,58,240],['sonia',0,'Seed',5,56,190],['anton',1,'Bud',6,44,201]]};
 window.mount_tm_active=function(){
   const el=$('#tm-ac-body'),u=A.me(),d=P.d('tm_active'),lim=P.limited(u),mgr=P.isMgr(u),g=AC.goal,k=AC.kudos;P.ptr(el,'tm_active');
   const demo=P.demo('tm_active',[['ok','Normal'],['nokudos','Kudos used up'],['error','Error']]);
