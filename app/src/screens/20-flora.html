@@ -139,7 +139,7 @@
   };
   Extras.flRetry=i=>{if(S.msgs[i].st!=="failed")return;deliver(i)};
   Extras.flDemo=el=>{el.classList.toggle("on");const on=el.classList.contains("on");({team:()=>S.assistant=!on,offline:()=>S.offline=on,off404:()=>S.off404=on,motion:()=>S.motion=on})[el.dataset.k]();render()};
-  Extras.flTeamPhoto=()=>{if(!S.token){App.toast("Send a message first – replies come into the session");return}S.awaiting=false;S.msgs.push({t:"Here's your bouquet before it leaves the shop – Vita hand-tied it just now.",img:"img/peach-posy.webp",who:"Vita · Floritta",ts:now()});render()};
+  Extras.flTeamPhoto=()=>{if(!S.token){App.toast("Send a message first – replies come into the session");return}S.awaiting=false;S.msgs.push({t:"Here's your bouquet before it leaves the shop – Vicky hand-tied it just now.",img:"img/peach-posy.webp",who:"Vicky · Floritta",ts:now()});render()};
   Extras.flForget=()=>{if(!S.token){App.toast("No session yet");return}S.token=null;S.pushed=false;S.msgs=[{sys:"Server replied 401 · token cleared · the next message opens a new session, this history will be gone"}];render()};
   Extras.flRestart=()=>{if(S.token){S.msgs=S.msgs.filter(m=>!m.sys);S.msgs.push({sys:"App restarted · token found in Keychain · history re-fetched from the server · contact line not shown again"})}else S.msgs=[];S.busy=false;S.awaiting=false;render()};
   Extras.flPush=()=>App.toast("<b>Flora</b> · Your bouquet photo is ready",{action:{label:"Open",onclick:"App.go('flora')"},ms:4000});

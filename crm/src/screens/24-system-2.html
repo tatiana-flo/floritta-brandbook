@@ -159,7 +159,7 @@ function mountLogin(){url("app.floritta.ai/login");
   $("#s25-login").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.login(this)">${LOGO}<div class="h2">Sign in to Floritta Admin</div>
    ${S.login==="flash"?`<div class="flash --ok">Password updated. Sign in with your new password.</div>`:""}
    ${S.login==="error"||S.login==="inactive"?`<div class="flash --err">These credentials do not match our records.</div>`:""}
-   <div class="field"><label>Email</label><input class="input" name="email" type="email" autocomplete="username" value="${S.login==="inactive"?"omar@floritta.example":S.login==="error"?"valeria@floritta.example":""}" placeholder="name@floritta.uk"></div>
+   <div class="field"><label>Email</label><input class="input" name="email" type="email" autocomplete="username" value="${S.login==="inactive"?"omar@floritta.example":S.login==="error"?"vanessa@floritta.example":""}" placeholder="name@floritta.uk"></div>
    <div class="field"><label>Password</label><input class="input" name="password" type="password" autocomplete="current-password" placeholder="••••••••"></div>
    <button class="btn --block" type="submit">Sign in</button>
    <div class="foot"><button type="button" class="textbtn" onclick="App.go('auth-forgot')">Forgot your password?</button><span title="Values are read from the form at submit – works with password managers and autofill">${I("lock")} autofill-safe</span></div>
@@ -171,9 +171,9 @@ function mountForgot(){url("app.floritta.ai/forgot-password");
   $("#s25-forgot").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.forgot()">${LOGO}<div class="h2">Forgot your password?</div><div id="s25-forgot-body"><div class="sm soft mb16">Enter the email you use for Floritta Admin – we will send a link to set a new password.</div><div class="field"><label>Email</label><input class="input" id="s25-fg-e" type="email" autofocus placeholder="name@floritta.uk"></div><button class="btn --block" type="submit">Send reset link</button></div><div class="foot"><button type="button" class="textbtn" onclick="App.go('auth-login')">Back to sign in</button><span>5 a minute</span></div></form>`;
 }
 function forgot(){$("#s25-forgot-body").innerHTML=`<div class="flash --ok">If that email belongs to a Floritta account, a reset link is on its way. Check your inbox and spam.</div><div class="xs muted">The same message for any address – the link is only sent to an active user.</div>`}
-function mountReset(){url("app.floritta.ai/reset-password/…?email=valeria@…");
+function mountReset(){url("app.floritta.ai/reset-password/…?email=vanessa@…");
   $("#s25-reset").innerHTML=`<form class="auth-box" onsubmit="event.preventDefault();S25.reset()">${LOGO}<div class="h2">Set a new password</div>
-   <div class="field"><label>Email</label><input class="input" value="valeria@floritta.example" readonly></div>
+   <div class="field"><label>Email</label><input class="input" value="vanessa@floritta.example" readonly></div>
    <div class="field"><label>New password</label><input class="input" type="password" id="s25-rs-p" autocomplete="new-password"><div class="xs muted mt8">At least 8 characters with letters and digits.</div></div>
    <div class="field"><label>Confirm new password</label><input class="input" type="password" id="s25-rs-c" autocomplete="new-password"><div class="err" id="s25-rs-err"></div></div>
    <button class="btn --block" type="submit">Set new password</button>

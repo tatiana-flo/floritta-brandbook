@@ -151,7 +151,7 @@ window.mount_today=function(params){
   live.filter(o=>o.status==="ready"&&o.type==="delivery"&&!o.courier&&!A.isLate(o)).forEach(o=>need.push({k:"delivery",ic:"truck",cls:"",t:`#${o.id} · ready, no courier · ${esc(o.recipient)}`,sub:`Slot ${o.slot} · ${esc(o.addr)}`,pill:A.pill("ready"),acts:[["Assign courier",`App.pickCourier(event,${o.id})`],["Dispatch",`App.go('delivery',{open:${o.id}})`]]}));
   TK.filter(t=>t.status!=="done"&&!T1_DONE_TASKS.has(t.id)&&(t.late||new Date(t.due)<A.NOW)).forEach(t=>need.push({k:"tasks",ic:"check",cls:"--warn",t:esc(t.t),sub:`${esc(A.user(t.who)?.n||t.who)} · due ${A.fmtTime(t.due)} · ${A.STATUS_LBL[t.status]}`,pill:A.pill("overdue"),acts:[["Open",`App.go('tasks',{open:${t.id}})`],["Nudge",`App.push('Reminder sent',${JSON.stringify(A.user(t.who)?.n+" · "+t.t)},{icon:'bell'});App.toast('Reminder sent · push')`]]}));
   const low=INV.filter(i=>i.qty<i.par);
-  if(low.length)need.push({k:"stock",ic:"warehouse",cls:low.some(i=>i.qty===0)?"--accent":"--warn",t:`${low.length} stock lines below par · ${low.filter(i=>i.qty===0).length} at zero`,sub:esc(low.slice(0,4).map(i=>i.name).join(", "))+(low.length>4?" …":""),pill:A.pill("plain","Stock"),acts:[["Order from RFH",`App.go('purchasing')`],["Stock",`App.go('stock',{view:'low'})`]]});
+  if(low.length)need.push({k:"stock",ic:"warehouse",cls:low.some(i=>i.qty===0)?"--accent":"--warn",t:`${low.length} stock lines below par · ${low.filter(i=>i.qty===0).length} at zero`,sub:esc(low.slice(0,4).map(i=>i.name).join(", "))+(low.length>4?" …":""),pill:A.pill("plain","Stock"),acts:[["Order from DFA",`App.go('purchasing')`],["Stock",`App.go('stock',{view:'low'})`]]});
   const nf=params&&params.need||"all";const cnt=k=>need.filter(x=>k==="all"||x.k===k).length;
   const needRows=need.filter(x=>nf==="all"||x.k===nf);
   const needHtml=`<div class="panel t-need"><div class="p-head"><div class="h4">Needs you now <span class="muted xs tnum">${need.length}</span></div>
@@ -179,12 +179,12 @@ window.mount_today=function(params){
   /* ---- Tomorrow ---- */
   const tom=O.filter(o=>o.n===1&&o.status!=="cancelled");
   const tomSlots=SL.map(s=>[s,tom.filter(o=>o.slot===s).length]).filter(x=>x[1]);
-  const rfh=INV.filter(i=>i.next==="Thu");
+  const dfa=INV.filter(i=>i.next==="Thu");
   const tomHtml=`<div class="panel"><div class="p-head"><div class="h4">Tomorrow <span class="muted xs">Wed 22 Oct</span></div><button class="textbtn" onclick="App.go('orders',{view:'tomorrow'})">Open</button></div>
     <div style="padding:14px"><div class="row" style="gap:20px;align-items:baseline"><span class="kpi">${tom.length}</span><span class="sm soft">orders booked · ${fmt(tom.reduce((s,o)=>s+o.total,0))} · ${tom.filter(o=>o.paid!=="paid").length} unpaid</span></div>
       <div class="chips mt16">${tomSlots.map(([s,n])=>`<button class="chip" onclick="App.go('orders',{view:'tomorrow',slot:'${s}'})">${s} <span class="n">${n}</span></button>`).join("")||'<span class="muted sm">Nothing booked yet</span>'}</div>
       <div class="hr" style="margin:14px 0"></div>
-      <div class="row" style="gap:10px"><span class="dot --ok"></span><div class="sm" style="flex:1">RFH delivery Thursday · ${rfh.length} lines expected${rfh.some(i=>i.qty<i.par)?` · <span class="accent">${rfh.filter(i=>i.qty<i.par).length} below par till then</span>`:""}</div><button class="textbtn" onclick="App.go('purchasing')">Purchasing</button></div>
+      <div class="row" style="gap:10px"><span class="dot --ok"></span><div class="sm" style="flex:1">DFA delivery Thursday · ${dfa.length} lines expected${dfa.some(i=>i.qty<i.par)?` · <span class="accent">${dfa.filter(i=>i.qty<i.par).length} below par till then</span>`:""}</div><button class="textbtn" onclick="App.go('purchasing')">Purchasing</button></div>
       <div class="row mt8" style="gap:10px"><span class="dot --ink"></span><div class="sm" style="flex:1">Shifts: ${esc(S.filter(s=>s.role==="florist").slice(0,3).map(s=>s.n).join(", "))} + Daniel (van)</div><button class="textbtn" onclick="App.go('team',{tab:'schedule'})">Schedule</button></div>
       <div class="btn-row mt16"><button class="btn --ghost --sm" onclick="App.toast('Sent to printer · ${tom.length} tickets for tomorrow')">${icon("printer")} Print tomorrow's tickets</button></div></div></div>`;
 
@@ -227,7 +227,7 @@ window.mount_today=function(params){
       <div class="list f-task" style="border:1px solid var(--hair)">${myTasks.map(t=>`<div class="li" onclick="App.go('tasks',{open:${t.id}})"><span class="dot ${t.late||new Date(t.due)<A.NOW?"--accent":t.status==="review"?"--warn":"--ink"}"></span><div class="t"><b>${esc(t.t)}</b><small>due ${A.fmtDay(t.due)} ${A.fmtTime(t.due)} · from ${esc(A.user(t.by)?.n||t.by)}</small></div>${t.status==="review"?A.pill("review"):`<button class="btn --ghost --sm" onclick="event.stopPropagation();T1.doneTask(${t.id})">${icon("check")} Done</button>`}</div>`).join("")||`<div class="empty">${icon("check")}<div class="sm">No open tasks for you.</div></div>`}</div></div>`;
     const lHtml=`<div><div class="sec-head"><div class="h3">Learning today</div><button class="textbtn" onclick="App.go('learning')">Learning</button></div>
       <div class="col" style="gap:8px">${T1_LESSONS.map((l,i)=>`<div class="f-lesson"><span class="ic">${icon(i?"sparkle":"book")}</span><div style="flex:1;min-width:0"><b>${esc(l.t)}</b><div class="sm muted">${esc(l.sub)}</div></div><button class="btn --sm ${i?"--ghost":""}" onclick="App.go('learning',{${i?"quiz":"lesson"}:true})">${icon("play")} ${l.min} min</button></div>`).join("")}
-      <div class="note-box">${icon("info")} Huddle at 13:00 · Kamila takes over the floor. RFH delivery Thursday – peonies out of stock till then.</div></div></div>`;
+      <div class="note-box">${icon("info")} Huddle at 13:00 · Katrina takes over the floor. DFA delivery Thursday – peonies out of stock till then.</div></div></div>`;
     return kp+`<div class="mt24">${mineHtml}</div><div class="mt24">${qHtml}</div><div class="f-cols">${tHtml}${lHtml}</div>`;
   }
 };

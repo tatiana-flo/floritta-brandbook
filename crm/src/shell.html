@@ -523,7 +523,7 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
             <aside class="sidebar" id="sidebar">
               <div class="logo"><img src="logo.svg" alt="Floritta"></div>
               <nav id="sb-nav" aria-label="Main navigation"></nav>
-              <div class="sb-foot"><span class="avatar" id="sb-av">VA</span><div class="who"><b id="sb-name">Valeria</b><small id="sb-role">Manager</small></div><button class="ib" title="Settings" onclick="App.go('system-settings')"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button></div>
+              <div class="sb-foot"><span class="avatar" id="sb-av">VA</span><div class="who"><b id="sb-name">Vanessa</b><small id="sb-role">Manager</small></div><button class="ib" title="Settings" onclick="App.go('system-settings')"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button></div>
             </aside>
             <div class="drawer-bg" id="drawer-bg" onclick="App.drawer(false)"></div>
             <!-- ids: SHEL-322 SHEL-467 – impersonation banner (Floritta One central admin inside a tenant): red strip above the TopBar with «Exit», writes are blocked while it is on -->
@@ -578,19 +578,19 @@ const ri=(a,b)=>a+Math.floor(rnd()*(b-a+1));
 
 const STAFF=[
  {id:"tatiana",n:"Tatiana",role:"owner",title:"Owner",av:"TA",shift:"09:00–18:00",on:true},
- {id:"valeria",n:"Valeria",role:"manager",title:"Manager",av:"VA",shift:"08:00–17:00",on:true},
- {id:"kamila",n:"Kamila",role:"manager",title:"Manager",av:"KA",shift:"13:00–22:00",on:false},
- {id:"svetlana",n:"Svetlana",role:"florist",title:"Senior florist",av:"SV",shift:"08:00–17:00",on:true},
+ {id:"vanessa",n:"Vanessa",role:"manager",title:"Manager",av:"VA",shift:"08:00–17:00",on:true},
+ {id:"katrina",n:"Katrina",role:"manager",title:"Manager",av:"KA",shift:"13:00–22:00",on:false},
+ {id:"sylvia",n:"Sylvia",role:"florist",title:"Senior florist",av:"SV",shift:"08:00–17:00",on:true},
  {id:"marina",n:"Marina",role:"florist",title:"Florist",av:"MA",shift:"08:00–17:00",on:true},
  {id:"olesya",n:"Olesya",role:"florist",title:"Florist",av:"OL",shift:"13:00–22:00",on:false},
  {id:"anna",n:"Anna",role:"florist",title:"Florist · seasonal",av:"AN",shift:"10:00–19:00",on:true,staff_type:"seasonal"},
- {id:"lina",n:"Lina",role:"florist",title:"Trainee",av:"LI",shift:"10:00–19:00",on:true,staff_type:"trainee"},
+ {id:"lola",n:"Lola",role:"florist",title:"Trainee",av:"LI",shift:"10:00–19:00",on:true,staff_type:"trainee"},
  {id:"daniel",n:"Daniel",role:"courier",title:"Courier · van",av:"DA",shift:"09:00–18:00",on:true},
  {id:"george",n:"George",role:"courier",title:"Courier · bike",av:"GE",shift:"12:00–22:00",on:false},
  {id:"omar",n:"Omar",role:"courier",title:"Courier · freelance",av:"OM",shift:"14:00–22:00",on:false},
- {id:"eliza",n:"Eliza",role:"manager",title:"Assistant",av:"EL",shift:"09:00–18:00",on:true}
+ {id:"elise",n:"Elise",role:"manager",title:"Assistant",av:"EL",shift:"09:00–18:00",on:true}
 ];
-const ROLE_USER={owner:"tatiana",manager:"valeria",florist:"svetlana",courier:"daniel",seasonal:"anna",trainee:"lina"};
+const ROLE_USER={owner:"tatiana",manager:"vanessa",florist:"sylvia",courier:"daniel",seasonal:"anna",trainee:"lola"};
 
 const PRODUCTS=(()=>{
  const imgs=["red-roses","peony-basket","pink-garden","white-spray","lilac-dream","peach-posy","belgravia","charmingly","daydream-basket","hero-basket","hero-white","pink-manifesto","pink-manifesto-2","poem-petals","powdered-rose","powdered-rose-2","veronica"];
@@ -656,7 +656,7 @@ const ORDERS=(()=>{
   o.log.push({at:o.placed,who:"system",t:"Order placed · "+chan+(paid==="paid"?" · paid":"")});
   if(o.florist)o.log.push({at:T(ri(8,10),ri(0,59),n),who:o.florist,t:"Started making"});
   if(o.photo)o.log.push({at:T(ri(9,11),ri(0,59),n),who:o.florist,t:"Photo uploaded"});
-  if(o.photoSent)o.log.push({at:T(ri(9,11),ri(0,59),n),who:"valeria",t:"Photo sent to customer · WhatsApp"});
+  if(o.photoSent)o.log.push({at:T(ri(9,11),ri(0,59),n),who:"vanessa",t:"Photo sent to customer · WhatsApp"});
   if(o.courier)o.log.push({at:T(ri(10,12),ri(0,59),n),who:o.courier,t:"Picked up · on the way"});
   if(status==="delivered")o.log.push({at:T(ri(11,13),ri(0,59),n),who:o.courier||"system",t:"Delivered · signed by recipient"});
   list.push(o);
@@ -680,21 +680,21 @@ const CONVOS=(()=>{
   ["Hi, what's your same-day cut-off?"],
   ["I'd like to cancel order 118431, sorry."]
  ];
- return txt.map((m,i)=>{const c=CUSTOMERS[(i*3)%25];return{id:7001+i,customer:c.id,chan:chans[i],unread:i<4,order:i===2?ORDERS[6].id:i===7?ORDERS[11].id:null,assigned:i%3===0?"valeria":i%3===1?"eliza":null,msgs:m.map((t,k)=>({at:T(ri(8,10),ri(0,59),0),me:k%2===1,t})),last:T(ri(9,10),ri(0,59),0),flora:[
+ return txt.map((m,i)=>{const c=CUSTOMERS[(i*3)%25];return{id:7001+i,customer:c.id,chan:chans[i],unread:i<4,order:i===2?ORDERS[6].id:i===7?ORDERS[11].id:null,assigned:i%3===0?"vanessa":i%3===1?"elise":null,msgs:m.map((t,k)=>({at:T(ri(8,10),ri(0,59),0),me:k%2===1,t})),last:T(ri(9,10),ri(0,59),0),flora:[
    "Thank you! Yes – weekly office flowers from £65, delivered every Monday before 10. Shall I send a few options?",
    "Thanks for your message – we can do that. Let me check and confirm within a few minutes.",
    "Same-day delivery is available until 22:00 across London SE1 and nearby; order by 19:00 for the last slot."][i%3]}});
 })();
 
 const TASKS=[
- {id:301,t:"Opening checklist – shop floor",who:"anna",by:"valeria",status:"done",due:T(8,30),tags:["shop"]},
- {id:302,t:"Photograph 12 new autumn bouquets",who:"svetlana",by:"tatiana",status:"doing",due:T(16,0),tags:["website"]},
- {id:303,t:"Halloween window display",who:"marina",by:"valeria",status:"todo",due:T(18,0,2),tags:["shop"]},
- {id:304,t:"Count ribbon & wrap stock",who:"lina",by:"valeria",status:"review",due:T(12,0),tags:["stock"]},
- {id:305,t:"Fridge temperature log",who:"anna",by:"valeria",status:"todo",due:T(9,0),tags:["shop"],late:true},
- {id:306,t:"Call RFH re: Thursday order",who:"valeria",by:"tatiana",status:"todo",due:T(15,0),tags:["purchasing"]},
- {id:307,t:"Prep workshop kits · Sat",who:"olesya",by:"valeria",status:"todo",due:T(17,0,3),tags:["workshops"]},
- {id:308,t:"Return vases to supplier",who:"daniel",by:"valeria",status:"doing",due:T(14,0),tags:["delivery"]}
+ {id:301,t:"Opening checklist – shop floor",who:"anna",by:"vanessa",status:"done",due:T(8,30),tags:["shop"]},
+ {id:302,t:"Photograph 12 new autumn bouquets",who:"sylvia",by:"tatiana",status:"doing",due:T(16,0),tags:["website"]},
+ {id:303,t:"Halloween window display",who:"marina",by:"vanessa",status:"todo",due:T(18,0,2),tags:["shop"]},
+ {id:304,t:"Count ribbon & wrap stock",who:"lola",by:"vanessa",status:"review",due:T(12,0),tags:["stock"]},
+ {id:305,t:"Fridge temperature log",who:"anna",by:"vanessa",status:"todo",due:T(9,0),tags:["shop"],late:true},
+ {id:306,t:"Call DFA re: Thursday order",who:"vanessa",by:"tatiana",status:"todo",due:T(15,0),tags:["purchasing"]},
+ {id:307,t:"Prep workshop kits · Sat",who:"olesya",by:"vanessa",status:"todo",due:T(17,0,3),tags:["workshops"]},
+ {id:308,t:"Return vases to supplier",who:"daniel",by:"vanessa",status:"doing",due:T(14,0),tags:["delivery"]}
 ];
 const INVENTORY=[
  ["Rose Red Naomi 60cm","stems",180,120,"Thu"],["Rose Quicksand 50cm","stems",90,80,"Thu"],["Peony Sarah Bernhardt","stems",0,40,"Sat"],["Garden rose Juliet","stems",36,40,"Thu"],["Hydrangea white","stems",24,20,"Thu"],["Eucalyptus cinerea","bunches",14,10,"Tue"],["Ruscus","bunches",9,8,"Tue"],["Lisianthus white","stems",60,50,"Thu"],["Ranunculus mix","stems",45,60,"Sat"],["Tulip white","stems",0,100,"Sat"],
@@ -704,7 +704,7 @@ const NOTIFS=[
  {id:1,type:"order",title:"New order · Website",body:"#"+ORDERS[25].id+" · Peach Posy · 14:00–16:00",at:T(10,31),read:false,go:["orders",{open:ORDERS[25].id}]},
  {id:2,type:"problem",title:"Delivery problem",body:"#"+ORDERS[7].id+" · recipient not answering",at:T(10,12),read:false,go:["delivery",{open:ORDERS[7].id}]},
  {id:3,type:"inbox",title:"Charlotte Whitfield · WhatsApp",body:"Yes please! And can you add a card?",at:T(10,5),read:false,go:["inbox",{id:7001}]},
- {id:4,type:"stock",title:"Low stock",body:"Peony Sarah Bernhardt · 0 stems · next RFH Sat",at:T(8,40),read:true,go:["inventory-stock",{}]},
+ {id:4,type:"stock",title:"Low stock",body:"Peony Sarah Bernhardt · 0 stems · next DFA Sat",at:T(8,40),read:true,go:["inventory-stock",{}]},
  {id:5,type:"task",title:"Task overdue",body:"Fridge temperature log · Anna · 09:00",at:T(9,5),read:true,go:["tasks",{view:"overdue"}]},
  {id:6,type:"pay",title:"Payment received",body:"#"+ORDERS[3].id+" · £"+ORDERS[3].total+" · Stripe",at:T(8,2),read:true,go:["orders",{open:ORDERS[3].id}]}
 ];

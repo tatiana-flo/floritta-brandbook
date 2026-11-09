@@ -43,18 +43,18 @@ const ICON={task:'board',ann:'megaphone',announcement:'megaphone',order:'flower'
 const FILTERS=[['all','All',null],['tasks','Tasks',['task']],['ann','Announcements',['ann','announcement']],['orders','Orders & routes',['order','queue','delivery','trip','trip_confirm']],['learning','Learning',['learn','learning','lesson']]];
 /* extra demo rows per persona – types the shell does not seed (orders, routes, chats, stock, digest, offers) */
 const EXTRA={
-  valeria:[{id:901,type:'comms',title:'Eleanor Harper is waiting · WhatsApp',body:'“Could it arrive before 2 pm?” · 7 min without a reply · Flora draft ready',at:T(11,4),read:false,priority:'high',go:['cm-chat',{id:1}]},
+  vanessa:[{id:901,type:'comms',title:'Eleanor Harper is waiting · WhatsApp',body:'“Could it arrive before 2 pm?” · 7 min without a reply · Flora draft ready',at:T(11,4),read:false,priority:'high',go:['cm-chat',{id:1}]},
     {id:902,type:'order',title:'New website order 715620',body:'Pink Manifesto Deluxe · SW11 · today 12:00–14:00',at:T(10,51),read:false,go:['order',{id:'715620'}]},
-    {id:903,type:'inventory',title:'Stocktake submitted · cold room',body:'Vita counted 48 lines, 3 differences to check',at:T(9,55),read:true,go:['work',{view:'stock'}]},
+    {id:903,type:'inventory',title:'Stocktake submitted · cold room',body:'Vicky counted 48 lines, 3 differences to check',at:T(9,55),read:true,go:['work',{view:'stock'}]},
     {id:904,type:'digest',title:'While you were away',body:'5 notifications since Monday 22:00',at:T(7,30),read:true,go:['inbox',{}]}],
-  kamila:[{id:901,type:'queue',title:'New order in your queue',body:'715620 · Pink Manifesto Deluxe · ready by 11:45',at:T(10,52),read:false,priority:'high',go:['work',{view:'orders',tab:'mine'}]},
+  katrina:[{id:901,type:'queue',title:'New order in your queue',body:'715620 · Pink Manifesto Deluxe · ready by 11:45',at:T(10,52),read:false,priority:'high',go:['work',{view:'orders',tab:'mine'}]},
     {id:902,type:'shift_offer',title:'Extra shift on Saturday',body:'10:00–16:00 at SW6 · 1 spot · reply in the app',at:T(9,30),read:false,go:null},
     {id:903,type:'digest',title:'While you were away',body:'3 notifications since yesterday 22:00',at:T(7,58),read:true,go:['inbox',{}]}],
-  andrii:[{id:901,type:'delivery',title:'Delivery 715619 · leave with neighbour',body:'Client says flat 4 is away – neighbour at flat 5 accepts',at:T(11,8),read:false,priority:'high',go:['stop',{id:2}]},
+  anton:[{id:901,type:'delivery',title:'Delivery 715619 · leave with neighbour',body:'Client says flat 4 is away – neighbour at flat 5 accepts',at:T(11,8),read:false,priority:'high',go:['stop',{id:2}]},
     {id:902,type:'trip_confirm',title:'Confirm your route · 3 stops',body:'Battersea → Clapham → Chelsea · first slot 12:00',at:T(10,30),read:false,go:['route',{}]},
     {id:903,type:'digest',title:'While you were away',body:'4 notifications since Sunday',at:T(7,50),read:true,go:['inbox',{}]}],
-  ayana:[{id:901,type:'lesson',title:'Lesson reminder',body:'Photo before packing – 60 % done, 2 minutes left',at:T(10,15),read:false,go:null}],
-  zhadra:[{id:901,type:'shift_offer',title:'New shift offer · Thu 12:00–20:00',body:'SE1 studio · pre-Halloween · 1 spot',at:T(9,20),read:false,priority:'high',go:null},
+  ayla:[{id:901,type:'lesson',title:'Lesson reminder',body:'Photo before packing – 60 % done, 2 minutes left',at:T(10,15),read:false,go:null}],
+  zhanna:[{id:901,type:'shift_offer',title:'New shift offer · Thu 12:00–20:00',body:'SE1 studio · pre-Halloween · 1 spot',at:T(9,20),read:false,priority:'high',go:null},
     {id:902,type:'contractor_job',title:'Pay statement ready',body:'Week 42 · £362.80 · PAYE',at:T(8,0),read:true,go:['pay',{}]}],
   tatiana:[{id:901,type:'comms',title:'Eleanor Harper is waiting · WhatsApp',body:'7 min without a reply · Flora draft ready',at:T(11,4),read:false,priority:'high',go:['cm-chat',{id:1}]},
     {id:902,type:'order',title:'Large order · 715618 · £340',body:'Corporate · Priya Nair · Thursday 9:00',at:T(10,20),read:false,go:['order',{id:'715618'}]},
@@ -104,7 +104,7 @@ IN.open=id=>{const n=A.state.notifs.find(x=>x.id==id);if(!n)return;A.readNotif(i
   if(!n.go||!document.getElementById('s-'+n.go[0])){render();A.toast(n.go?'Opens '+n.go[0]+' (shared screen)':'Marked as read – this type has nowhere to open');return}
   if(n.go[0]==='cm-chat'&&!isMgr()){render();A.toast('Chats are for managers');return}
   A.go(n.go[0],n.go[1]||{})};
-IN.simPush=()=>{const u=A.me();const id=Date.now();const n=u.role==='courier'?{id,type:'delivery',title:'Delivery 715621 · address changed',body:'Now 22 Lavender Hill, SW11 (fictional) · same slot',at:NOW.toISOString(),read:false,priority:'high',go:['route',{}]}:isMgr()?{id,type:'comms',title:'New message · Instagram',body:'@rosie.blooms: “Any chance of Sunday delivery?”',at:NOW.toISOString(),read:false,go:['cm-chat',{id:2}]}:{id,type:'task',title:'New task from Valeria',body:'Wrap the 12:00 marketplace orders · due 11:45',at:NOW.toISOString(),read:false,priority:'high',go:['tasks',{}]};
+IN.simPush=()=>{const u=A.me();const id=Date.now();const n=u.role==='courier'?{id,type:'delivery',title:'Delivery 715621 · address changed',body:'Now 22 Lavender Hill, SW11 (fictional) · same slot',at:NOW.toISOString(),read:false,priority:'high',go:['route',{}]}:isMgr()?{id,type:'comms',title:'New message · Instagram',body:'@rosie.blooms: “Any chance of Sunday delivery?”',at:NOW.toISOString(),read:false,go:['cm-chat',{id:2}]}:{id,type:'task',title:'New task from Vanessa',body:'Wrap the 12:00 marketplace orders · due 11:45',at:NOW.toISOString(),read:false,priority:'high',go:['tasks',{}]};
   A.state.notifs.push(n);A.push(n.title,n.body,{icon:ICON[n.type],go:n.go});render()};
 IN.simDigest=()=>{const c=A.state.notifs.filter(n=>!n.read).length;A.push('While you were away',`${c||3} notifications since your last shift`,{icon:'sun',go:['inbox',{}]})};
 /* keep in sync with the shell's own re-renders */

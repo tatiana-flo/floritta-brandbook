@@ -187,7 +187,7 @@ const COLOURS=["Red","Pink","White","Peach","Lilac","Mixed"];
 const LANGS=[["pl","Polish"],["ru","Russian"],["uk","Ukrainian"]];
 const DESC=n=>`<p>${n} is hand-tied in our Bermondsey studio the morning it leaves. Seasonal stems, conditioned overnight, wrapped in ivory paper.</p><p>Same-day delivery across London SE1 and nearby until 22:00.</p>`;
 function X(p){if(p.c21)return p.c21;const i=p.id,h=k=>(i*31+k*7)%100;const multi=p.sizes&&p.sizes.length>1;
- const rec=n=>p.bom?{lines:p.bom.map(l=>({item:l[0],qty:l[1]})),reviewed:h(n)<60,by:h(n)<30?"tatiana":"valeria",at:A.T(10,0,-(i%9+1))}:null;
+ const rec=n=>p.bom?{lines:p.bom.map(l=>({item:l[0],qty:l[1]})),reviewed:h(n)<60,by:h(n)<30?"tatiana":"vanessa",at:A.T(10,0,-(i%9+1))}:null;
  const vars=[{id:i*10+1,name:"Classic (as on the photo)",colour:COLOURS[i%6],price:p.price,old:h(1)<30?Math.round(p.price*1.15):null,active:true,soldOut:false,recipe:rec(2),saved:true}];
  if(multi){vars.push({id:i*10+2,name:"Smaller size for",colour:COLOURS[i%6],price:Math.round(p.price*.7),old:null,active:h(3)<80,soldOut:false,recipe:rec(4),saved:true});vars.push({id:i*10+3,name:"Upgrade size to",colour:COLOURS[i%6],price:Math.round(p.price*1.5),old:null,active:true,soldOut:h(5)<15,recipe:h(6)<50?rec(7):null,saved:true})}
  const photos=[p.img].concat(h(6)<70?[img(i+3)]:[]).concat(h(7)<40?[img(i+5)]:[]);
@@ -383,7 +383,7 @@ function pcSaveTr(){const x=X(findP(pc.id));LANGS.forEach(([k])=>{const t=x.tr[k
 function pcReview(vid){const x=X(findP(pc.id));const v=x.vars.find(w=>w.id===vid);if(!v.recipe){A.toast("Add recipe lines first");return}v.recipe.reviewed=!v.recipe.reviewed;v.recipe.by=A.me().id;v.recipe.at=A.NOW.toISOString();renderPC(findP(pc.id));A.toast(v.recipe.reviewed?"Recipe reviewed · no page reload":"Review removed")}
 function pcRecLine(vid,i,k,v){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);if(!w.recipe)w.recipe={lines:[],reviewed:false};w.recipe.lines[i][k]=k==="qty"?Math.max(1,num(v)||1):v}
 function pcRecRm(vid,i){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);w.recipe.lines.splice(i,1);renderPC(findP(pc.id))}
-function pcRecAdd(vid){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);if(!w.recipe)w.recipe={lines:[],reviewed:false,by:"valeria",at:A.NOW.toISOString()};w.recipe.lines.push({item:"",qty:1});renderPC(findP(pc.id))}
+function pcRecAdd(vid){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);if(!w.recipe)w.recipe={lines:[],reviewed:false,by:"vanessa",at:A.NOW.toISOString()};w.recipe.lines.push({item:"",qty:1});renderPC(findP(pc.id))}
 function pcRecSave(vid){const x=X(findP(pc.id));const w=x.vars.find(q=>q.id===vid);if(!w.recipe)return;w.recipe.lines=w.recipe.lines.filter(l=>l.item);renderPC(findP(pc.id));A.toast("Recipe saved · cost and buildable recalculated")}
 
 /* ================= PHOTO INBOX (s-catalog-intake) ================= */

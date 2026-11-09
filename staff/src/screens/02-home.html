@@ -118,9 +118,9 @@ const $=(s,r=document)=>r.querySelector(s);
 const ic=(n,s=18,x='')=>A.icon(n).replace('<svg',`<svg style="width:${s}px;height:${s}px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;${x}"`);
 
 /* ---------- contours: the shell's contour layer already sets `engagement` on STAFF (employee / worker / contractor / reserve / freelance)
-   and adds Lina (reserve), Mira (self-employed), Dana (self-employed courier), Sam (freelance). Here only the admin persona is added. ---------- */
+   and adds Lola (reserve), Mina (self-employed), Devon (self-employed courier), Sam (freelance). Here only the admin persona is added. ---------- */
 const STAFF=window.STAFF;const P=window.PERSONAS;const addP=(id,label)=>{if(STAFF.some(s=>s.id===id)&&!P.some(p=>p.id===id))P.push({id,label})};
-addP("tatiana","Admin · owner"); /* dana добавляет шелл */
+addP("tatiana","Admin · owner"); /* devon добавляет шелл */
 const ENG2C={employee:"employee",worker:"worker",contractor:"self_employed",reserve:"reserve"};
 
 /* ---------- shared shell state for this prototype ---------- */
@@ -158,7 +158,7 @@ SH.banner=()=>{const host=$("#push")?$("#push").parentElement:null;if(!host)retu
   if(!SH.state.viewAs){if(b)b.remove();return}
   if(!b){b=document.createElement("div");b.className="sh-viewas";host.appendChild(b)}
   b.innerHTML=`${ic("eye",16)}<span><b>Viewing as ${SH.state.viewAs}</b> · ${A.user(SH.state.real).n}, data of ${SH.state.whoseData==="mine"?"you":A.user(SH.state.whoseData).n}</span><button onclick="SH.viewAs(null)">Back</button>`};
-SH.viewAs=role=>{const rep={manager:"valeria",florist:"kamila",courier:"andrii",admin:null}[role];
+SH.viewAs=role=>{const rep={manager:"vanessa",florist:"katrina",courier:"anton",admin:null}[role];
   if(!role||!rep){const r=SH.state.real||"tatiana";SH.state.viewAs=null;SH.state.real=null;SH.state.viewRep=null;SH.state.whoseData="mine";A.setUser(r,{silent:true});A.go(A.state.current||"home",A.state.params,{replace:true});SH.banner();A.toast("Lens off · you are Tatiana again");return}
   SH.state.real=SH.state.real||A.state.me;SH.state.viewAs=role;SH.state.viewRep=rep;A.setUser(rep,{silent:true});A.state.history=[];
   A.go("home",{},{replace:true});SH.banner();A.toast(`Viewing as ${role} · tabs rebuilt for this role, your admin rights stay`)};
@@ -209,7 +209,7 @@ SH.clock=what=>{if(SH.state.busy)return;A.haptic();SH.state.busy=true;SH.state.c
     if(what==="out"){A.confirm("Clock out?",`You have been on shift for ${dur(Math.round((A.NOW-new Date(A.state.clockInAt))/6e4))}. Learning minutes are already included in your hours.`,"Clock out",()=>{A.clock();SH.state.onBreak=false;if(realCourier())A.toast("Clocked out · tracking stopped");mount()});mount();return}
     SH.state.onBreak=!SH.state.onBreak;A.toast(SH.state.onBreak?"Break started":"Break ended");mount()},600)};
 
-const SHELF=[{id:1,n:"Autumn posy · peach",by:"kamila",at:"9:40",price:38,ready:false},{id:2,n:"White spray roses",by:"vita",at:"10:05",price:45,ready:true},{id:3,n:"Dark dahlias",by:"svetlana",at:"10:30",price:52,ready:true}];
+const SHELF=[{id:1,n:"Autumn posy · peach",by:"katrina",at:"9:40",price:38,ready:false},{id:2,n:"White spray roses",by:"vicky",at:"10:05",price:45,ready:true},{id:3,n:"Dark dahlias",by:"sylvia",at:"10:30",price:52,ready:true}];
 function shelfCards(){if(isCourier()||SH.limited())return "";
   const mine=SHELF.filter(b=>b.by===A.state.me);const list=isMgr()?SHELF:mine;
   const rows=list.length?list.map(b=>`<button class="it" onclick="SH.shelfRow(${b.id})"><span class="f1"><span class="l" style="display:block">${b.n}</span><span class="d" style="display:block">${first(b.by)} · started ${b.at} · ${A.fmt(b.price)}</span></span>${b.ready?A.pill("done","Ready"):b.by===A.state.me?`<button class="btn --xs" onclick="event.stopPropagation();SH.shelfReady(${b.id})">Finished – send photo</button>`:A.pill("doing","Making")}</button>`).join(""):`<div class="soft-note">${isMgr()?"The shelf is empty.":"Nothing of yours on the shelf yet."}</div>`;
@@ -239,7 +239,7 @@ function managerRows(){if(!isMgr())return "";
   if(SH.state.allClear)return `<div class="sh-stats" data-sec="manager"><button onclick="App.tab('work')"><b>7</b><span>Orders today</span></button><button onclick="TD.whoIsOn()"><b>6</b><span>On shift</span></button><button onclick="SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')"><b>0</b><span>Not paid</span></button></div><div class="sh-empty">All clear – nothing needs you right now.</div>`;
   const row=(i,c,l,d,pill,go,red)=>`<button class="sh-att" onclick="${go}"><span class="ic ${c}">${ic(i,18)}</span><span class="rt"><span class="l ${red?"red":""}" style="display:block">${l}</span><span class="d" style="display:block">${d}</span></span>${pill}</button>`;
   return `<div class="sh-stats" data-sec="manager"><button onclick="App.tab('work')"><b>7</b><span>Orders today</span></button><button onclick="TD.whoIsOn()"><b>6</b><span>On shift</span></button><button onclick="SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')"><b class="red">3</b><span>Not paid</span></button></div>
-  <div data-sec="manager">${row("truck","","2 couriers wait for a route","Andrii, Oleh · trips not confirmed",A.pill("review","To check"),"SH.goOr('work',{view:'deliveries'})")}${row("flag","","1 order not confirmed","715627 · placed 10:52",A.pill("plain","Orders"),"SH.goOr('work',{view:'orders'})")}${row("edit","","2 orders with details missing","715602, 715623 · vase colour, card text",A.pill("plain","Orders"),"SH.goOr('work',{view:'orders'})")}${row("sparkle","acc","1 order needs special attention","Wedding arch · Sat 24 Oct, early delivery",A.pill("urgent","Urgent"),"SH.goOr('work',{view:'orders',tab:'attention'})",true)}${row("tag","acc","3 orders not paid – Chase the payment","£319 · links sent, 24 h to pay",A.pill("urgent","Urgent"),"SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')",true)}</div>`}
+  <div data-sec="manager">${row("truck","","2 couriers wait for a route","Anton, Ollie · trips not confirmed",A.pill("review","To check"),"SH.goOr('work',{view:'deliveries'})")}${row("flag","","1 order not confirmed","715627 · placed 10:52",A.pill("plain","Orders"),"SH.goOr('work',{view:'orders'})")}${row("edit","","2 orders with details missing","715602, 715623 · vase colour, card text",A.pill("plain","Orders"),"SH.goOr('work',{view:'orders'})")}${row("sparkle","acc","1 order needs special attention","Wedding arch · Sat 24 Oct, early delivery",A.pill("urgent","Urgent"),"SH.goOr('work',{view:'orders',tab:'attention'})",true)}${row("tag","acc","3 orders not paid – Chase the payment","£319 · links sent, 24 h to pay",A.pill("urgent","Urgent"),"SH.goOr('unpaid',{},'Opens Not paid (Me · Pay section)')",true)}</div>`}
 
 function laterWorker(){if(SH.contour()!=="worker"||!SH.state.contourApi)return "";const b=booked()[0];if(!b)return "";
   return `<div class="td-later" data-sec="later">${lbl("Later")}<button class="sh-later" onclick="SH.offers()">${ic("calendar",22,"stroke:var(--grey)")}<span class="f1"><span class="l" style="display:block">Next shift · ${dayLab(b.off)}</span><span class="d" style="display:block">${b.hrs} · ${b.place}</span></span>${b.note?A.pill("urgent","Urgent"):""}${A.icon("chev").replace("<svg",'<svg class="chev"')}</button></div>`}

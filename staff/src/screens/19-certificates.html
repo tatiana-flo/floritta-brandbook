@@ -24,7 +24,7 @@ const orig=window.mount_certificates;
 L.cdemo='crm';
 const top=()=>`<div class="lr-demo" style="padding-top:4px">${[['crm','CRM certificates'],['404','No endpoint'],['loading','Loading'],['error','Error'],['empty','Empty']].map(d=>`<button class="chip ${L.cdemo===d[0]?'on':''}" onclick="LR.cdemo='${d[0]}';window.mount_certificates()">${d[1]}</button>`).join('')}</div><button class="lr-ptr" onclick="App.haptic();App.toast('Refreshed · certificates and lessons')">${ic('repeat')} Pull to refresh</button>`;
 L.shareCert=function(name,signed){
-if(!signed){A.toast('No signed link for this PDF – ask Valeria');return}
+if(!signed){A.toast('No signed link for this PDF – ask Vanessa');return}
 A.sheet(`<div class="sh-head"><div class="h3">Share</div><button class="ib" onclick="App.closeSheet()">${ic('close')}</button></div><div class="sh-body"><p class="sm soft" style="margin:0 0 12px">${name} · PDF with a signed link (valid 7 days). Anyone with the link can open it without logging in.</p><div class="tiles">${['Messages','Mail','Files','AirDrop','WhatsApp','Copy link'].map(t=>`<button class="tile" onclick="App.closeSheet();App.toast('Shared via ${t}')"><span class="tl">${t}</span></button>`).join('')}</div></div>`);
 };
 window.mount_certificates=function(){

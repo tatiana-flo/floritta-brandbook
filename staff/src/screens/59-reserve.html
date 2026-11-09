@@ -133,14 +133,14 @@ const S=window.RS2={
   signing:false,resp:'ok',codeErr:null,
   busy:null
 };
-const LINA='lina';
+const LOLA='lola';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/</g,'&lt;');
 const isRes=()=>A.me().engagement==='reserve';
 const isMgr=()=>['manager','owner'].includes(A.role());
 const lens=()=>isMgr();                                   /* admin looking through the «Reserve» contour lens */
-const ensureRes=()=>{if(!isRes()&&!lens())A.setUser(LINA,{silent:true})};
-const ensureMgr=()=>{if(!isMgr())A.setUser('valeria',{silent:true})};
+const ensureRes=()=>{if(!isRes()&&!lens())A.setUser(LOLA,{silent:true})};
+const ensureMgr=()=>{if(!isMgr())A.setUser('vanessa',{silent:true})};
 const first=()=>A.me().n.split(' ')[0];
 const longDate=()=>A.NOW.toLocaleDateString(S.lang==='ru'?'ru-RU':'en-GB',{weekday:'long',day:'numeric',month:'long'});
 const ic=(n,c)=>A.icon(n).replace('<svg',`<svg class="${c||'ic'}"`);
@@ -271,7 +271,7 @@ window.mount_rs2_password=function(){
     <p class="hint" style="text-align:center;margin-top:24px">Shared screen with the whole team (/change-password) – it only knows about the code because it was remembered for it.</p>`;
 };
 S.pwInput=()=>{const n=$('rs2-pw-n').value,r=$('rs2-pw-r').value,b=$('rs2-pw-btn');if(n.length>=8&&n===r)b.removeAttribute('disabled');else b.setAttribute('disabled','')};
-S.pwSave=()=>{A.haptic();A.toast('Password saved');S.pwCurrent='';if(!isRes())A.setUser(LINA,{silent:true});A.state.history=[];A.go('rs2-today',{},{replace:true})};
+S.pwSave=()=>{A.haptic();A.toast('Password saved');S.pwCurrent='';if(!isRes())A.setUser(LOLA,{silent:true});A.state.history=[];A.go('rs2-today',{},{replace:true})};
 
 /* ========== /b – Today for the reserve ========== */
 window.mount_rs2_today=function(){ensureRes();const el=$('rs2-today-body'),o=S.ob;
@@ -309,14 +309,14 @@ const agreementSheet=kind=>{const t=kind==='worker'?'Casual worker agreement':'J
   A.sheet(`${sheetHead(t)}<div class="sh-body"><p class="xs muted" style="margin:0 0 10px">Shared B signing screen (/b/agreement?kind=${kind}) – shown here as a sheet.</p><div class="wk-kv --info">${kind==='worker'?'<span>Status</span><span>casual worker · PAYE, holiday pay</span><span>Shifts</span><span>offered, never assigned – take or skip</span><span>Pay</span><span>hourly, weekly</span>':'<span>Status</span><span>self-employed · your own business</span><span>Jobs</span><span>a fixed fee for a result, shown before you take it</span><span>Pay</span><span>by statement, gross</span>'}</div>${signed?'<div class="rs2-panel panel --ok" style="margin:14px 0 0"><div class="h4">Signed</div><div class="sm soft">Copy kept in CRM. Read-only here.</div></div>':''}</div><div class="sh-foot">${signed?'<button class="btn" onclick="App.closeSheet()">Close</button>':`<button class="btn --secondary" onclick="App.closeSheet()">Later</button><button class="btn" onclick="RS2.sign('${kind}')">Sign</button>`}</div>`,{full:true})};
 S.sign=kind=>{S.ob.agr[kind]=true;A.haptic();A.closeSheet();A.toast('Signed – copy kept in CRM');remount()};
 S.lessons=()=>{A.toast('Opens the shared Learning screen – two lessons for the reserve');S.ob.lessons=true;A.go('learn')};
-S.switchContour=()=>{const c=S.contour;A.toast(c==='worker'?'Contour: casual worker – team screens open':'Contour: self-employed – jobs board opens');S.contour='reserve';S.ob.complete=false;A.state.history=[];A.setUser(c==='worker'?'zhadra':'mira');A.go('home',{},{replace:true})};
+S.switchContour=()=>{const c=S.contour;A.toast(c==='worker'?'Contour: casual worker – team screens open':'Contour: self-employed – jobs board opens');S.contour='reserve';S.ob.complete=false;A.state.history=[];A.setUser(c==='worker'?'zhanna':'mina');A.go('home',{},{replace:true})};
 const remount=()=>{const cur=A.state.current;const f=window['mount_'+(cur||'').replace(/-/g,'_')];if(cur&&cur.startsWith('rs2-')&&f)f()};
 
 /* ========== /b/work – offers ========== */
 const OFFERS=[
-  {id:1,when:'Sat 24 Oct · 08:00–15:00',where:'SE1 studio',rate:'£13.21/h + bouquet bonus',places:2,st:'open'},
-  {id:2,when:'Sun 25 Oct · 09:00–14:00',where:'SE1 studio',rate:'£13.21/h',places:1,st:'open'},
-  {id:3,when:'Mon 26 Oct · 07:00–12:00',where:'SW6 shop',rate:'£13.21/h',places:1,st:'taken'}
+  {id:1,when:'Sat 24 Oct · 08:00–15:00',where:'SE1 studio',rate:'£13.00/h + bouquet bonus',places:2,st:'open'},
+  {id:2,when:'Sun 25 Oct · 09:00–14:00',where:'SE1 studio',rate:'£13.00/h',places:1,st:'open'},
+  {id:3,when:'Mon 26 Oct · 07:00–12:00',where:'SW6 shop',rate:'£13.00/h',places:1,st:'taken'}
 ];
 const JOBS=[
   {id:11,title:'Wedding · Chelsea Old Town Hall',what:'ceremony arch + 8 table centrepieces',when:'Sat 24 Oct · set up 07:30–10:30',fee:420,st:'open'},
@@ -497,12 +497,12 @@ document.addEventListener('screen',e=>{if(e.detail.id!=='rs2-pay'){S.editPay=fal
 S.people=[
   {id:'tom',n:'Tom R.',status:'ready',rtw:'checked',paths:{shifts:true,jobs:true}},
   {id:'chloe',n:'Chloe D.',status:'ready',rtw:'checked',paths:{shifts:false,jobs:true}},
-  {id:'marta',n:'Marta L.',status:'ready',rtw:'sent',code:'Q7P2LM9XA',paths:null},
-  {id:'sofia',n:'Sofia P.',status:'onboarding',rtw:'todo',paths:{shifts:true,jobs:false},steps:{done:1,total:5}},
+  {id:'mabel',n:'Mabel L.',status:'ready',rtw:'sent',code:'Q7P2LM9XA',paths:null},
+  {id:'sonia',n:'Sonia P.',status:'onboarding',rtw:'todo',paths:{shifts:true,jobs:false},steps:{done:1,total:5}},
   {id:'aigerim',n:'Aigerim B.',status:'invited',expires:'3 Nov 2026'},
   {id:'ben',n:'Ben H.',status:'invited',expires:'27 Oct 2026'}
 ];
-const lina=()=>({id:'lina',n:'Lina K.',status:S.ob.complete?'ready':'onboarding',rtw:S.ob.rtw,code:S.ob.share,paths:S.ob.paths,steps:progress(),offered:S.contour!=='reserve'});
+const lola=()=>({id:'lola',n:'Lola K.',status:S.ob.complete?'ready':'onboarding',rtw:S.ob.rtw,code:S.ob.share,paths:S.ob.paths,steps:progress(),offered:S.contour!=='reserve'});
 const pathsLabel=p=>!p?'paths not chosen yet':p.shifts&&p.jobs?'shifts and jobs':p.shifts?'shifts':p.jobs?'jobs':'paths not chosen yet';
 window.mount_rs2_manager=function(){ensureMgr();const el=$('rs2-manager-body');
   const chips=demo([['Data',"RS2.setNet('mnet','ok','rs2_manager')",S.mnet==='ok'],['Loading',"RS2.setNet('mnet','loading','rs2_manager')",S.mnet==='loading'],['Unavailable 404/403',"RS2.setNet('mnet','unavailable','rs2_manager')",S.mnet==='unavailable'],['Error',"RS2.setNet('mnet','error','rs2_manager')",S.mnet==='error'],['Empty',"RS2.setNet('mnet','empty','rs2_manager')",S.mnet==='empty'],['Button → 422',"RS2.mErr=true;App.toast('Next button returns 422')"]]);
@@ -511,7 +511,7 @@ window.mount_rs2_manager=function(){ensureMgr();const el=$('rs2-manager-body');
   /* ids: TM-RES-069 */
   const st=stateBlock('mnet');
   if(st){el.innerHTML=chips+ptr('rs2_manager')+intro+st;return}
-  const all=S.mnet==='empty'?[]:[lina(),...S.people].filter(p=>!p.offered);
+  const all=S.mnet==='empty'?[]:[lola(),...S.people].filter(p=>!p.offered);
   const G={invited:all.filter(p=>p.status==='invited'),onboarding:all.filter(p=>p.status==='onboarding'),ready:all.filter(p=>p.status==='ready'),rtw:all.filter(p=>p.rtw==='sent')};
   const busy=id=>S.busy===id;
   el.innerHTML=chips+ptr('rs2_manager')+intro+`
@@ -541,12 +541,12 @@ const run=(id,fn)=>{if(S.busy)return;S.busy=id;window.mount_rs2_manager();
     /* ids: TM-RES-070 */
     if(S.mErr){S.mErr=false;S.alert('Could not do that','422 · Right to work has not been checked yet.');window.mount_rs2_manager();return}
     try{fn()}finally{window.mount_rs2_manager()}},700)};
-S.rtwCheck=id=>run(id,()=>{if(id==='lina'){S.ob.rtw='checked';S.ob.complete=true}else{const p=S.people.find(x=>x.id===id);p.rtw='checked';if(p.status==='onboarding')p.status='ready'}A.toast(`Recorded – checked by ${A.me().n}, ${A.fmtTime(A.NOW)}`)});
-S.offer=(id,kind)=>{const p=id==='lina'?lina():S.people.find(x=>x.id===id);
+S.rtwCheck=id=>run(id,()=>{if(id==='lola'){S.ob.rtw='checked';S.ob.complete=true}else{const p=S.people.find(x=>x.id===id);p.rtw='checked';if(p.status==='onboarding')p.status='ready'}A.toast(`Recorded – checked by ${A.me().n}, ${A.fmtTime(A.NOW)}`)});
+S.offer=(id,kind)=>{const p=id==='lola'?lola():S.people.find(x=>x.id===id);
   if(p.rtw!=='checked'){S.mErr=true}
-  run(id,()=>{if(id==='lina'){S.contour=kind==='shifts'?'worker':'self_employed';
+  run(id,()=>{if(id==='lola'){S.contour=kind==='shifts'?'worker':'self_employed';
       /* ids: TM-RES-072 TM-RES-073 */
-      if(kind==='shifts')A.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.21/h',{icon:'calendar',to:'Lina',go:['rs2-work']});else A.push('New job · £420','Wedding, Chelsea – arch + 8 centrepieces',{icon:'calendar',to:'Lina',go:['rs2-work']});
+      if(kind==='shifts')A.push('Open shift · SE1 studio','Sat 24 Oct · 08:00–15:00 · £13.00/h',{icon:'calendar',to:'Lola',go:['rs2-work']});else A.push('New job · £420','Wedding, Chelsea – arch + 8 centrepieces',{icon:'calendar',to:'Lola',go:['rs2-work']});
     }else{p.offered=true}
     S.alert(`${p.n} got the offer`,kind==='shifts'?'They are now a casual worker – open shifts go to their phone. Their app switches at its next /me.':'They are now self-employed – jobs go to their phone. Their app switches at its next /me.')})};
 

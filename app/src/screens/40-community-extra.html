@@ -97,13 +97,13 @@ window.Comm=(()=>{
   const SE1=["Bermondsey","Borough","London Bridge","Southwark"];
   const M=[
     ["anna","Anna K.","AK","Bermondsey","Two cats, one windowsill, too many vases.",1],
-    ["marta","Marta S.","MS","Clapham","Sunday flowers, Monday coffee."],
+    ["mabel","Mabel S.","MS","Clapham","Sunday flowers, Monday coffee."],
     ["priya","Priya R.","PR","Islington","Making a small flat feel like a garden."],
     ["james","James O.","JO","Shoreditch","Flowers for the kitchen table every Friday."],
     ["olga","Olga V.","OV","Notting Hill","Peonies in May, dahlias in September.",1],
     ["hannah","Hannah L.","HL","Hampstead","Trying to keep things alive. Mostly succeeding."],
     ["tom","Tom B.","TB","Greenwich","New to flowers. Taking notes."],
-    ["sofia","Sofia M.","SM","Chelsea","Vase collector, allegedly."],
+    ["sonia","Sonia M.","SM","Chelsea","Vase collector, allegedly."],
     ["leila","Leila A.","LA","Borough","Pastel everything.",1],
     ["rachel","Rachel W.","RW","Battersea","Desk, bedside, then the compost. In that order."],
     ["daniel","Daniel F.","DF","London Bridge","Gift-giver in chief for a family of six."],
@@ -114,9 +114,9 @@ window.Comm=(()=>{
     ["grace","Grace H.","GH","Richmond","Roses on the piano since 2019."],
     ["max","Max R.","MR","Hackney","Flowers for my mum, photos for me."],
     ["isabel","Isabel C.","IC","Kensington","Hosts dinner twice a month. Flowers first."],
-    ["svetlana","Svetlana","SV","Bermondsey","Head florist at Floritta. Hand-ties in SE1 since 2021.",1,1],
-    ["kamila","Kamila","KA","Bermondsey","Florist at Floritta. Pastels, wraps, ribbons.",0,1],
-    ["vita","Vita","VI","Bermondsey","Florist at Floritta. Baskets and big garden roses.",0,1]
+    ["sylvia","Sylvia","SV","Bermondsey","Head florist at Floritta. Hand-ties in SE1 since 2021.",1,1],
+    ["katrina","Katrina","KA","Bermondsey","Florist at Floritta. Pastels, wraps, ribbons.",0,1],
+    ["vicky","Vicky","VI","Bermondsey","Florist at Floritta. Baskets and big garden roses.",0,1]
   ].map((a,i)=>({id:a[0],n:a[1],ini:a[2],area:a[3],bio:a[4],nw:!!a[5],fl:!!a[6],t:"--t"+(i%3+1),fw:a[6]?2400+i*137:120+(i*53)%640,fg:a[6]?48:60+(i*31)%300}));
   const ME={id:"me",n:"Tatiana S.",ini:"TS",bio:"Pink manifesto loyalist. Kitchen table, two vases, one very patient husband.",t:"--t2",fw:0,fg:0,get area(){return myArea()}};
   const outward=()=>(App.state.user.postcode||"").split(" ")[0];
@@ -128,19 +128,19 @@ window.Comm=(()=>{
     ["anna",9,9,"Day 4","d","2 h",48,"Day 4 and the peonies are still going. Changed the water twice and moved them off the windowsill – the afternoon sun was too much for them.","day4 peonies kitchentable","50% 30%",1.15],
     ["james",6,6,"","","3 h",61,"Friday rule: flowers on the table before the weekend starts. Twenty reds, trimmed short for the low bowl.","onmytable fridayflowers roses","50% 60%",1],
     ["nina","hw",0,"","q","4 h",23,"How do I keep hydrangeas from drooping? Mine look sad by day two, even with fresh water.","help hydrangeas","50% 40%",1.1],
-    ["svetlana",3,3,"","","5 h",132,"Hand-tied this one at 7 am, before the shop opened. Garden roses, ranunculus, a little jasmine for the scent.","handtied bermondsey floritta","50% 20%",1.05],
-    ["marta",5,5,"Day 1","d","6 h",37,"Day 1. Stems cut, water lukewarm, vase on the sideboard away from the radiator. Sunday flowers, Monday coffee.","day1 onmytable sundayflowers","40% 50%",1.2],
+    ["sylvia",3,3,"","","5 h",132,"Hand-tied this one at 7 am, before the shop opened. Garden roses, ranunculus, a little jasmine for the scent.","handtied bermondsey floritta","50% 20%",1.05],
+    ["mabel",5,5,"Day 1","d","6 h",37,"Day 1. Stems cut, water lukewarm, vase on the sideboard away from the radiator. Sunday flowers, Monday coffee.","day1 onmytable sundayflowers","40% 50%",1.2],
     ["leila",13,13,"","ba","8 h",54,"Before and after. Took it out of the wrap and split it between two small jars for the bathroom and the hall. Same bouquet, twice the rooms.","beforeafter rearranged lilac","50% 50%",1],
     ["tom",1,1,"","","9 h",71,"First bouquet I've ever bought for myself. The card said change the water every two days, so I've set an alarm.","firstbouquet onmytable peach","60% 30%",1.1],
     ["olga","p32",3,"Day 5","d","12 h",89,"Day 5. The ranunculus have opened fully and the roses are just starting to blow. This is my favourite stage.","day5 ranunculus onmytable","50% 70%",1.25],
     ["priya",10,10,"","","Yesterday",29,"Window ledge, north-facing, which turns out to be exactly what spray roses want. Veronica still upright.","windowsill sprayroses northlight","30% 40%",1.15],
-    ["kamila",4,4,"","","Yesterday",97,"Ivory wrap, white spray roses, eucalyptus. Went out to Chelsea at eleven. The customer sent this photo back an hour later.","floritta delivered whiteroses","50% 35%",1],
+    ["katrina",4,4,"","","Yesterday",97,"Ivory wrap, white spray roses, eucalyptus. Went out to Chelsea at eleven. The customer sent this photo back an hour later.","floritta delivered whiteroses","50% 35%",1],
     ["hannah",12,12,"Day 7","d","Yesterday",44,"Day 7. Lost two roses, kept the rest. Trimmed everything down to a tumbler and it looks like a new bouquet.","day7 stillgoing tumbler","50% 80%",1.3],
     ["daniel",8,8,"","","Yesterday",66,"Mum's birthday basket. She refused to let anyone touch it for a week, then finally moved it to the piano.","gift birthday basket","50% 45%",1.05],
-    ["sofia",11,11,"","","2 d",38,"The vase won this time. Pink and red on the mantelpiece, candles out.","mantelpiece onmytable vases","50% 25%",1.1],
+    ["sonia",11,11,"","","2 d",38,"The vase won this time. Pink and red on the mantelpiece, candles out.","mantelpiece onmytable vases","50% 25%",1.1],
     ["emma","hb",0,"","","2 d",52,"6 am light, kitchen table, nothing fancy. The best twenty minutes of the day.","kitchentable morninglight onmytable","50% 60%",1.2],
     ["rachel",7,7,"","","2 d",27,"Desk flowers. Small enough not to block the monitor, big enough to be noticed on a call.","desk wfh petite","50% 50%",1.3],
-    ["vita",2,2,"","ba","2 d",83,"Before and after on the bench. Loose stems at nine, finished bouquet at twenty past. The wrap is the last thing.","beforeafter atthebench floritta","50% 50%",1],
+    ["vicky",2,2,"","ba","2 d",83,"Before and after on the bench. Loose stems at nine, finished bouquet at twenty past. The wrap is the last thing.","beforeafter atthebench floritta","50% 50%",1],
     ["chloe","p52",5,"Day 1","d","3 d",31,"Day 1. Hung three stems upside down to dry already – I know, I know. The rest are in water on the shelf.","day1 dried powderedrose","70% 40%",1.2],
     ["yusuf",6,6,"","","3 d",19,"Office reception. Two people asked where they're from before lunch.","office reception roses","50% 20%",1.15],
     ["max",12,12,"","","3 d",58,"For my mum. She said 'oh, you shouldn't have' and then moved the TV to make room.","mum gift onmytable","30% 50%",1.2],
@@ -151,7 +151,7 @@ window.Comm=(()=>{
     ["james",10,10,"Day 5","d","6 d",25,"Day 5. The veronica has gone over, the roses haven't. Pulled the veronica, topped up the water, carried on.","day5 sprayroses kitchentable","50% 30%",1.2]
   ];
   const EXTRA=[
-    ["marta",3,3,"Day 7","d","1 w",30,"Day 7. Down to six roses in a jam jar by the kettle. Still the first thing I look at in the morning.","day7 jamjar onmytable","50% 75%",1.35],
+    ["mabel",3,3,"Day 7","d","1 w",30,"Day 7. Down to six roses in a jam jar by the kettle. Still the first thing I look at in the morning.","day7 jamjar onmytable","50% 75%",1.35],
     ["tom",1,1,"Day 5","d","1 w",22,"Day 5. The alarm works. Water changed, stems trimmed, one casualty. Learning.","day5 firstbouquet peach","40% 60%",1.2],
     ["hannah","hw",0,"","","1 w",41,"Moved everything to the bathroom for the steam. Works for roses too, apparently.","bathroom tip onmytable","50% 50%",1.15],
     ["olga",2,2,"","","1 w",57,"Birthday flowers from my sister. Opened the box on the bus and nearly missed my stop.","birthday gift peonies","50% 40%",1.05],
@@ -165,12 +165,12 @@ window.Comm=(()=>{
   let nid=1;
   const mk=a=>({id:nid++,m:a[0],img:IMG[a[1]]||a[1],pid:a[2],day:a[3],kind:a[4],time:a[5],likes:a[6],cap:a[7],tags:a[8]?a[8].split(" "):[],pos:a[9],sc:a[10],cm:[],loc:true});
   const POSTS=RAW.map(mk);const MORE=EXTRA.map(mk);let MYP=MINE.map(mk);
-  const QREP=[["svetlana","Cut the stems at an angle, dip the ends in just-boiled water for 20 seconds, then straight into cool water. Mist the heads – hydrangeas drink through the petals too."],["hannah","The boiling-water trick saved mine last week. Also keep them out of the sun."],["olga","I submerge the whole head in a sink of cold water for an hour. Sounds mad, works."]];
-  const CPOOL=[["marta","So lovely."],["james","Which vase is that? I need it."],["emma","The light in this photo."],["hannah","Mine lasted nine days with the boiling-water trick."],["sofia","Same table, same chaos, fewer flowers."],["daniel","Saving this for my next order."],["priya","Day 4 is the hardest. Keep going."],["grace","Bermondsey represent."],["tom","Taking notes, as usual."],["chloe","Dry a few stems before they go – you'll thank me."],["max","My mum would approve."],["leila","Pastel perfection."]];
-  const FPOOL=[["svetlana","Trim 1 cm off the stems every other day and they'll go another week."],["kamila","Keep them away from the fruit bowl – ripening fruit shortens the vase life."],["vita","Lovely placement. North light is perfect for these."]];
+  const QREP=[["sylvia","Cut the stems at an angle, dip the ends in just-boiled water for 20 seconds, then straight into cool water. Mist the heads – hydrangeas drink through the petals too."],["hannah","The boiling-water trick saved mine last week. Also keep them out of the sun."],["olga","I submerge the whole head in a sink of cold water for an hour. Sounds mad, works."]];
+  const CPOOL=[["mabel","So lovely."],["james","Which vase is that? I need it."],["emma","The light in this photo."],["hannah","Mine lasted nine days with the boiling-water trick."],["sonia","Same table, same chaos, fewer flowers."],["daniel","Saving this for my next order."],["priya","Day 4 is the hardest. Keep going."],["grace","Bermondsey represent."],["tom","Taking notes, as usual."],["chloe","Dry a few stems before they go – you'll thank me."],["max","My mum would approve."],["leila","Pastel perfection."]];
+  const FPOOL=[["sylvia","Trim 1 cm off the stems every other day and they'll go another week."],["katrina","Keep them away from the fruit bowl – ripening fruit shortens the vase life."],["vicky","Lovely placement. North light is perfect for these."]];
   const TIMES=["12 min","40 min","1 h","3 h","Yesterday"];
   /* состояние пользователя – в приложении стор community.v1 (AsyncStorage), только на устройстве */
-  const S={filter:"for",liked:new Set(),likedOnce:new Set(),saved:new Set(),follow:new Set(["anna","svetlana","olga","james"]),ftags:new Set(),more:false,cur:null,curM:null,hydrated:false,
+  const S={filter:"for",liked:new Set(),likedOnce:new Set(),saved:new Set(),follow:new Set(["anna","sylvia","olga","james"]),ftags:new Set(),more:false,cur:null,curM:null,hydrated:false,
     cp:{img:null,pid:null,day:null,tags:new Set(["onmytable"]),loc:true}};
   const SAFE={hidden:new Set(),reported:new Set(),blocked:new Set(),hiddenC:new Set()};
   const DEMO={off:false,skel:false,gallery:false};

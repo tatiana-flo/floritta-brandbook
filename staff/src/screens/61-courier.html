@@ -118,7 +118,7 @@ const ic=C.ic, sh=C.sh, alert=C.alert, stamp=C.stamp;
 document.querySelector('#s-cr-loc-consent .ib').innerHTML=I('back');
 
 /* ================= geo consent (signed) ================= */
-const GC={name:'Andrii Melnyk',agree:false,err:null};
+const GC={name:'Anton Melnyk',agree:false,err:null};
 window.mount_cr_geo_consent=function(){
   $('gc-body').innerHTML=`<div class="cr-cons"><div class="caps muted">A quick read, then your sign-off</div>
     <p>Floritta uses your approximate location while you’re clocked in on a delivery — to dispatch orders, give customers a live ETA, and support you on the road. Just your sign-off below and you’re ready to go.</p>
@@ -166,7 +166,7 @@ window.mount_cr_tracking=function(){
       <div class="r">${I('repeat')}<div>Checked at launch and every return to the app<div class="d">Shift from the time clock, OS permission and the task state decide start / stop / nothing; offline = leave as is. A killed app or a late “Always” no longer leaves the shift without points.</div></div></div>
       <div class="r">${I('clock')}<div>Breaks<div class="d">Normal break – sharing stops (GDPR). Automatic idle break – keeps going so the CRM sees you drive off.</div></div></div>
       <div class="r">${I('logout')}<div>Sign-out, end of shift, break<div class="d">Stop the task and wipe the buffer – not a single point outside the shift.</div></div></div>
-      <div class="r">${I('users')}<div>Only the real courier role<div class="d">A manager viewing as Andrii never starts tracking on their own phone.</div></div></div></div>
+      <div class="r">${I('users')}<div>Only the real courier role<div class="d">A manager viewing as Anton never starts tracking on their own phone.</div></div></div></div>
     <div class="pad mt16"><button class="btn --ghost --block" onclick="App.go('cr-loc-consent')">Show the notice before the OS prompt</button></div><div style="height:24px"></div>`;
 };
 C.tr={set(s){C.track.state=s;if(s==='noperm')C.track.perm='denied';else C.track.perm='always';if(s==='stopped')C.track.buffered=0;mount_cr_tracking()},
@@ -193,11 +193,11 @@ C.un={sync(){if(C.demo.offline){A.toast('No connection – still waiting');retur
 
 /* ================= zones ================= */
 const ZN={load:'ok',sent:false,f:['','',''],zones:[
-  {id:'floor',n:'Shop floor & window',owner:'kamila',metric:'Display refreshed by 9:00',open:3,overdue:0,limit:120},
-  {id:'delivery',n:'Delivery',owner:'andrii',metric:'Drops on time ≥ 95 %',open:2,overdue:1,limit:200},
-  {id:'stock',n:'Stock & conditioning',owner:'vita',metric:'Waste under 6 %',open:4,overdue:0,limit:400},
+  {id:'floor',n:'Shop floor & window',owner:'katrina',metric:'Display refreshed by 9:00',open:3,overdue:0,limit:120},
+  {id:'delivery',n:'Delivery',owner:'anton',metric:'Drops on time ≥ 95 %',open:2,overdue:1,limit:200},
+  {id:'stock',n:'Stock & conditioning',owner:'vicky',metric:'Waste under 6 %',open:4,overdue:0,limit:400},
   {id:'market',n:'Marketplaces',owner:null,metric:'Accept within 2 min',open:1,overdue:1,limit:0},
-  {id:'team',n:'Team & schedule',owner:'valeria',metric:'Shifts covered',open:2,overdue:0,limit:0}]};
+  {id:'team',n:'Team & schedule',owner:'vanessa',metric:'Shifts covered',open:2,overdue:0,limit:0}]};
 window.mount_cr_zones=function(){
   const me=A.state.me;const mine=ZN.zones.find(z=>z.owner===me);
   $('zn-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back('me')">${I('back')}</button><div class="ttl">Zones</div><button class="ib" aria-label="Refresh" onclick="CR.zn.refresh()">${I('repeat')}</button>`;
@@ -216,41 +216,41 @@ window.mount_cr_zones=function(){
 C.zn={set(s){ZN.load=s;mount_cr_zones()},f(i,v){ZN.f[i]=v},reset(){ZN.sent=false;ZN.f=['','',''];mount_cr_zones()},
   refresh(){A.toast('Refreshing…');setTimeout(()=>{A.toast('Zones updated · '+stamp());mount_cr_zones()},500)},
   send(){if(ZN.f.some(x=>!x.trim())){alert('Fill in all three lines.','The report is sent as one text: 1. Metric this week … 2. What broke … 3. What I am changing …');return}
-    ZN.sent=true;A.haptic();A.toast('Sent. Thank you.');setTimeout(()=>A.push('Weekly report · '+A.me().n,'1. '+ZN.f[0]+' 2. '+ZN.f[1]+' 3. '+ZN.f[2],{icon:'checksq',to:'Valeria'}),700);mount_cr_zones()}};
+    ZN.sent=true;A.haptic();A.toast('Sent. Thank you.');setTimeout(()=>A.push('Weekly report · '+A.me().n,'1. '+ZN.f[0]+' 2. '+ZN.f[1]+' 3. '+ZN.f[2],{icon:'checksq',to:'Vanessa'}),700);mount_cr_zones()}};
 
 /* ================= order card – delivery blocks ================= */
-const CO={code:'715602',first:false,freelancer:false,market:false,booking:null,queue:{florist:'kamila',pos:2,when:'today'},pod:null,podMissing:null,advisor:true};
-const COUR_TRIP={andrii:'confirmed',oleh:'on_road',max:null};
+const CO={code:'715602',first:false,freelancer:false,market:false,booking:null,queue:{florist:'katrina',pos:2,when:'today'},pod:null,podMissing:null,advisor:true};
+const COUR_TRIP={anton:'confirmed',ollie:'on_road',max:null};
 window.mount_cr_order=function(p){
   if(p&&p.code)CO.code=p.code;const s=C.stop(CO.code)||C.stops[2];CO.code=s.code;const o=A.order(s.code)||{n:s.name,img:s.img,window:s.slot,area:s.area,price:0};
   const r=C.rk(), mgr=r==='manager', cour=r==='courier';
   $('co-bar').innerHTML=`<button class="ib" aria-label="Back" onclick="App.back(${cour?"'stop'":"'cr-dispatch'"})">${I('back')}</button><div class="ttl">Order ${s.code}</div><button class="ib" aria-label="Demo" onclick="CR.co.demo()">${I('dots')}</button>`;
-  const courName=CO.freelancer?'Freelancer (outside courier)':s.courier===null?'Not assigned':A.user(s.courier||'andrii').n;
-  const adv=CO.advisor&&mgr&&!CO.freelancer?`<div class="adv">${ic('sparkle',14)} Advisor: Oleh · run 2 · leaves 12:10${(s.courier||'andrii')==='oleh'?' <span class="muted">(advisor)</span>':''}</div>`:'';
+  const courName=CO.freelancer?'Freelancer (outside courier)':s.courier===null?'Not assigned':A.user(s.courier||'anton').n;
+  const adv=CO.advisor&&mgr&&!CO.freelancer?`<div class="adv">${ic('sparkle',14)} Advisor: Ollie · run 2 · leaves 12:10${(s.courier||'anton')==='ollie'?' <span class="muted">(advisor)</span>':''}</div>`:'';
   const courier=`<div class="cr-blk"><div class="hd"><span class="caps">Delivery courier</span>${mgr?`<button class="textbtn" onclick="CR.co.pick()">${s.courier===null&&!CO.freelancer?'Assign':'Change'}</button>`:''}</div><div class="v">${courName}</div>${CO.freelancer?'<div class="m">No in-house run and no “deliver first” for an outside courier.</div>':''}${adv}${mgr&&!CO.freelancer&&s.courier!==null?`<div class="sw"><span>Deliver first<div class="m">The courier takes this drop first, whatever the best route says.</div></span><button class="switch ${CO.first?'on':''}" onclick="CR.co.first()"></button></div>`:''}</div>`;
   const b=CO.booking;
   const market=`<div class="cr-blk"><div class="hd"><span class="caps">Courier (Relay / Uber Direct)</span></div>${b?`<div class="v">${b.carrier} · ${b.status}</div><div class="m">Courier: ${b.name}</div><button class="textbtn mt8" onclick="App.toast('Opening the carrier tracking page')">Open tracking</button>`:`<div class="m">No courier booked yet.</div>${mgr?`<button class="btn --sm --ghost mt12" onclick="CR.co.callCourier()">${I('phone')} Call a courier</button>`:''}`}</div>`;
   const mp=CO.market?`<div class="cr-blk"><div class="hd"><span class="caps">Marketplace</span></div><div class="v">Deliveroo · accepted</div><div class="m">Prep time promised 25 min. On Android the reason text goes as the default.</div>${mgr?`<div class="row3"><button class="btn --sm" onclick="App.toast('Sent to the platform · Ready for pickup')">Ready for pickup</button><button class="btn --sm --ghost" onclick="CR.co.mpPrompt('deny')">Deny</button><button class="btn --sm --ghost" onclick="CR.co.mpPrompt('cancel')">Cancel on platform</button></div>`:''}</div>`:'';
   const q=CO.queue;const fl=q.florist&&A.user(q.florist);
   const queue=`<div class="cr-blk"><div class="hd"><span class="caps">Queue</span>${mgr?`<button class="textbtn" onclick="CR.co.queue()">${fl?'Change':'Put in queue'}</button>`:''}</div><div class="v">${fl?`№${q.pos} · ${fl.n} · ${q.when==='today'?'today':'on the delivery day'}`:'Not in the queue'}</div></div>`;
-  const pod=`<div class="cr-blk" style="border-bottom:0"><div class="hd"><span class="caps">Proof of delivery</span></div>${s.hasPod||CO.pod?`<div class="pod"><img src="${s.img}" alt="Proof of delivery"><div class="tg"><span class="tag --ink">${CO.pod?CO.pod.by:'Andrii'}</span><span class="tag --soft">${CO.pod?CO.pod.at:(s.photoAt||s.deliveredAt)}</span></div></div>`:CO.podMissing?`<div class="v">No photo</div><div class="m">Reason: ${CO.podMissing}</div>`:`<div class="m">No proof photo yet.</div>`}${mgr?`<div class="row3"><button class="btn --sm --ghost" onclick="CR.co.addPod()">${I('camera')} Add photo</button><button class="btn --sm --ghost" onclick="CR.co.noPod()">No photo</button>${(s.hasPod||CO.pod)?`<button class="btn --sm --ghost" ${C.demo.offline?'disabled':''} onclick="CR.co.delPod()">${I('trash')} Delete</button>`:''}</div>${C.demo.offline?'<div class="m">Photo and “no photo” queue offline; delete works online only.</div>':''}`:''}</div>`;
+  const pod=`<div class="cr-blk" style="border-bottom:0"><div class="hd"><span class="caps">Proof of delivery</span></div>${s.hasPod||CO.pod?`<div class="pod"><img src="${s.img}" alt="Proof of delivery"><div class="tg"><span class="tag --ink">${CO.pod?CO.pod.by:'Anton'}</span><span class="tag --soft">${CO.pod?CO.pod.at:(s.photoAt||s.deliveredAt)}</span></div></div>`:CO.podMissing?`<div class="v">No photo</div><div class="m">Reason: ${CO.podMissing}</div>`:`<div class="m">No proof photo yet.</div>`}${mgr?`<div class="row3"><button class="btn --sm --ghost" onclick="CR.co.addPod()">${I('camera')} Add photo</button><button class="btn --sm --ghost" onclick="CR.co.noPod()">No photo</button>${(s.hasPod||CO.pod)?`<button class="btn --sm --ghost" ${C.demo.offline?'disabled':''} onclick="CR.co.delPod()">${I('trash')} Delete</button>`:''}</div>${C.demo.offline?'<div class="m">Photo and “no photo” queue offline; delete works online only.</div>':''}`:''}</div>`;
   $('co-body').innerHTML=`<div class="pad mt8"><div class="flex g12"><img class="wk-th" src="${s.img}" alt=""><div class="f1"><div class="h4">${o.n}</div><div class="xs muted mt4">${s.slot} · ${s.area}</div><div class="xs muted mt4">${s.who} · ${s.line1}, ${s.pc}</div>${s.isAlcohol?'<div class="mt8"><span class="pill cr-pill-acc">Alcohol · 18+</span></div>':''}</div></div></div>
     <div class="sec-head"><h2 class="h3 f1">Delivery</h2>${cour?'<span class="xs muted">read only</span>':''}</div>${courier}${market}${mp}${queue}${pod}
-    ${!mgr&&!cour?`<div class="pad mt16"><div class="panel"><div class="sm soft">Florists read these blocks; assigning couriers and the queue is for managers.</div><button class="btn --sm mt12" onclick="App.setUser('valeria')">View as Valeria</button></div></div>`:''}<div style="height:24px"></div>`;
+    ${!mgr&&!cour?`<div class="pad mt16"><div class="panel"><div class="sm soft">Florists read these blocks; assigning couriers and the queue is for managers.</div><button class="btn --sm mt12" onclick="App.setUser('vanessa')">View as Vanessa</button></div></div>`:''}<div style="height:24px"></div>`;
 };
 C.co={
   demo(){A.sheet(sh('Demo · order blocks',`<div class="cr-chipw"><button class="chip ${CO.market?'on':''}" onclick="CR.co.set('market',${!CO.market})">Marketplace order</button><button class="chip ${CO.advisor?'on':''}" onclick="CR.co.set('advisor',${!CO.advisor})">Advisor available</button><button class="chip ${C.demo.offline?'on':''}" onclick="CR.demo.offline=${!C.demo.offline};App.closeSheet();CR.remount()">Offline</button><button class="chip" onclick="CR.co.set('booking',null);CR.co.set('pod',null);CR.co.set('podMissing',null)">Reset</button></div>`,`<button class="btn --block" onclick="App.closeSheet()">Done</button>`))},
   set(k,v){CO[k]=v;A.closeSheet();mount_cr_order()},
-  pick(){const s=C.stop(CO.code);const cur=CO.freelancer?'fl':(s.courier===null?null:(s.courier||'andrii'));
-    const rows=[['none','Unassign','Takes the order off every run'],['andrii','Andrii','Route confirmed · 3 open stops'],['oleh','Oleh','On the road · back ≈ 12:05'],['max','Max','Not on shift today'],['fl','Freelancer (outside courier)','Shown only when the CRM sends the freelancer field']];
-    A.sheet(sh('Assign courier',`${rows.map(r=>`<button class="wk-pick" ${r[0]==='max'?'disabled':''} onclick="CR.co.assign('${r[0]}')">${r[0]==='none'||r[0]==='fl'?`<span class="avatar">${r[0]==='fl'?'FL':'–'}</span>`:A.avatar(r[0],'--shift')}<span class="f1"><b class="h4">${r[1]}${cur===r[0]?' · current':''}${r[0]==='oleh'&&CO.advisor?' <span class="xs muted">(advisor)</span>':''}</b><span class="xs">${r[2]}</span></span>${I('chev')}</button>`).join('')}`),{full:true})},
+  pick(){const s=C.stop(CO.code);const cur=CO.freelancer?'fl':(s.courier===null?null:(s.courier||'anton'));
+    const rows=[['none','Unassign','Takes the order off every run'],['anton','Anton','Route confirmed · 3 open stops'],['ollie','Ollie','On the road · back ≈ 12:05'],['max','Milo','Not on shift today'],['fl','Freelancer (outside courier)','Shown only when the CRM sends the freelancer field']];
+    A.sheet(sh('Assign courier',`${rows.map(r=>`<button class="wk-pick" ${r[0]==='max'?'disabled':''} onclick="CR.co.assign('${r[0]}')">${r[0]==='none'||r[0]==='fl'?`<span class="avatar">${r[0]==='fl'?'FL':'–'}</span>`:A.avatar(r[0],'--shift')}<span class="f1"><b class="h4">${r[1]}${cur===r[0]?' · current':''}${r[0]==='ollie'&&CO.advisor?' <span class="xs muted">(advisor)</span>':''}</b><span class="xs">${r[2]}</span></span>${I('chev')}</button>`).join('')}`),{full:true})},
   assign(id){const s=C.stop(CO.code);
-    if(CO.advisor&&id!=='oleh'&&id!=='none'){A.confirm('The advisor suggested otherwise',`The advisor suggested Oleh (run 2, leaves 12:10). Assign ${id==='fl'?'a freelancer':A.user(id).n}?`,'Assign anyway',()=>{CO.advisor=false;C.co.assign(id);CO.advisor=true});return}
-    if(id==='andrii'&&COUR_TRIP.andrii==='confirmed'){C.co.impact('andrii');return}
-    if(id==='oleh'){C.co.impactNext('oleh');return}
+    if(CO.advisor&&id!=='ollie'&&id!=='none'){A.confirm('The advisor suggested otherwise',`The advisor suggested Ollie (run 2, leaves 12:10). Assign ${id==='fl'?'a freelancer':A.user(id).n}?`,'Assign anyway',()=>{CO.advisor=false;C.co.assign(id);CO.advisor=true});return}
+    if(id==='anton'&&COUR_TRIP.anton==='confirmed'){C.co.impact('anton');return}
+    if(id==='ollie'){C.co.impactNext('ollie');return}
     C.co.doAssign(id)},
-  impact(id){A.closeSheet();A.sheet(sh(`Add to Andrii's run? The route is already confirmed`,`<div class="cr-imp">#${CO.code} becomes stop 3 of 5 · ETA ≈ 12:41</div><div class="cr-imp">The run gets <span class="acc">14 min longer</span>, back at the shop ≈ 13:54</div><div class="cr-imp">#715611 moves +14 min · <span class="acc">6 min late</span> (window 15:00–18:00 is still met)</div><div class="cr-imp"><span class="ok">Nobody else on the run is noticeably delayed</span></div><p class="xs muted" style="margin:12px 0 0">Approximate times – straight lines, no traffic. Andrii gets a push with the new order.</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="CR.co.doAssign('andrii')">Assign anyway</button>`),{full:true})},
-  impactNext(id){A.closeSheet();A.sheet(sh(`Oleh is on the road – the order can only go on the next run`,`<div class="cr-imp">Oleh is back at the shop ≈ 12:05, the next run leaves ≈ 12:10</div><div class="cr-imp">#${CO.code}: ETA on the next run ≈ 12:40 · <span class="ok">within the window 14:00–17:00</span></div><div class="cr-imp">Advice: give it to Oleh for the next run</div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn --ghost" onclick="CR.co.uber()">${I('truck')} Call Uber for #${CO.code}</button><button class="btn" onclick="CR.co.doAssign('oleh')">Assign</button>`),{full:true})},
+  impact(id){A.closeSheet();A.sheet(sh(`Add to Anton's run? The route is already confirmed`,`<div class="cr-imp">#${CO.code} becomes stop 3 of 5 · ETA ≈ 12:41</div><div class="cr-imp">The run gets <span class="acc">14 min longer</span>, back at the shop ≈ 13:54</div><div class="cr-imp">#715611 moves +14 min · <span class="acc">6 min late</span> (window 15:00–18:00 is still met)</div><div class="cr-imp"><span class="ok">Nobody else on the run is noticeably delayed</span></div><p class="xs muted" style="margin:12px 0 0">Approximate times – straight lines, no traffic. Anton gets a push with the new order.</p>`,`<button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn" onclick="CR.co.doAssign('anton')">Assign anyway</button>`),{full:true})},
+  impactNext(id){A.closeSheet();A.sheet(sh(`Ollie is on the road – the order can only go on the next run`,`<div class="cr-imp">Ollie is back at the shop ≈ 12:05, the next run leaves ≈ 12:10</div><div class="cr-imp">#${CO.code}: ETA on the next run ≈ 12:40 · <span class="ok">within the window 14:00–17:00</span></div><div class="cr-imp">Advice: give it to Ollie for the next run</div>`,`<button class="btn --secondary" onclick="App.closeSheet()">Back</button><button class="btn --ghost" onclick="CR.co.uber()">${I('truck')} Call Uber for #${CO.code}</button><button class="btn" onclick="CR.co.doAssign('ollie')">Assign</button>`),{full:true})},
   doAssign(id){A.closeSheet();const s=C.stop(CO.code);
     if(id==='none'){s.courier=null;CO.freelancer=false;CO.first=false;A.toast('Courier removed · back to Not assigned')}
     else if(id==='fl'){s.courier=null;CO.freelancer=true;CO.first=false;A.toast('Freelancer · outside courier')}

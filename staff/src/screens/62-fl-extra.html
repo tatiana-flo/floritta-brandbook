@@ -60,7 +60,7 @@ const X=window.FLX={
  signup:'ok',link:'ok',bank:'ok',su:{rtw:'code',transport:'bike'},
  routes:[{n:'Home from uni',f:'WC1E 6BT',t:'SE15 4QL',m:'Bike',d:'Mon–Thu',w:'16:30'},{n:'Saturday gym',f:'SE15 4QL',t:'SW11 1AJ',m:'Transit',d:'Sat',w:'09:00'}],
  areas:['SE1','SE15','SE11','SW8'],
- msgs:[{me:true,t:'16:41',x:"I'm 10 min late to the studio, the bridge is closed."},{me:false,who:'Kamila',t:'16:43',x:'No problem, the bouquet will be at the front desk. Order 186412.'},{me:true,t:'18:05',x:'Concierge says flat 4 is empty. Leave with him?'},{me:false,who:'Kamila',t:'18:06',x:'Yes, the sender agreed. Take the photo with the concierge desk please.'}]
+ msgs:[{me:true,t:'16:41',x:"I'm 10 min late to the studio, the bridge is closed."},{me:false,who:'Katrina',t:'16:43',x:'No problem, the bouquet will be at the front desk. Order 186412.'},{me:true,t:'18:05',x:'Concierge says flat 4 is empty. Leave with him?'},{me:false,who:'Katrina',t:'18:06',x:'Yes, the sender agreed. Take the photo with the concierge desk please.'}]
 };
 const BOARD=[
  {when:'Today · 12:00–14:00',where:'Bermondsey SE16',pay:'£7',km:'2.2 km',t:'11 min',tags:[['Your area','--ok'],['Pick up from 11:30','']],area:true,soon:true},
@@ -172,7 +172,7 @@ function renderStudio(){const b=document.getElementById('flx-studio-body');if(!b
  if(X.studio==='empty'){b.innerHTML='<div class="flx-empty" style="margin-top:12px"><div class="h3">No messages yet.</div><p class="soft sm" style="margin:0">Write when you need the studio – running late, can\'t find the entrance, anything.</p></div>';return}
  b.innerHTML='<div class="caps muted" style="text-align:center;margin:10px 0">Today</div>'+X.msgs.map(m=>'<div class="bubble '+(m.me?'--me':'--them')+'"><small>'+(m.me?'You':'Studio ('+esc(m.who)+')')+' · '+m.t+'</small>'+esc(m.x)+'</div>').join('');b.scrollTop=b.scrollHeight}
 X.studioSend=()=>{const i=$('#fl-st-msg');const v=i.value.trim();if(!v)return;if(X.studio==='offline'){A.sheet('<div class="sh-head"><div class="h3">Couldn\'t send</div></div><div class="sh-body"><p class="soft sm" style="margin:0">No connection. Your text stays in the box – try again in a moment.</p></div><div class="sh-foot"><button class="btn" onclick="App.closeSheet()">OK</button></div>');return}
- X.studio='normal';X.msgs.push({me:true,t:'11:12',x:v});i.value='';dis('fl-st-send',false);X.render();setTimeout(()=>{X.msgs.push({me:false,who:'Kamila',t:'11:13',x:'Got it, thanks Sam.'});X.render();FL.push('reply')},1500)};
+ X.studio='normal';X.msgs.push({me:true,t:'11:12',x:v});i.value='';dis('fl-st-send',false);X.render();setTimeout(()=>{X.msgs.push({me:false,who:'Katrina',t:'11:13',x:'Got it, thanks Sam.'});X.render();FL.push('reply')},1500)};
 /* ---------- earnings ---------- */
 function renderEarn(){const s=document.getElementById('flx-earn-stats');if(!s)return;demo('flx-d-earn','earn',[['normal','Normal'],['nobank','No bank details'],['first','First week']]);
  const first=X.earn==='first';s.innerHTML='<div><b>'+(first?'£0':'£57')+'</b><span>This week</span></div><div><b>'+(first?'£0':'£214')+'</b><span>This month</span></div><div><b>'+(first?'£0':'£57')+'</b><span>Unpaid</span></div>';

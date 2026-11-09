@@ -190,7 +190,7 @@ const isFree=()=>eng()==='freelance';
 const isAdmin=()=>A.role()==='owner';
 const isMgr=()=>A.role()==='manager'||isAdmin();
 const limited=()=>A.isTrainee()||A.me().staff_type==='seasonal';
-const canDictate=()=>['tatiana','valeria'].includes(A.me().id);
+const canDictate=()=>['tatiana','vanessa'].includes(A.me().id);
 const tasksHidden=()=>A.role()==='courier'||isSE()||isRes()||isFree();
 
 /* ---------- stand persona: admin (owner) – «All» scope, dictation, admin lens ---------- */
@@ -203,22 +203,22 @@ const X=window.WX_STATE={offline:false,tdemo:'normal',scope:null,view:'list',que
 
 /* self-employed jobs with a fixed fee */
 X.jobs=[
- {id:21,off:2,when:'Thu 22 Oct · from 09:00',title:'Wedding table arrangements · 8 centrepieces',fee:180,extra:20,place:'SE1 studio → Dulwich SE21',tags:['Hard window','Special'],role:'florist',status:'taken',by:'mira',brief:'Eight low centrepieces in the client’s vessels, blush and cream. Set up at the venue by 11:00, photos to the manager before you leave.',materials:['Garden roses ×40','Spray roses ×30','Eucalyptus ×12','Vessels ×8 (client’s)']},
+ {id:21,off:2,when:'Thu 22 Oct · from 09:00',title:'Wedding table arrangements · 8 centrepieces',fee:180,extra:20,place:'SE1 studio → Dulwich SE21',tags:['Hard window','Special'],role:'florist',status:'taken',by:'mina',brief:'Eight low centrepieces in the client’s vessels, blush and cream. Set up at the venue by 11:00, photos to the manager before you leave.',materials:['Garden roses ×40','Spray roses ×30','Eucalyptus ×12','Vessels ×8 (client’s)']},
  {id:22,off:0,when:'Today · 15:00–18:00',title:'Halloween window install at SW6',fee:95,place:'SW6 shop',tags:['Peak'],role:'florist',status:'open',brief:'Dark dahlias, dried grasses, black ribbon. Reference photos in the brief. Shop stays open while you work.',materials:['Dried grasses ×6 bunches','Dahlias ×30','Black ribbon 25 mm']},
  {id:23,off:null,when:'Date to agree',title:'Corporate reception · 6 tall arrangements',fee:240,place:'City EC2',tags:['Special'],role:'florist',status:'open',brief:'Six tall arrangements for a reception desk and stage. Date to agree with the client – early November.',materials:['Delphinium','Lilies (no – allergy, use orchids)','Tall vases ×6'],race:true},
  {id:24,off:3,when:'Fri 23 Oct · 10:00–12:00',title:'Stock run SW6 → SE1 · 12 boxes',fee:28,place:'SW6 shop → SE1 studio',tags:[],role:'courier',status:'open',brief:'Collect 12 boxes of hard goods at SW6, deliver to the SE1 studio.'},
- {id:25,off:-3,when:'Sat 17 Oct',title:'Funeral spray · 2 pieces',fee:120,place:'SE1 studio',tags:[],role:'florist',status:'done',by:'mira',doneDay:'Sat 17 Oct',brief:'Two sprays in white and green, collected by the family at 14:00.'}
+ {id:25,off:-3,when:'Sat 17 Oct',title:'Funeral spray · 2 pieces',fee:120,place:'SE1 studio',tags:[],role:'florist',status:'done',by:'mina',doneDay:'Sat 17 Oct',brief:'Two sprays in white and green, collected by the family at 14:00.'}
 ];
 /* manager board: published shifts for casual workers */
 X.offers=[
- {id:1,off:0,role:'florist',start:'15:00',end:'22:00',place:'SE1 studio',spots:1,booked:['zhadra'],status:'started'},
- {id:2,off:2,role:'florist',start:'08:00',end:'15:00',place:'SE1 studio',spots:2,booked:['zhadra'],status:'open'},
+ {id:1,off:0,role:'florist',start:'15:00',end:'22:00',place:'SE1 studio',spots:1,booked:['zhanna'],status:'started'},
+ {id:2,off:2,role:'florist',start:'08:00',end:'15:00',place:'SE1 studio',spots:2,booked:['zhanna'],status:'open'},
  {id:3,off:3,role:'courier',start:'12:00',end:'20:00',place:'SE1 studio',spots:1,booked:['max'],status:'full',note:'Pre-Halloween · expect a busy day'},
  {id:4,off:5,role:'florist',start:'08:00',end:'15:00',place:'SW6 shop',spots:2,booked:[],status:'open'}
 ];
 X.ending=[
  {who:'max',kind:'Casual worker',ends:'12 Nov 2026',days:23,decide:'29 Oct',left:9},
- {who:'dana',kind:'Self-employed',ends:'18 Nov 2026',days:29,decide:'4 Nov',left:15}
+ {who:'devon',kind:'Self-employed',ends:'18 Nov 2026',days:29,decide:'4 Nov',left:15}
 ];
 /* catalog: typical errands for points (Floritta Active) */
 X.catalog=[
@@ -231,13 +231,13 @@ X.catalog=[
 ];
 /* questions to me (kind = ask) – addressed to whoever is looking */
 X.asks=[
- {id:901,from:'valeria',title:'Can you cover Thursday 12:00–22:00?',body:'Svetlana is off. Say yes, only until 18:00, or no – I need to close the rota today.',options:['Yes, the full shift','Only until 18:00','No, sorry'],wait:1,urgent:false},
+ {id:901,from:'vanessa',title:'Can you cover Thursday 12:00–22:00?',body:'Sylvia is off. Say yes, only until 18:00, or no – I need to close the rota today.',options:['Yes, the full shift','Only until 18:00','No, sorry'],wait:1,urgent:false},
  {id:902,from:'tatiana',title:'Which supplier for the dried grasses?',body:'For Thursday’s window. Name the supplier and the price per bunch so I can approve the spend.',fields:['Supplier','Price per bunch'],wait:2,urgent:true}
 ];
 /* a few touches on the shared demo tasks: links in text, «why it matters», proof by comment, my step in someone else’s task */
 (function seed(){
-  const t102=A.task(102);if(t102&&!/https?:/.test(t102.desc)){t102.desc+=' Guide: https://floritta.uk/photo-standard';const s=t102.checklist.find(c=>/Peony basket/.test(c.t));if(s)s.who='kamila'}
-  const t110=A.task(110);if(t110&&t110.checklist[1])t110.checklist[1].who='ayana';
+  const t102=A.task(102);if(t102&&!/https?:/.test(t102.desc)){t102.desc+=' Guide: https://floritta.uk/photo-standard';const s=t102.checklist.find(c=>/Peony basket/.test(c.t));if(s)s.who='katrina'}
+  const t110=A.task(110);if(t110&&t110.checklist[1])t110.checklist[1].who='ayla';
   const t112=A.task(112);if(t112)t112.whyMatters='Without a proof photo we cannot defend a “not delivered” claim – the client gets a refund and we lose the order.';
   const t113=A.task(113);if(t113)t113.whyMatters='A rejected marketplace order lowers our ranking for the whole day.';
   const t107=A.task(107);if(t107)t107.proof='comment';
@@ -285,7 +285,7 @@ window.mount_work=function(p){
 };
 function stubBodyBase(){return `<div class="wx-note" style="padding-top:12px">Each segment brings its own list and pull-to-refresh – the Work screen itself does not scroll.</div>`}
 
-/* ---- Orders (self-employed florist): the classic orders board, embedded, read-only for Mira ---- */
+/* ---- Orders (self-employed florist): the classic orders board, embedded, read-only for Mina ---- */
 function ordersLiteHtml(){
   const tabs=[['today','Today'],['todo','To do'],['mine','Mine'],['handover','Handover'],['delivering','Delivering'],['tomorrow','Tomorrow'],['attention','Attention'],['date','Date'],['closed','Closed']];
   const cur=X.ordTab||'todo';
@@ -299,7 +299,7 @@ function ordersLiteHtml(){
 
 /* ---- Deliveries (manager): all couriers’ routes, list or map, trips waiting for confirmation ---- */
 function mgrDeliveriesHtml(){
-  const cs=[{id:'andrii',drops:ROUTE.length,done:ROUTE.filter(r=>r.status==='done').length,next:'715619 · Battersea',eta:'12:25'},{id:'oleh',drops:5,done:2,next:'715588 · Chelsea (re-delivery)',eta:'13:10'},{id:'max',drops:0,done:0,next:'Shift from 12:00',eta:''}];
+  const cs=[{id:'anton',drops:ROUTE.length,done:ROUTE.filter(r=>r.status==='done').length,next:'715619 · Battersea',eta:'12:25'},{id:'ollie',drops:5,done:2,next:'715588 · Chelsea (re-delivery)',eta:'13:10'},{id:'max',drops:0,done:0,next:'Shift from 12:00',eta:''}];
   const map=X.dlvMap;
   return `${pendingHtml()}
   <div class="flex ai-c jc-sb pad mt16"><div class="h3">Routes today</div><div class="wx-toggle"><button class="${map?'':'on'}" onclick="WX.x('dlvMap',false)">List</button><button class="${map?'on':''}" onclick="WX.x('dlvMap',true)">Map</button></div></div>
@@ -309,7 +309,7 @@ function mgrDeliveriesHtml(){
 }
 function pendingHtml(){
   const n=X.tripsOk?0:2;
-  return n?`<button class="wx-banner" onclick="WX.x('trips')">${A.icon('truck')}<div class="f1"><div class="t">${n} trips wait for your confirmation</div><div class="d">Oleh · 2 extra drops · Andrii · return to shop. Tap to review.</div></div></button>`:`<div class="wx-note" style="padding-top:12px">${ic('check',14)} All trips confirmed.</div>`;
+  return n?`<button class="wx-banner" onclick="WX.x('trips')">${A.icon('truck')}<div class="f1"><div class="t">${n} trips wait for your confirmation</div><div class="d">Ollie · 2 extra drops · Anton · return to shop. Tap to review.</div></div></button>`:`<div class="wx-note" style="padding-top:12px">${ic('check',14)} All trips confirmed.</div>`;
 }
 
 /* ---- Stock (classic inventory, embedded) – compact stand-in; the full screen is the Stock section ---- */
@@ -612,7 +612,7 @@ function decorateTasks(){
       const r=[...el.querySelectorAll('.row')].find(x=>/Routines and templates/.test(x.textContent));
       (r?r.parentElement:el).insertAdjacentHTML('beforebegin',catalogCardHtml());
       const gone=[...el.querySelectorAll('.tk-pool')].find(p=>/cold room shelves/.test(p.textContent));
-      if(gone&&X.raced){gone.style.opacity='.45';const b=gone.querySelector('.btn');if(b){b.textContent='Taken by Vita';b.disabled=true}}
+      if(gone&&X.raced){gone.style.opacity='.45';const b=gone.querySelector('.btn');if(b){b.textContent='Taken by Vicky';b.disabled=true}}
     }
     const sp=el.lastElementChild;if(sp&&sp.style.height==='80px')sp.insertAdjacentHTML('beforebegin',footHtml());
     bindMoves(el);
@@ -657,7 +657,7 @@ function peopleSheet(sel,single,fn){
   const ppl=STAFF.filter(u=>u.role!=='owner'&&u.id!==meId()&&!['reserve','freelance'].includes(u.engagement)).sort((a,b)=>(!!b.onShift-!!a.onShift)||a.n.localeCompare(b.n));
   const row=(id,n,sub)=>`<button class="check ${picked.has(id)?'on':''}" onclick="WX.x('ppl','${id}')">${id==='__free'?`<span class="avatar --sm">${ic('users',14)}</span>`:A.avatar(id,'--sm')}<span class="who">${n}<small>${sub}</small></span><span class="cb">${A.icon('check')}</span></button>`;
   X.ppl={picked,single,fn};
-  A.sheet(`${shHead('Who does it')}<div class="sh-body wx-people">${row('__free','Free (nobody)','Anyone on shift can take it')}${row(meId(),'Me',A.me().title)}<div class="caps muted" style="margin:12px 0 4px">On shift</div>${ppl.filter(u=>u.onShift).map(u=>row(u.id,u.n,u.title+(u.id==='sasha'?' · accountant':''))).join('')}<div class="caps muted" style="margin:12px 0 4px">Everyone</div>${ppl.filter(u=>!u.onShift).map(u=>row(u.id,u.n,u.title)).join('')}</div>${single?'':`<div class="sh-foot"><button class="btn" onclick="WX.x('pplDone')">Done</button></div>`}`);
+  A.sheet(`${shHead('Who does it')}<div class="sh-body wx-people">${row('__free','Free (nobody)','Anyone on shift can take it')}${row(meId(),'Me',A.me().title)}<div class="caps muted" style="margin:12px 0 4px">On shift</div>${ppl.filter(u=>u.onShift).map(u=>row(u.id,u.n,u.title+(u.id==='sabrina'?' · accountant':''))).join('')}<div class="caps muted" style="margin:12px 0 4px">Everyone</div>${ppl.filter(u=>!u.onShift).map(u=>row(u.id,u.n,u.title)).join('')}</div>${single?'':`<div class="sh-foot"><button class="btn" onclick="WX.x('pplDone')">Done</button></div>`}`);
 }
 /* due sheet – 8 days, 30-minute steps 08:00–22:00, Reset / Set */
 function dueSheet(cur,fn){
@@ -757,7 +757,7 @@ window.TSK.send=function(){
 };
 /* race on the pool: one item is always taken a moment earlier */
 const origTake=window.TSK.take;
-window.TSK.take=function(pid){if(X.offline){offlineFail();return}if(pid==='p6'){X.raced=true;alertSheet('Someone took it first','Vita took “Re-label the cold room shelves” a moment ago. Pick another one.','OK',()=>{window.TSK.setView('pool')});return}origTake.apply(this,arguments)};
+window.TSK.take=function(pid){if(X.offline){offlineFail();return}if(pid==='p6'){X.raced=true;alertSheet('Someone took it first','Vicky took “Re-label the cold room shelves” a moment ago. Pick another one.','OK',()=>{window.TSK.setView('pool')});return}origTake.apply(this,arguments)};
 ['setView','who','flag'].forEach(k=>{const o=window.TSK[k];window.TSK[k]=function(){o.apply(this,arguments);decorateTasks()}});
 
 /* =====================================================================
@@ -791,10 +791,10 @@ const H={
   ordTab(k){X.ordTab=k;window.mount_work({})},
   ordSearch(){A.sheet(`${shHead('Search orders')}<div class="sh-body"><div class="input-wrap">${A.icon('search')}<input class="input" placeholder="Order number or client" autofocus></div><div class="xs muted mt8">Searches all tabs of the board.</div></div>`)},
   dlvMap(v){X.dlvMap=v;window.mount_work({})},
-  trips(){A.sheet(`${shHead('Trips to confirm')}<div class="sh-body">${[['oleh','2 extra drops · 715588 re-delivery + 715631','+£9.40'],['andrii','Return to shop · collect balloons 715611','+£4.20']].map(([id,d,m])=>`<div class="row" style="padding-left:0;padding-right:0">${A.avatar(id,'--sm')}<div class="rt"><div class="l">${first(id)}</div><div class="d">${d}</div></div><span class="val">${m}</span></div>`).join('')}</div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Later</button><button class="btn" onclick="WX.x('tripsOk')">Confirm both</button></div>`)},
-  tripsOk(){X.tripsOk=true;A.closeSheet();A.toast('2 trips confirmed');setTimeout(()=>A.push('Trip confirmed','Oleh · 2 extra drops · goes on this week’s hours',{icon:'truck',to:'Oleh'}),600);window.mount_work({})},
-  chat(i){const c=[['Mrs Harper','Smoked glass please, thank you!','Is the vase clear or smoked?'],['James O.','Can the balloons say “40”?','Hi, order 715611 – a question'],['Anna K.','Photo received – looks lovely','Here is the photo of your bouquet']][i];A.sheet(`${shHead(c[0])}<div class="sh-body"><div class="cmt">${A.avatar('valeria','--sm')}<div class="cb-b"><div class="cb-h"><b>Floritta</b><span>10:40</span></div><div class="cb-t">${c[2]}</div></div></div><div class="cmt"><span class="avatar --sm">${c[0].slice(0,1)}</span><div class="cb-b"><div class="cb-h"><b>${c[0]}</b><span>10:52</span></div><div class="cb-t">${c[1]}</div></div></div><div class="tk-compose mt12" style="padding:0"><input class="input" placeholder="Reply…"><button class="btn" onclick="App.closeSheet();App.toast('Reply sent')">${A.icon('send')}</button></div></div>`)},
-  pushes(){A.sheet(`${shHead('Pushes that open Work')}<div class="sh-body"><div class="xs muted" style="margin:-4px 0 8px">Each push lands on its segment. Tap one to preview.</div>${[['inventory','Stock is low','Quicksand roses · 38 stems left','stock',null],['trip','Trip to confirm','Oleh · 2 extra drops today','deliveries',null],['queue','Your queue moved','715602 is next · window 14:00','orders','mine'],['contractor_job','New job · £95','Halloween window install at SW6 · today 15:00','jobs',null]].map(([k,t,b,v,tab])=>`<button class="tk-mrow" onclick="WX.x('pushGo','${k}','${esc(t)}','${esc(b)}','${v}',${tab?`'${tab}'`:'null'})">${A.icon('bell')}<div class="f1"><div>${t}</div><div class="d">${b} · <span class="caps">${k}</span> → ${VL[v]}</div></div></button>`).join('')}</div>`)},
+  trips(){A.sheet(`${shHead('Trips to confirm')}<div class="sh-body">${[['ollie','2 extra drops · 715588 re-delivery + 715631','+£9.40'],['anton','Return to shop · collect balloons 715611','+£4.20']].map(([id,d,m])=>`<div class="row" style="padding-left:0;padding-right:0">${A.avatar(id,'--sm')}<div class="rt"><div class="l">${first(id)}</div><div class="d">${d}</div></div><span class="val">${m}</span></div>`).join('')}</div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Later</button><button class="btn" onclick="WX.x('tripsOk')">Confirm both</button></div>`)},
+  tripsOk(){X.tripsOk=true;A.closeSheet();A.toast('2 trips confirmed');setTimeout(()=>A.push('Trip confirmed','Ollie · 2 extra drops · goes on this week’s hours',{icon:'truck',to:'Ollie'}),600);window.mount_work({})},
+  chat(i){const c=[['Mrs Harper','Smoked glass please, thank you!','Is the vase clear or smoked?'],['James O.','Can the balloons say “40”?','Hi, order 715611 – a question'],['Anna K.','Photo received – looks lovely','Here is the photo of your bouquet']][i];A.sheet(`${shHead(c[0])}<div class="sh-body"><div class="cmt">${A.avatar('vanessa','--sm')}<div class="cb-b"><div class="cb-h"><b>Floritta</b><span>10:40</span></div><div class="cb-t">${c[2]}</div></div></div><div class="cmt"><span class="avatar --sm">${c[0].slice(0,1)}</span><div class="cb-b"><div class="cb-h"><b>${c[0]}</b><span>10:52</span></div><div class="cb-t">${c[1]}</div></div></div><div class="tk-compose mt12" style="padding:0"><input class="input" placeholder="Reply…"><button class="btn" onclick="App.closeSheet();App.toast('Reply sent')">${A.icon('send')}</button></div></div>`)},
+  pushes(){A.sheet(`${shHead('Pushes that open Work')}<div class="sh-body"><div class="xs muted" style="margin:-4px 0 8px">Each push lands on its segment. Tap one to preview.</div>${[['inventory','Stock is low','Quicksand roses · 38 stems left','stock',null],['trip','Trip to confirm','Ollie · 2 extra drops today','deliveries',null],['queue','Your queue moved','715602 is next · window 14:00','orders','mine'],['contractor_job','New job · £95','Halloween window install at SW6 · today 15:00','jobs',null]].map(([k,t,b,v,tab])=>`<button class="tk-mrow" onclick="WX.x('pushGo','${k}','${esc(t)}','${esc(b)}','${v}',${tab?`'${tab}'`:'null'})">${A.icon('bell')}<div class="f1"><div>${t}</div><div class="d">${b} · <span class="caps">${k}</span> → ${VL[v]}</div></div></button>`).join('')}</div>`)},
   pushGo(k,t,b,v,tab){A.closeSheet();A.push(t,b,{icon:'bell',go:['work',{view:v,tab}]});setTimeout(()=>{if(v==='jobs'&&!isSE()){A.go('wx-jobs');return}const vs=isRes()||isFree()?[]:views();if(!vs.includes(v)){A.toast('This push goes to people who have the '+VL[v]+' segment');return}X.seenParam=null;A.go('work',{view:v,tab:tab||undefined})},900)},
   /* jobs */
   jobsDemo(k){if(k==='offline'){X.offline=!X.offline;A.toast(X.offline?'Offline – writes will fail':'Back online')}else if(k==='unsigned'){X.jobsDemo='normal';X.agreementSigned=!X.agreementSigned;A.toast(X.agreementSigned?'Agreement signed':'Agreement not signed – “Take” is refused')}else X.jobsDemo=k;rerenderJobs()},
@@ -803,10 +803,10 @@ const H={
     if(X.offline){offlineFail();return}
     if(!X.agreementSigned){A.sheet(`${shHead('Sign your services agreement first')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">Jobs are paid under the Florist Services Agreement. It takes two minutes – read, tick, sign with your finger.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Not now</button><button class="btn" onclick="App.closeSheet();App.go(document.getElementById('s-agreement')?'agreement':'me')">Open agreement</button></div>`);return}
     X.inFlight['j'+id]=true;rerenderJobs();
-    setTimeout(()=>{delete X.inFlight['j'+id];if(j.race){alertSheet('Someone has already taken this job.','It left the board a moment ago. The push goes to everyone of the role – first come, first served.','OK');j.status='taken';j.by='dana';rerenderJobs();return}
-      j.status='taken';j.by=meId();A.haptic();A.toast('Job is yours · '+gbp(j.fee+(j.extra||0)));setTimeout(()=>A.push(first(meId())+' took a job',j.title,{icon:'flower',to:'Valeria'}),600);rerenderJobs()},700)},
+    setTimeout(()=>{delete X.inFlight['j'+id];if(j.race){alertSheet('Someone has already taken this job.','It left the board a moment ago. The push goes to everyone of the role – first come, first served.','OK');j.status='taken';j.by='devon';rerenderJobs();return}
+      j.status='taken';j.by=meId();A.haptic();A.toast('Job is yours · '+gbp(j.fee+(j.extra||0)));setTimeout(()=>A.push(first(meId())+' took a job',j.title,{icon:'flower',to:'Vanessa'}),600);rerenderJobs()},700)},
   withdraw(id){const j=X.jobs.find(x=>x.id==id);A.sheet(`${shHead('Hand this job back?')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">It goes back on the board. No fee, no rating.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep it</button><button class="btn --accent" onclick="WX.x('withdrawDo',${id})">Withdraw</button></div>`)},
-  withdrawDo(id){const j=X.jobs.find(x=>x.id==id);A.closeSheet();if(X.offline){offlineFail();return}j.status='open';j.by=null;A.toast('Back on the board');setTimeout(()=>A.push('Job handed back',j.title+' · open again',{icon:'swap',to:'Valeria'}),600);rerenderJobs()},
+  withdrawDo(id){const j=X.jobs.find(x=>x.id==id);A.closeSheet();if(X.offline){offlineFail();return}j.status='open';j.by=null;A.toast('Back on the board');setTimeout(()=>A.push('Job handed back',j.title+' · open again',{icon:'swap',to:'Vanessa'}),600);rerenderJobs()},
   jobDone(id){jobDoneSheet(id)},
   jdPhoto(src){const s=X.jd;s.photos.push(ORDERS[(s.photos.length+2)%ORDERS.length].img);renderJD();A.toast(src==='camera'?'Photo taken':'Photo chosen')},
   jdDenied(){alertSheet('Camera access is off','Allow the camera for Floritta Team in Settings → Privacy → Camera, then try again. You can still choose a photo from the library.','OK',()=>renderJD())},
@@ -835,7 +835,7 @@ const H={
     const hu=hoursUntil(f);const o={id:Date.now(),off:f.date?Math.max(0,Math.round((new Date(f.date)-new Date(2026,9,20))/864e5)):f.off,role:f.role,start:f.start,end:f.end,place:f.place.trim(),spots:f.spots,booked:[],status:'open',note:f.note.trim()};
     X.offers.push(o);X.of={role:f.role,off:1,date:'',start:f.start,end:f.end,place:'',spots:1,note:'',err:''};A.closeSheet();
     setTimeout(()=>alertSheet('Shift published',(hu<48?'Short notice – it starts in under 48 h. ':'')+`Everyone of the role gets a push: ${dlab(o.off)} ${o.start}–${o.end} · ${o.place}.`,'OK'),200);
-    setTimeout(()=>A.push('Open shift · '+dlab(o.off),`${o.start}–${o.end} · ${o.place} · ${o.spots} place${o.spots>1?'s':''}`,{icon:'calendar',to:o.role==='courier'?'Max':'Zhadra'}),1300);rerenderJobs()},
+    setTimeout(()=>A.push('Open shift · '+dlab(o.off),`${o.start}–${o.end} · ${o.place} · ${o.spots} place${o.spots>1?'s':''}`,{icon:'calendar',to:o.role==='courier'?'Milo':'Zhanna'}),1300);rerenderJobs()},
   cancelOffer(id){const o=X.offers.find(x=>x.id==id);A.sheet(`${shHead('Cancel this shift?')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">Everyone who took it gets a push. Nothing is paid or deducted.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep</button><button class="btn --accent" onclick="WX.x('cancelOfferDo',${id})">Cancel it</button></div>`)},
   cancelOfferDo(id){A.closeSheet();if(X.offline){offlineFail();return}X.inFlight['o'+id]=true;rerenderJobs();setTimeout(()=>{const o=X.offers.find(x=>x.id==id);o.status='cancelled';delete X.inFlight['o'+id];A.toast('Shift cancelled');if(o.booked.length)setTimeout(()=>A.push('Shift cancelled',`${dlab(o.off)} ${o.start}–${o.end} · nothing is paid or deducted`,{icon:'close',to:first(o.booked[0])}),500);rerenderJobs()},800)},
   jobForm(){jobForm()},
@@ -853,7 +853,7 @@ const H={
     const j={id:Date.now(),off,when:off==null?(f.when.trim()||'Date to agree'):dlab(off)+' · '+(f.time||'09:00')+(f.when?' · '+f.when:''),title:f.title.trim(),fee:+f.fee,place:f.place.trim(),tags:[],role:f.role,status:'open',brief:f.brief.trim(),materials:f.materials.trim()?f.materials.split(',').map(s=>s.trim()):null};
     X.jobs.unshift(j);X.jf=null;A.closeSheet();
     setTimeout(()=>alertSheet('Job published',`Self-employed ${f.role==='any'?'florists and couriers':f.role+'s'} with a signed agreement get a push: ${gbp(j.fee)} · ${j.title}.`,'OK'),200);
-    setTimeout(()=>A.push('New job · '+gbp(j.fee),j.title+' · '+j.when,{icon:'flower',to:f.role==='courier'?'Dana':'Mira'}),1300);rerenderJobs()},
+    setTimeout(()=>A.push('New job · '+gbp(j.fee),j.title+' · '+j.when,{icon:'flower',to:f.role==='courier'?'Devon':'Mina'}),1300);rerenderJobs()},
   cancelJob(id){const j=X.jobs.find(x=>x.id==id);A.sheet(`${shHead('Cancel this job?')}<div class="sh-body"><p class="soft" style="margin:0 0 8px">Whoever took it gets a push. Nothing is paid.</p></div><div class="sh-foot"><button class="btn --secondary" onclick="App.closeSheet()">Keep</button><button class="btn --accent" onclick="WX.x('cancelJobDo',${id})">Cancel it</button></div>`)},
   cancelJobDo(id){A.closeSheet();if(X.offline){offlineFail();return}X.inFlight['mj'+id]=true;rerenderJobs();setTimeout(()=>{const j=X.jobs.find(x=>x.id==id);const by=j.by;j.status='cancelled';delete X.inFlight['mj'+id];A.toast('Job cancelled');if(by)setTimeout(()=>A.push('Job cancelled',j.title+' · nothing is paid',{icon:'close',to:first(by)}),500);rerenderJobs()},800)},
   /* catalog */
@@ -861,7 +861,7 @@ const H={
   catDemo(k){X.catDemo=k;window.mount_wx_catalog()},
   catRefresh(){A.toast('Catalog refreshed');window.mount_wx_catalog()},
   catTake(id){const c=X.catalog.find(x=>x.id===id);if(!c||X.inFlight['c'+id])return;if(X.offline){offlineFail();return}X.inFlight['c'+id]=true;window.mount_wx_catalog();
-    setTimeout(()=>{delete X.inFlight['c'+id];const t=A.addTask({title:c.title,assignee:meId(),by:'valeria',due:A.T(16,0),desc:c.desc+' · '+c.pts+' points when checked.',tags:['shop']});if(t){alertSheet('Taken!','“'+c.title+'” is on your list for this shift. '+c.pts+' points when the manager checks it.','Open task',()=>A.go('task',{id:t.id}))}window.mount_wx_catalog()},700)},
+    setTimeout(()=>{delete X.inFlight['c'+id];const t=A.addTask({title:c.title,assignee:meId(),by:'vanessa',due:A.T(16,0),desc:c.desc+' · '+c.pts+' points when checked.',tags:['shop']});if(t){alertSheet('Taken!','“'+c.title+'” is on your list for this shift. '+c.pts+' points when the manager checks it.','Open task',()=>A.go('task',{id:t.id}))}window.mount_wx_catalog()},700)},
   /* tasks tab */
   scope(k){X.scope=k;X.questions=false;if(k==='pool')window.TSK.setView('pool');else if(k==='mine')window.TSK.setView(X.view==='board'?'board':'mine');else decorateTasks()},
   toggleView(){X.view=X.view==='board'?'list':'board';const b=$('#tk-act .wx-tact');if(b)b.innerHTML=A.icon(X.view==='board'?'list':'board');if(X.scope==='mine')window.TSK.setView(X.view==='board'?'board':'mine');else decorateTasks()},
@@ -886,7 +886,7 @@ const H={
   recCancel(){clearInterval(X.rec.timer);X.rec=null;A.closeSheet();A.toast('Recording discarded')},
   recStop(){if(!X.rec||X.rec.t<1)return;clearInterval(X.rec.timer);X.rec=null;
     A.sheet(`${shHead('Transcribing…')}<div class="sh-body"><div class="wx-sk" style="margin:8px 0 16px"><i style="height:20px"></i><i style="height:20px;width:70%"></i></div><div class="sm soft">Sending the recording and building the draft (up to 90 s).</div></div>`);
-    setTimeout(()=>{A.closeSheet();A.go('task-new',{title:'Restock ribbons before the weekend',body:'Check the drawer under the wrapping station, write what is below 20.',voice:{transcript:'Sofia, please restock the ribbons before the weekend, check the drawer under the wrapping station and write what is below twenty, by Friday evening',warnings:['unknown_assignee'],unknownNames:['Sofia']}})},1600)},
+    setTimeout(()=>{A.closeSheet();A.go('task-new',{title:'Restock ribbons before the weekend',body:'Check the drawer under the wrapping station, write what is below 20.',voice:{transcript:'Sonia, please restock the ribbons before the weekend, check the drawer under the wrapping station and write what is below twenty, by Friday evening',warnings:['unknown_assignee'],unknownNames:['Sonia']}})},1600)},
   askOpt(id,i){X.ans=Object.assign({id,opt:null,text:'',fields:{},free:false},X.ans&&X.ans.id===id?X.ans:{});X.ans.opt=i;redrawAsk(id)},
   askField(id,f,v){X.ans=Object.assign({id,opt:null,text:'',fields:{},free:false},X.ans&&X.ans.id===id?X.ans:{});X.ans.fields[f]=v},
   askText(id,v){X.ans=Object.assign({id,opt:null,text:'',fields:{},free:false},X.ans&&X.ans.id===id?X.ans:{});X.ans.text=v},
