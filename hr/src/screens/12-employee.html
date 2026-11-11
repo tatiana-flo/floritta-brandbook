@@ -1,0 +1,177 @@
+<style>
+#s-employee .em-wrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:start}
+#s-employee .phone{width:375px;max-width:100%;height:760px;border:10px solid var(--ink);border-radius:46px;background:var(--paper);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-pop)}
+#s-employee .ph-sb{height:34px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:12px;font-weight:500}
+#s-employee .ph-sb i{width:90px;height:20px;background:var(--ink);border-radius:12px;display:block}
+#s-employee .ph-hd{flex:none;padding:6px 18px 10px;border-bottom:1px solid var(--hair)}
+#s-employee .ph-hd .ey{font-size:10px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+#s-employee .ph-hd h2{font-family:var(--f-display);font-weight:500;font-size:26px;line-height:1.1}
+#s-employee .ph-bd{flex:1;overflow:auto;padding:14px 16px 20px;font-size:13.5px}
+#s-employee .ph-tb{flex:none;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--hair);padding:6px 4px 14px;background:var(--paper)}
+#s-employee .ph-tb button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--grey);padding:4px 0}
+#s-employee .ph-tb button svg{width:20px;height:20px}
+#s-employee .ph-tb button.on{color:var(--accent-dark)}
+#s-employee .blk{border:1px solid var(--hair);padding:12px;margin-bottom:12px}
+#s-employee .blk h5{font-size:10px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);font-weight:400;margin-bottom:8px;display:flex;gap:6px;align-items:center}
+#s-employee .big{font-family:var(--f-display);font-size:30px;line-height:1}
+#s-employee .li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#s-employee .li:last-child{border-bottom:0}
+#s-employee .li .ic{flex:none;margin-top:1px}
+#s-employee .li small{display:block;color:var(--grey);font-size:11.5px}
+#s-employee .li.done>span:first-child{color:var(--ok)}
+#s-employee .li.todo{cursor:pointer}
+#s-employee .li.todo:hover{background:var(--silver)}
+#s-employee .tag{font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;border:1px solid var(--hair);color:var(--graphite);white-space:nowrap}
+#s-employee .faces{display:flex;justify-content:space-between;margin:10px 0}
+#s-employee .faces button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--grey);padding:6px 2px;border:1px solid transparent;width:19%}
+#s-employee .faces button.on{border-color:var(--ink);color:var(--ink)}
+#s-employee .faces svg{width:36px;height:36px}
+#s-employee .sk{display:grid;grid-template-columns:1fr 70px 40px;gap:8px;align-items:center;font-size:12.5px;padding:4px 0}
+#s-employee .dots{display:flex;gap:3px}
+#s-employee .dots i{width:14px;height:6px;background:var(--hair);display:block}
+#s-employee .dots i.f{background:var(--ink)}
+#s-employee .dots i.t{background:var(--accent-bg);outline:1px solid var(--accent)}
+#s-employee .vals{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+#s-employee .vals button{height:28px;padding:0 10px;border:1px solid var(--hair);font-size:12px}
+#s-employee .vals button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+#s-employee .ph-bd .inp,#s-employee .ph-bd .sel{height:34px;font-size:13px}
+#s-employee .ph-bd .ta{min-height:64px;font-size:13px}
+#s-employee .ph-bd .btn{width:100%;margin-top:8px}
+#s-employee .ex h3{font-family:var(--f-display);font-weight:500;font-size:26px;margin:4px 0 10px}
+#s-employee .ex ul{margin:0 0 12px 18px;color:var(--graphite)}
+#s-employee .ex li{margin-bottom:6px}
+#s-employee .ex .tabs-m{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+#s-employee .ex .tabs-m button{height:30px;padding:0 10px;border:1px solid var(--hair);font-size:12px}
+#s-employee .ex .tabs-m button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media (max-width:900px){#s-employee .em-wrap{grid-template-columns:1fr}#s-employee .phone{margin:0 auto}}
+</style>
+<script>
+(()=>{
+window.HRX=window.HRX||{audit:[]};
+const ME='daria';
+if(!D.notes.some(n=>n.id==='n-d1'))D.notes.push({id:'n-d1',who:'daria',by:'eva',d:'2026-10-28',vis:'shared',cat:'1:1',t:'Договорились: свадебный трек к L3 – урок по аркам, ассистировать Mila 7 нояб, 2 свадебных заказа в декабре.'});
+const KIN=[ // kudos received by Daria (fictional)
+ {from:'mila',d:'2026-11-07',val:'Мастерство',t:'Каскадный букет для свадебного заказа без единой правки'},
+ {from:'kira',d:'2026-11-04',val:'Забота',t:'Клиентка попросила передать спасибо за букет-сюрприз'},
+ {from:'polina',d:'2026-10-24',val:'Команда',t:'Взяла утреннюю волну, когда заболела коллега'}
+];
+const STEPS=[
+ {t:'Урок «Свадебные арки и подвесы»',s:'done',w:'пройден 3 нояб'},
+ {t:'Ассистировать Mila на свадьбе',s:'done',w:'7 нояб · Mila подтвердила'},
+ {t:'2 свадебных заказа самостоятельно',s:'todo',w:'декабрь · следующий шаг'},
+ {t:'Замер знаний «Свадьбы» – уровень 2 из 3',s:'todo',w:'до 15 янв'}
+];
+const EXP=[['Собирает свадебные заказы без контроля','part'],['Держит скорость и стандарты в пик','ok'],['Наставляет новичка на смене','no'],['Переделок меньше 1 %','part']];
+const TARGET={design:3,wedding:2,speed:2,care:2,coach:2};
+const st={tab:'grow',pend:{},face:null,sent:false,val:'Команда'};
+const TABS=[['grow','sprout','Рост','Мой рост'],['one','chat','1:1','Мой 1:1'],['pulse','heart','Пульс','Пульс'],['kudos','star','Спасибо','Спасибо'],['hr','eye','Обо мне','Что обо мне видит HR']];
+const FACES=[['Тяжело',2,'M8 17c2-3 6-3 8 0'],['Так себе',4,'M8 16c2-1.5 6-1.5 8 0'],['Нормально',6,'M8 15h8'],['Хорошо',8,'M8 14c2 1.5 6 1.5 8 0'],['Отлично',10,'M7.5 13c2 3.5 7 3.5 9 0']];
+const face=(d)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="8.5" cy="9.5" r=".8" fill="currentColor"/><circle cx="15.5" cy="9.5" r=".8" fill="currentColor"/><path d="${d}"/></svg>`;
+const EXPL={
+ grow:['Мой рост','Человек видит свой уровень, что ждут на следующем и один конкретный следующий шаг – а не просто «процент плана».',['Уровень и ожидания – из карьерного трека флориста (новое; сейчас есть только денежные тиры).','План развития и шаги – уже есть в CRM (раздел «Развитие»), здесь – в приложении.','«Сделано» уходит наставнику на подтверждение – сам себе не ставишь галочку.','Навыки – та же шкала 0–3, что в Матрице навыков.']],
+ one:['Мой 1:1','Общая повестка: сотрудник сам добавляет темы до встречи, после – видит договорённости и кто что делает.',['Темы, добавленные здесь, сразу видны HR в экране 1:1.','Личные заметки HR сюда не попадают – только «Видит сотрудник».','Договорённости с владельцем и сроком – чтобы обещания HR тоже были видны.','Встречи 1:1 в CRM есть, но без повестки и действий – это новое.']],
+ pulse:['Пульс','Один тап после смены – 5 лиц, комментарий по желанию. Без длинных опросов.',['Оценку видит только HR – как личный тренд, чтобы заметить усталость рано. Сотрудник знает об этом.','Руководитель – только среднее по команде, если в срезе 5+ человек.','Комментарий – анонимно, без имени.','Не анализируем эмоции по лицу, голосу или сообщениям – только то, что человек поставил сам.']],
+ kudos:['Спасибо','Полученные благодарности и отправка своей – с ценностью Floritta.',['Благодарности уже есть в CRM (Floritta Active) – здесь удобный вход с телефона.','HR видит, кого давно не благодарили («кого не замечают»), но не пишет за людей.','Без денежных наград и сумм.']],
+ hr:['Что обо мне видит HR','Экран прозрачности: что HR видит и чего не видит, какие сигналы считает CRM, кто открывал карточку.',['Основа доверия к внешнему HR-подрядчику.','Заметки «Видит сотрудник» – здесь же.','«Запросить мои данные» – запуск запроса доступа к данным (DSAR, ответ в течение месяца).','Список сигналов совпадает с «Аналитикой людей» – никаких скрытых правил.']]
+};
+
+function grow(){
+ const p=P(ME),L=D.ladders[p.ladder].levels;
+ return `<div class="blk"><h5>${ic('target')}Мой уровень</h5><div class="row"><div><div class="big">${L[p.lvl-1].split(' ')[0]}</div><div class="sm">${L[p.lvl-1].replace(/^L\d /,'')}</div></div><span class="sp"></span>${ic('arrow')}<span class="sp"></span><div style="text-align:right"><div class="big" style="color:var(--accent-dark)">${L[p.lvl].split(' ')[0]}</div><div class="sm">${L[p.lvl].replace(/^L\d /,'')}</div></div></div></div>
+ <div class="blk"><h5>${ic('sprout')}Цель плана развития</h5><b style="font-weight:500">${p.pdp.goal}</b><div class="row" style="margin-top:8px">${H.bar(p.pdp.pct,'ac')}<span class="sm">${p.pdp.pct} %</span></div></div>
+ <div class="blk"><h5>${ic('flag')}Шаги</h5>${STEPS.map((s,i)=>{const pend=st.pend[i];return `<div class="li ${s.s==='done'?'done':'todo'}" ${s.s==='todo'?`data-step="${i}"`:''}><span class="ic">${ic(s.s==='done'?'check':pend?'clock':'target')}</span><div style="flex:1">${s.t}<small>${pend?'на подтверждении у Mila':s.w}</small></div>${s.s==='todo'&&!pend?'<span class="tag">отметить</span>':''}</div>`}).join('')}</div>
+ <div class="blk"><h5>${ic('star')}Что ждут на ${L[p.lvl].split(' ')[0]}</h5>${EXP.map(([t,s])=>`<div class="li"><span class="ic" style="color:${s==='ok'?'var(--ok)':s==='part'?'var(--warn)':'var(--grey)'}">${ic(s==='ok'?'check':s==='part'?'clock':'dots')}</span><div>${t}<small>${s==='ok'?'уже получается':s==='part'?'в процессе':'ещё не начато'}</small></div></div>`).join('')}</div>
+ <div class="blk"><h5>${ic('chart')}Навыки: сейчас → цель</h5>${Object.keys(TARGET).map(k=>`<div class="sk"><span>${H.skillNames[k]}</span><span class="dots">${[1,2,3].map(n=>`<i class="${n<=p.skills[k]?'f':n<=TARGET[k]?'t':''}"></i>`).join('')}</span><span class="sm muted">${p.skills[k]} → ${TARGET[k]}</span></div>`).join('')}</div>
+ <button class="btn" data-toast="Запрос отправлен Mila и Irina – ответ придёт в приложение">${ic('chat')}Попросить обратную связь</button>`;
+}
+function one(){
+ const o=D.ones.find(x=>x.who===ME&&x.status!=='done');
+ const by={emp:'Ты',hr:'Eva',auto:'Из CRM'};
+ return `<div class="blk"><h5>${ic('cal')}Следующая встреча</h5><div class="big">${fmtD(o.d)}, ${o.time}</div><div class="sm" style="margin-top:4px">${o.d==='2026-11-11'?'Сегодня · ':''}с Eva Marin, People Partner · видеозвонок</div>
+  <div class="row" style="gap:6px;margin-top:8px"><button class="btn s" style="width:auto;margin:0" data-toast="Добавлено в календарь телефона">${ic('cal')}В календарь</button><button class="btn s" style="width:auto;margin:0" data-toast="Запрос на перенос отправлен Eva">${ic('clock')}Перенести</button></div></div>
+ <div class="blk"><h5>${ic('note')}Общая повестка</h5>${o.agenda.map(a=>`<div class="li"><span class="tag">${by[a.by]}</span><div>${H.esc(a.t)}</div></div>`).join('')}
+  <form id="em-add" style="margin-top:8px"><input class="inp" id="em-topic" placeholder="Добавить тему…" autocomplete="off"><button class="btn pr" type="submit">${ic('plus')}Добавить тему</button></form></div>
+ <div class="blk"><h5>${ic('check')}Договорённости</h5>${o.actions.map(a=>`<div class="li ${a.done?'done':''}"><span class="ic">${ic(a.done?'check':'clock')}</span><div>${H.esc(a.t)}<small>${a.owner===ME?'Ты':P(a.owner)?P(a.owner).name.split(' ')[0]:'Eva'} · до ${fmtD(a.due)}</small></div></div>`).join('')}
+  <div class="li done"><span class="ic">${ic('check')}</span><div>Пройти урок «Свадебные арки и подвесы»<small>Ты · сделано 3 нояб</small></div></div>
+  <div class="li done"><span class="ic">${ic('check')}</span><div>Поставить на свадьбу ассистентом к Mila<small>Eva · сделано 30 окт</small></div></div></div>
+ <div class="blk"><h5>${ic('eye')}Итоги 28 окт</h5>${H.vis('shared')}<p style="margin-top:6px">${D.notes.find(n=>n.id==='n-d1').t}</p></div>`;
+}
+function pulse(){
+ const p=P(ME);
+ if(st.sent)return `<div class="blk" style="text-align:center;padding:24px 12px"><div style="color:var(--ok)">${ic('check')}</div><div class="big" style="margin:8px 0">Спасибо!</div><p class="sm">Следующий вопрос – после следующей смены.</p></div>
+  <div class="blk"><h5>${ic('chart')}Мой тренд</h5>${H.spark(p.pulse,{w:300,h:50,color:H.pulseColor(p.pulse[p.pulse.length-1])})}<p class="sm muted" style="margin-top:6px">Видишь только ты и HR.</p></div>
+  <button class="btn" id="em-again">Изменить ответ</button>`;
+ return `<div class="blk"><h5>${ic('heart')}После смены</h5><b style="font-weight:500">Как прошла смена сегодня?</b>
+  <div class="faces">${FACES.map(([l,v,d],i)=>`<button data-face="${i}" class="${st.face===i?'on':''}" aria-label="${l}">${face(d)}<span>${l}</span></button>`).join('')}</div>
+  <p class="sm muted">Оценку видит только HR – как твой тренд. Руководитель – только среднее по команде от 5 человек.</p></div>
+ <div class="blk" style="${st.face===null?'opacity:.5':''}"><h5>${ic('note')}Комментарий <span class="vis shared" style="margin-left:auto">${ic('lock')}анонимно</span></h5><textarea class="ta" id="em-cm" placeholder="Что помогло или мешало? Необязательно" ${st.face===null?'disabled':''}></textarea><p class="sm muted" style="margin-top:6px">Уходит без имени, показывается только в общей сводке, если ответили 5+ человек.</p></div>
+ <button class="btn pr" id="em-send" ${st.face===null?'disabled':''}>${ic('send')}Отправить</button><button class="btn ghost" data-toast="Пропущено – спросим после следующей смены">Пропустить</button>`;
+}
+function kudos(){
+ const sent=D.kudos.filter(k=>k.from===ME);
+ const got=[...D.kudos.filter(k=>k.to===ME),...KIN];
+ return `<div class="blk"><h5>${ic('star')}Мне сказали спасибо · ${got.length}</h5>${got.map(k=>`<div class="li">${H.av(P(k.from),'s')}<div>${H.esc(k.t)}<small>${P(k.from).name.split(' ')[0]} · ${k.val} · ${fmtD(k.d)}</small></div></div>`).join('')}</div>
+ <div class="blk"><h5>${ic('send')}Сказать спасибо</h5>
+  <select class="sel" id="em-to">${D.people.filter(p=>p.id!==ME).map(p=>`<option value="${p.id}">${p.name} – ${p.role}</option>`).join('')}</select>
+  <div class="vals">${D.values.map(v=>`<button data-val="${v}" class="${st.val===v?'on':''}">${v}</button>`).join('')}</div>
+  <input class="inp" id="em-kt" placeholder="За что? Например: помогла с аркой" autocomplete="off">
+  <button class="btn pr" id="em-ks">${ic('heart')}Отправить</button><p class="sm muted" style="margin-top:6px">Благодарность видна в ленте команды.</p></div>
+ ${sent.length?`<div class="blk"><h5>${ic('check')}Я отправила · ${sent.length}</h5>${sent.map(k=>`<div class="li">${H.av(P(k.to),'s')}<div>${H.esc(k.t)}<small>${P(k.to).name.split(' ')[0]} · ${k.val} · ${fmtD(k.d)}</small></div></div>`).join('')}</div>`:''}`;
+}
+function hr(){
+ const sh=D.notes.filter(n=>n.who===ME&&n.vis==='shared');
+ const Y=['Профиль, роль, стаж','Навыки, обучение, план развития','Повестка и договорённости 1:1','Рабочие метрики без денег: букеты, переделки, опоздания','Тренд оценки после смены','Даты отсутствий – без причин'];
+ const N=['Ставки, выплаты, бонусы','Причины болезни и диагнозы','Твои ответы eNPS по имени','Личные сообщения и чаты'];
+ return `<div class="blk"><h5>${ic('eye')}HR видит</h5>${Y.map(t=>`<div class="li"><span class="ic" style="color:var(--ok)">${ic('check')}</span><div>${t}</div></div>`).join('')}</div>
+ <div class="blk"><h5>${ic('lock')}HR не видит</h5>${N.map(t=>`<div class="li"><span class="ic" style="color:var(--accent-dark)">${ic('lock')}</span><div>${t}</div></div>`).join('')}</div>
+ <div class="blk"><h5>${ic('alert')}Сигналы, которые считает CRM</h5><p class="sm">Оценка после смены падает 4 недели · переработка 3 недели подряд · давно не было 1:1 · обучение просрочено · 3+ опоздания за месяц.</p><p class="sm muted" style="margin-top:6px">Это повод поговорить, а не оценка. Решения принимают люди.</p></div>
+ <div class="blk"><h5>${ic('note')}Заметки, которые видишь ты · ${sh.length}</h5>${sh.map(n=>`<div class="li"><div style="flex:1">${H.esc(n.t)}<small>${P(n.by)?P(n.by).name:'Eva Marin'} · ${fmtD(n.d)} · ${n.cat}</small><div style="margin-top:4px">${H.vis(n.vis)}</div></div></div>`).join('')||'<p class="sm muted">Пока нет</p>'}</div>
+ <div class="blk"><h5>${ic('clock')}Кто открывал мою карточку</h5><div class="li"><div>Eva Marin (HR)<small>11 нояб · подготовка к 1:1</small></div></div><div class="li"><div>Irina Petrova (руководитель)<small>4 нояб · график смен</small></div></div></div>
+ <button class="btn pr" id="em-dsar">${ic('file')}Запросить мои данные</button>`;
+}
+function draw(el){
+ const T=TABS.find(t=>t[0]===st.tab),E=EXPL[st.tab];
+ el.querySelector('#em-ttl').textContent=T[3];
+ el.querySelector('#em-bd').innerHTML={grow,one,pulse,kudos,hr}[st.tab]();
+ el.querySelector('#em-bd').scrollTop=0;
+ el.querySelectorAll('.ph-tb button,.tabs-m button').forEach(b=>b.classList.toggle('on',b.dataset.t===st.tab));
+ el.querySelector('#em-ex').innerHTML=`<div class="eyebrow">Экран приложения</div><h3>${E[0]}</h3><p style="margin-bottom:10px">${E[1]}</p><ul>${E[2].map(x=>`<li>${x}</li>`).join('')}</ul>`;
+ bind(el);
+}
+function bind(el){
+ const bd=el.querySelector('#em-bd');
+ bd.querySelectorAll('[data-step]').forEach(s=>s.addEventListener('click',()=>{st.pend[s.dataset.step]=1;App.toast('Отправлено Mila на подтверждение');draw(el)}));
+ const f=bd.querySelector('#em-add');if(f)f.addEventListener('submit',e=>{e.preventDefault();const v=bd.querySelector('#em-topic').value.trim();if(!v){App.toast('Напишите тему');return}D.ones.find(x=>x.who===ME&&x.status!=='done').agenda.push({by:'emp',t:v});App.toast('Тема добавлена – Eva увидит её до встречи');draw(el)});
+ bd.querySelectorAll('[data-face]').forEach(b=>b.addEventListener('click',()=>{st.face=+b.dataset.face;draw(el)}));
+ const s=bd.querySelector('#em-send');if(s)s.addEventListener('click',()=>{if(st.face===null)return;P(ME).pulse.push(FACES[st.face][1]);st.sent=true;App.toast('Спасибо! Ответ учтён'+(bd.querySelector('#em-cm').value.trim()?' – комментарий ушёл без имени':''));draw(el)});
+ const a=bd.querySelector('#em-again');if(a)a.addEventListener('click',()=>{P(ME).pulse.pop();st.sent=false;st.face=null;draw(el)});
+ bd.querySelectorAll('[data-val]').forEach(b=>b.addEventListener('click',()=>{st.val=b.dataset.val;bd.querySelectorAll('[data-val]').forEach(x=>x.classList.toggle('on',x===b))}));
+ const k=bd.querySelector('#em-ks');if(k)k.addEventListener('click',()=>{const t=bd.querySelector('#em-kt').value.trim();if(!t){App.toast('Напишите, за что спасибо');return}const to=bd.querySelector('#em-to').value;D.kudos.unshift({from:ME,to,d:'2026-11-11',val:st.val,t});P(to).kudos++;App.toast('Спасибо отправлено – '+P(to).name.split(' ')[0]+' увидит в приложении');draw(el)});
+ const d=bd.querySelector('#em-dsar');if(d)d.addEventListener('click',()=>{if(!HRX.dsar){HRX.dsar=1;HRX.audit.unshift({who:'Daria Lis',what:'Запрос своих данных (DSAR)',when:'сегодня, 10:30',why:'Ответ до 11 дек'})}App.toast('Запрос отправлен – копия данных придёт в течение месяца')});
+}
+
+App.reg('employee',{
+ title:'Приложение сотрудника',
+ crumb:()=>App.role==='employee'?'Floritta Team':'Приложение сотрудника',
+ render(el){
+  const emp=App.role==='employee';
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">${emp?'Floritta Team':'Контроль · превью'}</div><h1>${emp?'Моё приложение':'Приложение сотрудника'}</h1><div class="sub">${emp?'Вы вошли как Daria Lis – только свои данные.':'Так Daria Lis видит свой рост, 1:1, пульс и благодарности в «Floritta Team».'}</div></div>
+  <div class="acts">${H.chip('доработать','warn')}</div></div>
+  <div class="em-wrap"><div class="phone"><div class="ph-sb"><span>10:30</span><i></i><span>5G</span></div>
+   <div class="ph-hd"><div class="ey">Floritta Team · Daria</div><h2 id="em-ttl"></h2></div>
+   <div class="ph-bd" id="em-bd"></div>
+   <nav class="ph-tb">${TABS.map(([k,i,l])=>`<button data-t="${k}">${ic(i)}<span>${l}</span></button>`).join('')}</nav></div>
+  <div class="ex"><div class="tabs-m">${TABS.map(([k,,,l])=>`<button data-t="${k}">${l}</button>`).join('')}</div><div id="em-ex"></div>
+   <div class="callout info" style="margin-top:8px">Всё в приложении – только свои данные. Чужие оценки, заметки HR «Только я» и «HR + основатель», деньги других людей сюда не попадают.</div></div></div>`;
+  el.addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b&&el.contains(b)){st.tab=b.dataset.t;draw(el)}});
+  draw(el);
+ },
+ notes:`<h4>Что это</h4><p>Что сотрудник видит в «Floritta Team»: рост, 1:1, пульс после смены, благодарности и экран прозрачности «Что обо мне видит HR».</p>
+<h4>Зачем HR</h4><p>Без участия людей 1:1 и пульс не работают: человек сам добавляет темы, ставит оценку за 1 тап и видит, что о нём знают.</p>
+<h4>Откуда идея</h4><p><span class="src">Lattice</span><span class="src">15Five</span><span class="src">Officevibe</span><span class="src">Connecteam</span><span class="src">Culture Amp</span></p>
+<h4>Данные из нашей CRM</h4><ul><li>Есть в приложении: обучение, развитие, благодарности, график, табель.</li><li>Новое: общая повестка 1:1, пульс после смены, экран прозрачности, запрос своих данных.</li></ul>
+<h4>Доступы</h4><p>Только свои данные. Комментарий пульса анонимен; оценку видит HR как тренд – об этом сказано прямо в приложении.</p>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span> 1:1 и «Обо мне» <span class="pri p2">Следующий шаг</span> пульс, рост</p>`
+});
+})();
+</script>

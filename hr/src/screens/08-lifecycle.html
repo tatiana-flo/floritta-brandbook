@@ -1,0 +1,430 @@
+<style>
+#s-lifecycle .stack{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+#s-lifecycle .stack>*,#s-lifecycle .two>*{min-width:0}
+#s-lifecycle .two{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+#s-lifecycle .scroll{overflow:auto}
+#s-lifecycle .cap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+#s-lifecycle .jr{cursor:pointer;text-align:left;width:100%;display:block}
+#s-lifecycle .jr.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+#s-lifecycle .jr .meta{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+#s-lifecycle .ci{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}
+#s-lifecycle .ci button{border:1px solid var(--hair);padding:6px 8px;text-align:left;font-size:12px;background:var(--paper)}
+#s-lifecycle .ci button b{display:block;font-weight:500;font-size:12.5px}
+#s-lifecycle .ci button.done{background:var(--ok-bg);border-color:var(--ok-bg);color:var(--ok)}
+#s-lifecycle .ci button.next{border-color:var(--ink)}
+#s-lifecycle .ci button:hover{border-color:var(--ink)}
+#s-lifecycle .grp h5{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500;margin:0 0 8px;display:flex;gap:8px;align-items:center}
+#s-lifecycle .it{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--hair);font-size:13px;width:100%;text-align:left}
+#s-lifecycle .it:last-child{border-bottom:0}
+#s-lifecycle .it .bx{width:16px;height:16px;border:1px solid var(--light);flex:none;margin-top:2px;display:inline-flex;align-items:center;justify-content:center}
+#s-lifecycle .it.on .bx{background:var(--ink);border-color:var(--ink);color:#fff}
+#s-lifecycle .it.on .bx svg{width:12px;height:12px}
+#s-lifecycle .it.on .tx{color:var(--grey)}
+#s-lifecycle .it .tx{flex:1;min-width:0}
+#s-lifecycle .it small{display:block;color:var(--grey);font-size:11.5px;margin-top:2px;text-decoration:none}
+#s-lifecycle .cal{border-collapse:collapse;font-size:11px}
+#s-lifecycle .cal th{font-weight:400;color:var(--grey);padding:2px 0;width:24px;min-width:24px;text-align:center;font-size:10.5px}
+#s-lifecycle .cal th.we,#s-lifecycle .cal td.we{background:var(--silver)}
+#s-lifecycle .cal th.td{color:var(--ink);font-weight:500;box-shadow:inset 0 -2px 0 var(--ink)}
+#s-lifecycle .cal td{height:26px;border-bottom:1px solid var(--hair);padding:2px 1px}
+#s-lifecycle .cal td.nm{white-space:nowrap;padding-right:10px;min-width:130px;font-size:12.5px;position:sticky;left:0;background:var(--paper);z-index:1}
+#s-lifecycle .cal td i{display:block;height:16px}
+#s-lifecycle .cal td.tdc{box-shadow:inset 1px 0 0 var(--ink),inset -1px 0 0 var(--ink)}
+#s-lifecycle .lg{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--graphite);margin-top:10px}
+#s-lifecycle .lg span{display:inline-flex;align-items:center;gap:5px}
+#s-lifecycle .req{background:repeating-linear-gradient(-45deg,var(--info) 0 3px,transparent 3px 6px)}
+#s-lifecycle .bf{display:grid;grid-template-columns:130px 1fr 40px;gap:10px;align-items:center;padding:7px 0;font-size:13px}
+#s-lifecycle .bft{position:relative;height:10px;background:var(--silver)}
+#s-lifecycle .bft i{position:absolute;left:0;top:0;bottom:0;background:var(--v3)}
+#s-lifecycle .bft i.hi{background:var(--warn)}
+#s-lifecycle .bft u{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--accent)}
+#s-lifecycle .ev{display:grid;grid-template-columns:54px 28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair);width:100%;text-align:left}
+#s-lifecycle .ev:last-child{border-bottom:0}
+#s-lifecycle .ev .dt{font-family:var(--f-display);font-size:26px;line-height:1}
+#s-lifecycle .ev .dt small{display:block;font-family:var(--f-body);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:2px}
+#s-lifecycle .ev.past{opacity:.55}
+#s-lifecycle .ev.today{background:var(--silver)}
+#s-lifecycle .ev .ico{width:28px;height:28px;border:1px solid var(--hair);display:inline-flex;align-items:center;justify-content:center}
+#s-lifecycle .ev .t b{font-weight:500;display:block}
+#s-lifecycle .ev .t small{color:var(--grey);font-size:12px}
+#s-lifecycle .rs{display:grid;grid-template-columns:minmax(0,1fr) 1fr 24px;gap:10px;align-items:center;padding:7px 0;font-size:13px}
+#s-lifecycle .lv{padding:10px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#s-lifecycle .lv:last-child{border-bottom:0}
+#s-lifecycle table.t td{font-size:13px}
+#s-lifecycle .kpi.f{cursor:pointer}
+#s-lifecycle .kpi.f.on{border-color:var(--ink)}
+@media (max-width:900px){#s-lifecycle .two{grid-template-columns:minmax(0,1fr)} #s-lifecycle .ci{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<script>
+(()=>{
+const pname=id=>id==='eva'?'Eva Marin':id==='founder'?'Основатель':(P(id)?P(id).name:'—');
+const fmtY=s=>fmtD(s)+' '+s.slice(0,4);
+const addDays=(s,n)=>{const d=dd(s);d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const addMonths=(s,n)=>{const d=dd(s);d.setUTCMonth(d.getUTCMonth()+n);return d.toISOString().slice(0,10)};
+const today='2026-11-11';
+const dayN=s=>daysBetween(dd(s),NOW);
+const OWN={hr:'HR',mgr:'Руководитель',buddy:'Напарник',emp:'Сотрудник',admin:'Админ'};
+
+/* ---------- onboarding ---------- */
+const TPL={
+ studio:{n:'Студия',g:[
+  ['До выхода',[['Договор подписан в приложении','admin',1],['Право на работу проверено','hr'],['Доступ в приложение сотрудника и тур по нему','admin',1],['Назначен напарник','mgr',1]]],
+  ['Дни 1–30',[['Техника безопасности и инструменты – урок','emp',1],['Стандарты упаковки и открыток','buddy'],['6 базовых стилей – наблюдение наставника','buddy',1],['Первая самостоятельная утренняя волна','mgr'],['Встречи «день 7» и «день 30»','hr']]],
+  ['Дни 31–60',[['Свадебный заказ в паре с наставником','buddy'],['Повторный замер знаний','emp',1],['Встреча «день 45»','hr']]],
+  ['Дни 61–90',[['Самостоятельная смена','mgr'],['Ревью испытательного срока','mgr'],['План развития на полгода','hr']]]]},
+ delivery:{n:'Доставка',g:[
+  ['До выхода',[['Права и страховка hire & reward проверены','admin'],['Право на работу проверено','hr'],['Приложение курьера и согласие на геолокацию','admin',1],['Напарник на первые 3 маршрута','mgr',1]]],
+  ['Дни 1–30',[['Маршруты Central в паре','buddy'],['Как везти цветы: фургон и велосипед','emp',1],['Фото-подтверждение доставки','emp'],['Продажа алкоголя – урок с подписью','emp',1],['Встречи «день 7» и «день 30»','hr']]],
+  ['Дни 31–60',[['Самостоятельные маршруты','mgr'],['Разбор «вовремя» – без давления','mgr'],['Встреча «день 45»','hr']]],
+  ['Дни 61–90',[['Пиковая неделя с поддержкой','mgr'],['Ревью 90 дней','mgr'],['План развития','hr']]]]},
+ remote:{n:'Удалённая команда',g:[
+  ['До выхода',[['Договор подрядчика и NDA подписаны','admin',1],['Рабочие доступы выданы','admin'],['Карта «кто есть кто» и часовые пояса','hr'],['Назначен напарник в продукте','hr',1]]],
+  ['Дни 1–30',[['Видео-экскурсия по магазину и студии','hr'],['Знакомство 1:1 с управляющей и старшей смены','hr'],['Доступ к аналитике доставки','admin'],['Первая задача на проде','buddy'],['Встречи «день 7» и «день 30»','hr']]],
+  ['Дни 31–60',[['Свой участок: отчёты доставки','mgr'],['Демо для магазина','emp'],['Встреча «день 45»','hr']]],
+  ['Дни 61–90',[['Ревью 90 дней','hr'],['План развития','hr'],['Отзыв о своём онбординге','emp']]]]}
+};
+const J={
+ denis:{tpl:'remote',buddy:'vera',ci:[['День 7','2026-10-06'],['День 30','2026-10-29'],['День 45','2026-11-13'],['День 90','2026-12-28']]},
+ alina:{tpl:'studio',buddy:'mila',ci:[['День 7','2026-08-31'],['День 30','2026-09-23'],['День 45','2026-10-08'],['День 90','2026-11-23']]}
+};
+const DONE={'denis:remote':[0,1,2,3,4,5,7,8],'alina:studio':[0,1,2,3,4,5,6,7,8,9,10,11,12]};
+const OVERDUE={'denis:remote':6};
+const TPLKEY=['studio','delivery','remote'];
+
+/* ---------- probation ---------- */
+const PROB=[{id:'alina',len:3,end:'2026-11-23',st:'plan'},{id:'denis',st:'na'},{id:'kira',len:3,end:'2025-05-17',st:'ok'},{id:'yana',len:3,end:'2025-08-10',st:'ok'}];
+
+/* ---------- documents ---------- */
+const DOCS=[
+ ['mila','rtw','Право на работу','Оригинал паспорта','2023-03-01',null,'irina'],
+ ['daria','rtw','Право на работу','Share code (онлайн)','2024-08-12','2027-02-10','irina'],
+ ['nika','rtw','Право на работу','Цифровой провайдер','2024-01-10',null,'irina'],
+ ['alina','rtw','Право на работу','Цифровой провайдер','2026-08-20',null,'eva'],
+ ['yana','rtw','Право на работу','Share code (онлайн)','2025-05-05','2026-12-21','irina'],
+ ['polina','rtw','Право на работу','Оригинал паспорта','2022-09-28',null,'irina'],
+ ['irina','rtw','Право на работу','Оригинал паспорта','2021-04-08',null,'founder'],
+ ['kira','rtw','Право на работу','Share code (онлайн)','2025-02-14','2026-11-05','irina'],
+ ['ruslan','rtw','Право на работу','Share code (онлайн)','2024-10-30','2027-04-30','irina'],
+ ['jake','rtw','Право на работу','Оригинал паспорта','2025-08-28',null,'irina'],
+ ['bogdan','rtw','Право на работу','Share code (онлайн)','2023-06-05',null,'irina'],
+ ['artem','rtw','Право на работу','Не требуется – подрядчик за рубежом',null,'na',null],
+ ['vera','rtw','Право на работу','Не требуется – подрядчик за рубежом',null,'na',null],
+ ['denis','rtw','Право на работу','Не требуется – подрядчик за рубежом',null,'na',null],
+ ['ruslan','drive','Водительские права (B)','Проверка онлайн по коду DVLA','2025-12-02','2026-12-02','irina'],
+ ['bogdan','drive','Водительские права (B)','Проверка онлайн по коду DVLA','2026-06-15','2027-06-15','irina'],
+ ['jake','drive','Водительские права','Велосипед – не нужны',null,'na',null],
+ ['ruslan','drive','Страховка hire & reward','Копия полиса','2026-03-01','2027-03-01','irina'],
+ ['bogdan','drive','Страховка hire & reward','Копия полиса','2025-11-30','2026-11-30','irina'],
+ ['ruslan','cert','Продажа алкоголя (Challenge 25)','Урок с подписью','2025-11-20','2026-11-20','polina'],
+ ['jake','cert','Продажа алкоголя (Challenge 25)','Урок с подписью','2025-10-30','2026-10-30','polina'],
+ ['polina','cert','Первая помощь на работе','Сертификат курса','2024-05-14','2027-05-14','irina'],
+ ['mila','cert','Наставник: может обучать','Матрица навыков','2026-03-01','2027-03-01','polina']
+].map(([who,kind,name,method,checked,next,by],i)=>({i,who,kind,name,method,checked,next,by}));
+const dstat=d=>{if(d.next==='na')return 'na';if(!d.next)return 'ok';const n=daysBetween(NOW,dd(d.next));return n<0?'bad':n<=45?'warn':'ok'};
+const DS={ok:['ок','ok'],warn:['скоро','warn'],bad:['просрочено','bad'],na:['не требуется','line']};
+
+/* ---------- absences ---------- */
+const AT={leave:['Отпуск','var(--info)'],sick:['Больничный','var(--accent)'],dep:['По уходу за близкими','var(--warn)'],other:['Прочее','var(--v3)']};
+const ABS=[
+ {id:'nika',type:'sick',from:'2026-10-22',to:'2026-10-22',cert:'self',rtw:'need'},
+ {id:'bogdan',type:'leave',from:'2026-11-02',to:'2026-11-16',st:'ok',by:'irina'},
+ {id:'jake',type:'sick',from:'2026-11-03',to:'2026-11-03',cert:'self',rtw:'done'},
+ {id:'ruslan',type:'dep',from:'2026-11-06',to:'2026-11-06',rtw:'na'},
+ {id:'jake',type:'sick',from:'2026-11-09',to:'2026-11-09',cert:'self',rtw:'need'},
+ {id:'yana',type:'other',from:'2026-11-20',to:'2026-11-20',note:'учёба'},
+ {id:'daria',type:'leave',from:'2026-11-23',to:'2026-11-27',st:'ok',by:'irina'},
+ {id:'vera',type:'leave',from:'2026-11-25',to:'2026-11-27',st:'ok',by:'founder'},
+ {id:'kira',type:'leave',from:'2026-11-30',to:'2026-11-30',st:'req'}
+];
+const BF=[{id:'jake',s:4,d:5},{id:'nika',s:2,d:2},{id:'ruslan',s:3,d:3,ex:1},{id:'kira',s:1,d:3},{id:'daria',s:1,d:1}];
+
+/* ---------- exit ---------- */
+const OFF=[
+ ['Решение и даты',[['Письменное подтверждение ухода и последний день','hr'],['Остаток отпуска и финальный расчёт – передать админу','hr','HR сумм не видит'],['Рекомендательное письмо – по запросу','mgr']]],
+ ['Передача дел',[['Передать заказы, маршруты, инструкции','mgr'],['Вернуть ключи, униформу, фургон или терминал','mgr'],['Убрать из будущих смен в «Графике»','mgr']]],
+ ['Доступы – в последний день',[['Отключить CRM и приложение сотрудника','admin'],['Удалить из рабочих чатов','admin'],['Удалённым – отозвать доступы к коду и серверам, сменить общие пароли','admin']]],
+ ['Разговор и прощание',[['Exit-интервью – добровольно, ведёт HR, а не прямой руководитель','hr'],['Прощание от команды – если человек хочет','mgr'],['Выключить «Дни заботы»','hr']]],
+ ['Хранение',[['Личное дело – 6 лет после ухода','hr'],['Проверка права на работу – 2 года после ухода','hr'],['В аналитике – только агрегаты, без имени','hr']]]
+];
+const LEAVERS=[['Флорист','Студия','фев 2026','7 мес','Нагрузка в пиковые недели',true],['Флорист выходного дня','Студия','мар 2026','1 г 2 мес','Учёба и переезд',true],['Курьер','Доставка','июн 2026','5 мес','Нет следующего шага в росте',false]];
+
+/* ---------- calendar ---------- */
+const EXTRA=[
+ {d:'2026-11-04',t:'Годовщина: 2 года в Floritta',who:'ruslan',k:'star',c:'ann'},
+ {d:'2026-11-05',t:'Повторная проверка права на работу – просрочено',who:'kira',k:'file',c:'doc'},
+ {d:'2026-11-16',t:'Возвращается из отпуска',who:'bogdan',k:'cal',c:'abs'},
+ {d:'2026-11-20',t:'Продажа алкоголя – сертификат истекает',who:'ruslan',k:'file',c:'doc'},
+ {d:'2026-11-23',t:'Отпуск 23–27 нояб',who:'daria',k:'cal',c:'abs'},
+ {d:'2026-11-30',t:'Страховка hire & reward истекает',who:'bogdan',k:'file',c:'doc'},
+ {d:'2026-12-14',t:'День рождения',who:'polina',k:'gift',c:'bday'},
+ {d:'2026-12-28',t:'Онбординг: встреча «день 90»',who:'denis',k:'flag',c:'rev'},
+ {d:'2027-01-01',t:'Закон: защита от необоснованного увольнения с 6 месяцев',who:null,k:'shield',c:'rev'},
+ {d:'2027-01-08',t:'День рождения',who:'vera',k:'gift',c:'bday'},
+ {d:'2027-01-24',t:'5-й месяц: решить по испытательному до 6 месяцев',who:'alina',k:'clip',c:'rev'}
+];
+const CATS={all:'Все',bday:'Дни рождения',ann:'Годовщины',doc:'Документы',rev:'Ревью и онбординг',abs:'Отсутствия'};
+const evCat=e=>e.c||(/рожд/i.test(e.t)?'bday':/провер|прав/i.test(e.t)?'doc':/отпуск/i.test(e.t)?'abs':'rev');
+const MONTHS=['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+const WD=['вс','пн','вт','ср','чт','пт','сб'];
+
+const S={tab:null,j:'denis',tpl:{},doneSets:{},docK:'all',docS:null,cal:'all',rem:true,offDone:{}};
+Object.entries(DONE).forEach(([k,v])=>S.doneSets[k]=new Set(v));
+const TABS=[['onb','Онбординг'],['prob','Испытательный срок'],['docs','Документы'],['abs','Отсутствия'],['exit','Уход'],['cal','Календарь']];
+const flat=t=>TPL[t].g.flatMap(g=>g[1]);
+const prog=(pid,t)=>{const set=S.doneSets[pid+':'+t]||new Set();return Math.round(set.size/flat(t).length*100)};
+
+const R={};
+R.onb=()=>{
+ const card=pid=>{const p=P(pid),j=J[pid],t=j.tpl,pc=prog(pid,t),n=dayN(p.start)+0;
+  const nxt=j.ci.findIndex(c=>dd(c[1])>=dd(today));
+  return `<div class="card jr ${S.j===pid?'on':''}" data-a="pick" data-id="${pid}"><div class="cb">
+   <div class="row">${H.av(p,'l')}<div style="min-width:0;flex:1"><b style="font-weight:500;font-size:15px">${p.name}</b><div class="muted sm">${p.role} · ${p.team==='tech'?'удалённо':'магазин и студия'} · с ${fmtD(p.start)}</div></div><div style="text-align:right"><div style="font-family:var(--f-display);font-size:30px;line-height:1">${n}</div><div class="muted sm">день из 90</div></div></div>
+   <div class="meta">${H.statusChip(p)}${H.chip('Шаблон: '+TPL[t].n,'line')}<button class="chip ok" data-person="${j.buddy}">Напарник: ${P(j.buddy).name} · уже есть в CRM</button></div>
+   <div class="row"><div style="flex:1">${H.bar(pc,'ok')}</div><span class="num sm">${pc} %</span></div>
+   <div class="ci">${j.ci.map((c,i)=>{const done=dd(c[1])<dd(today);return `<button class="${done?'done':i===nxt?'next':''}" data-a="ci" data-id="${pid}" data-i="${i}"><b>${c[0]}</b>${done?'проведена':fmtD(c[1])+(i===nxt?' · '+inDays(c[1]):'')}</button>`}).join('')}</div>
+  </div></div>`};
+ const pid=S.j, t=S.tpl[pid]||J[pid].tpl, key=pid+':'+t, set=S.doneSets[key]||(S.doneSets[key]=new Set());
+ let gi=0;
+ return `<div class="stack">
+ <div class="grid g2">${card('denis')}${card('alina')}</div>
+ <div class="card"><div class="ch"><h3>План 30 / 60 / 90 · ${P(pid).name}</h3>${H.chip('новое','info')}<div class="r"><label class="muted sm" for="lc-tpl">Шаблон</label><select class="sel" id="lc-tpl" data-a="tpl" style="width:auto;height:30px">${TPLKEY.map(k=>`<option value="${k}" ${k===t?'selected':''}>${TPL[k].n}</option>`).join('')}</select><button class="btn s" data-a="additem">${ic('plus')}Пункт</button></div></div>
+  <div class="cb">
+   ${t!==J[pid].tpl?`<div class="callout info row" style="margin-bottom:14px"><span style="flex:1">Это шаблон «${TPL[t].n}», а у ${P(pid).name.split(' ')[0]} назначен «${TPL[J[pid].tpl].n}».</span><button class="btn s" data-a="applytpl">Применить шаблон</button></div>`:''}
+   <div class="grid g4">${TPL[t].g.map(([gn,items])=>{const st=gi;const dn=items.filter((_,k)=>set.has(st+k)).length;const h=`<div class="grp"><h5>${gn}<span class="muted" style="letter-spacing:0">${dn}/${items.length}</span></h5>${items.map(([tx,o,ex],k)=>{const idx=st+k,on=set.has(idx),od=OVERDUE[key]===idx&&!on;return `<button class="it ${on?'on':''}" data-a="chk" data-i="${idx}"><span class="bx">${on?ic('check'):''}</span><span class="tx">${tx}<small>${OWN[o]}${ex?' · уже есть в CRM':''}${od?' · <span style="color:var(--accent-dark)">просрочено</span>':''}</small></span></button>`}).join('')}</div>`;gi+=items.length;return h}).join('')}</div>
+   <div class="cap">Пункты раздаются владельцам задачами. «Уже есть в CRM» – договор с подписью, уроки обучения, «Напарник», проверка права на работу в резерве. Новое – единый план с владельцами и встречами 7/30/45/90.</div>
+  </div></div>
+ </div>`;
+};
+
+R.prob=()=>{
+ const a=P('alina'), s6=addMonths(a.start,6), s5=addMonths(a.start,5);
+ const t0=dd(a.start), t1=dd(s6), span=t1-t0, X=d=>40+((dd(d)-t0)/span)*560;
+ const mk=[[a.start,'Старт','var(--grey)',0],[a.probEnd,'Конец испытательного','var(--ink)',1],[today,'Сегодня','var(--accent)',0],['2027-01-01','Новый закон','var(--info)',1],[s5,'Напоминание · 5-й мес.','var(--warn)',0],[s6,'6 месяцев','var(--ok)',1]];
+ const svg=`<svg viewBox="0 0 640 96" style="width:100%;height:auto;display:block" role="img" aria-label="Шкала испытательного срока Alina Moroz"><rect x="40" y="44" width="560" height="6" fill="var(--silver)"/><rect x="40" y="44" width="${X(today)-40}" height="6" fill="var(--ink)"/>${mk.map(([d,l,c,up])=>`<line x1="${X(d)}" x2="${X(d)}" y1="${up?30:40}" y2="${up?54:64}" stroke="${c}" stroke-width="1.5"/><text x="${X(d)}" y="${up?22:80}" font-size="10.5" text-anchor="middle" fill="${c}">${l}</text><text x="${X(d)}" y="${up?10:92}" font-size="9.5" text-anchor="middle" fill="var(--grey)">${fmtD(d)}</text>`).join('')}</svg>`;
+ const row=r=>{const p=P(r.id),emp=p.type==='employee';const st=r.st==='plan'?H.chip('ревью '+fmtD(r.end)+' · '+inDays(r.end),'warn'):r.st==='ok'?H.chip('пройден','ok'):H.chip('ревью 90 дней · '+fmtD(J[r.id]?J[r.id].ci[3][1]:today),'info');
+  const prot=!emp?`<span class="muted sm">не применяется (${H.type(p)})</span>`:dayN(p.start)>183?`<span class="sm">уже больше 6 мес.</span>`:`<span class="sm">${fmtY(addMonths(p.start,6))}</span><div class="muted sm">напоминание ${fmtD(addMonths(p.start,5))}</div>`;
+  return `<tr><td><button class="row" data-person="${p.id}">${H.av(p,'s')}<span style="text-align:left"><b style="font-weight:500">${p.name}</b><div class="muted sm">${p.role}</div></span></button></td><td>${H.type(p)}</td><td class="num">${fmtY(p.start)}</td><td class="num">${r.end?fmtY(r.end):'<span class="muted sm">нет – подрядчик</span>'}</td><td>${st}</td><td>${prot}</td><td>${r.st==='plan'?`<button class="btn s pr" data-a="review">Подготовить ревью</button>`:r.st==='na'?`<button class="btn s ghost" data-a="toonb">Онбординг</button>`:`<button class="btn s ghost" data-a="probdoc" data-id="${p.id}">Итог</button>`}</td></tr>`};
+ return `<div class="stack">
+ <div class="callout row" style="align-items:flex-start">${ic('shield')}<div style="flex:1"><b style="font-weight:500">6 месяцев – с 1 янв 2027 защита от необоснованного увольнения (Employment Rights Act 2025).</b> Для employee решение о прохождении испытательного принимаем до 6-месячной отметки. CRM напомнит HR и руководителю на 5-м месяце.</div><button class="btn s" data-a="rem">${S.rem?ic('check')+'Напоминание вкл.':'Включить напоминание'}</button></div>
+ <div class="card"><div class="ch"><h3>Испытательный срок</h3>${H.chip('новое','info')}<div class="r">${H.vis('mgr')}</div></div><div class="scroll"><table class="t"><thead><tr><th>Сотрудник</th><th>Тип</th><th>Старт</th><th>Испытательный до</th><th>Ревью</th><th>6 мес. · защита</th><th></th></tr></thead><tbody>${PROB.map(row).join('')}</tbody></table></div></div>
+ <div class="card"><div class="ch"><h3>Alina Moroz · шкала до 6 месяцев</h3></div><div class="cb">${svg}<div class="cap">Испытательный – 3 месяца, ревью 23 нояб. Если продлеваем – всё равно решаем до ${fmtY(s6)}: после этой даты действует защита от необоснованного увольнения.</div></div></div>
+ </div>`;
+};
+
+R.docs=()=>{
+ const xs=DOCS.filter(d=>(S.docK==='all'||d.kind===S.docK)&&(!S.docS||dstat(d)===S.docS));
+ const all=DOCS.filter(d=>S.docK==='all'||d.kind===S.docK);
+ const c=k=>all.filter(d=>dstat(d)===k).length;
+ return `<div class="stack">
+ <div class="row" style="flex-wrap:wrap"><div class="seg">${[['all','Все'],['rtw','Право на работу'],['drive','Права и страховка'],['cert','Сертификаты']].map(([k,t])=>`<button data-a="dk" data-v="${k}" class="${S.docK===k?'on':''}">${t}</button>`).join('')}</div><span class="sp"></span>${H.chip('право на работу – уже есть в резерве и у курьеров','ok')}${H.chip('сводный трекер – новое','info')}</div>
+ <div class="grid g3">${[['ok','В порядке','бессрочно или больше 45 дней'],['warn','Скоро','проверить в ближайшие 45 дней'],['bad','Просрочено','нужна проверка сейчас']].map(([k,t,s])=>`<div class="kpi f ${S.docS===k?'on':''}" data-a="ds" data-v="${k}"><div class="k">${t}</div><div class="v num" style="color:${k==='bad'?'var(--accent)':k==='warn'?'var(--warn)':'var(--ink)'}">${c(k)}</div><div class="d">${s}</div></div>`).join('')}</div>
+ <div class="card"><div class="ch"><h3>Документы и сроки проверок</h3>${S.docS?`<button class="btn s ghost" data-a="ds" data-v="${S.docS}">Сбросить фильтр</button>`:''}<div class="r">${H.vis('hr')}</div></div><div class="scroll"><table class="t"><thead><tr><th>Сотрудник</th><th>Документ</th><th>Способ</th><th>Проверено</th><th>Следующая</th><th>Статус</th><th></th></tr></thead><tbody>
+  ${xs.map(d=>{const p=P(d.who),st=dstat(d);return `<tr class="clk" data-a="doc" data-i="${d.i}"><td style="white-space:nowrap"><span class="row">${H.av(p,'s')}${p.name}</span></td><td>${d.name}</td><td class="muted">${d.method}</td><td class="num">${d.checked?fmtY(d.checked):'—'}</td><td class="num">${d.next==='na'?'—':d.next?fmtY(d.next):'бессрочно'}</td><td>${H.chip(DS[st][0],DS[st][1])}</td><td>${st==='na'?'':`<button class="btn s ghost" data-a="docok" data-i="${d.i}">Отметить проверку</button>`}</td></tr>`}).join('')||`<tr><td colspan="7"><div class="empty">Нет документов с таким статусом</div></td></tr>`}
+ </tbody></table></div></div>
+ <div class="lockbox">${ic('lock')}<div><b style="font-weight:500;color:var(--graphite)">Реквизиты выплат и налоговые данные – у админа.</b> Банк, номер социального страхования, налоговый номер самозанятого и налоговый чек-лист HR не видит: запрет на сервере, не только в меню.${App.role==='admin'?' Вы админ – они в «Настройки → Команда» и «Резерв», на этом экране их нет специально.':''}</div></div>
+ <div class="cap">Копии документов – в защищённой папке, видят HR и админ. Проверку права на работу храним 2 года после ухода. Способы: оригинал документа, share code онлайн, цифровой провайдер.</div>
+ </div>`;
+};
+
+R.abs=()=>{
+ const days=Array.from({length:30},(_,i)=>i+1), ds=n=>'2026-11-'+String(n).padStart(2,'0');
+ const wd=n=>dd(ds(n)).getUTCDay();
+ const cell=(pid,n)=>{const s=ds(n);const a=ABS.find(x=>x.id===pid&&x.from<=s&&x.to>=s&&x.st!=='rej');if(!a)return '';return a.st==='req'?`<i class="req" title="Запрос: ${AT[a.type][0]}"></i>`:`<i style="background:${AT[a.type][1]}" title="${AT[a.type][0]} · ${fmtD(a.from)}${a.to!==a.from?' – '+fmtD(a.to):''}"></i>`};
+ const hr=App.role==='hr';
+ const wdays=(a,b)=>{let c=0;for(let d=dd(a);d<=dd(b);d.setUTCDate(d.getUTCDate()+1)){const w=d.getUTCDay();if(w&&w!==6)c++}return c};
+ return `<div class="stack">
+ <div class="card"><div class="ch"><h3>Ноябрь 2026 · кто отсутствует</h3>${H.chip('доработать «Отпуск»','warn')}<div class="r"><button class="btn s pr" data-a="addabs">${ic('plus')}Отметить отсутствие</button></div></div><div class="cb">
+  <div class="scroll"><table class="cal"><thead><tr><th></th>${days.map(n=>`<th class="${wd(n)===0||wd(n)===6?'we':''} ${n===11?'td':''}">${n}<br>${WD[wd(n)]}</th>`).join('')}</tr></thead><tbody>
+  ${D.people.map(p=>`<tr><td class="nm"><button data-person="${p.id}">${p.name}</button></td>${days.map(n=>`<td class="${wd(n)===0||wd(n)===6?'we':''} ${n===11?'tdc':''}">${cell(p.id,n)}</td>`).join('')}</tr>`).join('')}
+  </tbody></table></div>
+  <div class="lg">${Object.values(AT).map(([t,c])=>`<span><i class="dotc" style="background:${c}"></i>${t}</span>`).join('')}<span><i class="dotc req"></i>Запрошено</span><span class="muted">Коллеги в приложении видят только «нет на месте», без типа.</span></div>
+ </div></div>
+ <div class="two">
+  <div class="card"><div class="ch"><h3>Журнал отсутствий</h3>${H.chip('новое: типы','info')}<div class="r">${H.vis('hr')}</div></div>
+   <div class="scroll"><table class="t"><thead><tr><th>Кто</th><th>Тип</th><th>Даты</th><th>Дней</th><th>Оформление</th><th>Разговор после</th></tr></thead><tbody>
+   ${ABS.map((a,i)=>{const p=P(a.id);return `<tr><td style="white-space:nowrap"><span class="row">${H.av(p,'s')}${p.name}</span></td><td><span class="row" style="gap:6px"><i class="dotc" style="background:${AT[a.type][1]}"></i>${AT[a.type][0]}${a.note?' · '+a.note:''}</span></td><td class="num" style="white-space:nowrap">${fmtD(a.from)}${a.to!==a.from?' – '+fmtD(a.to):''}</td><td class="num">${wdays(a.from,a.to)}</td><td>${a.type==='sick'?(a.cert==='fit'?'Fit note – в защищённой папке':'Самосертификация (до 7 дней)'):a.st==='req'?`<span class="row" style="gap:6px"><button class="btn s pr" data-a="appr" data-i="${i}">Одобрить</button><button class="btn s ghost" data-a="rej" data-i="${i}">Отклонить</button></span>`:a.st==='rej'?H.chip('отклонено','line'):a.st==='ok'?'<span class="muted">одобрил(а) '+pname(a.by)+'</span>':'<span class="muted">—</span>'}</td><td>${a.rtw==='done'?H.chip('проведён','ok'):a.rtw==='need'?`<button class="btn s" data-a="rtw" data-i="${i}">Провести</button>${dayN(a.to)>7?' '+H.chip('давно','bad'):''}`:'<span class="muted">—</span>'}</td></tr>`}).join('')}
+   </tbody></table></div>
+   <div class="cb" style="border-top:1px solid var(--hair)"><div class="callout info">Храним факт отсутствия и тип, не диагноз – рекомендация ICO. В поле причины медицинские подробности не пишем; fit note, если есть, лежит в защищённой папке, руководители и AI его не видят.</div>
+   <div class="cap">Записи об отпусках храним 6 лет – требование Employment Rights Act 2025 с 6 апр 2026.</div></div>
+  </div>
+  ${hr?`<div class="card"><div class="ch"><h3>Bradford factor · 12 мес.</h3><div class="r"><span class="vis priv">${ic('lock')}Только HR</span></div></div><div class="cb">
+   <div class="muted sm" style="margin-bottom:8px">B = S² × D: S – сколько раз отсутствовал, D – сколько дней всего. Отметка – 100.</div>
+   ${BF.map(b=>{const s=b.s-(b.ex||0),d=b.d-(b.ex||0),v=s*s*d,p=P(b.id);return `<div class="bf"><button class="row" data-person="${p.id}" style="gap:6px">${H.av(p,'s')}<span>${p.name.split(' ')[0]}</span></button><div class="bft"><i class="${v>=60?'hi':''}" style="width:${Math.min(100,v/150*100)}%"></i><u style="left:${100/150*100}%"></u></div><span class="num">${v}</span></div>${b.ex?`<div class="muted sm" style="margin:-4px 0 4px">1 отсутствие исключено – уход за близкими</div>`:''}`}).join('')}
+   <div class="callout" style="margin-top:12px">Не считаем отсутствия, связанные с инвалидностью, беременностью, уходом за иждивенцами. Это сигнал для разговора, не основание для решений. Руководители этот показатель не видят.</div>
+  </div></div>`:`<div class="lockbox">${ic('lock')}<div>Bradford factor видит только HR: показатель легко превращается в наказание за болезнь, поэтому он не выходит за пределы HR.</div></div>`}
+ </div></div>`;
+};
+
+R.exit=()=>{
+ const reasons={};LEAVERS.forEach(l=>reasons[l[4]]=(reasons[l[4]]||0)+1);
+ const mx=Math.max(...Object.values(reasons));
+ let gi=0;const tot=OFF.reduce((a,g)=>a+g[1].length,0),dn=Object.values(S.offDone).filter(Boolean).length;
+ return `<div class="stack">
+ <div class="grid g4">
+  <div class="kpi"><div class="k">Ушли за 12 мес.</div><div class="v num">${LEAVERS.length}</div><div class="d">все по своему желанию</div></div>
+  <div class="kpi"><div class="k">Текучесть</div><div class="v num">12 %</div><div class="d">3 из ~25 в среднем за год</div></div>
+  <div class="kpi"><div class="k">Ушли до 6 мес.</div><div class="v num">1</div><div class="d">сигнал для онбординга</div></div>
+  <div class="kpi"><div class="k">Exit-интервью</div><div class="v num">2 из 3</div><div class="d">добровольно</div></div>
+ </div>
+ <div class="two">
+  <div class="card"><div class="ch"><h3>Чек-лист ухода</h3>${H.chip('новое','info')}<span class="muted sm">${dn}/${tot}</span><div class="r"><button class="btn s pr" data-a="startoff">Начать оффбординг</button></div></div><div class="cb">
+   <div class="grid g2">${OFF.map(([gn,items])=>{const st=gi;gi+=items.length;return `<div class="grp"><h5>${gn}</h5>${items.map(([t,o,x],k)=>{const on=S.offDone[st+k];return `<button class="it ${on?'on':''}" data-a="offchk" data-i="${st+k}"><span class="bx">${on?ic('check'):''}</span><span class="tx">${t}<small>${OWN[o]}${x?' · '+x:''}</small></span></button>`}).join('')}</div>`}).join('')}</div>
+   <div class="cap">Шаблон. На реальном уходе пункты получают сроки от последнего рабочего дня и раздаются владельцам задачами.</div>
+  </div></div>
+  <div class="stack">
+   <div class="card"><div class="ch"><h3>Причины ухода · 12 мес.</h3><div class="r">${H.vis('hr')}</div></div><div class="cb">
+    ${Object.entries(reasons).map(([r,n])=>`<div class="rs"><span>${r}</span>${H.bar(n/mx*100,'ac')}<span class="num muted">${n}</span></div>`).join('')}
+    <div class="hr-line"></div>
+    ${LEAVERS.map(l=>`<div class="lv"><b style="font-weight:500">${l[0]}</b> · ${l[1]} · ${l[2]}<div class="muted sm">стаж ${l[3]} · ${l[4]} · exit-интервью: ${l[5]?'да':'нет'}</div></div>`).join('')}
+    <div class="cap">Без имён. Причина – со слов человека на exit-интервью.</div>
+   </div></div>
+   <div class="card"><div class="ch"><h3>Exit-интервью</h3></div><div class="cb"><p class="sm" style="margin-bottom:10px">8 вопросов, 20 минут. Идентифицируемо – так и говорим человеку. Лучше через 1–2 недели после последнего дня.</p><button class="btn s" data-a="exitq">${ic('note')}Открыть шаблон</button></div></div>
+  </div>
+ </div></div>`;
+};
+
+R.cal=()=>{
+ const evs=[...D.events.map(e=>({...e,c:evCat(e)})),...EXTRA].filter(e=>S.cal==='all'||e.c===S.cal).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);
+ const by={};evs.forEach(e=>{const k=e.d.slice(0,7);(by[k]=by[k]||[]).push(e)});
+ return `<div class="stack">
+ <div class="row" style="flex-wrap:wrap"><div class="seg">${Object.entries(CATS).map(([k,t])=>`<button data-a="cf" data-v="${k}" class="${S.cal===k?'on':''}">${t}</button>`).join('')}</div><span class="sp"></span><button class="btn s" data-a="ical">${ic('link')}Подписаться в календаре</button><button class="btn s pr" data-a="addev">${ic('plus')}Событие</button></div>
+ ${Object.keys(by).length?Object.entries(by).map(([m,list])=>`<div class="card"><div class="ch"><h3>${MONTHS[+m.slice(5)-1]} ${m.slice(0,4)}</h3><span class="muted sm">${list.length} ${plural(list.length,'событие','события','событий')}</span></div><div class="cb" style="padding-top:0;padding-bottom:0">
+  ${list.map(e=>{const p=e.who&&P(e.who),past=e.d<today,td=e.d===today;return `<${p?`button data-person="${e.who}"`:'div'} class="ev ${past?'past':''} ${td?'today':''}"><span class="dt">${+e.d.slice(8)}<small>${WD[dd(e.d).getUTCDay()]}</small></span><span class="ico">${ic(e.k||'cal')}</span><span class="t"><b>${e.t}</b><small>${p?p.name+' · '+D.teams[p.team]:'Вся команда'}${e.x?' · '+e.x:''}</small></span><span class="row" style="gap:6px">${H.chip(CATS[e.c],e.c==='doc'&&/просроч/.test(e.t)?'bad':'line')}<span class="muted sm" style="white-space:nowrap">${past?'прошло':inDays(e.d)}</span></span></${p?'button':'div'}>`}).join('')}
+ </div></div>`).join(''):'<div class="empty">Нет событий этого типа</div>'}
+ <div class="cap">Даты берутся из профиля (день рождения, дата найма), отпусков, документов и онбординга. Возраст не показываем; сотрудник может скрыть свой день рождения.</div>
+ </div>`;
+};
+
+const NOTES={
+ onb:`<h4>Что это</h4><p>План первых 90 дней по шаблону: пункты с владельцами, напарник, встречи на 7/30/45/90 день, прогресс.</p><h4>Зачем HR</h4><p>Сейчас онбординг – это набор уроков и чекпоинты напарника, без общего плана и ответственных. Половина уходов – в первые месяцы.</p><h4>Откуда идея</h4><p><span class="src">HiBob – task lists</span><span class="src">Personio – шаблоны по типу занятости</span><span class="src">CharlieHR</span><span class="src">Humaans</span></p><h4>Данные из нашей CRM</h4><p>Уже есть: «Напарник» с чекпоинтами, онбординг-уроки, договор с подписью, резерв с проверкой права на работу, тур по приложению.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span></p>`,
+ prob:`<h4>Что это</h4><p>Трекер окончания испытательного срока и ревью, шкала до 6 месяцев.</p><h4>Зачем HR</h4><p>С 1 янв 2027 защита от необоснованного увольнения начинается после 6 месяцев (Employment Rights Act 2025). Решение о прохождении нужно принять до этой отметки – CRM напоминает на 5-м месяце.</p><h4>Откуда идея</h4><p><span class="src">CharlieHR – шаблон ревью пробации</span><span class="src">Personio – длина пробации</span></p><h4>Данные из нашей CRM</h4><p>Дата найма и тип занятости из профиля (защита – только у employee), матрица навыков и замер знаний – для критериев ревью.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span></p>`,
+ docs:`<h4>Что это</h4><p>Сводный трекер проверок: право на работу, права и страховка курьеров, сертификаты.</p><h4>Зачем HR</h4><p>Работа без действующей проверки права на работу – штраф; просроченные права или страховка – незастрахованная доставка.</p><h4>Откуда идея</h4><p><span class="src">Sage HR – right to work</span><span class="src">HiBob – конфиденциальные папки</span><span class="src">Deputy – сертификаты как допуск к сменам</span></p><h4>Данные из нашей CRM</h4><p>Уже есть: проверка права на работу в резерве и у курьеров, сроки сертификатов в обучении, договоры с подписью. Новое – одна таблица со статусами.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span></p><h4>Доступы</h4><p>Копии – HR и админ. Реквизиты и налоги – только админ.</p>`,
+ abs:`<h4>Что это</h4><p>Типы отсутствий поверх «Отпуска», календарь месяца, разговор после болезни, Bradford factor только для HR.</p><h4>Зачем HR</h4><p>Сейчас в «Отпуске» только отпуск – больничные и отгулы по уходу нигде не видны, разговоров после болезни нет.</p><h4>Откуда идея</h4><p><span class="src">Breathe – fit notes и шаблон разговора</span><span class="src">BrightHR – Bradford</span><span class="src">Ciphr – уход за близкими не в Bradford</span><span class="src">ICO – факт отсутствия вместо диагноза</span></p><h4>Данные из нашей CRM</h4><p>«Отпуск» с одобрением, «График», отметки прихода и ухода со смены.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span> типы и журнал · <span class="pri p2">Следующий шаг</span> Bradford</p>`,
+ exit:`<h4>Что это</h4><p>Чек-лист ухода, шаблон exit-интервью, причины ухода за год.</p><h4>Зачем HR</h4><p>Сейчас в CRM нет дат и причин ухода – текучесть не считается. Уход без чек-листа – это забытые доступы и ключи.</p><h4>Откуда идея</h4><p><span class="src">CharlieHR – offboarding</span><span class="src">Personio – шаги от последнего дня</span><span class="src">Lattice – exit-опрос идентифицируемый</span></p><h4>Данные из нашей CRM</h4><p>Активность учётки, дата ухода из «Графика», приглашения и доступы.</p><h4>Приоритет</h4><p><span class="pri p2">Следующий шаг</span></p>`,
+ cal:`<h4>Что это</h4><p>Все кадровые даты одним списком по месяцам: дни рождения, годовщины, проверки документов, ревью, отпуска.</p><h4>Зачем HR</h4><p>Ничего не пропустить: поздравить, вовремя проверить документ, подготовить ревью.</p><h4>Откуда идея</h4><p><span class="src">BambooHR – who's out и celebrations</span><span class="src">HiBob</span></p><h4>Данные из нашей CRM</h4><p>День рождения и дата найма из профиля, «Дни заботы», «Отпуск», сроки документов.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span></p>`
+};
+
+function ciSheet(pid,i){
+ const p=P(pid),c=J[pid].ci[i],done=dd(c[1])<dd(today);
+ App.sheet(c[0]+' · '+p.name,`<div class="row" style="margin-bottom:14px">${H.chip(done?'проведена':'запланирована '+fmtD(c[1]),done?'ok':'info')}${H.vis('shared')}</div>
+  ${['Что оказалось не так, как ожидал(а)?','Хватает ли доступов, инструментов, информации?','Как работается с напарником?','Что одно мы можем улучшить уже сейчас?','Адаптация по ощущениям: 1–5'].map(q=>`<div style="padding:10px 0;border-bottom:1px solid var(--hair)"><div>${q}</div>${done?`<div class="muted sm" style="margin-top:4px">Ответ записан на встрече</div>`:''}</div>`).join('')}
+  <p class="muted sm" style="margin-top:12px">Встреча идентифицируемая: ответы видит сотрудник, HR и руководитель.</p>`,
+  `<button class="btn" data-close>Закрыть</button><button class="btn pr" data-go="oneonones">${ic('chat')}Открыть в 1:1</button>`);
+}
+
+App.reg('lifecycle',{
+ title:'Онбординг и даты',
+ crumb:()=>'Онбординг и даты',
+ render(el,params){
+  const t=params.tab||params.id; if(t&&TABS.some(x=>x[0]===t)) S.tab=t; if(!S.tab) S.tab='onb';
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">Команда · жизненный цикл</div><h1>Онбординг и даты</h1><div class="sub">Первые 90 дней, испытательный срок, документы, отсутствия, уход и календарь кадровых дат</div></div>
+   <div class="acts"><button class="btn" data-a="tocal">${ic('cal')}Ближайшие даты</button><button class="btn pr" data-a="startonb">${ic('plus')}Запустить онбординг</button></div></div>
+   <div class="tabs">${TABS.map(([k,n])=>`<button data-lt="${k}">${n}</button>`).join('')}</div><div id="lc-body"></div>`;
+  const body=el.querySelector('#lc-body');
+  const draw=()=>{body.innerHTML=R[S.tab]();el.querySelectorAll('[data-lt]').forEach(b=>b.classList.toggle('on',b.dataset.lt===S.tab))};
+  const setTab=k=>{S.tab=k;App.params={tab:k};history.replaceState(null,'','#lifecycle/'+k);draw();document.getElementById('notes-body').innerHTML=NOTES[k];document.getElementById('view').scrollTop=0};
+  el.addEventListener('change',e=>{if(e.target.id==='lc-tpl'){S.tpl[S.j]=e.target.value;draw()}});
+  el.addEventListener('click',e=>{
+   const tb=e.target.closest('[data-lt]'); if(tb){setTab(tb.dataset.lt);return}
+   if(e.target.closest('[data-person],[data-go]')) return;
+   const b=e.target.closest('[data-a]'); if(!b||b.tagName==='SELECT') return;
+   const a=b.dataset.a,v=b.dataset.v,i=+b.dataset.i;
+   if(a==='pick'){S.j=b.dataset.id;draw();const c=el.querySelector('#lc-tpl');if(c)c.closest('.card').scrollIntoView({behavior:'smooth',block:'start'})}
+   else if(a==='ci'){e.stopPropagation();ciSheet(b.dataset.id,i)}
+   else if(a==='chk'){const t=S.tpl[S.j]||J[S.j].tpl,k=S.j+':'+t,set=S.doneSets[k]||(S.doneSets[k]=new Set());set.has(i)?set.delete(i):set.add(i);draw()}
+   else if(a==='applytpl'){J[S.j].tpl=S.tpl[S.j];App.toast('Шаблон «'+TPL[J[S.j].tpl].n+'» применён – владельцы получат задачи');draw()}
+   else if(a==='additem'){
+    const t=S.tpl[S.j]||J[S.j].tpl;
+    App.sheet('Новый пункт · '+TPL[t].n,`<label class="f">Период</label><select class="sel" id="lc-i-g">${TPL[t].g.map((g,k)=>`<option value="${k}">${g[0]}</option>`).join('')}</select><label class="f" style="margin-top:14px">Что сделать</label><input class="inp" id="lc-i-t" placeholder="Например: показать, где лежат расходники"><label class="f" style="margin-top:14px">Кто отвечает</label><select class="sel" id="lc-i-o">${Object.entries(OWN).map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select><p class="muted sm" style="margin-top:10px">Пункт добавится в шаблон – для всех будущих онбордингов.</p>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="lc-i-go">Добавить</button>`);
+    document.getElementById('lc-i-go').onclick=()=>{const tx=document.getElementById('lc-i-t').value.trim();if(!tx){App.toast('Опишите пункт');return}
+     const g=+document.getElementById('lc-i-g').value; let pos=0; for(let k=0;k<=g;k++) pos+=TPL[t].g[k][1].length;
+     Object.keys(S.doneSets).filter(k=>k.endsWith(':'+t)).forEach(k=>{S.doneSets[k]=new Set([...S.doneSets[k]].map(x=>x>=pos?x+1:x))});
+     Object.keys(OVERDUE).filter(k=>k.endsWith(':'+t)&&OVERDUE[k]>=pos).forEach(k=>OVERDUE[k]++);
+     TPL[t].g[g][1].push([tx,document.getElementById('lc-i-o').value]);App.close();draw();App.toast('Пункт добавлен в шаблон «'+TPL[t].n+'»')};
+   }
+   else if(a==='startonb'){
+    App.sheet('Запустить онбординг',`<label class="f">Кто выходит</label><select class="sel"><option>Кандидат из «Найма» – оффер принят</option><option>Человек из резерва</option></select>
+     <label class="f" style="margin-top:14px">Шаблон</label><select class="sel" id="lc-o-t">${TPLKEY.map(k=>`<option value="${k}">${TPL[k].n}</option>`).join('')}</select>
+     <label class="f" style="margin-top:14px">Напарник</label><select class="sel">${D.people.filter(p=>p.tags.includes('Наставник')||p.lvl>=3).map(p=>`<option>${p.name}</option>`).join('')}</select>
+     <label class="f" style="margin-top:14px">Первый день</label><select class="sel">${['2026-11-16','2026-11-23','2026-11-30','2026-12-07'].map(d=>`<option>${fmtD(d)}</option>`).join('')}</select>
+     <p class="muted sm" style="margin-top:12px">Пункты «До выхода» уйдут владельцам сразу, встречи 7/30/45/90 встанут в календарь HR.</p>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="lc-o-go">Запустить</button>`);
+    document.getElementById('lc-o-go').onclick=()=>{const t=document.getElementById('lc-o-t').value;App.close();App.toast('Онбординг запущен: '+flat(t).length+' пунктов по шаблону «'+TPL[t].n+'», задачи ушли владельцам')};
+   }
+   else if(a==='tocal'){S.cal='all';setTab('cal');const f=el.querySelector('.ev:not(.past)');if(f)f.scrollIntoView({block:'center'})}
+   else if(a==='toonb'){S.j='denis';setTab('onb')}
+   else if(a==='rem'){S.rem=!S.rem;draw();App.toast(S.rem?'Напоминание на 5-м месяце включено для всех employee':'Напоминание выключено – решение о прохождении легко пропустить')}
+   else if(a==='probdoc'){const p=P(b.dataset.id);App.toast(p.name+': испытательный пройден, итог подписан руководителем и сотрудником')}
+   else if(a==='review'){
+    const p=P('alina');
+    App.sheet('Ревью испытательного · Alina Moroz',`<div class="row" style="margin-bottom:12px">${H.chip('ревью '+fmtD(p.probEnd),'warn')}${H.vis('mgr')}</div>
+     <div class="eyebrow" style="margin-bottom:6px">Критерии из CRM</div>
+     ${[['6 базовых стилей','4 из 6 подтверждены наставником','warn'],['Утренняя волна без переделок','да, 6 нояб – отметила Polina','ok'],['Опоздания за 3 месяца','1','ok'],['Обучение','8 из 12 уроков','warn'],['Пульс по 1:1','стабильно 7–8','ok']].map(([k,v,c])=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--hair)"><span style="flex:1">${k}</span>${H.chip(v,c)}</div>`).join('')}
+     <label class="f" style="margin-top:16px">Отзыв напарника (Mila Novak)</label><textarea class="ta" placeholder="Что получается, над чем работать"></textarea>
+     <label class="f" style="margin-top:14px">Решение</label>
+     ${[['pass','Пройден'],['ext','Продлить на 4 недели – с причиной и планом'],['fail','Не пройден – только после разговора, письменно']].map(([k,t],n)=>`<label class="row" style="padding:6px 0;cursor:pointer"><input type="radio" name="lc-dec" value="${k}" ${n===0?'checked':''}><span>${t}</span></label>`).join('')}
+     <div class="callout" style="margin-top:10px">Продление тоже должно закончиться до ${fmtY(addMonths(p.start,6))} – после 6 месяцев действует защита от необоснованного увольнения.</div>`,
+     `<button class="btn" data-close>Отмена</button><button class="btn" data-close data-toast="Черновик ревью сохранён – видят HR и руководитель">Сохранить черновик</button><button class="btn pr" data-close data-toast="Встреча-ревью 23 нояб назначена: Alina, Polina, HR">Назначить встречу</button>`);
+   }
+   else if(a==='dk'){S.docK=v;draw()}
+   else if(a==='ds'){S.docS=S.docS===v?null:v;draw()}
+   else if(a==='docok'){e.stopPropagation();const d=DOCS[i];d.checked=today;if(d.next&&d.next!=='na')d.next=addMonths(today,12);draw();App.toast(P(d.who).name+': «'+d.name+'» – проверка отмечена сегодня, копия в защищённой папке')}
+   else if(a==='doc'){
+    const d=DOCS[i],p=P(d.who),st=dstat(d);
+    App.sheet(d.name,`<div class="row" style="margin-bottom:14px">${H.av(p)}<div><b style="font-weight:500">${p.name}</b><div class="muted sm">${p.role} · ${H.type(p)}</div></div><span class="sp"></span>${H.chip(DS[st][0],DS[st][1])}</div>
+     ${[['Способ',d.method],['Проверено',d.checked?fmtY(d.checked):'—'],['Кто проверял',d.by?pname(d.by):'—'],['Следующая проверка',d.next==='na'?'не требуется':d.next?fmtY(d.next):'бессрочно'],['Копия',d.checked?'PDF в защищённой папке – HR и админ':'—'],['Храним',d.kind==='rtw'?'2 года после ухода':'пока действует + 1 год']].map(([k,v])=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--hair)"><span class="muted" style="width:150px">${k}</span><span style="flex:1">${v}</span></div>`).join('')}
+     ${d.kind==='rtw'&&st!=='na'?`<p class="muted sm" style="margin-top:12px">Способы проверки: оригинал документа при сотруднике, share code онлайн или цифровой провайдер. Скан без проверки не считается.</p>`:''}`,
+     st==='na'?'<button class="btn" data-close>Закрыть</button>':`<button class="btn" data-close data-toast="Сотруднику ушла задача в приложении: прислать документ или share code">Запросить у сотрудника</button><button class="btn pr" id="lc-d-ok">${ic('check')}Отметить проверку</button>`);
+    const ok=document.getElementById('lc-d-ok'); if(ok) ok.onclick=()=>{d.checked=today;if(d.next&&d.next!=='na')d.next=addMonths(today,12);App.close();draw();App.toast('Проверка отмечена сегодня')};
+   }
+   else if(a==='addabs'){
+    App.sheet('Отметить отсутствие',`<label class="f">Кто</label><select class="sel" id="lc-a-p">${D.people.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>
+     <label class="f" style="margin-top:14px">Тип</label><select class="sel" id="lc-a-t">${Object.entries(AT).map(([k,[t]])=>`<option value="${k}">${t}</option>`).join('')}</select>
+     <div class="grid g2" style="margin-top:14px"><div><label class="f">С</label><select class="sel" id="lc-a-f">${Array.from({length:30},(_,n)=>`<option value="${n+1}" ${n+1===12?'selected':''}>${n+1} нояб</option>`).join('')}</select></div><div><label class="f">По</label><select class="sel" id="lc-a-to">${Array.from({length:30},(_,n)=>`<option value="${n+1}" ${n+1===12?'selected':''}>${n+1} нояб</option>`).join('')}</select></div></div>
+     <label class="f" style="margin-top:14px">Оформление</label><select class="sel" id="lc-a-c"><option value="">Не нужно</option><option value="self">Самосертификация (до 7 дней)</option><option value="fit">Fit note – загрузить в защищённую папку</option></select>
+     <label class="f" style="margin-top:14px">Комментарий</label><input class="inp" id="lc-a-n" placeholder="Без диагноза и медицинских подробностей">
+     <div class="callout info" style="margin-top:12px">Храним факт отсутствия, не диагноз. После больничного CRM предложит разговор о возвращении.</div>`,
+     `<button class="btn" data-close>Отмена</button><button class="btn pr" id="lc-a-go">Сохранить</button>`);
+    document.getElementById('lc-a-go').onclick=()=>{const f=+document.getElementById('lc-a-f').value,to=Math.max(f,+document.getElementById('lc-a-to').value),ty=document.getElementById('lc-a-t').value,ds=n=>'2026-11-'+String(n).padStart(2,'0');
+     const rec={id:document.getElementById('lc-a-p').value,type:ty,from:ds(f),to:ds(to),cert:document.getElementById('lc-a-c').value||undefined,st:ty==='leave'?'ok':undefined,by:'eva'};
+     if(ty==='sick') rec.rtw='need'; else if(ty==='dep') rec.rtw='na';
+     ABS.push(rec);App.close();draw();App.toast(P(rec.id).name+': '+AT[ty][0].toLowerCase()+' отмечен(о)')};
+   }
+   else if(a==='appr'||a==='rej'){const r=ABS[i];r.st=a==='appr'?'ok':'rej';r.by=App.role==='admin'?'founder':'eva';draw();App.toast(a==='appr'?'Одобрено. 30 нояб в магазине останется 1 человек – проверьте «График»':'Отклонено – Kira получит уведомление с причиной')}
+   else if(a==='rtw'){
+    const r=ABS[i],p=P(r.id);
+    App.sheet('Разговор после отсутствия',`<div class="row" style="margin-bottom:12px">${H.av(p)}<div><b style="font-weight:500">${p.name}</b><div class="muted sm">${AT[r.type][0]} · ${fmtD(r.from)}${r.to!==r.from?' – '+fmtD(r.to):''}</div></div><span class="sp"></span>${H.vis('hr')}</div>
+     ${['Как самочувствие, готов(а) ли вернуться к обычным задачам','Есть ли рекомендации в fit note: меньше часов, лёгкие задачи – договориться о плане','Нужна ли поддержка: постепенный выход, другой график, перерывы','Связано ли с работой (нагрузка, травма, тяжести) – если да, оценить риски','Рассказать, что изменилось за время отсутствия','Зафиксировать договорённости и дату следующего разговора'].map((q,n)=>`<label class="row" style="padding:8px 0;border-bottom:1px solid var(--hair);cursor:pointer;align-items:flex-start"><input type="checkbox" class="lc-rtw" style="margin-top:3px"><span>${q}</span></label>`).join('')}
+     <label class="f" style="margin-top:14px">Договорённости</label><textarea class="ta" placeholder="Только договорённости. Диагноз не записываем."></textarea>
+     <p class="muted sm" style="margin-top:10px">По закону разговор не обязателен – это наша политика заботы. Короткий, по-человечески, не допрос.</p>`,
+     `<button class="btn" data-close>Отмена</button><button class="btn pr" id="lc-rtw-go">${ic('check')}Разговор проведён</button>`);
+    document.getElementById('lc-rtw-go').onclick=()=>{r.rtw='done';App.close();draw();App.toast('Разговор отмечен. Запись видят только HR и сотрудник по запросу')};
+   }
+   else if(a==='offchk'){S.offDone[i]=!S.offDone[i];draw()}
+   else if(a==='startoff'){
+    App.sheet('Начать оффбординг',`<label class="f">Кто уходит</label><select class="sel" id="lc-x-p">${D.people.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>
+     <label class="f" style="margin-top:14px">Последний рабочий день</label><select class="sel">${['2026-11-27','2026-12-04','2026-12-11','2026-12-18'].map(d=>`<option>${fmtD(d)}</option>`).join('')}</select>
+     <label class="f" style="margin-top:14px">Инициатива</label><select class="sel"><option>Сотрудника</option><option>Компании – только после разговора и по процедуре ACAS</option><option>Конец договора</option></select>
+     <p class="muted sm" style="margin-top:12px">Финальный расчёт и остаток отпуска считает админ. HR видит только «передано админу».</p>`,
+     `<button class="btn" data-close>Отмена</button><button class="btn pr" id="lc-x-go">Начать</button>`);
+    document.getElementById('lc-x-go').onclick=()=>{const p=P(document.getElementById('lc-x-p').value);App.close();App.toast('Оффбординг '+p.name+' создан в черновике – видит только HR, пока не подтвердите')};
+   }
+   else if(a==='exitq'){
+    App.sheet('Exit-интервью · шаблон',`<div class="callout info" style="margin-bottom:12px">Идентифицируемо: человек знает, что ответы видит HR. В отчёт основателю – только темы, цитаты без имени и с согласия.</div>
+     ${['Что стало главной причиной ухода?','Был ли момент, когда вы решили уйти? Что тогда произошло?','Что было лучшим в работе здесь?','Что мы могли сделать иначе?','Как вам поддержка руководителя: 1–5','Хватало ли роста и обучения?','Порекомендуете ли Floritta как место работы?','Вернулись бы? Можно ли вам написать через полгода?'].map((q,n)=>`<div style="padding:9px 0;border-bottom:1px solid var(--hair)"><span class="muted num" style="margin-right:8px">${n+1}</span>${q}</div>`).join('')}
+     <p class="muted sm" style="margin-top:10px">Ведёт HR, а не прямой руководитель. Лучше через 1–2 недели после последнего дня.</p>`,
+     `<button class="btn" data-close data-toast="Шаблон открыт для правки – изменения применятся к следующим интервью">Править</button><button class="btn pr" data-close data-toast="Ссылка на интервью отправлена в приложение – ответить можно до 2 недель">Отправить ссылку</button>`);
+   }
+   else if(a==='cf'){S.cal=v;draw()}
+   else if(a==='ical') App.toast('Ссылка на календарь скопирована – только даты и имена, без деталей');
+   else if(a==='addev'){
+    App.sheet('Новое событие',`<label class="f">Что</label><input class="inp" id="lc-e-t" placeholder="Например: ревью Q4 со студией"><label class="f" style="margin-top:14px">Когда</label><select class="sel" id="lc-e-d">${Array.from({length:19},(_,n)=>addDays(today,n+1)).map(d=>`<option value="${d}">${fmtD(d)}</option>`).join('')}</select><label class="f" style="margin-top:14px">Кто</label><select class="sel" id="lc-e-p"><option value="">Вся команда</option>${D.people.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>`,
+     `<button class="btn" data-close>Отмена</button><button class="btn pr" id="lc-e-go">Добавить</button>`);
+    document.getElementById('lc-e-go').onclick=()=>{const t=document.getElementById('lc-e-t').value.trim();if(!t){App.toast('Назовите событие');return}D.events.push({d:document.getElementById('lc-e-d').value,t,who:document.getElementById('lc-e-p').value||null,k:'clip'});App.close();S.cal='all';draw();App.toast('Событие добавлено в календарь')};
+   }
+  });
+  draw();
+ },
+ notes:()=>NOTES[S.tab||'onb']
+});
+})();
+</script>

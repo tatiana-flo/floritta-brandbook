@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Floritta · HR в CRM – концепция</title>
+<meta name="description" content="Исследование: какие HR-функции лучших систем 2025–2026 годов нужны CRM Floritta, как закрыть финансы от роли HR и в каком порядке строить.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fdfdfd; --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378; --light:#cecece; --hair:#e6e6e6; --silver:#f2f2f4;
+  --accent:#b4595f; --accent-dark:#9a474c; --accent-bg:#f3e1e1; --ok:#5f7350; --ok-bg:#eef0e9; --warn:#9a6a0a; --warn-bg:#fbf1d4;
+  --info:#3f5f7a; --info-bg:#e7eef4;
+  --f-display:"Cormorant Infant",Georgia,serif; --f-body:"Jost","Helvetica Neue",Arial,sans-serif;
+  --btn-h:36px; --btn-h-s:28px; --top-h:56px; --toc-w:228px;
+  --ls-caps:.08em; --ls-eyebrow:.14em;
+  --m-fast:160ms;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:var(--f-body);font-weight:400;font-size:15px;line-height:1.55;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit;color:inherit}
+ul,ol{list-style:none}
+.num{font-variant-numeric:lining-nums tabular-nums}
+.eyebrow{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.muted{color:var(--grey)}
+b,strong{font-weight:500}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:30;height:var(--top-h);display:flex;align-items:center;gap:12px;padding:0 24px;background:rgba(253,253,253,.97);border-bottom:1px solid var(--hair)}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;min-width:0}
+.brand b{font-family:var(--f-display);font-weight:500;font-size:22px;letter-spacing:.02em}
+.brand span{font-size:10px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);white-space:nowrap}
+.topnav{margin-left:auto;display:flex;gap:6px}
+
+/* buttons, chips */
+.btn{height:var(--btn-h);padding:0 14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;letter-spacing:var(--ls-caps);text-transform:uppercase;border:1px solid var(--hair);background:var(--paper);white-space:nowrap;text-decoration:none;transition:background var(--m-fast)}
+.btn:hover{background:var(--silver)}
+.btn.pr{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.pr:hover{background:#3a332e}
+.btn.s{height:var(--btn-h-s);padding:0 10px;font-size:10.5px}
+.btn.lg{height:44px;padding:0 20px;font-size:12px}
+.btn.on{background:var(--ink);border-color:var(--ink);color:#fff;cursor:default}
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;font-size:11.5px;background:var(--silver);color:var(--graphite);white-space:nowrap}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}.chip.warn{background:var(--warn-bg);color:var(--warn)}.chip.bad{background:var(--accent-bg);color:var(--accent-dark)}.chip.info{background:var(--info-bg);color:var(--info)}
+.pri{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;white-space:nowrap;margin:0 4px 4px 0}
+.pri.p1{background:var(--ink);color:#fff}.pri.p2{background:var(--accent-bg);color:var(--accent-dark)}.pri.p3{background:var(--paper);color:var(--graphite);border:1px solid var(--light)}.pri.p4{background:var(--paper);color:var(--grey);border:1px dashed var(--light);text-decoration:line-through}
+.callout{border-left:2px solid var(--accent);padding:12px 16px;background:var(--accent-bg);color:var(--accent-dark);font-size:14px}
+.callout.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.callout.info{border-color:var(--info);background:var(--info-bg);color:var(--info)}
+.callout.ink{border-color:var(--ink);background:var(--silver);color:var(--ink)}
+.lockbox{border:1px dashed var(--light);padding:16px 18px;color:var(--graphite);font-size:14px;background:repeating-linear-gradient(-45deg,transparent 0 8px,rgba(0,0,0,.018) 8px 16px)}
+.go{font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--accent-dark);text-decoration:none;white-space:nowrap;border-bottom:1px solid transparent}
+.go:hover{border-bottom-color:var(--accent)}
+
+/* layout */
+.layout{display:grid;grid-template-columns:var(--toc-w) minmax(0,1fr);max-width:1280px;margin:0 auto}
+.toc{position:sticky;top:var(--top-h);align-self:start;max-height:calc(100vh - var(--top-h));overflow:auto;padding:32px 14px 32px 24px;border-right:1px solid var(--hair)}
+.toc .eyebrow{display:block;padding:0 10px 10px}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:7px 10px;font-size:13.5px;line-height:1.35;color:var(--graphite);text-decoration:none;border-left:2px solid transparent}
+.toc a .n{font-size:10.5px;color:var(--grey);letter-spacing:.06em;min-width:18px;font-variant-numeric:tabular-nums}
+.toc a:hover{background:var(--silver);color:var(--ink)}
+.toc a.on{border-left-color:var(--accent);color:var(--ink);background:var(--silver)}
+.toc .toc-cta{margin:20px 10px 0;display:flex}
+main{min-width:0;padding:0 48px 96px}
+section{padding:64px 0 8px;border-top:1px solid var(--hair);margin-top:56px}
+.sec-h{margin-bottom:22px}
+h2{font-family:var(--f-display);font-weight:500;font-size:38px;line-height:1.08;letter-spacing:.005em;margin-top:6px}
+h3.sub{font-family:var(--f-display);font-weight:500;font-size:26px;line-height:1.15;margin:44px 0 12px}
+.lead{font-size:16px;color:var(--graphite);max-width:780px;margin-top:10px}
+p+p{margin-top:10px}
+.prose{max-width:780px;color:var(--graphite)}
+.prose b{color:var(--ink)}
+
+/* hero */
+.hero{padding:56px 0 8px}
+.hero h1{font-family:var(--f-display);font-weight:500;font-size:60px;line-height:1.02;letter-spacing:.005em;margin-top:10px}
+.hero .tagline{font-family:var(--f-display);font-size:24px;line-height:1.25;color:var(--graphite);margin-top:12px;max-width:820px}
+.hero .summary{font-size:16px;line-height:1.6;color:var(--graphite);max-width:820px;margin-top:22px}
+.hero .summary b{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--hair);margin-top:32px}
+.stat{padding:18px 18px 16px;border-right:1px solid var(--hair);min-width:0}
+.stat:last-child{border-right:0}
+.stat .v{font-family:var(--f-display);font-size:52px;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+.stat .k{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--ink);margin-top:10px}
+.stat .d{font-size:12.5px;color:var(--grey);margin-top:4px}
+.stat.ac .v{color:var(--accent)}
+.verbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.verb{border:1px solid var(--hair);padding:16px 18px}
+.verb .t{font-family:var(--f-display);font-size:26px;line-height:1.1}
+.verb p{font-size:14px;color:var(--graphite);margin-top:6px}
+.hero .callout{margin-top:16px;max-width:none}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+
+/* cards */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{border:1px solid var(--hair);background:var(--paper);padding:20px 22px;display:flex;flex-direction:column;min-width:0}
+.card .no{font-family:var(--f-display);font-size:15px;color:var(--accent);letter-spacing:.04em}
+.card h3{font-family:var(--f-display);font-weight:500;font-size:25px;line-height:1.15;margin-top:4px}
+.card p{font-size:14px;color:var(--graphite);margin-top:8px}
+.card p b{color:var(--ink)}
+.card .foot{margin-top:auto;padding-top:14px}
+.card.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.card.dark p{color:#d9d3ce}.card.dark p b{color:#fff}.card.dark .no{color:#e3a8ac}
+.card.silver{background:var(--silver);border-color:var(--silver)}
+ul.dots li{position:relative;padding-left:16px;margin-top:6px;font-size:14px;color:var(--graphite)}
+ul.dots li::before{content:"";position:absolute;left:0;top:.7em;width:6px;height:1px;background:var(--accent)}
+ul.dots li b{color:var(--ink)}
+
+/* tables */
+.tw{overflow-x:auto;border-top:1px solid var(--ink);max-width:100%}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{text-align:left;font-weight:400;font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);padding:12px 12px 10px;border-bottom:1px solid var(--hair);vertical-align:bottom}
+table.t td{padding:12px;border-bottom:1px solid var(--hair);vertical-align:top;overflow-wrap:anywhere}
+table.t td b{font-weight:500}
+table.t .what{color:var(--graphite);font-size:13px;margin-top:3px}
+table.t .note{color:var(--graphite);font-size:12.5px;margin-top:5px}
+table.t .best{font-size:13px;color:var(--graphite)}
+table.t .best a,.prose a,.card a:not(.go),.src a,table.t td a.ext{color:var(--ink);text-decoration:underline;text-decoration-color:var(--light);text-underline-offset:2px}
+table.t .best a:hover,.prose a:hover,.src a:hover,table.t td a.ext:hover{text-decoration-color:var(--accent)}
+table.t tr.grp td{background:var(--silver);font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--ink);padding:9px 12px;font-weight:500}
+table.t tr.grp td span{color:var(--grey);font-weight:400;margin-left:6px}
+table.cat{min-width:860px}
+table.cat td:nth-child(1){width:30%}table.cat td:nth-child(2){width:24%}table.cat td:nth-child(3){width:26%}table.cat td:nth-child(4){width:12%}table.cat td:nth-child(5){width:8%}
+table.zones{min-width:640px}
+table.zones td:first-child{font-weight:500;width:22%}
+table.zones td.no{color:var(--accent-dark)}
+table.law td.date{font-family:var(--f-display);font-size:22px;line-height:1.1;white-space:nowrap;width:16%}
+table.law td.date .chip{font-family:var(--f-body);margin-top:6px}
+table.law tr.key td{background:#fbf7f7}
+
+/* filters */
+.filters{border:1px solid var(--hair);padding:14px 16px;margin-bottom:16px;display:grid;gap:10px}
+.frow{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.flabel{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);min-width:96px;padding-top:6px}
+.fchips{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+.fchip{height:28px;padding:0 10px;font-size:12.5px;border:1px solid var(--hair);background:var(--paper);color:var(--graphite);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.fchip:hover{background:var(--silver);color:var(--ink)}
+.fchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.fchip .c{font-size:11px;color:var(--grey)}
+.fchip[aria-pressed="true"] .c{color:#cfc8c2}
+.fsearch{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.inp{height:var(--btn-h);border:1px solid var(--hair);padding:0 12px;background:var(--paper);font-size:14px;outline:none;border-radius:0;flex:1;min-width:0;width:100%;max-width:420px}
+.inp:focus{border-color:var(--ink)}
+.count{font-size:13px;color:var(--graphite);white-space:nowrap}
+.count b{font-family:var(--f-display);font-size:20px;font-weight:500;color:var(--ink)}
+.empty{padding:32px;text-align:center;color:var(--grey);font-size:14px;border-bottom:1px solid var(--hair)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--graphite);margin:14px 0 18px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+
+/* access */
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--hair)}
+.level{padding:18px;border-right:1px solid var(--hair);min-width:0;position:relative}
+.level:last-child{border-right:0}
+.level .step{font-family:var(--f-display);font-size:34px;line-height:1;color:var(--light)}
+.level h4{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500;margin-top:8px}
+.level .who{font-size:13.5px;margin-top:8px}
+.level .for{font-size:13px;color:var(--graphite);margin-top:6px}
+.level .rule{font-size:12.5px;color:var(--grey);margin-top:8px;padding-top:8px;border-top:1px solid var(--hair)}
+.level.def{background:var(--accent-bg)}
+.level.def .step{color:var(--accent)}
+.level .tag{position:absolute;top:14px;right:14px}
+.layers{counter-reset:l;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.layer{border-top:2px solid var(--ink);padding-top:12px}
+.layer .n{font-family:var(--f-display);font-size:34px;line-height:1}
+.layer h4{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500;margin-top:6px}
+.layer p{font-size:13.5px;color:var(--graphite);margin-top:6px}
+.thr{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+.big5{border:1px solid var(--ink);padding:22px}
+.big5 .v{font-family:var(--f-display);font-size:120px;line-height:.9;color:var(--accent)}
+.big5 .k{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;margin-top:10px}
+.big5 p{font-size:13px;color:var(--graphite);margin-top:8px}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 28px}
+.rules li{font-size:14px;color:var(--graphite);padding:8px 0;border-bottom:1px solid var(--hair)}
+.rules li b{color:var(--ink)}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--hair)}
+.phase{padding:20px;border-right:1px solid var(--hair);min-width:0}
+.phase:last-child{border-right:0}
+.phase.mvp{background:var(--silver)}
+.phase .ph{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.phase h3{font-family:var(--f-display);font-weight:500;font-size:30px;line-height:1.05}
+.phase .why{font-size:13px;color:var(--graphite);margin-top:6px;min-height:40px}
+.pkg{margin-top:14px;padding-top:12px;border-top:1px solid var(--hair)}
+.phase.mvp .pkg{border-top-color:#dddde0}
+.pkg b{display:block;font-size:13.5px}
+.pkg p{font-size:13px;color:var(--graphite);margin-top:3px}
+.pkg .go{display:inline-block;margin-top:6px}
+.dont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin-top:6px}
+.dont li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px;color:var(--graphite)}
+.dont li::before{content:"×";color:var(--accent);font-size:16px;line-height:1;flex:none}
+.dont li b{color:var(--ink)}
+
+/* decisions */
+.dec{counter-reset:d;border-top:1px solid var(--ink)}
+.dec li{counter-increment:d;display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.1fr);gap:20px;padding:20px 0;border-bottom:1px solid var(--hair)}
+.dec li::before{content:counter(d,decimal-leading-zero);font-family:var(--f-display);font-size:40px;line-height:.95;color:var(--accent)}
+.dec h4{font-family:var(--f-display);font-weight:500;font-size:22px;line-height:1.2}
+.dec .opt{font-size:13.5px;color:var(--graphite);margin-top:6px}
+.dec .prop{font-size:14px;border-left:2px solid var(--ink);padding-left:14px}
+.dec .prop .eyebrow{display:block;margin-bottom:4px}
+
+/* sources */
+.srcs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.srcs h4{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500;padding-bottom:8px;border-bottom:1px solid var(--ink)}
+.srcs h4 span{color:var(--grey);font-weight:400;margin-left:6px}
+.src{font-size:13px;line-height:1.5;color:var(--graphite);padding:7px 0;border-bottom:1px solid var(--hair);overflow-wrap:anywhere}
+.src b{color:var(--ink);margin-right:4px}
+.src i{font-style:normal;color:var(--light);margin:0 4px}
+
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--hair);font-size:12.5px;color:var(--grey);display:flex;flex-wrap:wrap;gap:8px 20px}
+footer a{color:var(--graphite)}
+
+/* responsive */
+@media (max-width:1100px){
+  main{padding:0 28px 80px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat:nth-child(3){border-right:0}
+  .stat:nth-child(n+4){border-top:1px solid var(--hair)}
+  .layers{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .levels{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .level:nth-child(2){border-right:0}
+  .level:nth-child(n+3){border-top:1px solid var(--hair)}
+  .srcs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:960px){
+  html{scroll-padding-top:108px}
+  .layout{display:block}
+  .toc{position:sticky;top:var(--top-h);z-index:20;max-height:none;display:flex;gap:2px;overflow-x:auto;padding:6px 12px;border-right:0;border-bottom:1px solid var(--hair);background:rgba(253,253,253,.97);scrollbar-width:none}
+  .toc::-webkit-scrollbar{display:none}
+  .toc .eyebrow,.toc .toc-cta{display:none}
+  .toc a{flex:none;white-space:nowrap;border-left:0;border-bottom:2px solid transparent;padding:8px 10px;font-size:13px}
+  .toc a.on{border-bottom-color:var(--accent);background:transparent}
+  .toc a .n{display:none}
+  .road{grid-template-columns:1fr}
+  .phase{border-right:0;border-bottom:1px solid var(--hair)}
+  .phase:last-child{border-bottom:0}
+  .phase .why{min-height:0}
+  .dec li{grid-template-columns:52px minmax(0,1fr)}
+  .dec .prop{grid-column:2}
+  .thr{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  body{font-size:14.5px}
+  .topbar{padding:0 16px;gap:8px}
+  .brand b{font-size:20px}
+  .brand span{display:none}
+  main{padding:0 16px 64px}
+  section{margin-top:40px;padding-top:44px}
+  h2{font-size:31px}
+  h3.sub{font-size:23px;margin-top:34px}
+  .hero{padding-top:32px}
+  .hero h1{font-size:40px}
+  .hero .tagline{font-size:20px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{border-right:1px solid var(--hair)!important;border-top:1px solid var(--hair)}
+  .stat:nth-child(2n){border-right:0!important}
+  .stat:nth-child(-n+2){border-top:0}
+  .stat:last-child{grid-column:1 / -1}
+  .stat .v{font-size:42px}
+  .verbs,.g2,.g3,.g4,.layers,.levels,.rules,.dont,.srcs{grid-template-columns:1fr}
+  .level{border-right:0!important;border-top:1px solid var(--hair)}
+  .level:first-child{border-top:0}
+  .flabel{min-width:0;width:100%;padding-top:0}
+  .inp{max-width:none}
+  .big5 .v{font-size:96px}
+  .dec li{grid-template-columns:1fr;gap:8px}
+  .dec li::before{font-size:32px}
+  .dec .prop{grid-column:auto}
+  /* tables become cards */
+  .tw{border-top:0;overflow-x:visible}
+  table.stack{min-width:0!important}
+  table.stack thead{display:none}
+  table.stack,table.stack tbody,table.stack tr,table.stack td{display:block;width:100%!important}
+  table.stack tr{border:1px solid var(--hair);padding:10px 14px;margin-bottom:10px}
+  table.stack tr.grp{border:0;padding:0;margin:18px 0 8px}
+  table.stack tr.grp td{padding:8px 10px}
+  table.stack td{border:0;padding:4px 0}
+  table.stack td[data-label]::before{content:attr(data-label);display:block;font-size:10px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);margin:8px 0 2px;font-family:var(--f-body);font-weight:400}
+  table.stack td.first::before{display:none}
+  table.law td.date{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#top"><b>Floritta</b><span>· HR в CRM</span></a>
+  <nav class="topnav" aria-label="Разделы">
+    <a class="btn s" href="index.html">Прототип</a>
+    <a class="btn s on" href="concept.html" aria-current="page">Концепция</a>
+  </nav>
+</header>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Содержание">
+    <span class="eyebrow">Содержание</span>
+    <a href="#top"><span class="n">00</span>Обзор</a>
+    <a href="#vyvody"><span class="n">01</span>Главные выводы</a>
+    <a href="#katalog"><span class="n">02</span>Каталог функций</a>
+    <a href="#dostup"><span class="n">03</span>Доступы и приватность</a>
+    <a href="#pravo"><span class="n">04</span>Британское право</a>
+    <a href="#roadmap"><span class="n">05</span>Дорожная карта</a>
+    <a href="#resheniya"><span class="n">06</span>Решения для основателя</a>
+    <a href="#istochniki"><span class="n">07</span>Источники</a>
+    <div class="toc-cta"><a class="btn pr s" href="index.html">Открыть прототип →</a></div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <header class="hero" id="top">
+      <div class="eyebrow">Исследование · 11 ноября 2026</div>
+      <h1>Роль HR в CRM Floritta</h1>
+      <p class="tagline">Открыть, разрезать, достроить: что взять у лучших HR-систем и как встроить People Partner в нашу CRM, не открыв ему деньги</p>
+      <p class="summary">Лучшие HR-системы 2025–2026 годов – Lattice, 15Five, Leapsome, Culture Amp, HiBob, Personio, Odoo, Zoho People и frontline-платформы вроде Deputy и Opus – сошлись на компактном ядре для People Partner: непрерывная нить 1:1, заметки о человеке с явным уровнем видимости, план развития по навыкам, лёгкие ревью из накопленных данных, редкие короткие опросы со строгим порогом анонимности, признание без лидербордов и AI, который готовит к разговору, но ничего не решает. Главный вывод для Floritta: <b>почти ничего не нужно строить с нуля</b>. Из 50 функций каталога 31 уже имеет основу в CRM, но всё это разбросано по разным разделам, открыто только админам и менеджерам и сплетено с деньгами. Поэтому главная работа и главный риск – не HR-функции, а то, как отрезать деньги: <b>запрет финансов на сервере с автотестом – условие запуска</b>, и его нужно сделать раньше, чем HR получит первый логин.</p>
+
+      <div class="stats" role="list">
+        <div class="stat" role="listitem"><div class="v">8</div><div class="k">исследований</div><div class="d">легли в основу отчёта</div></div>
+        <div class="stat" role="listitem"><div class="v">50</div><div class="k">функций в каталоге</div><div class="d">в 10 областях</div></div>
+        <div class="stat ac" role="listitem"><div class="v">31</div><div class="k">уже имеют основу в CRM</div><div class="d">6 работают целиком, 25 – частично</div></div>
+        <div class="stat" role="listitem"><div class="v">23</div><div class="k">функции в MVP</div><div class="d">остальное – следующий шаг и позже</div></div>
+        <div class="stat" role="listitem"><div class="v">6</div><div class="k">из них новых</div><div class="d">17 – открыть или расширить то, что есть</div></div>
+      </div>
+
+      <div class="verbs">
+        <div class="verb"><div class="t">Открыть</div><p>HR то, что уже работает: план развития и его черновики, обучение, kudos и признание, eNPS, объявления с подтверждением прочтения.</p></div>
+        <div class="verb"><div class="t">Разрезать</div><p>экраны про людей так, чтобы деньги вырезались на сервере и никогда не доходили до роли HR.</p></div>
+        <div class="verb"><div class="t">Достроить</div><p>то, чего нет совсем: роль с жёстким запретом финансов, 1:1, HR-заметки с уровнями видимости, карточку 360 и жизненный цикл.</p></div>
+      </div>
+
+      <p class="callout">Срочность задаёт UK-право: <b>с 1 января 2027 года защита от несправедливого увольнения возникает через 6 месяцев работы</b> вместо 2 лет. Испытательный срок с решением до 6-месячной отметки становится самой срочной функцией.</p>
+
+      <div class="cta">
+        <a class="btn pr lg" href="index.html">Открыть прототип →</a>
+        <a class="btn lg" href="#katalog">Каталог функций</a>
+      </div>
+    </header>
+
+    <!-- 01 -->
+    <section id="vyvody">
+      <div class="sec-h">
+        <div class="eyebrow">01 · Главные выводы</div>
+        <h2>Лидеры строят HR вокруг разговора, а не анкеты</h2>
+        <p class="lead">Восемь тезисов, из которых собран прототип. Каждый ведёт на экран, где он воплощён.</p>
+      </div>
+      <div class="grid g2">
+        <article class="card">
+          <div class="no">01</div>
+          <h3>1:1 – непрерывная нить с автоконтекстом</h3>
+          <p>У лидеров встреча один на один стала центром, куда стекается всё остальное: общая повестка, автоперенос незакрытых пунктов, приватная часть, бриф перед встречей. Для Floritta сильнее всего <b>автоконтекст</b>: «с прошлой встречи – два kudos, отзыв клиента, просроченный урок, три отказа от смен». Вместо потока писем – одно напоминание в Telegram в день встречи. AI-конспект нужен только для созвонов с удалёнными сотрудниками.</p>
+          <div class="foot"><a class="go" href="index.html#oneonones">в прототипе →</a></div>
+        </article>
+        <article class="card">
+          <div class="no">02</div>
+          <h3>Заметки о человеке живут по уровням видимости</h3>
+          <p>Ни один SMB-продукт не держит HR-заметки открытыми для всех. Но в UK «приватная» не значит «секретная»: заметки попадают в выдачу по запросу сотрудника (DSAR), поэтому их пишут как факты, даты и договорённости. <b>Взыскания и объяснительные People Partner не ведёт</b> – иначе роль развития начнут воспринимать как контроль.</p>
+          <div class="foot"><a class="go" href="index.html#person/mila">в прототипе →</a></div>
+        </article>
+        <article class="card">
+          <div class="no">03</div>
+          <h3>Развитие опирается на навыки, уровни и фото-доказательства</h3>
+          <p>Трек делится на уровни, уровни – на компетенции, сотрудник видит «где я». Навык подтверждает старший на рабочем месте по чек-листу с обязательным фото – у Floritta фото букета и так делается для клиента. <b>Лестница мастерства отдельна от денег</b>: сегодняшний тир флориста – денежная ступень, а трек развития описывает мастерство.</p>
+          <div class="foot"><a class="go" href="index.html#growth">в прототипе →</a></div>
+        </article>
+        <article class="card">
+          <div class="no">04</div>
+          <h3>Ревью собирают из накопленного, пробация становится обязательной</h3>
+          <p>Черновик ревью собирается из 1:1, фидбэка и задач, у каждой фразы виден источник, решает и отправляет человек. Для 25 человек хватит доски «все оценки рядом» и флага расхождения самооценки с оценкой руководителя – калибровка и 9-box не нужны. <b>Испытательный срок с вехами и напоминаниями</b> – самое важное нововведение года.</p>
+          <div class="foot"><a class="go" href="index.html#reviews">в прототипе →</a></div>
+        </article>
+        <article class="card">
+          <div class="no">05</div>
+          <h3>Опросы редкие, анонимность – только с жёстким порогом</h3>
+          <p>Стартовый опрос на 20 вопросов, повтор через 3 месяца, между ними микропульс на 3–5 вопросов раз в месяц и необязательная отметка одним тапом после смены. Порог – <b>5 ответивших</b>, срезы меньше порога запрещены, настройки замораживаются при запуске. В команде из 25 человек один ответ сдвигает eNPS примерно на 4 пункта, поэтому показываем распределение, а не одну цифру.</p>
+          <div class="foot"><a class="go" href="index.html#pulse">в прототипе →</a></div>
+        </article>
+        <article class="card">
+          <div class="no">06</div>
+          <h3>Признание удерживает людей, рейтинги их выжигают</h3>
+          <p>Хорошо признанные сотрудники <b>на 45 % реже уходят в течение двух лет</b> (Gallup и Workhuman). Работают лента «спасибо» с обязательной ценностью компании, бейдж в профиле и автоматические поздравления. Принудительная геймификация и табло темпа снижают и вовлечённость, и результат. Денежные награды – это финансы, в зону HR они не входят.</p>
+          <div class="foot"><a class="go" href="index.html#pulse">в прототипе →</a></div>
+        </article>
+        <article class="card">
+          <div class="no">07</div>
+          <h3>Сигналы риска – правила с объяснением, а не модель</h3>
+          <p>Промышленным моделям ухода нужны 24 месяца истории и группы от 25 человек. Для Floritta правильный аналог – светофор прозрачных правил: «нет 1:1 45 дней», «пунктуальность хуже собственной нормы за 13 недель», «урок стоит 14 дней», «три отказа от смен за месяц». <b>Каждый сигнал – с датой и ссылкой на данные</b>, итогового балла нет, сотрудник может увидеть свои сигналы.</p>
+          <div class="foot"><a class="go" href="index.html#analytics">в прототипе →</a></div>
+        </article>
+        <article class="card">
+          <div class="no">08</div>
+          <h3>AI готовит разговор, но ничего не решает</h3>
+          <p>Бриф перед 1:1, ежемесячный People-апдейт основателю, вопрос текстом в пределах прав HR. <b>Никаких автоматических решений</b>, скорингов «риск ухода» и анализа эмоций; здоровье, религия, профсоюз и деньги в AI не попадают; каждый AI-текст подписан и ведёт на источники.</p>
+          <div class="foot"><a class="go" href="index.html#askhr">в прототипе →</a></div>
+        </article>
+      </div>
+
+      <h3 class="sub">Что это значит для Floritta</h3>
+      <div class="grid g3">
+        <div class="card dark">
+          <div class="no">Риск</div>
+          <h3>Главная работа – отрезать деньги</h3>
+          <p>Сегодня деньги смешаны с экранами про людей: тир и ставка в «Людях», бонусный фонд в «Мотивации», ставки в графике, деньги заказов в аналитике по сотрудникам, а часть HR-блоков – пока заглушки. Права в CRM складываются, поэтому одна лишняя галочка откроет удалённому подрядчику зарплаты, бонусы и P&amp;L.</p>
+        </div>
+        <div class="card silver">
+          <div class="no">Преимущество</div>
+          <h3>Операционные данные уже рядом</h3>
+          <p>Букеты и скорость флориста, переделки и жалобы, пунктуальность курьеров, план и факт смен, приёмка задач, обучение и похвалы из отзывов Google лежат в той же базе, что и люди. То, что Lattice и Culture Amp продают как AI-бриф и сигналы, у нас собирается из уже существующих данных. Но та же близость делает HR-модуль мониторингом в смысле ICO, поэтому <b>прозрачность – часть продукта</b>.</p>
+        </div>
+        <div class="card">
+          <div class="no">Мера успеха</div>
+          <h3>Три числа, которые CRM считает сама</h3>
+          <ul class="dots">
+            <li>доля проведённых 1:1;</li>
+            <li>доля людей с живым планом развития;</li>
+            <li>доля опросов, после которых команда увидела «вы сказали → мы сделали».</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section id="katalog">
+      <div class="sec-h">
+        <div class="eyebrow">02 · Каталог функций</div>
+        <h2>50 функций в 10 областях</h2>
+        <p class="lead">Для каждой функции – что она делает, у кого из лидеров сделана лучше всего, есть ли основа в нашей CRM и когда её строить. Итог: есть – 6, частично – 25, нет – 19. В MVP – 23 функции, из них новых только 6.</p>
+      </div>
+      <div class="legend">
+        <span><span class="chip ok">Есть</span>переиспользовать и открыть HR</span>
+        <span><span class="chip warn">Частично</span>расширить то, что есть</span>
+        <span><span class="chip bad">Нет</span>сделать заново</span>
+      </div>
+
+      <div class="filters" id="filters">
+        <div class="frow"><span class="flabel">Область</span><div class="fchips" id="fArea"></div></div>
+        <div class="frow"><span class="flabel">База в CRM</span><div class="fchips" id="fBase"></div></div>
+        <div class="frow"><span class="flabel">Приоритет</span><div class="fchips" id="fPri"></div></div>
+        <div class="frow fsearch">
+          <input class="inp" id="fq" type="search" placeholder="Поиск: функция, вендор, описание" aria-label="Поиск по каталогу">
+          <span class="count" id="count" aria-live="polite"></span>
+          <button class="btn s" id="freset" type="button">Сбросить</button>
+        </div>
+      </div>
+
+      <div class="tw">
+        <table class="t cat stack">
+          <thead><tr><th>Функция</th><th>У кого лучше всего сделано</th><th>База в нашей CRM</th><th>Приоритет</th><th>Прототип</th></tr></thead>
+          <tbody id="catBody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="catEmpty" hidden>Ничего не найдено. Измените фильтры или <button class="go" type="button" id="freset2">сбросьте их</button>.</div>
+    </section>
+
+    <!-- 03 -->
+    <section id="dostup">
+      <div class="sec-h">
+        <div class="eyebrow">03 · Доступы и приватность</div>
+        <h2>HR видит людей, но никогда не видит денег</h2>
+        <p class="lead">Все крупные системы строят права по трём осям: чьи данные, какие поля и какие действия, а компенсацию выносят в отдельный домен. У Workday это отдельная группа «Compensation Partner», у Personio – группа прав на зарплаты, у BambooHR типовой уровень так и называется: «видит всё, кроме компенсации». Для Floritta это даёт карту из 13 зон.</p>
+      </div>
+
+      <div class="tw">
+        <table class="t zones stack">
+          <thead><tr><th>Данные</th><th>HR видит и делает</th><th>HR не видит никогда</th></tr></thead>
+          <tbody>
+            <tr><td class="first">Профиль и учётная запись</td><td data-label="HR видит и делает">Должность, контур, тип занятости, стаж, рабочие контакты, язык, день рождения без года; правит HR-поля и назначает руководителя</td><td class="no" data-label="HR не видит никогда">Роли и особые права, PIN для возвратов, сброс пароля, выдача прав по приглашению</td></tr>
+            <tr><td class="first">Чувствительные персональные данные</td><td data-label="HR видит и делает">Статус и сроки права на работу (RTW), статус и срок договора</td><td class="no" data-label="HR не видит никогда">NI, полная дата рождения, адрес, реквизиты выплат, налоговый чек-лист HMRC, UTR и инвойсинг</td></tr>
+            <tr><td class="first">График и табель</td><td data-label="HR видит и делает">Смены, план и факт, часы, перерывы, опоздания, отказы, отпуска на графике</td><td class="no" data-label="HR не видит никогда">Ставка и сумма смены, «бонус дня»</td></tr>
+            <tr><td class="first">Работа и качество</td><td data-label="HR видит и делает">Букеты в штуках, скорость относительно медианы, переделки, жалобы, замечания к фото, доставки в слот, разборы рейсов</td><td class="no" data-label="HR не видит никогда">Деньги подтверждённых заказов, суммы возвратов</td></tr>
+            <tr><td class="first">Задачи, обучение, развитие</td><td data-label="HR видит и делает">Всё: нагрузка, приёмка, «Здоровье рутины», уроки, журнал, сертификаты, планы развития, check-in; назначает уроки и ведёт планы</td><td class="no" data-label="HR не видит никогда">Оплачиваемые минуты обучения в деньгах</td></tr>
+            <tr><td class="first">Признание</td><td data-label="HR видит и делает">Kudos, бейджи, баллы, признание с причиной</td><td class="no" data-label="HR не видит никогда">Денежные награды, фонд командной цели, выгрузка бонусов, бонус флористов</td></tr>
+            <tr><td class="first">Мотивация</td><td data-label="HR видит и делает">Агрегаты eNPS за порогом, 1:1, отпуска</td><td class="no" data-label="HR не видит никогда">Таблица бонусов и бонусный фонд</td></tr>
+            <tr><td class="first">Курьеры</td><td data-label="HR видит и делает">Пунктуальность, рейтинги рейсов, статус и срок RTW и страховки</td><td class="no" data-label="HR не видит никогда">Оплата, простои, ставка, реквизиты</td></tr>
+            <tr><td class="first">Найм</td><td data-label="HR видит и делает">Кандидаты, стадии, заметки, источники, согласия</td><td class="no" data-label="HR не видит никогда">Ожидаемая ставка кандидата, стоимость канала</td></tr>
+            <tr><td class="first">Отсутствия и здоровье</td><td data-label="HR видит и делает">Даты, типы, остатки в днях; fit note и встреча после болезни – в категории «здоровье», только HR</td><td class="no" data-label="HR не видит никогда">Отпускные, больничные (SSP) в деньгах, расчётные листы</td></tr>
+            <tr><td class="first">Опросы</td><td data-label="HR видит и делает">Агрегаты и комментарии за порогом 5</td><td class="no" data-label="HR не видит никогда">Сырые ответы – их не видит никто, включая админа</td></tr>
+            <tr><td class="first">Финансы целиком</td><td data-label="HR видит и делает">–</td><td class="no" data-label="HR не видит никогда">Финансы, касса, себестоимость, возвраты, панель основателя, P&amp;L, маржа, бонус менеджеров</td></tr>
+            <tr><td class="first">Система</td><td data-label="HR видит и делает">–</td><td class="no" data-label="HR не видит никогда">Управление пользователями, ролями, настройками и интеграциями, удаление данных, вход под чужой учётной записью; выдать права себе HR не может</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Четыре уровня видимости заметок</h3>
+      <p class="prose">Модель собрана из паттернов Rotaready («видит только автор»), Eddy («только HR»), BambooHR («HR и руководитель») и Deputy («показать сотруднику»). Уровень по умолчанию – «HR», чтобы знания не терялись при смене подрядчика. После сохранения понизить приватность заметки нельзя, как в Flare HR.</p>
+      <div class="levels" style="margin-top:18px">
+        <div class="level"><div class="step">1</div><h4>Только я</h4><div class="who">Автор; админ – только через экстренный доступ</div><div class="for">Личная подготовка к разговору, гипотезы</div><div class="rule">Не переходит к следующему HR; всё равно попадает в выдачу по DSAR</div></div>
+        <div class="level def"><span class="chip bad tag">по умолчанию</span><div class="step">2</div><h4>HR</h4><div class="who">Все пользователи роли HR и админ</div><div class="for">Наблюдения, запросы сотрудника, риски, договорённости</div><div class="rule">Сохраняет знания при смене подрядчика</div></div>
+        <div class="level"><div class="step">3</div><h4>HR и руководитель</h4><div class="who">Плюс прямой руководитель</div><div class="for">Развитие, коучинг, план улучшения</div><div class="rule">Руководитель видит только своих людей</div></div>
+        <div class="level"><div class="step">4</div><h4>Видно сотруднику</h4><div class="who">Плюс сам сотрудник в приложении</div><div class="for">Итоги 1:1, план развития, похвала</div><div class="rule">После сохранения понизить уровень нельзя</div></div>
+      </div>
+      <div class="lockbox" style="margin-top:12px"><b>Категории «здоровье» и «ER-кейс»</b> – только HR и админ, расширить нельзя. Fit note, жалобы, дисциплинарные шаги недоступны руководителю и AI, каждое чтение пишется в журнал. Даже админ читает чужие заметки «только я» лишь через экстренный доступ – так устроены Lattice и 15Five, где админы не видят содержимого чужих 1:1.</div>
+
+      <h3 class="sub">Финансы закрыты на сервере, а не в интерфейсе</h3>
+      <p class="prose">Права в CRM, как в BambooHR и Workday, складываются: при конфликте побеждает более широкое, а запрещающих прав нет. Значит, финансовый запрет нельзя держать на «не выдали галочку»: если HR выдадут вторую роль или право на аналитику, в котором есть деньги, она молча увидит бонусы менеджеров и P&amp;L. А удалённый подрядчик с инструментами разработчика в браузере увидит всё, что пришло в ответе сервера, даже если экран этого не рисует. Поэтому защита строится в четыре слоя.</p>
+      <div class="layers" style="margin-top:20px">
+        <div class="layer"><div class="n">1</div><h4>Запрет поверх всех прав</h4><p>Для роли HR финансы закрыты на сервере, какие бы ещё роли и права у неё ни появились.</p></div>
+        <div class="layer"><div class="n">2</div><h4>Свой закрытый раздел</h4><p>Отдельное узкое право HR и свой раздел – по образцу уже работающего закрытого раздела бухгалтера.</p></div>
+        <div class="layer"><div class="n">3</div><h4>Денежные поля не уходят в браузер</h4><p>Сервер вырезает суммы до отправки: недоступное поле просто не возвращается, как у HiBob.</p></div>
+        <div class="layer"><div class="n">4</div><h4>Автотест</h4><p>HR плюс любая дополнительная роль получает отказ на всех финансовых страницах, и в ответах нет ни одной суммы в фунтах.</p></div>
+      </div>
+      <div class="grid g2" style="margin-top:24px">
+        <div class="card silver">
+          <h3>Без обходных путей</h3>
+          <p>HR не получает ни «глобальных отчётов», ни управления ролями: у Personio право на отчёты показывает все данные сотрудников независимо от остальных прав. AI-поиск по CRM уже закрывает HR-данные от всех, а для роли HR нужен зеркальный список запретов – финансы. Иначе AI станет обходным путём к деньгам.</p>
+        </div>
+        <div class="card silver">
+          <h3>Гигиена и журнал</h3>
+          <ul class="dots">
+            <li>двухфакторная аутентификация и короткие сессии;</li>
+            <li>запрет массовой выгрузки в таблицы;</li>
+            <li>доступ подрядчика отключается сам в дату окончания договора;</li>
+            <li>раз в квартал – пересмотр прав и журнала просмотров;</li>
+            <li>журнал чтения только на добавление, на карточке – блок «Кто смотрел»;</li>
+            <li>экстренный доступ к приватной заметке – с причиной, на 24 часа и с уведомлением автора, по принципу ICO.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub">Порог анонимности – 5, и ни одного среза меньше</h3>
+      <div class="thr">
+        <div class="big5"><div class="v num">5</div><div class="k">ответивших – жёсткий минимум</div><p>Не 3: команда слишком мала. AI-сводка комментариев – только от 10 комментариев, по образцу Microsoft Viva Glint.</p></div>
+        <ul class="rules">
+          <li><b>Порог для комментариев</b> считается по числу заполнивших опрос.</li>
+          <li><b>Сильная защита срезов</b> включена всегда и не отключается.</li>
+          <li><b>Порог и режим замораживаются</b> при запуске, как у Culture Amp, а не как у Lattice.</li>
+          <li><b>Для 20–30 человек</b> – только «вся компания» и максимум две группы: «магазин и курьеры» и «удалённые», если в каждой ответили не меньше пяти.</li>
+          <li><b>Комбинации фильтров</b> (роль × стаж × локация) запрещены целиком.</li>
+          <li><b>Срез не открывается</b>, если его дополнение до целого меньше порога: иначе «вся компания минус магазин» выдаст удалёнку.</li>
+          <li><b>Сырые ответы</b> не видит никто, включая основателя: ответ технически не связан с человеком.</li>
+          <li><b>Честные слова</b>: опрос «анонимный», а не «конфиденциальный»; над комментарием – «не указывайте деталей, по которым вас узнают».</li>
+          <li><b>Онбординг-, exit-опросы и 1:1</b> по природе идентифицируемы, и интерфейс так и говорит.</li>
+          <li><b>Ответ HR на анонимный комментарий</b> уходит со случайной задержкой, как в Peakon.</li>
+        </ul>
+      </div>
+
+      <h3 class="sub">AI готовит разговор, но не принимает решений</h3>
+      <div class="grid g2">
+        <div class="card">
+          <h3>Правила для CRM</h3>
+          <ul class="dots">
+            <li><b>Никаких автоматических решений</b> по сигналам: про смены, дисциплинарку, увольнение. Поле «почему решили так» обязательно.</li>
+            <li><b>Сигналы описывают наблюдаемые факты, а не личность.</b> Никаких скорингов «риск ухода».</li>
+            <li><b>В AI не попадают</b> здоровье, диагнозы, беременность, религия, членство в профсоюзе и деньги.</li>
+            <li><b>Нет анализа тональности и эмоций</b> по сообщениям, голосу или фото.</li>
+            <li><b>Каждый AI-текст подписан</b> «Сгенерировано AI, проверено: кто, когда» и ведёт на источники.</li>
+            <li><b>AI-выводы входят в выдачу по DSAR.</b></li>
+            <li><b>С поставщиком модели – договор об обработке данных:</b> нулевое хранение, понятный регион обработки, короткие логи.</li>
+            <li><b>Глобальный выключатель AI</b> у админа, как в Lattice.</li>
+          </ul>
+        </div>
+        <div class="card silver">
+          <h3>Почему так</h3>
+          <p>С 5 февраля 2026 года в UK действует большая часть Data (Use and Access) Act: автоматизированные решения разрешены при гарантиях, но ограничения для данных особой категории сохраняются. Решение считается «только автоматическим», если в нём нет подлинного участия человека, и формальное одобрение такое участие не заменяет.</p>
+          <p>В ЕС с 2 февраля 2025 года запрещён AI, распознающий эмоции на работе, а требования к HR-AI как к системам высокого риска перенесены на 2 декабря 2027 года. Для Floritta это важно, только если выводы касаются людей в ЕС.</p>
+          <p>Индекс Брэдфорда показывается только для справки: из него исключаются отсутствия из-за инвалидности, беременности и ухода за иждивенцами, иначе возникает риск дискриминации.</p>
+        </div>
+      </div>
+      <div style="margin-top:18px"><a class="go" href="index.html#access">Доступы, журнал и UK-минимум в прототипе →</a></div>
+    </section>
+
+    <!-- 04 -->
+    <section id="pravo">
+      <div class="sec-h">
+        <div class="eyebrow">04 · Британское право</div>
+        <h2>Обязательный минимум</h2>
+        <p class="lead">Реформа Employment Rights Act и Data (Use and Access) Act меняет порядок приоритетов: часть требований уже действует, главное – испытательный срок – вступает через несколько недель.</p>
+      </div>
+      <div class="tw">
+        <table class="t law stack">
+          <thead><tr><th>С какой даты</th><th>Требование</th><th>Что это значит для CRM</th></tr></thead>
+          <tbody id="lawBody">
+            <tr data-date="2026-02-05"><td class="date first num">05.02.2026</td><td data-label="Требование">DUAA: разумный поиск при DSAR, обязанность разбирать жалобы, новые правила автоматизированных решений (<a class="ext" href="https://privacymatters.dlapiper.com/2026/02/uk-commencement-of-the-data-protection-provisions-in-the-data-use-and-access-act/" target="_blank" rel="noopener noreferrer">DLA Piper</a>)</td><td data-label="Что это значит для CRM">Выгрузка «всё о сотруднике», форма жалобы на обработку данных, гарантии для AI</td></tr>
+            <tr data-date="2026-04-06"><td class="date first num">06.04.2026</td><td data-label="Требование">Записи об отпусках хранить 6 лет, ERA 2025 s.35 (<a class="ext" href="https://thepayrollcentre.co.uk/news/uk-employers-must-keep-holiday-records-from-april-2026/" target="_blank" rel="noopener noreferrer">The Payroll Centre</a>; <a class="ext" href="https://www.legislation.gov.uk/ukpga/2025/36" target="_blank" rel="noopener noreferrer">legislation.gov.uk</a>)</td><td data-label="Что это значит для CRM">Архив вместо удаления человека; справочник отсутствий</td></tr>
+            <tr data-date="2026-04-06"><td class="date first num">06.04.2026</td><td data-label="Требование">Больничные (SSP) с первого дня болезни (<a class="ext" href="https://www.gov.uk/guidance/sickness-absences-that-start-before-and-end-on-or-after-6-april-2026" target="_blank" rel="noopener noreferrer">GOV.UK</a>)</td><td data-label="Что это значит для CRM">HR видит факт и даты больничного, суммы – нет</td></tr>
+            <tr data-date="2026-10-01"><td class="date first num">01.10.2026</td><td data-label="Требование">Срок подачи иска в трибунал – 6 месяцев (<a class="ext" href="https://www.gov.uk/government/publications/implementing-the-plan-to-make-work-pay-and-employment-rights-act/plan-to-make-work-pay-and-employment-rights-act-timeline-update" target="_blank" rel="noopener noreferrer">GOV.UK</a>)</td><td data-label="Что это значит для CRM">Структурированные записи, хранение ER-кейсов</td></tr>
+            <tr data-date="2026-10-01"><td class="date first num">01.10.2026</td><td data-label="Требование">Проверка права на работу для более широкого круга, в том числе части подрядчиков; по проекту кодекса (<a class="ext" href="https://www.morganlewis.com/pubs/2026/08/expansion-of-uk-right-to-work-rules-part-3-digital-verification-identity-matching-and-onboarding" target="_blank" rel="noopener noreferrer">Morgan Lewis</a>)</td><td data-label="Что это значит для CRM">Карточка RTW для всех контуров, а не только для курьеров</td></tr>
+            <tr data-date="2026-10-30"><td class="date first num">30.10.2026</td><td data-label="Требование">«Все разумные шаги» против домогательств (<a class="ext" href="https://www.gov.uk/government/publications/implementing-the-plan-to-make-work-pay-and-employment-rights-act/plan-to-make-work-pay-and-employment-rights-act-timeline-update" target="_blank" rel="noopener noreferrer">GOV.UK</a>)</td><td data-label="Что это значит для CRM">Политика с подтверждением прочтения, тренинг, журнал жалоб</td></tr>
+            <tr data-date="2027-01-01" class="key"><td class="date first num">01.01.2027</td><td data-label="Требование"><b>Защита от несправедливого увольнения после 6 месяцев работы</b> вместо 2 лет (<a class="ext" href="https://www.gov.uk/government/publications/implementing-the-plan-to-make-work-pay-and-employment-rights-act/plan-to-make-work-pay-and-employment-rights-act-timeline-update" target="_blank" rel="noopener noreferrer">GOV.UK</a>)</td><td data-label="Что это значит для CRM">Испытательный срок с решением до 6-месячной отметки</td></tr>
+            <tr><td class="date first">действует</td><td data-label="Требование">Здоровье – данные особой категории: Art. 9 и Sch. 1, записи об отсутствии вместо записей о болезни (<a class="ext" href="https://www.penningtonslaw.com/insights/new-ico-guidance-for-employers-processing-workers-health-data/" target="_blank" rel="noopener noreferrer">Penningtons</a>)</td><td data-label="Что это значит для CRM">Отдельная категория «здоровье», недоступная руководителю и AI</td></tr>
+            <tr><td class="date first">действует</td><td data-label="Требование">Передача данных за пределы UK: если HR работает из страны вне списка adequacy UK, например Грузии, это ограниченная передача (<a class="ext" href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/international-transfers/adequacy-regulations/is-the-restricted-transfer-covered-by-adequacy-regulations/" target="_blank" rel="noopener noreferrer">ICO</a>)</td><td data-label="Что это значит для CRM">IDTA или Addendum плюс оценка рисков передачи (<a class="ext" href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/international-transfers/international-transfers-a-guide/" target="_blank" rel="noopener noreferrer">ICO</a>) – до выдачи доступа</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid g3" style="margin-top:24px">
+        <div class="card">
+          <h3>DPIA до запуска</h3>
+          <p>Заметки 1:1, опросы, аналитика по людям, AI-сводки и удалённый доступ из третьей страны по логике ICO относятся к высокому риску. Сотрудникам сообщают о любом мониторинге, выбирают наименее навязчивый способ и дают оспорить выводы аналитики. Privacy notice называет, кто ведёт HR и из какой страны, основания обработки, сроки хранения и каждую AI-сводку.</p>
+        </div>
+        <div class="card">
+          <h3>Сроки хранения</h3>
+          <ul class="dots">
+            <li><b>Отпуска</b> – не меньше 6 лет.</li>
+            <li><b>Личное дело</b> – 6 лет после ухода; это практика по Limitation Act, а не прямое требование закона.</li>
+            <li><b>Копии RTW</b> – срок работы плюс 2 года.</li>
+            <li><b>Данные кандидатов</b> – 36 месяцев, анонимизация уже работает.</li>
+            <li><b>Рутинные 1:1</b> – разумно короче.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Что ещё учесть</h3>
+          <p>ICO не считает ограниченной передачей доступ собственного сотрудника за рубежом, а доступ отдельного получателя считает. Для подрядчика безопаснее исходить из того, что это передача, и проверить вывод у юриста.</p>
+          <p>Кодекс ACAS сам по себе не создаёт ответственности, но трибунал может увеличить компенсацию до 25 %, если работодатель его не соблюдал. Поэтому ER-кейсы, когда до них дойдёт очередь, строятся строго по шагам Кодекса.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section id="roadmap">
+      <div class="sec-h">
+        <div class="eyebrow">05 · Дорожная карта</div>
+        <h2>Сначала роль и разговоры, потом голос и сигналы</h2>
+        <p class="lead">Порядок задаёт риск. Первой идёт архитектура доступа, потому что ошибка в ней открывает зарплаты. Затем ежедневная работа HR: 1:1, заметки, карточка, жизненный цикл. И только потом слушание и сигналы, которым нужно доверие команды и работающие пороги анонимности.</p>
+      </div>
+      <div class="road">
+        <div class="phase mvp">
+          <div class="ph"><span class="pri p1">Этап 1</span><h3>MVP</h3></div>
+          <p class="why">23 функции, из них 6 новых. Роль HR не получает логин, пока не готов запрет финансов.</p>
+          <div class="pkg"><b>Правовая база</b><p>DPIA, privacy notice для команды, договор с HR, IDTA и оценка рисков передачи, если HR работает из-за пределов UK; политика сроков хранения.</p></div>
+          <div class="pkg"><b>Роль и запрет финансов</b><p>Отдельная роль HR с узкими правами (смотреть и вести людей, заметки, аналитика без денег), свой закрытый раздел, запрет на сервере, ответы без денежных полей, автотест, двухфакторная аутентификация, журнал чтения, свой список запретов для AI-поиска.</p><a class="go" href="index.html#access">в прототипе →</a></div>
+          <div class="pkg"><b>Карточка 360, первая версия</b><p>Единый вид человека вместо двух разрозненных записей, поле «руководитель», люди без смен, вкладки по правам.</p><a class="go" href="index.html#person/mila">в прототипе →</a></div>
+          <div class="pkg"><b>1:1 и заметки</b><p>Серии с каденцией, повестка с шаблоном и автопереносом, договорённости → задачи, приватная и общая части, HR-заметки с 4 уровнями видимости, реальный процент проведённых 1:1.</p><a class="go" href="index.html#oneonones">в прототипе →</a></div>
+          <div class="pkg"><b>Открыть то, что есть</b><p>Планы развития и черновики, обучение (журнал, матрица, назначение), kudos и признание, eNPS с порогом 5 и распределением, политики через объявления.</p><a class="go" href="index.html#growth">в прототипе →</a></div>
+          <div class="pkg"><b>Жизненный цикл</b><p>Испытательный срок с напоминанием до 6-месячной отметки, онбординг 30/60/90, офбординг с причиной ухода вместо удаления, справочник отсутствий и остатки.</p><a class="go" href="index.html#lifecycle">в прототипе →</a></div>
+          <div class="pkg"><b>HR-дашборд, первая версия</b><p>Численность, стаж, уходы за 12 месяцев в штуках, 1:1 и планы развития, обучение в срок, отсутствия – всё без денег.</p><a class="go" href="index.html#analytics">в прототипе →</a></div>
+        </div>
+        <div class="phase">
+          <div class="ph"><span class="pri p2">Этап 2</span><h3>Следующий шаг</h3></div>
+          <p class="why">Подготовка к разговору, развитие, голос команды, сигналы и комплаенс.</p>
+          <div class="pkg"><b>Подготовка к разговору</b><p>Автоконтекст в повестке, AI-бриф со ссылками, заметка «в моменте» из приложения (голос, фото, смена), лента событий.</p><a class="go" href="index.html#askhr">в прототипе →</a></div>
+          <div class="pkg"><b>Развитие</b><p>Треки флориста, курьера, менеджера и разработчика; единая шкала навыков 1–5; подтверждение навыка с фото; связь «курс → навык»; квартальный чек-ин с Keeper Test.</p><a class="go" href="index.html#growth">в прототипе →</a></div>
+          <div class="pkg"><b>Голос команды</b><p>Стартовый опрос и повтор через 3 месяца, микропульс, отметка после смены, «вы сказали → мы сделали», авто-праздники, способ признания.</p><a class="go" href="index.html#pulse">в прототипе →</a></div>
+          <div class="pkg"><b>Сигналы</b><p>Опоздания и неявки, нагрузка, светофор правил, ежемесячный People-апдейт основателю.</p><a class="go" href="index.html#analytics">в прототипе →</a></div>
+          <div class="pkg"><b>Комплаенс</b><p>RTW для всех, документы с папками и сроками, больничный с fit note и встречей после возвращения, статус занятости с обоснованием, выгрузка по DSAR, автоудаление, экстренный доступ.</p><a class="go" href="index.html#lifecycle">в прототипе →</a></div>
+        </div>
+        <div class="phase">
+          <div class="ph"><span class="pri p3">Этап 3</span><h3>Позже</h3></div>
+          <p class="why">То, что требует доверия, согласий или редко нужно команде из 25 человек.</p>
+          <div class="pkg"><b>AI второго круга</b><p>Конспект созвонов удалённой команды с согласием, сводки комментариев (от 10), «спроси текстом», черновик ревью с источниками.</p></div>
+          <div class="pkg"><b>Редкие процессы</b><p>ER-кейсы по Кодексу ACAS, анонимный диалог, AI-уроки из SOP, мягкое предупреждение о навыках в графике, история изменений полей.</p></div>
+        </div>
+      </div>
+
+      <h3 class="sub">Что не строим</h3>
+      <ul class="dont">
+        <li><span><b>ML-скоринг риска ухода</b> – вендорам нужны 24 месяца истории и группы от 25 человек.</span></li>
+        <li><span><b>Калибровку и сетку 9-box</b> – для 25 человек хватит доски «все оценки рядом».</span></li>
+        <li><span><b>Публичные лидерборды</b> скорости и выработки.</span></li>
+        <li><span><b>Денежные баллы</b> в зоне HR.</span></li>
+        <li><span><b>Анализ тональности и эмоций.</b></span></li>
+        <li><span><b>Обязательные опросы</b>, блокирующие доступ к системе.</span></li>
+        <li><span><b>Еженедельный пульс</b> по умолчанию.</span></li>
+        <li><span><b>Обязательный peer-360.</b></span></li>
+        <li><span><b>Индекс Брэдфорда</b> как повод для санкций.</span></li>
+        <li><span><b>Взыскания и объяснительные</b> в руках People Partner.</span></li>
+      </ul>
+    </section>
+
+    <!-- 06 -->
+    <section id="resheniya">
+      <div class="sec-h">
+        <div class="eyebrow">06 · Решения для основателя</div>
+        <h2>Семь открытых вопросов</h2>
+        <p class="lead">Отчёт предлагает вариант по каждому, но решение – за основателем. Первый вопрос нужно закрыть до выдачи доступа.</p>
+      </div>
+      <ol class="dec">
+        <li><div><h4>Где и в каком статусе работает HR</h4><p class="opt">В UK или в стране вне списка adequacy UK; подрядчик-обработчик или лицо под контролем компании.</p></div><div class="prop"><span class="eyebrow">Предложение</span>Если HR работает вне UK – IDTA или Addendum и оценка рисков передачи до выдачи доступа; статус подрядчика решить с юристом.</div></li>
+        <li><div><h4>Видит ли админ HR-заметки</h4><p class="opt">По умолчанию «HR и админ» или только через экстренный доступ.</p></div><div class="prop"><span class="eyebrow">Предложение</span>«HR и админ» по умолчанию, заметки «только я» – через экстренный доступ с журналом.</div></li>
+        <li><div><h4>Пограничные денежные поля</h4><p class="opt">Показать HR или скрыть тир флориста, ожидаемую ставку кандидата, текст договора со ставкой.</p></div><div class="prop"><span class="eyebrow">Предложение</span>Скрыть; уровень мастерства вести в треках развития.</div></li>
+        <li><div><h4>Копии RTW и fit note</h4><p class="opt">HR видит копии документов или только статус и даты.</p></div><div class="prop"><span class="eyebrow">Предложение</span>HR видит копии в конфиденциальной папке; руководитель и AI – нет.</div></li>
+        <li><div><h4>Доступ линейного руководителя</h4><p class="opt">Видит ли руководитель уровень «HR и руководитель»; кто руководитель у удалённых сотрудников.</p></div><div class="prop"><span class="eyebrow">Предложение</span>Видит только своих людей; руководителей удалённых сотрудников назначить явно.</div></li>
+        <li><div><h4>Сроки хранения</h4><p class="opt">Рутинные 1:1 – 2 года или всё – 6 лет после ухода.</p></div><div class="prop"><span class="eyebrow">Предложение</span>1:1 – 2 года, ER-кейсы и личное дело – 6 лет, отпуска – не меньше 6 лет.</div></li>
+        <li><div><h4>Оплата времени на опросы и отметки</h4><p class="opt">Считать это время рабочим временем смены или нет.</p></div><div class="prop"><span class="eyebrow">Предложение</span>Оплачивать, иначе сотрудники с почасовой оплатой не отвечают. Это решение про деньги, оно за основателем.</div></li>
+      </ol>
+    </section>
+
+    <!-- 07 -->
+    <section id="istochniki">
+      <div class="sec-h">
+        <div class="eyebrow">07 · Источники</div>
+        <h2>На чём основан отчёт</h2>
+        <p class="lead" id="srcLead">Документация и релизы вендоров, первоисточники права и регуляторов, исследования и отзывы пользователей. Все ссылки открываются в новой вкладке.</p>
+      </div>
+      <div class="srcs" id="srcs"></div>
+    </section>
+
+    <footer>
+      <span>Floritta · HR в CRM · исследование от 11 ноября 2026</span>
+      <a href="index.html">Интерактивный прототип</a>
+      <a href="#top">Наверх</a>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+var AREAS=[
+  {k:'people',t:'Люди и карточка 360'},
+  {k:'oneonone',t:'1:1'},
+  {k:'notes',t:'Заметки и записи'},
+  {k:'growth',t:'Развитие: PDP, треки, навыки'},
+  {k:'reviews',t:'Ревью'},
+  {k:'pulse',t:'Пульс, eNPS, признание'},
+  {k:'analytics',t:'Аналитика и сигналы'},
+  {k:'ai',t:'AI-помощник'},
+  {k:'lifecycle',t:'Жизненный цикл'},
+  {k:'access',t:'Доступы и приватность'}
+];
+var BASE={yes:{t:'Есть',c:'ok'},part:{t:'Частично',c:'warn'},no:{t:'Нет',c:'bad'}};
+var PRI={mvp:{t:'MVP',c:'p1'},next:{t:'Следующий шаг',c:'p2'},later:{t:'Позже',c:'p3'},never:{t:'Не строить',c:'p4'}};
+var SCREENS={'home':'HR-центр','people':'Люди','person/mila':'Карточка 360','oneonones':'1:1','growth':'Развитие','reviews':'Ревью и испытательный срок','pulse':'Пульс и признание','lifecycle':'Жизненный цикл','analytics':'Аналитика людей','askhr':'AI-помощник','access':'Доступы','employee':'Приложение сотрудника'};
+
+/* a – область, n – функция, w – что делает, b – у кого лучше (ссылки в виде [текст](url)), s – база, sn – пояснение, p – приоритеты, pn – уточнение, scr – экран прототипа */
+var F=[
+ {a:'people',n:'Карточка сотрудника 360',w:'Одна страница человека: работа, смены, задачи, обучение, развитие, признание, 1:1 и заметки; вкладка видна только при праве',b:'Odoo 19 – карточка-хаб с вкладками по приложениям и правам ([Odoo](https://www.odoo.com/documentation/19.0/applications/hr/employees/new_employee.html))',s:'part',sn:'Человек описан в двух местах, и связь между ними бывает пустой; экран «Люди» открыт только админу',p:['mvp'],scr:'person/mila'},
+ {a:'people',n:'Лента событий',w:'Хронология: найм, смена роли и контура, уроки, похвалы, 1:1, отсутствия без диагнозов, договоры',b:'HiBob – история с датой вступления в силу ([HiBob](https://apidocs.hibob.com/docs/additional-employee-data))',s:'no',sn:'Экрана нет, хотя сами события в CRM уже записываются',p:['next'],scr:'person/mila'},
+ {a:'people',n:'Люди вне магазина и руководитель',w:'Карточка для удалённых разработчиков и консультантов без смен; поля «руководитель» и «закреплённый People Partner»',b:'Humaans – запросы идут на People Partner из поля профиля ([Humaans](https://humaans.io/product-releases-2025))',s:'part',sn:'Профиль человека без смен почти пустой, поля «руководитель» нет',p:['mvp'],scr:'people'},
+ {a:'people',n:'Статус занятости с обоснованием',w:'Employee, worker или self-employed: кто, когда и почему определил; история изменений',b:'GOV.UK – статус определяется реальностью отношений, а не ярлыком ([GOV.UK](https://www.gov.uk/government/publications/employment-status-and-employment-rights/employment-status-and-rights-checklist-for-employers-and-other-engagers))',s:'part',sn:'Тип занятости и контур есть, но без даты и причины; изменения уже попадают в аудит',p:['next'],scr:'person/mila'},
+
+ {a:'oneonone',n:'Серия 1:1 с каденцией',w:'Регулярные встречи, одно напоминание в день встречи, перенос без ложных уведомлений, пауза после 3 пропусков, реальный процент проведённых',b:'Lattice Meetings ([Lattice](https://lattice.com/blog/october-2026-product-updates)); автопауза – Zoho People ([Zoho](https://zstatic.zohostatic.com/people/whats-new.html))',s:'part',sn:'Есть даты последней и следующей встречи и одна заметка; нужны создание встреч и честный процент проведённых вместо заглушки',p:['mvp'],scr:'oneonones'},
+ {a:'oneonone',n:'Общая повестка и автоперенос',w:'Шаблон вопросов, темы от обеих сторон заранее, незакрытые пункты переезжают на следующую встречу',b:'Small Improvements ([SI](https://www.small-improvements.com/release-notes/)); Leapsome ([Leapsome](https://leapsome.com/product/meetings))',s:'no',sn:'',p:['mvp'],scr:'oneonones'},
+ {a:'oneonone',n:'Договорённости → задачи',w:'Пункт 1:1 становится задачей с исполнителем и сроком, её статус виден в следующей повестке',b:'15Five Kona ([15Five](https://success.15five.com/hc/en-us/articles/36196491046043))',s:'part',sn:'Задачи с приёмкой уже есть, нужна только связь с 1:1',p:['mvp'],scr:'oneonones'},
+ {a:'oneonone',n:'Приватная и общая части',w:'Общие заметки видят оба участника; запись «только я» не видит никто, включая админа',b:'Small Improvements ([SI](https://help.small-improvements.com/hc/en-us/articles/209566929-Private-Notes-)); 15Five ([15Five](https://success.15five.com/hc/en-us/articles/50988120900507))',s:'no',sn:'У встречи одно общее поле заметки',p:['mvp'],scr:'oneonones'},
+ {a:'oneonone',n:'Автоконтекст в повестке',w:'Что было с прошлой встречи: kudos, отзывы клиентов, закрытые цели плана развития, пропуски смен, просроченные уроки',b:'Small Improvements (09.02.2026); Culture Amp ([Culture Amp](https://www.cultureamp.com/blog/whats-new-culture-amp-may-2025))',s:'no',sn:'Функции нет, но все данные уже в CRM: баллы, похвалы из отзывов Google, цели развития, табель',p:['next'],scr:'oneonones'},
+ {a:'oneonone',n:'AI-конспект созвона',w:'Для удалённых сотрудников: темы, договорённости, повестка; аудио не хранится, транскрипт недоступен людям',b:'15Five Kona ([15Five](https://success.15five.com/hc/en-us/articles/36196491046043)); Leapsome – встроенное согласие',s:'no',sn:'',p:['later'],scr:'oneonones'},
+
+ {a:'notes',n:'HR-заметки с видимостью',w:'Категория, 4 уровня видимости, вложения; править может только автор, понижать приватность нельзя',b:'Eddy ([Eddy](https://eddy.com/support/performance-notes-admin-notes/)); Flare HR ([Flare](https://support.flarehr.com/hc/en-us/articles/900002548183))',s:'no',sn:'Заметки сейчас есть только у кандидатов и фриланс-курьеров',p:['mvp'],scr:'person/mila'},
+ {a:'notes',n:'Заметка «в моменте»',w:'С телефона: текст или голос, до 5 фото, привязка к смене или заказу, теги, флажок «показать сотруднику»',b:'Deputy Performance Notes ([Deputy](https://whatsnew.deputy.com/performance-notes---captured-in-the-moment-on-the-floor-464V9K))',s:'no',sn:'Опора есть: график смен, вложения в задачах, приложение Floritta Team',p:['next'],scr:'person/mila'},
+ {a:'notes',n:'ER-кейсы по Кодексу ACAS',w:'Дисциплинарка и жалобы по шагам Кодекса, таймеры, шаблоны писем, апелляция у другого менеджера',b:'В SMB-системах нет, только специализированные ([Workpro](https://www.g2.com/products/workpro-hr-case-management/discuss)); шаги – Кодекс ([Acas](https://www.acas.org.uk/acas-code-of-practice-for-disciplinary-and-grievance-procedures/html))',s:'no',sn:'',p:['later'],scr:''},
+
+ {a:'growth',n:'План развития (PDP)',w:'До 3 целей с мерой успеха и сроком, согласование, check-in',b:'Culture Amp Develop ([Culture Amp](https://www.cultureamp.com/blog/whats-new-perform-2026-q3))',s:'yes',sn:'Планы, цели, check-in и экран наставника работают; открыть HR',p:['mvp'],scr:'growth'},
+ {a:'growth',n:'Черновик плана и сигналы',w:'Машинный черновик плана и «что заметили системы» с доказательствами; утверждает человек',b:'Lattice – Growth Areas ([Lattice](https://lattice.com/blog/march-2026-product-updates))',s:'yes',sn:'Квартальный машинный черновик и сигналы с доказательствами уже работают',p:['mvp'],scr:'growth'},
+ {a:'growth',n:'Карьерные треки',w:'Трек → 3–4 уровня → 5–8 компетенций → ожидания; «где я» подсвечено',b:'Lattice Grow ([Lattice](https://help.lattice.com/hc/en-us/articles/360061200073)); двойной трек – Employment Hero ([Employment Hero](https://employmenthero.com/en-ca/resources/career-progression-plan-template-for-retail/))',s:'no',sn:'Тир флориста 1–4 – денежная лестница, а не лестница мастерства',p:['next'],scr:'growth'},
+ {a:'growth',n:'Единая матрица навыков',w:'Шкала 1–5 от «нет опыта» до «обучает других»; видны пустые клетки и навыки с одним носителем',b:'Шкала Whatfix ([Whatfix](https://whatfix.com/blog/skill-matrix/)); Deputy ([Deputy](https://www.deputy.com/help/adding-training-requirements/))',s:'part',sn:'Навыки живут в трёх несвязанных местах: HR-матрица 0–3, станции с отметкой «может обучать», замер знаний',p:['next'],scr:'growth'},
+ {a:'growth',n:'Подтверждение навыка с фото',w:'Старший проверяет на рабочем месте: чек-лист, обязательное фото, «засчитано / ещё раз»; пройденный курс предлагает поднять уровень навыка',b:'Opus Check-ins ([Opus](https://help.opus.so/en/articles/15465175-getting-started-skill-validation)); Zoho – обучение обновляет профиль ([Zoho](https://zstatic.zohostatic.com/people/whats-new.html))',s:'part',sn:'Есть наблюдение наставника и фото букетов в заказах; связи «урок → навык» нет',p:['next'],scr:'growth'},
+ {a:'growth',n:'Обучение и сертификаты',w:'Назначение уроков, сроки, сертификаты с истечением, журнал подписанных уроков, напарник',b:'Mitti ([Mitti](https://mitti.com/training)); Connecteam ([Connecteam](https://connecteam.com/employee-training-software/))',s:'yes',sn:'Уроки, журнал, согласия, напарник и истечение сертификатов работают; дать доступ HR',p:['mvp'],scr:'growth'},
+ {a:'growth',n:'AI-урок из SOP',w:'Черновик урока и квиза из SOP или брендбука, человек правит; русский и английский',b:'Axonify Co-Creator ([Axonify](https://axonify.com/news/co-creator-an-ai-solution/))',s:'part',sn:'Переводы уроков есть, генерации нет',p:['later'],scr:''},
+
+ {a:'reviews',n:'Квартальный чек-ин и Keeper Test',w:'4–6 вопросов самооценки и оценки руководителя с телефона; самооценка скрыта до «поделиться»; сотруднику – «вижу себя здесь через 2 года», руководителю – «стал бы удерживать?»',b:'Odoo – тумблеры Private / Shared ([Odoo](https://www.odoo.com/documentation/19.0/applications/hr/appraisals/new_appraisals.html)); Culture Amp – намерение остаться ([Culture Amp](https://support.cultureamp.com/en/articles/7916907-retention-insights))',s:'part',sn:'Самооценка есть только в замере знаний',p:['next'],scr:'reviews'},
+ {a:'reviews',n:'AI-черновик ревью',w:'Черновик из 1:1, плана развития, похвал и задач, у каждой фразы источник; рейтинг и отправка – только за человеком',b:'Lattice ([Lattice](https://lattice.com/blog/lattice-spring-summer-2026-product-release))',s:'no',sn:'',p:['later'],scr:'reviews'},
+ {a:'reviews',n:'Калибровка и 9-box',w:'Авто-группы, выбросы, сетка 9-box',b:'Lattice, Small Improvements ([SI](https://www.small-improvements.com/release-notes/))',s:'no',sn:'Для 25 человек хватит доски «все оценки рядом»',p:['never'],scr:''},
+
+ {a:'pulse',n:'eNPS раз в квартал',w:'Анонимный балл с комментарием, участие хранится отдельно от ответа, показывается распределение вместо одной цифры',b:'Officevibe ([Workleap](https://help.workleap.com/en/articles/10281743-workleap-officevibe-team-manager-faq))',s:'yes',sn:'Опрос работает, ответ технически не связан с человеком',p:['mvp'],scr:'pulse'},
+ {a:'pulse',n:'Порог анонимности',w:'Порог 5 для баллов и комментариев, сильная защита срезов, настройки замораживаются при запуске',b:'Culture Amp ([Culture Amp](https://support.cultureamp.com/en/articles/7048386-confidentiality-protections-in-reporting))',s:'part',sn:'Ответы отделены от участия, но порога и правил для срезов нет',p:['mvp'],scr:'pulse'},
+ {a:'pulse',n:'Пульс с банком вопросов',w:'Стартовый опрос около 20 вопросов, повтор через 3 месяца, ежемесячный микропульс на 3–5 вопросов, версии формулировок',b:'Culture Amp ([Culture Amp](https://support.cultureamp.com/en/articles/7048333-guide-to-culture-amp-engagement-questions-and-alternatives)); Peakon 26R1 ([Workday](https://doc.workday.com/peakon/en-us/workday-peakon-employee-voice/surveys/survey-questions/reference--26r1-question-library-refresh.html))',s:'no',sn:'',p:['next'],scr:'pulse'},
+ {a:'pulse',n:'Отметка после смены',w:'После окончания смены или маршрута – шкала из 4–5 значков, необязательно, видны только агрегаты',b:'7shifts ([7shifts](https://kb.7shifts.com/hc/en-us/articles/4417519785875)); Deputy Shift Pulse+ ([IT Brief](https://itbrief.com.au/story/deputy-launches-shift-pulse-to-boost-worker-engagement-insight))',s:'no',sn:'Поводы для запуска уже есть: отметка ухода в табеле и смены курьеров',p:['next'],scr:'employee'},
+ {a:'pulse',n:'«Вы сказали → мы сделали»',w:'План «тема → шаг → владелец → срок» и публикация итогов; позже – анонимный диалог с задержкой уведомлений',b:'Leapsome ([Leapsome](https://www.leapsome.com/product/ai-recommendations)); Peakon ([Workday](https://doc.workday.com/peakon/en-us/workday-peakon-employee-voice/surveys/answering-surveys/faq--if-it-s-confidential--why-do-i-receive-commen.html))',s:'part',sn:'Итоги можно публиковать объявлением с подтверждением прочтения',p:['next','later'],pn:'итоги – следующий шаг, диалог – позже',scr:'pulse'},
+ {a:'pulse',n:'Признание коллег',w:'«Спасибо» с обязательным «за что» и ценностью компании, бейдж в профиле, без денег',b:'Kudos ([SelectHub](https://www.selecthub.com/employee-recognition-software/kudos-vs-bonusly/)); Bitrix24 ([Bitrix24](https://helpdesk.bitrix24.com/open/18411100))',s:'yes',sn:'Kudos, признание от менеджера, бейджи и «Моя неделя» без сравнения с коллегами работают',p:['mvp'],scr:'pulse'},
+ {a:'pulse',n:'Авто-праздники и способ признания',w:'День рождения без года, годовщина работы и приход новичка в ленте с возможностью отказаться; поле «как меня благодарить»',b:'Bonusly ([Bonusly](https://help.bonus.ly/en/articles/466903-celebrations)); Workhuman ([Workhuman](https://www.workhuman.com/blog/recognition-done-right-the-key-to-employee-engagement-and-retention/))',s:'part',sn:'Дни рождения, дата найма и «дни заботы» уже есть',p:['next'],scr:'pulse'},
+
+ {a:'analytics',n:'HR-дашборд без денег',w:'Численность по контурам, найм и уходы за 12 месяцев в штуках, стаж, процент проведённых 1:1, покрытие планами развития, обучение, отсутствия',b:'Personio Assistant ([Personio](https://www.personio.com/blog/personio-assistant/))',s:'part',sn:'Аналитика по сотрудникам и рабочему времени смешана с деньгами, текучесть пока заглушка',p:['mvp'],scr:'analytics'},
+ {a:'analytics',n:'Пунктуальность и неявки',w:'Опоздания, ранние уходы, неявки, отказы от смен в сравнении с собственной нормой',b:'7shifts Engage ([7shifts](https://www.7shifts.com/employee-engagement/))',s:'no',sn:'Расчёта нет, но план смен, окна смен, факт табеля и отказы уже в CRM',p:['next'],scr:'analytics'},
+ {a:'analytics',n:'Нагрузка',w:'Часы сверх плана несколько недель подряд, серии без выходного, отдых между сменами меньше 11 часов, сезонные пики',b:'Viva Insights ([Microsoft](https://learn.microsoft.com/tr-tr/viva/insights/introduction))',s:'part',sn:'Табель и учёт активности уже считают время',p:['next'],scr:'analytics'},
+ {a:'analytics',n:'Уходы и удержание',w:'Последний день, причина, exit- и stay-интервью, текучесть за скользящие 12 месяцев, удержание по когортам найма',b:'Culture Amp Retention Insights ([Culture Amp](https://support.cultureamp.com/en/articles/7916907-retention-insights))',s:'part',sn:'Есть только дата ухода и отметка «активен»; нужен архив вместо удаления',p:['mvp'],scr:'analytics'},
+ {a:'analytics',n:'Светофор сигналов',w:'0–3 названных сигнала с датой и ссылкой на данные, видит только HR, итогового балла нет',b:'Culture Amp ([Culture Amp](https://support.cultureamp.com/en/articles/15515532-msi-insight-turnover-risk-early-access)); Gloat ([Gloat](https://gloat.com/academy/flight-risk-pattern-not-score/))',s:'part',sn:'Есть сигналы развития и еженедельный AI-разбор работы курьеров',p:['next'],scr:'analytics'},
+
+ {a:'ai',n:'Бриф перед 1:1',w:'Страница за 30 или 90 дней: смены, задачи, обучение, похвалы и жалобы, прошлые договорённости – всё со ссылками',b:'Lattice ([Lattice](https://lattice.com/blog/june-2026-product-updates))',s:'part',sn:'Есть сигналы развития и еженедельная повестка разговора по курьерам',p:['next'],scr:'askhr'},
+ {a:'ai',n:'People-апдейт и сводки комментариев',w:'Ежемесячный текст основателю по агрегатам; сводка комментариев опросов – только если их не меньше 10',b:'Glint Copilot ([Microsoft](https://learn.microsoft.com/en-us/viva/glint/setup/copilot-privacy))',s:'no',sn:'',p:['next','later'],pn:'апдейт – следующий шаг, сводки – позже',scr:'askhr'},
+ {a:'ai',n:'«Спроси текстом»',w:'Вопрос словами → график и проверяемый запрос в пределах прав HR',b:'Rippling ([CPA Practice Advisor](https://www.cpapracticeadvisor.com/2026/07/01/rippling-introduces-data-cloud/186024/)); Zoho Zia ([Zoho](https://zstatic.zohostatic.com/people/whats-new.html))',s:'part',sn:'AI-поиск по CRM уже есть и закрывает HR-данные от всех; для роли HR нужен свой список запретов – финансы',p:['later'],scr:'askhr'},
+
+ {a:'lifecycle',n:'Онбординг 30/60/90',w:'Чек-лист с ответственными, стартует от подписания договора: уроки, напарник, встречи на 30, 60 и 90 день',b:'HiBob Task Lists ([HiBob](https://www.hibob.com/guides/hr-process-automation-using-task-lists))',s:'part',sn:'Есть автоназначение уроков новичку, напарник, онбординг резерва и туры по приложению',p:['mvp'],scr:'lifecycle'},
+ {a:'lifecycle',n:'Испытательный срок',w:'Дата окончания ставится при создании профиля; вехи; напоминание за 2–4 недели до 6 месяцев; решение с обоснованием',b:'Culture Amp Probation Reviews ([Culture Amp](https://www.cultureamp.com/blog/whats-new-perform-2026-q3)); Humaans Milestone Reviews ([Humaans](https://humaans.io/product-releases-2025))',s:'no',sn:'',p:['mvp'],scr:'reviews'},
+ {a:'lifecycle',n:'Офбординг',w:'Последний день, причина, отключение доступов, разговор при уходе, архив вместо удаления',b:'CharlieHR ([CharlieHR](https://charliehr.com/product))',s:'part',sn:'Отметка об уходе есть; удаление человека нужно заменить архивом',p:['mvp'],scr:'lifecycle'},
+ {a:'lifecycle',n:'Кадровые документы',w:'Папки «Общие» (видит сотрудник) и «Конфиденциальные» (только HR и админ), дата истечения с напоминанием, электронная подпись',b:'HiBob ([HiBob](https://apidocs.hibob.com/docs/explore-docs-api.md)); BrightHR ([BrightHR](https://www.brighthr.com/blog/all-things-bright/just-released-brighthr-s-new-automatic-document-reminders/))',s:'part',sn:'Договоры с подписью и напоминание об их окончании уже есть',p:['next'],scr:'lifecycle'},
+ {a:'lifecycle',n:'Right to work для всех',w:'Способ и дата проверки, кто проверял, срок разрешения → повторная проверка; хранение «срок работы + 2 года»',b:'Правила Home Office в разборе Morgan Lewis ([Morgan Lewis](https://www.morganlewis.com/pubs/2026/08/expansion-of-uk-right-to-work-rules-part-3-digital-verification-identity-matching-and-onboarding))',s:'part',sn:'Проверка ведётся только у курьеров, кандидатов и резерва',p:['next'],scr:'lifecycle'},
+ {a:'lifecycle',n:'Типы отсутствий и остатки',w:'Справочник типов, остаток в днях, записи 6 лет, проверка покрытия смен при одобрении',b:'CharlieHR ([CharlieHR](https://charliehr.com/product))',s:'part',sn:'Пока учитывается только отпуск, остаток не считается',p:['mvp'],scr:'lifecycle'},
+ {a:'lifecycle',n:'Больничный и возвращение',w:'Самосертификация до 7 дней, fit note, встреча после возвращения, поэтапный выход; индекс Брэдфорда только для справки, с исключениями',b:'Breathe ([Breathe](https://www.breathehr.com/hr-software/sickness-monitoring-system)); BrightHR ([BrightHR](https://www.brighthr.com/articles/leave-and-absence/the-bradford-factor/))',s:'no',sn:'',p:['next'],scr:'lifecycle'},
+ {a:'lifecycle',n:'Политики с подтверждением',w:'Политика против домогательств и handbook с отметкой «прочитал», тренинг',b:'Trainual – подпись с датой ([Trainual](https://trainual.com/manual/trainual-vs-sweetprocess))',s:'yes',sn:'Объявления с подтверждением прочтения и уроки с декларацией и подписью работают',p:['mvp'],scr:'lifecycle'},
+
+ {a:'access',n:'Роль HR и узкие права на людей',w:'Отдельная роль со своим охватом; доступ к данным людей без доступа к настройкам',b:'Workday HR Partner ([Workday](https://doc.workday.com/workday-education/en-us/course-manuals/security-for-administrators/choosing-the-right-security-group-type.html)); Odoo 19 Officer ([Odoo](https://www.odoo.com/odoo-19-release-notes))',s:'no',sn:'Кадровой роли нет; образец – уже работающий закрытый раздел бухгалтера',p:['mvp'],scr:'access'},
+ {a:'access',n:'Жёсткий запрет финансов',w:'Запрет на сервере поверх всех прав, денежные поля вырезаются до отправки в браузер, автотест на отказ',b:'Workday ([Workday](https://doc.workday.com/workday-education/en-us/course-manuals/security-for-administrators/segment-based-security.html)); HiBob ([HiBob](https://apidocs.hibob.com/docs/categories-and-permissions))',s:'no',sn:'Сегодня деньги встроены в «Людей», «Мотивацию», график и аналитику по сотрудникам',p:['mvp'],scr:'access'},
+ {a:'access',n:'Журнал просмотров и экстренный доступ',w:'Журнал чтения, который нельзя править, блок «Кто смотрел», экстренный доступ с причиной на 24 часа',b:'Lattice ([Lattice](https://help.lattice.com/hc/en-us/articles/40772175958807-Lattice-AI-Agent-in-1-1s-Privacy))',s:'part',sn:'Действия с кадровыми данными уже пишутся в аудит, просмотры – нет',p:['mvp','next'],pn:'журнал – MVP, экстренный доступ – следующий шаг',scr:'access'},
+ {a:'access',n:'DSAR и сроки хранения',w:'Выгрузка «всё о сотруднике» за минуты с закраской данных третьих лиц; автоудаление по категориям',b:'ICO ([ICO](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/employment/subject-access-request-q-and-as-for-employers))',s:'part',sn:'Автоанонимизация кандидатов через 36 месяцев уже работает',p:['next'],scr:'access'}
+];
+
+var SRC=[
+ {g:'Вендоры HR-систем',items:[
+  ['Lattice',[['обновления июня 2026','https://lattice.com/blog/june-2026-product-updates'],['обновления октября 2026','https://lattice.com/blog/october-2026-product-updates'],['обновления марта 2026','https://lattice.com/blog/march-2026-product-updates'],['релиз весна–лето 2026','https://lattice.com/blog/lattice-spring-summer-2026-product-release'],['карьерные треки','https://help.lattice.com/hc/en-us/articles/360061200073'],['анонимность опросов','https://help.lattice.com/hc/en-us/articles/360061207493-Anonymity-in-Surveys-Pulse'],['Employee Health и прогноз ухода','https://lattice.com/articles/how-lattices-employee-health-score-predicts-turnover'],['приватность AI в 1:1','https://help.lattice.com/hc/en-us/articles/40772175958807-Lattice-AI-Agent-in-1-1s-Privacy']]],
+  ['Culture Amp',[['новое, май 2025','https://www.cultureamp.com/blog/whats-new-culture-amp-may-2025'],['Perform, III квартал 2026','https://www.cultureamp.com/blog/whats-new-perform-2026-q3'],['вопросы вовлечённости','https://support.cultureamp.com/en/articles/7048333-guide-to-culture-amp-engagement-questions-and-alternatives'],['защита конфиденциальности в отчётах','https://support.cultureamp.com/en/articles/7048386-confidentiality-protections-in-reporting'],['риск ухода','https://support.cultureamp.com/en/articles/15515532-msi-insight-turnover-risk-early-access'],['Retention Insights','https://support.cultureamp.com/en/articles/7916907-retention-insights']]],
+  ['15Five',[['Kona: приватность','https://success.15five.com/hc/en-us/articles/36196491046043'],['приватные заметки 1:1','https://success.15five.com/hc/en-us/articles/50988120900507']]],
+  ['Leapsome',[['встречи 1:1','https://leapsome.com/product/meetings'],['AI-рекомендации','https://www.leapsome.com/product/ai-recommendations']]],
+  ['Small Improvements',[['release notes','https://www.small-improvements.com/release-notes/'],['приватные заметки','https://help.small-improvements.com/hc/en-us/articles/209566929-Private-Notes-']]],
+  ['Zoho',[['Zoho People: что нового','https://zstatic.zohostatic.com/people/whats-new.html'],['интеграция Zoho CRM и People','https://help.zoho.com/portal/en/kb/people/administrator-guide/marketplace/zoho-integrations/articles/zoho-crm-integration-with-zoho-people']]],
+  ['Personio',[['права доступа','https://support.personio.de/hc/en-us/articles/360000038205-Permissions'],['Personio Assistant','https://www.personio.com/blog/personio-assistant/'],['сообщество: права ИТ-админа','https://community.personio.com/employee-roles-approvals-88/limit-access-it-administrator-to-employee-details-587']]],
+  ['HiBob',[['история данных сотрудника','https://apidocs.hibob.com/docs/additional-employee-data'],['чек-листы процессов','https://www.hibob.com/guides/hr-process-automation-using-task-lists'],['документы','https://apidocs.hibob.com/docs/explore-docs-api.md'],['категории и права','https://apidocs.hibob.com/docs/categories-and-permissions']]],
+  ['Odoo',[['ревью в Odoo 19','https://www.odoo.com/documentation/19.0/applications/hr/appraisals/new_appraisals.html'],['карточка сотрудника','https://www.odoo.com/documentation/19.0/applications/hr/employees/new_employee.html'],['Odoo 19 release notes','https://www.odoo.com/odoo-19-release-notes'],['курс eLearning → резюме (OCB)','https://git.coopdevs.org/coopdevs/odoo/OCB/-/commit/6e9d7615604f18db8972270de7baa32bcd842b9b']]],
+  ['Workday',[['Peakon: библиотека вопросов 26R1','https://doc.workday.com/peakon/en-us/workday-peakon-employee-voice/surveys/survey-questions/reference--26r1-question-library-refresh.html'],['Peakon: ответы на анонимные комментарии','https://doc.workday.com/peakon/en-us/workday-peakon-employee-voice/surveys/answering-surveys/faq--if-it-s-confidential--why-do-i-receive-commen.html'],['типы групп безопасности','https://doc.workday.com/workday-education/en-us/course-manuals/security-for-administrators/choosing-the-right-security-group-type.html'],['сегментная безопасность','https://doc.workday.com/workday-education/en-us/course-manuals/security-for-administrators/segment-based-security.html'],['ограничения групп безопасности','https://doc.workday.com/workday-education/en-us/course-manuals/security-for-administrators/security-group-configuration-and-constraints.html']]],
+  ['Microsoft',[['Viva Glint: приватность Copilot','https://learn.microsoft.com/en-us/viva/glint/setup/copilot-privacy'],['Viva Insights','https://learn.microsoft.com/tr-tr/viva/insights/introduction']]],
+  ['Deputy',[['заметки «в моменте»','https://whatsnew.deputy.com/performance-notes---captured-in-the-moment-on-the-floor-464V9K'],['требования к обучению','https://www.deputy.com/help/adding-training-requirements/']]],
+  ['7shifts',[['опрос после смены','https://kb.7shifts.com/hc/en-us/articles/4417519785875'],['Engage','https://www.7shifts.com/employee-engagement/']]],
+  ['BambooHR',[['кастомные уровни доступа','https://bamboohr.screenstepslive.com/m/53910/l/1975478-creating-custom-access-levels-and-use-cases'],['несколько уровней доступа','https://bamboohr.screenstepslive.com/m/53910/l/587874-assign-a-user-to-multiple-access-levels']]],
+  ['BrightHR',[['напоминания о документах','https://www.brighthr.com/blog/all-things-bright/just-released-brighthr-s-new-automatic-document-reminders/'],['индекс Брэдфорда','https://www.brighthr.com/articles/leave-and-absence/the-bradford-factor/']]],
+  ['Workleap Officevibe',[['FAQ для менеджера','https://help.workleap.com/en/articles/10281743-workleap-officevibe-team-manager-faq']]],
+  ['Opus',[['подтверждение навыков','https://help.opus.so/en/articles/15465175-getting-started-skill-validation']]],
+  ['Eddy',[['Performance и Admin Notes','https://eddy.com/support/performance-notes-admin-notes/']]],
+  ['Flare HR',[['уровни доступа заметок','https://support.flarehr.com/hc/en-us/articles/900002548183']]],
+  ['Humaans',[['релизы 2025','https://humaans.io/product-releases-2025']]],
+  ['CharlieHR',[['продукт','https://charliehr.com/product']]],
+  ['Breathe',[['учёт больничных','https://www.breathehr.com/hr-software/sickness-monitoring-system']]],
+  ['Visier',[['прогнозы: сильные и слабые стороны','https://docs.visier.com/developer/Visier%20People%20Metrics/predictions/predictions%20strengths%20and%20limitations.htm']]],
+  ['Gloat',[['flight risk – паттерн, а не балл','https://gloat.com/academy/flight-risk-pattern-not-score/']]],
+  ['Bonusly',[['праздники','https://help.bonus.ly/en/articles/466903-celebrations']]],
+  ['Bitrix24',[['бейджи','https://helpdesk.bitrix24.com/open/18411100']]],
+  ['Workhuman',[['признание, сделанное правильно','https://www.workhuman.com/blog/recognition-done-right-the-key-to-employee-engagement-and-retention/']]],
+  ['Mitti',[['обучение','https://mitti.com/training']]],
+  ['Connecteam',[['обучение сотрудников','https://connecteam.com/employee-training-software/']]],
+  ['Axonify',[['Co-Creator','https://axonify.com/news/co-creator-an-ai-solution/']]],
+  ['Trainual',[['Trainual и SweetProcess','https://trainual.com/manual/trainual-vs-sweetprocess']]],
+  ['Employment Hero',[['карьерный план для ритейла','https://employmenthero.com/en-ca/resources/career-progression-plan-template-for-retail/']]],
+  ['Whatfix',[['матрица навыков','https://whatfix.com/blog/skill-matrix/']]],
+  ['Daylogue',[['пороги анонимности','https://daylogue.com/learn/employee-survey-anonymity-thresholds']]],
+  ['Saby',[['поощрения','https://saby.ru/help/motivation/reward']]]
+ ]},
+ {g:'Право и регуляторы',items:[
+  ['GOV.UK',[['Employment Rights Act: график изменений','https://www.gov.uk/government/publications/implementing-the-plan-to-make-work-pay-and-employment-rights-act/plan-to-make-work-pay-and-employment-rights-act-timeline-update'],['статус занятости: чек-лист','https://www.gov.uk/government/publications/employment-status-and-employment-rights/employment-status-and-rights-checklist-for-employers-and-other-engagers'],['больничные с 6 апреля 2026','https://www.gov.uk/guidance/sickness-absences-that-start-before-and-end-on-or-after-6-april-2026']]],
+  ['ICO',[['adequacy и ограниченные передачи','https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/international-transfers/adequacy-regulations/is-the-restricted-transfer-covered-by-adequacy-regulations/'],['гайд по международным передачам','https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/international-transfers/international-transfers-a-guide/'],['DSAR: вопросы работодателей','https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/employment/subject-access-request-q-and-as-for-employers'],['мониторинг работников','https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/employment/monitoring-workers/data-protection-and-monitoring-workers/']]],
+  ['Acas',[['Кодекс: дисциплинарка и жалобы','https://www.acas.org.uk/acas-code-of-practice-for-disciplinary-and-grievance-procedures/html']]],
+  ['legislation.gov.uk',[['Employment Rights Act 2025','https://www.legislation.gov.uk/ukpga/2025/36']]],
+  ['DLA Piper',[['вступление DUAA в силу','https://privacymatters.dlapiper.com/2026/02/uk-commencement-of-the-data-protection-provisions-in-the-data-use-and-access-act/']]],
+  ['Kennedys',[['DUAA и автоматизированные решения','https://kennedyslaw.com/en/thought-leadership/article/2025/the-uk-dua-act-s-reform-pillars-divergence-from-the-eu-gdpr-automated-decision-making-adm']]],
+  ['Morgan Lewis',[['расширение правил right to work','https://www.morganlewis.com/pubs/2026/08/expansion-of-uk-right-to-work-rules-part-3-digital-verification-identity-matching-and-onboarding']]],
+  ['Penningtons',[['ICO о данных о здоровье работников','https://www.penningtonslaw.com/insights/new-ico-guidance-for-employers-processing-workers-health-data/']]],
+  ['The Payroll Centre',[['записи об отпусках с апреля 2026','https://thepayrollcentre.co.uk/news/uk-employers-must-keep-holiday-records-from-april-2026/']]],
+  ['EU AI Act',[['статья 5','https://artificialintelligenceact.eu/article/5/']]],
+  ['Mondaq',[['EU Digital Omnibus по AI','https://www.mondaq.com/eu-digital-omnibus-on-ai-enters-into-force/1825722']]]
+ ]},
+ {g:'Исследования, отзывы и медиа',items:[
+  ['Gallup',[['признание и удержание (с Workhuman)','https://www.gallup.com/workplace/650174/employee-recognition-low-gallup-workhuman.aspx'],['Q12 – зарегистрированная марка','https://q12.gallup.com']]],
+  ['strategy+business',[['геймификация на работе','https://www.strategy-business.com/blog/Are-we-having-fun-at-work-yet?gko=03603']]],
+  ['SHRM',[['когда геймификация вредит','https://shrm.org/topics-tools/news/technology/careful-gamification-work-can-go-wrong']]],
+  ['AOL',[['усталость от опросов вовлечённости','https://www.aol.com/employees-sick-tired-engagement-surveys-081701426.html']]],
+  ['UNLEASH',[['модели ухода и что с ними делать','https://www.unleash.ai/data-and-analytics/analysis/ask-the-analyst-attrition-models-can-flag-dozens-of-flight-risks-at-once-what-separates-organizations-that-act-effectively-from-those-that-drown-in-the-output']]],
+  ['HR Analytics Trends',[['баллы риска ухода – не стратегия','https://www.hr-analytics-trends.com/flight-risk-scores-are-not-a-retention-strategy']]],
+  ['City & Guilds',[['квалификации по флористике','https://www.cityandguilds.com/qualifications-and-apprenticeships/land-based-services/floristry/0351-floristry']]],
+  ['Capterra',[['отзывы о Lattice','https://www.capterra.com/p/151676/Lattice/reviews/']]],
+  ['G2',[['отзывы о Lattice','https://www.g2.com/products/lattice-performance-management/reviews'],['Workpro: кейсы ER','https://www.g2.com/products/workpro-hr-case-management/discuss']]],
+  ['Hackceleration',[['ПО для ревью в малом бизнесе (аффилиатный обзор)','https://hackceleration.com/labs/best/performance-review-software-small-business']]],
+  ['SelectHub',[['Kudos и Bonusly','https://www.selecthub.com/employee-recognition-software/kudos-vs-bonusly/']]],
+  ['IT Brief',[['Deputy Shift Pulse','https://itbrief.com.au/story/deputy-launches-shift-pulse-to-boost-worker-engagement-insight']]],
+  ['CPA Practice Advisor',[['Rippling Data Cloud','https://www.cpapracticeadvisor.com/2026/07/01/rippling-introduces-data-cloud/186024/']]],
+  ['SiliconANGLE',[['Salesforce Agentforce для HR','https://siliconangle.com/2025/05/06/salesforce-brings-ai-agents-employee-support-agentforce-hr-service']]],
+  ['Soware',[['Happy Job','https://soware.ru/products/happy-job']]]
+ ]}
+];
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function md(s){return esc(s).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,function(_,t,u){return '<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+t+'</a>'})}
+function norm(s){return String(s).toLowerCase().replace(/ё/g,'е')}
+
+/* ---------- catalogue ---------- */
+var st={area:'all',base:'all',pri:'all',q:''};
+var $=function(id){return document.getElementById(id)};
+
+function chips(el,key,opts){
+  el.innerHTML=opts.map(function(o){return '<button type="button" class="fchip" data-k="'+key+'" data-v="'+o.v+'" aria-pressed="'+(st[key]===o.v)+'">'+esc(o.t)+(o.c!=null?' <span class="c">'+o.c+'</span>':'')+'</button>'}).join('');
+}
+function countBy(fn){return F.filter(fn).length}
+function buildFilters(){
+  chips($('fArea'),'area',[{v:'all',t:'Все',c:F.length}].concat(AREAS.map(function(a){return {v:a.k,t:a.t,c:countBy(function(r){return r.a===a.k})}})));
+  chips($('fBase'),'base',[{v:'all',t:'Все'}].concat(Object.keys(BASE).map(function(k){return {v:k,t:BASE[k].t,c:countBy(function(r){return r.s===k})}})));
+  chips($('fPri'),'pri',[{v:'all',t:'Все'}].concat(Object.keys(PRI).map(function(k){return {v:k,t:PRI[k].t,c:countBy(function(r){return r.p[0]===k})}})));
+}
+function match(r){
+  if(st.area!=='all'&&r.a!==st.area)return false;
+  if(st.base!=='all'&&r.s!==st.base)return false;
+  if(st.pri!=='all'&&r.p.indexOf(st.pri)<0)return false;
+  if(st.q){
+    var hay=norm([r.n,r.w,r.b.replace(/\]\([^)]*\)/g,']'),BASE[r.s].t,r.sn||'',r.p.map(function(k){return PRI[k].t}).join(' '),(AREAS.filter(function(a){return a.k===r.a})[0]||{}).t].join(' '));
+    var words=norm(st.q).split(/\s+/).filter(Boolean);
+    for(var i=0;i<words.length;i++){if(hay.indexOf(words[i])<0)return false}
+  }
+  return true;
+}
+function row(r){
+  var b=BASE[r.s];
+  var pri=r.p.map(function(k){return '<span class="pri '+PRI[k].c+'">'+PRI[k].t+'</span>'}).join('');
+  var link=r.scr?'<a class="go" href="index.html#'+r.scr+'" title="Экран «'+esc(SCREENS[r.scr]||'')+'»">в прототипе →</a>':'<span class="muted">–</span>';
+  return '<tr>'+
+    '<td class="first"><b>'+esc(r.n)+'</b><div class="what">'+esc(r.w)+'</div></td>'+
+    '<td class="best" data-label="У кого лучше всего сделано">'+md(r.b)+'</td>'+
+    '<td data-label="База в нашей CRM"><span class="chip '+b.c+'">'+b.t+'</span>'+(r.sn?'<div class="note">'+esc(r.sn)+'</div>':'')+'</td>'+
+    '<td data-label="Приоритет">'+pri+(r.pn?'<div class="note">'+esc(r.pn)+'</div>':'')+'</td>'+
+    '<td data-label="Прототип">'+link+'</td>'+
+  '</tr>';
+}
+function render(){
+  var html='',shown=0;
+  AREAS.forEach(function(a){
+    var rows=F.filter(function(r){return r.a===a.k&&match(r)});
+    if(!rows.length)return;
+    shown+=rows.length;
+    html+='<tr class="grp"><td colspan="5">'+esc(a.t)+'<span>'+rows.length+'</span></td></tr>'+rows.map(row).join('');
+  });
+  $('catBody').innerHTML=html;
+  $('catEmpty').hidden=shown>0;
+  $('count').innerHTML='показано <b class="num">'+shown+'</b> из '+F.length;
+  ['fArea','fBase','fPri'].forEach(function(id){
+    Array.prototype.forEach.call($(id).querySelectorAll('.fchip'),function(btn){btn.setAttribute('aria-pressed',String(st[btn.dataset.k]===btn.dataset.v))});
+  });
+}
+function reset(){st={area:'all',base:'all',pri:'all',q:''};$('fq').value='';render()}
+$('filters').addEventListener('click',function(e){
+  var btn=e.target.closest('.fchip'); if(!btn)return;
+  st[btn.dataset.k]=btn.dataset.v; render();
+});
+$('fq').addEventListener('input',function(e){st.q=e.target.value.trim();render()});
+$('freset').addEventListener('click',reset);
+$('freset2').addEventListener('click',reset);
+buildFilters(); render();
+
+/* ---------- law: status by date ---------- */
+(function(){
+  var now=new Date(); now.setHours(0,0,0,0);
+  Array.prototype.forEach.call(document.querySelectorAll('#lawBody tr'),function(tr){
+    var td=tr.querySelector('td.date'), d=tr.dataset.date, chip;
+    if(d){
+      var p=d.split('-'), dt=new Date(+p[0],+p[1]-1,+p[2]);
+      var days=Math.round((dt-now)/864e5);
+      chip=days>0?'<span class="chip warn">через '+days+' дн.</span>':'<span class="chip ok">действует</span>';
+      td.innerHTML=esc(td.textContent)+'<br>'+chip;
+    }
+  });
+})();
+
+/* ---------- sources ---------- */
+(function(){
+  var total=0;
+  $('srcs').innerHTML=SRC.map(function(g){
+    var n=g.items.reduce(function(s,it){return s+it[1].length},0); total+=n;
+    return '<div><h4>'+esc(g.g)+'<span>'+n+'</span></h4>'+g.items.map(function(it){
+      return '<div class="src"><b>'+esc(it[0])+'</b>'+it[1].map(function(l){return '<a href="'+esc(l[1])+'" target="_blank" rel="noopener noreferrer">'+esc(l[0])+'</a>'}).join('<i>·</i>')+'</div>';
+    }).join('')+'</div>';
+  }).join('');
+  $('srcLead').textContent='Документация и релизы вендоров, первоисточники права и регуляторов, исследования и отзывы пользователей – '+total+' '+plural(total)+'. Все ссылки открываются в новой вкладке.';
+  function plural(n){var m10=n%10,m100=n%100;if(m10===1&&m100!==11)return 'ссылка';if(m10>=2&&m10<=4&&(m100<12||m100>14))return 'ссылки';return 'ссылок'}
+})();
+
+/* ---------- table of contents ---------- */
+(function(){
+  var toc=$('toc'), links=Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  var cur=null;
+  function setOn(id){
+    if(id===cur)return; cur=id;
+    links.forEach(function(a){
+      var on=a.getAttribute('href')==='#'+id;
+      a.classList.toggle('on',on);
+      if(on){a.setAttribute('aria-current','true'); if(toc.scrollWidth>toc.clientWidth){toc.scrollLeft=Math.max(0,a.offsetLeft-16)}}
+      else a.removeAttribute('aria-current');
+    });
+  }
+  function onScroll(){
+    var y=window.scrollY+130, id=secs[0].id;
+    for(var i=0;i<secs.length;i++){if(secs[i].getBoundingClientRect().top+window.scrollY<=y)id=secs[i].id}
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4)id=secs[secs.length-1].id;
+    setOn(id);
+  }
+  var ticking=false;
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;onScroll()})}},{passive:true});
+  window.addEventListener('resize',onScroll);
+  onScroll();
+})();
+})();
+</script>
+</body>
+</html>

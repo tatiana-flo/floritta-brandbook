@@ -1,0 +1,141 @@
+<style>
+#s-people .pp-call{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+#s-people .pp-call span.tx{flex:1;min-width:220px}
+#s-people .pp-ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+#s-people .pp-ctl .seg{flex-wrap:wrap}
+#s-people .pp-ctl .seg .n{color:inherit;opacity:.6;margin-left:4px}
+#s-people .pp-q{width:220px;height:32px}
+#s-people .pp-tg{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--graphite);cursor:pointer;height:32px;padding:0 10px;border:1px solid var(--hair)}
+#s-people .pp-tg input{accent-color:var(--ink)}
+#s-people .pp-tg.on{border-color:var(--ink);color:var(--ink)}
+#s-people .pp-wrap{overflow:auto}
+#s-people table.t{min-width:960px}
+#s-people table.t th,#s-people table.t td{padding-left:8px;padding-right:8px}
+#s-people table.t th{white-space:normal;line-height:1.2}
+#s-people table.t td.ct{font-size:12.5px;color:var(--graphite)}
+#s-people table.t td:first-child{max-width:190px}
+#s-people table.t td.lv{min-width:96px;font-size:13px}
+#s-people th.srt{cursor:pointer;user-select:none}
+#s-people th.srt:hover{color:var(--ink)}
+#s-people th.srt.on{color:var(--ink)}
+#s-people td .bar{margin-bottom:3px}
+#s-people td small{color:var(--grey);font-size:11.5px}
+#s-people .pp-tm{display:inline-flex;align-items:flex-start;gap:6px;min-width:84px}
+#s-people .pp-tm svg{margin-top:2px}
+#s-people .pp-pl{display:inline-flex;align-items:center;gap:8px}
+#s-people .pp-pl b{font-weight:500;font-variant-numeric:tabular-nums}
+#s-people .pp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+#s-people .pp-card{padding:14px 16px;cursor:pointer;display:flex;flex-direction:column;gap:10px}
+#s-people .pp-card:hover{border-color:var(--light);background:var(--silver)}
+#s-people .pp-card .nm b{display:block;font-weight:500}
+#s-people .pp-card .nm small{display:block;color:var(--grey);font-size:12px}
+#s-people .pp-card .chips{display:flex;flex-wrap:wrap;gap:4px}
+#s-people .pp-card dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:12.5px;align-items:center}
+#s-people .pp-card dt{color:var(--grey)}
+#s-people .pp-card .sigs{display:flex;flex-wrap:wrap;gap:4px}
+#s-people .pp-card .sigs .chip{white-space:normal;height:auto;min-height:22px;padding:2px 8px}
+#s-people .pp-tree{padding:18px 16px;overflow:auto}
+#s-people .pp-tree ul{list-style:none;margin:0 0 0 24px;padding:0;border-left:1px solid var(--light)}
+#s-people .pp-tree li{position:relative;padding:8px 0 0 20px}
+#s-people .pp-tree li::before{content:'';position:absolute;left:0;top:30px;width:16px;border-top:1px solid var(--light)}
+#s-people .pp-tree li:last-child::after{content:'';position:absolute;left:-1px;top:31px;bottom:0;border-left:1px solid var(--paper)}
+#s-people .pp-node{display:inline-flex;align-items:center;gap:10px;padding:7px 12px;border:1px solid var(--hair);background:var(--paper);min-width:280px;text-align:left}
+#s-people button.pp-node:hover{border-color:var(--ink)}
+#s-people .pp-node .nm{flex:1;min-width:0}
+#s-people .pp-node .nm b{display:block;font-weight:500;font-size:13px}
+#s-people .pp-node .nm small{display:block;color:var(--grey);font-size:11.5px}
+#s-people .pp-node .meta{display:flex;gap:6px;align-items:center;font-size:11.5px;color:var(--grey);white-space:nowrap}
+#s-people .pp-node.root{background:var(--ink);color:#fff;border-color:var(--ink)}
+#s-people .pp-node.root small{color:#cfc8c2}
+#s-people .pp-node.dim{opacity:.35}
+#s-people .pp-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--grey);padding:10px 16px;border-top:1px solid var(--hair)}
+#s-people .pp-leg span{display:inline-flex;align-items:center;gap:6px}
+#s-people .pp-empty{padding:32px 16px;text-align:center;color:var(--grey)}
+@media (max-width:900px){#s-people .pp-q{width:100%}#s-people .pp-node{min-width:220px}}
+</style>
+<script>
+(()=>{
+const S={team:'all',q:'',attn:false,view:'table',sort:'sig',dir:-1};
+const TEAMS=[['all','Все'],['studio','Студия'],['delivery','Доставка'],['shop','Магазин и сервис'],['tech','Продукт и разработка']];
+const VIEWS=[['table','Таблица'],['cards','Карточки'],['tree','Структура']];
+const days=p=>daysBetween(dd(p.last),NOW);
+const lastP=p=>p.pulse[p.pulse.length-1];
+const sevCls=p=>{const m=Math.floor(HRP.sev(p)/10);return m>=3?'bad':m===2?'warn':m===1?'info':''};
+const KEY={name:p=>p.name,team:p=>D.teams[p.team],tenure:p=>daysBetween(dd(p.start),NOW),last:p=>days(p),pulse:p=>lastP(p),pdp:p=>p.pdp.pct,train:p=>p.train[0]/p.train[1],sig:p=>HRP.sev(p)};
+const match=p=>{const q=S.q.trim().toLowerCase();return (S.team==='all'||p.team===S.team)&&(!S.attn||HRP.attn(p))&&(!q||[p.name,p.role,D.teams[p.team],H.type(p),...p.tags].join(' ').toLowerCase().includes(q))};
+const list=()=>D.people.filter(match).sort((a,b)=>{const x=KEY[S.sort](a),y=KEY[S.sort](b);return ((x>y)-(x<y))*S.dir||a.name.localeCompare(b.name)});
+const pulseCell=p=>{const v=lastP(p),c=H.pulseColor(v);return `<span class="pp-pl">${H.spark(p.pulse,{w:46,h:20,color:c})}<b style="color:${c}">${v}</b></span>`};
+const lastCell=p=>{const n=days(p);return `${n>30?H.chip(ago(p.last),'warn'):ago(p.last)}<br><small>след. ${fmtD(p.next)}</small>`};
+const sigCell=p=>p.signals.length?`<span class="chip ${sevCls(p)}" title="${H.esc(p.signals.map(s=>s.t).join(' · '))}">${ic(sevCls(p)==='info'?'flag':'alert')}${p.signals.length}</span>`:'<span class="muted">—</span>';
+const pdpCell=p=>p.pdp.goal==='—'?'<span class="chip warn">нет плана</span>':`<div title="${H.esc(p.pdp.goal)}" style="min-width:80px">${H.bar(p.pdp.pct,p.pdp.pct<25?'ac':'')}<small>${p.pdp.pct} %</small></div>`;
+const trainCell=p=>`<div style="min-width:64px">${H.bar(p.train[0]/p.train[1]*100,p.train[0]===p.train[1]?'ok':'')}<small>${p.train[0]} из ${p.train[1]}</small></div>`;
+const subLine=p=>p.role+(p.status!=='active'?' · '+({probation:'испытательный',leave:'в отпуске до '+(p.leaveTo?fmtD(p.leaveTo):''),onboarding:'онбординг'})[p.status]:'');
+
+const COLS=[['name','Человек'],['team','Команда'],[null,'Контур'],[null,'Уровень'],['tenure','Стаж'],['last','Последний 1:1'],['pulse','Пульс'],['pdp','План развития'],['train','Обучение'],['sig','Сигналы']];
+const table=rows=>`<div class="card"><div class="pp-wrap"><table class="t"><thead><tr>${COLS.map(([k,t])=>k?`<th class="srt ${S.sort===k?'on':''}" data-s="${k}">${t}${S.sort===k?(S.dir>0?' ↑':' ↓'):''}</th>`:`<th>${t}</th>`).join('')}</tr></thead><tbody>
+ ${rows.map(p=>`<tr class="clk" data-person="${p.id}"><td>${H.who(p,subLine(p))}</td><td><span class="pp-tm">${ic(TEAM_IC[p.team])}${D.teams[p.team]}</span></td><td class="ct">${H.type(p)}</td><td class="lv">${H.lvl(p)}</td><td style="white-space:nowrap">${H.tenure(p)}</td><td style="white-space:nowrap">${lastCell(p)}</td><td>${pulseCell(p)}</td><td>${pdpCell(p)}</td><td>${trainCell(p)}</td><td>${sigCell(p)}</td></tr>`).join('')}
+ </tbody></table></div></div>`;
+
+const cards=rows=>`<div class="pp-cards">${rows.map(p=>`<div class="card pp-card" data-person="${p.id}" role="button" tabindex="0">
+ <div class="row">${H.av(p,'l')}<div class="nm"><b>${p.name}</b><small>${p.role}</small><small>${H.lvl(p)}</small></div></div>
+ <div class="chips">${H.statusChip(p)}${H.chip(D.teams[p.team],'line')}${H.chip(H.type(p),'line')}</div>
+ <dl><dt>Стаж</dt><dd>${H.tenure(p)}</dd><dt>1:1</dt><dd>${days(p)>30?H.chip(ago(p.last),'warn'):ago(p.last)}</dd><dt>Пульс</dt><dd>${pulseCell(p)}</dd><dt>План</dt><dd>${pdpCell(p)}</dd><dt>Обучение</dt><dd>${p.train[0]} из ${p.train[1]}</dd></dl>
+ ${p.signals.length?`<div class="sigs">${p.signals.map(H.sig).join('')}</div>`:''}
+</div>`).join('')}</div>`;
+
+const tree=()=>{
+ const ok=new Set(D.people.filter(match).map(p=>p.id));
+ const kids=id=>D.people.filter(p=>(p.mgr||null)===id);
+ const node=p=>{const k=kids(p.id),n=days(p);return `<li><button class="pp-node ${ok.has(p.id)?'':'dim'}" data-person="${p.id}">${H.av(p,'s')}<span class="nm"><b>${p.name}</b><small>${p.role}</small></span><span class="meta">${n>30?H.chip('1:1 '+n+' дн.','warn'):'1:1 '+n+' дн.'}${p.signals.length?`<span class="dotc" style="background:var(--${sevCls(p)==='bad'?'accent':sevCls(p)==='warn'?'v-mid':'info'})" title="${H.esc(p.signals.map(s=>s.t).join(' · '))}"></span>`:''}</span></button>${k.length?`<ul>${k.map(node).join('')}</ul>`:''}</li>`};
+ return `<div class="card"><div class="pp-tree"><button class="pp-node root" data-a="root"><span class="av s">ОС</span><span class="nm"><b>Основатель</b><small>Админ · вне охвата HR</small></span></button><ul>${kids(null).map(node).join('')}</ul></div>
+ <div class="pp-leg"><span>${ic('chat')}дни с последнего 1:1 (жёлтое – больше 30)</span><span><i class="dotc" style="background:var(--accent)"></i>сильный сигнал</span><span><i class="dotc" style="background:var(--v-mid)"></i>сигнал</span><span><i class="dotc" style="background:var(--info)"></i>для сведения</span><span>Разработка и удалённые подрядчики подчиняются основателю напрямую. Фильтры приглушают, а не прячут.</span></div></div>`;
+};
+
+App.reg('people',{
+ title:'Люди',
+ render(el){
+  const res=()=>{const rows=list(),box=el.querySelector('.pp-res');
+   el.querySelector('.pp-cnt').textContent=`${rows.length} из ${D.people.length}`;
+   box.innerHTML=S.view==='tree'?tree():rows.length?(S.view==='cards'?cards(rows):table(rows)):`<div class="card pp-empty">Никого не нашли по этим фильтрам.<div style="margin-top:10px"><button class="btn s" data-a="reset">Сбросить фильтры</button></div></div>`};
+  const draw=()=>{
+   const N=D.people.length, remote=D.people.filter(p=>p.att.shifts===null).length, old=D.people.filter(p=>days(p)>30).length, attn=D.people.filter(HRP.attn).length;
+   const cnt=k=>k==='all'?N:D.people.filter(p=>p.team===k).length;
+   el.innerHTML=`
+   <div class="scr-h"><div><div class="eyebrow">Команда</div><h1>Люди</h1><div class="sub">${N} человек · 4 команды · удалённо ${remote} · без 1:1 больше 30 дней: ${old} · требуют внимания: ${attn}</div></div>
+    <div class="acts"><button class="btn" data-a="export">${ic('file')}Экспорт без денег</button><button class="btn pr" data-a="note">${ic('note')}Новая заметка</button></div></div>
+   <div class="callout info pp-call">${H.chip('доработать','warn')}<span class="tx">Тир и ставка убраны из экрана для роли HR – остаются в «Расчётах» у админа. Поля не приходят с сервера вовсе, а не прячутся в браузере.</span>${App.role==='admin'?`<button class="btn s" data-a="pay">${ic('coin')}Открыть «Расчёты»</button>`:''}</div>
+   <div class="pp-ctl">
+    <div class="seg">${TEAMS.map(([k,t])=>`<button class="${S.team===k?'on':''}" data-team="${k}">${t}<span class="n">${cnt(k)}</span></button>`).join('')}</div>
+    <input class="inp pp-q" type="search" placeholder="Поиск: имя, роль, тег" value="${H.esc(S.q)}">
+    <label class="pp-tg ${S.attn?'on':''}"><input type="checkbox" class="pp-attn" ${S.attn?'checked':''}>Только требующие внимания</label>
+    <span class="sp"></span><span class="muted sm pp-cnt"></span>
+    <div class="seg">${VIEWS.map(([k,t])=>`<button class="${S.view===k?'on':''}" data-view="${k}">${t}</button>`).join('')}</div>
+   </div>
+   <div class="pp-res"></div>`;
+   el.querySelector('.pp-q').addEventListener('input',e=>{S.q=e.target.value;res()});
+   el.querySelector('.pp-attn').addEventListener('change',e=>{S.attn=e.target.checked;draw()});
+   res();
+  };
+  el.onclick=(e)=>{
+   const t=e.target.closest('[data-team],[data-view],[data-s],[data-a]'); if(!t||!el.contains(t)) return;
+   if(t.dataset.team){S.team=t.dataset.team;draw()}
+   else if(t.dataset.view){S.view=t.dataset.view;draw()}
+   else if(t.dataset.s){const k=t.dataset.s;if(S.sort===k)S.dir=-S.dir;else{S.sort=k;S.dir=(k==='name'||k==='team')?1:-1}res()}
+   else if(t.dataset.a==='reset'){Object.assign(S,{team:'all',q:'',attn:false});draw()}
+   else if(t.dataset.a==='note') HRP.noteSheet(null,()=>res());
+   else if(t.dataset.a==='export') App.toast(`Выгрузка готова: ${list().length} строк – люди, команды, 1:1, планы, обучение. Без тира, ставок и реквизитов`);
+   else if(t.dataset.a==='pay') App.toast('«Расчёты» – раздел админа, этот проект его не меняет');
+   else if(t.dataset.a==='root') App.toast('Основатель – админ: в охват HR не входит, его карточку HR не ведёт');
+  };
+  el.onkeydown=(e)=>{if(e.key==='Enter'&&e.target.classList.contains('pp-card'))e.target.click()};
+  draw();
+ },
+ notes:`<h4>Что это</h4><p>Экран «Команда → Люди», переделанный для HR: вместо тира и ставки – 1:1, пульс, план развития, обучение и сигналы. Три вида: таблица, карточки, структура.</p>
+<h4>Зачем HR</h4><p>Один список, чтобы видеть, у кого давно не было 1:1, у кого падает пульс и кто застрял в плане развития.</p>
+<h4>Откуда идея</h4><p><span class="src">BambooHR</span><span class="src">HiBob</span><span class="src">ChartHop</span><span class="src">Personio</span></p><p>Справочник плюс оргструктура. На оргструктуре – один слой: дни с последнего 1:1 и открытый сигнал. Поля разбиты по категориям доступа: деньги – отдельная категория, которую HR не выдают.</p>
+<h4>Данные из нашей CRM</h4><ul><li>Сейчас «Люди» видит только админ, и на строке – тир и личная ставка.</li><li>Уже есть: контур, форма занятости, стаж, матрица навыков, обучение, планы развития.</li><li>Новое: пульс, история 1:1, сигналы, поле «руководитель». Разработчики и подрядчики сейчас не заведены как люди – нужна карточка без логина.</li></ul>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span>таблица, фильтры, без денег</p><p><span class="pri p2">Следующий шаг</span>карточки и структура</p>
+<h4>Доступы</h4><p>HR видит всех, кроме админов-основателей. Денежные поля вырезаются на сервере: запрет плюс автотест, а не скрытая колонка.</p>`
+});
+})();
+</script>

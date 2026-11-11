@@ -1,0 +1,330 @@
+<style>
+#s-growth .tabs button .chip{height:18px;font-size:10px;padding:0 6px;letter-spacing:0;text-transform:none}
+#s-growth .tw{overflow:auto}
+#s-growth .stl{display:flex;align-items:center;gap:8px;min-width:120px}
+#s-growth .stl .bar{flex:1}
+#s-growth .lad{display:flex;align-items:stretch;gap:6px;overflow-x:auto;padding:2px 2px 8px}
+#s-growth .lv{flex:1 0 150px;min-width:150px;border:1px solid var(--hair);background:var(--paper);padding:12px;text-align:left;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+#s-growth .lv:hover{border-color:var(--grey)}
+#s-growth .lv.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+#s-growth .lv.nx{border-style:dashed;border-color:var(--accent)}
+#s-growth .lv .ln{font-weight:500;font-size:13.5px}
+#s-growth .lv .avs{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+#s-growth .lv .avs [data-pp]{cursor:pointer}
+#s-growth .lv .avs [data-pp]:hover .av{border-color:var(--ink)}
+#s-growth .arr{display:flex;align-items:center;color:var(--light);flex:none}
+#s-growth .fork{flex:1.1 0 170px;display:flex;flex-direction:column;gap:6px;border:1px dashed var(--light);padding:6px}
+#s-growth .fork .fk{font-size:10px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--accent-dark);text-align:center}
+#s-growth .fork .lv{flex:1 0 auto}
+#s-growth table.comp td{vertical-align:top;font-size:12.5px;min-width:130px}
+#s-growth table.comp td:first-child{min-width:170px}
+#s-growth table.comp td small{display:block;color:var(--grey);font-size:11px}
+#s-growth table.comp .hl{background:var(--silver)}
+#s-growth table.comp .hn{background:var(--accent-bg)}
+#s-growth .nxg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+#s-growth .nxi{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#s-growth .nxi b{font-weight:500;min-width:140px;flex:none}
+#s-growth .hm{padding:4px 6px;text-align:center}
+#s-growth .c,#s-growth .lg i{display:inline-flex;align-items:center;justify-content:center;width:40px;height:30px;font-size:13px;font-variant-numeric:tabular-nums;border:0;position:relative}
+#s-growth button.c{cursor:pointer}
+#s-growth button.c:hover{outline:1px solid var(--ink);outline-offset:1px}
+#s-growth .l0{background:var(--silver);color:var(--grey)}
+#s-growth .l1{background:var(--accent-bg);color:var(--accent-dark)}
+#s-growth .l2{background:var(--v2);color:var(--ink)}
+#s-growth .l3{background:var(--v1);color:#fff}
+#s-growth .na{color:var(--light);background:transparent}
+#s-growth .below{box-shadow:inset 0 0 0 2px var(--warn)}
+#s-growth .below::after{content:"!";position:absolute;top:-2px;right:2px;font-size:10px;color:var(--warn);font-weight:500}
+#s-growth .grow{outline:1px dashed var(--graphite);outline-offset:-4px}
+#s-growth .flash{animation:gwf 1.4s var(--m-ease)}
+@keyframes gwf{0%{transform:scale(1.25)}100%{transform:none}}
+#s-growth .lg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;color:var(--graphite);margin-bottom:12px}
+#s-growth .lg span{display:inline-flex;align-items:center;gap:6px}
+#s-growth .lg i{width:22px;height:16px;font-size:0}
+#s-growth .mx th.sk{white-space:normal;line-height:1.2;text-align:center;min-width:72px}
+#sheet .gw-sh h4{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500;color:var(--ink);margin:20px 0 8px}
+#sheet .gw-sh .goal{border:1px solid var(--hair);padding:10px 12px;margin-bottom:8px}
+#sheet .gw-sh .goal b{font-weight:500}
+#sheet .gw-sh .ln{display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#sheet .gw-sh .dots{display:inline-flex;gap:3px}
+#sheet .gw-sh .dots i{width:12px;height:12px;background:var(--silver);border:1px solid var(--hair)}
+#sheet .gw-sh .dots i.f{background:var(--ink);border-color:var(--ink)}
+#sheet .gw-sh .dots i.g{border:1px dashed var(--warn);background:var(--warn-bg)}
+#sheet .gw-sh .sug{border-bottom:1px dashed var(--hair);padding:10px 0}
+#sheet .gw-sh .sug:last-child{border-bottom:0}
+#sheet .gw-sh .add{display:flex;gap:8px;margin-top:10px}
+#sheet .gw-sh .ph{border:1px dashed var(--light);min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--grey);text-align:center;padding:16px;font-size:12.5px}
+#sheet .gw-sh .ph.got{border-style:solid;border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+#sheet .gw-sh .chk{display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--hair);font-size:13px;cursor:pointer}
+#sheet .gw-sh input[type=checkbox]{accent-color:var(--ink);width:15px;height:15px}
+#sheet .gw-sh .etr{border:1px solid var(--hair);padding:10px;margin-bottom:10px;display:grid;gap:6px}
+</style>
+<script>
+(function(){
+const SK=['design','wedding','speed','care','coach'];
+const REL={florist:SK,courier:['speed','care','coach'],care:['design','speed','care','coach'],tech:[]};
+const EXP={
+ florist:{'1':{design:1,wedding:0,speed:1,care:1,coach:0},'2':{design:2,wedding:1,speed:2,care:2,coach:0},'3':{design:3,wedding:2,speed:2,care:2,coach:1},'4p':{design:3,wedding:2,speed:3,care:3,coach:2},'4m':{design:3,wedding:3,speed:2,care:2,coach:2},'5':{design:3,wedding:3,speed:3,care:3,coach:3}},
+ courier:{'1':{speed:2,care:2,coach:0},'2':{speed:3,care:3,coach:1},'3':{speed:3,care:3,coach:3}},
+ care:{'1':{design:0,speed:1,care:2,coach:0},'2':{design:1,speed:2,care:3,coach:1},'3':{design:2,speed:2,care:3,coach:3}},
+ tech:{}
+};
+const TR={
+ florist:{cols:[{k:'1',n:'L1 Младший флорист'},{k:'2',n:'L2 Флорист'},{k:'3',n:'L3 Старший флорист'},{k:'4p',n:'L4 Старшая смены',sub:'люди'},{k:'4m',n:'L4 Мастер-флорист',sub:'ремесло'},{k:'5',n:'L5 Шеф-флорист'}],rows:[
+  {n:'Техника и стиль Floritta',sk:'design',e:['6 базовых стилей по карточке','Все стили каталога без подсказки','Авторские работы в стиле бренда','Проверяет качество смены','Задаёт сезонные коллекции','Отвечает за стиль студии']},
+  {n:'Свадьбы и инсталляции',sk:'wedding',e:['Помогает на сборке','Бутоньерки и букет невесты','Ведёт свадебный заказ целиком','Планирует людей на ивент','Сложные инсталляции и арки','Ведёт крупные ивенты']},
+  {n:'Скорость и стандарты',sk:'speed',e:['Букет по стандарту в норму времени','Утренняя волна без переделок','Держит темп в пик','Распределяет заказы смены','Стабильное качество авторских работ','Стандарты студии и обучение']},
+  {n:'Клиент и консультация',sk:'care',e:['Вежливо принимает заказ','Подбирает букет по запросу','Сложные запросы и жалобы','Разбирает жалобы смены','Консультации для особых заказов','Ключевые клиенты студии']},
+  {n:'Люди и наставничество',sk:'coach',e:['Учится у напарника','Помогает новичку на смене','Напарник для 1 новичка','Ведёт смену и ретро','Проводит мастер-классы','Растит старших флористов']}]},
+ courier:{cols:[{k:'1',n:'L1 Курьер'},{k:'2',n:'L2 Старший курьер'},{k:'3',n:'L3 Лид маршрутов'}],rows:[
+  {n:'Маршруты и вовремя',sk:'speed',e:['95 % доставок вовремя','98 % вовремя, сложные адреса','Планирует маршруты смены']},
+  {n:'Клиент на пороге',sk:'care',e:['Вручение и фото по стандарту','Решает проблемы на месте','Разбирает жалобы по доставке']},
+  {n:'Сохранность букета',e:['Упаковка и вода по чек-листу','Крупные и хрупкие заказы','Проверяет загрузку машин']},
+  {n:'Безопасность и документы',e:['Права, страховка, ПДД','Фургон и тяжёлые заказы','Следит за документами команды']},
+  {n:'Наставничество',sk:'coach',e:['–','Возит новичка по маршрутам','Обучает и ставит новичков']}]},
+ care:{cols:[{k:'1',n:'L1 Сервис'},{k:'2',n:'L2 Специалист сервиса'},{k:'3',n:'L3 Управляющая магазином'}],rows:[
+  {n:'Общение с клиентом',sk:'care',e:['Отвечает по скриптам','Сложные запросы без эскалации','Стандарт сервиса магазина']},
+  {n:'Ассортимент и сезон',sk:'design',e:['Знает каталог','Советует замены и сезонные цветы','Сезонные коллекции с шефом']},
+  {n:'Скорость ответа',sk:'speed',e:['Первый ответ до 10 мин','До 5 мин в пик','Нормы ответа для смены']},
+  {n:'Жалобы и возвраты',e:['Передаёт старшему','Разбирает сам по инструкции','Пишет инструкции, решает спорные']},
+  {n:'Люди и процессы',sk:'coach',e:['–','Обучает новичка сервиса','График, найм, ретро']}]},
+ tech:{cols:[{k:'1',n:'L1 Junior'},{k:'2',n:'L2 Middle'},{k:'3',n:'L3 Senior'},{k:'4',n:'L4 Lead'}],rows:[
+  {n:'Качество и тесты',e:['Тесты к своему коду','Не ломает соседние модули','Задаёт стандарты качества','Отвечает за качество продукта']},
+  {n:'Самостоятельность',e:['Задачи с понятным ТЗ','Фича от ТЗ до релиза','Сервис целиком','Несколько сервисов и людей']},
+  {n:'Понимание работы Floritta',e:['Знает путь заказа','Понимает смены и доставку','Предлагает улучшения процессов','Влияет на план продукта']},
+  {n:'Удалённая коммуникация',e:['Пишет статус каждый день','Сам поднимает риски','Ведёт обсуждения с магазином','Синхронизирует команду']},
+  {n:'Наставничество и ревью',e:['–','Ревью кода коллег','Наставник для junior','Растит команду']}]}
+};
+const BR={polina:'4p'}, TARGET={mila:'4m'};
+const NEXT={florist:{'1':['2'],'2':['3'],'3':['4p','4m'],'4p':['5'],'4m':['5'],'5':[]}};
+const colKey=p=>p.ladder==='florist'&&p.lvl===4?(BR[p.id]||'4p'):String(p.lvl);
+const nextKeys=(ld,k)=>NEXT[ld]?(NEXT[ld][k]||[]):(TR[ld].cols.some(c=>c.k===String(+k+1))?[String(+k+1)]:[]);
+const colName=(ld,k)=>(TR[ld].cols.find(c=>c.k===k)||{}).n||'';
+const colIdx=(ld,k)=>TR[ld].cols.findIndex(c=>c.k===k);
+const gaps=(p,k)=>{const e=EXP[p.ladder][k];if(!e)return[];return REL[p.ladder].filter(s=>p.skills[s]<(e[s]||0)).map(s=>({k:s,have:p.skills[s],need:e[s]}))};
+const target=p=>{const n=nextKeys(p.ladder,colKey(p));return TARGET[p.id]&&n.includes(TARGET[p.id])?TARGET[p.id]:n[0]};
+const fn=p=>p.name.split(' ')[0];
+const who=id=>id==='eva'?'Eva · HR':(P(id)?P(id).name:id);
+
+const PX={
+ mila:{goals:[{t:'Провести мастер-класс по рождественским венкам',m:'МК для 8 гостей, отзывы 4,5+',s:'Irina – зал и материалы',due:'2026-12-12',c:'coach',pct:65},{t:'Портфолио на «Мастер-флорист»',m:'5 авторских работ с фото',s:'Шеф-флорист – разбор работ',due:'2027-02-26',c:'design',pct:30}],acts:[['Наставник','Polina – как вести группу',1],['Практика','Пробный МК для команды 28 нояб',0],['Курс','«Подача и сторителлинг» в Обучении',1]],ci:[['2026-10-30','eva','Выбрали тему МК, Mila собирает список материалов'],['2026-10-02','irina','Цель квартала согласована']]},
+ daria:{goals:[{t:'Свадьбы и инсталляции – готовность к L3',m:'2 свадебных заказа под присмотром, бутоньерка подтверждена',s:'Mila – совместная сборка арки',due:'2026-12-20',c:'wedding',pct:40},{t:'Авторская техника по брендбуку',m:'3 работы приняты старшим флористом',s:'Polina – разбор на смене',due:'2027-01-29',c:'design',pct:25}],acts:[['Курс','Урок «Свадебная бутоньерка» в Обучении',0],['Ротация','2 смены на свадебном заказе в декабре',0],['Наставник','Mila – сборка арки 21 нояб',0]],ci:[['2026-10-28','eva','Цель – L3 к лету; бутоньерка первым шагом'],['2026-09-30','irina','План на Q4 согласован']]},
+ nika:{goals:[{t:'Курс по колористике + 3 авторских букета',m:'Курс пройден, 3 работы в каталоге',s:'HR – запись на курс',due:'2026-12-31',c:'design',pct:15}],acts:[['Курс','Колористика – запись не оформлена с 20 окт',0],['Практика','1 авторский букет в неделю вместо сета',0]],ci:[['2026-10-07','eva','Договорились о курсе; запись пока не сделана']]},
+ alina:{goals:[{t:'Пройти испытательный: 6 базовых стилей подтверждены',m:'6 из 6 в матрице до 23 нояб',s:'Mila – напарник',due:'2026-11-23',c:'design',pct:70}],acts:[['Наставник','Напарник Mila – 2 смены в неделю',1],['Практика','Утренние смены с поставкой пионов',1]],ci:[['2026-11-04','eva','4 из 6 стилей; больше практики с пионами'],['2026-10-21','polina','Скорость растёт, переделок мало']]},
+ polina:{goals:[{t:'Лидерство: вести ретро и наставлять 2 новичков',m:'Ретро раз в 2 недели, 2 новичка сдали базу',s:'Irina – разгрузка смен',due:'2026-12-31',c:'coach',pct:55}],acts:[['Практика','Ретро смены каждые 2 недели',1],['Наставник','Напарник для Alina и следующего новичка',1]],ci:[['2026-11-03','eva','Нужна разгрузка смен, иначе нет времени на ретро']]},
+ ruslan:{goals:[{t:'Пробный лид маршрутов по субботам',m:'4 субботы, у команды 96 %+ вовремя',s:'Irina – доступ к планировщику',due:'2026-12-19',c:'coach',pct:20}],acts:[['Ротация','Субботняя раскладка маршрутов',0],['Наставник','Bogdan после отпуска',0]],ci:[['2026-10-12','irina','Согласовали пробные субботы']]},
+ artem:{goals:[{t:'Вести сервис маршрутизации целиком',m:'Границы сервиса описаны, дежурства по графику',s:'Основатель – «дежурный день»',due:'2026-12-31',c:null,pct:60}],acts:[['Практика','Описать границы сервиса',0],['Ротация','«Дежурный день» раз в неделю',1]],ci:[['2026-10-31','eva','Меньше переключений – дежурный день']]},
+ jake:{goals:[],acts:[],ci:[]}
+};
+const px=p=>PX[p.id]||(PX[p.id]={goals:[{t:p.pdp.goal,m:'Согласовано на check-in',s:'Руководитель',due:'2026-12-31',c:null,pct:p.pdp.pct}],acts:[['Практика','Задачи по цели в рабочих сменах',0]],ci:[[p.last,'eva','Обсудили прогресс на 1:1']]});
+const lastCi=p=>{const c=px(p).ci[0];return c?c[0]:null};
+const st=p=>{if(!px(p).goals.length)return 'none';if(px(p).fresh)return 'ok';const lc=lastCi(p);const dd2=lc?daysBetween(dd(lc),NOW):999;return (p.pdp.pct<25||dd2>30)?'late':'ok'};
+const stChip=s=>s==='ok'?H.chip('в графике','ok'):s==='late'?H.chip('отстаёт','warn'):H.chip('нет плана','bad');
+const SG={design:'Подтвердить авторскую технику: 3 работы в стиле бренда',wedding:'Собрать 2 свадебных заказа под присмотром старшего флориста',speed:'4 недели утренней волны без переделок',care:'Разобрать 5 сложных запросов клиентов вместе с сервисом',coach:'Стать напарником для следующего новичка'};
+const SGc={speed:'Выйти на 95 % доставок вовремя за 6 недель',care:'Месяц без жалоб на вручение, фото каждой доставки',coach:'Провезти новичка по маршрутам Central'};
+const sugs={};
+function makeSug(p){
+ const nk=target(p);const out=[];
+ if(nk)gaps(p,nk).forEach(g=>out.push({t:(p.ladder==='courier'?SGc:SG)[g.k]||SG[g.k],c:g.k,why:`${H.skillNames[g.k]}: ${g.have} → нужно ${g.need} на «${colName(p.ladder,nk)}»${g.k==='speed'&&/вовремя/.test(p.ops.q)?' · сейчас '+p.ops.q:''}`}));
+ if(p.ladder==='tech')out.push({t:'Описать и вести один сервис целиком',c:null,why:'Компетенция «Самостоятельность» следующего уровня'},{t:'Ревью кода коллег раз в неделю',c:null,why:'Компетенция «Наставничество и ревью»'});
+ out.push({t:nk?`Подготовиться к уровню «${colName(p.ladder,nk)}»: разбор на квартальном ревью`:'Передать опыт: мастер-класс для команды',c:null,why:nk?'Следующий шаг карьерного трека':'Вершина трека'});
+ if(out.length<2)out.unshift({t:'Обучить новичка базовым стилям и подтвердить наставничество',c:'coach',why:'Навыки на уровне – следующий шаг: учить других'});
+ return out.slice(0,3).map(s=>({...s,acc:false}));
+}
+let tab='plans', pf='all', trk='florist', foc=null, mf='all';
+
+App.reg('growth',{
+ title:'Развитие',
+ crumb:(pr)=>'Развитие · '+({plans:'Планы развития',tracks:'Карьерные треки',matrix:'Матрица навыков'}[tabOf(pr)]),
+ render(el,params){
+  tab=tabOf(params);
+  const openPid=params&&params.id&&P(params.id)?params.id:null;
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">Обучение</div><h1>Развитие</h1><div class="sub">Планы развития, карьерные треки и навыки – без ставок и денег</div></div><div class="acts" id="gw-acts"></div></div>
+   <div class="tabs">${[['plans','Планы развития',H.chip('доработать','warn')],['tracks','Карьерные треки',H.chip('новое','info')],['matrix','Матрица навыков',H.chip('уже есть в CRM','ok')]].map(([k,n,c])=>`<button class="${tab===k?'on':''}" data-go="growth" data-id="${k}">${n}${c}</button>`).join('')}</div><div id="gw-b"></div>`;
+  const B=el.querySelector('#gw-b'),A=el.querySelector('#gw-acts');
+  /* ---------- plans ---------- */
+  function plans(){
+   const ppl=D.people;const sts=ppl.map(st);
+   const withPlan=sts.filter(s=>s!=='none').length,late=sts.filter(s=>s==='late').length,none=sts.filter(s=>s==='none').length;
+   const ci30=ppl.filter(p=>{const l=lastCi(p);return l&&daysBetween(dd(l),NOW)<=30}).length;
+   const avg=Math.round(ppl.filter(p=>st(p)!=='none').reduce((a,p)=>a+p.pdp.pct,0)/Math.max(1,withPlan));
+   const list=ppl.filter(p=>pf==='all'||st(p)===pf);
+   A.innerHTML=`<button class="btn" data-toast="Сотрудники получат напоминание обновить свой план в приложении – одно на человека">${ic('send')}Напомнить про check-in</button>`;
+   B.innerHTML=`<div class="grid g4" style="margin-bottom:16px">
+     <div class="kpi"><div class="k">С планом</div><div class="v">${withPlan}<span class="muted" style="font-size:20px"> / ${ppl.length}</span></div><div class="d">цели до 3 на человека</div></div>
+     <div class="kpi"><div class="k">Check-in за 30 дней</div><div class="v">${ci30}</div><div class="d">через 1:1 или в «Развитии»</div></div>
+     <div class="kpi"><div class="k">Отстают</div><div class="v">${late}</div><div class="d">прогресс < 25 % или check-in > 30 дн.</div></div>
+     <div class="kpi"><div class="k">Средний прогресс</div><div class="v">${avg} %</div><div class="d">Q4 2026 · прошло 45 % квартала</div></div></div>
+    <div class="card"><div class="ch"><h3>Планы развития · Q4 2026</h3>${H.chip('доработать','warn')}<div class="r"><div class="seg" id="gw-pf">${[['all','Все'],['late','Отстают ('+late+')'],['none','Нет плана ('+none+')']].map(([k,n])=>`<button data-pf="${k}" class="${pf===k?'on':''}">${n}</button>`).join('')}</div></div></div>
+     <div class="tw"><table class="t"><thead><tr><th>Человек</th><th>Главная цель</th><th>Прогресс</th><th>Последний check-in</th><th>Статус</th></tr></thead><tbody>
+     ${list.map(p=>{const s=st(p),l=lastCi(p);return `<tr class="clk" data-pdp="${p.id}"><td>${H.who(p,H.lvl(p))}</td><td style="min-width:220px">${s==='none'?'<span class="muted">Плана нет</span>':H.esc(px(p).goals[0].t)}</td><td>${s==='none'?'<span class="muted">–</span>':`<div class="stl">${H.bar(p.pdp.pct,s==='late'?'ac':'ok')}<span class="sm num">${p.pdp.pct} %</span></div>`}</td><td class="sm">${l?fmtD(l)+' <span class="muted">· '+ago(l)+'</span>':'<span class="muted">–</span>'}</td><td>${stChip(s)}</td></tr>`}).join('')||'<tr><td colspan="5" class="empty">Никого</td></tr>'}
+     </tbody></table></div></div>`;
+  }
+  /* ---------- tracks ---------- */
+  function box(k){const ppl=D.people.filter(p=>p.ladder===trk&&colKey(p)===k);const c=TR[trk].cols.find(x=>x.k===k);
+   const fk=foc&&foc.lv?foc.lv:(foc&&foc.pid?colKey(P(foc.pid)):null);const isN=fk&&nextKeys(trk,fk).includes(k);
+   return `<button class="lv ${fk===k?'on':''} ${isN?'nx':''}" data-lv="${k}"><span class="ln">${c.n}</span>${c.sub?H.chip(c.sub,'line'):''}<span class="avs">${ppl.map(p=>`<span data-pp="${p.id}">${H.av(p,'s')}</span>`).join('')||'<span class="muted sm">пока никого</span>'}</span></button>`}
+  function nextPanel(){
+   const ld=trk;let fromK,people;if(foc.lv==='__none')return '';
+   if(foc&&foc.pid){const p=P(foc.pid);fromK=colKey(p);people=[p]}else{fromK=foc.lv;people=D.people.filter(p=>p.ladder===ld&&colKey(p)===fromK)}
+   const nks=nextKeys(ld,fromK);const t=TR[ld];
+   const title=foc.pid?`${P(foc.pid).name} · что нужно для следующего уровня`:`${colName(ld,fromK)} → что нужно для следующего уровня`;
+   if(!nks.length)return `<div class="card" style="margin-top:16px"><div class="ch"><h3>${title}</h3></div><div class="cb"><p>Вершина трека. Дальше – растить других: мастер-классы, наставничество, новые направления.</p></div></div>`;
+   return `<div class="card" style="margin-top:16px"><div class="ch"><h3>${title}</h3>${nks.length>1?H.chip('развилка: выберите путь','info'):''}<div class="r"><button class="btn s ghost" id="gw-fx">${ic('x')}Скрыть</button></div></div><div class="cb"><div class="nxg">
+    ${nks.map(nk=>{const i=colIdx(ld,nk);return `<div><div class="eyebrow" style="margin-bottom:6px">${colName(ld,fromK)} → ${colName(ld,nk)}</div>
+     ${t.rows.map(r=>`<div class="nxi"><b>${r.n}</b><span>${H.esc(r.e[i]||'–')}${r.sk&&EXP[ld][nk]?` <span class="muted">· навык ${EXP[ld][nk][r.sk]}</span>`:''}</span></div>`).join('')}
+     <div style="margin-top:10px">${people.length?people.map(p=>{const g=gaps(p,nk);return `<div class="row" style="padding:6px 0;flex-wrap:wrap;gap:6px">${H.av(p,'s')}<span>${fn(p)}</span>${ld==='tech'?H.chip('по компетенциям трека','line'):g.length?g.map(x=>H.chip(`${H.skillNames[x.k]} ${x.have} → ${x.need}`,'warn')).join(''):H.chip('навыки на уровне – можно планировать переход','ok')}${foc.pid?`<button class="btn s" data-go="growth" data-id="${p.id}">${ic('sprout')}В план развития</button>`:''}</div>`}).join(''):'<p class="muted sm">На этом уровне сейчас никого</p>'}</div></div>`}).join('')}
+   </div></div></div>`;
+  }
+  function tracks(){
+   const t=TR[trk];const cols=t.cols;
+   if(!foc)foc={lv:trk==='florist'?'3':'1'};
+   const fk=foc.lv||colKey(P(foc.pid));const nk=nextKeys(trk,fk);
+   A.innerHTML=`<button class="btn" id="gw-edit">${ic('note')}Редактировать трек</button>`;
+   let lad='';
+   if(trk==='florist'){lad=`${box('1')}<span class="arr">${ic('arrow')}</span>${box('2')}<span class="arr">${ic('arrow')}</span>${box('3')}<span class="arr">${ic('arrow')}</span><div class="fork"><div class="fk">Развилка – два равных пути</div>${box('4p')}${box('4m')}</div><span class="arr">${ic('arrow')}</span>${box('5')}`}
+   else lad=cols.map(c=>box(c.k)).join(`<span class="arr">${ic('arrow')}</span>`);
+   B.innerHTML=`<div class="card"><div class="ch"><h3>${H.esc(t.name||D.ladders[trk].name)}</h3>${H.chip('новое','info')}<div class="r"><div class="seg" id="gw-trk">${Object.keys(TR).map(k=>`<button data-trk="${k}" class="${trk===k?'on':''}">${{florist:'Флористы',courier:'Доставка',care:'Сервис',tech:'Разработка'}[k]}</button>`).join('')}</div></div></div>
+    <div class="cb"><p class="sm muted" style="margin-bottom:12px">Нажмите на уровень или на человека – покажем, что нужно для следующего шага. Трек не связан со ставками: уровень = навыки и ответственность.</p><div class="lad">${lad}</div>
+    ${trk==='florist'?'<p class="sm muted" style="margin-top:6px">После L3 два равноценных пути: вести людей и смены или расти в ремесле (авторские работы, ивенты, мастер-классы). Внешняя квалификация – по желанию: City &amp; Guilds Level 3–4.</p>':''}</div></div>
+    ${nextPanel()}
+    <div class="card" style="margin-top:16px"><div class="ch"><h3>Компетенции по уровням</h3><div class="r"><span class="muted sm">5 строк – коротко, что человек делает на уровне</span></div></div>
+    <div class="tw"><table class="t comp"><thead><tr><th>Компетенция</th>${cols.map(c=>`<th class="${c.k===fk?'hl':nk.includes(c.k)?'hn':''}">${c.n}</th>`).join('')}</tr></thead><tbody>
+    ${t.rows.map(r=>`<tr><td><b style="font-weight:500">${H.esc(r.n)}</b>${r.sk?`<small>в матрице: ${H.skillNames[r.sk]}</small>`:''}</td>${cols.map((c,i)=>`<td class="${c.k===fk?'hl':nk.includes(c.k)?'hn':''}">${H.esc(r.e[i]||'–')}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div></div>`;
+  }
+  /* ---------- matrix ---------- */
+  function cls(p,k){const v=p.skills[k];const ce=EXP[p.ladder][colKey(p)]||{};const tk=target(p);const ne=tk?EXP[p.ladder][tk]||{}:{};
+   return v<(ce[k]||0)?'below':(v<(ne[k]||0)?'grow':'')}
+  function matrix(){
+   const ppl=D.people.filter(p=>REL[p.ladder].length&&(mf==='all'||p.team===mf));
+   let below=0,grow=0;ppl.forEach(p=>REL[p.ladder].forEach(k=>{const c=cls(p,k);if(c==='below')below++;if(c==='grow')grow++}));
+   A.innerHTML=`<button class="btn pr" id="gw-so">${ic('check')}Подтвердить навык</button>`;
+   B.innerHTML=`<div class="card"><div class="ch"><h3>Матрица навыков</h3>${H.chip('уже есть в CRM','ok')}<div class="r"><div class="seg" id="gw-mf">${[['all','Все'],['studio','Студия'],['shop','Магазин'],['delivery','Доставка']].map(([k,n])=>`<button data-mf="${k}" class="${mf===k?'on':''}">${n}</button>`).join('')}</div></div></div>
+    <div class="cb"><div class="lg"><span><i class="l0"></i>0 – нет опыта</span><span><i class="l1"></i>1 – учится, под присмотром</span><span><i class="l2"></i>2 – самостоятельно</span><span><i class="l3"></i>3 – может обучать</span><span><i class="l0 below"></i>ниже своего уровня · ${below}</span><span><i class="l0 grow"></i>нужно для следующего · ${grow}</span></div>
+    <div class="tw"><table class="t mx"><thead><tr><th>Человек</th><th>Уровень</th>${SK.map(k=>`<th class="sk">${H.skillNames[k]}</th>`).join('')}</tr></thead><tbody>
+    ${ppl.map(p=>`<tr><td>${H.who(p,p.role)}</td><td class="sm">${H.lvl(p)}</td>${SK.map(k=>REL[p.ladder].includes(k)?`<td class="hm"><button class="c l${p.skills[k]} ${cls(p,k)}" data-sk="${p.id}|${k}" title="${H.skillNames[k]}: ${p.skills[k]} – нажмите, чтобы подтвердить">${p.skills[k]}</button></td>`:'<td class="hm"><span class="c na" title="Не входит в трек">–</span></td>').join('')}</tr>`).join('')}
+    <tr><td colspan="2" class="sm muted">Могут обучать (уровень 3)</td>${SK.map(k=>`<td class="hm sm">${ppl.filter(p=>REL[p.ladder].includes(k)&&p.skills[k]===3).length}</td>`).join('')}</tr>
+    </tbody></table></div>
+    <p class="sm muted" style="margin-top:10px">Шкала 0–3 – как в текущей матрице CRM. Разработчики ведутся по компетенциям трека, не по матрице студии. Уровень 3 даёт право подтверждать навык другим.</p></div></div>`;
+  }
+  function draw(){foc=foc&&foc._trk===trk?foc:null;if(tab==='plans')plans();else if(tab==='tracks'){tracks();if(foc)foc._trk=trk}else matrix()}
+  /* ---------- PDP sheet ---------- */
+  function openPdp(pid){
+   const p=P(pid);const x=px(p);const tk=target(p);const s=st(p);
+   const rel=REL[p.ladder];const ne=tk?EXP[p.ladder][tk]||{}:{};
+   const skills=rel.length?rel.map(k=>{const have=p.skills[k],need=Math.max(ne[k]||0,have);return `<div class="ln"><span style="flex:1">${H.skillNames[k]}</span><span class="dots">${[1,2,3].map(i=>`<i class="${i<=have?'f':i<=need?'g':''}"></i>`).join('')}</span><span class="sm ${need>have?'':'muted'}" style="min-width:64px;text-align:right">${need>have?have+' → '+need:'на уровне'}</span></div>`}).join(''):'<p class="sm muted">Для трека разработки рост ведётся по компетенциям трека – см. вкладку «Карьерные треки».</p>';
+   const sg=sugs[pid];
+   const aiBox=sg?sg.map((g,i)=>`<div class="sug"><div class="row"><b style="flex:1;font-weight:500" data-sgt="${i}">${H.esc(g.t)}</b>${g.acc?H.chip('принято','ok'):''}</div><div class="sm muted" style="margin-top:2px">Почему: ${g.why}</div>${g.acc?'':`<div class="row" style="margin-top:8px;gap:6px"><button class="btn s pr" data-acc="${i}">Принять</button><button class="btn s" data-ed="${i}">Изменить</button></div>`}</div>`).join('')+'<p class="sm muted" style="margin-top:8px">HR или руководитель принимает и правит. AI сам в план ничего не пишет.</p>'
+    :`<p class="sm">AI посмотрит трек «${D.ladders[p.ladder].name}», пробелы до уровня «${tk?colName(p.ladder,tk):'—'}» и прошлые check-in и предложит 2–3 цели.</p><button class="btn s ac" id="gw-ai" style="margin-top:8px">${ic('spark')}Предложить цели</button>`;
+   App.sheet('План развития',`<div class="gw-sh">
+    ${H.who(p,H.lvl(p)+(tk?' → '+colName(p.ladder,tk):''))}
+    <div class="row" style="margin-top:12px;flex-wrap:wrap;gap:6px">${stChip(s)}${H.chip('Q4 2026','line')}${H.vis('shared')}</div>
+    <p class="sm muted" style="margin-top:6px">План пишет сам сотрудник в «Развитии», руководитель и HR согласуют. Видят сотрудник, руководитель и HR.</p>
+    <h4>Цели · до 3</h4>
+    ${x.goals.length?x.goals.map((g,i)=>`<div class="goal"><div class="row"><b style="flex:1">${H.esc(g.t)}</b>${g.c?H.chip(H.skillNames[g.c],'line'):''}<button class="btn s ghost" data-gx="${i}" title="Убрать цель">${ic('x')}</button></div><div class="sm muted" style="margin-top:4px">Мера успеха: ${H.esc(g.m)} · Поддержка: ${H.esc(g.s)} · до ${fmtD(g.due)}</div><div class="row" style="margin-top:8px"><div style="flex:1">${H.bar(g.pct,g.pct>=50?'ok':'')}</div><span class="sm num">${g.pct} %</span></div></div>`).join(''):'<div class="empty" style="border:1px dashed var(--light)">Плана нет. Начните с целей от AI ниже или добавьте свою.</div>'}
+    <div class="add"><input class="inp" id="gw-gn" placeholder="Своя цель…"><button class="btn s" id="gw-ga">${ic('plus')}Цель</button></div>
+    <h4>Навыки, которые растим</h4>${skills}
+    <h4>Действия</h4>${x.acts.length?x.acts.map((a,i)=>`<label class="ln" style="cursor:pointer"><input type="checkbox" data-ax="${i}" ${a[2]?'checked':''}>${H.chip(a[0],a[0]==='Курс'?'info':a[0]==='Наставник'?'ok':a[0]==='Ротация'?'warn':'line')}<span style="flex:1">${H.esc(a[1])}</span></label>`).join(''):'<p class="sm muted">Действий пока нет</p>'}
+    <div class="add"><select class="sel" id="gw-at" style="width:auto">${['Курс','Наставник','Ротация','Практика'].map(k=>`<option>${k}</option>`).join('')}</select><input class="inp" id="gw-an" placeholder="Что именно…"><button class="btn s" id="gw-aa">${ic('plus')}</button></div>
+    <h4>Check-in</h4>${x.ci.length?x.ci.map(c=>`<div class="ln" style="align-items:flex-start"><span class="sm" style="min-width:64px"><b style="font-weight:500">${fmtD(c[0])}</b></span><span style="flex:1"><span class="sm muted">${who(c[1])}</span><br>${H.esc(c[2])}</span></div>`).join(''):'<p class="sm muted">Check-in ещё не было</p>'}
+    <div class="add"><input class="inp" id="gw-cn" placeholder="Короткая заметка check-in…"><button class="btn s" id="gw-ca">Добавить</button></div>
+    <div class="card ai" style="margin-top:20px"><div class="ch"><h3>Предложить цели</h3><div class="r">${H.aiLabel()}</div></div><div class="cb">${aiBox}</div></div>
+   </div>`,`<button class="btn" data-person="${p.id}" data-tab="growth">Карточка</button><button class="btn pr" id="gw-save">Сохранить план</button>`);
+   const sb=document.getElementById('sheet-b'),sf=document.getElementById('sheet-f');
+   const re=()=>{const y=sb.scrollTop;openPdp(pid);document.getElementById('sheet-b').scrollTop=y};
+   sb.onclick=e=>{if(!sb.querySelector('.gw-sh'))return;const b=e.target.closest('button');if(!b)return;
+    if(b.id==='gw-ai'){sugs[pid]=makeSug(p);re();{const n=sugs[pid].length;App.toast(`Предложено ${n} ${plural(n,'цель','цели','целей')} – проверьте перед тем, как принять`)};return}
+    if(b.dataset.acc!==undefined){if(x.goals.length>=3){App.toast('В плане уже 3 цели – уберите одну');return}const g=sugs[pid][+b.dataset.acc];g.acc=true;x.goals.push({t:g.t,m:'Уточнить на check-in',s:'Руководитель',due:'2027-02-26',c:g.c,pct:0});re();App.toast('Цель добавлена в план');return}
+    if(b.dataset.ed!==undefined){const i=+b.dataset.ed;const t=sb.querySelector(`[data-sgt="${i}"]`);if(b.textContent==='Сохранить'){const v=sb.querySelector('#gw-sge').value.trim();if(v)sugs[pid][i].t=v;re();App.toast('Формулировка изменена');return}
+     t.innerHTML=`<input class="inp" id="gw-sge" value="${H.esc(sugs[pid][i].t)}">`;b.textContent='Сохранить';sb.querySelector('#gw-sge').focus();return}
+    if(b.dataset.gx!==undefined){x.goals.splice(+b.dataset.gx,1);re();App.toast('Цель убрана из плана');return}
+    if(b.id==='gw-ga'){const v=sb.querySelector('#gw-gn').value.trim();if(!v){App.toast('Напишите цель');return}if(x.goals.length>=3){App.toast('В плане уже 3 цели – уберите одну');return}x.goals.push({t:v,m:'Уточнить на check-in',s:'Руководитель',due:'2027-02-26',c:null,pct:0});re();App.toast('Цель добавлена');return}
+    if(b.id==='gw-aa'){const v=sb.querySelector('#gw-an').value.trim();if(!v){App.toast('Опишите действие');return}x.acts.push([sb.querySelector('#gw-at').value,v,0]);re();App.toast('Действие добавлено');return}
+    if(b.id==='gw-ca'){const v=sb.querySelector('#gw-cn').value.trim();if(!v){App.toast('Напишите заметку');return}x.ci.unshift(['2026-11-11','eva',v]);re();App.toast('Check-in записан – виден сотруднику');return}
+   };
+   sb.onchange=e=>{if(!sb.querySelector('.gw-sh'))return;const t=e.target;if(t.dataset.ax!==undefined){x.acts[+t.dataset.ax][2]=t.checked?1:0;App.toast(t.checked?'Действие выполнено':'Действие снова открыто')}};
+   sf.onclick=e=>{if(!sb.querySelector('.gw-sh'))return;if(e.target.closest('#gw-save')){if(!x.goals.length){App.toast('Добавьте хотя бы одну цель');return}
+    if(!p.pdp.goal||p.pdp.goal==='—'){p.pdp.goal=x.goals[0].t;p.pdp.pct=0;x.fresh=true;p.signals=p.signals.filter(s=>s.t!=='Нет плана развития')}
+    App.close();sb.onclick=sb.onchange=sf.onclick=null;draw();App.toast(`План сохранён – ${fn(p)} увидит его в приложении в «Развитии»`)}};
+  }
+  /* ---------- sign-off sheet ---------- */
+  const STEPS={design:['Гамма и цветы по карточке стиля','Спиральная техника, ровные стебли','Упаковка в фирменном стиле','Фото для клиента по стандарту','Уложилась в норму времени'],wedding:['Бутоньерка на проволоке','Букет невесты по эскизу','Элемент арки','Упаковка и перевозка свадебного заказа'],speed:['3 букета утренней волны подряд','Без переделок','Рабочее место по стандарту','Время в норме'],care:['Приняла заказ по телефону по стандарту','Подобрала замену при нехватке цветка','Разобрала жалобу вместе со старшим','Записала договорённость в заказ'],coach:['Провела урок новичку на смене','Дала обратную связь по чек-листу','Новичок сдал навык после её обучения']};
+  const STc={speed:['Маршрут из 10+ точек без опозданий','Фото доставки по стандарту','Отметки в приложении вовремя'],care:['Вручение по стандарту','Решила проблему на месте (нет дома, не тот адрес)','Позвонила клиенту, записала в заказ']};
+  function openSo(pid,k){
+   const p=P(pid);const lv=p.skills[k];const tg=Math.min(3,lv+1);const steps=(p.ladder==='courier'&&STc[k])||STEPS[k];
+   const ass=D.people.filter(q=>q.id!==pid&&q.skills[k]===3&&REL[q.ladder].includes(k));
+   App.sheet('Подтвердить навык',`<div class="gw-sh">${H.who(p,H.lvl(p))}
+    <div class="row" style="margin-top:12px;flex-wrap:wrap;gap:6px">${H.chip(H.skillNames[k],'ink')}${lv<3?H.chip('сейчас '+lv+' → подтверждаем '+tg,'info'):H.chip('уровень 3 – повторная проверка','info')}</div>
+    <h4>Практическая проверка на смене</h4>${steps.map((s,i)=>`<label class="chk"><input type="checkbox" data-st="${i}">${s}</label>`).join('')}
+    <h4>Фото работы</h4><div class="ph" id="gw-ph">${ic('flower','')}<b>фото работы</b><span>Фото готового букета уже делается для клиента – возьмите его из заказа или загрузите</span><button class="btn s" id="gw-phb">Взять фото из заказа</button></div>
+    <h4>Кто проверяет</h4><select class="sel" id="gw-as">${(ass.length?ass:[P('irina')]).map(q=>`<option>${q.name} · может обучать</option>`).join('')}</select>
+    <h4>Комментарий</h4><textarea class="ta" id="gw-cm" placeholder="Что получилось, что подтянуть"></textarea>
+    <h4>Решение</h4><div class="seg" id="gw-dec"><button data-dec="pass">Сдал</button><button data-dec="retry">Ещё раз</button></div>
+    <p class="sm muted" style="margin-top:8px">Решение ставит проверяющий, AI в этом не участвует. Повторная проверка – через 6 месяцев, как сертификаты в Обучении.</p></div>`,
+    `<button class="btn" data-close>Отмена</button><button class="btn pr" id="gw-sos">Сохранить решение</button>`);
+   let dec=null;const sb=document.getElementById('sheet-b'),sf=document.getElementById('sheet-f');
+   sb.onclick=e=>{if(!sb.querySelector('.gw-sh'))return;const b=e.target.closest('button');if(!b)return;
+    if(b.id==='gw-phb'){const ph=sb.querySelector('#gw-ph');ph.classList.add('got');ph.innerHTML=`${ic('check')}<b>Фото прикреплено</b><span>Заказ #48231 · 11 нояб, утренняя волна</span>`;App.toast('Фото взято из заказа – клиентские данные не копируются');return}
+    if(b.dataset.dec){dec=b.dataset.dec;sb.querySelectorAll('#gw-dec button').forEach(x=>x.classList.toggle('on',x===b))}};
+   sf.onclick=e=>{if(!sb.querySelector('.gw-sh')||!e.target.closest('#gw-sos'))return;
+    if(!dec){App.toast('Выберите решение: «Сдал» или «Ещё раз»');return}
+    const all=[...sb.querySelectorAll('[data-st]')].every(c=>c.checked);
+    if(dec==='pass'&&!all){App.toast('Не все шаги отмечены – отметьте их или выберите «Ещё раз»');return}
+    App.close();sb.onclick=sf.onclick=null;
+    if(dec==='pass'){p.skills[k]=tg;draw();const c=el.querySelector(`[data-sk="${pid}|${k}"]`);if(c)c.classList.add('flash');App.toast(lv<3?`${fn(p)} · ${H.skillNames[k]}: ${lv} → ${tg} подтверждено`:`${fn(p)} · ${H.skillNames[k]}: уровень 3 подтверждён повторно`)}
+    else App.toast(`Повтор через 2 недели – задача создана для проверяющего, ${fn(p)} получит подсказку, что подтянуть`)};
+  }
+  /* ---------- edit track sheet ---------- */
+  function openEdit(){
+   const t=TR[trk];const rowH=(r)=>`<div class="etr"><input class="inp et-rn" value="${H.esc(r.n)}" placeholder="Компетенция">${t.cols.map((c,i)=>`<label class="f" style="margin-top:4px">${c.n}</label><input class="inp et-c" value="${H.esc(r.e[i]||'')}">`).join('')}</div>`;
+   App.sheet('Редактировать трек',`<div class="gw-sh"><label class="f">Название трека</label><input class="inp" id="gw-tn" value="${H.esc(t.name||D.ladders[trk].name)}">
+    <p class="sm muted" style="margin:8px 0 12px">Уровни – колонки, компетенции – строки. 3–6 слов в ячейке: что человек делает на этом уровне. Без ставок – деньги ведёт админ отдельно.</p>
+    <div id="gw-rows">${t.rows.map(rowH).join('')}</div><button class="btn s" id="gw-addr">${ic('plus')}Компетенция</button></div>`,
+    `<button class="btn" data-close>Отмена</button><button class="btn pr" id="gw-tsave">Сохранить</button>`);
+   const sb=document.getElementById('sheet-b'),sf=document.getElementById('sheet-f');
+   sb.onclick=e=>{if(sb.querySelector('.gw-sh')&&e.target.closest('#gw-addr')){sb.querySelector('#gw-rows').insertAdjacentHTML('beforeend',rowH({n:'',e:[]}));App.toast('Строка добавлена')}};
+   sf.onclick=e=>{if(!sb.querySelector('.gw-sh')||!e.target.closest('#gw-tsave'))return;
+    const rows=[...sb.querySelectorAll('.etr')].map((d,i)=>({n:d.querySelector('.et-rn').value.trim(),sk:(t.rows[i]||{}).sk,e:[...d.querySelectorAll('.et-c')].map(x=>x.value.trim()||'–')})).filter(r=>r.n);
+    t.rows=rows;t.name=sb.querySelector('#gw-tn').value.trim()||D.ladders[trk].name;App.close();sb.onclick=sf.onclick=null;draw();App.toast(`Трек «${t.name}» сохранён как черновик – сотрудники увидят после согласования основателем`)};
+  }
+  el.addEventListener('click',e=>{
+   const t=e.target;
+   const pd=t.closest('[data-pdp]');if(pd){openPdp(pd.dataset.pdp);return}
+   const f=t.closest('[data-pf]');if(f){pf=f.dataset.pf;draw();return}
+   const tr=t.closest('[data-trk]');if(tr){trk=tr.dataset.trk;foc=null;draw();return}
+   const pp=t.closest('[data-pp]');if(pp){foc={pid:pp.dataset.pp,_trk:trk};draw();return}
+   const lv=t.closest('[data-lv]');if(lv){foc={lv:lv.dataset.lv,_trk:trk};draw();return}
+   if(t.closest('#gw-fx')){foc={lv:'__none',_trk:trk};const c=t.closest('.card');if(c)c.remove();return}
+   const mfb=t.closest('[data-mf]');if(mfb){mf=mfb.dataset.mf;draw();return}
+   const sk=t.closest('[data-sk]');if(sk){const [a,b]=sk.dataset.sk.split('|');openSo(a,b);return}
+   if(t.closest('#gw-edit')){openEdit();return}
+   if(t.closest('#gw-so')){
+    const cand=D.people.filter(p=>REL[p.ladder].length);
+    App.modal('Подтвердить навык',`<label class="f">Кто</label><select class="sel" id="gw-mp">${cand.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select><div style="height:10px"></div><label class="f">Навык</label><select class="sel" id="gw-mk">${SK.map(k=>`<option value="${k}">${H.skillNames[k]}</option>`).join('')}</select>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="gw-mgo">Далее</button>`);
+    document.getElementById('gw-mgo').onclick=()=>{const pid=document.getElementById('gw-mp').value,k=document.getElementById('gw-mk').value;if(!REL[P(pid).ladder].includes(k)){App.toast('Этот навык не входит в трек человека');return}App.close();setTimeout(()=>openSo(pid,k),60)};return}
+  });
+  if(tab==='tracks'&&foc&&foc.lv==='__none')foc=null;
+  draw();
+  if(openPid){setTimeout(()=>openPdp(openPid),30)}
+ },
+ notes:(pr)=>{const t=tabOf(pr);
+  if(t==='tracks')return `<h4>Что это</h4><p>Карьерные треки по ролям: уровни – колонки, 5 компетенций – строки. У флористов после L3 развилка: «Старшая смены» (люди) или «Мастер-флорист» (ремесло).</p>
+<h4>Зачем HR</h4><p>Человек видит, где он и что нужно для следующего шага; план развития строится от пробелов следующего уровня. Сейчас в CRM есть только денежная лестница флористов – её HR не видит, трек от денег отделён.</p>
+<h4>Откуда идея</h4><p><span class="src">Lattice Grow</span><span class="src">Leapsome</span><span class="src">Employment Hero</span> двойной трек в рознице; <span class="src">City &amp; Guilds</span> Level 2–5 по флористике как внешняя опция.</p>
+<h4>Данные из нашей CRM</h4><p>Матрица навыков 0–3 (строки трека ссылаются на её навыки), планы развития в «Развитии». Сами треки – новое.</p>
+<h4>Приоритет</h4><p><span class="pri p2">Следующий шаг</span> после планов и 1:1. Правка трека – черновик, согласует основатель.</p>`;
+  if(t==='matrix')return `<h4>Что это</h4><p>Существующая матрица навыков 0–3 в виде тепловой карты с пробелами относительно уровня человека и практическим подтверждением навыка.</p>
+<h4>Зачем HR</h4><p>Видно, кого учить, кто может обучать и кого ставить напарником. Пробелы сразу становятся целями плана развития.</p>
+<h4>Откуда идея</h4><p><span class="src">Opus</span><span class="src">Mitti</span> практический sign-off с фото и «сдал / ещё раз»; <span class="src">AG5</span> матрица в рознице.</p>
+<h4>Данные из нашей CRM</h4><p>Матрица навыков у человека, допуски станций и наблюдение на смене в «Обучении», фото букета, которое и так делается для клиента. Три системы навыков стоит свести в одну.</p>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span> доступ HR и подсветка пробелов; <span class="pri p2">Следующий шаг</span> подтверждение с фото.</p>`;
+  return `<h4>Что это</h4><p>Сводка всех планов развития: главная цель, прогресс, последний check-in, статус. Клик – план человека с целями, навыками, действиями и историей check-in.</p>
+<h4>Зачем HR</h4><p>Сразу видно, чей план отстаёт или его нет (Jake). AI предлагает цели от пробелов до следующего уровня – HR принимает или правит.</p>
+<h4>Откуда идея</h4><p><span class="src">Culture Amp Develop</span><span class="src">Lattice Grow</span><span class="src">Leapsome</span> – цели привязаны к компетенциям следующего уровня, AI-черновик плана.</p>
+<h4>Данные из нашей CRM</h4><p>Экран «Развитие» уже есть: до 3 целей с мерой успеха и поддержкой, check-in, квартальный машинный черновик плана. Доработать: доступ HR, связь с 1:1 и ревью.</p>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span> открыть HR существующие планы. <span class="pri p2">Следующий шаг</span> AI-цели.</p>`}
+});
+function tabOf(pr){const k=pr&&(pr.tab||pr.id);return ['plans','tracks','matrix'].includes(k)?k:'plans'}
+})();
+</script>

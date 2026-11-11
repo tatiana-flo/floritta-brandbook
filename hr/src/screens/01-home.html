@@ -1,0 +1,282 @@
+<style>
+#s-home .hm-kpi{text-align:left;cursor:pointer;display:block;width:100%}
+#s-home .hm-kpi:hover{background:var(--silver)}
+#s-home .hm-kpi .row{justify-content:space-between;align-items:flex-end;gap:8px}
+#s-home .hm-kpi .up{color:var(--ok)}#s-home .hm-kpi .dn{color:var(--accent)}
+#s-home .hm-sec{margin-top:16px}
+#s-home .hm-att{display:grid;grid-template-columns:minmax(170px,220px) minmax(0,1fr);gap:16px;padding:14px 16px;border-bottom:1px solid var(--hair)}
+#s-home .hm-att .sigs{display:flex;flex-wrap:wrap;gap:6px}
+#s-home .hm-att .why{font-size:12px;color:var(--grey);margin:7px 0 9px;display:flex;gap:6px;align-items:flex-start}
+#s-home .hm-att .why svg{margin-top:2px}
+#s-home .hm-att .acts{display:flex;gap:6px;flex-wrap:wrap}
+#s-home .hm-att.info .sigs .chip{opacity:.9}
+#s-home .hm-li{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--hair)}
+#s-home .hm-li:last-child{border-bottom:0}
+#s-home .hm-li .grow{flex:1;min-width:0}
+#s-home .hm-li .t{display:flex;align-items:center;gap:8px}
+#s-home .hm-li .t b{font-weight:500}
+#s-home .hm-when{width:72px;flex:none;font-size:11.5px;color:var(--grey);line-height:1.3}
+#s-home .hm-when b{display:block;color:var(--ink);font-weight:500;font-size:13px}
+#s-home .hm-pt{display:grid;grid-template-columns:minmax(0,1fr) 120px 44px 74px;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--hair)}
+#s-home .hm-pt b{font-weight:500}
+#s-home .hm-pt .val{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+#s-home .hm-cap{font-size:11.5px;color:var(--grey);padding:10px 16px;border-top:1px solid var(--hair);display:flex;gap:6px;align-items:flex-start}
+#s-home .hm-cap svg{margin-top:1px}
+#s-home .hm-kd{padding:10px 16px;border-bottom:1px solid var(--hair)}
+#s-home .hm-kd .top{display:flex;align-items:center;gap:6px;font-size:12.5px;flex-wrap:wrap}
+#s-home .hm-kd .top .sp{flex:1}
+#s-home .hm-kd p{margin-top:4px;font-size:13px;color:var(--graphite)}
+#s-home .hm-lnk{font-weight:500;text-decoration:underline;text-decoration-color:var(--light);text-underline-offset:3px}
+#s-home .hm-more{width:100%;padding:10px 16px;text-align:left;font-size:12px;color:var(--graphite);display:flex;gap:8px;align-items:center}
+#s-home .hm-more:hover{background:var(--silver)}
+#s-home .hm-empty{padding:24px 16px;color:var(--grey);font-size:13px}
+@media (max-width:700px){#s-home .hm-att{grid-template-columns:1fr;gap:8px}#s-home .hm-pt{grid-template-columns:minmax(0,1fr) 90px 44px}#s-home .hm-pt .dl{display:none}#s-home .hm-li{flex-wrap:wrap}}
+/* sheet and modal content (outside the screen root) – unique hrp- prefix */
+#sheet-b .hrp-f{margin-bottom:16px}
+#sheet-b .hrp-vis,#modal-b .hrp-vis{display:flex;flex-direction:column;gap:6px}
+#sheet-b .hrp-vis label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--hair);cursor:pointer}
+#sheet-b .hrp-vis label.on{border-color:var(--ink)}
+#sheet-b .hrp-vis label.dis{opacity:.4;cursor:not-allowed}
+#sheet-b .hrp-vis input{margin-top:3px;accent-color:var(--ink)}
+#sheet-b .hrp-vis small{display:block;color:var(--grey);font-size:12px;margin-top:3px}
+#sheet-b .hrp-hint{font-size:12px;color:var(--grey);margin-top:6px}
+#sheet-b .hrp-hint.warn{color:var(--warn)}
+#sheet-b .hrp-vals{display:flex;flex-wrap:wrap;gap:6px}
+#sheet-b .hrp-vals label{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:1px solid var(--hair);cursor:pointer;font-size:13px}
+#sheet-b .hrp-vals label.on{border-color:var(--ink);background:var(--silver)}
+#sheet-b .hrp-vals input{accent-color:var(--ink)}
+#sheet-b .hrp-ai{border:1px solid var(--accent);padding:10px 12px;margin-bottom:16px;background:var(--accent-bg)}
+#sheet-b .hrp-ai .hrp-hint{color:var(--accent-dark)}
+#sheet-b .hrp-wk{min-height:110px;font-size:13px}
+#sheet-b .hrp-log{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#sheet-b .hrp-log small{display:block;color:var(--grey);font-size:12px}
+</style>
+<script>
+/* Shared helpers for my three screens (home, people, person). Unique global name. */
+window.HRP=(()=>{
+ const SEV={bad:3,warn:2,info:1};
+ const MALE=['ruslan','jake','bogdan','artem','denis'];
+ const myKudos=[];
+ const R={
+  SEV,
+  me:()=>App.role==='admin'?'founder':'eva',
+  name:(id)=>id==='eva'?'Eva Marin':id==='founder'?'Основатель':(P(id)?P(id).name:String(id)),
+  first:(id)=>R.name(id).split(' ')[0],
+  avS:(id)=>P(id)?H.av(P(id),'s'):`<span class="av s">${id==='eva'?'EM':'ОС'}</span>`,
+  g:(p,m,f)=>MALE.includes(p.id)?m:f,
+  kudos:()=>[...myKudos,...D.kudos].sort((a,b)=>b.d.localeCompare(a.d)),
+  cats:['Наблюдение','1:1','Развитие','Работа','Похвала','Риск','Благополучие','Онбординг'],
+  VIS:{priv:['Только я','Черновик мыслей. Не видит никто, даже основатель'],hr:['HR + основатель','Риски и личные обстоятельства'],mgr:['+ руководитель','Рабочие договорённости, которые нужны руководителю'],shared:['Видит сотрудник','Итоги 1:1, похвала, общие договорённости']},
+  canRead:(n)=>!(n.vis==='priv'&&n.by!==R.me()),
+  sev:(p)=>p.signals.reduce((m,s)=>Math.max(m,SEV[s.lvl]||0),0)*10+p.signals.length,
+  attn:(p)=>p.signals.some(s=>s.lvl!=='info'),
+  nextOne:(pid)=>D.ones.filter(o=>o.who===pid&&o.status!=='done').sort((a,b)=>(a.d+a.time).localeCompare(b.d+b.time))[0],
+  rule(s){const t=s.t;
+   if(/Пульс/.test(t)) return ['пульс упал на 3+ пункта за 4–6 недель против своей нормы','еженедельный пульс'];
+   if(/Переработка/.test(t)) return ['часы сверх плана 3 недели подряд','клок-ин против графика смен'];
+   if(/Нет 1:1/.test(t)) return ['нет 1:1 дольше 30 дней','история 1:1'];
+   if(/Вовремя/.test(t)) return ['доля доставок в слот на 5+ пунктов ниже команды за 4 недели','доставки и оценки рейсов'];
+   if(/плана развития/.test(t)) return ['нет активного плана развития','планы развития'];
+   if(/переключений/.test(t)) return ['одна и та же тема в 2 из 3 последних 1:1','повестки 1:1'];
+   if(/испытательного/.test(t)) return ['до конца испытательного срока меньше 14 дней','даты найма'];
+   if(/Проверка прав/.test(t)) return ['документ истекает в ближайшие 30 дней','документы курьеров'];
+   if(/день 45/.test(t)) return ['контрольная точка онбординга: 30, 45 и 90 дней','план онбординга'];
+   return ['правило HR','данные CRM'];
+  },
+  recs(p){const h=[...p.id].reduce((a,c)=>a+c.charCodeAt(0),0);
+   const r={studio:[['Смена','10 нояб, утро'],['Смена','7 нояб, вечер'],['Проблема с букетом','#48'+(100+h%800)]],
+    delivery:[['Смена курьера','10 нояб'],['Разбор рейса','9 нояб'],['Доставка','#48'+(100+h%800)]],
+    shop:[['Смена','10 нояб'],['Жалоба клиента','#48'+(100+h%800)],['Задача','T-'+(2100+h%90)]],
+    tech:[['Задача','T-'+(2200+h%90)],['Задача','T-'+(2150+h%90)],['Релиз','11 нояб']]}[p.team].slice();
+   if(p.id==='nika') r[2]=['Проблема с букетом','#48213'];
+   return r.map(([k,ref])=>({k,ref}));
+  },
+  visRadios(sel,name){return ['priv','hr','mgr','shared'].map(k=>`<label class="${k===sel?'on':''}" data-v="${k}"><input type="radio" name="${name}" value="${k}" ${k===sel?'checked':''}><span>${H.vis(k)}<small>${R.VIS[k][1]}</small></span></label>`).join('')},
+  wireVis(box,catSel,hint){
+   const sync=()=>{const sens=catSel&&catSel.value==='Благополучие';
+    box.querySelectorAll('label').forEach(l=>{const k=l.dataset.v,inp=l.querySelector('input'),dis=sens&&(k==='mgr'||k==='shared');inp.disabled=dis;l.classList.toggle('dis',dis);if(dis&&inp.checked){box.querySelector('input[value="hr"]').checked=true}});
+    box.querySelectorAll('label').forEach(l=>l.classList.toggle('on',l.querySelector('input').checked));
+    if(hint){hint.textContent=sens?'Здоровье и личные обстоятельства – особая категория данных (UK GDPR): не шире «HR + основатель».':'';hint.classList.toggle('warn',sens)}};
+   box.addEventListener('change',sync); if(catSel) catSel.addEventListener('change',sync); sync();
+  },
+  copy(text,ok){try{navigator.clipboard.writeText(text).then(()=>App.toast(ok||'Скопировано'),()=>App.toast('Буфер обмена недоступен – выделите текст вручную'))}catch(e){App.toast('Буфер обмена недоступен – выделите текст вручную')}},
+  noteSheet(pid,onSave){
+   const opts=D.people.map(p=>`<option value="${p.id}"${p.id===pid?' selected':''}>${p.name} – ${p.role}</option>`).join('');
+   App.sheet('Новая заметка',`<div id="hrp-nf">
+    <div class="hrp-f"><label class="f">О ком</label><select class="sel" id="hrp-who">${pid?'':'<option value="">Выберите человека…</option>'}${opts}</select></div>
+    <div class="hrp-f"><label class="f">Категория</label><select class="sel" id="hrp-cat">${R.cats.map(c=>`<option>${c}</option>`).join('')}</select></div>
+    <div class="hrp-f"><label class="f">Кто видит</label><div class="hrp-vis" id="hrp-vis">${R.visRadios('hr','hrp-v')}</div><div class="hrp-hint" id="hrp-hint"></div></div>
+    <div class="hrp-f"><label class="f">Текст</label><textarea class="ta" id="hrp-t" rows="5" placeholder="Факты и договорённости. Без диагнозов и оценок личности."></textarea></div>
+    <div class="hrp-f"><label class="f">Привязать к записи CRM · необязательно</label><select class="sel" id="hrp-link"></select><div class="hrp-hint">Смена, проблема с букетом или задача – контекст, которого нет в отдельных HR-системах. Суммы заказов HR не видит.</div></div>
+    ${App.role==='admin'?'<div class="callout info sm">Вы пишете как основатель. Заметку «Только я» не увидит даже HR.</div>':''}
+   </div>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="hrp-save">${ic('check')}Сохранить</button>`);
+   const who=document.getElementById('hrp-who'),link=document.getElementById('hrp-link');
+   const fill=()=>{const p=P(who.value);link.innerHTML='<option value="">Без привязки</option>'+(p?R.recs(p).map((r,i)=>`<option value="${i}">${r.k} ${r.ref}</option>`).join(''):'')};
+   who.addEventListener('change',fill); fill();
+   R.wireVis(document.getElementById('hrp-vis'),document.getElementById('hrp-cat'),document.getElementById('hrp-hint'));
+   document.getElementById('hrp-save').addEventListener('click',()=>{
+    const p=P(who.value),t=document.getElementById('hrp-t').value.trim();
+    if(!p){App.toast('Выберите, о ком заметка');return} if(!t){App.toast('Напишите текст заметки');return}
+    const vis=document.querySelector('#hrp-vis input:checked').value;
+    const n={id:'n'+Date.now(),who:p.id,by:R.me(),d:'2026-11-11',vis,cat:document.getElementById('hrp-cat').value,t};
+    if(link.value!=='') n.link=R.recs(p)[+link.value];
+    D.notes.push(n); App.close(); App.toast(`Заметка сохранена: ${p.name} · видимость: ${R.VIS[vis][0]}`); if(onSave) onSave(n);
+   });
+  },
+  kudosSheet(pid,onSave){
+   const opts=D.people.map(p=>`<option value="${p.id}"${p.id===pid?' selected':''}>${p.name} – ${p.role}</option>`).join('');
+   App.sheet('Благодарность',`<div>
+    <div class="hrp-f"><label class="f">Кому</label><select class="sel" id="hrp-kto">${pid?'':'<option value="">Выберите человека…</option>'}${opts}</select></div>
+    <div class="hrp-f"><label class="f">Ценность</label><div class="hrp-vals" id="hrp-kv">${D.values.map((v,i)=>`<label class="${i?'':'on'}"><input type="radio" name="hrp-kv" value="${v}" ${i?'':'checked'}>${v}</label>`).join('')}</div></div>
+    <div class="hrp-f"><label class="f">За что</label><textarea class="ta" id="hrp-kt" rows="4" placeholder="Конкретный поступок: что сделал(а) и почему это важно"></textarea></div>
+    <div class="callout ok sm">Благодарность видят сотрудник и команда в приложении. Без баллов и денег – только слова.</div>
+   </div>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="hrp-ksave">${ic('heart')}Отправить</button>`);
+   const kv=document.getElementById('hrp-kv');
+   kv.addEventListener('change',()=>kv.querySelectorAll('label').forEach(l=>l.classList.toggle('on',l.querySelector('input').checked)));
+   document.getElementById('hrp-ksave').addEventListener('click',()=>{
+    const p=P(document.getElementById('hrp-kto').value),t=document.getElementById('hrp-kt').value.trim();
+    if(!p){App.toast('Выберите, кому благодарность');return} if(!t){App.toast('Напишите, за что спасибо');return}
+    myKudos.unshift({from:R.me(),to:p.id,d:'2026-11-11',val:kv.querySelector('input:checked').value,t}); p.kudos++;
+    App.close(); App.toast(`Благодарность отправлена – ${p.name.split(' ')[0]} увидит её в приложении`); if(onSave) onSave();
+   });
+  }
+ };
+ return R;
+})();
+
+(()=>{
+const HM={dismissed:new Set(),more:false,rem:{}};
+const W={studio:8,delivery:5,shop:5,tech:5};
+const TEAMS=['studio','delivery','shop','tech'];
+const f1=v=>(Math.round(v*10)/10).toFixed(1).replace('.',',');
+const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+const teamAvg=()=>D.pulseTeam.weeks.map((_,i)=>{let s=0,n=0;TEAMS.forEach(t=>{s+=D.pulseTeam[t][i]*W[t];n+=W[t]});return s/n});
+const dayLbl=s=>{const n=daysBetween(NOW,dd(s));return n===0?'Сегодня':n===1?'Завтра':fmtD(s)};
+
+const attRow=p=>{const top=p.signals.slice().sort((a,b)=>HRP.SEV[b.lvl]-HRP.SEV[a.lvl])[0];const [r,src]=HRP.rule(top);
+ return `<div class="hm-att ${HRP.attn(p)?'':'info'}"><div>${H.who(p)}<div class="sm muted" style="margin-top:6px">1:1 ${ago(p.last)} · пульс ${p.pulse[p.pulse.length-1]}/10</div></div>
+ <div><div class="sigs">${p.signals.map(H.sig).join('')}</div>
+ <div class="why">${ic('filter')}<span>Почему: правило – ${r}. Источник: ${src}.</span></div>
+ <div class="acts"><button class="btn s" data-person="${p.id}">${ic('user')}Карточка</button><button class="btn s" data-a="one" data-p="${p.id}">${ic('chat')}Назначить 1:1</button><button class="btn s ghost" data-a="done" data-p="${p.id}">${ic('check')}Разобрано</button></div></div></div>`};
+
+const oneRow=o=>{const p=P(o.who),emp=o.agenda.filter(a=>a.by==='emp').length,open=o.actions.filter(a=>!a.done).length;
+ const sub=`${o.agenda.length} ${plural(o.agenda.length,'тема','темы','тем')}${emp?` · ${emp} от сотрудника`:''}${open?` · ${open} ${plural(open,'незакрытое действие','незакрытых действия','незакрытых действий')}`:''}`;
+ return `<div class="hm-li"><div class="hm-when"><b>${dayLbl(o.d)}</b>${o.time}</div><div class="grow">${H.who(p,sub)}</div><button class="btn s" data-a="prep" data-o="${o.id}">Подготовиться</button></div>`};
+
+const evAct=(e,i)=>{
+ if(e.k==='gift') return `<button class="btn s" data-a="card" data-i="${i}">${ic('gift')}Открытка</button>`;
+ if(e.k==='file') return HM.rem[i]?`<button class="btn s ghost" data-a="unrem" data-i="${i}">${ic('check')}Напомню</button>`:`<button class="btn s" data-a="rem" data-i="${i}">${ic('clock')}Напоминание</button>`;
+ if(!e.who) return `<button class="btn s" data-go="reviews">${ic('clip')}Открыть ревью</button>`;
+ return `<button class="btn s" data-person="${e.who}" data-tab="${e.k==='clip'?'docs':'overview'}">${ic('user')}Карточка</button>`};
+const evRow=(e,i)=>{const p=e.who&&P(e.who);
+ return `<div class="hm-li"><div class="hm-when"><b>${fmtD(e.d)}</b>${inDays(e.d)}</div><div class="grow"><div class="t">${ic(e.k)}<b>${e.t}</b></div><div class="sm muted">${p?p.name+' · '+p.role:'Вся команда'}${e.x?' · '+e.x:''}</div></div>${evAct(e,i)}</div>`};
+
+const ptRow=t=>{const v=D.pulseTeam[t],last=v[v.length-1],d4=Math.round((last-v[v.length-5])*10)/10,c=H.pulseColor(last);
+ return `<div class="hm-pt"><div><b>${D.teams[t]}</b><div class="sm muted">${W[t]} ${plural(W[t],'ответ','ответа','ответов')} · неделя 4 нояб</div></div>${H.spark(v,{w:120,h:30,min:5,max:9,color:c})}<div class="val" style="color:${c}">${f1(last)}</div><div class="sm dl">${d4<0?'<span style="color:var(--accent)">▼ '+f1(-d4)+'</span>':d4>0?'<span style="color:var(--ok)">▲ '+f1(d4)+'</span>':'= 0'} <span class="muted">за 4 нед.</span></div></div>`};
+
+const kRow=k=>`<div class="hm-kd"><div class="top">${HRP.avS(k.from)}<span>${HRP.name(k.from)}</span>${ic('arrow')}${HRP.avS(k.to)}<button class="hm-lnk" data-person="${k.to}">${HRP.name(k.to)}</button><span class="sp"></span>${H.chip(k.val,'line')}<span class="muted sm">${ago(k.d)}</span></div><p>${H.esc(k.t)}</p></div>`;
+
+const weekly=()=>{
+ const risk=D.people.filter(HRP.attn).sort((a,b)=>HRP.sev(b)-HRP.sev(a));
+ const nocov=D.people.filter(p=>daysBetween(dd(p.last),NOW)>30);
+ const st=D.pulseTeam.studio, kd=HRP.kudos().slice(0,3);
+ const doneWeek=D.ones.filter(o=>o.status==='done'&&daysBetween(dd(o.d),NOW)<=14).length;
+ const sec={
+  'Риски':risk.map(p=>{const o=HRP.nextOne(p.id);return `• ${p.name} (${lc(D.teams[p.team])}): ${p.signals.filter(s=>s.lvl!=='info').map(s=>lc(s.t)).join('; ')}. ${o?`1:1 – ${fmtD(o.d)}, ${o.time}.`:`Следующий 1:1 – ${fmtD(p.next)}.`}`}).join('\n'),
+  'Нужны решения':[
+   '• Разработка: «дежурный день» для срочных задач (Artem, предложено 7 нояб) – нужно ваше да или нет.',
+   '• Студия: второй старший смены на пятницу и субботу до Рождества – Polina 3 недели подряд сверх плана.',
+   '• Nika: курс по колористике обещан на 1:1 7 окт, срок 20 окт прошёл – подтвердить даты.',
+   `• Alina: ревью испытательного срока ${fmtD(P('alina').probEnd)} – нужен ваш час для решения вместе с Polina.`].join('\n'),
+  'Победы':[`• eNPS ${D.enps.score>0?'+':''}${D.enps.score} (было +${D.enps.prev}), ответили ${D.enps.n}.`,...kd.map(k=>`• ${HRP.name(k.to)}: ${lc(k.t)} (спасибо от ${HRP.name(k.from)}).`)].join('\n'),
+  'Рекомендации':[
+   `• Пульс студии ${f1(st[0])} → ${f1(st[st.length-1])} за 8 недель: до Рождества не ставить смены сверх плана, в пики добавить людей из резерва.`,
+   '• Jake: начать с плана развития; опоздания обсудить как поддержку (велосипед в ремонте), без дисциплинарных шагов.',
+   `• 1:1 с теми, у кого не было встречи 30+ дней: ${nocov.map(p=>p.name).join(', ')||'таких нет'}.`].join('\n')
+ };
+ App.sheet('Сводка для основателя',`<div class="hrp-ai">${H.aiLabel()}<div class="hrp-hint">Неделя 9–15 нояб. Собрано из сигналов (${risk.length}), 1:1 за 2 недели (${doneWeek}), благодарностей (${HRP.kudos().length}) и пульса за 4 нояб. Деньги, здоровье и заметки «Только я» в сводку не попадают. Правьте текст – это черновик.</div></div>
+ ${Object.entries(sec).map(([h,t])=>`<div class="hrp-f"><label class="f">${h}</label><textarea class="ta hrp-wk" rows="${Math.min(9,t.split('\n').length*2+1)}" data-h="${h}">${H.esc(t)}</textarea></div>`).join('')}`,
+ `<button class="btn" id="hrp-wk-copy">${ic('file')}Скопировать</button><button class="btn pr" id="hrp-wk-send">${ic('send')}Отправить основателю</button>`);
+ const text=()=>[...document.querySelectorAll('#sheet-b .hrp-wk')].map(t=>t.dataset.h.toUpperCase()+'\n'+t.value).join('\n\n');
+ document.getElementById('hrp-wk-copy').addEventListener('click',()=>HRP.copy('Люди Floritta – неделя 9–15 нояб\n\n'+text(),'Сводка скопирована'));
+ document.getElementById('hrp-wk-send').addEventListener('click',()=>{App.close();App.toast('Сводка отправлена основателю – придёт в CRM и в Telegram')});
+};
+
+const cardModal=e=>{const p=P(e.who);
+ App.modal(`Открытка для ${p.name.split(' ')[0]}`,`<label class="f">Текст от команды</label><textarea class="ta" id="hm-card-t" rows="4">С днём рождения, ${p.name.split(' ')[0]}! Спасибо, что ты с нами. Команда Floritta</textarea><div class="sm muted" style="margin-top:8px">${e.x?e.x+' ':''}Коллеги допишут пару слов в приложении до конца дня. Год рождения нигде не показываем.</div>`,
+ `<button class="btn" data-close>Отмена</button><button class="btn pr" id="hm-card-send">${ic('send')}Отправить команде на подпись</button>`);
+ document.getElementById('hm-card-send').addEventListener('click',()=>{App.close();App.toast(`Открытка для ${p.name.split(' ')[0]} ушла команде на подпись`)});
+};
+
+App.reg('home',{
+ title:'HR-центр',
+ render(el){
+  const draw=()=>{
+   const admin=App.role==='admin';
+   const attn=D.people.filter(p=>p.signals.length&&!HM.dismissed.has(p.id)).sort((a,b)=>HRP.sev(b)-HRP.sev(a));
+   const serious=attn.filter(HRP.attn), infoOnly=attn.filter(p=>!HRP.attn(p));
+   const ones=D.ones.filter(o=>o.status!=='done').sort((a,b)=>(a.d+a.time).localeCompare(b.d+b.time));
+   const soon=ones.filter(o=>daysBetween(NOW,dd(o.d))<=1).length;
+   const avg=teamAvg(), pl=avg[avg.length-1], d8=pl-avg[0];
+   const N=D.people.length, cov=D.people.filter(p=>daysBetween(dd(p.last),NOW)<=30).length, nocov=D.people.filter(p=>daysBetween(dd(p.last),NOW)>30);
+   const pdps=D.people.filter(p=>p.pdp.goal!=='—'&&p.pdp.pct>0), nopdp=D.people.filter(p=>!(p.pdp.goal!=='—'&&p.pdp.pct>0));
+   const avgPdp=Math.round(pdps.reduce((s,p)=>s+p.pdp.pct,0)/(pdps.length||1));
+   const e=D.enps;
+   el.innerHTML=`
+   <div class="scr-h"><div><div class="eyebrow">Среда, 11 ноября</div><h1>${admin?'HR-центр глазами основателя':'Доброе утро, Eva'}</h1>
+    <div class="sub">${soon} ${plural(soon,'встреча','встречи','встреч')} 1:1 сегодня и завтра · ${serious.length} ${plural(serious.length,'человек','человека','человек')} ${serious.length===1?'требует':'требуют'} внимания</div></div>
+    <div class="acts"><button class="btn" data-a="note">${ic('note')}Новая заметка</button><button class="btn pr" data-a="weekly">${ic('send')}Сводка для основателя</button></div></div>
+   <div class="grid g4">
+    <button class="kpi hm-kpi" data-go="pulse"><div class="k">Пульс команды</div><div class="row"><div class="v">${f1(pl)}</div>${H.spark(avg,{w:72,h:28,min:6,max:8.5,color:H.pulseColor(pl)})}</div><div class="d"><span class="${d8<0?'dn':'up'}">${d8<0?'▼':'▲'} ${f1(Math.abs(d8))}</span> за 8 недель · ответили 23 из 25</div></button>
+    <button class="kpi hm-kpi" data-go="pulse"><div class="k">eNPS · квартал</div><div class="v">${e.score>0?'+':''}${e.score}</div><div class="d"><span class="up">▲ ${e.score-e.prev}</span> было +${e.prev} · ${e.n} ответов, порог 5</div></button>
+    <button class="kpi hm-kpi" data-go="oneonones"><div class="k">Охват 1:1 за 30 дней</div><div class="v">${Math.round(cov/N*100)} %</div><div class="d">${cov} из ${N} · без 1:1: ${nocov.map(p=>p.name.split(' ')[0]).join(', ')||'нет'}</div></button>
+    <button class="kpi hm-kpi" data-go="growth"><div class="k">Активные планы развития</div><div class="v">${pdps.length}</div><div class="d">из ${N} · средний прогресс ${avgPdp} %${nopdp.length?' · нет плана: '+nopdp.map(p=>p.name.split(' ')[0]).join(', '):''}</div></button>
+   </div>
+
+   <div class="card hm-sec"><div class="ch"><h3>Требует внимания</h3><span class="chip line">${serious.length}</span><div class="r">${H.chip('новое','info')}<button class="btn s ghost" data-go="people">Все люди ${ic('arrow')}</button></div></div>
+    ${serious.map(attRow).join('')||'<div class="hm-empty">Всё разобрано – новых сигналов нет.</div>'}
+    ${infoOnly.length?(HM.more?infoOnly.map(attRow).join('')+`<button class="hm-more" data-a="more">${ic('x')}Скрыть «для сведения»</button>`:`<button class="hm-more" data-a="more">${ic('plus')}Для сведения: ещё ${infoOnly.length} – ${infoOnly.map(p=>p.name.split(' ')[0]).join(', ')}</button>`):''}
+    <div class="hm-cap">${ic('shield')}<span>Сигналы – прозрачные правила, не скоринг. Видит только HR и основатель. Решения принимает человек; «Разобрано» пишется в журнал.</span></div></div>
+
+   <div class="grid g2 hm-sec">
+    <div class="card"><div class="ch"><h3>Мои 1:1</h3><span class="chip line">${ones.length}</span><div class="r"><button class="btn s ghost" data-go="oneonones">Все встречи ${ic('arrow')}</button></div></div>
+     ${ones.map(oneRow).join('')||'<div class="hm-empty">Встреч не запланировано.</div>'}</div>
+    <div class="card"><div class="ch"><h3>Ближайшие даты</h3><div class="r">${H.chip('доработать','warn')}<button class="btn s ghost" data-go="lifecycle">Календарь ${ic('arrow')}</button></div></div>
+     ${D.events.map(evRow).join('')}</div>
+   </div>
+
+   <div class="grid g2 hm-sec">
+    <div class="card"><div class="ch"><h3>Пульс по командам</h3><div class="r"><button class="btn s ghost" data-go="pulse">Подробнее ${ic('arrow')}</button></div></div>
+     ${TEAMS.map(ptRow).join('')}
+     <div class="hm-cap">${ic('eye')}<span>Команду показываем, только если ответили 5+ человек. Ответы анонимны – HR не видит, кто что ответил.</span></div></div>
+    <div class="card"><div class="ch"><h3>Свежие благодарности</h3><div class="r">${H.chip('уже есть в CRM','ok')}<button class="btn s" data-a="kudos">${ic('heart')}Сказать спасибо</button></div></div>
+     ${HRP.kudos().slice(0,6).map(kRow).join('')}
+     <div class="hm-cap">${ic('star')}<span>Благодарности уже живут в мотивации сотрудников. Здесь – только слова и ценности, без баллов и наград.</span></div></div>
+   </div>`;
+  };
+  el.onclick=(ev)=>{
+   const b=ev.target.closest('[data-a]'); if(!b||!el.contains(b)) return;
+   const a=b.dataset.a, p=b.dataset.p&&P(b.dataset.p);
+   if(a==='note') HRP.noteSheet(null);
+   else if(a==='weekly') weekly();
+   else if(a==='kudos') HRP.kudosSheet(null,draw);
+   else if(a==='one'){const o=HRP.nextOne(p.id); App.go('oneonones',o?{id:o.id}:{}); App.toast(o?`У ${p.name.split(' ')[0]} уже есть 1:1 ${fmtD(o.d)} – открыла подготовку`:`Назначьте 1:1 с ${p.name.split(' ')[0]}`)}
+   else if(a==='done'){HM.dismissed.add(p.id); draw(); App.toast(`${p.name} – сигнал разобран, отметка в журнале`)}
+   else if(a==='more'){HM.more=!HM.more; draw()}
+   else if(a==='prep') App.go('oneonones',{id:b.dataset.o});
+   else if(a==='card') cardModal(D.events[+b.dataset.i]);
+   else if(a==='rem'){const e=D.events[+b.dataset.i],d=dd(e.d);d.setUTCDate(d.getUTCDate()-14);HM.rem[b.dataset.i]=1;draw();App.toast(`Напоминание: задача Irina на ${fmtD(d.toISOString().slice(0,10))} – «${e.t}», ${P(e.who).name}`)}
+   else if(a==='unrem'){delete HM.rem[b.dataset.i];draw();App.toast('Напоминание снято')}
+  };
+  draw();
+ },
+ notes:`<h4>Что это</h4><p>Стартовый экран People Partner: кому нужно внимание, ближайшие 1:1, кадровые даты, пульс команд и свежие благодарности. Денег здесь нет.</p>
+<h4>Зачем HR</h4><p>За 5 минут понять, с кем поговорить сегодня, и раз в неделю отправить основателю короткую сводку по людям.</p>
+<h4>Откуда идея</h4><p><span class="src">Lattice</span><span class="src">Culture Amp</span><span class="src">15Five</span><span class="src">Bitrix24</span></p>
+<ul><li>Lattice – на главной ближайшие 1:1 и бриф перед встречей.</li><li>Culture Amp – 1–3 названных сигнала вместо балла «риска ухода»: на 25 людях модель не обучить.</li><li>Bitrix24 – виджет дней рождения и благодарностей.</li></ul>
+<h4>Данные из нашей CRM</h4><ul><li>eNPS – уже есть в «Мотивации», раз в квартал; еженедельного пульса по командам пока нет.</li><li>Переработка – клок-ин против графика смен; опоздания сейчас не считаются, хотя план и факт есть.</li><li>1:1 – сейчас только даты, создать встречу из интерфейса нельзя.</li><li>Дни рождения и годовщины – уже есть («Дни заботы»); права и право на работу – в карточке курьера.</li><li>Благодарности – мотивация сотрудников (благодарности коллег и признание от руководителя).</li></ul>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span>внимание, 1:1, даты</p><p><span class="pri p2">Следующий шаг</span>пульс по командам, сводка основателю с AI</p>
+<h4>Доступы</h4><p>Сигналы видят HR и основатель. AI-сводка – только черновик: без денег, здоровья и оценок личности; отправляет человек.</p>`
+});
+})();
+</script>

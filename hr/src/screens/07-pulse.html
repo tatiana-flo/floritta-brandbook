@@ -1,0 +1,464 @@
+<style>
+#s-pulse .stack{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+#s-pulse .stack>*,#s-pulse .two>*{min-width:0}
+#s-pulse .two{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+#s-pulse .scroll{overflow:auto}
+#s-pulse .cap{font-size:12px;color:var(--grey);margin-top:8px;line-height:1.45}
+#s-pulse .q{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--hair)}
+#s-pulse .q:last-child{border-bottom:0}
+#s-pulse .q .tx{flex:1;min-width:0}
+#s-pulse .q .tx small{display:block;color:var(--grey);font-size:12px;margin-top:2px}
+#s-pulse .hm{width:100%;border-collapse:collapse;font-size:13px}
+#s-pulse .hm th{font-weight:400;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);text-align:center;padding:4px 4px 8px;vertical-align:bottom;white-space:nowrap}
+#s-pulse .hm th small{display:block;letter-spacing:0;text-transform:none;font-size:11px;margin-top:2px}
+#s-pulse .hm td{height:40px;text-align:center;border:2px solid var(--paper);padding:0 6px;min-width:100px;font-variant-numeric:tabular-nums}
+#s-pulse .hm td.dr{text-align:left;min-width:120px;padding-left:0}
+#s-pulse .hm td.c{cursor:pointer}
+#s-pulse .hm td.c:hover{outline:1px solid var(--ink);outline-offset:-2px}
+#s-pulse .hm td.g{background:var(--ok-bg);color:var(--ok)}
+#s-pulse .hm td.m{background:var(--warn-bg);color:var(--warn)}
+#s-pulse .hm td.b{background:var(--accent-bg);color:var(--accent-dark)}
+#s-pulse .hm td.h{background:repeating-linear-gradient(-45deg,var(--silver) 0 6px,var(--paper) 6px 12px);color:var(--grey);font-size:11px;cursor:not-allowed}
+#s-pulse .hm td small{font-size:10.5px;margin-left:3px;opacity:.8}
+#s-pulse .seg button.lk{color:var(--light)}
+#s-pulse .seg button svg{width:12px;height:12px;margin-right:3px}
+#s-pulse .anon li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;list-style:none;font-size:13px}
+#s-pulse .anon li svg{margin-top:2px;color:var(--ok)}
+#s-pulse .drv{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+#s-pulse .drv button{height:28px;padding:0 10px;border:1px solid var(--hair);font-size:12px;color:var(--graphite)}
+#s-pulse .drv button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+#s-pulse .phone{width:260px;max-width:100%;border:1px solid var(--ink);padding:16px;margin:0 auto;background:var(--paper)}
+#s-pulse .phone .bar0{display:flex;justify-content:space-between;font-size:10.5px;color:var(--grey);margin-bottom:14px}
+#s-pulse .faces{display:flex;justify-content:space-between;gap:2px;margin:14px 0 8px}
+#s-pulse .face{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--grey);padding:4px 2px;border:1px solid transparent;flex:1}
+#s-pulse .face svg{width:32px;height:32px}
+#s-pulse .face.on{border-color:var(--ink);color:var(--ink)}
+#s-pulse .stk{display:flex;height:22px;width:100%;background:var(--silver)}
+#s-pulse .stk i{display:block;height:100%}
+#s-pulse .shrow{display:grid;grid-template-columns:70px 1fr 70px;gap:10px;align-items:center;padding:8px 0}
+#s-pulse .lg{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--graphite);margin-top:8px}
+#s-pulse .lg span{display:inline-flex;align-items:center;gap:5px}
+#s-pulse .cm{padding:10px 0;border-bottom:1px solid var(--hair);display:flex;gap:10px;align-items:flex-start}
+#s-pulse .cm:last-child{border-bottom:0}
+#s-pulse .cm .tx{flex:1;min-width:0}
+#s-pulse .th{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px;border:1px solid var(--hair);background:var(--paper);text-align:left;width:100%;margin-bottom:8px}
+#s-pulse .th:hover,#s-pulse .th.on{border-color:var(--accent)}
+#s-pulse .th b{font-weight:500}
+#s-pulse .th i{grid-column:1/-1;font-size:12.5px;color:var(--graphite)}
+#s-pulse .kd{padding:12px 0;border-bottom:1px solid var(--hair)}
+#s-pulse .kd:last-child{border-bottom:0}
+#s-pulse .kd .hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#s-pulse .kd .hd b{font-weight:500}
+#s-pulse .kd p{margin:6px 0 0 0;font-size:13.5px}
+#s-pulse .vrow{display:grid;grid-template-columns:120px 1fr 28px;gap:10px;align-items:center;padding:6px 0;font-size:13px}
+#s-pulse .prow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--hair)}
+#s-pulse .prow:last-child{border-bottom:0}
+#s-pulse .prow .who{flex:1;min-width:0}
+#s-pulse table.t td.act{white-space:nowrap}
+#s-pulse table.t .sel{height:30px;font-size:12.5px;width:auto;min-width:130px}
+#s-pulse .pub{display:flex;gap:8px;align-items:center}
+@media (max-width:900px){#s-pulse .two{grid-template-columns:minmax(0,1fr)}}
+</style>
+<script>
+(()=>{
+const f1=v=>(Math.round(v*10)/10).toFixed(1).replace('.',',');
+const MON={Sep:'сент',Oct:'окт',Nov:'нояб'};
+const wk=s=>{const [d,m]=s.split(' ');return d+' '+(MON[m]||m)};
+const meId=()=>App.role==='admin'?'founder':'eva';
+const meSign=()=>App.role==='admin'?'Основатель':'Eva Marin · People Partner';
+const pname=id=>id==='eva'?'Eva Marin':id==='founder'?'Основатель':(P(id)?P(id).name:id);
+const ensureMe=()=>{const id=meId(); if(!D.byId[id]) D.byId[id]={id,name:id==='eva'?'Eva Marin':'Основатель',role:id==='eva'?'People Partner':'Основатель',team:'shop',type:'contractor',start:'2026-11-02',mgr:null,lvl:1,ladder:'care',cad:'—',pulse:[],status:'active',bday:'1990-01-01',pdp:{goal:'—',pct:0},train:[0,0],att:{shifts:null,late:null,abs:0,ot:null},ops:{k:'—',v:0,q:'—',r:null},kudos:0,skills:{design:0,wedding:0,speed:0,care:0,coach:0},tags:[],signals:[]}; return id};
+const vcls=v=>v>=7.5?'g':v>=6?'m':'b';
+const TEAMN=k=>D.people.filter(p=>p.team===k).length;
+
+/* ---------- data (fictional) ---------- */
+const DRV=['Нагрузка','Признание','Рост','Руководитель','Ясность целей','Благополучие','Команда'];
+const LIB={
+ 'Нагрузка':['Объём работы на моих сменах выполним','Я успеваю сделать перерыв на смене','Срочные задачи редко ломают мой план'],
+ 'Признание':['За последние 2 недели меня благодарили за хорошую работу','Я чувствую, что мою работу замечают','Похвала в команде звучит честно, а не для галочки'],
+ 'Рост':['Я понимаю, как вырасти до следующего уровня','За последний месяц я научился чему-то новому','У меня есть время на обучение'],
+ 'Руководитель':['Руководитель помогает, когда что-то идёт не так','Я могу открыто сказать руководителю о проблеме','Я получаю полезную обратную связь'],
+ 'Ясность целей':['Я понимаю, что от меня ждут на этой неделе','Я знаю, как моя работа влияет на клиента','Приоритеты не меняются каждый день'],
+ 'Благополучие':['Я успеваю восстановиться между сменами','Работа не мешает моей жизни вне работы','Я редко чувствую себя вымотанным после смены'],
+ 'Команда':['Коллеги помогают, когда завал','Я могу положиться на тех, с кем работаю','Я чувствую себя частью команды, даже если работаю удалённо']
+};
+const LAST={'Нагрузка':'неделя 43','Признание':'неделя 44','Рост':'неделя 45','Руководитель':'неделя 45','Ясность целей':'неделя 42','Благополучие':'неделя 44','Команда':'неделя 45'};
+const COMPANY=[5.9,7.4,6.6,7.9,7.2,6.4,8.3], DELTA=[-0.4,0.3,0,0.1,-0.2,-0.3,0.1];
+const CUTS={
+ team:{n:'Команды',cols:[{n:'Студия',k:'studio',r:5,v:[5.2,7.8,6.1,7.6,7.4,6.0,8.5]},{n:'Магазин и сервис',k:'shop',r:2},{n:'Доставка',k:'delivery',r:2},{n:'Продукт и разработка',k:'tech',r:3}]},
+ type:{n:'Тип занятости',cols:[{n:'Employee',t:'employee',r:7,v:[5.6,7.6,6.4,7.8,7.3,6.2,8.4]},{n:'Worker',t:'worker',r:2},{n:'Самозанятый',t:'self',r:1},{n:'Подрядчик',t:'contractor',r:3}]},
+ ten:{n:'Стаж',cols:[{n:'До 1 года',ppl:2,r:2},{n:'1–2 года',ppl:5,r:4},{n:'Больше 2 лет',ppl:7,r:6,v:[5.5,7.9,5.8,8.0,7.6,6.1,8.6]}]}
+};
+const ppl=c=>c.ppl??(c.k?TEAMN(c.k):D.people.filter(p=>p.type===c.t).length);
+const RESP_RATE=[92,88,90,85,83,79,86,86];
+const SHIFT={'Утро':[1,3,9,20,15],'День':[2,4,11,15,9],'Вечер':[3,6,9,8,3]};
+const DAYS=[['28 окт',78],['29',74],['30',70],['31',81],['1 нояб',76],['2',62],['3',58],['4',72],['5',75],['6',69],['7',80],['8',66],['9',60],['10',71]];
+const FACE_L=['Тяжело','Так себе','Нормально','Хорошо','Отлично'];
+const FACE_C=['var(--accent)','var(--v2)','var(--light)','var(--ok)','var(--ok)'];
+const FACE_O=[1,1,1,.55,1];
+const SHIFT_CM=[['вечер','Поставка пришла поздно, собирали до закрытия'],['утро','Хорошая смена, всё успели к первой волне'],['вечер','Не хватило ленты для упаковки'],['день','Было спокойно, наконец-то сделали витрину']];
+const COMMENTS=[
+ {g:'p',th:'atm',t:'Команда – лучшее, что здесь есть. Помогают без просьб.'},
+ {g:'d',th:'load',t:'В пиковые дни не успеваем даже поесть. До праздников страшно.'},
+ {g:'p',th:'grow',t:'Нравится, что можно учиться новому – курсы и мастер-классы.'},
+ {g:'n',th:'grow',t:'Хочется понятного пути к старшему флористу, сейчас неясно, что для этого нужно.'},
+ {g:'d',th:'load',t:'Срочные задачи постоянно ломают план, переключаемся по десять раз за день.'},
+ {g:'p',th:'atm',t:'Чувствую, что мою работу замечают.'},
+ {g:'n',th:'remote',t:'Не всегда понятно, кто в продукте за что отвечает.'},
+ {g:'p',th:'load',t:'Стало лучше, когда поставку перенесли на утро.'},
+ {g:'p',th:'atm',t:'Спасибо за «Дни заботы» – приятно.'},
+ {g:'n',th:'load',t:'Вечерние смены тяжелее остальных, к закрытию нет сил.'},
+ {g:'p',th:'grow',t:'Наставник очень помог в первый месяц.'},
+ {g:'p',th:'remote',t:'Демо продукта для магазина – отличная идея, хочется чаще.'}
+];
+const THEMES={load:{n:'Нагрузка в пиковые дни и вечером',q:'В пиковые дни не успеваем даже поесть',tone:'в основном негатив'},atm:{n:'Команда и атмосфера',q:'Команда – лучшее, что здесь есть',tone:'позитив'},grow:{n:'Рост и обучение',q:'Хочется понятного пути к старшему флористу',tone:'смешанный'},remote:{n:'Связь магазина и продукта',q:'Не всегда понятно, кто в продукте за что отвечает',tone:'нейтрально'}};
+const GLAB={p:['Промоутер','ok'],n:['Нейтрал','line'],d:['Критик','bad']};
+const ST={plan:['Запланировано','line'],work:['В работе','info'],done:['Сделано','ok']};
+const OWNERS=['eva','founder','irina','polina','mila','vera'];
+const DUES=['2026-11-18','2026-11-25','2026-12-02','2026-12-09','2026-12-16'];
+const LASTK={jake:'2026-09-18',denis:'2026-10-14',nika:'2026-09-30',yana:'2026-10-02',daria:'2026-10-21',bogdan:'2026-10-12',artem:'2026-11-07'};
+
+const S={tab:null,cut:'team',freq:'week',drv:'Нагрузка',face:null,themeF:null,replied:{},kv:'all',pub:null,optOut:{kira:true},off:{},
+ week:[['Нагрузка',0],['Признание',0],['Ясность целей',0]],
+ actions:[
+  {th:'Нагрузка',src:'eNPS Q4 · 4 комментария',t:'«Дежурный день» для срочных задач в продукте – остальное время без переключений',own:'founder',due:'2026-11-15',st:'work'},
+  {th:'Нагрузка',src:'Пульс · Нагрузка 5,9',t:'Флорист из резерва на пиковые недели декабря и 12–14 февраля',own:'irina',due:'2026-12-01',st:'plan'},
+  {th:'Рост',src:'eNPS Q4 · 3 комментария',t:'Показать трек флориста L1–L5 на общем собрании, у каждого – план развития',own:'eva',due:'2026-11-30',st:'work'},
+  {th:'Признание',src:'Пульс · Признание 7,1 → 7,4',t:'Кнопка «Спасибо» прямо в приложении после смены',own:'eva',due:'2026-11-08',st:'done'},
+  {th:'Связь магазина и продукта',src:'eNPS Q4 · 2 комментария',t:'Раз в 2 недели – 15-минутное демо продукта для магазина',own:'vera',due:'2026-11-18',st:'plan'}
+ ]};
+
+const TABS=[['pulse','Пульс'],['after','После смены'],['enps','eNPS'],['actions','План действий'],['kudos','Благодарности']];
+
+/* ---------- small charts ---------- */
+function lineChart(series,labels,{min=6,max=8.5,w=660,h=240}={}){
+ const L=34,R=150,T=10,B=26,iw=w-L-R,ih=h-T-B;
+ const x=i=>L+i*iw/(labels.length-1), y=v=>T+ih-(v-min)/(max-min)*ih;
+ let s='';
+ for(let v=min;v<=max+1e-9;v+=0.5) s+=`<line x1="${L}" x2="${L+iw}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="var(--hair)"/><text x="${L-6}" y="${(y(v)+3.5).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--grey)">${f1(v)}</text>`;
+ labels.forEach((l,i)=>{ if(i%2===0||i===labels.length-1) s+=`<text x="${x(i).toFixed(1)}" y="${h-6}" text-anchor="middle" font-size="10" fill="var(--grey)">${l}</text>` });
+ const ends=[];
+ series.forEach(se=>{
+  const pts=se.vals.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  s+=`<polyline points="${pts}" fill="none" stroke="${se.color}" stroke-width="${se.w||1.8}" ${se.dash?'stroke-dasharray="4 3"':''}/>`;
+  se.vals.forEach((v,i)=>{s+=`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${i===se.vals.length-1?3:2}" fill="${se.color}"><title>${se.name} · ${labels[i]}: ${f1(v)}</title></circle>`});
+  ends.push({y:y(se.vals[se.vals.length-1]),t:`${se.name} ${f1(se.vals[se.vals.length-1])}`,c:se.color});
+ });
+ ends.sort((a,b)=>a.y-b.y); for(let i=1;i<ends.length;i++) if(ends[i].y-ends[i-1].y<13) ends[i].y=ends[i-1].y+13;
+ ends.forEach(e=>{s+=`<text x="${L+iw+8}" y="${(e.y+4).toFixed(1)}" font-size="11" fill="${e.c}">${e.t}</text>`});
+ return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block" role="img" aria-label="Линейный график пульса по командам">${s}</svg>`;
+}
+function face(i){
+ const m=['M8 16.5q4-4 8 0','M8.5 16q3.5-2 7 0','M8.5 15h7','M8.5 14q3.5 2.5 7 0','M8 13.5q4 4.5 8 0'][i];
+ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="15" cy="10" r=".6" fill="currentColor"/><path d="${m}"/></svg>`;
+}
+
+/* ---------- tabs ---------- */
+const R={};
+R.pulse=()=>{
+ const w=D.pulseTeam, n=w.weeks.length;
+ const tot=D.people.length, resp=12;
+ const avg=i=>{let s=0,c=0;['studio','delivery','shop','tech'].forEach(k=>{const m=TEAMN(k);s+=w[k][i]*m;c+=m});return s/c};
+ const now=avg(n-1), prev=avg(n-2);
+ const hrView=App.role==='hr';
+ const colors={studio:'var(--v1)',delivery:'var(--v3)',shop:'var(--ok)',tech:'var(--info)'};
+ const series=hrView?['studio','delivery','shop','tech'].map(k=>({name:D.teams[k],vals:w[k],color:colors[k]})):[{name:'Вся компания',vals:w.weeks.map((_,i)=>avg(i)),color:'var(--ink)',w:2.2},{name:'Студия',vals:w.studio,color:'var(--v1)'}];
+ const cut=CUTS[S.cut];
+ const cols=[{n:'Вся компания',ppl:tot,r:resp,v:COMPANY,all:true},...cut.cols];
+ const freqTxt={week:'Каждую неделю 3 вопроса · около минуты',two:'Раз в 2 недели 4 вопроса · около полутора минут',month:'Раз в месяц 5 вопросов · около 2 минут'}[S.freq];
+ return `<div class="stack">
+ <div class="grid g4">
+  <div class="kpi"><div class="k">Отклик · неделя 46</div><div class="v num">${Math.round(resp/tot*100)} %</div><div class="d row" style="gap:8px">${resp} из ${tot} · цель от 70 % ${H.spark(RESP_RATE,{min:50,max:100,w:60,h:18,color:'var(--grey)'})}</div></div>
+  <div class="kpi"><div class="k">Общий балл «Как вы?»</div><div class="v num">${f1(now)}</div><div class="d">было ${f1(prev)} · <span class="${now>=prev?'up':'dn'}">${now>=prev?'↑':'↓'} ${f1(Math.abs(now-prev))}</span></div></div>
+  <div class="kpi"><div class="k">Комментариев</div><div class="v num">6</div><div class="d">видны только на уровне компании</div></div>
+  <div class="kpi"><div class="k">Опрос закрывается</div><div class="v" style="font-size:28px">вс, 15 нояб</div><div class="d">одно напоминание – в пятницу</div></div>
+ </div>
+ <div class="two">
+  <div class="card"><div class="ch"><h3>Вопросы этой недели</h3>${H.chip('новое','info')}<div class="r"><div class="seg">${[['week','Неделя'],['two','2 недели'],['month','Месяц']].map(([k,t])=>`<button data-a="freq" data-v="${k}" class="${S.freq===k?'on':''}">${t}</button>`).join('')}</div></div></div>
+   <div class="cb">
+    <div class="q"><span class="chip ink">Всегда</span><div class="tx">Как вы в целом? (0–10)<small>Конфиденциально, не анонимно: ответ человека видит только HR, чтобы вовремя предложить помощь. В опросе это написано.</small></div></div>
+    ${S.week.map(([d,i],k)=>`<div class="q"><span class="chip">${d}</span><div class="tx">${LIB[d][i]}<small>Анонимно · шкала 0–10 · комментарий по желанию</small></div><button class="btn s ghost" data-a="swap" data-i="${k}">Заменить</button></div>`).join('')}
+    <div class="cap">${freqTxt}. Каждый драйвер – раз в 2–3 недели, вопросы ротируются из библиотеки. ${S.freq==='week'?'<b style="font-weight:500;color:var(--warn)">Для 25 человек исследования советуют раз в месяц</b> – если отклик 3 недели подряд ниже 60 %, CRM предложит реже.':'Отклик проверяем каждую волну.'}</div>
+   </div></div>
+  <div class="card"><div class="ch"><h3>Анонимность</h3><div class="r">${ic('lock')}</div></div><div class="cb"><ul class="anon">
+   <li>${ic('check')}<span>Порог для баллов – <b style="font-weight:500">5 ответов</b>, для комментариев – тоже 5. Минимум зашит в код, ниже нельзя.</span></li>
+   <li>${ic('check')}<span>Настройки фиксируются после запуска опроса – задним числом порог не понизить.</span></li>
+   <li>${ic('check')}<span>Сырые ответы по драйверам не видит никто – даже основатель. Только средние.</span></li>
+   <li>${ic('check')}<span>Фильтры, дающие группу меньше 5, заблокированы. Срез не откроется, если «вся компания минус срез» меньше 5.</span></li>
+   <li>${ic('check')}<span>Руководитель не видит, кто ответил, а кто нет.</span></li>
+  </ul></div></div>
+ </div>
+ <div class="card"><div class="ch"><h3>Общий балл по командам · 8 недель</h3><div class="r"><span class="muted sm">«Как вы в целом?», 0–10</span></div></div><div class="cb">
+  ${lineChart(series,w.weeks.map(wk))}
+  <div class="cap">${hrView?'HR видит средние всех команд: этот вопрос конфиденциальный, не анонимный. Студия и Продукт снижаются 8 недель подряд – темы для 1:1 и плана действий.':'Основатель видит компанию целиком и группы от 5 человек. Средние по командам меньше 5 человек – только у HR.'}</div>
+ </div></div>
+ <div class="card"><div class="ch"><h3>Драйверы × группы · последние 4 недели</h3>${H.chip('новое','info')}<div class="r"><div class="seg">${Object.entries(CUTS).map(([k,c])=>`<button data-a="cut" data-v="${k}" class="${S.cut===k?'on':''}">${c.n}</button>`).join('')}<button class="lk" data-a="loclock">${ic('lock')}Локация</button></div></div></div>
+  <div class="cb"><div class="scroll"><table class="hm"><thead><tr><th></th>${cols.map(c=>`<th>${c.n}<small>${ppl(c)} чел.${c.v?' · '+c.r+' отв.':''}</small></th>`).join('')}</tr></thead><tbody>
+   ${DRV.map((d,ri)=>`<tr><td class="dr">${d}</td>${cols.map((c,ci)=>c.v&&c.r>=5?`<td class="c ${vcls(c.v[ri])}" data-a="cell" data-c="${ci}" data-r="${ri}" title="Открыть: ${d} · ${c.n}">${f1(c.v[ri])}${c.all&&DELTA[ri]?`<small>${DELTA[ri]>0?'↑':'↓'}${f1(Math.abs(DELTA[ri]))}</small>`:''}</td>`:`<td class="h" data-a="hidden">скрыто: &lt; 5 ответов</td>`).join('')}</tr>`).join('')}
+  </tbody></table></div>
+  <div class="lg"><span><i class="dotc" style="background:var(--ok-bg);border:1px solid var(--ok)"></i>от 7,5</span><span><i class="dotc" style="background:var(--warn-bg);border:1px solid var(--warn)"></i>6–7,4</span><span><i class="dotc" style="background:var(--accent-bg);border:1px solid var(--accent)"></i>ниже 6</span><span class="muted">Стрелки – к прошлому месяцу. Клик по ячейке – вопросы драйвера.</span></div>
+ </div></div>
+ <div class="card"><div class="ch"><h3>Библиотека вопросов</h3><span class="muted sm">${DRV.length} драйверов · ${Object.values(LIB).reduce((a,b)=>a+b.length,0)} вопросов</span><div class="r"><button class="btn s" data-a="addq">${ic('plus')}Добавить вопрос</button></div></div><div class="cb">
+  <div class="drv">${DRV.map(d=>`<button data-a="drv" data-v="${d}" class="${S.drv===d?'on':''}">${d}</button>`).join('')}</div>
+  ${LIB[S.drv].map((q,i)=>{const cur=S.week.some(([d,k])=>d===S.drv&&k===i), off=S.off[S.drv+i];return `<div class="q"><div class="tx" style="${off?'color:var(--grey);text-decoration:line-through':''}">${q}<small>${cur?'В опросе этой недели':'Последний раз: '+LAST[S.drv]}</small></div>${cur?H.chip('на этой неделе','info'):''}<button class="btn s ghost" data-a="qoff" data-i="${i}">${off?'Вернуть в ротацию':'Убрать из ротации'}</button></div>`}).join('')}
+ </div></div>
+ </div>`;
+};
+
+R.after=()=>{
+ const tot=Object.values(SHIFT).flat().reduce((a,b)=>a+b,0);
+ const pos=Object.values(SHIFT).reduce((a,v)=>a+v[3]+v[4],0), neg=Object.values(SHIFT).reduce((a,v)=>a+v[0]+v[1],0);
+ const pct=(a,b)=>Math.round(a/b*100);
+ const has=S.actions.some(a=>a.th==='Вечерние смены');
+ const bw=22,gap=8,h=110,cw=DAYS.length*(bw+gap);
+ const cols=DAYS.map(([l,v],i)=>{const bh=(v/100)*(h-20);return `<rect x="${i*(bw+gap)}" y="${h-bh-16}" width="${bw}" height="${bh}" fill="${v<65?'var(--accent)':'var(--v3)'}"><title>${l}: ${v} % хорошо и отлично</title></rect>${i%2===0?`<text x="${i*(bw+gap)+bw/2}" y="${h-3}" font-size="9.5" text-anchor="middle" fill="var(--grey)">${l}</text>`:''}`}).join('');
+ return `<div class="stack">
+ <div class="grid g4">
+  <div class="kpi"><div class="k">Ответили · 2 недели</div><div class="v num">${pct(tot,164)} %</div><div class="d">${tot} из 164 закрытых смен</div></div>
+  <div class="kpi"><div class="k">Хорошо и отлично</div><div class="v num">${pct(pos,tot)} %</div><div class="d">${pos} ${plural(pos,'ответ','ответа','ответов')}</div></div>
+  <div class="kpi"><div class="k">Тяжело и так себе</div><div class="v num">${pct(neg,tot)} %</div><div class="d"><span class="dn">вечер – ${pct(SHIFT['Вечер'][0]+SHIFT['Вечер'][1],29)} %</span></div></div>
+  <div class="kpi"><div class="k">Комментариев</div><div class="v num">14</div><div class="d">необязательные, видит HR</div></div>
+ </div>
+ <div class="two">
+  <div class="card"><div class="ch"><h3>Как прошла смена · по времени смены</h3>${H.chip('новое','info')}<div class="r"><span class="muted sm">28 окт – 10 нояб</span></div></div><div class="cb">
+   ${Object.entries(SHIFT).map(([k,v])=>{const s=v.reduce((a,b)=>a+b,0);return `<div class="shrow"><b style="font-weight:500">${k}</b><div class="stk">${v.map((c,i)=>`<i style="width:${c/s*100}%;background:${FACE_C[i]};opacity:${FACE_O[i]}" title="${FACE_L[i]}: ${c}"></i>`).join('')}</div><span class="muted sm num">${s} отв.</span></div>`}).join('')}
+   <div class="lg">${FACE_L.map((l,i)=>`<span><i class="dotc" style="background:${FACE_C[i]};opacity:${FACE_O[i]}"></i>${l}</span>`).join('')}</div>
+   <div class="hr-line"></div>
+   <div class="eyebrow" style="margin-bottom:8px">Доля «хорошо и отлично» по дням</div>
+   <div class="scroll"><svg viewBox="0 0 ${cw} ${h}" style="width:100%;min-width:360px;height:auto;display:block" role="img" aria-label="Доля хороших смен по дням">${cols}</svg></div>
+   <div class="cap">Красным – дни ниже 65 %. Провалы 2–3 и 8–9 нояб совпадают с поздней поставкой.</div>
+  </div></div>
+  <div class="stack">
+   <div class="card"><div class="ch"><h3>В приложении сотрудника</h3><div class="r"><button class="btn s ghost" data-a="aftset">Настройки</button></div></div><div class="cb">
+    <div class="phone"><div class="bar0"><span>Floritta Team</span><span>18:04</span></div>
+     <div class="eyebrow">Смена закрыта</div><div style="font-family:var(--f-display);font-size:22px;line-height:1.15;margin-top:4px">Как прошла смена?</div>
+     <div class="faces">${FACE_L.map((l,i)=>`<button class="face ${S.face===i?'on':''}" data-a="face" data-i="${i}" title="${l}">${face(i)}<span>${l}</span></button>`).join('')}</div>
+     <div class="muted" style="font-size:11.5px;line-height:1.4">${S.face===null?'Один тап, можно пропустить.':'Спасибо! Можно добавить пару слов – тоже анонимно.'}</div>
+     <button class="btn s ghost" style="margin-top:8px;width:100%" data-a="skip">Пропустить</button>
+    </div>
+   </div></div>
+   <div class="callout info">Анонимно и необязательно. Ответ не привязан к человеку и конкретной смене, в табель и оценку не попадает. Срез по утру, дню и вечеру – только при 5+ ответах.</div>
+  </div>
+ </div>
+ <div class="two">
+  <div class="card"><div class="ch"><h3>Сигнал</h3>${H.chip('3-я неделя подряд','warn')}</div><div class="cb">
+   <p style="margin-bottom:10px">Вечерние смены: <b style="font-weight:500">${pct(SHIFT['Вечер'][0]+SHIFT['Вечер'][1],29)} % «тяжело и так себе»</b> против ${pct(SHIFT['Утро'][0]+SHIFT['Утро'][1],48)} % утром. В комментариях – поздняя поставка и нехватка расходников.</p>
+   <button class="btn ${has?'':'pr'} s" data-a="eveplan" ${has?'disabled':''}>${has?ic('check')+'Уже в плане действий':ic('plus')+'В план действий'}</button>
+  </div></div>
+  <div class="card"><div class="ch"><h3>Комментарии</h3><span class="muted sm">14 · показаны 4</span><div class="r">${H.vis('hr')}</div></div><div class="cb">
+   ${SHIFT_CM.map(([s,t])=>`<div class="cm"><span class="chip line">${s}</span><div class="tx">${t}</div></div>`).join('')}
+   <div class="cap">Без даты и команды – чтобы комментарий нельзя было сопоставить с графиком смен.</div>
+  </div></div>
+ </div></div>`;
+};
+
+R.enps=()=>{
+ const e=D.enps, tot=e.promoters+e.passives+e.detractors;
+ const seg=[['Промоутеры',e.promoters,'var(--ok)'],['Нейтралы',e.passives,'var(--light)'],['Критики',e.detractors,'var(--accent)']];
+ const Q=[['Q1',12],['Q2',18],['Q3',e.prev],['Q4',e.score]];
+ const bw=44,gp=26,ch=130,mx=40;
+ const bars=Q.map(([l,v],i)=>{const bh=v/mx*(ch-34);return `<rect x="${i*(bw+gp)+10}" y="${ch-18-bh}" width="${bw}" height="${bh}" fill="${i===Q.length-1?'var(--ink)':'var(--v4)'}"><title>${l} 2026: +${v}</title></rect><text x="${i*(bw+gp)+10+bw/2}" y="${ch-22-bh}" font-size="11" text-anchor="middle" fill="var(--ink)">+${v}</text><text x="${i*(bw+gp)+10+bw/2}" y="${ch-4}" font-size="10" text-anchor="middle" fill="var(--grey)">${l}</text>`}).join('');
+ const cm=COMMENTS.map((c,i)=>({...c,i})).filter(c=>!S.themeF||c.th===S.themeF);
+ const th=Object.entries(THEMES).map(([k,t])=>({k,...t,n:COMMENTS.filter(c=>c.th===k).length})).sort((a,b)=>b.n-a.n);
+ return `<div class="stack">
+ <div class="row" style="flex-wrap:wrap">${H.chip('уже есть в CRM · «Мотивация»','ok')}<span class="muted sm">Квартальный опрос Q4 закрыт 7 нояб · ${e.n} ${plural(e.n,'ответ','ответа','ответов')} · анонимно</span><span class="sp"></span><button class="btn s" data-a="runenps">Запустить опрос</button></div>
+ <div class="grid g3">
+  <div class="kpi"><div class="k">eNPS · Q4</div><div class="v num">+${e.score}</div><div class="d">было +${e.prev} · <span class="up">↑ ${e.score-e.prev}</span></div></div>
+  <div class="kpi" style="grid-column:span 2"><div class="k">Распределение ответов</div>
+   <div class="stk" style="margin-top:12px">${seg.map(([l,v,c])=>`<i style="width:${v/tot*100}%;background:${c}" title="${l}: ${v}"></i>`).join('')}</div>
+   <div class="lg">${seg.map(([l,v,c])=>`<span><i class="dotc" style="background:${c}"></i>${l} – ${v} (${Math.round(v/tot*100)} %)</span>`).join('')}</div>
+   <div class="d" style="margin-top:6px">Промоутеры – 9–10, нейтралы – 7–8, критики – 0–6 по вопросу «Порекомендуете ли Floritta как место работы?»</div></div>
+ </div>
+ <div class="two">
+  <div class="card"><div class="ch"><h3>Анонимные комментарии</h3><span class="muted sm">${COMMENTS.length}${S.themeF?' · тема: '+THEMES[S.themeF].n:''}</span><div class="r">${S.themeF?`<button class="btn s ghost" data-a="thall">Показать все</button>`:''}${H.vis('hr')}</div></div><div class="cb">
+   ${cm.map(c=>`<div class="cm"><span class="chip ${GLAB[c.g][1]}">${GLAB[c.g][0]}</span><div class="tx">${c.t}${S.replied[c.i]?`<div class="sm" style="color:var(--ok);margin-top:4px">${ic('check')} Ответ отправлен – придёт автору со случайной задержкой</div>`:''}</div><button class="btn s ghost" data-a="reply" data-i="${c.i}" ${S.replied[c.i]?'disabled':''}>Ответить анонимно</button></div>`).join('')}
+  </div></div>
+  <div class="stack">
+   <div class="card ai"><div class="ch"><h3>Темы комментариев</h3>${H.chip('новое','info')}</div><div class="cb">
+    <div style="margin-bottom:10px">${H.aiLabel()}</div>
+    ${COMMENTS.length>=10?th.map(t=>`<button class="th ${S.themeF===t.k?'on':''}" data-a="theme" data-v="${t.k}"><b>${t.n}</b><span class="muted sm num">${t.n===1?'':''}${t.n} · ${t.tone}</span><i>«${t.q}»</i></button>`).join('')+`<div class="cap">Сводка – только при 10+ комментариях (сейчас ${COMMENTS.length}), только для HR. Цитаты дословные и ведут к исходным; узнаваемые формулировки AI не цитирует.</div><button class="btn s" style="margin-top:10px" data-a="aiplan">${ic('spark')}Черновик плана действий</button>`:`<div class="empty">Сводки нет: меньше 10 комментариев</div>`}
+   </div></div>
+   <div class="card"><div class="ch"><h3>eNPS по кварталам · 2026</h3></div><div class="cb"><svg viewBox="0 0 ${Q.length*(bw+gp)+20} ${ch}" style="width:100%;max-width:320px;height:auto;display:block" role="img" aria-label="eNPS по кварталам">${bars}</svg></div></div>
+  </div>
+ </div></div>`;
+};
+
+R.actions=()=>{
+ const cnt=k=>S.actions.filter(a=>a.st===k).length;
+ return `<div class="stack">
+ <div class="grid g4">
+  <div class="kpi"><div class="k">Действий</div><div class="v num">${S.actions.length}</div><div class="d">из опроса Q4 и пульса</div></div>
+  <div class="kpi"><div class="k">В работе</div><div class="v num">${cnt('work')}</div><div class="d">владельцам ушли задачи</div></div>
+  <div class="kpi"><div class="k">Сделано</div><div class="v num">${cnt('done')}</div><div class="d">из ${S.actions.length}</div></div>
+  <div class="kpi"><div class="k">Рассказали команде</div><div class="v" style="font-size:28px">${S.pub?'сегодня':'ещё нет'}</div><div class="d">${S.pub?'в «Объявлениях» и пушем':'последний раз – 12 авг'}</div></div>
+ </div>
+ <div class="card"><div class="ch"><h3>План действий</h3>${H.chip('новое','info')}<div class="r"><button class="btn s" data-a="aiplan">${ic('spark')}Предложить шаги</button><button class="btn s" data-a="addact">${ic('plus')}Действие</button><button class="btn s pr" data-a="tell">${ic('send')}Рассказать команде</button></div></div>
+  <div class="scroll"><table class="t"><thead><tr><th>Тема</th><th>Действие</th><th>Владелец</th><th>Срок</th><th>Статус</th></tr></thead><tbody>
+  ${S.actions.map((a,i)=>`<tr><td><b style="font-weight:500">${a.th}</b><div class="muted sm">${a.src}</div></td><td style="min-width:240px">${a.t}</td><td style="white-space:nowrap">${P(a.own)?`<button class="row" data-person="${a.own}">${H.av(P(a.own),'s')}<span>${pname(a.own)}</span></button>`:`<span class="row"><span class="av s">${a.own==='eva'?'EM':'ОС'}</span>${pname(a.own)}${a.own===meId()?' (вы)':''}</span>`}</td><td class="num" style="white-space:nowrap">${fmtD(a.due)}${a.st!=='done'&&dd(a.due)<NOW?` ${H.chip('просрочено','bad')}`:''}</td><td><select class="sel" data-a="st" data-i="${i}">${Object.entries(ST).map(([k,[t]])=>`<option value="${k}" ${a.st===k?'selected':''}>${t}</option>`).join('')}</select></td></tr>`).join('')}
+  </tbody></table></div></div>
+ <div class="callout ok">«Вы сказали – мы сделали»: главная жалоба на опросы – «ответили, и ничего не поменялось». После каждого опроса публикуем, что взяли в работу и что уже сделали. Без цитат и без цифр по группам меньше 5 человек.</div>
+ </div>`;
+};
+
+R.kudos=()=>{
+ const counts=D.values.map(v=>[v,D.kudos.filter(k=>k.val===v).length]);
+ const mx=Math.max(1,...counts.map(c=>c[1]));
+ const list=D.kudos.filter(k=>S.kv==='all'||k.val===S.kv);
+ const cutoff=new Date(NOW-14*864e5);
+ const lastK=id=>{const r=D.kudos.filter(k=>k.to===id).map(k=>k.d).sort().pop();return r||LASTK[id]||null};
+ const quiet=D.people.filter(p=>{const l=lastK(p.id);return !l||dd(l)<cutoff}).sort((a,b)=>a.kudos-b.kudos).slice(0,4);
+ const y=NOW.getUTCFullYear();
+ const nextD=(md)=>{let d=dd(y+'-'+md);if(daysBetween(d,NOW)>7)d=dd((y+1)+'-'+md);return d};
+ const care=[];
+ D.people.forEach(p=>{
+  const b=nextD(p.bday.slice(5)), n=daysBetween(NOW,b);
+  if(n>=-7&&n<=35) care.push({p,k:'День рождения',n,d:b});
+  const a=nextD(p.start.slice(5)), na=daysBetween(NOW,a), yrs=a.getUTCFullYear()-+p.start.slice(0,4);
+  if(yrs>0&&na>=-7&&na<=35) care.push({p,k:'Годовщина · '+yrs+' '+plural(yrs,'год','года','лет'),n:na,d:a});
+ });
+ care.sort((a,b)=>a.n-b.n);
+ const when=n=>n<0?'отправлено':n===0?'сегодня':n===1?'завтра':'через '+n+' '+plural(n,'день','дня','дней');
+ return `<div class="two">
+ <div class="card"><div class="ch"><h3>Лента благодарностей</h3>${H.chip('уже есть в CRM: kudos, баллы, бейджи','ok')}<div class="r"><button class="btn s pr" data-a="thanks">${ic('heart')}Сказать спасибо</button></div></div><div class="cb">
+  <div class="drv"><button data-a="kv" data-v="all" class="${S.kv==='all'?'on':''}">Все · ${D.kudos.length}</button>${counts.map(([v,c])=>`<button data-a="kv" data-v="${v}" class="${S.kv===v?'on':''}">${v} · ${c}</button>`).join('')}</div>
+  ${list.length?list.map(k=>{const f=P(k.from),t=P(k.to);return `<div class="kd"><div class="hd">${f?H.av(f,'s'):''}<b>${f?f.name:pname(k.from)}</b><span class="muted">→</span>${t?`<button class="row" data-person="${k.to}" style="gap:8px">${H.av(t,'s')}<b>${t.name}</b></button>`:''}<span class="chip info">${k.val}</span><span class="sp"></span>${k.priv?'<span class="vis priv">'+ic('lock')+'Лично</span>':'<span class="muted sm">в ленте команды</span>'}<span class="muted sm">${ago(k.d)}</span></div><p>${H.esc(k.t)}</p></div>`}).join(''):'<div class="empty">Пока нет благодарностей с этой ценностью</div>'}
+ </div></div>
+ <div class="stack">
+  <div class="card"><div class="ch"><h3>По ценностям · 30 дней</h3></div><div class="cb">
+   ${counts.map(([v,c])=>`<div class="vrow"><span>${v}</span>${H.bar(c/mx*100,'ac')}<span class="num muted">${c}</span></div>`).join('')}
+   <div class="cap">Если какую-то ценность месяц никто не отмечает – тема для общего собрания, а не для оценки людей.</div>
+  </div></div>
+  ${App.role==='hr'?`<div class="card"><div class="ch"><h3>Кого давно не благодарили</h3><div class="r"><span class="vis priv">${ic('lock')}Только HR</span></div></div><div class="cb">
+   ${quiet.map(p=>{const l=lastK(p.id);return `<div class="prow"><button class="row who" data-person="${p.id}" style="text-align:left">${H.av(p,'s')}<span><b style="font-weight:500">${p.name}</b><small class="muted" style="display:block;font-size:12px">${l?'последняя – '+ago(l):'ни одной за 30 дней'} · ${D.teams[p.team]}</small></span></button><button class="btn s ghost" data-a="nudge" data-id="${p.id}">Подсказать</button></div>`}).join('')}
+   <div class="cap">Мало благодарностей ≠ плохая работа: курьеры и удалёнка реже на виду. «Подсказать» – мягкое напоминание руководителю, без этого списка.</div>
+  </div></div>`:`<div class="lockbox">${ic('lock')}<div>Список «кого давно не благодарили» видит только HR – чтобы он не превратился в рейтинг.</div></div>`}
+  <div class="callout">Публичного рейтинга нет специально: в команде из 25 человек лидеры всегда одни и те же, а флористов, курьеров и разработчиков не сравнить. Рейтинг в «Задачах» – только у руководителей.</div>
+  <div class="card"><div class="ch"><h3>Дни заботы</h3>${H.chip('уже есть в CRM','ok')}</div><div class="cb">
+   ${care.map(c=>{const opt=S.optOut[c.p.id];const leave=c.p.status==='leave';return `<div class="prow"><button class="row who" data-person="${c.p.id}" style="text-align:left">${H.av(c.p,'s')}<span><b style="font-weight:500">${c.p.name}</b><small class="muted" style="display:block;font-size:12px">${c.k} · ${fmtD(c.d.toISOString().slice(0,10))} · ${when(c.n)}${leave?' · в отпуске':''}</small></span></button>${c.n<0?H.chip('отправлено','ok'):leave&&c.n===0?`<button class="btn s" data-a="card" data-id="${c.p.id}">Открытка от команды</button>`:`<button class="btn s ghost" data-a="opt" data-id="${c.p.id}" title="Сотрудник сам выбирает в приложении">${opt?'Только лично':'В ленте команды'}</button>`}</div>`}).join('')}
+   <div class="cap">Авто-поздравление от команды + задача руководителю (как сейчас в «Днях заботы»). Сотрудник может отказаться от публичного поздравления в приложении. Возраст не показываем.</div>
+  </div></div>
+ </div></div>`;
+};
+
+/* ---------- actions ---------- */
+const NOTES={
+ pulse:`<h4>Что это</h4><p>Еженедельный микропульс: 3 вопроса из библиотеки по 7 драйверам + постоянный «Как вы в целом?». Около минуты в приложении сотрудника.</p><h4>Зачем HR</h4><p>Увидеть, какая команда проседает и по какому драйверу, раньше, чем человек уйдёт. Темы – в 1:1 и план действий.</p><h4>Откуда идея</h4><p><span class="src">Peakon – драйверы</span><span class="src">Officevibe – еженедельный пульс</span><span class="src">Culture Amp – порог 5, защита от вычитания</span><span class="src">Glint – блок настроек</span></p><h4>Данные из нашей CRM</h4><p>Сейчас есть только квартальный анонимный eNPS. Рассылка – через уведомления приложения сотрудника. Пульс – новое.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span> Для 25 человек исследование советует раз в месяц – частоту оставили настраиваемой, CRM следит за откликом.</p><h4>Доступы</h4><p>Драйверы – только средние от 5 ответов, никто не видит сырые. «Как вы в целом?» по человеку – только HR, с честной пометкой в опросе.</p>`,
+ after:`<h4>Что это</h4><p>Одна отметка настроения после клок-аута – 5 лиц, можно пропустить.</p><h4>Зачем HR</h4><p>Флористы и курьеры не отвечают на длинные опросы. Отметка показывает «тяжёлые» смены (сейчас – вечер), а не людей.</p><h4>Откуда идея</h4><p><span class="src">7shifts – Shift Feedback</span><span class="src">Deputy</span><span class="src">HappyOrNot</span></p><h4>Данные из нашей CRM</h4><p>Отметка ухода со смены в приложении – только как момент показа. Ответ к смене и человеку не привязывается.</p><h4>Приоритет</h4><p><span class="pri p2">Следующий шаг</span></p>`,
+ enps:`<h4>Что это</h4><p>Квартальный eNPS, который уже есть на «Мотивации», + темы комментариев и анонимные ответы.</p><h4>Зачем HR</h4><p>Сейчас eNPS видит только админ, и рядом таблица бонусов. HR нужен опрос без денег.</p><h4>Откуда идея</h4><p><span class="src">Officevibe – подписанный ответ</span><span class="src">Peakon – случайная задержка</span><span class="src">Culture Amp – AI-темы с цитатами</span><span class="src">Glint – нет сводки при &lt; 10</span></p><h4>Данные из нашей CRM</h4><p>Анонимный eNPS: балл и комментарий хранятся без имени, отдельно – только факт «ответил». Запуск – раз в квартал.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span> перенос · <span class="pri p2">Следующий шаг</span> AI-темы</p>`,
+ actions:`<h4>Что это</h4><p>Тема из опроса → действие → владелец → срок → статус. Публикация «Вы сказали – мы сделали».</p><h4>Зачем HR</h4><p>Без видимых действий отклик падает уже ко второму опросу. Это главный инструмент доверия.</p><h4>Откуда идея</h4><p><span class="src">Leapsome – action plans</span><span class="src">Culture Amp – AI Coach</span><span class="src">Officevibe</span></p><h4>Данные из нашей CRM</h4><p>«Объявления» – уже есть. Владельцу – задача в «Задачах».</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span></p>`,
+ kudos:`<h4>Что это</h4><p>Лента «спасибо» с тегом ценности, разрез по ценностям, «Дни заботы».</p><h4>Зачем HR</h4><p>Видеть, кого не замечают, и поддерживать ценности. Новое – только разрез и список «давно не благодарили» (видит только HR).</p><h4>Откуда идея</h4><p><span class="src">Workleap Good Vibes</span><span class="src">Bonusly – праздники с opt-out</span><span class="src">15Five High Fives</span></p><h4>Данные из нашей CRM</h4><p>Благодарности, баллы и бейджи, признание от руководителя, «Дни заботы» – всё уже есть. Денежные награды и фонд HR не видит.</p><h4>Приоритет</h4><p><span class="pri p1">MVP</span> перенос. Публичного рейтинга нет специально – для 25 человек это давление, а не признание.</p>`
+};
+
+function addAction(a){S.actions.push(a);App.toast('Добавлено в план действий: '+a.th)}
+function aiSheet(draw){
+ const SUG=[['Нагрузка','Предупреждать о пиковых днях за 2 недели и открывать доп. смены в «Смены и работы»','irina'],['Рост и обучение','Час наставника в неделю для флористов L2, которые хотят расти','mila'],['Связь магазина и продукта','Канал вопросов в продукт с ответом в течение дня','vera']];
+ App.sheet('Черновик плана',`<div class="card ai"><div class="ch"><h3>По темам комментариев Q4</h3></div><div class="cb"><div style="margin-bottom:10px">${H.aiLabel()}</div>
+  ${SUG.map(([th,t,o],i)=>`<div style="padding:10px 0;border-bottom:1px solid var(--hair)"><div class="eyebrow">${th}</div><div style="margin:4px 0 8px">${t}</div><div class="row"><span class="muted sm">Владелец: ${pname(o)}</span><span class="sp"></span><button class="btn s" data-sug="${i}">${ic('plus')}В план</button></div></div>`).join('')}
+  <p class="muted sm" style="margin-top:10px">AI только предлагает – решает HR. В «Объявления» ничего не уходит без вашей правки.</p></div></div>`);
+ document.querySelectorAll('#sheet-b [data-sug]').forEach(b=>b.onclick=()=>{const [th,t,o]=SUG[+b.dataset.sug];addAction({th,src:'AI-черновик · eNPS Q4',t,own:o,due:'2026-12-02',st:'plan'});b.disabled=true;b.innerHTML=ic('check')+'Добавлено';draw()});
+}
+function thanksSheet(go){
+ App.sheet('Сказать спасибо',`<label class="f">Кому</label><select class="sel" id="pu-k-to">${D.people.map(p=>`<option value="${p.id}">${p.name} – ${p.role}</option>`).join('')}</select>
+  <label class="f" style="margin-top:14px">Ценность</label><select class="sel" id="pu-k-val">${D.values.map(v=>`<option>${v}</option>`).join('')}</select>
+  <label class="f" style="margin-top:14px">За что</label><textarea class="ta" id="pu-k-t" placeholder="Конкретно: что сделал и чем помогло"></textarea>
+  <label class="f" style="margin-top:14px">Где показать</label><select class="sel" id="pu-k-vis"><option value="pub">В ленте команды</option><option value="priv">Лично – видит только получатель</option></select>
+  <p class="muted sm" style="margin-top:12px">Баллы за благодарность начисляются как сейчас. От кого: ${meSign()}.</p>`,
+  `<button class="btn" data-close>Отмена</button><button class="btn pr" id="pu-k-go">${ic('send')}Отправить</button>`);
+ document.getElementById('pu-k-go').onclick=()=>{
+  const t=document.getElementById('pu-k-t').value.trim(); if(!t){App.toast('Напишите, за что спасибо');return}
+  const to=document.getElementById('pu-k-to').value, val=document.getElementById('pu-k-val').value, priv=document.getElementById('pu-k-vis').value==='priv';
+  const from=ensureMe(); D.kudos.unshift({from,to,d:'2026-11-11',val,t,priv}); if(P(to)) P(to).kudos++;
+  App.close(); App.toast('Спасибо отправлено: '+P(to).name+(priv?' – лично':' – в ленте команды')); go();
+ };
+}
+
+App.reg('pulse',{
+ title:'Пульс и признание',
+ crumb:()=>'Пульс и признание',
+ render(el,params){
+  const t=params.tab||params.id; if(t&&TABS.some(x=>x[0]===t)) S.tab=t; if(!S.tab) S.tab='pulse';
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">Команда · Мотивация</div><h1>Пульс и признание</h1><div class="sub">Как команда себя чувствует – только агрегаты от 5 ответов. Пульс недели 46 открыт до вс, 15 нояб.</div></div>
+   <div class="acts"><button class="btn" data-a="preview">${ic('phone')}Предпросмотр опроса</button><button class="btn pr" data-a="thanks">${ic('heart')}Сказать спасибо</button></div></div>
+   <div class="tabs">${TABS.map(([k,n])=>`<button data-pt="${k}">${n}</button>`).join('')}</div><div id="pu-body"></div>`;
+  const body=el.querySelector('#pu-body');
+  const draw=()=>{body.innerHTML=R[S.tab](); el.querySelectorAll('[data-pt]').forEach(b=>b.classList.toggle('on',b.dataset.pt===S.tab))};
+  const setTab=k=>{S.tab=k;App.params={tab:k};history.replaceState(null,'','#pulse/'+k);draw();document.getElementById('notes-body').innerHTML=NOTES[k];document.getElementById('view').scrollTop=0};
+  el.addEventListener('change',e=>{const s=e.target.closest('[data-a="st"]'); if(s){const a=S.actions[+s.dataset.i];a.st=s.value;App.toast(`${a.th}: ${ST[a.st][0].toLowerCase()} – владелец получит уведомление`);draw()}});
+  el.addEventListener('click',e=>{
+   const tb=e.target.closest('[data-pt]'); if(tb){setTab(tb.dataset.pt);return}
+   const b=e.target.closest('[data-a]'); if(!b||b.tagName==='SELECT') return;
+   const a=b.dataset.a, v=b.dataset.v, i=+b.dataset.i;
+   if(a==='freq'){S.freq=v;draw();App.toast(v==='week'?'Каждую неделю: 3 вопроса':v==='two'?'Раз в 2 недели: 4 вопроса':'Раз в месяц: 5 вопросов – меньше риск усталости от опросов')}
+   else if(a==='swap'){const w=S.week[i];w[1]=(w[1]+1)%LIB[w[0]].length;let g=0;while(S.off[w[0]+w[1]]&&g++<3)w[1]=(w[1]+1)%LIB[w[0]].length;draw();App.toast('Вопрос заменён на другой из драйвера «'+w[0]+'»')}
+   else if(a==='cut'){S.cut=v;draw()}
+   else if(a==='loclock') App.toast('Заблокировано: «вся компания минус магазин» = 3 удалённых человека – их ответы можно было бы вычислить');
+   else if(a==='hidden') App.toast('Скрыто: в группе меньше 5 ответов. Порог нельзя понизить после запуска опроса');
+   else if(a==='cell'){
+    const cols=[{n:'Вся компания',v:COMPANY,all:true},...CUTS[S.cut].cols]; const c=cols[+b.dataset.c], ri=+b.dataset.r, d=DRV[ri], sc=c.v[ri];
+    App.sheet(d+' · '+c.n,`<div class="row" style="margin-bottom:14px"><div class="kpi" style="flex:1"><div class="k">Средний балл</div><div class="v num">${f1(sc)}</div><div class="d">${c.all?'к прошлому месяцу '+(DELTA[ri]>=0?'+':'–')+f1(Math.abs(DELTA[ri])):'вся компания – '+f1(COMPANY[ri])}</div></div></div>
+     <div class="eyebrow" style="margin-bottom:6px">Вопросы драйвера · 8 недель</div>
+     ${LIB[d].map((q,k)=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--hair)"><span style="flex:1">${q}</span><b class="num" style="font-weight:500">${f1(Math.min(9.6,Math.max(3,sc+[0.3,-0.4,0.1][k])))}</b></div>`).join('')}
+     <div class="eyebrow" style="margin:16px 0 6px">Комментарии</div>
+     ${c.all?`<p class="sm">2 комментария по драйверу – во вкладке eNPS и в темах AI.</p>`:`<p class="sm muted">Комментарии показываем только на уровне всей компании – в группе их автора легко узнать.</p>`}
+     <p class="muted sm" style="margin-top:14px">Средние от 5+ ответов. Сырые ответы не хранятся рядом с именем.</p>`,
+     `<button class="btn" data-close>Закрыть</button><button class="btn pr" id="pu-cell-plan">${ic('plus')}В план действий</button>`);
+    document.getElementById('pu-cell-plan').onclick=()=>{addAction({th:d,src:'Пульс · '+c.n+' '+f1(sc),t:'Обсудить на собрании: что мешает по теме «'+d.toLowerCase()+'» – собрать 3 идеи',own:'eva',due:'2026-11-25',st:'plan'});App.close()};
+   }
+   else if(a==='drv'){S.drv=v;draw()}
+   else if(a==='qoff'){const k=S.drv+i;if(S.week.some(([d,x])=>d===S.drv&&x===i)){App.toast('Вопрос уже в опросе этой недели – уберите его со следующей');return}S.off[k]=!S.off[k];draw();App.toast(S.off[k]?'Вопрос убран из ротации':'Вопрос вернулся в ротацию')}
+   else if(a==='addq'){
+    App.sheet('Новый вопрос',`<label class="f">Драйвер</label><select class="sel" id="pu-q-d">${DRV.map(d=>`<option ${d===S.drv?'selected':''}>${d}</option>`).join('')}</select><label class="f" style="margin-top:14px">Утверждение (шкала 0–10)</label><textarea class="ta" id="pu-q-t" placeholder="Например: «Мне хватает инструментов, чтобы делать работу хорошо»"></textarea><p class="muted sm" style="margin-top:10px">Формулируйте от первого лица, одна мысль в вопросе. Новый вопрос попадёт в ротацию со следующей недели.</p>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="pu-q-go">Добавить</button>`);
+    document.getElementById('pu-q-go').onclick=()=>{const t=document.getElementById('pu-q-t').value.trim();if(!t){App.toast('Впишите вопрос');return}const d=document.getElementById('pu-q-d').value;LIB[d].push(t);S.drv=d;App.close();draw();App.toast('Вопрос добавлен в драйвер «'+d+'»')};
+   }
+   else if(a==='preview'){
+    App.modal('Пульс · неделя 46',`<p class="muted sm" style="margin-bottom:12px">Так опрос видят в приложении. Около минуты.</p>
+     ${[['Как вы в целом?','Видит HR – чтобы вовремя предложить помощь'],...S.week.map(([d,k])=>[LIB[d][k],'Анонимно · показываем только средние от 5 человек'])].map(([q,s])=>`<div style="padding:10px 0;border-bottom:1px solid var(--hair)"><div>${q}</div><div class="row" style="gap:3px;margin:8px 0 4px;flex-wrap:wrap">${Array.from({length:11},(_,n)=>`<span style="width:26px;height:26px;border:1px solid var(--hair);display:inline-flex;align-items:center;justify-content:center;font-size:11.5px">${n}</span>`).join('')}</div><div class="muted" style="font-size:11.5px">${s}</div></div>`).join('')}
+     <p class="sm" style="margin-top:10px">+ комментарий по желанию. Комментарии видны только на уровне всей компании.</p>`);
+   }
+   else if(a==='thanks') thanksSheet(()=>{S.tab='kudos';App.params={tab:'kudos'};history.replaceState(null,'','#pulse/kudos');draw();document.getElementById('notes-body').innerHTML=NOTES.kudos});
+   else if(a==='face'){S.face=i;draw();App.toast('Ответ «'+FACE_L[i]+'» записан анонимно')}
+   else if(a==='skip'){S.face=null;draw();App.toast('Пропущено – напоминаний не будет')}
+   else if(a==='aftset'){
+    App.sheet('Отметка после смены',`${[['Показывать после клок-аута',true],['Показывать курьеру после маршрута',true],['Поле для комментария',true],['Напоминание, если не ответил',false]].map(([t,on],k)=>`<label class="row" style="padding:10px 0;border-bottom:1px solid var(--hair);cursor:pointer"><input type="checkbox" ${on?'checked':''} ${k===3?'disabled':''}><span style="flex:1">${t}</span>${k===3?'<span class="muted sm">выкл. специально</span>':''}</label>`).join('')}
+     <div class="lockbox" style="margin-top:14px">${ic('lock')}<div>Порог 5 ответов для среза по утру, дню и вечеру – фиксирован.</div></div>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" data-close data-toast="Настройки отметки после смены сохранены">Сохранить</button>`);
+   }
+   else if(a==='eveplan'){addAction({th:'Вечерние смены',src:'После смены · вечер – тяжелее всего',t:'Поставку – на утро, к 17:00 вся упаковка и лента на столе',own:'polina',due:'2026-11-20',st:'plan'});draw()}
+   else if(a==='runenps') App.toast('Опрос Q4 уже проведён – CRM запускает eNPS раз в квартал, следующий в январе');
+   else if(a==='theme'){S.themeF=S.themeF===v?null:v;draw()}
+   else if(a==='thall'){S.themeF=null;draw()}
+   else if(a==='reply'){
+    const c=COMMENTS[i];
+    App.modal('Ответить анонимно',`<div class="callout info" style="margin-bottom:12px">«${c.t}»</div>
+     <ul style="margin:0 0 12px 16px;font-size:13px;color:var(--graphite)"><li>Автор остаётся анонимным – вы не узнаете, кто он.</li><li>Ваш ответ подписан: <b style="font-weight:500;color:var(--ink)">${meSign()}</b>.</li><li>Доставим со случайной задержкой от 1 до 24 часов, чтобы по времени прочтения нельзя было угадать автора.</li><li>Автор может ответить – с его стороны переписка тоже анонимна.</li></ul>
+     <label class="f">Ваш ответ</label><textarea class="ta" id="pu-r-t" placeholder="Спасибо, что написали. Вот что мы уже делаем…"></textarea>`,
+     `<button class="btn" data-close>Отмена</button><button class="btn pr" id="pu-r-go">${ic('send')}Отправить</button>`);
+    document.getElementById('pu-r-go').onclick=()=>{if(!document.getElementById('pu-r-t').value.trim()){App.toast('Напишите ответ');return}S.replied[i]=true;App.close();draw();App.toast('Ответ отправлен – придёт автору со случайной задержкой')};
+   }
+   else if(a==='aiplan') aiSheet(draw);
+   else if(a==='addact'){
+    App.sheet('Новое действие',`<label class="f">Тема</label><select class="sel" id="pu-a-th">${[...DRV,'Вечерние смены','Связь магазина и продукта'].map(d=>`<option>${d}</option>`).join('')}</select>
+     <label class="f" style="margin-top:14px">Что делаем</label><textarea class="ta" id="pu-a-t" placeholder="Одно конкретное действие"></textarea>
+     <label class="f" style="margin-top:14px">Владелец</label><select class="sel" id="pu-a-o">${OWNERS.map(o=>`<option value="${o}">${pname(o)}</option>`).join('')}</select>
+     <label class="f" style="margin-top:14px">Срок</label><select class="sel" id="pu-a-d">${DUES.map(d=>`<option value="${d}">${fmtD(d)}</option>`).join('')}</select>
+     <p class="muted sm" style="margin-top:10px">Владелец получит задачу в «Задачах».</p>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="pu-a-go">Добавить</button>`);
+    document.getElementById('pu-a-go').onclick=()=>{const t=document.getElementById('pu-a-t').value.trim();if(!t){App.toast('Опишите действие');return}addAction({th:document.getElementById('pu-a-th').value,src:'Добавлено вручную',t,own:document.getElementById('pu-a-o').value,due:document.getElementById('pu-a-d').value,st:'plan'});App.close();draw()};
+   }
+   else if(a==='tell'){
+    const xs=S.actions.filter(x=>x.st!=='plan'); if(!xs.length){App.toast('Сначала возьмите хотя бы одно действие в работу');return}
+    App.modal('Вы сказали – мы сделали',`<p class="muted sm" style="margin-bottom:10px">Черновик объявления по итогам опроса Q4 и пульса. Без цитат и цифр по маленьким группам.</p>
+     ${xs.map(x=>`<div style="padding:10px 0;border-bottom:1px solid var(--hair)"><div class="muted sm">Вы сказали: ${x.th.toLowerCase()}</div><div class="row" style="align-items:flex-start;margin-top:3px"><span style="flex:1">Мы: ${x.t}</span>${H.chip(ST[x.st][0],ST[x.st][1])}</div></div>`).join('')}
+     <p class="sm" style="margin-top:10px">Спасибо всем, кто ответил – ${D.enps.n} человек. Следующий пульс – в понедельник.</p>`,
+     `<button class="btn" data-close>Отмена</button><button class="btn pr" id="pu-pub">${ic('send')}Опубликовать в «Объявления»</button>`);
+    document.getElementById('pu-pub').onclick=()=>{S.pub=true;App.close();draw();App.toast('Опубликовано в «Объявления» – всем придёт пуш в приложении')};
+   }
+   else if(a==='kv'){S.kv=v;draw()}
+   else if(a==='nudge'){const p=P(b.dataset.id);const m=p.mgr?P(p.mgr).name:'Vera Kuznets (напарник)';App.toast(m+' получит мягкую подсказку про '+p.name.split(' ')[0]+' – без этого списка')}
+   else if(a==='opt'){const id=b.dataset.id;S.optOut[id]=!S.optOut[id];draw();App.toast(S.optOut[id]?P(id).name+': только личное поздравление':P(id).name+': поздравление в ленте команды')}
+   else if(a==='card') App.toast('Ссылка на открытку ушла команде – подписать до 18:00, отправим '+P(b.dataset.id).name.split(' ')[0]+' вечером');
+  });
+  draw();
+ },
+ notes:()=>NOTES[S.tab||'pulse']
+});
+})();
+</script>

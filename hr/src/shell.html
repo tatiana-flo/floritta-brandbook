@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Floritta CRM · роль HR</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../crm/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ===================== TOKENS (site palette, 01.11.2026) ===================== */
+:root{
+  --paper:#fdfdfd; --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378; --light:#cecece; --hair:#e6e6e6; --silver:#f2f2f4;
+  --accent:#b4595f; --accent-dark:#9a474c; --accent-bg:#f3e1e1; --ok:#5f7350; --ok-bg:#eef0e9; --warn:#9a6a0a; --warn-bg:#fbf1d4;
+  --info:#3f5f7a; --info-bg:#e7eef4;
+  --sel:#1e1a17; --sel-bg:#f2f2f4; --on-sel:#fff;
+  --f-display:"Cormorant Infant",Georgia,serif; --f-body:"Jost","Helvetica Neue",Arial,sans-serif;
+  --r:0px; --btn-h:36px; --btn-h-s:28px; --row-h:44px; --sidebar-w:232px; --topbar-h:56px; --notes-w:340px; --pad:24px;
+  --ls-caps:.08em; --ls-eyebrow:.14em;
+  --m-fast:160ms; --m-base:280ms; --m-ease:cubic-bezier(.22,1,.36,1);
+  --shadow-sheet:-12px 0 40px rgba(30,26,23,.14); --shadow-pop:0 6px 24px rgba(30,26,23,.16);
+  /* data-viz: one hue family + status */
+  --v1:#b4595f; --v2:#d9a2a6; --v3:#8b8378; --v4:#cecece; --v-good:#5f7350; --v-mid:#c9a227; --v-bad:#b4595f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--f-body);font-weight:400;font-size:14px;line-height:1.45;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:middle}
+.num{font-variant-numeric:tabular-nums}
+
+/* ===================== LAYOUT ===================== */
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr var(--notes-w);height:100vh}
+.app.no-notes{grid-template-columns:var(--sidebar-w) 1fr 0}
+.side{border-right:1px solid var(--hair);display:flex;flex-direction:column;min-height:0;background:var(--paper)}
+.side .brand{height:var(--topbar-h);display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid var(--hair);flex:none}
+.side .brand b{font-family:var(--f-display);font-weight:500;font-size:22px;letter-spacing:.02em}
+.side .brand span{font-size:10px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);margin-top:4px}
+.side nav{flex:1;overflow:auto;padding:10px 10px 20px}
+.side .grp{font-size:10px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);padding:16px 10px 6px}
+.side .it{display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;font-size:13.5px;color:var(--graphite);text-align:left;position:relative}
+.side .it:hover{background:var(--silver);color:var(--ink)}
+.side .it.on{background:var(--sel);color:var(--on-sel)}
+.side .it .b{margin-left:auto;font-size:11px;min-width:18px;height:18px;padding:0 5px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff}
+.side .it.on .b{background:#fff;color:var(--ink)}
+.side .it .ro{margin-left:auto;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.side .it.on .ro{color:#cfc8c2}
+.side .locked{margin:14px 10px 0;padding:12px;border:1px dashed var(--light);font-size:12px;color:var(--grey)}
+.side .locked .lk{display:flex;align-items:center;gap:8px;height:24px;color:var(--light);text-decoration:line-through}
+.side .locked .lk svg{stroke:var(--grey)}
+.side .locked p{margin-top:6px;line-height:1.4}
+.side .me{border-top:1px solid var(--hair);padding:12px 16px;display:flex;align-items:center;gap:10px;flex:none}
+.side .me small{display:block;color:var(--grey);font-size:11.5px}
+
+.main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.top{height:var(--topbar-h);border-bottom:1px solid var(--hair);display:flex;align-items:center;gap:14px;padding:0 var(--pad);flex:none}
+.top .crumb{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .crumb b{color:var(--ink);font-weight:500}
+.top .srch{margin-left:auto;display:flex;align-items:center;gap:8px;height:34px;border:1px solid var(--hair);padding:0 10px;width:260px;color:var(--grey);font-size:13px;cursor:text}
+.top .srch kbd{margin-left:auto;font-family:inherit;font-size:11px;border:1px solid var(--hair);padding:0 5px}
+.roles{display:flex;border:1px solid var(--hair)}
+.roles button{height:32px;padding:0 10px;font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey)}
+.roles button.on{background:var(--sel);color:var(--on-sel)}
+.top .ib{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--hair);position:relative}
+.top .ib:hover{background:var(--silver)}
+.top .ib .dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:var(--accent)}
+.view{flex:1;overflow:auto;min-height:0;position:relative}
+.scr{padding:var(--pad);max-width:1400px}
+.scr-h{display:flex;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.scr-h h1{font-family:var(--f-display);font-weight:500;font-size:34px;line-height:1.05;letter-spacing:.005em}
+.scr-h .sub{color:var(--grey);font-size:13px;margin-top:4px}
+.scr-h .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.eyebrow{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+
+/* ===================== NOTES PANEL ===================== */
+.notes{border-left:1px solid var(--hair);background:var(--silver);overflow:auto;min-width:0}
+.app.no-notes .notes{display:none}
+.notes .nh{height:var(--topbar-h);display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--hair);gap:8px;position:sticky;top:0;background:var(--silver);z-index:2}
+.notes .nh b{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500}
+.notes .nh button{margin-left:auto}
+.notes .nb{padding:18px 20px 40px;font-size:13px;color:var(--graphite)}
+.notes .nb h4{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--ink);font-weight:500;margin:18px 0 6px}
+.notes .nb h4:first-child{margin-top:0}
+.notes .nb p{margin:0 0 8px}
+.notes .nb ul{margin:0 0 8px 16px}
+.notes .nb li{margin:0 0 4px}
+.notes .nb .src{display:inline-block;font-size:11px;border:1px solid var(--light);padding:0 6px;margin:0 4px 4px 0;background:var(--paper);color:var(--graphite)}
+.notes .nb .pri{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;margin-right:4px}
+.pri.p1{background:var(--ink);color:#fff}.pri.p2{background:var(--accent-bg);color:var(--accent-dark)}.pri.p3{background:var(--paper);color:var(--grey);border:1px solid var(--light)}
+.notes-toggle{position:fixed;right:16px;bottom:16px;z-index:40;height:36px;padding:0 14px;background:var(--ink);color:#fff;font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;display:none;align-items:center;gap:8px}
+.app.no-notes ~ .notes-toggle{display:inline-flex}
+
+/* ===================== COMPONENTS ===================== */
+.btn{height:var(--btn-h);padding:0 14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;letter-spacing:var(--ls-caps);text-transform:uppercase;border:1px solid var(--hair);background:var(--paper);white-space:nowrap;transition:background var(--m-fast)}
+.btn:hover{background:var(--silver)}
+.btn.pr{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.pr:hover{background:#3a332e}
+.btn.ac{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.s{height:var(--btn-h-s);padding:0 10px;font-size:10.5px}
+.btn.ghost{border-color:transparent}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.inp,.sel,.ta{height:var(--btn-h);border:1px solid var(--hair);padding:0 10px;background:var(--paper);font-size:13.5px;width:100%;outline:none;border-radius:0}
+.ta{height:auto;min-height:84px;padding:8px 10px;resize:vertical;line-height:1.45}
+.inp:focus,.sel:focus,.ta:focus{border-color:var(--ink)}
+label.f{display:block;font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);margin:0 0 4px}
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;font-size:11.5px;background:var(--silver);color:var(--graphite);white-space:nowrap}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}.chip.warn{background:var(--warn-bg);color:var(--warn)}.chip.bad{background:var(--accent-bg);color:var(--accent-dark)}.chip.info{background:var(--info-bg);color:var(--info)}.chip.ink{background:var(--ink);color:#fff}.chip.line{background:transparent;border:1px solid var(--hair)}
+.dotc{display:inline-block;width:8px;height:8px;flex:none}
+.card{border:1px solid var(--hair);background:var(--paper)}
+.card .ch{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--hair);min-height:46px}
+.card .ch h3{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500}
+.card .ch .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.card .cb{padding:14px 16px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpi{border:1px solid var(--hair);padding:14px 16px;background:var(--paper)}
+.kpi .k{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.kpi .v{font-family:var(--f-display);font-size:34px;line-height:1.1;margin-top:4px;font-variant-numeric:lining-nums tabular-nums}
+.kpi .d{font-size:12px;color:var(--grey);margin-top:2px}
+.kpi .d .up{color:var(--ok)}.kpi .d .dn{color:var(--accent)}
+.av{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;letter-spacing:.02em;flex:none;color:var(--ink);background:var(--silver);border:1px solid var(--hair)}
+.av.l{width:56px;height:56px;font-size:18px}.av.xl{width:72px;height:72px;font-size:22px;font-family:var(--f-display)}.av.s{width:24px;height:24px;font-size:10px}
+.pr-line{display:flex;align-items:center;gap:10px}
+.pr-line .who{min-width:0}
+.pr-line .who b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-line .who small{display:block;color:var(--grey);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{height:6px;background:var(--silver);position:relative;overflow:hidden;min-width:60px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.bar.ac i{background:var(--accent)}.bar.ok i{background:var(--ok)}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th{text-align:left;font-weight:400;font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);height:38px;padding:0 12px;border-bottom:1px solid var(--hair);white-space:nowrap;position:sticky;top:0;background:var(--paper);z-index:1}
+table.t td{height:var(--row-h);padding:6px 12px;border-bottom:1px solid var(--hair);vertical-align:middle}
+table.t tr.clk{cursor:pointer}
+table.t tr.clk:hover td{background:var(--silver)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--hair);overflow-x:auto;scrollbar-width:none;margin-bottom:18px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{height:40px;padding:0 12px;font-size:11.5px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.tabs button .n{font-size:11px;color:var(--grey)}
+.seg{display:inline-flex;border:1px solid var(--hair)}
+.seg button{height:30px;padding:0 10px;font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey)}
+.seg button.on{background:var(--sel);color:#fff}
+.vis{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--hair);color:var(--graphite);white-space:nowrap}
+.vis.priv{border-color:var(--ink);color:var(--ink)}.vis.hr{border-color:var(--accent);color:var(--accent-dark)}.vis.shared{border-color:var(--ok);color:var(--ok)}.vis.mgr{border-color:var(--info);color:var(--info)}
+.empty{padding:28px;text-align:center;color:var(--grey);font-size:13px}
+.muted{color:var(--grey)}
+.sm{font-size:12px}
+.row{display:flex;align-items:center;gap:10px}
+.sp{flex:1}
+.hr-line{height:1px;background:var(--hair);margin:14px 0}
+.ai{border:1px solid var(--accent);background:linear-gradient(0deg,rgba(180,89,95,.04),rgba(180,89,95,.04)),var(--paper)}
+.ai .ch h3{color:var(--accent-dark)}
+.ai-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-dark)}
+.lockbox{border:1px dashed var(--light);padding:14px 16px;color:var(--grey);font-size:12.5px;display:flex;gap:10px;align-items:flex-start;background:repeating-linear-gradient(-45deg,transparent 0 8px,rgba(0,0,0,.018) 8px 16px)}
+.callout{border-left:2px solid var(--accent);padding:10px 14px;background:var(--accent-bg);color:var(--accent-dark);font-size:13px}
+.callout.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.callout.info{border-color:var(--info);background:var(--info-bg);color:var(--info)}
+
+/* sheet / modal / toast */
+.scrim{position:fixed;inset:0;background:rgba(30,26,23,.28);z-index:50;opacity:0;pointer-events:none;transition:opacity var(--m-base) var(--m-ease)}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:var(--paper);box-shadow:var(--shadow-sheet);z-index:51;transform:translateX(100%);transition:transform var(--m-base) var(--m-ease);display:flex;flex-direction:column}
+.sheet.on{transform:none}
+.sheet .sh{height:var(--topbar-h);display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid var(--hair);flex:none}
+.sheet .sh h2{font-family:var(--f-display);font-weight:500;font-size:24px}
+.sheet .sh .x{margin-left:auto}
+.sheet .sb{flex:1;overflow:auto;padding:20px}
+.sheet .sf{border-top:1px solid var(--hair);padding:12px 20px;display:flex;gap:8px;justify-content:flex-end;flex:none}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-48%);opacity:0;pointer-events:none;width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 64px);overflow:auto;background:var(--paper);box-shadow:var(--shadow-pop);z-index:52;transition:all var(--m-base) var(--m-ease)}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal .mh{padding:18px 20px 0;font-family:var(--f-display);font-size:24px}
+.modal .mb{padding:12px 20px 4px}
+.modal .mf{padding:14px 20px 18px;display:flex;gap:8px;justify-content:flex-end}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;font-size:13px;z-index:60;transition:all var(--m-base) var(--m-ease);pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.cmdk{position:fixed;left:50%;top:14vh;transform:translateX(-50%);width:min(560px,calc(100vw - 32px));background:var(--paper);box-shadow:var(--shadow-pop);z-index:53;display:none}
+.cmdk.on{display:block}
+.cmdk input{width:100%;height:52px;border:0;border-bottom:1px solid var(--hair);padding:0 18px;font-size:16px;outline:none}
+.cmdk .res{max-height:50vh;overflow:auto}
+.cmdk .res button{display:flex;width:100%;align-items:center;gap:10px;padding:8px 18px;text-align:left}
+.cmdk .res button:hover,.cmdk .res button.on{background:var(--silver)}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:1280px){ .app{grid-template-columns:var(--sidebar-w) 1fr 0} .app .notes{display:none} .notes-toggle{display:inline-flex} .app.notes-open .notes{display:block;position:fixed;right:0;top:0;bottom:0;width:min(360px,100vw);z-index:45;box-shadow:var(--shadow-sheet)} }
+@media (max-width:900px){
+  body{overflow:auto}
+  .app{display:block;height:auto}
+  .side{position:sticky;top:0;z-index:30;border-right:0;border-bottom:1px solid var(--hair)}
+  .side nav{display:flex;overflow-x:auto;padding:6px 8px;gap:2px}
+  .side .grp,.side .locked,.side .me{display:none}
+  .side .it{width:auto;white-space:nowrap;flex:none}
+  .side .brand{height:48px}
+  .top{height:auto;flex-wrap:wrap;padding:10px 16px}
+  .top .srch{display:none}
+  .view{overflow:visible}
+  .scr{padding:16px}
+  .g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}
+  .grid>*,.card,.kpi{min-width:0;max-width:100%}
+  .card .cb{overflow-x:auto}
+  .card .ch{flex-wrap:wrap}
+  .card .ch .r{margin-left:0;flex-wrap:wrap}
+  .seg{flex-wrap:wrap;max-width:100%}
+  .scr-h .acts{margin-left:0}
+  .scr-h>*{min-width:0}
+  .scr-h h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="side">
+    <div class="brand"><b>Floritta</b><span>CRM · People</span></div>
+    <nav id="nav"></nav>
+    <div class="me"><span class="av s" id="me-av">EM</span><div><b id="me-name" style="font-weight:500">Eva Marin</b><small id="me-role">People Partner · HR</small></div></div>
+  </aside>
+  <main class="main">
+    <header class="top">
+      <div class="crumb" id="crumb"></div>
+      <div class="srch" id="srch-open"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Поиск людей, заметок, 1:1</span><kbd>⌘K</kbd></div>
+      <a class="btn s" href="concept.html" title="Ресёрч, каталог функций, доступы, дорожная карта">Концепция</a>
+      <div class="roles" id="roles" title="Посмотреть ту же CRM глазами другой роли">
+        <button data-r="hr" class="on">HR</button><button data-r="admin">Админ</button><button data-r="employee">Сотрудник</button>
+      </div>
+      <button class="ib" id="bell" title="Уведомления"><svg class="i" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="dot"></span></button>
+      <button class="ib" id="notes-btn" title="Пояснения к экрану"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h5"/></svg></button>
+    </header>
+    <div class="view" id="view"></div>
+  </main>
+  <aside class="notes" id="notes"><div class="nh"><b>Пояснения к экрану</b><button class="btn s ghost" id="notes-close">Скрыть</button></div><div class="nb" id="notes-body"></div></aside>
+</div>
+<button class="notes-toggle" id="notes-show"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8"/></svg>Пояснения</button>
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet"><div class="sh"><h2 id="sheet-t"></h2><button class="btn s ghost x" id="sheet-x">Закрыть</button></div><div class="sb" id="sheet-b"></div><div class="sf" id="sheet-f"></div></aside>
+<div class="modal" id="modal"><div class="mh" id="modal-t"></div><div class="mb" id="modal-b"></div><div class="mf" id="modal-f"></div></div>
+<div class="cmdk" id="cmdk"><input id="cmdk-in" placeholder="Поиск людей и экранов…" autocomplete="off"><div class="res" id="cmdk-res"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== ICONS ===================== */
+const IC={
+ home:'<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/>',
+ users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.5c2.8.2 4.6 2 5 5"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c.6-4 3.8-6.5 8-6.5s7.4 2.5 8 6.5"/>',
+ chat:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+ sprout:'<path d="M12 21v-9"/><path d="M12 12C12 7 8 5 4 5c0 4 3 7 8 7z"/><path d="M12 14c0-4 3-6 8-6 0 4-3 6-8 6z"/>',
+ clip:'<path d="M8 4h8v3H8z"/><path d="M6 6H5v15h14V6h-1"/><path d="m9 14 2 2 4-4"/>',
+ heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+ book:'<path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z"/><path d="M12 6v14"/>',
+ cal:'<rect x="4" y="5" width="16" height="15"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+ chart:'<path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 16v-5M12 16V8M16 16v-3"/>',
+ spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+ shield:'<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/>',
+ phone:'<rect x="7" y="3" width="10" height="18"/><path d="M11 18h2"/>',
+ lock:'<rect x="5" y="11" width="14" height="10"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+ eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ x:'<path d="M6 6l12 12M18 6 6 18"/>',
+ check:'<path d="m5 12 4.5 4.5L19 7"/>',
+ arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+ back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+ flag:'<path d="M5 21V4h11l-2 4 2 4H5"/>',
+ note:'<path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5"/>',
+ file:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',
+ star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.5 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+ alert:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17v.5"/>',
+ clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+ target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
+ mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+ send:'<path d="M4 12 20 4l-5 16-3-7z"/>',
+ filter:'<path d="M4 5h16l-6 8v6l-4-2v-4z"/>',
+ dots:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+ link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+ gift:'<rect x="4" y="9" width="16" height="11"/><path d="M3 9h18M12 9v11M12 9c-2-4-6-4-6-1.5S10 9 12 9c2 0 6-1 6-1.5S14 5 12 9"/>',
+ truck:'<path d="M3 6h11v10H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>',
+ flower:'<circle cx="12" cy="9" r="2"/><path d="M12 7c0-3 3-4 3-1.5S12 9 12 9 9 8 9 5.5 12 4 12 7zM14 9c3 0 4 3 1.5 3S12 9 12 9M10 9c-3 0-4 3-1.5 3S12 9 12 9M12 11v10M12 17c-2-2-5-2-6-1M12 19c2-2 5-2 6-1"/>',
+ code:'<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/>',
+ coin:'<circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.5c-.5-1-1.5-1.5-2.5-1.5-1.5 0-2.5.8-2.5 2s1 1.6 2.5 2 2.5.8 2.5 2-1 2-2.5 2c-1 0-2-.5-2.5-1.5M12 6.5v1.5M12 16v1.5"/>'
+};
+const ic=(n,cls='')=>`<svg class="i ${cls}" viewBox="0 0 24 24">${IC[n]||''}</svg>`;
+
+/* ===================== DEMO DATA (fictional people only) ===================== */
+const NOW=new Date(Date.UTC(2026,10,11,10,30)); // Wed 11 Nov 2026, London
+const dd=(s)=>new Date(s+'T12:00:00Z');
+const daysBetween=(a,b)=>Math.round((b-a)/864e5);
+const fmtD=(s,opt={day:'numeric',month:'short'})=>dd(s).toLocaleDateString('ru-RU',{...opt,timeZone:'Europe/London'}).replace('.','');
+const plural=(n,a,b,c)=>{const m=Math.abs(n)%100,k=m%10;return m>10&&m<20?c:k>1&&k<5?b:k===1?a:c};
+const ago=(s)=>{const n=daysBetween(dd(s),NOW);return n<=0?'сегодня':n===1?'вчера':n<14?n+' '+plural(n,'день','дня','дней')+' назад':Math.round(n/7)+' нед. назад'};
+const inDays=(s)=>{const n=daysBetween(NOW,dd(s));return n===0?'сегодня':n===1?'завтра':n<0?Math.abs(n)+' '+plural(Math.abs(n),'день','дня','дней')+' назад':'через '+n+' '+plural(n,'день','дня','дней')};
+
+const D={
+ me:{id:'eva',name:'Eva Marin',role:'People Partner',initials:'EM'},
+ teams:{studio:'Студия',delivery:'Доставка',shop:'Магазин и сервис',tech:'Продукт и разработка'},
+ types:{employee:'Employee',worker:'Worker',self:'Самозанятый',contractor:'Подрядчик'},
+ ladders:{
+  florist:{name:'Трек флориста',levels:['L1 Младший флорист','L2 Флорист','L3 Старший флорист','L4 Старшая смены','L5 Шеф-флорист']},
+  courier:{name:'Трек доставки',levels:['L1 Курьер','L2 Старший курьер','L3 Лид маршрутов']},
+  care:{name:'Трек клиентского сервиса',levels:['L1 Сервис','L2 Специалист сервиса','L3 Управляющая магазином']},
+  tech:{name:'Трек разработки',levels:['L1 Junior','L2 Middle','L3 Senior','L4 Lead']}
+ },
+ people:[
+  {id:'mila',name:'Mila Novak',role:'Старший флорист',team:'studio',type:'employee',start:'2023-03-06',mgr:'irina',lvl:3,ladder:'florist',cad:'Раз в 2 недели',last:'2026-10-30',next:'2026-11-13',pulse:[8,8,9,8,9,9],status:'active',bday:'1994-11-19',pdp:{goal:'Провести мастер-класс по рождественским венкам',pct:65},train:[14,15],att:{shifts:21,late:0,abs:0,ot:4},ops:{k:'Букетов собрано',v:298,q:'0,7 % переделок',r:4.9},kudos:11,skills:{design:3,wedding:3,speed:2,care:2,coach:2},tags:['Наставник'],signals:[]},
+  {id:'daria',name:'Daria Lis',role:'Флорист',team:'studio',type:'employee',start:'2024-08-19',mgr:'irina',lvl:2,ladder:'florist',cad:'Раз в 2 недели',last:'2026-10-28',next:'2026-11-11',pulse:[7,7,8,7,7,8],status:'active',bday:'1999-02-03',pdp:{goal:'Свадьбы и инсталляции – готовность к L3',pct:40},train:[11,15],att:{shifts:20,late:1,abs:0,ot:2},ops:{k:'Букетов собрано',v:276,q:'1,1 % переделок',r:4.8},kudos:6,skills:{design:2,wedding:1,speed:3,care:2,coach:1},tags:[],signals:[]},
+  {id:'nika',name:'Nika Fedorova',role:'Флорист',team:'studio',type:'employee',start:'2024-01-15',mgr:'irina',lvl:2,ladder:'florist',cad:'Раз в 2 недели',last:'2026-10-07',next:'2026-11-12',pulse:[8,7,7,6,5,4],status:'active',bday:'1997-06-22',pdp:{goal:'Курс по колористике + 3 авторских букета',pct:15},train:[9,15],att:{shifts:24,late:3,abs:1,ot:13},ops:{k:'Букетов собрано',v:341,q:'2,4 % переделок',r:4.6},kudos:3,skills:{design:2,wedding:2,speed:3,care:1,coach:1},tags:[],signals:[{lvl:'bad',t:'Пульс 8 → 4 за 6 недель'},{lvl:'warn',t:'Переработка +13 ч за 3 недели'},{lvl:'warn',t:'Нет 1:1 уже 35 дней'}]},
+  {id:'alina',name:'Alina Moroz',role:'Младший флорист',team:'studio',type:'employee',start:'2026-08-24',mgr:'polina',lvl:1,ladder:'florist',cad:'Еженедельно',last:'2026-11-04',next:'2026-11-11',pulse:[7,8,8,8],status:'probation',probEnd:'2026-11-23',bday:'2003-11-27',pdp:{goal:'Пройти испытательный: 6 базовых стилей подтверждены',pct:70},train:[8,12],att:{shifts:18,late:1,abs:0,ot:0},ops:{k:'Букетов собрано',v:121,q:'1,6 % переделок',r:4.8},kudos:4,skills:{design:1,wedding:0,speed:1,care:2,coach:0},tags:['Испытательный','Напарник: Mila'],signals:[{lvl:'info',t:'Ревью испытательного срока 23 нояб'}]},
+  {id:'yana',name:'Yana Kim',role:'Флорист (выходные)',team:'studio',type:'worker',start:'2025-05-10',mgr:'polina',lvl:2,ladder:'florist',cad:'Раз в месяц',last:'2026-10-18',next:'2026-11-15',pulse:[7,7,7,8,7,7],status:'active',bday:'2000-09-09',pdp:{goal:'Контент: 2 видео-урока в месяц',pct:50},train:[12,15],att:{shifts:8,late:0,abs:0,ot:0},ops:{k:'Букетов собрано',v:104,q:'0,9 % переделок',r:4.9},kudos:5,skills:{design:2,wedding:1,speed:2,care:2,coach:0},tags:['Частичная занятость'],signals:[]},
+  {id:'polina',name:'Polina Sokol',role:'Старшая смены',team:'studio',type:'employee',start:'2022-10-03',mgr:'irina',lvl:4,ladder:'florist',cad:'Раз в 2 недели',last:'2026-11-03',next:'2026-11-17',pulse:[7,7,6,7,6,6],status:'active',bday:'1991-12-14',pdp:{goal:'Лидерство: вести ретро и наставлять 2 новичков',pct:55},train:[15,15],att:{shifts:22,late:0,abs:0,ot:9},ops:{k:'Смен проведено',v:22,q:'98 % отправок вовремя',r:4.9},kudos:14,skills:{design:3,wedding:3,speed:3,care:3,coach:2},tags:['Ведёт напарников'],signals:[{lvl:'warn',t:'Переработка 3 недели подряд'}]},
+  {id:'irina',name:'Irina Petrova',role:'Управляющая магазином',team:'shop',type:'employee',start:'2021-04-12',mgr:null,lvl:3,ladder:'care',cad:'Раз в 2 недели',last:'2026-11-05',next:'2026-11-19',pulse:[8,8,8,7,8,8],status:'active',bday:'1988-03-30',pdp:{goal:'Передать составление графика старшим смен',pct:30},train:[13,13],att:{shifts:22,late:0,abs:0,ot:5},ops:{k:'Задач принято',v:146,q:'92 % за 24 ч',r:4.8},kudos:9,skills:{design:2,wedding:2,speed:2,care:3,coach:3},tags:['Руководитель'],signals:[]},
+  {id:'kira',name:'Kira Belova',role:'Клиентский сервис',team:'shop',type:'employee',start:'2025-02-17',mgr:'irina',lvl:1,ladder:'care',cad:'Раз в 2 недели',last:'2026-10-29',next:'2026-11-12',pulse:[6,7,7,7,8,8],status:'active',bday:'1996-11-12',pdp:{goal:'Своя инструкция по жалобам; L2 к Q2',pct:45},train:[10,11],att:{shifts:20,late:2,abs:0,ot:1},ops:{k:'Чатов обработано',v:612,q:'4 мин до 1-го ответа',r:4.7},kudos:7,skills:{design:0,wedding:0,speed:2,care:3,coach:1},tags:[],signals:[]},
+  {id:'ruslan',name:'Ruslan Tairov',role:'Курьер',team:'delivery',type:'worker',start:'2024-11-04',mgr:'irina',lvl:2,ladder:'courier',cad:'Раз в месяц',last:'2026-10-12',next:'2026-11-14',pulse:[7,6,6,7,6,6],status:'active',bday:'1990-07-01',pdp:{goal:'Пробный лид маршрутов по субботам',pct:20},train:[6,8],att:{shifts:19,late:2,abs:1,ot:3},ops:{k:'Доставок',v:402,q:'96 % вовремя',r:4.9},kudos:5,skills:{design:0,wedding:0,speed:3,care:3,coach:1},tags:['Фургон'],signals:[{lvl:'info',t:'Проверка прав 2 дек'}]},
+  {id:'jake',name:'Jake Wilson',role:'Курьер',team:'delivery',type:'self',start:'2025-09-01',mgr:'irina',lvl:1,ladder:'courier',cad:'Раз в месяц',last:'2026-09-20',next:'2026-11-20',pulse:[6,6,5,5],status:'active',bday:'1998-04-18',pdp:{goal:'—',pct:0},train:[4,8],att:{shifts:14,late:4,abs:2,ot:0},ops:{k:'Доставок',v:288,q:'88 % вовремя',r:4.5},kudos:1,skills:{design:0,wedding:0,speed:2,care:2,coach:0},tags:['Велосипед'],signals:[{lvl:'warn',t:'Вовремя 88 % (команда 95 %)'},{lvl:'info',t:'Нет плана развития'}]},
+  {id:'bogdan',name:'Bogdan Kravets',role:'Старший курьер',team:'delivery',type:'employee',start:'2023-06-12',mgr:'irina',lvl:2,ladder:'courier',cad:'Раз в месяц',last:'2026-10-21',next:'2026-11-18',pulse:[8,8,8,8,9,8],status:'leave',leaveTo:'2026-11-16',bday:'1986-11-11',pdp:{goal:'Обучить 2 новых курьеров маршрутам Central',pct:80},train:[8,8],att:{shifts:16,late:0,abs:0,ot:2},ops:{k:'Доставок',v:455,q:'98 % вовремя',r:5.0},kudos:8,skills:{design:0,wedding:1,speed:3,care:3,coach:3},tags:['Отпуск'],signals:[]},
+  {id:'artem',name:'Artem Gromov',role:'Backend-разработчик',team:'tech',type:'contractor',start:'2025-03-03',mgr:null,lvl:3,ladder:'tech',cad:'Раз в 2 недели',last:'2026-10-31',next:'2026-11-14',pulse:[8,7,7,6,6,5],status:'active',bday:'1993-05-25',pdp:{goal:'Вести сервис маршрутизации целиком',pct:60},train:[5,6],att:{shifts:null,late:null,abs:0,ot:null},ops:{k:'Задач закрыто',v:38,q:'2 переоткрыты',r:null},kudos:6,skills:{design:0,wedding:0,speed:3,care:1,coach:2},tags:['Удалённо · UTC+4'],signals:[{lvl:'warn',t:'Пульс падает (8 → 5)'},{lvl:'info',t:'«Много переключений» – в 2 из 3 последних 1:1'}]},
+  {id:'vera',name:'Vera Kuznets',role:'QA и продукт',team:'tech',type:'contractor',start:'2025-07-14',mgr:null,lvl:2,ladder:'tech',cad:'Раз в 2 недели',last:'2026-11-06',next:'2026-11-20',pulse:[7,8,8,8,8,9],status:'active',bday:'1995-01-08',pdp:{goal:'Вырасти в Product Owner приложения сотрудников',pct:50},train:[6,6],att:{shifts:null,late:null,abs:0,ot:null},ops:{k:'Багов проверено',v:84,q:'0 ушло на прод',r:null},kudos:10,skills:{design:1,wedding:0,speed:2,care:3,coach:2},tags:['Удалённо · UTC+2'],signals:[]},
+  {id:'denis',name:'Denis Orlov',role:'Операционный аналитик',team:'tech',type:'contractor',start:'2026-09-29',mgr:null,lvl:1,ladder:'tech',cad:'Еженедельно',last:'2026-11-05',next:'2026-11-12',pulse:[8,8],status:'onboarding',bday:'1997-08-17',pdp:{goal:'План онбординга 30-60-90',pct:35},train:[3,7],att:{shifts:null,late:null,abs:0,ot:null},ops:{k:'Отчётов сдано',v:4,q:'—',r:null},kudos:2,skills:{design:0,wedding:0,speed:2,care:2,coach:0},tags:['Онбординг · день 43','Удалённо · UTC+3'],signals:[{lvl:'info',t:'Встреча «день 45» – 13 нояб'}]}
+ ],
+ // events: probation ends, birthdays, anniversaries, documents
+ events:[
+  {d:'2026-11-11',t:'День рождения',who:'bogdan',k:'gift',x:'В отпуске – отправить открытку от команды?'},
+  {d:'2026-11-12',t:'День рождения',who:'kira',k:'gift'},
+  {d:'2026-11-13',t:'Онбординг: встреча «день 45»',who:'denis',k:'flag'},
+  {d:'2026-11-19',t:'День рождения',who:'mila',k:'gift'},
+  {d:'2026-11-23',t:'Ревью испытательного срока',who:'alina',k:'clip'},
+  {d:'2026-11-27',t:'День рождения',who:'alina',k:'gift'},
+  {d:'2026-12-02',t:'Проверка водительских прав',who:'ruslan',k:'file'},
+  {d:'2026-12-09',t:'Старт квартального ревью Q4',who:null,k:'clip'},
+  {d:'2026-12-21',t:'Повторная проверка права на работу',who:'yana',k:'file'}
+ ],
+ // 1:1 meetings (shared by person card and 1:1 screen)
+ ones:[
+  {id:'o1',who:'daria',d:'2026-11-11',time:'15:00',status:'today',agenda:[{by:'emp',t:'Хочу больше свадебных заказов – можно ли ставить меня на инсталляции?'},{by:'hr',t:'Прогресс по плану развития: свадьбы → L3'},{by:'auto',t:'Из CRM: 2 благодарности от клиентов за неделю'}],actions:[{t:'Поговорить с Irina о 2 сменах на свадебном заказе в декабре',owner:'eva',due:'2026-11-15',done:false}]},
+  {id:'o2',who:'nika',d:'2026-11-12',time:'11:30',status:'planned',agenda:[{by:'hr',t:'Как ты? Нагрузка последние 3 недели'},{by:'auto',t:'Из CRM: переработка +13 ч, пульс 4/10'},{by:'auto',t:'Незакрыто с прошлого раза: курс по колористике'}],actions:[{t:'Записать Nika на курс по колористике',owner:'eva',due:'2026-10-20',done:false}]},
+  {id:'o3',who:'kira',d:'2026-11-12',time:'14:00',status:'planned',agenda:[{by:'emp',t:'Обсудить черновик инструкции по жалобам'}],actions:[]},
+  {id:'o4',who:'denis',d:'2026-11-12',time:'16:00',status:'planned',agenda:[{by:'hr',t:'Онбординг: встреча «день 45»'},{by:'emp',t:'Доступы к аналитике доставки'}],actions:[]},
+  {id:'o5',who:'mila',d:'2026-11-13',time:'10:00',status:'planned',agenda:[{by:'hr',t:'Мастер-класс по венкам: что нужно от нас'}],actions:[]},
+  {id:'o6',who:'artem',d:'2026-10-31',time:'12:00',status:'done',summary:'Говорили о переключениях между задачами доставки и срочными багами. Договорились: один «дежурный» день в неделю для срочного, остальное время – маршрутизация.',agenda:[{by:'emp',t:'Слишком много переключений между задачами'},{by:'hr',t:'План развития: маршрутизация целиком'}],actions:[{t:'Предложить основателю «дежурный день» для срочных задач',owner:'eva',due:'2026-11-07',done:true},{t:'Описать границы сервиса маршрутизации',owner:'artem',due:'2026-11-14',done:false}]},
+  {id:'o7',who:'alina',d:'2026-11-04',time:'09:30',status:'done',summary:'Неделя 11 испытательного срока. 4 из 6 базовых стилей подтверждены наставником. Просит больше практики с пионами.',agenda:[{by:'hr',t:'Испытательный срок: что осталось'},{by:'emp',t:'Можно больше практики с пионами?'}],actions:[{t:'Попросить Polina поставить Alina на утренние смены с поставкой пионов',owner:'eva',due:'2026-11-08',done:true}]},
+  {id:'o8',who:'nika',d:'2026-10-07',time:'11:00',status:'done',summary:'Nika устала от однотипных заказов, хочет авторские работы. Договорились о курсе по колористике.',agenda:[{by:'emp',t:'Хочется делать что-то своё, а не только сеты'}],actions:[{t:'Записать Nika на курс по колористике',owner:'eva',due:'2026-10-20',done:false}]}
+ ],
+ // HR notes with visibility levels; link = optional pointer to an operational record
+ notes:[
+  {id:'n1',who:'nika',by:'eva',d:'2026-11-09',vis:'priv',cat:'Наблюдение',t:'В чате смены отвечает коротко, на ретро промолчала. Похоже на усталость, не на конфликт. Поднять на 1:1 мягко.'},
+  {id:'n2',who:'nika',by:'irina',d:'2026-11-05',vis:'mgr',cat:'Работа',t:'Переделка свадебного букета – не та гамма. Заказ был срочный, взяла сверх своей смены.',link:{k:'Проблема с букетом',ref:'#48213'}},
+  {id:'n3',who:'nika',by:'eva',d:'2026-10-07',vis:'shared',cat:'1:1',t:'Договорились: курс по колористике и 3 авторских букета до конца года.'},
+  {id:'n4',who:'artem',by:'eva',d:'2026-11-01',vis:'hr',cat:'Риск',t:'Второй раз говорит про переключения. Если «дежурный день» не введут – высокий риск выгорания. Основатель в курсе.'},
+  {id:'n5',who:'alina',by:'polina',d:'2026-11-06',vis:'shared',cat:'Похвала',t:'Сама собрала 12 букетов на утреннюю волну без переделок. Отлично!',link:{k:'Смена',ref:'6 нояб, утро'}},
+  {id:'n6',who:'jake',by:'irina',d:'2026-10-30',vis:'mgr',cat:'Работа',t:'Два опоздания на забор заказов на этой неделе. Говорит, что велосипед в ремонте.',link:{k:'Смена курьера',ref:'29 окт'}},
+  {id:'n7',who:'polina',by:'eva',d:'2026-11-03',vis:'hr',cat:'Развитие',t:'Готова вести ретро, но не хватает времени из-за переработок. Обсудить с Irina разгрузку смен.'},
+  {id:'n8',who:'mila',by:'eva',d:'2026-10-30',vis:'shared',cat:'Развитие',t:'Хочет вести мастер-классы. Дать ей подготовку рождественского МК как цель квартала.'}
+ ],
+ kudos:[
+  {from:'polina',to:'alina',d:'2026-11-10',val:'Мастерство',t:'Первая самостоятельная утренняя волна без переделок'},
+  {from:'kira',to:'ruslan',d:'2026-11-09',val:'Забота',t:'Довёз срочный заказ в больницу за 25 минут и позвонил клиенту'},
+  {from:'mila',to:'polina',d:'2026-11-08',val:'Команда',t:'Осталась помочь со свадебной аркой после смены'},
+  {from:'vera',to:'artem',d:'2026-11-07',val:'Ответственность',t:'Починил импорт заказов в выходной, никто даже не заметил сбоя'},
+  {from:'irina',to:'kira',d:'2026-11-06',val:'Забота',t:'Клиентка написала отзыв лично про Kira'},
+  {from:'daria',to:'mila',d:'2026-11-05',val:'Команда',t:'Показала, как собирать каскадный букет'}
+ ],
+ values:['Мастерство','Забота','Команда','Ответственность'],
+ pulseTeam:{weeks:['16 Sep','23 Sep','30 Sep','7 Oct','14 Oct','21 Oct','28 Oct','4 Nov'],studio:[7.8,7.7,7.6,7.4,7.2,7.1,7.0,6.9],delivery:[7.2,7.1,7.0,6.9,7.0,6.8,6.7,6.7],shop:[7.6,7.7,7.8,7.7,7.8,8.0,8.0,8.0],tech:[7.9,7.8,7.6,7.5,7.3,7.2,7.1,7.0]},
+ enps:{score:31,prev:24,promoters:7,passives:3,detractors:3,n:13} // 13 of 14 answered: (7-3)/13 = +31
+};
+D.byId=Object.fromEntries(D.people.map(p=>[p.id,p]));
+D.extra={eva:{id:'eva',name:'Eva Marin',role:'People Partner · HR'},founder:{id:'founder',name:'Основатель',role:'Админ'}};
+const P=(id)=>D.byId[id]||D.extra[id];
+const initials=(n)=>n.split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase();
+const TEAM_IC={studio:'flower',delivery:'truck',shop:'heart',tech:'code'};
+
+/* ===================== HELPERS ===================== */
+const H={
+ av:(p,size='')=>`<span class="av ${size}" title="${p.name}">${initials(p.name)}</span>`,
+ who:(p,sub)=>`<div class="pr-line">${H.av(p)}<div class="who"><b>${p.name}</b><small>${sub??(p.role+(D.teams[p.team]?' · '+D.teams[p.team]:''))}</small></div></div>`,
+ type:(p)=>D.types[p.type]||p.type,
+ skillNames:{design:'Дизайн букета',wedding:'Свадьбы и инсталляции',speed:'Скорость и стандарты',care:'Общение с клиентом',coach:'Наставничество'},
+ chip:(t,k='')=>`<span class="chip ${k}">${t}</span>`,
+ bar:(pct,k='')=>`<div class="bar ${k}"><i style="width:${Math.max(0,Math.min(100,pct))}%"></i></div>`,
+ spark:(vals,{w=88,h=26,min=0,max=10,color='var(--ink)'}={})=>{ if(!vals||!vals.length) return ''; const st=w/(vals.length-1||1); const y=v=>h-2-((v-min)/(max-min))*(h-4); const pts=vals.map((v,i)=>`${(i*st).toFixed(1)},${y(v).toFixed(1)}`).join(' '); const last=vals[vals.length-1]; return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/><circle cx="${((vals.length-1)*st).toFixed(1)}" cy="${y(last).toFixed(1)}" r="2.5" fill="${color}"/></svg>`},
+ pulseColor:(v)=>v>=7.5?'var(--v-good)':v>=6?'var(--v-mid)':'var(--v-bad)',
+ vis:(k)=>({priv:`<span class="vis priv">${ic('lock')}Только я</span>`,hr:`<span class="vis hr">${ic('shield')}HR + основатель</span>`,mgr:`<span class="vis mgr">${ic('users')}+ руководитель</span>`,shared:`<span class="vis shared">${ic('eye')}Видит сотрудник</span>`})[k]||'',
+ sig:(s)=>`<span class="chip ${s.lvl==='bad'?'bad':s.lvl==='warn'?'warn':'info'}">${ic(s.lvl==='info'?'flag':'alert')}${s.t}</span>`,
+ esc:(s)=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]),
+ lvl:(p)=>D.ladders[p.ladder].levels[p.lvl-1]||'',
+ tenure:(p)=>{const m=Math.round(daysBetween(dd(p.start),NOW)/30.4);return m<12?m+' мес':(Math.floor(m/12)+' г '+(m%12?m%12+' мес':''))},
+ statusChip:(p)=>p.status==='probation'?H.chip('Испытательный','info'):p.status==='leave'?H.chip('В отпуске','line'):p.status==='onboarding'?H.chip('Онбординг','info'):H.chip('Работает','ok'),
+ aiLabel:()=>`<span class="ai-tag">${ic('spark')}Черновик AI – проверьте перед использованием</span>`
+};
+
+/* ===================== APP RUNTIME ===================== */
+const App={
+ screens:{}, order:[], cur:null, params:{}, role:'hr',
+ reg(id,def){this.screens[id]=def; if(!this.order.includes(id)) this.order.push(id)},
+ nav:[
+  {g:'Люди'},
+  {id:'home',t:'HR-центр',i:'home'},
+  {id:'people',t:'Люди',i:'users'},
+  {id:'oneonones',t:'1:1',i:'chat',b:3},
+  {id:'growth',t:'Развитие',i:'sprout'},
+  {id:'reviews',t:'Ревью',i:'clip'},
+  {id:'pulse',t:'Пульс и признание',i:'heart'},
+  {id:'lifecycle',t:'Онбординг и даты',i:'cal'},
+  {g:'Аналитика'},
+  {id:'analytics',t:'Аналитика людей',i:'chart'},
+  {id:'askhr',t:'Спроси у CRM · HR',i:'spark'},
+  {g:'Контроль'},
+  {id:'access',t:'Доступы и журнал',i:'shield'},
+  {id:'employee',t:'Приложение сотрудника',i:'phone',ro:'превью'}
+ ],
+ renderNav(){
+  const el=document.getElementById('nav'); let h='';
+  const role=this.role;
+  for(const n of this.nav){
+   if(n.g){h+=`<div class="grp">${n.g}</div>`;continue}
+   if(role==='employee' && !['employee'].includes(n.id)) continue;
+   if(!this.screens[n.id]) continue;
+   h+=`<button class="it ${this.cur===n.id?'on':''}" data-go="${n.id}">${ic(n.i)}<span>${n.t}</span>${n.b?`<span class="b">${n.b}</span>`:''}${n.ro?`<span class="ro">${n.ro}</span>`:''}</button>`;
+  }
+  if(role==='hr'){
+   h+=`<div class="locked"><div class="eyebrow" style="margin-bottom:6px">Нет в роли HR</div>${['Kassa и финансы','Расчёты, ставки, бонусы','Аналитика продаж','Клиенты и заказы'].map(x=>`<div class="lk">${ic('lock')}<span>${x}</span></div>`).join('')}<p>HR видит людей и рабочие сигналы, но не деньги. Запрет на сервере, не только в меню.</p></div>`;
+  }
+  if(role==='admin'){
+   h+=`<div class="grp">Только админ</div>${['Kassa','Расчёты','Бонус флористов'].map(x=>`<button class="it" data-toast="${x} – раздел админа, этот проект его не меняет">${ic('coin')}<span>${x}</span></button>`).join('')}`;
+  }
+  el.innerHTML=h;
+ },
+ go(id,params={},push=true){
+  if(!this.screens[id]) id='home';
+  if(this.role==='employee') id='employee';
+  this.cur=id; this.params=params;
+  const s=this.screens[id];
+  const v=document.getElementById('view'); v.scrollTop=0;
+  v.innerHTML=`<div class="scr" id="s-${id}"></div>`;
+  try{ s.render(document.getElementById('s-'+id),params) }catch(e){ console.error(e); v.innerHTML=`<div class="scr"><div class="callout">Ошибка экрана: ${H.esc(e.message)}</div></div>` }
+  document.getElementById('crumb').innerHTML=`Люди <span style="margin:0 6px">/</span> <b>${s.crumb?s.crumb(params):s.title}</b>`;
+  document.getElementById('notes-body').innerHTML=typeof s.notes==='function'?s.notes(params):(s.notes||'<p class="muted">—</p>');
+  this.renderNav();
+  if(push){const hs='#'+id+(params.id?'/'+params.id:'')+(params.tab?'/'+params.tab:''); if(location.hash!==hs) history.pushState(null,'',hs)}
+ },
+ fromHash(){const [id,pid,tab]=location.hash.replace('#','').split('/'); this.go(id||'home',{id:pid,tab},false)},
+ toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(this._tt);this._tt=setTimeout(()=>t.classList.remove('on'),2400)},
+ sheet(title,body,foot=''){document.getElementById('sheet-t').textContent=title;document.getElementById('sheet-b').innerHTML=body;document.getElementById('sheet-f').innerHTML=foot||'<button class="btn" data-close>Закрыть</button>';document.getElementById('sheet-f').style.display='flex';requestAnimationFrame(()=>{document.getElementById('sheet').classList.add('on');document.getElementById('scrim').classList.add('on')})},
+ modal(title,body,foot=''){document.getElementById('modal-t').textContent=title;document.getElementById('modal-b').innerHTML=body;document.getElementById('modal-f').innerHTML=foot||'<button class="btn" data-close>Закрыть</button>';document.getElementById('modal').classList.add('on');document.getElementById('scrim').classList.add('on')},
+ close(){['sheet','modal','scrim','cmdk'].forEach(i=>document.getElementById(i).classList.remove('on'))},
+ setRole(r){this.role=r;document.querySelectorAll('#roles button').forEach(b=>b.classList.toggle('on',b.dataset.r===r));
+  const me={hr:['Eva Marin','People Partner · HR','EM'],admin:['Основатель','Админ · полный доступ','ОС'],employee:['Daria Lis','Флорист · только свои данные','DL']}[r];
+  document.getElementById('me-name').textContent=me[0];document.getElementById('me-role').textContent=me[1];document.getElementById('me-av').textContent=me[2];
+  this.go(r==='employee'?'employee':(this.cur&&this.cur!=='employee'?this.cur:'home'),r==='employee'?{}:this.params);
+  this.toast(r==='hr'?'Вы смотрите как HR – без финансов':r==='admin'?'Вы смотрите как админ – видно всё, кроме личных заметок HR':'Вы смотрите как сотрудник – только свой профиль')},
+ cmdk(){const c=document.getElementById('cmdk');c.classList.add('on');document.getElementById('scrim').classList.add('on');const i=document.getElementById('cmdk-in');i.value='';this.cmdkList('');setTimeout(()=>i.focus(),20)},
+ cmdkList(q){q=q.toLowerCase();const items=[...D.people.map(p=>({t:p.name,s:p.role,go:['person',{id:p.id}],a:H.av(p,'s')})),...this.nav.filter(n=>n.id&&this.screens[n.id]).map(n=>({t:n.t,s:'Экран',go:[n.id,{}],a:ic(n.i)}))].filter(x=>!q||x.t.toLowerCase().includes(q)||x.s.toLowerCase().includes(q)).slice(0,12);
+  document.getElementById('cmdk-res').innerHTML=items.map((x,i)=>`<button class="${i?'':'on'}" data-cgo='${JSON.stringify(x.go)}'>${x.a}<span>${x.t}</span><span class="muted sm" style="margin-left:auto">${x.s}</span></button>`).join('')||'<div class="empty">Ничего не найдено</div>'}
+};
+
+/* global delegation */
+document.addEventListener('click',e=>{
+ const g=e.target.closest('[data-go]'); if(g){e.preventDefault();App.close();App.go(g.dataset.go,g.dataset.id?{id:g.dataset.id,tab:g.dataset.tab}:{});return}
+ const pg=e.target.closest('[data-person]'); if(pg){e.preventDefault();App.close();App.go('person',{id:pg.dataset.person,tab:pg.dataset.tab});return}
+ const t=e.target.closest('[data-toast]'); if(t){App.toast(t.dataset.toast);return}
+ const c=e.target.closest('[data-cgo]'); if(c){const [id,p]=JSON.parse(c.dataset.cgo);App.close();App.go(id,p);return}
+ if(e.target.closest('[data-close]')||e.target.id==='scrim'||e.target.closest('#sheet-x')){App.close();return}
+ const r=e.target.closest('#roles button'); if(r){App.setRole(r.dataset.r);return}
+ if(e.target.closest('#srch-open')){App.cmdk();return}
+ if(e.target.closest('#bell')){App.sheet('Уведомления',[
+   ['alert','Nika Fedorova – пульс упал до 4/10','2 ч назад','nika'],
+   ['clip','Alina Moroz – ревью испытательного срока через 12 дней','сегодня','alina'],
+   ['chat','Artem Gromov добавил тему в ваш 1:1: «Переключения контекста»','вчера','artem'],
+   ['star','Polina Sokol получила 3 благодарности за неделю','вчера','polina'],
+   ['file','Ruslan Tairov – проверка прав до 2 дек','2 дня назад','ruslan']
+  ].map(([i,t,w,p])=>`<button class="row" data-person="${p}" style="width:100%;text-align:left;padding:12px 0;border-bottom:1px solid var(--hair)">${ic(i)}<span style="flex:1">${t}</span><span class="muted sm">${w}</span></button>`).join(''));return}
+ if(e.target.closest('#notes-btn')||e.target.closest('#notes-show')){const a=document.getElementById('app'); if(window.innerWidth<=1280){a.classList.toggle('notes-open')} else a.classList.toggle('no-notes');return}
+ if(e.target.closest('#notes-close')){const a=document.getElementById('app'); a.classList.remove('notes-open'); if(window.innerWidth>1280) a.classList.add('no-notes');return}
+});
+document.addEventListener('keydown',e=>{
+ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();App.cmdk()}
+ if(e.key==='Escape')App.close();
+ if(e.key==='Enter'&&document.getElementById('cmdk').classList.contains('on')){const b=document.querySelector('#cmdk-res button');if(b)b.click()}
+});
+document.addEventListener('input',e=>{if(e.target.id==='cmdk-in')App.cmdkList(e.target.value)});
+window.addEventListener('popstate',()=>App.fromHash());
+</script>
+
+<!--SCREENS-->
+
+<script>
+App.fromHash();
+</script>
+</body>
+</html>

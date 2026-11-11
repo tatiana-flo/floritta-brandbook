@@ -1,0 +1,271 @@
+<style>
+#s-oneonones .lay{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px;align-items:start}
+#s-oneonones .lst{border:1px solid var(--hair);background:var(--paper)}
+#s-oneonones .gh{display:flex;align-items:center;gap:8px;padding:12px 14px 6px;font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);border-top:1px solid var(--hair)}
+#s-oneonones .gh:first-child{border-top:0}
+#s-oneonones .gh .n{margin-left:auto;color:var(--ink)}
+#s-oneonones .gh.warn{color:var(--accent-dark)}
+#s-oneonones .mrow{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;cursor:pointer;border-left:2px solid transparent}
+#s-oneonones .mrow:hover{background:var(--silver)}
+#s-oneonones .mrow.on{background:var(--silver);border-left-color:var(--ink)}
+#s-oneonones .mi{flex:1;min-width:0}
+#s-oneonones .mi b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#s-oneonones .mi small{display:block;font-size:12px;color:var(--grey)}
+#s-oneonones .mi small.w{color:var(--accent-dark)}
+#s-oneonones .cad{height:24px;margin-top:5px;font-size:11.5px;border:1px solid var(--hair);background:var(--paper);padding:0 4px;max-width:100%;cursor:pointer;border-radius:0}
+#s-oneonones .ws{display:flex;flex-direction:column;gap:16px;min-width:0;container-type:inline-size}
+#s-oneonones .whd{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+#s-oneonones .meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--graphite);margin-top:12px}
+#s-oneonones .meta span{display:inline-flex;align-items:center;gap:6px}
+#s-oneonones .tplw{display:flex;align-items:center;gap:8px}
+#s-oneonones .tplw .sel{width:auto;height:var(--btn-h-s);font-size:12.5px}
+#s-oneonones .li{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--hair)}
+#s-oneonones .li:last-child{border-bottom:0}
+#s-oneonones .li .t{flex:1;min-width:0}
+#s-oneonones .li .by{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:4px;font-size:11.5px;color:var(--grey)}
+#s-oneonones .li .by .chip{height:18px;font-size:10.5px;padding:0 6px}
+#s-oneonones .li.done .tx{color:var(--grey);text-decoration:line-through}
+#s-oneonones .li .ok{color:var(--ok)}
+#s-oneonones .ck{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--grey);white-space:nowrap;cursor:pointer}
+#s-oneonones input[type=checkbox]{accent-color:var(--ink);width:15px;height:15px;flex:none}
+#s-oneonones .add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+#s-oneonones .add .inp{flex:1;min-width:180px;width:auto}
+#s-oneonones .add .sel{width:auto}
+#s-oneonones .prep{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 22px}
+#s-oneonones .prep h5,#s-oneonones h5.e{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:500;color:var(--grey);margin-bottom:6px}
+#s-oneonones .prep ul{margin:0 0 0 16px;font-size:13px}
+#s-oneonones .qs{list-style:none;margin:0;padding:0}
+#s-oneonones .qs li{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--hair);font-size:13px}
+#s-oneonones .qs li:last-child{border-bottom:0}
+#s-oneonones .sw{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+#s-oneonones .sw input{appearance:none;-webkit-appearance:none;width:36px;height:20px;background:var(--light);position:relative;cursor:pointer;margin-top:2px;transition:background var(--m-fast)}
+#s-oneonones .sw input::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;background:var(--paper);transition:left var(--m-fast)}
+#s-oneonones .sw input:checked{background:var(--ok)}
+#s-oneonones .sw input:checked::after{left:19px}
+#s-oneonones .sw b{font-weight:500;display:block}
+#s-oneonones .sw small{display:block;color:var(--grey);font-size:12px}
+#s-oneonones .sum{min-height:170px;font-size:13px}
+#s-oneonones .pre{white-space:pre-line}
+@container (max-width:620px){#s-oneonones .prep{grid-template-columns:1fr}}
+@media (max-width:900px){#s-oneonones .lay{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+const TODAY='2026-11-11', WEEK_END='2026-11-15';
+const CAD={'Еженедельно':7,'Раз в 2 недели':14,'Раз в месяц':30,'Раз в 6 недель':42};
+const TPL={
+ 'Регулярная':['Что получилось лучше всего с прошлой встречи?','Что сейчас мешает работать?','Чем я могу помочь до следующей встречи?'],
+ 'Испытательный срок':['Что оказалось не так, как ожидалось при найме?','Какие задачи или стили пока даются неуверенно?','Хватает ли поддержки напарника на смене?','Что поменять в онбординге для следующих новичков?'],
+ 'Карьерный разговор':['Где ты видишь себя через год?','Какая работа даёт энергию, а какая забирает?','Что ближе на следующем шаге – люди или ремесло?','Какой навык хочешь подтвердить к квартальному ревью?'],
+ 'После отпуска / больничного':['Как прошло возвращение – что изменить в первых сменах?','Что важного произошло, пока тебя не было?','Нужна ли адаптация графика? (о здоровье не спрашиваем и не записываем)'],
+ 'Exit-интервью':['Что стало главной причиной ухода?','Что нам стоило сделать иначе?','Что тебе нравилось в работе в Floritta?','Можно ли написать тебе, если откроется подходящая роль?']
+};
+const QS={
+ daria:['Какие свадебные заказы в декабре тебе было бы интересно взять?','Урок по бутоньеркам не закрыт с 28 окт – что помешало?','Что нужно от Mila или Polina, чтобы чувствовать себя готовой к L3?'],
+ nika:['Как ты после последних трёх недель с переработками?','Какие заказы или смены забирают больше всего сил?','С чего начать авторскую работу, если освободим время?'],
+ alina:['Какие два стиля из шести хочешь подтвердить до 23 нояб?','Как тебе утренние смены с поставкой пионов?','Что было самым сложным за испытательный срок?'],
+ artem:['Ввели ли «дежурный день» – стало меньше переключений?','Что мешает описать границы сервиса маршрутизации?','Какая поддержка нужна, чтобы вести сервис целиком?'],
+ kira:['Что в черновике инструкции по жалобам вызывает сомнения?','Какие жалобы повторяются чаще всего?','Что нужно, чтобы выйти на L2 к Q2?'],
+ denis:['Каких доступов или данных не хватает?','Что за 45 дней оказалось не так, как ожидалось?','Кто в команде помогает больше всего?'],
+ mila:['Что нужно от нас для мастер-класса по венкам?','Интересен ли путь «Мастер-флорист»?','Кого из новичков готова взять напарником?']
+};
+const TRX={o1:'Daria готова к 2 свадебным сменам в декабре, если знать даты за 2 недели.',o2:'Nika просит не ставить её на вечерние смены до конца месяца.'};
+const PRIV={o1:'Daria стесняется сама просить сложные заказы – предложить первой. Не обещать даты, пока не поговорю с Irina.',o2:'Мягко. Не начинать с переделки букета – спросить про нагрузку, а не про ошибки.'};
+/* meetings that live only on this screen (consistent with p.next / p.last) */
+const X=[
+ {id:'x-alina',who:'alina',d:'2026-11-11',time:'12:00',status:'today',tpl:'Испытательный срок',agenda:[{by:'hr',t:'Испытательный срок: до ревью 12 дней – что ещё неуверенно?'},{by:'auto',src:'Благодарности',t:'Из CRM: благодарность от Polina за первую самостоятельную утреннюю волну'},{by:'auto',src:'Матрица навыков',t:'Из CRM: подтверждено 4 из 6 базовых стилей'}],actions:[]},
+ {id:'x-artem',who:'artem',d:'2026-11-14',time:'13:00',status:'planned',agenda:[{by:'emp',t:'Переключения контекста'}],actions:[]},
+ {id:'x-ruslan',who:'ruslan',d:'2026-11-14',time:'17:30',status:'planned',agenda:[{by:'hr',t:'Пробный лид маршрутов по субботам – как идёт?'},{by:'auto',src:'Документы',t:'Из CRM: проверка водительских прав до 2 дек'}],actions:[]},
+ {id:'x-yana',who:'yana',d:'2026-11-15',time:'10:00',status:'planned',agenda:[{by:'hr',t:'Видео-уроки: что получилось в октябре'}],actions:[]},
+ {id:'x-daria-p',who:'daria',d:'2026-10-28',time:'15:00',status:'done',summary:'Daria хочет расти в свадьбы и инсталляции, цель – L3 к лету. Договорились о практике на свадебных заказах и уроке по бутоньеркам.',agenda:[{by:'emp',t:'Хочу больше сложных заказов',done:true},{by:'hr',t:'План развития на Q4',done:true}],actions:[{t:'Пройти урок «Свадебная бутоньерка» в Обучении',owner:'daria',due:'2026-11-08',done:false},{t:'Спросить Mila про совместную сборку арки',owner:'eva',due:'2026-11-04',done:true}]}
+];
+const SLOTS=[[TODAY,'17:30'],['2026-11-12','15:00'],['2026-11-13','11:00'],['2026-11-16','15:00'],['2026-11-18','12:00']];
+const consent={};
+
+X.forEach(x=>{if(!D.ones.some(o=>o.id===x.id))D.ones.push(x)}); // share with other screens
+const all=()=>D.ones;
+const byId=id=>all().find(o=>o.id===id);
+const fn=p=>p?p.name.split(' ')[0]:'';
+const addD=(s,n)=>{const d=dd(s);d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const wd=s=>{const w=dd(s).toLocaleDateString('ru-RU',{weekday:'short',timeZone:'Europe/London'});return w.charAt(0).toUpperCase()+w.slice(1)};
+const slotL=(d,t)=>(d===TODAY?'Сегодня':wd(d)+', '+fmtD(d))+', '+t;
+const owner=o=>o==='eva'?'Eva · HR':fn(P(o))||o;
+const clean=t=>t.replace(/^Из CRM:\s*/,'');
+const srcOf=a=>{if(a.src)return a.src;const t=a.t.toLowerCase();if(t.includes('благодарн'))return 'Благодарности и отзывы';if(t.includes('переработ')||t.includes('пульс'))return 'Табель и пульс';if(t.includes('незакрыто'))return 'Прошлая 1:1';return 'CRM'};
+const prevOf=m=>all().filter(o=>o.who===m.who&&o.status==='done'&&o.id!==m.id&&o.d<=m.d).sort((a,b)=>b.d.localeCompare(a.d))[0];
+const overdue=p=>daysBetween(dd(p.last),NOW)>2*(CAD[p.cad]||14);
+const tplOf=m=>m.tpl||(P(m.who).status==='probation'?'Испытательный срок':'Регулярная');
+const byDT=(a,b)=>(a.d+a.time).localeCompare(b.d+b.time);
+const nextOf=pid=>all().filter(o=>o.who===pid&&o.status!=='done').sort(byDT)[0];
+function resolve(id){
+ if(id&&byId(id))return id;
+ if(id&&P(id)){const nx=nextOf(id);const ls=all().filter(o=>o.who===id&&o.status==='done').sort((a,b)=>b.d.localeCompare(a.d))[0];if(nx||ls)return (nx||ls).id}
+ return 'o1';
+}
+function carry(m){
+ if(m._c||m.status==='done')return; m._c=1; const pv=prevOf(m); if(!pv)return;
+ pv.actions.filter(a=>!a.done).slice().reverse().forEach(a=>{const ex=m.actions.find(x=>x.t===a.t);if(ex){ex.from=pv.d;ex.ref=a}else m.actions.unshift({t:a.t,owner:a.owner,due:a.due,done:false,from:pv.d,ref:a})});
+}
+function draft(m){
+ const p=P(m.who);const disc=m.agenda.filter(a=>a.done).map(a=>clean(a.t));const acts=m.actions.filter(a=>!a.done);
+ let s=`Итог 1:1 – ${p.name}, ${fmtD(m.d)}\n\nОбсудили:\n`+(disc.length?disc.map(t=>'– '+t).join('\n'):'– (отметьте темы повестки галочкой «обсудили»)');
+ s+='\n\nДоговорились:\n'+(acts.length?acts.map(a=>`– ${a.t} (${owner(a.owner)}, до ${fmtD(a.due)})`).join('\n'):'– новых договорённостей нет');
+ if(consent[m.id])s+='\n\nИз расшифровки: '+(TRX[m.id]||'уточнили сроки договорённостей – проверьте формулировки.');
+ s+=`\n\nСледующая встреча: ~${fmtD(addD(m.d,CAD[p.cad]||14))}.`;
+ return s;
+}
+
+App.reg('oneonones',{
+ title:'1:1',
+ crumb:(pr)=>{const m=byId(resolve(pr&&pr.id));return '1:1'+(m?' · '+P(m.who).name:'')},
+ render(el,params){
+  let curId=resolve(params&&params.id);
+  const cur=()=>byId(curId);
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">Команда</div><h1>1:1</h1><div class="sub" id="oo-sub"></div></div>
+   <div class="acts"><button class="btn" id="oo-tpls">${ic('note')}Шаблоны</button><button class="btn pr" id="oo-new">${ic('plus')}Новая встреча</button></div></div>
+   <div class="lay"><div class="lst" id="oo-lst"></div><div class="ws" id="oo-ws"></div></div>`;
+  const cadSel=p=>`<select class="cad" data-cad="${p.id}" title="Как часто встречаться">${Object.keys(CAD).map(k=>`<option ${k===p.cad?'selected':''}>${k}</option>`).join('')}</select>`;
+  function rowM(m){const p=P(m.who);const sub=m.status==='done'?fmtD(m.d)+' · состоялась':(m.d===TODAY?'Сегодня, '+m.time:wd(m.d)+', '+fmtD(m.d)+', '+m.time);
+   return `<div class="mrow ${m.id===curId?'on':''}" data-m="${m.id}">${H.av(p)}<div class="mi"><b>${p.name}</b><small>${sub} · ${tplOf(m)}</small>${m.status==='done'?`<small>${p.cad}</small>`:cadSel(p)}</div></div>`}
+  function renderList(){
+   const A=all(),act=A.filter(m=>m.status!=='done');
+   const g=[['Сегодня',act.filter(m=>m.d<=TODAY).sort(byDT)],['На этой неделе',act.filter(m=>m.d>TODAY&&m.d<=WEEK_END).sort(byDT)],['Позже',act.filter(m=>m.d>WEEK_END).sort(byDT)]];
+   const od=D.people.filter(overdue);
+   const past=A.filter(m=>m.status==='done').sort((a,b)=>b.d.localeCompare(a.d));
+   let h='';
+   g.forEach(([n,l],i)=>{if(!l.length&&i===2)return;h+=`<div class="gh">${n}<span class="n">${l.length}</span></div>`+(l.length?l.map(rowM).join(''):'<div class="empty" style="padding:10px 14px;text-align:left">Встреч нет</div>')});
+   h+=`<div class="gh warn">${ic('alert')}Пора встретиться<span class="n">${od.length}</span></div>`+(od.length?od.map(p=>{const nx=nextOf(p.id);return `<div class="mrow" data-op="${p.id}">${H.av(p)}<div class="mi"><b>${p.name}</b><small class="w">Последняя 1:1 ${ago(p.last)} · норма: ${p.cad.toLowerCase()}</small>${nx?`<small>Назначена: ${fmtD(nx.d)}, ${nx.time}</small>`:''}${cadSel(p)}</div><button class="btn s" data-sched="${p.id}">${nx?'Открыть':'Назначить'}</button></div>`}).join(''):'<div class="empty" style="padding:10px 14px;text-align:left">Все встречаются по графику</div>');
+   h+=`<div class="gh">Прошедшие<span class="n">${past.length}</span></div>`+past.map(rowM).join('');
+   el.querySelector('#oo-lst').innerHTML=h;
+   el.querySelector('#oo-sub').textContent=`${g[0][1].length} сегодня · ${g[1][1].length} на этой неделе · ${od.length} ${plural(od.length,'человек','человека','человек')} давно без 1:1`;
+  }
+  const byL=(a,p)=>a.by==='emp'?`${ic('user')}${fn(p)} · сотрудник`:a.by==='auto'?`${H.chip('из CRM','info')}${H.chip(srcOf(a),'line')}`:a.tpl?`${ic('note')}шаблон «${a.tpl}»`:`${ic('chat')}Eva · HR`;
+  const privCard=(m,ro)=>App.role==='admin'
+   ?`<div class="lockbox">${ic('lock')}<div><b style="color:var(--ink);font-weight:500">Личные заметки HR скрыты</b><br>Их видит только автор. Админ не видит даже с полным доступом – только через аварийный доступ с записью в журнал.</div></div>`
+   :`<div class="card"><div class="ch"><h3>Личные заметки</h3>${H.vis('priv')}</div><div class="cb">${ro?`<p class="sm">${H.esc(m._priv??PRIV[m.id]??'Заметок нет')}</p>`:`<textarea class="ta" id="oo-pn" placeholder="Что важно помнить – только для себя">${H.esc(m._priv??PRIV[m.id]??'')}</textarea>`}
+     <div class="row sm muted" style="margin-top:8px;flex-wrap:wrap">${ic('lock')}<span style="flex:1;min-width:200px">Видите только вы; даже админ не видит. Не попадают в итог, AI-черновики и ревью.</span>${ro?'':'<button class="btn s" id="oo-pn-save">Сохранить</button>'}</div></div></div>`;
+  function wsDone(m){
+   const p=P(m.who);const nx=nextOf(p.id);
+   return `<div class="card"><div class="cb"><div class="whd">${H.who(p,H.lvl(p)+' · '+D.teams[p.team])}${H.chip('Состоялась · '+fmtD(m.d),'ok')}<div class="sp"></div>
+     <button class="btn s ghost" data-person="${p.id}">${ic('user')}Карточка</button>${nx?`<button class="btn s pr" data-m="${nx.id}">${ic('arrow')}Следующая: ${fmtD(nx.d)}</button>`:`<button class="btn s pr" data-sched="${p.id}">${ic('plus')}Назначить следующую</button>`}</div>
+     <div class="meta"><span>${ic('cal')}${wd(m.d)}, ${fmtD(m.d)}, ${m.time}</span><span>${ic('note')}${tplOf(m)}</span><span>${ic('clock')}${p.cad}</span></div></div></div>
+    <div class="card"><div class="ch"><h3>Итог</h3>${H.vis('shared')}<div class="r"><span class="muted sm">Итог видят оба</span></div></div><div class="cb"><p class="pre">${H.esc(m.summary||'Итог не записан')}</p></div></div>
+    <div class="card"><div class="ch"><h3>Повестка</h3>${H.vis('shared')}</div><div class="cb">${m.agenda.map(a=>`<div class="li"><span class="${a.done!==false?'ok':'muted'}">${ic(a.done!==false?'check':'dots')}</span><div class="t"><span class="tx">${H.esc(clean(a.t))}</span><div class="by">${byL(a,p)}</div></div></div>`).join('')}</div></div>
+    <div class="card"><div class="ch"><h3>Договорённости</h3>${H.vis('shared')}</div><div class="cb">${m.actions.length?m.actions.map(a=>`<div class="li"><div class="t"><span class="tx">${H.esc(a.t)}</span><div class="by">${owner(a.owner)} · до ${fmtD(a.due)}</div></div>${a.done?H.chip('выполнено','ok'):H.chip('открыто – перенесётся','warn')}</div>`).join(''):'<p class="muted sm">Договорённостей не было</p>'}</div></div>
+    ${privCard(m,true)}`;
+  }
+  function wsActive(m){
+   const p=P(m.who);carry(m);const pv=prevOf(m);const tpl=tplOf(m);
+   const kd=D.kudos.filter(k=>k.to===p.id&&(!pv||k.d>=pv.d));
+   const last=p.pulse[p.pulse.length-1],tr=last-p.pulse[0];
+   m._qs=(QS[p.id]||TPL[tpl]).slice(0,3);
+   const open=m.actions.filter(a=>!a.done);
+   return `<div class="card"><div class="cb">
+     <div class="whd">${H.who(p,H.lvl(p)+' · '+D.teams[p.team])}${H.statusChip(p)}<div class="sp"></div>
+      <div class="tplw"><span class="eyebrow">Шаблон</span><select class="sel" id="oo-tpl">${Object.keys(TPL).map(k=>`<option ${k===tpl?'selected':''}>${k}</option>`).join('')}</select></div></div>
+     <div class="meta"><span>${ic('cal')}${slotL(m.d,m.time)}</span><span>${ic(p.team==='tech'?'link':'flower')}${p.team==='tech'?'Google Meet':'Студия'}</span><span>${ic('clock')}${p.cad}</span><span>${ic('chat')}Прошлая 1:1: ${fmtD(pv?pv.d:p.last)}</span></div>
+     ${p.signals.length?`<div class="row" style="flex-wrap:wrap;gap:6px;margin-top:10px">${p.signals.map(H.sig).join('')}</div>`:''}
+     <div class="row" style="margin-top:14px;flex-wrap:wrap;gap:8px"><button class="btn s pr" id="oo-finish">${ic('check')}Завершить встречу</button><button class="btn s" id="oo-resched">${ic('clock')}Перенести</button><button class="btn s ghost" data-person="${p.id}">${ic('user')}Карточка</button></div>
+    </div></div>
+    <div class="card ai"><div class="ch"><h3>Подготовка</h3><div class="r">${H.aiLabel()}</div></div><div class="cb">
+     <div class="prep">
+      <div><h5>Прошлая встреча${pv?' · '+fmtD(pv.d):''}</h5><p class="sm">${pv?H.esc(pv.summary||'Итог не записан'):'Записи нет – встречи до запуска 1:1 в CRM не сохранялись.'}</p></div>
+      <div><h5>Открытые договорённости</h5>${open.length?`<ul>${open.map(a=>`<li>${H.esc(a.t)} <span class="muted">– ${owner(a.owner)}</span></li>`).join('')}</ul>`:'<p class="sm muted">Всё закрыто</p>'}</div>
+      <div><h5>Пульс · ${p.pulse.length} нед.</h5><div class="row">${H.spark(p.pulse,{color:H.pulseColor(last)})}<span class="sm">${p.pulse[0]} → ${last} · ${tr<=-2?'падает':tr>=1?'растёт':'стабильно'}</span></div><p class="sm muted" style="margin-top:4px">Личный пульс видит только HR, в итог не попадает</p></div>
+      <div><h5>Благодарности с прошлой встречи</h5>${kd.length?kd.map(k=>`<p class="sm">«${H.esc(k.t)}» – ${fn(P(k.from))}, ${fmtD(k.d)}</p>`).join(''):'<p class="sm muted">От коллег – нет. Отзывы клиентов – в повестке «из CRM».</p>'}</div>
+     </div>
+     <div class="hr-line"></div>
+     <h5 class="e">Что спросить</h5>
+     <ul class="qs">${m._qs.map((q,i)=>`<li><span style="flex:1">${H.esc(q)}</span><button class="btn s ghost" data-q="${i}">${ic('plus')}В повестку</button></li>`).join('')}</ul>
+     <p class="sm muted" style="margin-top:8px">Источники: прошлая 1:1, договорённости, пульс, благодарности, план развития. Без денег и без чужих личных заметок. AI ничего не решает и не оценивает человека.</p>
+    </div></div>
+    <div class="card"><div class="ch"><h3>Общая повестка</h3>${H.vis('shared')}<div class="r"><span class="muted sm">${fn(p)} добавляет темы из приложения</span></div></div><div class="cb">
+     ${m.agenda.length?m.agenda.map((a,i)=>`<div class="li ${a.done?'done':''}"><div class="t"><span class="tx">${H.esc(clean(a.t))}</span><div class="by">${byL(a,p)}</div></div><label class="ck"><input type="checkbox" data-ag="${i}" ${a.done?'checked':''}>обсудили</label></div>`).join(''):'<p class="muted sm">Тем пока нет</p>'}
+     <div class="add"><input class="inp" id="oo-ag-in" placeholder="Добавить тему…"><button class="btn" id="oo-ag-add">${ic('plus')}Добавить</button></div>
+    </div></div>
+    <div class="card"><div class="ch"><h3>Договорённости</h3>${H.vis('shared')}<div class="r"><span class="muted sm">${open.length} ${plural(open.length,'открыта','открыты','открыто')}</span></div></div><div class="cb">
+     ${m.actions.length?m.actions.map((a,i)=>`<div class="li ${a.done?'done':''}"><input type="checkbox" data-act="${i}" ${a.done?'checked':''} title="Выполнено"><div class="t"><span class="tx">${H.esc(a.t)}</span><div class="by">${ic('user')}${owner(a.owner)} · до ${fmtD(a.due)}${a.from?H.chip('перенесено с '+fmtD(a.from),'warn'):''}</div></div></div>`).join(''):'<p class="muted sm">Пока нет договорённостей</p>'}
+     <div class="add"><input class="inp" id="oo-ac-in" placeholder="Новая договорённость…"><select class="sel" id="oo-ac-own"><option value="eva">Eva · HR</option><option value="${p.id}">${fn(p)}</option>${p.mgr?`<option value="${p.mgr}">${fn(P(p.mgr))} · руководитель</option>`:''}</select><select class="sel" id="oo-ac-due"><option value="3">через 3 дня</option><option value="7" selected>через неделю</option><option value="14">через 2 недели</option></select><button class="btn" id="oo-ac-add">${ic('plus')}Добавить</button></div>
+    </div></div>
+    ${privCard(m,false)}
+    <div class="card"><div class="ch"><h3>После встречи</h3></div><div class="cb">
+     <label class="sw"><input type="checkbox" id="oo-consent" ${consent[m.id]?'checked':''}><span><b>Сотрудник согласен на расшифровку</b><small>Аудио не храним. Расшифровка удаляется через 30 дней. Итог видят оба.</small></span></label>
+     <div id="oo-tr">${consent[m.id]?trBox(p):''}</div>
+     <div class="card ai" style="margin-top:14px"><div class="ch"><h3>Итог встречи</h3><div class="r">${H.aiLabel()}</div></div><div class="cb">
+      <textarea class="ta sum" id="oo-sum">${H.esc(m._draft??draft(m))}</textarea>
+      <p class="sm muted" style="margin:6px 0 10px">Собрано из отмеченных тем и договорённостей${consent[m.id]?' и расшифровки':''}. Личные заметки и пульс не используются. Можно править.</p>
+      <div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn s" id="oo-regen">${ic('spark')}Собрать заново</button><span class="sp"></span><span class="sm muted" id="oo-sent">${m._sent?'Отправлено '+m._sent:''}</span><button class="btn s ac" id="oo-send">${ic('send')}Отправить итог сотруднику</button></div>
+     </div></div>
+    </div></div>`;
+  }
+  const trBox=p=>`<div class="callout ok" style="margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px">Подтверждение от ${fn(p)} получено в приложении. Запись идёт только во время звонка.</span><button class="btn s" id="oo-tr-go">${ic('mic')}Начать расшифровку</button></div>`;
+  function renderWs(){const m=cur();el.querySelector('#oo-ws').innerHTML=m.status==='done'?wsDone(m):wsActive(m)}
+  function refreshDraft(){const m=cur();if(m._edited)return;m._draft=null;const ta=el.querySelector('#oo-sum');if(ta)ta.value=draft(m)}
+  function addAgenda(){const i=el.querySelector('#oo-ag-in');const v=i.value.trim();if(!v){App.toast('Напишите тему');i.focus();return}cur().agenda.push({by:'hr',t:v});renderWs();App.toast('Тема добавлена – сотрудник увидит её в приложении');const n=el.querySelector('#oo-ag-in');if(n)n.focus()}
+  function addAction(){const i=el.querySelector('#oo-ac-in');const v=i.value.trim();if(!v){App.toast('Напишите договорённость');i.focus();return}
+   const m=cur();m.actions.push({t:v,owner:el.querySelector('#oo-ac-own').value,due:addD(TODAY,+el.querySelector('#oo-ac-due').value),done:false});renderWs();refreshDraft();App.toast('Договорённость добавлена')}
+  function slotSel(id){return `<select class="sel" id="${id}">${SLOTS.map((s,i)=>`<option value="${i}">${slotL(s[0],s[1])}</option>`).join('')}</select>`}
+  function schedule(pid){
+   if(pid){const nx=nextOf(pid);if(nx){App.go('oneonones',{id:nx.id});return}}
+   App.modal(pid?'1:1 с '+P(pid).name:'Новая встреча 1:1',`${pid?'':`<label class="f">С кем</label><select class="sel" id="oo-sc-p">${D.people.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select><div style="height:10px"></div>`}
+    <label class="f">Когда</label>${slotSel('oo-sc-d')}<div style="height:10px"></div>
+    <label class="f">Шаблон</label><select class="sel" id="oo-sc-t">${Object.keys(TPL).map(k=>`<option>${k}</option>`).join('')}</select>
+    <p class="sm muted" style="margin-top:10px">Сотрудник получит приглашение в приложении и сможет заранее добавить свои темы. Сигналы из CRM попадут в повестку сами.</p>`,
+    `<button class="btn" data-close>Отмена</button><button class="btn pr" id="oo-sc-ok">Назначить</button>`);
+   document.getElementById('oo-sc-ok').onclick=()=>{
+    const who=pid||document.getElementById('oo-sc-p').value;const s=SLOTS[+document.getElementById('oo-sc-d').value];const tp=document.getElementById('oo-sc-t').value;const p=P(who);
+    const m={id:'m'+Date.now().toString(36),who,d:s[0],time:s[1],status:s[0]===TODAY?'today':'planned',tpl:tp,agenda:p.signals.filter(x=>!/пульс/i.test(x.t)).map(x=>({by:'auto',src:'Сигналы',t:x.t})).concat(TPL[tp].map(q=>({by:'hr',t:q,tpl:tp}))),actions:[]};
+    D.ones.push(m);p.next=s[0];App.close();App.go('oneonones',{id:m.id});App.toast(`1:1 с ${fn(p)} – ${slotL(s[0],s[1])}. Приглашение ушло в приложение`)};
+  }
+  function resched(){
+   const m=cur();const p=P(m.who);
+   App.modal('Перенести встречу',`<p class="sm muted" style="margin-bottom:10px">${p.name} · сейчас: ${slotL(m.d,m.time)}</p><label class="f">Новое время</label>${slotSel('oo-rs-d')}<div style="height:10px"></div>
+    <label class="f">Причина (видит сотрудник)</label><select class="sel" id="oo-rs-r"><option>Смена или срочный заказ</option><option>Сотрудник попросил</option><option>Без причины</option></select>`,
+    `<button class="btn" data-close>Отмена</button><button class="btn pr" id="oo-rs-ok">Перенести</button>`);
+   document.getElementById('oo-rs-ok').onclick=()=>{const s=SLOTS[+document.getElementById('oo-rs-d').value];m.d=s[0];m.time=s[1];m.status=s[0]===TODAY?'today':'planned';p.next=s[0];App.close();renderList();renderWs();App.toast(`Перенесено на ${slotL(s[0],s[1])} – ${fn(p)} получит уведомление`)};
+  }
+  function finish(){
+   const m=cur();const p=P(m.who);const ta=el.querySelector('#oo-sum');
+   if(m.d>TODAY)m.d=TODAY;m.summary=(m._edited&&ta?ta.value:draft(m)).trim();m.status='done';p.last=m.d;const nd=addD(m.d,CAD[p.cad]||14);p.next=nd;
+   if(!nextOf(p.id))D.ones.push({id:'m'+Date.now().toString(36),who:p.id,d:nd,time:m.time,status:'planned',agenda:[],actions:[]});
+   renderList();renderWs();App.toast(`Встреча с ${fn(p)} завершена – итог в карточке. Следующая ~${fmtD(nd)}`);
+  }
+  el.addEventListener('click',e=>{
+   const t=e.target;if(t.closest('select'))return;
+   const sc=t.closest('[data-sched]');if(sc){schedule(sc.dataset.sched);return}
+   const mm=t.closest('[data-m]');if(mm){App.go('oneonones',{id:mm.dataset.m});return}
+   const op=t.closest('[data-op]');if(op){schedule(op.dataset.op);return}
+   const q=t.closest('[data-q]');if(q){const m=cur();m.agenda.push({by:'hr',t:m._qs[+q.dataset.q]});renderWs();App.toast('Вопрос добавлен в общую повестку');return}
+   const id=(t.closest('button')||{}).id;
+   if(id==='oo-ag-add')addAgenda();
+   else if(id==='oo-ac-add')addAction();
+   else if(id==='oo-pn-save')App.toast('Личная заметка сохранена – видите только вы');
+   else if(id==='oo-regen'){const m=cur();m._edited=false;refreshDraft();App.toast('Черновик итога собран заново')}
+   else if(id==='oo-send'){const m=cur();const ta=el.querySelector('#oo-sum');m._draft=ta.value;m._sent='сегодня';el.querySelector('#oo-sent').textContent='Отправлено '+m._sent;App.toast(`Итог отправлен ${fn(P(m.who))} в приложение – видят оба`)}
+   else if(id==='oo-finish')finish();
+   else if(id==='oo-resched')resched();
+   else if(id==='oo-tr-go')App.toast('Расшифровка идёт. Аудио не сохраняется, текст удалится через 30 дней');
+   else if(id==='oo-new')schedule(null);
+   else if(id==='oo-tpls')App.sheet('Шаблоны 1:1',Object.keys(TPL).map(k=>`<div style="margin-bottom:18px"><div class="eyebrow" style="margin-bottom:6px">${k}</div>${TPL[k].map(x=>`<div class="sm" style="padding:6px 0;border-bottom:1px solid var(--hair)">${H.esc(x)}</div>`).join('')}</div>`).join('')+'<p class="sm muted">Шаблон добавляет вопросы в общую повестку – их видит сотрудник. Удалить или поменять вопрос можно прямо во встрече.</p>');
+  });
+  el.addEventListener('change',e=>{
+   const t=e.target;
+   if(t.dataset.cad){const p=P(t.dataset.cad);p.cad=t.value;renderList();if(cur().who===p.id)renderWs();App.toast(`${fn(p)}: 1:1 ${t.value.toLowerCase()}. Напомню за день до встречи`);return}
+   if(t.id==='oo-tpl'){const m=cur();const n=t.value;m.agenda=m.agenda.filter(a=>!(a.tpl&&!a.done));TPL[n].forEach(x=>m.agenda.push({by:'hr',t:x,tpl:n}));m.tpl=n;renderWs();App.toast(`Шаблон «${n}»: ${TPL[n].length} ${plural(TPL[n].length,'вопрос','вопроса','вопросов')} в повестке`);return}
+   if(t.dataset.ag!==undefined){const a=cur().agenda[+t.dataset.ag];a.done=t.checked;t.closest('.li').classList.toggle('done',t.checked);refreshDraft();return}
+   if(t.dataset.act!==undefined){const a=cur().actions[+t.dataset.act];a.done=t.checked;if(a.ref)a.ref.done=t.checked;t.closest('.li').classList.toggle('done',t.checked);refreshDraft();App.toast(t.checked?'Отмечено выполненным':'Снова открыто');return}
+   if(t.id==='oo-consent'){const m=cur();consent[m.id]=t.checked;el.querySelector('#oo-tr').innerHTML=t.checked?trBox(P(m.who)):'';refreshDraft();App.toast(t.checked?'Расшифровка включена – аудио не сохраняется':'Без расшифровки – итог только из повестки и договорённостей');return}
+  });
+  el.addEventListener('input',e=>{const t=e.target;if(t.id==='oo-sum'){const m=cur();m._draft=t.value;m._edited=true}if(t.id==='oo-pn')cur()._priv=t.value});
+  el.addEventListener('keydown',e=>{if(e.key!=='Enter')return;if(e.target.id==='oo-ag-in'){e.preventDefault();addAgenda()}if(e.target.id==='oo-ac-in'){e.preventDefault();addAction()}});
+  renderList();renderWs();
+ },
+ notes:`<h4>Что это</h4><p>Рабочее место для регулярных 1:1: список по каденции, общая повестка, договорённости с автопереносом, личные заметки, подготовка и итог.</p>
+<h4>Зачем HR</h4><p>1:1 – главный инструмент People Partner: ранние сигналы, рост, доверие. Сейчас в CRM у человека есть только даты последней и следующей встречи – без повестки и договорённостей.</p>
+<h4>Откуда идея</h4><p><span class="src">Small Improvements</span><span class="src">Lattice</span><span class="src">15Five</span><span class="src">Leapsome</span> – автоперенос незакрытого, напоминание о похвале, итог «видят оба», расшифровка только с согласием.</p>
+<h4>Данные из нашей CRM</h4><p>Даты 1:1 у человека (доработать), check-in планов в «Развитии», благодарности, табель и пульс – как автотемы «из CRM».</p>
+<h4>Доступы</h4><p>Личные заметки – только автор, даже админ. В AI, итог и ревью не попадают. Расшифровка – с согласия, 30 дней, аудио не храним.</p>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span> повестка, договорённости, заметки, каденция. <span class="pri p2">Следующий шаг</span> AI-подготовка и расшифровка созвонов с удалёнными.</p>`
+});
+})();
+</script>

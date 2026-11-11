@@ -1,0 +1,201 @@
+<style>
+#s-reviews .stp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--hair)}
+#s-reviews .stp>div{padding:14px 16px;border-right:1px solid var(--hair);position:relative}
+#s-reviews .stp>div:last-child{border-right:0}
+#s-reviews .stp .n{font-family:var(--f-display);font-size:28px;line-height:1;color:var(--accent)}
+#s-reviews .stp b{display:block;font-weight:500;margin-top:6px}
+#s-reviews .stp small{display:block;color:var(--grey);font-size:12px;margin-top:2px}
+#s-reviews .stp .d{font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--graphite);margin-top:8px}
+#s-reviews .tw{overflow:auto}
+#s-reviews td.st{text-align:center}
+#s-reviews th.st{text-align:center}
+#s-reviews .qrow{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+#s-reviews .qrow .qn{width:22px;flex:none;color:var(--grey);font-size:12px}
+#s-reviews .ck{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-top:10px;cursor:pointer}
+#s-reviews input[type=checkbox],#s-reviews input[type=radio]{accent-color:var(--ink);width:15px;height:15px;margin-top:2px;flex:none}
+#s-reviews .tl{border-left:1px solid var(--hair);margin:14px 0 14px 6px;padding-left:16px}
+#s-reviews .tl .cp{position:relative;padding:0 0 14px}
+#s-reviews .tl .cp::before{content:"";position:absolute;left:-21px;top:4px;width:9px;height:9px;background:var(--paper);border:1px solid var(--grey)}
+#s-reviews .tl .cp.ok::before{background:var(--ok);border-color:var(--ok)}
+#s-reviews .tl .cp.nx::before{background:var(--accent);border-color:var(--accent)}
+#s-reviews .tl .cp b{font-weight:500}
+#s-reviews .pf{border:1px solid var(--hair);padding:14px 16px;background:var(--silver)}
+#s-reviews .pf .fq{margin-bottom:12px}
+#s-reviews .pf .fact{font-size:12.5px;color:var(--graphite);margin-top:3px}
+#s-reviews .fq{margin-bottom:22px}
+#s-reviews .fq .qh{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
+#s-reviews .fq .qh .qn{font-family:var(--f-display);font-size:22px;color:var(--accent);line-height:1}
+#s-reviews .fq .qh b{font-weight:500}
+#s-reviews .dr{padding:10px 12px;margin-bottom:8px}
+#s-reviews .dr p{font-size:13px;margin:6px 0 8px}
+#s-reviews .dr .srcs{display:flex;flex-wrap:wrap;gap:6px}
+#s-reviews .dr .srcs .chip{height:20px;font-size:11px}
+#s-reviews .rad{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px}
+#s-reviews .rad label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+#s-reviews .lgd{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--graphite);margin-top:8px}
+#s-reviews .lgd span{display:inline-flex;align-items:center;gap:6px}
+#s-reviews svg text{font-family:var(--f-body)}
+@media (max-width:900px){#s-reviews .stp{grid-template-columns:1fr 1fr}#s-reviews .stp>div:nth-child(2){border-right:0}#s-reviews .stp>div:nth-child(-n+2){border-bottom:1px solid var(--hair)}}
+</style>
+<script>
+(function(){
+const STEPS=[{n:'Самооценка',d:'9–13 дек',x:'3–4 вопроса, 10 минут с телефона'},{n:'Взгляд руководителя',d:'9–16 дек',x:'AI собирает факты, текст пишет человек'},{n:'Встреча',d:'до 19 дек',x:'вместо очередной 1:1'},{n:'Обновление плана развития',d:'до 23 дек',x:'цели на Q1 в «Развитии»'}];
+const SIM={mila:'dddp',daria:'ddpw',nika:'pdww',yana:'dpww',polina:'dddd',irina:'dddp',kira:'ddpw',ruslan:'wwww',jake:'ddpw',bogdan:'dddd',artem:'dpww',vera:'dddp'};
+const OUT={mila:'рост',daria:'рост',nika:'нужна поддержка',polina:'стабильно',irina:'стабильно',kira:'рост',jake:'нужна поддержка',bogdan:'рост',vera:'рост'};
+const SELF={nika:'стабильно',jake:'стабильно'};
+const OPT={artem:'согласился',vera:'согласилась'};
+const SCALE=['нужна поддержка','стабильно','растёт','пример для команды'];
+const CFG={qs:['Чем ты больше всего гордишься за квартал?','Что получилось хуже, чем хотелось, и почему?','Какой навык хочешь подтвердить в следующем квартале?','Что команда или руководитель могут сделать, чтобы тебе было лучше работать?'],scale:false,contr:true,show:'после встречи'};
+const REL={florist:['design','wedding','speed','care','coach'],courier:['speed','care','coach'],care:['design','speed','care','coach'],tech:[]};
+let view='sim',formPid='daria',formMode='mgr',started=false,pbDec=null;
+const fn=p=>p.name.split(' ')[0];
+const mgrN=p=>p.mgr?P(p.mgr).name:'Основатель';
+const parts=()=>D.people.filter(p=>p.status!=='probation'&&p.status!=='onboarding'&&(p.type!=='contractor'||CFG.contr));
+const stc=c=>c==='d'?H.chip('готово','ok'):c==='p'?H.chip('в работе','warn'):H.chip('ждёт','line');
+const outC=o=>o==='рост'?'ok':o==='стабильно'?'line':'bad';
+
+function drafts(p,mode){
+ const self=mode==='self';
+ const kd=D.kudos.filter(k=>k.to===p.id);
+ const one=D.ones.filter(o=>o.who===p.id);
+ const nt=D.notes.filter(n=>n.who===p.id&&(n.vis==='shared'||(!self&&n.vis==='mgr')));
+ const o=p.ops,a=p.att;const pre=self?'Факты из CRM, чтобы было проще вспомнить: ':'Факты за квартал: ';
+ const sig=p.signals.filter(s=>!/пульс/i.test(s.t)&&s.lvl!=='info');
+ const work=nt.filter(n=>n.cat==='Работа');
+ const rel=REL[p.ladder].slice().sort((x,y)=>p.skills[x]-p.skills[y]).filter(k=>p.skills[k]<3).slice(0,2);
+ const nxt=D.ladders[p.ladder].levels[p.lvl]||'вершина трека';
+ const emp=one.flatMap(m=>m.agenda.filter(x=>x.by==='emp').map(x=>x.t));
+ const opn=one.flatMap(m=>m.actions.filter(x=>!x.done).map(x=>x.t)).filter((v,i,arr)=>arr.indexOf(v)===i);
+ return [
+  {t:pre+`${o.k.toLowerCase()} – ${o.v}${o.q&&o.q!=='—'?', '+o.q:''}${o.r?', оценка клиентов '+String(o.r).replace('.',','):''}. Благодарностей за квартал: ${p.kudos}${kd.length?', например: «'+kd[0].t+'»':''}.`+nt.filter(n=>n.cat==='Развитие'||n.cat==='Похвала').map(n=>' '+n.t).join(''),src:['Рабочие метрики','Благодарности ('+p.kudos+')'].concat(nt.some(n=>n.cat==='Развитие'||n.cat==='Похвала')?['Общие заметки 1:1']:[])},
+  {t:pre+(a&&a.shifts?`${a.shifts} смен, опозданий ${a.late}, пропусков ${a.abs}, переработка ${a.ot} ч.`:'работа удалённая, смен нет.')+(sig.length?' Сигналы: '+sig.map(s=>s.t.toLowerCase()).join('; ')+'.':' Тревожных сигналов нет.')+(work.length?' Из заметок руководителя: '+work.map(n=>n.t).join(' '):''),src:(a&&a.shifts?['Табель']:[]).concat(sig.length?['Рабочие сигналы']:[],work.length?['Заметки руководителя']:[])},
+  {t:pre+`план развития – «${p.pdp.goal}», выполнено ${p.pdp.pct} %. `+(rel.length?'Ниже всего в матрице: '+rel.map(k=>H.skillNames[k]+' ('+p.skills[k]+')').join(', ')+'. ':'')+`Следующий уровень трека – ${nxt}.`,src:['План развития'].concat(rel.length?['Матрица навыков']:['Карьерный трек'])},
+  {t:pre+(emp.length?'на 1:1 сотрудник сам поднимал: «'+emp.join('», «')+'». ':'своих тем на 1:1 в этом квартале не было. ')+(opn.length?'Не закрыто: '+opn.join('; ')+'.':'Все договорённости закрыты.'),src:['Общие заметки 1:1','Договорённости 1:1']}
+ ];
+}
+
+App.reg('reviews',{
+ title:'Ревью',
+ render(el,params){
+  if(params&&params.id&&P(params.id))formPid=params.id;
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">Развитие</div><h1>Ревью</h1><div class="sub">Лёгкое квартальное ревью и испытательный срок – без оценок «в деньгах» и без 9-box</div></div>
+   <div class="acts"><button class="btn" id="rv-remind">${ic('send')}Напомнить</button><button class="btn pr" id="rv-start">${ic('clip')}Запустить раньше</button></div></div>
+   <div id="rv-cycle"></div><div style="height:16px"></div><div id="rv-parts"></div><div style="height:16px"></div>
+   <div class="grid g2"><div id="rv-set"></div><div id="rv-sum"></div></div><div style="height:16px"></div>
+   <div id="rv-prob"></div><div style="height:16px"></div><div id="rv-form"></div>`;
+  const $=s=>el.querySelector(s);
+  function cycle(){
+   $('#rv-cycle').innerHTML=`<div class="card"><div class="ch"><h3>Q4 2026 – лёгкое квартальное ревью</h3>${started?H.chip('идёт','ok'):H.chip('черновик · старт 9 дек, '+inDays('2026-12-09'),'info')}${H.chip('новое','info')}</div><div class="cb">
+    <div class="stp">${STEPS.map((s,i)=>`<div><span class="n">${i+1}</span><b>${s.n}</b><small>${s.x}</small><div class="d">${s.d}</div></div>`).join('')}</div>
+    <p class="sm muted" style="margin-top:10px">Один цикл в квартал. Без 360 и калибровки – для 25 человек хватает самооценки, взгляда руководителя и разговора. Итог ревью – обновлённый план развития, а не цифра.</p></div></div>`;
+  }
+  function partsT(){
+   const ps=parts();const sim=view==='sim';
+   $('#rv-parts').innerHTML=`<div class="card"><div class="ch"><h3>Участники · ${ps.length}</h3><div class="r"><div class="seg" id="rv-view"><button data-v="now" class="${sim?'':'on'}">Сегодня</button><button data-v="sim" class="${sim?'on':''}">Пример: 16 дек</button></div></div></div>
+    ${sim?'<div class="callout info" style="margin:12px 16px 0">Пример – так HR увидит цикл в середине: кто на каком шаге. Клик по строке – форма этого человека ниже.</div>':''}
+    <div class="tw"><table class="t"><thead><tr><th>Человек</th><th>Руководитель</th>${STEPS.map(s=>`<th class="st">${s.n.split(' ')[0]==='Обновление'?'План':s.n.split(' ')[0]==='Взгляд'?'Взгляд рук.':s.n}</th>`).join('')}<th>Итог</th><th></th></tr></thead><tbody>
+    ${ps.map(p=>{const s=SIM[p.id]||'wwww';const o=sim&&s[1]==='d'?OUT[p.id]:null;return `<tr class="clk" data-fp="${p.id}"><td>${H.who(p,p.role+(p.type==='contractor'?' · подрядчик':''))}</td><td class="sm">${mgrN(p)}${p.type==='contractor'?`<br>${H.chip('по желанию: '+(OPT[p.id]||'не ответил'),'line')}`:''}</td>
+     ${[0,1,2,3].map(i=>`<td class="st">${sim?stc(s[i]):H.chip(i===0?'с 9 дек':'–','line')}</td>`).join('')}
+     <td>${o?H.chip(o,outC(o)):'<span class="muted sm">–</span>'}</td>
+     <td>${sim&&s.includes('w')?`<button class="btn s" data-rem="${p.id}">Напомнить</button>`:!sim&&p.pdp.goal==='—'?H.chip('нет плана развития','warn'):''}</td></tr>`}).join('')}
+    </tbody></table></div>
+    <div class="cb sm muted" style="border-top:1px solid var(--hair)">Не участвуют: Alina Moroz – идёт испытательный срок (ниже), Denis Orlov – онбординг до конца года.${CFG.contr?'':' Подрядчики выключены в настройках.'}</div></div>`;
+  }
+  function settings(){
+   $('#rv-set').innerHTML=`<div class="card" style="height:100%"><div class="ch"><h3>Настройки цикла</h3></div><div class="cb">
+    <label class="f">Открытые вопросы · 3–4</label>
+    ${CFG.qs.map((q,i)=>`<div class="qrow"><span class="qn">${i+1}</span><input class="inp" data-qi="${i}" value="${H.esc(q)}"><button class="btn s ghost" data-qx="${i}" title="Убрать">${ic('x')}</button></div>`).join('')}
+    <button class="btn s" id="rv-qadd">${ic('plus')}Вопрос</button>
+    <div class="hr-line"></div>
+    <label class="ck"><input type="checkbox" id="rv-scale" ${CFG.scale?'checked':''}><span>Шкала 1–4 по желанию<br><span class="muted sm">${SCALE.map((s,i)=>(i+1)+' – '+s).join(' · ')}</span></span></label>
+    <label class="ck"><input type="checkbox" id="rv-contr" ${CFG.contr?'checked':''}><span>Подрядчики – по желанию<br><span class="muted sm">Artem и Vera решают сами, участвовать ли</span></span></label>
+    <label class="f" style="margin-top:14px">Сотрудник видит результат</label><select class="sel" id="rv-show">${['после встречи','сразу после отправки руководителем'].map(x=>`<option ${x===CFG.show?'selected':''}>${x}</option>`).join('')}</select>
+    <div style="margin-top:14px"><button class="btn s pr" id="rv-save">Сохранить настройки</button></div></div></div>`;
+  }
+  function summary(){
+   const ps=parts();const teams=Object.keys(D.teams).map(t=>{const m=ps.filter(p=>p.team===t);const done=m.reduce((a,p)=>a+(SIM[p.id]||'wwww').split('').filter(c=>c==='d').length,0);return {t,n:m.length,pct:m.length?Math.round(done/(m.length*4)*100):0}}).filter(x=>x.n);
+   const W=360,lw=128,bw=W-lw-44;
+   const bars=`<svg viewBox="0 0 ${W} ${teams.length*30}" width="100%" style="max-width:${W}px;display:block" role="img" aria-label="Выполнение по командам">${teams.map((x,i)=>`<text x="0" y="${i*30+17}" font-size="12" style="fill:var(--graphite)">${D.teams[x.t]}</text><rect x="${lw}" y="${i*30+7}" width="${bw}" height="12" style="fill:var(--silver)"/><rect x="${lw}" y="${i*30+7}" width="${(bw*x.pct/100).toFixed(1)}" height="12" style="fill:var(--ink)"/><text x="${W}" y="${i*30+17}" font-size="12" text-anchor="end" style="fill:var(--ink)">${x.pct} %</text>`).join('')}</svg>`;
+   const cnt={'рост':0,'стабильно':0,'нужна поддержка':0};let none=0;ps.forEach(p=>{const s=SIM[p.id]||'wwww';const o=s[1]==='d'?OUT[p.id]:null;if(o)cnt[o]++;else none++});
+   const tot=ps.length||1;const seg=[['рост',cnt['рост'],'var(--v-good)'],['стабильно',cnt['стабильно'],'var(--v3)'],['нужна поддержка',cnt['нужна поддержка'],'var(--v-bad)'],['ещё не оценены',none,'var(--v4)']];
+   let x=0;const stack=`<svg viewBox="0 0 ${W} 22" width="100%" style="max-width:${W}px;display:block" role="img" aria-label="Распределение итогов">${seg.map(s=>{const w=W*s[1]/tot;const r=`<rect x="${x.toFixed(1)}" y="0" width="${Math.max(0,w-2).toFixed(1)}" height="22" style="fill:${s[2]}"/>`;x+=w;return r}).join('')}</svg>`;
+   const mism=ps.filter(p=>SELF[p.id]&&(SIM[p.id]||'')[1]==='d'&&SELF[p.id]!==OUT[p.id]);
+   $('#rv-sum').innerHTML=`<div class="card" style="height:100%"><div class="ch"><h3>Сводка цикла</h3>${H.chip('пример на 16 дек','line')}</div><div class="cb">
+    <div class="eyebrow" style="margin-bottom:8px">Выполнение шагов по командам</div>${bars}
+    <div class="hr-line"></div>
+    <div class="eyebrow" style="margin-bottom:8px">Итог руководителя – словами</div>${stack}
+    <div class="lgd">${seg.map(s=>`<span><i class="dotc" style="background:${s[2]}"></i>${s[0]} · ${s[1]}</span>`).join('')}</div>
+    ${mism.length?`<div class="callout" style="margin-top:12px">Самооценка и взгляд руководителя расходятся: ${mism.map(fn).join(', ')} – обсудить на встрече, а не решать заочно.</div>`:''}
+    <p class="sm muted" style="margin-top:10px">Без 9-box и рейтингов. Сводку видят HR и основатель; руководитель – только своих.</p></div></div>`;
+  }
+  function prob(){
+   const a=P('alina');
+   const cps=[['День 30','2026-09-23','ok','Пройдено','2 из 6 стилей, пунктуальность в норме'],['День 60','2026-10-23','ok','Пройдено','4 из 6 стилей, первая благодарность от команды'],['День 90','2026-11-22','nx',inDays('2026-11-22'),'Форма готова, ждёт Polina · решение 23 нояб']];
+   $('#rv-prob').innerHTML=`<div class="card"><div class="ch"><h3>Испытательный срок</h3>${H.chip('новое','info')}<div class="r"><span class="muted sm">Новички попадают сюда автоматически при найме</span></div></div><div class="cb"><div class="grid g2">
+    <div>${H.who(a,'Младший флорист · руководитель Polina Sokol · напарник Mila')}
+     <div class="row" style="margin-top:10px;flex-wrap:wrap;gap:6px">${H.chip('до '+fmtD(a.probEnd)+' · '+inDays(a.probEnd),'info')}${H.chip('добавлена автоматически','line')}</div>
+     <div class="tl">${cps.map(c=>`<div class="cp ${c[2]}"><b>${c[0]}</b> · ${fmtD(c[1])} · ${c[2]==='ok'?H.chip(c[3],'ok'):H.chip(c[3],'warn')}<div class="sm muted" style="margin-top:2px">${c[4]}</div></div>`).join('')}</div>
+     <div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn s" data-go="oneonones" data-id="alina">${ic('chat')}1:1 с Alina</button><button class="btn s" id="rv-pbsend">${ic('send')}Отправить форму Polina</button></div>
+     <p class="sm muted" style="margin-top:12px">Denis Orlov – подрядчик: вместо испытательного встреча «день 45» 13 нояб.</p></div>
+    <div class="pf"><div class="eyebrow" style="margin-bottom:10px">Форма «День 90» – предпросмотр</div>
+     <div class="fq"><b style="font-weight:500">Освоены ли базовые стили?</b><div class="fact">${ic('link')} 4 из 6 подтверждены в матрице навыков · осталось: пионы, каскад</div></div>
+     <div class="fq"><b style="font-weight:500">Надёжность на сменах</b><div class="fact">${ic('link')} ${a.att.shifts} смен, ${a.att.late} ${plural(a.att.late,'опоздание','опоздания','опозданий')}, пропусков ${a.att.abs} (табель)</div></div>
+     <div class="fq"><b style="font-weight:500">Команда и клиенты</b><div class="fact">${ic('link')} ${a.kudos} благодарности, оценка клиентов ${String(a.ops.r).replace('.',',')}, переделок ${a.ops.q.replace(' переделок','')}</div></div>
+     <div class="fq"><b style="font-weight:500">Решение</b><div class="rad" style="margin-top:6px">${['Подтвердить','Продлить на 1 месяц','Не подтверждать'].map(x=>`<label><input type="radio" name="rv-pbd" value="${x}" ${pbDec===x?'checked':''}>${x}</label>`).join('')}</div>
+      <textarea class="ta" id="rv-pbw" placeholder="Почему так решили – обязательно" style="margin-top:8px;min-height:64px"></textarea></div>
+     <div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn s pr" id="rv-pbsave">Сохранить решение</button><span class="sm muted" style="flex:1;min-width:180px">Решение принимает Polina вместе с HR. AI только подставляет факты.</span></div>
+    </div></div></div></div>`;
+  }
+  function form(){
+   const ps=parts();if(!ps.some(p=>p.id===formPid))formPid=ps[0].id;
+   const p=P(formPid);const dr=drafts(p,formMode);
+   $('#rv-form').innerHTML=`<div class="card"><div class="ch"><h3>Форма ревью – предпросмотр</h3><div class="r" style="flex-wrap:wrap"><select class="sel" id="rv-fp" style="width:auto;height:var(--btn-h-s)">${ps.map(x=>`<option value="${x.id}" ${x.id===formPid?'selected':''}>${x.name}</option>`).join('')}</select><div class="seg"><button data-fm="self" class="${formMode==='self'?'on':''}">Самооценка</button><button data-fm="mgr" class="${formMode==='mgr'?'on':''}">Взгляд руководителя</button></div></div></div><div class="cb">
+    <div class="row" style="margin-bottom:12px;flex-wrap:wrap;gap:8px">${H.who(p,formMode==='self'?'Заполняет сам · '+p.role:'Заполняет '+mgrN(p))}<span class="sp"></span>${H.vis(formMode==='self'?'shared':'mgr')}</div>
+    <div class="callout info" style="margin-bottom:16px">Оценки и решения ставит человек, AI только собирает факты. В черновик не попадают: личные заметки, заметки «HR + основатель», пульс, здоровье и деньги.</div>
+    ${CFG.qs.map((q,i)=>{const d=dr[i]||{t:'AI подберёт факты к теме вопроса после старта цикла.',src:['Общие заметки 1:1']};return `<div class="fq"><div class="qh"><span class="qn">${i+1}</span><b>${H.esc(q)}</b></div>
+     <div class="ai dr"><div class="row" style="flex-wrap:wrap">${H.aiLabel()}<span class="sp"></span><button class="btn s ghost" data-ins="${i}">${ic('plus')}Вставить в ответ</button></div><p>${H.esc(d.t)}</p><div class="srcs">${d.src.map(s=>`<span class="chip line">${ic('link')}${s}</span>`).join('')}</div></div>
+     <textarea class="ta" data-ans="${i}" placeholder="${formMode==='self'?'Ваш ответ своими словами':'Ответ руководителя своими словами'}" style="min-height:64px"></textarea></div>`}).join('')}
+    ${CFG.scale?`<div class="fq"><div class="qh"><span class="qn">${ic('star')}</span><b>Общая оценка – по желанию</b></div><div class="rad">${SCALE.map((s,i)=>`<label><input type="radio" name="rv-sc">${i+1} – ${s}</label>`).join('')}</div><p class="sm muted" style="margin-top:6px">Ставит человек. AI оценку не предлагает.</p></div>`:''}
+    <div class="row" style="justify-content:flex-end;gap:8px;flex-wrap:wrap"><span class="sm muted">Результат сотрудник видит ${CFG.show}</span><button class="btn pr" id="rv-fsend">${ic('send')}Отправить</button></div>
+   </div></div>`;
+  }
+  function all(){cycle();partsT();settings();summary();prob();form()}
+  el.addEventListener('click',e=>{
+   const t=e.target;
+   const rem=t.closest('[data-rem]');if(rem){App.toast(`Напоминание ушло ${fn(P(rem.dataset.rem))} в приложение – одно, без повторов`);return}
+   const fp=t.closest('[data-fp]');if(fp){formPid=fp.dataset.fp;form();$('#rv-form').scrollIntoView({behavior:'smooth',block:'start'});return}
+   const v=t.closest('[data-v]');if(v){view=v.dataset.v;partsT();return}
+   const fm=t.closest('[data-fm]');if(fm){formMode=fm.dataset.fm;form();return}
+   const qx=t.closest('[data-qx]');if(qx){if(CFG.qs.length<=3){App.toast('Минимум 3 вопроса');return}CFG.qs.splice(+qx.dataset.qx,1);settings();form();return}
+   const ins=t.closest('[data-ins]');if(ins){const i=+ins.dataset.ins;const ta=el.querySelector(`[data-ans="${i}"]`);ta.value=drafts(P(formPid),formMode)[i]?drafts(P(formPid),formMode)[i].t.replace(/^Факты[^:]*:\s*/,''):'';ta.focus();App.toast('Факты вставлены – допишите своими словами');return}
+   const id=(t.closest('button')||{}).id;
+   if(id==='rv-qadd'){if(CFG.qs.length>=4){App.toast('Не больше 4 вопросов – форма должна заполняться с телефона за 10 минут');return}CFG.qs.push('Новый вопрос');settings();form();const ins2=el.querySelector(`[data-qi="${CFG.qs.length-1}"]`);if(ins2){ins2.focus();ins2.select()}}
+   else if(id==='rv-save'){partsT();summary();form();App.toast('Настройки цикла сохранены – форма обновлена')}
+   else if(id==='rv-remind')App.toast(started?'Напоминание ушло тем, у кого есть незакрытый шаг – одно, без повторов':'Цикл ещё не начался – руководители получат напоминание 9 дек');
+   else if(id==='rv-start'){if(started){App.toast('Цикл уже идёт');return}App.modal('Запустить цикл раньше?',`<p>Цикл стартует автоматически 9 дек. Если запустить сейчас, ${parts().length} ${plural(parts().length,'участник получит','участника получат','участников получат')} самооценку в приложении сегодня.</p>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="rv-go">Запустить</button>`);
+    document.getElementById('rv-go').onclick=()=>{started=true;App.close();cycle();App.toast('Цикл Q4 запущен – самооценка ушла участникам')}}
+   else if(id==='rv-pbsend')App.toast('Форма «День 90» отправлена Polina – факты уже подставлены, решение за ней');
+   else if(id==='rv-pbsave'){const r=el.querySelector('input[name="rv-pbd"]:checked');const w=el.querySelector('#rv-pbw').value.trim();if(!r){App.toast('Выберите решение');return}if(!w){App.toast('Напишите, почему так решили – без этого решение не сохраняется');return}pbDec=r.value;App.toast(`Решение «${r.value}» записано. Письмо Alina готовит HR – AI его не отправляет`)}
+   else if(id==='rv-fsend')App.toast(started?'Ответ отправлен':'Это предпросмотр – форма откроется участникам 9 дек');
+  });
+  el.addEventListener('input',e=>{const t=e.target;if(t.dataset.qi!==undefined)CFG.qs[+t.dataset.qi]=t.value});
+  el.addEventListener('change',e=>{const t=e.target;
+   if(t.id==='rv-fp'){formPid=t.value;form();return}
+   if(t.id==='rv-scale'){CFG.scale=t.checked;form();App.toast(t.checked?'Шкала 1–4 добавлена в форму – по желанию':'Шкала убрана – только открытые вопросы');return}
+   if(t.id==='rv-contr'){CFG.contr=t.checked;partsT();summary();form();App.toast(t.checked?'Подрядчики могут участвовать по желанию':'Подрядчики не участвуют в цикле');return}
+   if(t.id==='rv-show'){CFG.show=t.value;form();return}
+   if(t.dataset.qi!==undefined)form();
+  });
+  all();
+  if(params&&params.id==='probation')setTimeout(()=>$('#rv-prob').scrollIntoView({block:'start'}),30);
+  else if(params&&params.id&&P(params.id))setTimeout(()=>$('#rv-form').scrollIntoView({block:'start'}),30);
+ },
+ notes:`<h4>Что это</h4><p>Лёгкое квартальное ревью (самооценка → взгляд руководителя → встреча → обновление плана развития) и испытательный срок с вехами 30/60/90.</p>
+<h4>Зачем HR</h4><p>Сейчас в CRM ревью нет. Для команды из 25 человек – 3–4 открытых вопроса без 360 и калибровки; испытательный срок – самое ценное из-за текучки флористов и курьеров.</p>
+<h4>Откуда идея</h4><p><span class="src">Lattice</span><span class="src">15Five</span> AI-черновик с источниками, оценку ставит человек; <span class="src">Culture Amp</span> автоподписка новичков на испытательный; <span class="src">PerformYard</span> лёгкий чек-ин.</p>
+<h4>Данные из нашей CRM</h4><p>Общие заметки и договорённости 1:1, благодарности, планы в «Развитии», матрица навыков, табель и рабочие метрики – без денег.</p>
+<h4>Доступы</h4><p>AI не видит личные заметки, пульс, здоровье, деньги; не ставит оценок и не принимает решений. Решение по испытательному – только с письменным «почему».</p>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span> испытательный срок; <span class="pri p2">Следующий шаг</span> квартальный цикл и AI-черновики.</p>`
+});
+})();
+</script>

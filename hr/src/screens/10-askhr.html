@@ -1,0 +1,184 @@
+<style>
+#s-askhr .ak-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+#s-askhr .ak-chat{border:1px solid var(--hair);display:flex;flex-direction:column;min-height:560px}
+#s-askhr .ak-log{flex:1;padding:16px;display:flex;flex-direction:column;gap:14px;min-height:300px}
+#s-askhr .ak-q{align-self:flex-end;max-width:80%;background:var(--ink);color:#fff;padding:9px 14px;font-size:13.5px}
+#s-askhr .ak-a{max-width:100%;border:1px solid var(--hair);background:var(--paper)}
+#s-askhr .ak-a .hd{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+#s-askhr .ak-a .bd{padding:12px 14px;font-size:13.5px}
+#s-askhr .ak-a .bd p{margin:0 0 8px}
+#s-askhr .ak-a .bd ul{margin:0 0 8px 18px}
+#s-askhr .ak-a .bd li{margin-bottom:4px}
+#s-askhr .ak-a.ai{border-color:var(--accent)}
+#s-askhr .ak-a.deny{border:1px dashed var(--light);background:repeating-linear-gradient(-45deg,transparent 0 8px,rgba(0,0,0,.018) 8px 16px)}
+#s-askhr .ak-a .ft{border-top:1px solid var(--hair);padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px}
+#s-askhr .ak-a .ft code{font-family:inherit;font-size:11.5px}#s-askhr pre{font-family:inherit;font-size:12px}
+#s-askhr .ak-a .ft code{background:var(--silver);padding:1px 5px;color:var(--graphite)}
+#s-askhr details{border-top:1px solid var(--hair);padding:8px 14px;font-size:12.5px;color:var(--graphite)}
+#s-askhr details summary{cursor:pointer;font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey)}
+#s-askhr pre{white-space:pre-wrap;background:var(--silver);padding:10px;margin-top:8px;color:var(--ink);line-height:1.5}
+#s-askhr .ak-in{border-top:1px solid var(--hair);padding:12px;display:flex;gap:8px;position:sticky;bottom:0;background:var(--paper)}
+#s-askhr .ak-chips{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--hair);background:var(--silver)}
+#s-askhr .ak-chips button{height:30px;padding:0 10px;border:1px solid var(--hair);background:var(--paper);font-size:12.5px;display:inline-flex;align-items:center;gap:6px}
+#s-askhr .ak-chips button:hover{border-color:var(--ink)}
+#s-askhr .ak-typing{color:var(--grey);font-size:12.5px;display:flex;gap:6px;align-items:center}
+#s-askhr .lim li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--hair);font-size:13px;list-style:none}
+#s-askhr .lim li:last-child{border-bottom:0}
+#s-askhr .lim li svg{margin-top:2px;color:var(--accent-dark)}
+#s-askhr .lim li small{display:block;color:var(--grey);font-size:11.5px}
+#s-askhr table.t td,#s-askhr table.t th{height:auto;padding:6px 10px}
+#s-askhr table.t th{position:static}
+#s-askhr .ovx{overflow:auto;margin:6px 0 10px}
+#s-askhr svg.ch{width:100%;max-width:460px;height:auto;display:block}
+#s-askhr svg.ch text{font-family:var(--f-body);font-size:11px;fill:var(--grey)}
+#s-askhr svg.ch text.v{fill:var(--ink)}
+#s-askhr .sec{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);margin:10px 0 4px}
+@media (max-width:1100px){#s-askhr .ak-wrap{grid-template-columns:1fr}}
+</style>
+<script>
+(()=>{
+window.HRX=window.HRX||{audit:[]};
+const log=[]; // chat history for this session
+let busy=false;
+const tm=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+const src=(xs)=>`<span class="muted">Источники:</span>${xs.map(x=>`<code>${x}</code>`).join('')}`;
+const how=(t)=>`<details><summary>Как посчитано</summary><pre>${H.esc(t)}</pre></details>`;
+const PROMPTS=[
+ {k:'kudos',q:'Кого давно не благодарили?'},
+ {k:'prep',q:'Подготовь меня к 1:1 с Nika'},
+ {k:'load',q:'Как изменилась нагрузка студии за месяц?'},
+ {k:'weekly',q:'Собери сводку по людям за неделю для основателя'},
+ {k:'rate',q:'Какая ставка у Ruslan?'}
+];
+const LASTK={nika:'2026-09-14',jake:'2026-08-21',yana:'2026-09-25',bogdan:'2026-10-16',denis:'2026-10-20',irina:'2026-10-22'};
+const lastK=(p)=>{const k=D.kudos.filter(x=>x.to===p.id).map(x=>x.d).sort().pop();return k||LASTK[p.id]||'2026-10-30'};
+
+function answer(k){
+ if(k==='kudos'){
+  const rows=D.people.map(p=>({p,d:lastK(p)})).map(x=>({...x,n:daysBetween(dd(x.d),NOW)})).sort((a,b)=>b.n-a.n).slice(0,5);
+  return {ai:1,body:`<p>Дольше всего без благодарностей (за 90 дней, от коллег и клиентов):</p>
+  <div class="ovx"><table class="t"><thead><tr><th>Кто</th><th>Последняя</th><th>Дней</th><th>За 90 дней</th></tr></thead><tbody>${rows.map(x=>`<tr class="clk" data-person="${x.p.id}"><td>${H.who(x.p)}</td><td>${fmtD(x.d)}</td><td class="num" style="${x.n>=60?'color:var(--accent-dark)':''}">${x.n}</td><td class="num">${x.p.kudos}</td></tr>`).join('')}</tbody></table></div>
+  <div class="sec">Поводы из CRM, которые можно отметить</div><ul><li><b>Jake</b> – 14 смен за месяц, ни одной неудачной доставки на этой неделе.</li><li><b>Nika</b> – 341 букет за месяц, больше всех в студии; брала срочные заказы сверх смены.</li><li><b>Yana</b> – 2 видео-урока для «Обучения» в октябре.</li></ul>
+  <p class="muted sm">Это подсказка: благодарить или нет – решаете вы или руководитель. Тексты благодарностей не пишу за людей.</p>`,
+  src:['благодарности (Floritta Active)','похвала в отзывах клиентов','собранные букеты','смены курьеров'],
+  how:`Для каждого человека – дата последней благодарности от коллег или клиентов\nи число благодарностей за 90 дней. Сортировка: дольше всего без благодарности.\nПоводы – из букетов и доставок за 30 дней, в штуках. Суммы не читаются.`,
+  acts:`<button class="btn s" data-go="pulse">${ic('heart')}Открыть «Пульс и признание»</button>`};
+ }
+ if(k==='prep'){
+  const p=P('nika'),o=D.ones.find(x=>x.id==='o2'),O=[0,1,1,2,1,4,4,5];
+  const W=440,HT=92;const ln=p.pulse.map((v,i)=>`${(10+i*(200/5)).toFixed(1)},${(HT-14-v/10*(HT-28)).toFixed(1)}`).join(' ');
+  const chart=`<svg class="ch" viewBox="0 0 ${W} ${HT}"><text x="10" y="10">Оценка после смены, 6 нед.</text><polyline points="${ln}" fill="none" stroke="var(--v-bad)" stroke-width="2"/>${p.pulse.map((v,i)=>`<g><title>Неделя ${i+1}: ${v}/10</title><circle cx="${10+i*40}" cy="${HT-14-v/10*(HT-28)}" r="3" fill="var(--v-bad)"/><text class="v" x="${10+i*40}" y="${HT-18-v/10*(HT-28)}" text-anchor="middle">${v}</text></g>`).join('')}
+  <text x="250" y="10">Часы сверх графика, 8 нед.</text>${O.map((v,i)=>`<g><title>Неделя ${i+1}: +${v} ч</title><rect x="${250+i*23}" y="${HT-14-v*10}" width="16" height="${v*10}" fill="${i>=5?'var(--v1)':'var(--v4)'}"/></g>`).join('')}<line x1="250" x2="430" y1="${HT-14}" y2="${HT-14}" stroke="var(--light)"/><text x="250" y="${HT}">сен</text><text x="430" y="${HT}" text-anchor="end">нояб</text></svg>`;
+  return {ai:1,body:`<p>1:1 с <b>Nika Fedorova</b> – ${fmtD(o.d)}, ${o.time}. Факты из CRM, без выводов о состоянии:</p>${chart}
+  <div class="sec">Черновик повестки</div><ul><li>Открытый вопрос: «Как тебе последние три недели?» – без ссылки на цифры в начале.</li><li>Нагрузка: +13 ч сверх графика за 3 недели, 3 срочных заказа сверх смены. Что можно снять?</li><li>Незакрыто с 7 окт: запись на курс по колористике (просрочено с 20 окт – на нашей стороне).</li><li>Её цель: авторские работы – 3 букета до конца года. Что мешает?</li></ul>
+  <div class="sec">Что не включено</div><p class="sm muted">Ваша личная заметка от 9 нояб (видимость «Только я») в черновик не попадает. Причины отсутствий и здоровье не анализирую.</p>`,
+  src:['1:1 от 7 окт','оценки после смены','клок-ин и график смен','проблема с букетом 5 нояб','план развития Nika'],
+  how:`Окно – 6 недель.\nОценка после смены – личный тренд, видит только HR.\nЧасы сверх графика = факт по клок-ину минус план по графику, по неделям.\nНезакрытое – договорённости прошлых 1:1, которые не отмечены сделанными.\nЗаметки «Только я» и «+ руководитель» не читаются.`,
+  acts:`<button class="btn s pr" id="ak-add">${ic('plus')}Добавить в повестку 1:1</button><button class="btn s" data-person="nika">${ic('user')}Карточка Nika</button>`};
+ }
+ if(k==='load'){
+  const wk=['5 окт','12 окт','19 окт','26 окт','2 нояб','9 нояб'],h=[6,7,8,11,14,16],b=[61,63,66,70,74,72];
+  const W=440,HT=120,mx=18;
+  const chart=`<svg class="ch" viewBox="0 0 ${W} ${HT}"><line x1="0" x2="${W}" y1="${HT-20}" y2="${HT-20}" stroke="var(--light)"/>${h.map((v,i)=>{const x=20+i*70,hh=v/mx*(HT-40);return `<g><title>${wk[i]}: +${v} ч сверх графика по студии</title><rect x="${x}" y="${HT-20-hh}" width="26" height="${hh}" fill="${i>=4?'var(--v1)':'var(--v3)'}"/><text class="v" x="${x+13}" y="${HT-25-hh}" text-anchor="middle">+${v}</text><text x="${x+13}" y="${HT-5}" text-anchor="middle">${wk[i]}</text></g>`}).join('')}</svg>`;
+  return {ai:1,body:`<p>Студия, 6 человек. Нагрузка выросла – в основном за счёт предрождественских заказов и двух человек.</p>${chart}<p class="muted sm">Часы сверх графика по студии за неделю, сумма.</p>
+  <div class="ovx"><table class="t"><thead><tr><th>Показатель</th><th>Октябрь</th><th>Ноябрь (11 дней)</th></tr></thead><tbody>
+  <tr><td>Букетов на смену (медиана)</td><td class="num">13,2</td><td class="num">15,8</td></tr>
+  <tr><td>Часы сверх графика в неделю</td><td class="num">+8</td><td class="num">+15</td></tr>
+  <tr><td>Смен вовремя (клок-ин)</td><td class="num">97 %</td><td class="num">95 %</td></tr>
+  <tr><td>Переделки</td><td class="num">1,1 %</td><td class="num">1,6 %</td></tr></tbody></table></div>
+  <p>Больше всего переработки у <a href="#" data-person="nika">Nika</a> (+13 ч за 3 недели) и <a href="#" data-person="polina">Polina</a> (+9 ч). Возможный шаг – обсудить с Irina ещё одну смену в пятницу–субботу; решение за руководителем.</p>`,
+  src:['график смен','клок-ин','собранные букеты','статусы заказов','проблемы с букетами'],
+  how:`Команда – студия, окно – 6 недель.\nБукетов на смену = собранные букеты / число смен.\nПереработка = факт по клок-ину минус план графика по неделям, только плюс.\nСуммы заказов не используются – только штуки.`,
+  acts:`<button class="btn s" data-go="analytics">${ic('chart')}Открыть «Аналитику людей»</button>`};
+ }
+ if(k==='weekly'){
+  return {ai:1,vis:'hr',body:`<p><b>Люди, неделя 2–8 нояб.</b> 14 человек, 1 в отпуске, 1 на испытательном, 1 на онбординге.</p>
+  <div class="sec">Хорошее</div><ul><li>11 благодарностей за неделю; Polina – 3, Alina – первая самостоятельная утренняя волна.</li><li>Alina: 4 из 6 базовых стилей подтверждены, ревью испытательного 23 нояб.</li><li>eNPS +31 (было +24), ответили 14.</li></ul>
+  <div class="sec">На что посмотреть</div><ul><li>Nika – оценка после смены 8 → 4, +13 ч за 3 недели, 1:1 не было 35 дней. 1:1 завтра в 11:30.</li><li>Polina – переработка 3 недели подряд; мешает вести ретро.</li><li>Artem – «много переключений» второй раз; ждём решение про «дежурный день».</li></ul>
+  <div class="sec">Нужно решение основателя</div><ul><li>«Дежурный день» для срочных задач разработки – да / нет.</li><li>Дополнительная смена в студии на пятницу–субботу до Рождества.</li></ul>
+  <div class="sec">Даты</div><ul><li>Bogdan возвращается из отпуска 16 нояб.</li><li>Ревью испытательного Alina – 23 нояб; проверка прав Ruslan – 2 дек.</li></ul>
+  <p class="muted sm">Без денег и без здоровья. Имена в «На что посмотреть» – повод для разговора, не оценка.</p>`,
+  src:['встречи 1:1','благодарности','eNPS (агрегат)','оценки после смены','клок-ин','заметки HR + основатель','даты команды'],
+  how:`Окно – 2–8 нояб.\nВключаются: сигналы из «Аналитики людей», 1:1 и договорённости, даты, благодарности.\nНе включаются: заметки «Только я», ответы eNPS по людям, причины отсутствий, деньги.`,
+  acts:`<button class="btn s" data-toast="Скопировано – проверьте текст перед отправкой">${ic('file')}Скопировать</button><button class="btn s pr" data-toast="Черновик сохранён в «Задачи» основателю – отправите после проверки, AI сам не отправляет">${ic('send')}В задачи основателю</button>`};
+ }
+ if(k==='ones'){
+  const cd=(p)=>/Еженед/.test(p.cad)?7:/2 недел/.test(p.cad)?14:30;
+  const rows=D.people.filter(p=>p.status!=='leave').map(p=>({p,n:daysBetween(dd(p.last),NOW),c:cd(p)})).sort((a,b)=>b.n/b.c-a.n/a.c).slice(0,5);
+  return {ai:1,body:`<p>Дольше всего без 1:1 относительно своего ритма:</p><div class="ovx"><table class="t"><thead><tr><th>Кто</th><th>Последняя</th><th>Дней</th><th>Ритм</th><th>Следующая</th></tr></thead><tbody>${rows.map(x=>`<tr class="clk" data-person="${x.p.id}"><td>${H.who(x.p)}</td><td>${fmtD(x.p.last)}</td><td class="num" style="${x.n>2*x.c?'color:var(--accent-dark)':''}">${x.n}</td><td class="sm">${x.p.cad}</td><td>${fmtD(x.p.next)}</td></tr>`).join('')}</tbody></table></div><p class="muted sm">Красным – дольше 2× ритма (порог сигнала в «Аналитике людей»).</p>`,
+  src:['встречи 1:1','ритм 1:1 (новое)'],how:`Дней с последней проведённой 1:1, делённое на ритм человека в днях.\nСортировка – по этому отношению. Люди в отпуске не входят.`,acts:`<button class="btn s" data-go="oneonones">${ic('chat')}Открыть 1:1</button>`};
+ }
+ if(k==='rate') return {deny:1,title:'Финансовые данные недоступны для роли HR',body:`<p>Ставки, расчёты, бонусы и суммы заказов закрыты на сервере для роли HR – не только в меню, но и в отчётах и в «Спроси у CRM». Запрос записан в журнал доступа.</p><p>Могу показать по Ruslan без денег: стаж, график смен, % доставок вовремя, план развития.</p>${App.role==='admin'?`<p class="sm">Вы админ: ставку можно посмотреть в обычном «Спроси у CRM» или в «Команда → Люди».</p>`:''}`,
+  acts:`<button class="btn s" data-person="ruslan">${ic('user')}Карточка Ruslan</button>`,log:'Попытка: ставка Ruslan Tairov – отказано (финансы)'};
+ if(k==='health') return {deny:1,title:'Здоровье и причины отсутствия не вижу',body:`<p>В HR-режиме нет доступа к причинам отсутствий и данным о здоровье – только даты отсутствия. Диагнозы в CRM не храним (ICO: записи об отсутствии вместо записей о болезни).</p>`,log:'Попытка: здоровье / причины отсутствия – отказано'};
+ if(k==='emo') return {deny:1,title:'Эмоции не анализирую',body:`<p>Не оцениваю настроение, тон сообщений или эмоции людей – это запрещено для рабочих систем (EU AI Act, ст. 5, с 02.02.2025) и непрозрачно. Могу показать оценки после смены, которые люди поставили сами.</p>`,log:'Попытка: анализ эмоций – отказано'};
+ if(k==='decide') return {deny:1,title:'Решений о людях не принимаю',body:`<p>Не выбираю, кого уволить, повысить или лишить смен. Могу собрать факты по человеку из CRM – решение и разговор остаются за вами и основателем (UK DUAA, ст. 22A–22D).</p>`,log:'Попытка: решение о человеке – отказано'};
+ return {ai:1,body:`<p>В демо я отвечаю только на примеры выше. В рабочей версии HR-режим понимает вопросы о людях, 1:1, обучении, развитии, графике и благодарностях – без денег и здоровья.</p><p class="muted sm">Попробуйте: «Кого давно не благодарили?» или «Подготовь меня к 1:1 с Nika».</p>`,src:['—'],how:`вопрос не распознан – ответ-заглушка, данные не читались`};
+}
+function route(t){
+ const s=t.toLowerCase();
+ if(/(?<!до)ставк|стоит|стоимост|зарплат|бонус|£|оплат|деньг|выручк|расч[её]т|kassa|касс|сумм/.test(s))return 'rate';
+ if(/болел|больнич|здоров|диагноз|беремен|причин.*отсутств/.test(s))return 'health';
+ if(/эмоци|настроени|тон сообщ|сентимент/.test(s))return 'emo';
+ if(/уволи|кого убрать|понизить|лишить/.test(s))return 'decide';
+ if(/благодар|спасибо|не замеча/.test(s))return 'kudos';
+ if(/без 1:1|давно.*1:1|1:1.*давно/.test(s))return 'ones';
+ if(/1:1|подготов|nika|ника/.test(s))return 'prep';
+ if(/нагрузк|переработ|студи/.test(s))return 'load';
+ if(/сводк|основател|за неделю/.test(s))return 'weekly';
+ return 'other';
+}
+function renderA(a){
+ if(a.deny) return `<div class="ak-a deny"><div class="hd">${ic('lock')}<b style="font-weight:500">${a.title}</b><span class="sp"></span>${H.chip('отказано','bad')}</div><div class="bd">${a.body}</div>${a.acts?`<div class="ft">${a.acts}<span class="sp"></span><span class="muted">${ic('shield')} в журнале доступа</span></div>`:`<div class="ft"><span class="muted">${ic('shield')} Запрос записан в журнал доступа</span></div>`}</div>`;
+ return `<div class="ak-a ai"><div class="hd">${H.aiLabel()}<span class="sp"></span>${a.vis?H.vis(a.vis):''}</div><div class="bd">${a.body}</div>${a.acts?`<div class="ft">${a.acts}</div>`:''}<div class="ft">${src(a.src)}</div>${how(a.how)}<div class="ft"><span class="muted">Полезно?</span><button class="btn s ghost" data-toast="Спасибо – отметка помогает улучшить подсказки (данные людей не уходят на обучение моделей)">${ic('check')}Да</button><button class="btn s ghost" data-toast="Отмечено как неточное – HR-команда посмотрит запрос">${ic('x')}Не то</button></div></div>`;
+}
+function paint(el){
+ if(!el.isConnected)return;
+ const L=el.querySelector('#ak-log');
+ L.innerHTML=log.length?log.map(m=>m.q?`<div class="ak-q">${H.esc(m.q)}</div>`:m.typing?`<div class="ak-typing">${ic('spark')}Ищу в HR-данных CRM…</div>`:renderA(m.a)).join(''):`<div class="empty">${ic('spark')}<div style="margin-top:8px">Спросите о людях, 1:1, обучении, нагрузке или благодарностях.<br>Деньги, здоровье и эмоции – вне HR-режима.</div></div>`;
+ const add=el.querySelector('#ak-add');
+ if(add)add.addEventListener('click',()=>{const o=D.ones.find(x=>x.id==='o2');const t='Что можно снять с тебя до Рождества? (нагрузка +13 ч)';if(!o.agenda.some(x=>x.t===t)){o.agenda.push({by:'hr',t});App.toast('Тема добавлена в повестку 1:1 с Nika – видна ей в приложении')}else App.toast('Уже в повестке');add.disabled=true});
+ const v=document.getElementById('view');v.scrollTop=v.scrollHeight;
+}
+function ask(el,q,k){
+ if(busy)return;busy=true;k=k||route(q);
+ log.push({q});log.push({typing:1});paint(el);
+ setTimeout(()=>{log.pop();const a=answer(k);log.push({a});
+  HRX.audit.unshift({who:App.role==='admin'?'Основатель':'Eva Marin (HR)',what:a.log||('Спроси у CRM · HR: «'+q+'»'),when:'сегодня, '+tm(),why:a.deny?'отказано':'запрос HR-режима',deny:!!a.deny});
+  busy=false;paint(el)},550);
+}
+
+App.reg('askhr',{
+ title:'Спроси у CRM · HR',
+ render(el,params){
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">Аналитика</div><h1>Спроси у CRM · HR</h1><div class="sub">HR-режим существующего «Спроси у CRM»: отвечает только по людям, без денег и здоровья.</div></div>
+  <div class="acts">${App.role==='admin'?`<div class="seg"><button class="on">HR-режим</button><button data-toast="Обычный «Спроси у CRM» – экран админа, этот проект его не меняет">Обычный</button></div>`:''}<button class="btn" id="ak-clr">${ic('x')}Очистить</button></div></div>
+  <div class="ak-wrap"><div class="ak-chat">
+   <div class="ak-chips">${PROMPTS.map(p=>`<button data-k="${p.k}">${ic(p.k==='rate'?'lock':'spark')}${p.q}</button>`).join('')}</div>
+   <div class="ak-log" id="ak-log"></div>
+   <form class="ak-in" id="ak-form"><input class="inp" id="ak-inp" placeholder="Спросите о людях, например: кто давно без 1:1?" autocomplete="off"><button class="btn pr" type="submit">${ic('send')}Спросить</button></form>
+  </div>
+  <div class="card"><div class="ch"><h3>Ограничения</h3><div class="r">${H.chip('новое','info')}</div></div><div class="cb"><ul class="lim">
+   <li>${ic('lock')}<div>Не видит здоровье и причины отсутствия<small>только даты; диагнозов в CRM нет</small></div></li>
+   <li>${ic('eye')}<div>Не анализирует эмоции<small>ни тон сообщений, ни лица, ни голос</small></div></li>
+   <li>${ic('users')}<div>Не принимает решений о людях<small>только факты и черновики, решает человек</small></div></li>
+   <li>${ic('coin')}<div>Не видит финансы<small>ставки, расчёты, бонусы, Kassa, суммы заказов</small></div></li>
+   <li>${ic('shield')}<div>Все запросы в журнале<small><a href="#" data-go="access">Доступы и журнал</a> – видит основатель</small></div></li>
+   <li>${ic('x')}<div>Данные не уходят на обучение моделей<small>договор с провайдером AI, без хранения</small></div></li>
+   <li>${ic('note')}<div>Не читает заметки «Только я»<small>и заметки «+ руководитель» по чужим командам</small></div></li>
+  </ul><div class="hr-line"></div><p class="sm muted">Работает через отдельные HR-выборки без денежных данных. Обычный «Спроси у CRM» по-прежнему не видит данные о людях.</p></div></div></div>`;
+  paint(el);
+  el.querySelector('.ak-chips').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(!b)return;const p=PROMPTS.find(x=>x.k===b.dataset.k);ask(el,p.q,p.k)});
+  el.querySelector('#ak-form').addEventListener('submit',e=>{e.preventDefault();const i=el.querySelector('#ak-inp');const q=i.value.trim();if(!q){App.toast('Напишите вопрос или выберите пример');return}i.value='';ask(el,q)});
+  el.querySelector('#ak-clr').addEventListener('click',()=>{log.length=0;paint(el);App.toast('История очищена (журнал доступа сохраняется)')});
+  if(params&&params.id){const p=PROMPTS.find(x=>x.k===params.id);if(p&&!log.some(m=>m.q===p.q))ask(el,p.q,p.k)}
+ },
+ notes:`<h4>Что это</h4><p>HR-режим «Спроси у CRM»: вопрос текстом – ответ таблицей или графиком, с источниками и раскрываемым «Как посчитано».</p>
+<h4>Зачем HR</h4><p>Подготовка к 1:1 за минуту, недельная сводка основателю, «кого не замечают» – без ручных выгрузок.</p>
+<h4>Откуда идея</h4><p><span class="src">Lattice AI</span><span class="src">Rippling</span><span class="src">Factorial One</span><span class="src">ChartHop</span><span class="src">Personio Assistant</span></p>
+<h4>Данные из нашей CRM</h4><p>Сейчас «Спроси у CRM» есть только у админа и намеренно не читает данные о людях: учётки, профили, 1:1, отпуска, eNPS. HR-режиму нужны отдельные выборки без денег и свой список отказов.</p>
+<h4>Доступы</h4><ul><li>Отказ на деньги, здоровье, эмоции и решения о людях; каждый запрос – в журнал.</li><li>Ответ – черновик AI; ничего не отправляет сам (DUAA ст. 22A–22D, EU AI Act).</li></ul>
+<h4>Приоритет</h4><p><span class="pri p2">Следующий шаг</span> после ролей, заметок и аналитики</p>`
+});
+})();
+</script>

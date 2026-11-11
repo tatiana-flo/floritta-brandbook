@@ -1,0 +1,366 @@
+<style>
+#s-person .ps-head{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}
+#s-person .ps-id{flex:1;min-width:260px}
+#s-person .ps-id h1{font-family:var(--f-display);font-weight:500;font-size:34px;line-height:1.05;margin:3px 0 4px}
+#s-person .ps-meta{color:var(--graphite);font-size:13px}
+#s-person .ps-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+#s-person .ps-acts{display:flex;gap:8px;flex-wrap:wrap}
+#s-person .ps-sec{margin-top:16px}
+#s-person .ps-cap{font-size:11.5px;color:var(--grey);padding:10px 16px;border-top:1px solid var(--hair);display:flex;gap:6px;align-items:flex-start}
+#s-person .ps-cap svg{margin-top:1px}
+#s-person .ps-sig{padding:12px 16px;border-bottom:1px solid var(--hair)}
+#s-person .ps-sig .why{font-size:12px;color:var(--grey);margin-top:6px}
+#s-person .ps-brief{list-style:none;padding:6px 16px 4px}
+#s-person .ps-brief li{display:flex;gap:8px;padding:6px 0;font-size:13.5px}
+#s-person .ps-brief li::before{content:'';width:5px;height:5px;background:var(--accent);flex:none;margin-top:8px}
+#s-person .ps-src{display:inline-block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);border:1px solid var(--accent-bg);background:var(--paper);padding:0 5px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+#s-person .ps-tl{display:grid;grid-template-columns:96px 22px minmax(0,1fr);gap:10px;padding:10px 16px;border-bottom:1px solid var(--hair)}
+#s-person .ps-tl .d{font-size:12px;color:var(--grey);line-height:1.3}
+#s-person .ps-tl .d small{display:block;color:var(--info)}
+#s-person .ps-tl .ic{color:var(--graphite);padding-top:1px}
+#s-person .ps-tl b{font-weight:500;margin-right:6px}
+#s-person .ps-tl p{margin-top:3px;color:var(--graphite);font-size:13px}
+#s-person .ps-tl.lock b{color:var(--grey);font-weight:400}
+#s-person .ps-tl.fut{background:var(--info-bg)}
+#s-person .ps-link{cursor:pointer;margin-top:6px}
+#s-person .ps-link:hover{border-color:var(--ink)}
+#s-person .ps-more{width:100%;padding:10px 16px;text-align:left;font-size:12px;color:var(--graphite);display:flex;gap:8px;align-items:center}
+#s-person .ps-more:hover{background:var(--silver)}
+#s-person .ps-ag{display:flex;gap:10px;padding:5px 0;font-size:13.5px}
+#s-person .ps-by{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);min-width:84px;padding-top:3px}
+#s-person .ps-act{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:6px 0;width:100%;font-size:13.5px}
+#s-person .ps-act .bx,#s-person .ps-ms .bx{width:18px;height:18px;border:1px solid var(--light);display:inline-flex;align-items:center;justify-content:center;flex:none}
+#s-person .ps-act.done .bx,#s-person .ps-ms.done .bx{background:var(--ok);border-color:var(--ok);color:#fff}
+#s-person .ps-act.done .tx,#s-person .ps-ms.done .tx{text-decoration:line-through;color:var(--grey)}
+#s-person .ps-ms{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:9px 0;border-bottom:1px solid var(--hair);font-size:13.5px}
+#s-person .ps-h5{font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);margin:14px 0 6px}
+#s-person .ps-step{display:flex;align-items:center;gap:10px;padding:7px 0}
+#s-person .ps-step i{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--light);font-style:normal;font-size:11px;flex:none}
+#s-person .ps-step.past i{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+#s-person .ps-step.cur i{background:var(--ink);border-color:var(--ink);color:#fff}
+#s-person .ps-step.cur b{font-weight:500}
+#s-person .ps-step.fut{color:var(--grey)}
+#s-person .ps-exp{border:1px solid var(--hair);padding:10px 12px;margin-top:8px;background:var(--silver)}
+#s-person .ps-exp li{margin:4px 0 4px 18px;font-size:13px}
+#s-person .ps-note{padding:12px 16px;border-bottom:1px solid var(--hair)}
+#s-person .ps-note .row{flex-wrap:wrap;gap:6px}
+#s-person .ps-note p{margin-top:6px}
+#s-person .ps-note.lock{display:flex;gap:10px;color:var(--grey);background:repeating-linear-gradient(-45deg,transparent 0 8px,rgba(0,0,0,.018) 8px 16px)}
+#s-person .ps-note.lock b{font-weight:500;color:var(--graphite)}
+#s-person .hrp-vis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+#s-person .hrp-vis label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--hair);cursor:pointer}
+#s-person .hrp-vis label.on{border-color:var(--ink)}
+#s-person .hrp-vis label.dis{opacity:.4;cursor:not-allowed}
+#s-person .hrp-vis input{margin-top:3px;accent-color:var(--ink)}
+#s-person .hrp-vis small{display:block;color:var(--grey);font-size:12px;margin-top:3px}
+#s-person .hrp-hint{font-size:12px;color:var(--grey);margin-top:6px}
+#s-person .hrp-hint.warn{color:var(--warn)}
+#s-person .ps-f{margin-top:12px}
+#s-person .ps-kd{padding:10px 16px;border-bottom:1px solid var(--hair)}
+#s-person .ps-kd .top{display:flex;align-items:center;gap:6px;font-size:12.5px;flex-wrap:wrap}
+#s-person .ps-kd p{margin-top:4px;font-size:13px;color:var(--graphite)}
+#s-person .ps-sk{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr) 104px;gap:12px;align-items:center;padding:8px 0;font-size:13.5px}
+#s-person .ps-sk small{color:var(--grey);font-size:12px}
+#s-person .ps-ls{display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--hair);font-size:13.5px}
+#s-person .ps-ls:last-child{border-bottom:0}
+#s-person .ps-ls .tx{flex:1;min-width:0}
+#s-person .ps-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;max-width:320px}
+#s-person .ps-days span{height:22px;border:1px solid var(--hair)}
+#s-person .ps-days .wd{border:0;height:auto;font-size:10px;color:var(--grey);text-align:center}
+#s-person .ps-days .work{background:var(--ok-bg);border-color:var(--ok-bg)}
+#s-person .ps-days .late{background:var(--warn-bg);border-color:var(--warn)}
+#s-person .ps-days .abs{background:var(--accent-bg);border-color:var(--accent)}
+#s-person .ps-leg{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--grey);margin-top:10px}
+#s-person .ps-leg i{display:inline-block;width:10px;height:10px;margin-right:5px;border:1px solid var(--hair);vertical-align:-1px}
+#s-person .ps-svg{width:100%;height:auto;display:block}
+#s-person .ps-row{display:grid;grid-template-columns:200px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--hair);font-size:13.5px}
+#s-person .ps-row .lb{font-size:11px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--grey)}
+#s-person .ps-row small{display:block;color:var(--grey);font-size:12px}
+#s-person .ps-row.hl{background:var(--warn-bg)}
+#s-person .kpi .v small{font-family:var(--f-body);font-size:13px;color:var(--grey);margin-left:4px}
+#s-person .ps-strip .kpi .v{font-size:28px}
+@media (max-width:900px){#s-person .ps-row{grid-template-columns:1fr;gap:6px}#s-person .ps-tl{grid-template-columns:70px 18px minmax(0,1fr)}#s-person .hrp-vis{grid-template-columns:1fr}#s-person .ps-sk{grid-template-columns:1fr 104px}#s-person .ps-sk .bar{grid-column:1/-1}}
+#modal-b .ps-mm{display:flex;flex-direction:column;gap:8px}
+#modal-b .ps-mm .btn{justify-content:flex-start;width:100%}
+#sheet-b .ps-log{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--hair);font-size:13px}
+#sheet-b .ps-log small{display:block;color:var(--grey);font-size:12px}
+#sheet-b .ps-dr{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--hair);margin-bottom:6px;cursor:pointer}
+#sheet-b .ps-dr input{margin-top:3px;accent-color:var(--ink)}
+</style>
+<script>
+(()=>{
+const S={cat:'all',form:false,tl:false,ms:{},ci:{},added:{}};
+const TABS=[['overview','Обзор'],['ones','1:1'],['growth','Развитие'],['notes','Заметки'],['kudos','Признание'],['skills','Навыки и обучение'],['work','Работа'],['docs','Документы и даты']];
+const hs=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))%997,7);
+const fy=s=>fmtD(s)+(s.slice(0,4)!=='2026'?' '+s.slice(0,4):'');
+const addM=(s,m)=>{const d=dd(s);d.setUTCMonth(d.getUTCMonth()+m);return d.toISOString().slice(0,10)};
+const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+const num=v=>String(v).replace('.',',');
+const first=p=>p.name.split(' ')[0];
+const card=(title,body,o={})=>`<div class="card ${o.cls||''}"><div class="ch"><h3>${title}</h3>${o.r?`<div class="r">${o.r}</div>`:''}</div>${body}${o.cap?`<div class="ps-cap">${ic(o.ci||'eye')}<span>${o.cap}</span></div>`:''}</div>`;
+const linkChip=l=>`<button class="chip line ps-link" data-a="link" data-k="${H.esc(l.k)}" data-r="${H.esc(l.ref)}">${ic('link')}${H.esc(l.k)} ${H.esc(l.ref)}</button>`;
+const sortedOnes=p=>D.ones.filter(o=>o.who===p.id).sort((a,b)=>b.d.localeCompare(a.d));
+const notesOf=p=>D.notes.filter(n=>n.who===p.id).sort((a,b)=>b.d.localeCompare(a.d));
+const BY={emp:'Сотрудник',hr:'HR',auto:'Из CRM'};
+const LEVELS=['нет','с помощью','сам(а)','учит других'];
+
+/* ---------- reference data for the prototype (fictional) ---------- */
+const COURSE={florist:'Уход за срезом и вёдрами',courier:'Доставка алкоголя: Challenge 25',care:'Работа с жалобами',tech:'Безопасность данных (UK GDPR)'};
+const LESSONS={florist:['Базовые стили Floritta','Уход за срезом и вёдрами','Упаковка и фото до отправки','Работа с пионами','Свадебная бутоньерка','Каскадный букет'],
+ courier:['Маршруты Central','Доставка алкоголя: Challenge 25','Фото у двери и подпись','Хрупкие и крупные заказы','Безопасность на дороге','Разбор сложных адресов'],
+ care:['Тон общения Floritta','Работа с жалобами','Заказы с открыткой','Срочные заказы день в день','Уход за цветами: что советовать','Защита данных клиентов'],
+ tech:['Безопасность данных (UK GDPR)','Доступы и секреты','Как устроены заказы','Релизы и откат','Как работает студия','Доставка изнутри']};
+const CERT={florist:[['Безопасная работа с ножом и шипами','2027-03-01'],['Токсичные и аллергенные растения','2027-01-15'],['Журнал обучения: подпись','2026-12-05']],
+ courier:[['Доставка алкоголя: Challenge 25','2026-12-02'],['Безопасность на дороге','2027-04-10']],
+ care:[['Работа с жалобами','2027-05-01'],['Защита данных клиентов','2027-02-01']],
+ tech:[['Безопасность данных (UK GDPR)','2027-03-31'],['Доступы и секреты','2027-06-30']]};
+const MS={nika:[['Записаться на курс по колористике',0],['3 авторских букета для витрины (готов 1)',0],['Показать работы на ретро студии',0]],
+ daria:[['Ассистировать на 2 свадебных заказах',1],['Собрать арку под присмотром Polina',0],['Подтвердить «Свадьбы» на уровне 2 в матрице навыков',0]],
+ mila:[['План мастер-класса и список материалов',1],['Пробный мастер-класс для команды',1],['Рождественский мастер-класс для клиентов – 12 дек',0]],
+ alina:[['4 базовых стиля подтверждены наставником',1],['Ещё 2 стиля: пионы и каскад',0],['Ревью испытательного срока – 23 нояб',0]],
+ artem:[['«Дежурный день» для срочных задач',1],['Описать границы сервиса маршрутизации – до 14 нояб',0],['Передать срочные баги дежурному',0]],
+ polina:[['Провести 2 ретро студии',1],['Наставник для Alina и Yana',1],['Разгрузить свои смены, чтобы было время вести',0]],
+ denis:[['Доступы и знакомство с командами (день 1–14)',1],['Первый еженедельный отчёт по доставке (день 15–30)',1],['Свой дашборд для операционного утра (день 31–60)',0]]};
+const EXP={florist:[null,['Собирает весь стандартный ассортимент без помощи','Переделок по гамме и упаковке – меньше 1 %','Знает уход за 30 основными сортами'],['Свадьбы и инсталляции самостоятельно','Наставляет новичка в программе «Напарник»','Авторская работа на витрину раз в месяц'],['Ведёт смену: распределяет заказы, 97 %+ отправок вовремя','Разбирает проблемы с букетами вместе с командой','Проводит ретро смены'],['Отвечает за стиль студии и сезонные коллекции','Обучает флористов, ведёт мастер-классы','Участвует в найме']],
+ courier:[null,['Наставник новых курьеров','Сложные маршруты Central','97 %+ доставок вовремя 3 месяца подряд'],['Планирует маршруты на день','Разбирает проблемные доставки','Отвечает за стандарты доставки']],
+ care:[null,['Сам(а) закрывает жалобы без эскалации','Ведёт инструкцию по сервису','Обучает новичков сервиса'],['Управляет магазином: график, люди, стандарты','Ведёт 1:1 с командой магазина','Отвечает за сервис по отзывам']],
+ tech:[null,['Ведёт задачу от постановки до релиза сам(а)','Тесты и ревью без возвратов','Понимает процессы магазина'],['Отвечает за сервис целиком','Ревьюит чужой код, предлагает решения','Поддерживает новичков'],['Ведёт направление и планирует работу','Растит других разработчиков','Говорит с бизнесом на его языке']]};
+const RM={artem:['84 %','89 %','2,4 дня'],vera:['95 %','97 %','1,1 дня'],denis:['100 %','75 %','3 дня']};
+const RTW={mila:['Паспорт UK – ручная проверка','2023-03-01',null],daria:['Share code – eVisa','2024-08-12','2027-08-11'],nika:['Share code – EUSS, settled','2024-01-10',null],alina:['Share code – Graduate visa','2026-08-20','2027-06-30'],yana:['Share code – EUSS, pre-settled','2025-05-06','2026-12-21'],polina:['Паспорт UK – ручная проверка','2022-09-28',null],irina:['Паспорт UK – ручная проверка','2021-04-08',null],kira:['Share code – eVisa','2025-02-12','2027-03-15'],ruslan:['Share code – EUSS, settled','2024-10-30',null],jake:['Паспорт UK – ручная проверка','2025-08-28',null],bogdan:['Share code – EUSS, settled','2023-06-07',null]};
+const LIC={ruslan:['Категория B · фургон','2026-12-02'],bogdan:['Категория B · фургон','2027-06-12'],jake:['Велосипед – права не нужны',null]};
+const WEEKS=['21 сен','28 сен','5 окт','12 окт','19 окт','26 окт','2 нояб','9 нояб'];
+
+/* ---------- small builders ---------- */
+const bars=(vals,lbl,o={})=>{const w=o.w||420,h=o.h||140,plan=o.plan??null,mx=(Math.max(...vals,plan||0)||1)*1.2,n=vals.length,bw=w/n,base=h-20,y=v=>base-(v/mx)*(base-14);
+ let s=`<svg class="ps-svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${o.label||''}">`;
+ vals.forEach((v,i)=>{const x=i*bw,over=plan!=null&&v>plan;s+=`<rect x="${(x+bw*.22).toFixed(1)}" y="${y(v).toFixed(1)}" width="${(bw*.56).toFixed(1)}" height="${Math.max(0,base-y(v)).toFixed(1)}" style="fill:${over?'var(--v-mid)':i===n-1?'var(--ink)':'var(--v3)'}"/><text x="${(x+bw/2).toFixed(1)}" y="${h-5}" text-anchor="middle" style="fill:var(--grey);font-size:10px">${lbl[i]}</text><text x="${(x+bw/2).toFixed(1)}" y="${(y(v)-4).toFixed(1)}" text-anchor="middle" style="fill:var(--graphite);font-size:10px">${v}</text>`});
+ if(plan!=null){const py=y(plan);s+=`<line x1="0" x2="${w}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}" style="stroke:var(--accent);stroke-dasharray:4 3"/><text x="2" y="${(py-4).toFixed(1)}" style="fill:var(--accent-dark);font-size:10px">план ${plan}${o.unit||''}</text>`}
+ return s+'</svg>'};
+const hours=p=>{const a=p.att,plan=Math.round(a.shifts/4*7),ot=a.ot||0,t=Math.floor(ot/3),tail=ot>=6?[t,t,ot-2*t]:ot>0?[0,Math.floor(ot/2),Math.ceil(ot/2)]:[0,0,0],nz=[0,-1,1,0,-1],v=[];
+ for(let i=0;i<5;i++)v.push(plan+nz[(i+hs(p.id))%5]); tail.forEach(x=>v.push(plan+x)); if(a.abs)v[5]-=7*a.abs; return {plan,v}};
+const strip=p=>{const a=p.att,N=28,st=Array(N).fill('off'),w=[];for(let k=0;k<a.shifts;k++){const d=Math.floor(k*N/a.shifts);st[d]='work';w.push(d)}
+ for(let j=0;j<a.late;j++)st[w[Math.floor((j+.5)*w.length/a.late)]]='late';
+ for(let j=0;j<a.abs;j++)st[w[Math.max(0,w.length-2-j*4)]]='abs';
+ return `<div class="ps-days">${['пн','вт','ср','чт','пт','сб','вс'].map(d=>`<span class="wd">${d}</span>`).join('')}${st.map((s,i)=>`<span class="${s}" title="${s==='late'?'опоздание':s==='abs'?'пропуск':s==='work'?'смена':'выходной'}"></span>`).join('')}</div>
+ <div class="ps-leg"><span><i style="background:var(--ok-bg)"></i>смена</span><span><i style="background:var(--warn-bg);border-color:var(--warn)"></i>опоздание 5+ мин</span><span><i style="background:var(--accent-bg);border-color:var(--accent)"></i>пропуск</span><span><i></i>выходной</span></div>`};
+const lockbox=(t,sub)=>`<div class="lockbox ps-sec">${ic('lock')}<div style="flex:1"><b style="color:var(--graphite);font-weight:500">${t}</b><div>${sub}</div></div>${App.role==='admin'?`<button class="btn s" data-a="pay">${ic('coin')}Открыть «Расчёты»</button>`:''}</div>`;
+
+/* ---------- brief + timeline ---------- */
+const openActions=p=>{const seen=new Set();return D.ones.filter(o=>o.who===p.id).flatMap(o=>o.actions.filter(a=>!a.done)).filter(a=>!seen.has(a.t)&&seen.add(a.t))};
+const brief=p=>{const out=[],last=sortedOnes(p).find(o=>o.status==='done');
+ out.push(last?{t:'На прошлом 1:1: '+last.summary.split('. ')[0]+'.',s:'1:1 от '+fmtD(last.d)}:{t:`Последний 1:1 – ${fmtD(p.last)} (${ago(p.last)}); итогов в CRM нет – начать с открытого вопроса «как тебе сейчас?»`,s:'история 1:1'});
+ const pl=p.pulse,f=pl[0],l=pl[pl.length-1];
+ out.push({t:l-f<=-2?`Пульс снизился: ${f} → ${l} за ${pl.length} нед. Спросить про нагрузку и интерес к работе, не про «настроение».`:l-f>=1?`Пульс растёт: ${f} → ${l} – отметить, что изменилось к лучшему.`:`Пульс ровный: ${l}/10 последние ${pl.length} нед.`,s:'пульс, '+pl.length+' нед.'});
+ out.push(p.att.shifts!=null?{t:`${p.att.shifts} ${plural(p.att.shifts,'смена','смены','смен')} за 4 недели${p.att.ot?`, сверх плана +${p.att.ot} ч`:''}${p.att.late?`, опозданий: ${p.att.late}`:''}; ${lc(p.ops.k)} – ${p.ops.v}, ${p.ops.q}.`,s:'CRM: смены и '+(p.team==='studio'?'переделки':p.team==='delivery'?'доставки':'задачи')}:{t:`${p.ops.k} за месяц: ${p.ops.v}, ${p.ops.q}. Смен нет – удалённая работа, смотрим задачи.`,s:'CRM: задачи'});
+ const kr=HRP.kudos().filter(k=>k.to===p.id);
+ out.push(kr.length?{t:`Благодарность от ${HRP.name(kr[0].from)} ${fmtD(kr[0].d)}: «${kr[0].t}». Всего ${p.kudos}.`,s:'благодарности'}:{t:`За 2 недели благодарностей не было (всего ${p.kudos}) – есть за что отметить?`,s:'благодарности'});
+ const oa=openActions(p);
+ out.push(oa.length?{t:'Не закрыто с прошлых встреч: '+oa.map(a=>`${lc(a.t)} (срок ${fmtD(a.due)}${dd(a.due)<NOW?', просрочено':''})`).join('; ')+'.',s:'действия 1:1'}:{t:p.pdp.goal==='—'?'Плана развития нет – предложить выбрать одну цель на квартал.':`План развития: «${p.pdp.goal}» – ${p.pdp.pct} %.`,s:'развитие'});
+ return out};
+const timeline=p=>{const me=HRP.me(),it=[];
+ sortedOnes(p).forEach(o=>it.push({d:o.d,i:'chat',t:o.status==='done'?'1:1 проведён':'1:1 запланирован, '+o.time,s:o.summary||o.agenda.map(a=>a.t).slice(0,2).join(' · '),fut:o.status!=='done'}));
+ notesOf(p).forEach(n=>it.push(HRP.canRead(n)?{d:n.d,i:'note',t:'Заметка · '+n.cat+' · '+HRP.name(n.by),s:n.t,vis:n.vis,link:n.link}:{d:n.d,i:'lock',t:'Личная заметка HR – видит только автор',lock:1}));
+ HRP.kudos().filter(k=>k.to===p.id).forEach(k=>it.push({d:k.d,i:'star',t:'Благодарность от '+HRP.name(k.from)+' · '+k.val,s:k.t}));
+ HRP.kudos().filter(k=>k.from===p.id).forEach(k=>it.push({d:k.d,i:'heart',t:HRP.g(p,'Сказал','Сказала')+' спасибо: '+HRP.name(k.to),s:k.t}));
+ it.push({d:p.start,i:'flag',t:HRP.g(p,'Пришёл','Пришла')+' в команду',s:`${H.type(p)} · ${D.teams[p.team]}`});
+ if(p.lvl>1&&p.ladder!=='tech'){const d=addM(p.start,12*(p.lvl-1));if(d<'2026-11-11')it.push({d,i:'sprout',t:'Новый уровень: '+H.lvl(p),s:D.ladders[p.ladder].name})}
+ it.push({d:'2026-10-'+String(8+hs(p.id)%20).padStart(2,'0'),i:'book',t:`Урок пройден: «${COURSE[p.ladder]}»`,s:`Обучение · ${p.train[0]} из ${p.train[1]}`});
+ if(p.status==='probation')it.push({d:p.probEnd,i:'clip',t:'Ревью испытательного срока',s:'С наставником и руководителем',fut:1});
+ if(p.status==='leave')it.push({d:'2026-11-09',i:'cal',t:'Отпуск до '+fmtD(p.leaveTo),s:'Одобрен руководителем'});
+ return it.sort((a,b)=>b.d.localeCompare(a.d))};
+
+/* ---------- tabs ---------- */
+const T={};
+T.overview=p=>{const pl=p.pulse[p.pulse.length-1],tl=timeline(p),sh=S.tl?tl:tl.slice(0,8);
+ return `<div class="grid g4 ps-strip">
+  <div class="kpi"><div class="k">Пульс</div><div class="row" style="justify-content:space-between"><div class="v" style="color:${H.pulseColor(pl)}">${pl}<small>/10</small></div>${H.spark(p.pulse,{w:70,h:26,color:H.pulseColor(pl)})}</div><div class="d">${p.pulse.length} нед. · анонимно в команде, лично – только HR</div></div>
+  <div class="kpi"><div class="k">Последний 1:1</div><div class="v">${fmtD(p.last)}</div><div class="d">${ago(p.last)} · ${lc(p.cad)}</div></div>
+  <div class="kpi"><div class="k">План развития</div><div class="v">${p.pdp.goal==='—'?'—':p.pdp.pct+'<small>%</small>'}</div><div class="d">${p.pdp.goal==='—'?'плана нет':H.esc(p.pdp.goal)}</div></div>
+  <div class="kpi"><div class="k">Обучение</div><div class="v">${p.train[0]}<small>из ${p.train[1]}</small></div><div class="d">${p.train[0]===p.train[1]?'всё пройдено':'осталось '+(p.train[1]-p.train[0])+' '+plural(p.train[1]-p.train[0],'урок','урока','уроков')}</div></div>
+ </div>
+ <div class="grid g2 ps-sec">
+  ${card('Сигналы',p.signals.length?p.signals.map(s=>{const [r,src]=HRP.rule(s);return `<div class="ps-sig">${H.sig(s)}<div class="why">Правило: ${r}. Источник: ${src}.</div></div>`}).join(''):'<div class="cb"><div class="callout ok">Открытых сигналов нет – по правилам всё в норме.</div></div>',{r:H.chip('правила, не скоринг','line'),cap:'Видит только HR и основатель. Сотрудник может запросить сигналы о себе и оспорить их. Решение всегда за человеком.',ci:'shield'})}
+  ${card('Кратко перед 1:1',`<ul class="ps-brief">${brief(p).map(b=>`<li><span>${H.esc(b.t)}<span class="ps-src">${b.s}</span></span></li>`).join('')}</ul>
+   <div class="ps-cap" style="justify-content:space-between;align-items:center;flex-wrap:wrap">${H.aiLabel()}<span class="row" style="gap:6px"><button class="btn s" data-a="brief-copy">${ic('file')}Скопировать</button><button class="btn s ac" data-a="brief-add">${ic('plus')}В повестку 1:1</button></span></div>`,{cls:'ai',r:H.chip('новое','info')})}
+ </div>
+ ${card('История',sh.map(x=>`<div class="ps-tl ${x.fut?'fut':''} ${x.lock?'lock':''}"><div class="d">${fy(x.d)}${x.fut?'<small>скоро</small>':''}</div><div class="ic">${ic(x.i)}</div><div><b>${H.esc(x.t)}</b>${x.vis?H.vis(x.vis):''}${x.s?`<p>${H.esc(x.s)}</p>`:''}${x.link?linkChip(x.link):''}</div></div>`).join('')+(tl.length>8?`<button class="ps-more" data-a="tl">${ic(S.tl?'x':'plus')}${S.tl?'Свернуть':'Показать всю историю ('+tl.length+')'}</button>`:''),{cls:'ps-sec',r:H.chip('1:1 · заметки · благодарности · обучение','line'),cap:'Лента собирается из того, что уже есть в CRM: 1:1, заметки, благодарности, обучение, даты найма. Медицинских деталей в ленте нет.'})}`};
+
+T.ones=p=>{const os=sortedOnes(p);
+ return `<div class="row" style="flex-wrap:wrap;margin-bottom:14px"><span class="muted">Ритм: <b style="color:var(--ink);font-weight:500">${lc(p.cad)}</b> · последний ${fmtD(p.last)} (${ago(p.last)}) · следующий ${fmtD(p.next)} (${inDays(p.next)})</span><span class="sp"></span><button class="btn s" data-a="one">${ic('chat')}Назначить 1:1</button></div>
+ ${os.length?os.map(o=>`<div class="card ps-sec" style="margin-top:0;margin-bottom:16px"><div class="ch"><h3>${fmtD(o.d)} · ${o.time}</h3>${o.status==='done'?H.chip('проведён','ok'):o.status==='today'?H.chip('сегодня','ink'):H.chip('запланирован','info')}<div class="r"><button class="btn s" data-a="open-one" data-id="${o.id}">Открыть встречу ${ic('arrow')}</button></div></div><div class="cb">
+  ${o.summary?`<p style="margin-bottom:10px">${H.esc(o.summary)}</p>${H.vis('shared')} <span class="muted sm">итог видят оба</span>`:''}
+  <div class="ps-h5">Повестка</div>${o.agenda.map(a=>`<div class="ps-ag"><span class="ps-by">${BY[a.by]}</span><span>${H.esc(a.t)}</span></div>`).join('')}
+  ${o.actions.length?`<div class="ps-h5">Договорённости</div>${o.actions.map((a,i)=>`<button class="ps-act ${a.done?'done':''}" data-a="act" data-o="${o.id}" data-i="${i}"><span class="bx">${a.done?ic('check'):''}</span><span class="tx">${H.esc(a.t)}</span><span class="sp"></span><span class="muted sm" style="white-space:nowrap">${HRP.name(a.owner)} · до ${fmtD(a.due)}${!a.done&&dd(a.due)<NOW?' · <span style="color:var(--accent)">просрочено</span>':''}</span></button>`).join('')}`:''}
+ </div></div>`).join(''):`<div class="card"><div class="empty">Встреч в CRM ещё нет. Последний 1:1 – ${fmtD(p.last)}, вне CRM.<div style="margin-top:10px"><button class="btn s" data-a="one">Назначить 1:1</button></div></div></div>`}`};
+
+T.growth=p=>{const lad=D.ladders[p.ladder],nx=EXP[p.ladder][p.lvl],has=p.pdp.goal!=='—';
+ const ms=S.ms[p.id]||(S.ms[p.id]=(MS[p.id]||[['Договориться о цели и мере успеха',p.pdp.pct>=20],['Практика и обратная связь наставника',p.pdp.pct>=55],['Показать результат на 1:1 или ревью',p.pdp.pct>=90]]).map(([t,d])=>({t,d:!!d})));
+ const cis=[...(S.ci[p.id]||[]),...sortedOnes(p).filter(o=>o.status==='done').map(o=>({d:o.d,t:o.summary.split('. ')[0]+'.',by:'eva'})),...notesOf(p).filter(n=>n.cat==='Развитие'&&HRP.canRead(n)).map(n=>({d:n.d,t:n.t,by:n.by}))].sort((a,b)=>b.d.localeCompare(a.d)).slice(0,4);
+ const pdp=has?`<div class="cb"><div class="eyebrow">Цель на квартал</div><div style="font-family:var(--f-display);font-size:22px;line-height:1.2;margin:4px 0 10px">${H.esc(p.pdp.goal)}</div>
+  <div class="row">${H.bar(p.pdp.pct,p.pdp.pct<25?'ac':'ok')}<b style="font-weight:500;white-space:nowrap">${p.pdp.pct} %</b></div>
+  <div class="ps-h5">Шаги</div>${ms.map((m,i)=>`<button class="ps-ms ${m.d?'done':''}" data-a="ms" data-i="${i}"><span class="bx">${m.d?ic('check'):''}</span><span class="tx">${H.esc(m.t)}</span></button>`).join('')}
+  <div class="ps-h5" style="display:flex;align-items:center">Check-in <span class="sp"></span><button class="btn s ghost" data-a="ci">${ic('plus')}Добавить</button></div>
+  ${cis.map(c=>`<div class="ps-ag"><span class="ps-by">${fmtD(c.d)}</span><span>${H.esc(c.t)} <span class="muted sm">– ${HRP.name(c.by)}</span></span></div>`).join('')||'<div class="muted sm">Check-in ещё не было.</div>'}</div>`
+  :`<div class="cb"><div class="callout">Плана развития нет. Начните с одной цели на квартал – AI предложит черновик из данных CRM, решение за вами и ${first(p)}.</div><div style="margin-top:12px"><button class="btn ac" data-a="pdp-draft">${ic('spark')}Предложить черновик плана</button></div></div>`;
+ const track=`<div class="cb">${lad.levels.map((l,i)=>`<div class="ps-step ${i+1<p.lvl?'past':i+1===p.lvl?'cur':'fut'}"><i>${i+1<p.lvl?ic('check'):'L'+(i+1)}</i><span><b>${l.replace(/^L\d /,'')}</b>${i+1===p.lvl?' <span class="chip ink">сейчас</span>':''}</span></div>`).join('')}
+  ${nx?`<div class="ps-exp"><div class="eyebrow">Что нужно для «${lad.levels[p.lvl].replace(/^L\d /,'')}»</div><ul>${nx.map((x,i)=>`<li>${x} ${i<Math.floor(p.pdp.pct/40)?H.chip('есть доказательства','ok'):H.chip('в работе','line')}</li>`).join('')}</ul></div>`:'<div class="callout ok" style="margin-top:8px">Высший уровень трека – следующий шаг обсуждаем индивидуально.</div>'}
+  <div style="margin-top:12px"><button class="btn s" data-a="growth">${ic('sprout')}Открыть в «Развитии»</button></div></div>`;
+ return `<div class="grid g2">${card('План развития',pdp,{r:H.chip('уже есть в CRM','ok'),cap:'Цели, шаги и check-in уже живут в разделе «Развитие». Новое – связь с 1:1 и ревью.'})}${card(lad.name,track,{r:H.chip('новое','info'),cap:'Трек – про рост и ожидания, не про оплату. Денежная лестница тиров остаётся у админа.',ci:'lock'})}</div>`};
+
+T.notes=p=>{const all=notesOf(p),read=all.filter(HRP.canRead),cats=[...new Set(read.map(n=>n.cat))];if(S.cat!=='all'&&!cats.includes(S.cat))S.cat='all';
+ const sh=S.cat==='all'?all:read.filter(n=>n.cat===S.cat),recs=HRP.recs(p);
+ const form=S.form?`<div class="card" style="margin-bottom:16px"><div class="ch"><h3>Новая заметка · ${first(p)}</h3></div><div class="cb">
+  <div class="grid g2"><div><label class="f">Категория</label><select class="sel" id="ps-cat">${HRP.cats.map(c=>`<option>${c}</option>`).join('')}</select></div><div><label class="f">Привязать к записи CRM</label><select class="sel" id="ps-link"><option value="">Без привязки</option>${recs.map((r,i)=>`<option value="${i}">${r.k} ${r.ref}</option>`).join('')}</select></div></div>
+  <div class="ps-f"><label class="f">Кто видит</label><div class="hrp-vis" id="ps-vis">${HRP.visRadios('hr','ps-v')}</div><div class="hrp-hint" id="ps-hint"></div></div>
+  <div class="ps-f"><label class="f">Текст</label><textarea class="ta" id="ps-t" rows="4" placeholder="Факты и договорённости. Без диагнозов и оценок личности."></textarea></div>
+  <div class="row ps-f" style="justify-content:flex-end"><button class="btn" data-a="nf">Отмена</button><button class="btn pr" data-a="nf-save">${ic('check')}Сохранить</button></div></div></div>`:'';
+ return `<div class="row" style="flex-wrap:wrap;margin-bottom:14px"><div class="seg"><button class="${S.cat==='all'?'on':''}" data-a="cat" data-c="all">Все ${all.length}</button>${cats.map(c=>`<button class="${S.cat===c?'on':''}" data-a="cat" data-c="${c}">${c}</button>`).join('')}</div><span class="sp"></span>${S.form?'':`<button class="btn pr s" data-a="nf">${ic('plus')}Новая заметка</button>`}</div>
+ ${form}
+ ${card('Заметки',sh.map(n=>HRP.canRead(n)?`<div class="ps-note"><div class="row">${H.vis(n.vis)}${H.chip(n.cat,'line')}<span class="muted sm">${HRP.name(n.by)} · ${fy(n.d)}</span>${n.link?linkChip(n.link):''}</div><p>${H.esc(n.t)}</p></div>`:`<div class="ps-note lock">${ic('lock')}<div><b>Личная заметка HR – видит только автор</b><div class="sm">${HRP.name(n.by)} · ${fy(n.d)} · открыть можно только через экстренный доступ с записью в журнал</div></div></div>`).join('')||'<div class="empty">Заметок нет.</div>',{r:H.chip('новое','info'),cap:'Заметку можно привязать к смене, проблеме с букетом или задаче – это контекст из нашей CRM, которого нет в отдельных HR-системах. Сотрудник видит только заметки «Видит сотрудник».',ci:'link'})}`};
+
+T.kudos=p=>{const all=HRP.kudos(),rec=all.filter(k=>k.to===p.id),giv=all.filter(k=>k.from===p.id),cnt=D.values.map(v=>rec.filter(k=>k.val===v).length);
+ for(let j=0;j<Math.max(0,p.kudos-rec.length);j++)cnt[(hs(p.id)+j*j)%4]++;const mx=Math.max(...cnt,1);
+ const row=(k,who)=>`<div class="ps-kd"><div class="top">${HRP.avS(who)}<b style="font-weight:500">${HRP.name(who)}</b><span class="sp" style="flex:1"></span>${H.chip(k.val,'line')}<span class="muted sm">${fmtD(k.d)}</span></div><p>${H.esc(k.t)}</p></div>`;
+ return `<div class="grid g3">
+  <div class="kpi"><div class="k">Благодарностей за всё время</div><div class="v">${p.kudos}</div><div class="d">за 2 недели: ${rec.length}</div></div>
+  <div class="kpi"><div class="k">${HRP.g(p,'Сказал','Сказала')} спасибо другим</div><div class="v">${giv.length+(hs(p.id)%5)}</div><div class="d">за 2 недели: ${giv.length}</div></div>
+  <div class="kpi"><div class="k">Чаще всего за</div><div class="v" style="font-size:26px">${D.values[cnt.indexOf(Math.max(...cnt))]}</div><div class="d">по ценностям Floritta</div></div></div>
+ <div class="grid g2 ps-sec">
+  ${card('Получено',rec.map(k=>row(k,k.from)).join('')||'<div class="empty">За 2 недели благодарностей не было.</div>',{r:`<button class="btn s" data-a="kudos">${ic('heart')}Сказать спасибо</button>`})}
+  <div>${card('По ценностям',`<div class="cb">${D.values.map((v,i)=>`<div class="ps-sk" style="grid-template-columns:130px minmax(0,1fr) 30px"><span>${v}</span>${H.bar(cnt[i]/mx*100,'ac')}<b style="font-weight:500;text-align:right">${cnt[i]}</b></div>`).join('')}</div>`,{r:H.chip('уже есть в CRM','ok'),cap:'Благодарности и признание уже работают в мотивации сотрудников. Баллы и награды здесь не показываем.',ci:'star'})}
+  <div class="ps-sec">${card(HRP.g(p,'Сказал','Сказала')+' спасибо',giv.map(k=>row(k,k.to)).join('')||'<div class="empty">За 2 недели – нет.</div>')}</div></div>
+ </div>`};
+
+T.skills=p=>{const L=LESSONS[p.ladder],dn=Math.round(p.train[0]/p.train[1]*L.length),h=hs(p.id),base=55+h%20,rep=Math.min(97,base+12+h%10);
+ return `<div class="grid g2">
+  ${card('Навыки',`<div class="cb">${Object.entries(p.skills).map(([k,v])=>`<div class="ps-sk"><span>${H.skillNames[k]}</span>${H.bar(v/3*100,v===3?'ok':'')}<small>${v} · ${LEVELS[v]}</small></div>`).join('')}</div>`,{r:H.chip('уже есть в CRM: Матрица навыков','ok'),cap:'Шкала CRM: 0 – нет, 1 – с помощью, 2 – сам(а), 3 – учит других. Уровень ставит наставник на смене.',ci:'check'})}
+  ${card('Обучение',`<div class="cb"><div class="row" style="margin-bottom:8px">${H.bar(p.train[0]/p.train[1]*100,'ok')}<b style="font-weight:500;white-space:nowrap">${p.train[0]} из ${p.train[1]}</b></div>
+   ${L.map((l,i)=>`<div class="ps-ls">${ic(i<dn?'check':i===dn?'clock':'book')}<span class="tx">${l}</span>${i<dn?H.chip('пройден','ok'):i===dn?H.chip('в процессе','info'):H.chip('назначен','line')}</div>`).join('')}</div>`,{r:H.chip('уже есть в CRM','ok'),cap:'Уроки, практика с наставником и сертификаты – из раздела «Обучение».',ci:'book'})}
+ </div>
+ <div class="grid g2 ps-sec">
+  ${card('Сертификаты',`<div class="cb">${CERT[p.ladder].map(([t,d])=>{const n=daysBetween(NOW,dd(d));return `<div class="ps-ls">${ic('file')}<span class="tx">${t}<br><small class="muted">действует до ${fy(d)}</small></span>${n<=30?`<button class="btn s" data-a="cert" data-t="${t}">${ic('clock')}Продлить</button>`:H.chip('действует','ok')}</div>`}).join('')}</div>`)}
+  ${card('Замер знаний',`<div class="cb"><div class="ps-sk" style="grid-template-columns:120px minmax(0,1fr) 48px"><span>Стартовый</span>${H.bar(base)}<b style="font-weight:500">${base} %</b></div><div class="ps-sk" style="grid-template-columns:120px minmax(0,1fr) 48px"><span>Повторный</span>${H.bar(rep,'ok')}<b style="font-weight:500">${rep} %</b></div>
+   <p class="sm muted" style="margin-top:8px">Повторный – 2 нояб, рост +${rep-base} п. Самооценка выше результата в теме «${H.skillNames[Object.keys(p.skills).sort((a,b)=>p.skills[a]-p.skills[b])[0]]}» – хорошая тема для 1:1.</p></div>`,{r:H.chip('уже есть в CRM: Замер знаний','ok')})}
+ </div>`};
+
+T.work=p=>{const a=p.att,o=p.ops,src='Источники: клок-ин и график смен, собранные букеты, проблемы с букетами, оценки рейсов курьеров, задачи.',lb=lockbox('Ставка, расчёты и бонусы – у админа','HR видит часы и смены, но не деньги: ставка, сумма смены, выписки и бонус флористов вырезаются на сервере.');
+ const rl=p.team==='studio'?'Оценка букетов клиентами':p.team==='delivery'?'Оценка доставки':'Оценка сервиса';
+ if(a.shifts==null){const r=RM[p.id]||['—','—','—'],base=o.v/4,mul=[.8,1.1,.9,1.2,1,.7,1.1,1],v=mul.map((m,i)=>p.status==='onboarding'&&i<3?0:Math.round(base/2*m));
+  return `<div class="callout info">${ic('code')} Удалённая работа: табеля и смен нет, смотрим задачи. Активность вне рабочих часов по человеку не показываем – только по команде целиком, и сотрудники об этом знают.</div>
+  <div class="grid g4 ps-sec"><div class="kpi"><div class="k">${o.k}</div><div class="v">${o.v}</div><div class="d">${o.q}</div></div><div class="kpi"><div class="k">В срок</div><div class="v">${r[0]}</div><div class="d">задачи за 8 недель</div></div><div class="kpi"><div class="k">Приняты с первого раза</div><div class="v">${r[1]}</div><div class="d">без возврата на доработку</div></div><div class="kpi"><div class="k">Цикл задачи</div><div class="v" style="font-size:28px">${r[2]}</div><div class="d">медиана, от старта до приёмки</div></div></div>
+  <div class="grid g2 ps-sec">${card('Закрыто задач по неделям',`<div class="cb">${bars(v,WEEKS,{label:'Задачи по неделям'})}</div>`,{r:H.chip('уже есть в CRM','ok')})}${card('Что смотреть на 1:1',`<div class="cb"><ul class="ps-brief" style="padding:0">${[`Возвраты на доработку: ${o.q}`,'Много срочного вне плана – договорённость о «дежурном дне»','Часовой пояс: '+(p.tags.find(t=>/UTC/.test(t))||'—').replace('Удалённо · ','')].map(t=>`<li><span>${t}</span></li>`).join('')}</ul></div>`)}</div>
+  <div class="ps-cap" style="border:0;padding:12px 0 0">${ic('file')}<span>Источники: задачи и журнал их приёмки, обучение, 1:1.</span></div>${lb}`}
+ const hr=hours(p),ow=[.94,1.06,.97,1.03].map(f=>Math.round(o.v/4*f));
+ return `<div class="grid g4"><div class="kpi"><div class="k">Смен за 4 недели</div><div class="v">${a.shifts}</div><div class="d">по графику и клок-ину</div></div>
+  <div class="kpi"><div class="k">Опоздания 5+ мин</div><div class="v" style="color:${a.late>=3?'var(--accent)':'inherit'}">${a.late}</div><div class="d">план смены против факта ${H.chip('новое','info')}</div></div>
+  <div class="kpi"><div class="k">Пропуски</div><div class="v">${a.abs}</div><div class="d">без причин – только HR</div></div>
+  <div class="kpi"><div class="k">Сверх плана</div><div class="v" style="color:${a.ot>=8?'var(--warn)':'inherit'}">+${a.ot}<small>ч</small></div><div class="d">за 4 недели</div></div></div>
+ <div class="grid g2 ps-sec">
+  ${card('Часы по неделям',`<div class="cb">${bars(hr.v,WEEKS,{plan:hr.plan,unit:' ч',label:'Часы по неделям против плана'})}</div>`,{r:H.chip('уже есть в CRM','ok'),cap:'Жёлтым – недели сверх плана. Перегруз: 3 недели подряд сверх плана или отдых между сменами меньше 11 часов.',ci:'alert'})}
+  ${card(o.k+' по неделям',`<div class="cb">${bars(ow,WEEKS.slice(4),{label:o.k})}<div class="row" style="margin-top:10px;flex-wrap:wrap">${H.chip(o.q,'line')}${o.r?H.chip(rl+': '+num(o.r),'ok'):''}</div></div>`,{r:H.chip('уже есть в CRM','ok')})}
+ </div>
+ ${card('Посещаемость за 4 недели',`<div class="cb">${strip(p)}</div>`,{cls:'ps-sec',r:H.chip('новое','info'),cap:'Опоздания сейчас в CRM не считаются, хотя план и факт есть – это новое. Причины пропусков и здоровье здесь не показываем.',ci:'clock'})}
+ <div class="ps-cap" style="border:0;padding:12px 0 0">${ic('file')}<span>${src}</span></div>${lb}`};
+
+T.docs=p=>{const emp=p.type==='employee',tech=p.team==='tech',r=RTW[p.id],li=LIC[p.id];
+ const nb=(()=>{let b='2026'+p.bday.slice(4);if(b<'2026-11-11')b='2027'+p.bday.slice(4);return b})();
+ const na=(()=>{let a='2026'+p.start.slice(4);if(a<'2026-11-11')a='2027'+p.start.slice(4);return a})(),yrs=+na.slice(0,4)-+p.start.slice(0,4);
+ const six=addM(p.start,6),two=addM(p.start,24);
+ const ud=!emp?['Не применяется','не employee – статус проверять по факту работы, а не по ярлыку в договоре','line',0]:two<='2026-11-11'?['Действует','стаж больше 2 лет','ok',0]:six<'2027-01-01'?['С 1 янв 2027','порог снижается с 2 лет до 6 месяцев – стаж уже больше','info',0]:['С '+fy(six),'6 месяцев работы – после 1 янв 2027 это порог защиты. Решение по испытательному – до этой даты','warn',1];
+ const row=(lb,val,sub,chip,act='',hl=0)=>`<div class="ps-row ${hl?'hl':''}"><span class="lb">${lb}</span><span>${val}${sub?`<small>${sub}</small>`:''}</span>${chip||'<span></span>'}${act||'<span></span>'}`+'</div>';
+ const rtw=tech?row('Право на работу в UK','Работает из-за рубежа по договору услуг','проверка права на работу в UK не нужна',H.chip('не требуется','line'))
+  :r?row('Право на работу в UK',r[0],'проверено '+fy(r[1])+' · Irina Petrova · копия хранится весь срок работы + 2 года',r[2]?(daysBetween(NOW,dd(r[2]))<=60?H.chip('повторно '+fmtD(r[2]),'warn'):H.chip('повторно '+fy(r[2]),'line')):H.chip('бессрочно','ok'),r[2]&&daysBetween(NOW,dd(r[2]))<=60?`<button class="btn s" data-a="remind" data-t="Повторная проверка права на работу">${ic('clock')}Напомнить</button>`:`<button class="btn s ghost" data-a="file">${ic('eye')}Копия</button>`,r[2]&&daysBetween(NOW,dd(r[2]))<=60):'';
+ const lic=li?row('Водительские права',li[0],li[1]?'следующая проверка '+fy(li[1]):'для велосипеда проверка не нужна',li[1]?(daysBetween(NOW,dd(li[1]))<=30?H.chip(inDays(li[1]),'warn'):H.chip('действуют','ok')):H.chip('не нужны','line'),li[1]&&daysBetween(NOW,dd(li[1]))<=30?`<button class="btn s" data-a="remind" data-t="Проверка водительских прав">${ic('clock')}Напомнить</button>`:'',li[1]&&daysBetween(NOW,dd(li[1]))<=30):'';
+ const ct={employee:'Трудовой договор',worker:'Договор worker',self:'Самозанятый – договор услуг',contractor:'Договор услуг + NDA'}[p.type];
+ const prob=p.status==='probation'?row('Испытательный срок','до '+fmtD(p.probEnd)+' · '+inDays(p.probEnd),'ревью с наставником и руководителем',H.chip('идёт','info'),`<button class="btn s" data-go="reviews">${ic('clip')}Ревью</button>`,1)
+  :p.status==='onboarding'?row('Онбординг','План 30-60-90 · день '+daysBetween(dd(p.start),NOW),'встреча «день 45» – 13 нояб',H.chip('идёт','info'))
+  :emp?row('Испытательный срок','Пройден '+fy(addM(p.start,3)),'',H.chip('пройден','ok')):row('Испытательный срок','Нет','не employee',H.chip('—','line'));
+ return `${card('Документы',`${rtw}${lic}${row('Договор',ct,'подписан '+fy(p.start)+(p.type==='worker'?' · в приложении':'')+' · контур '+H.type(p),H.chip('подписан','ok'),`<button class="btn s ghost" data-a="file">${ic('eye')}Открыть</button>`)}${prob}${row('Защита от необоснованного увольнения',ud[0],ud[1],H.chip(ud[2]==='warn'?'6 месяцев':ud[2]==='ok'?'есть':ud[2]==='info'?'с 2027':'—',ud[2]),'',ud[3])}`,{r:H.chip('доработать','warn'),cap:'С 1 янв 2027 порог защиты от необоснованного увольнения – 6 месяцев (Employment Rights Act 2025). HR получает напоминание за 4 недели до 6-месячной отметки.',ci:'alert'})}
+ ${card('Даты',`${row('День рождения',fmtD(nb),'год не показываем',H.chip(inDays(nb),nb==='2026-11-11'?'ink':'line'),nb==='2026-11-11'?`<button class="btn s" data-a="bday">${ic('gift')}Открытка</button>`:'')}${row('Годовщина в Floritta',yrs+' '+plural(yrs,'год','года','лет')+' – '+fy(na),'в команде с '+fy(p.start),H.chip(inDays(na),'line'))}`,{cls:'ps-sec',r:H.chip('уже есть в CRM','ok')})}
+ ${lockbox('Реквизиты выплат и налоговые данные – у админа','Банковские реквизиты, налоговые анкеты и данные для HMRC HR не видит и не редактирует.')}`};
+
+/* ---------- notes panel per tab ---------- */
+const NB={
+ overview:['<span class="src">Culture Amp</span><span class="src">Lattice</span><span class="src">Odoo</span><p>Профиль-хаб с лентой событий и 1–3 названными сигналами вместо балла риска; бриф перед 1:1 из прошлых встреч и договорённостей; кнопки-переходы в данные других модулей.</p>','<ul><li>Уже есть: даты найма, обучение, благодарности, планы развития с check-in.</li><li>Новое: история 1:1, HR-заметки, сигналы-правила над клок-ином, графиком смен, проблемами с букетами и задачами.</li></ul>','<span class="pri p1">MVP</span>','AI-бриф без денег, здоровья и анализа тона переписки. Сотрудник может запросить сигналы о себе и оспорить.'],
+ ones:['<span class="src">Lattice</span><span class="src">15Five</span><span class="src">Small Improvements</span><p>Общая повестка, которую пополняют обе стороны, автоперенос незакрытого, договорённости с владельцем и сроком, приватные заметки отдельно от общих.</p>','<ul><li>Сейчас у 1:1 есть только даты, создать встречу из интерфейса нельзя.</li><li>Ближайший аналог – check-in в «Развитии», но без повестки и приватности.</li><li>Пункты «Из CRM» в повестке – смены, переделки, благодарности.</li></ul>','<span class="pri p1">MVP</span>','Итог встречи видят оба; личные заметки HR – отдельно.'],
+ growth:['<span class="src">Lattice Grow</span><span class="src">Leapsome</span><span class="src">progression.fyi</span><p>Трек → уровни → ожидания; план развития – 1–3 цели под компетенции следующего уровня, с доказательствами и отметками на 1:1.</p>','<ul><li>Уже есть: планы развития (до 3 целей), check-in, машинный черновик плана раз в квартал.</li><li>Нет: карьерных треков. Тиры 1–4 – это оплата, для роста не годятся.</li></ul>','<span class="pri p1">MVP</span> план <span class="pri p2">Следующий шаг</span> треки','План видят сотрудник, руководитель и HR.'],
+ notes:['<span class="src">Rotaready</span><span class="src">BambooHR</span><span class="src">Personio</span><p>4 уровня видимости: «только автор» (Rotaready), «только HR» (админ-заметки), «+ руководитель» (BambooHR), «видит сотрудник» (performance notes).</p>','<ul><li>Сейчас заметки есть только по кандидатам и фриланс-курьерам – по сотрудникам нет.</li><li>Привязка к смене, проблеме с букетом или задаче не найдена ни у одного вендора – это наше преимущество.</li></ul>','<span class="pri p1">MVP</span>','Здоровье – особая категория, не шире «HR + основатель». Даже основатель не читает «Только я»: только экстренный доступ с записью в журнал. Админ – переключите роль, чтобы увидеть.'],
+ kudos:['<span class="src">Bitrix24</span><span class="src">Culture Amp</span><p>Благодарности копятся в профиле и привязаны к ценностям компании.</p>','<ul><li>Уже есть: благодарности коллег, мгновенное признание от руководителя, бейджи, похвалы из отзывов Google.</li><li>Денежные награды и фонд командной цели HR не показываем.</li></ul>','<span class="pri p1">MVP</span> – только показать в карточке','Видят сотрудник и команда.'],
+ skills:['<span class="src">Odoo</span><span class="src">Leapsome</span><p>Пройденный курс автоматически обновляет навык в профиле; матрица навыков по ролям.</p>','<ul><li>Сейчас три несвязанные системы: матрица навыков 0–3, матрица станций в «Обучении» с допуском «может обучать» и «Замер знаний» с самооценкой.</li><li>Сертификаты с датой истечения уже есть.</li></ul>','<span class="pri p2">Следующий шаг</span> – свести в одну шкалу','Видят сотрудник, наставник, HR.'],
+ work:['<span class="src">Odoo Planning</span><span class="src">Zoho People</span><span class="src">Microsoft Viva</span><p>План против факта смен, посещаемость прямо в профиле и ревью, сигналы перегруза по часам.</p>','<ul><li>Уже есть: клок-ин и график смен, собранные букеты и переделки, оценки рейсов курьеров, задачи с приёмкой.</li><li>Новое: опоздания – план и факт есть, расчёта нет.</li></ul>','<span class="pri p1">MVP</span>','Ставка, сумма смены, выписки и бонусы для HR вырезаются на сервере: запрет плюс автотест.'],
+ docs:['<span class="src">HiBob</span><span class="src">Breathe HR</span><span class="src">BrightHR</span><p>Карточка права на работу: способ, кто и когда проверил, дата повторной проверки и авто-напоминание.</p>','<ul><li>Уже есть у курьеров: право на работу, права, страховка. Подписание договоров – в приложении.</li><li>Новое: то же для всех, испытательный срок, отметка 6 месяцев.</li><li>Налоговые и платёжные данные – только админ.</li></ul>','<span class="pri p1">MVP</span>','Копии документов – конфиденциально, каждый просмотр пишется в журнал.']};
+
+App.reg('person',{
+ title:'Карточка 360',
+ crumb:(pr)=>P(pr.id)?P(pr.id).name:'Карточка 360',
+ render(el,pr){
+  const p=P(pr.id);
+  if(!p){el.innerHTML=`<div class="empty">Человек не найден.<div style="margin-top:10px"><button class="btn s" data-go="people">К списку людей</button></div></div>`;return}
+  const tab=TABS.some(t=>t[0]===pr.tab)?pr.tab:'overview';
+  if(S.pid!==p.id){S.pid=p.id;S.cat='all';S.form=false;S.tl=false}
+  const draw=()=>{
+   const v=document.getElementById('view'),st=v?v.scrollTop:0,nx=HRP.nextOne(p.id);
+   const cnt={ones:sortedOnes(p).length,notes:notesOf(p).length,kudos:HRP.kudos().filter(k=>k.to===p.id||k.from===p.id).length};
+   el.innerHTML=`<div class="ps-head">${H.av(p,'xl')}
+    <div class="ps-id"><div class="eyebrow">${D.teams[p.team]} · ${H.type(p)}</div><h1>${p.name}</h1>
+     <div class="ps-meta">${p.role} · ${H.lvl(p)} · в Floritta ${H.tenure(p)} · руководитель: ${p.mgr?`<button data-person="${p.mgr}" style="text-decoration:underline;text-decoration-color:var(--light);text-underline-offset:3px">${P(p.mgr).name}</button>`:'Основатель'}</div>
+     <div class="ps-tags">${H.statusChip(p)}${p.tags.map(t=>H.chip(H.esc(t),'line')).join('')}${H.chip(ic('chat')+'Следующий 1:1: '+(nx?fmtD(nx.d)+', '+nx.time:fmtD(p.next))+' · '+inDays(nx?nx.d:p.next),'info')}</div></div>
+    <div class="ps-acts"><button class="btn" data-a="note">${ic('note')}Заметка</button><button class="btn" data-a="one">${ic('chat')}1:1</button><button class="btn" data-a="kudos">${ic('heart')}Благодарность</button><button class="btn" data-a="more">${ic('dots')}Ещё</button></div></div>
+   ${App.role==='admin'?`<div class="callout info" style="margin-bottom:14px">${ic('eye')} Вы смотрите как админ: видно всё, кроме личных заметок HR. Деньги этого человека – в «Расчётах», не в карточке.</div>`:''}
+   <div class="tabs">${TABS.map(([k,t])=>`<button class="${k===tab?'on':''}" data-tabk="${k}">${t}${cnt[k]!=null?`<span class="n">${cnt[k]}</span>`:''}</button>`).join('')}</div>
+   <div class="ps-body">${T[tab](p)}</div>`;
+   if(tab==='notes'&&S.form) HRP.wireVis(el.querySelector('#ps-vis'),el.querySelector('#ps-cat'),el.querySelector('#ps-hint'));
+   if(v) v.scrollTop=st;
+  };
+  const more=()=>{App.modal('Ещё',`<div class="ps-mm"><button class="btn" id="ps-m-rev">${ic('clip')}Запланировать ревью</button><button class="btn" id="ps-m-log">${ic('eye')}Журнал доступа к карточке</button><button class="btn" id="ps-m-dsar">${ic('file')}Выгрузка по запросу сотрудника</button><button class="btn" id="ps-m-team">${ic('users')}Сменить команду или руководителя</button></div>`);
+   document.getElementById('ps-m-rev').onclick=()=>{App.close();App.go('reviews',{id:p.id})};
+   document.getElementById('ps-m-dsar').onclick=()=>{App.close();App.toast(`Выгрузка данных о ${p.name} собрана – проверьте перед отправкой. Срок ответа – 1 месяц`)};
+   document.getElementById('ps-m-team').onclick=()=>{App.close();App.toast('Смена команды – через админа: меняет доступы и график. Запрос отправлен')};
+   document.getElementById('ps-m-log').onclick=()=>{App.close();App.sheet('Журнал доступа',`<p class="muted sm" style="margin-bottom:10px">Кто открывал карточку ${p.name} за 30 дней. Журнал нельзя изменить или удалить.</p>${[['eye','Eva Marin (HR) открыла вкладку «Обзор»','сегодня, 10:12'],['note',`${p.mgr?P(p.mgr).name:'Основатель'} добавил(а) заметку · «+ руководитель»`,'5 нояб, 18:40'],['eye','Основатель открыл вкладку «Работа»','3 нояб, 09:05'],['file','Eva Marin открыла копию договора','28 окт, 14:22'],['shield','Экстренный доступ к личным заметкам – не запрашивался','за 30 дней']].map(([i,t,w])=>`<div class="ps-log">${ic(i)}<div>${t}<small>${w}</small></div></div>`).join('')}`)}};
+  const draft=()=>{const nl=EXP[p.ladder][p.lvl]||[];const opts=p.team==='delivery'?['95 % доставок вовремя 6 недель подряд (сейчас '+p.ops.q.replace(' вовремя','')+')','Освоить маршруты Central вместе с Bogdan','Пройти '+(p.train[1]-p.train[0])+' оставшихся урока трека доставки']:[...nl.slice(0,2),'Пройти '+(p.train[1]-p.train[0])+' оставшихся уроков'];
+   App.sheet('Черновик плана развития',`<div class="hrp-ai" style="border:1px solid var(--accent);padding:10px 12px;margin-bottom:16px;background:var(--accent-bg)">${H.aiLabel()}<div class="sm" style="color:var(--accent-dark);margin-top:4px">Из данных CRM: ${p.signals.map(s=>lc(s.t)).join('; ')||'сигналов нет'}; уровень ${H.lvl(p)}; обучение ${p.train[0]} из ${p.train[1]}. Выберите одну цель и обсудите с ${first(p)} на 1:1.</div></div>
+   ${opts.map((o,i)=>`<label class="ps-dr"><input type="radio" name="ps-dr" value="${H.esc(o)}" ${i?'':'checked'}><span>${H.esc(o)}</span></label>`).join('')}
+   <label class="f" style="margin-top:12px">Формулировка цели</label><textarea class="ta" id="ps-dr-t" rows="3">${H.esc(opts[0])}</textarea>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="ps-dr-ok">${ic('check')}Создать план</button>`);
+   document.getElementById('sheet-b').querySelectorAll('input[name="ps-dr"]').forEach(r=>r.onchange=()=>{document.getElementById('ps-dr-t').value=r.value});
+   document.getElementById('ps-dr-ok').onclick=()=>{const g=document.getElementById('ps-dr-t').value.trim();if(!g){App.toast('Сформулируйте цель');return}
+    p.pdp={goal:g,pct:5};p.signals=p.signals.filter(s=>!/плана развития/.test(s.t));delete S.ms[p.id];App.close();draw();App.toast(`План создан – ${first(p)} увидит его в приложении и сможет поправить`)}};
+  el.onclick=(e)=>{
+   const tb=e.target.closest('[data-tabk]');if(tb&&el.contains(tb)){App.go('person',{id:p.id,tab:tb.dataset.tabk});return}
+   const b=e.target.closest('[data-a]');if(!b||!el.contains(b))return;const a=b.dataset.a;
+   if(a==='note')HRP.noteSheet(p.id,draw);
+   else if(a==='one'){const o=HRP.nextOne(p.id);App.go('oneonones',o?{id:o.id}:{})}
+   else if(a==='kudos')HRP.kudosSheet(p.id,draw);
+   else if(a==='more')more();
+   else if(a==='open-one')App.go('oneonones',{id:b.dataset.id});
+   else if(a==='act'){const ac=D.ones.find(o=>o.id===b.dataset.o).actions[+b.dataset.i];ac.done=!ac.done;draw();App.toast(ac.done?'Договорённость выполнена':'Договорённость снова открыта')}
+   else if(a==='brief-copy')HRP.copy(brief(p).map(x=>'• '+x.t+' ['+x.s+']').join('\n'),'Бриф скопирован');
+   else if(a==='brief-add'){const o=HRP.nextOne(p.id);if(!o){App.toast('Запланированного 1:1 нет – сначала назначьте встречу');return}
+    if(S.added[o.id]){App.toast('Бриф уже в повестке 1:1 '+fmtD(o.d));return}
+    brief(p).slice(1,3).forEach(x=>o.agenda.push({by:'auto',t:x.t}));S.added[o.id]=1;App.toast(`2 пункта добавлены в повестку 1:1 ${fmtD(o.d)}, ${o.time}`)}
+   else if(a==='tl'){S.tl=!S.tl;draw()}
+   else if(a==='cat'){S.cat=b.dataset.c;draw()}
+   else if(a==='nf'){S.form=!S.form;draw()}
+   else if(a==='nf-save'){const t=el.querySelector('#ps-t').value.trim();if(!t){App.toast('Напишите текст заметки');return}
+    const vis=el.querySelector('#ps-vis input:checked').value,li=el.querySelector('#ps-link').value,n={id:'n'+Date.now(),who:p.id,by:HRP.me(),d:'2026-11-11',vis,cat:el.querySelector('#ps-cat').value,t};
+    if(li!=='')n.link=HRP.recs(p)[+li];D.notes.push(n);S.form=false;S.cat='all';draw();App.toast('Заметка сохранена · видимость: '+HRP.VIS[vis][0])}
+   else if(a==='link')App.toast(`«${b.dataset.k} ${b.dataset.r}» откроется в своём разделе CRM – HR видит факты и статусы, без сумм`);
+   else if(a==='ms'){const m=S.ms[p.id][+b.dataset.i];m.d=!m.d;const dn=S.ms[p.id].filter(x=>x.d).length;p.pdp.pct=Math.max(p.pdp.pct,Math.round(dn/S.ms[p.id].length*90));draw();App.toast(m.d?'Шаг отмечен – прогресс плана обновлён':'Отметка снята')}
+   else if(a==='ci'){App.modal('Check-in по плану',`<label class="f">Что изменилось</label><textarea class="ta" id="ps-ci-t" rows="4" placeholder="Коротко: что сделано, что мешает, следующий шаг"></textarea>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="ps-ci-ok">Сохранить</button>`);
+    document.getElementById('ps-ci-ok').onclick=()=>{const t=document.getElementById('ps-ci-t').value.trim();if(!t){App.toast('Напишите пару слов');return}(S.ci[p.id]=S.ci[p.id]||[]).unshift({d:'2026-11-11',t,by:HRP.me()});App.close();draw();App.toast('Check-in сохранён – виден '+first(p)+' и руководителю')}}
+   else if(a==='pdp-draft')draft();
+   else if(a==='growth')App.go('growth',{id:p.id});
+   else if(a==='remind')App.toast(`${b.dataset.t}: напоминание HR и руководителю за 14 дней`);
+   else if(a==='file')App.toast('Документ конфиденциальный – просмотр записан в журнал доступа');
+   else if(a==='cert')App.toast(`«${b.dataset.t}» – урок на продление назначен ${first(p)}`);
+   else if(a==='bday')App.toast(`Открытка для ${first(p)} ушла команде на подпись`);
+   else if(a==='pay')App.toast('«Расчёты» – раздел админа, этот проект его не меняет');
+  };
+  draw();
+ },
+ notes:(pr)=>{const t=TABS.some(x=>x[0]===pr.tab)?pr.tab:'overview',n=NB[t],nm=(TABS.find(x=>x[0]===t)||[])[1];
+  return `<h4>Что это</h4><p>Карточка 360 для HR: рост, общение и работа человека в одном месте, без денег. Сейчас открыта вкладка «${nm}».</p>
+<h4>Зачем HR</h4><p>Подготовиться к 1:1 за 2 минуты и видеть человека целиком: чего хочет, как растёт, как ему сейчас.</p>
+<h4>Откуда идея</h4>${n[0]}<h4>Данные из нашей CRM</h4>${n[1]}<h4>Приоритет</h4><p>${n[2]}</p><h4>Доступы</h4><p>${n[3]}</p>`}
+});
+})();
+</script>

@@ -1,0 +1,174 @@
+<style>
+#s-access .ac-sec{margin-bottom:18px}
+#s-access .ovx{overflow:auto}
+#s-access table.mx{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+#s-access table.mx th{font-weight:400;font-size:10.5px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);height:40px;padding:0 10px;border-bottom:1px solid var(--hair);text-align:center;white-space:nowrap}
+#s-access table.mx th:first-child{text-align:left}
+#s-access table.mx td{border-bottom:1px solid var(--hair);padding:0;height:42px;text-align:center}
+#s-access table.mx td:first-child{text-align:left;padding:6px 10px;min-width:220px}
+#s-access table.mx td:first-child small{display:block;color:var(--grey);font-size:11.5px}
+#s-access table.mx .cl{width:100%;height:42px;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px}
+#s-access table.mx .cl:hover{background:var(--silver)}
+#s-access table.mx .y{color:var(--ok)}
+#s-access table.mx .p{color:var(--warn)}
+#s-access table.mx .n{color:var(--light)}
+#s-access table.mx .L{color:var(--accent-dark)}
+#s-access table.mx .b{color:var(--info)}
+#s-access table.mx .hl{background:var(--accent-bg)}
+#s-access table.mx th.hl{color:var(--accent-dark);background:var(--accent-bg)}
+#s-access table.mx tr.fin td:first-child{border-left:2px solid var(--accent)}
+#s-access .lg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--grey);margin-top:10px}
+#s-access .lg span{display:inline-flex;gap:5px;align-items:center}
+#s-access .lv{border:1px solid var(--hair);padding:14px}
+#s-access .lv p{font-size:12.5px;color:var(--graphite);margin-top:8px}
+#s-access .lv .who{font-size:11.5px;color:var(--grey);margin-top:6px}
+#s-access .demo{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:14px;align-items:start;border:1px dashed var(--light);padding:14px;margin-top:14px}
+#s-access .tr{border:1px solid var(--hair);padding:14px;display:flex;flex-direction:column;gap:6px}
+#s-access .tr h4{font-size:13.5px;font-weight:500;display:flex;gap:8px;align-items:center}
+#s-access .tr p{font-size:12.5px;color:var(--graphite)}
+#s-access .ck{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--hair);cursor:pointer}
+#s-access .ck:last-child{border-bottom:0}
+#s-access .ck .bx{width:18px;height:18px;border:1px solid var(--grey);flex:none;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+#s-access .ck.on .bx{background:var(--ink);border-color:var(--ink);color:#fff}
+#s-access .ck.on b{text-decoration:line-through;color:var(--grey)}
+#s-access .ck b{font-weight:500;font-size:13.5px}
+#s-access .ck small{display:block;color:var(--graphite);font-size:12px;margin-top:2px}
+#s-access .ck .own{margin-left:auto;flex:none}
+#s-access table.t td{height:auto;padding:9px 12px}
+#s-access table.t th{position:static}
+@media (max-width:900px){#s-access .demo{grid-template-columns:1fr}}
+</style>
+<script>
+(()=>{
+window.HRX=window.HRX||{audit:[]};
+const ROLES=[['hr','HR'],['admin','Админ'],['mgr','Руководитель'],['self','Сотрудник о себе'],['peer','Коллеги']];
+// y = да, p = частично, n = нет, L = запрещено на сервере, b = break-glass
+const M=[
+ ['Профиль и контакты','роль, команда, стаж, рабочие контакты',0,[['y','Рабочие контакты, роль, команда, стаж, тип сотрудничества. Без NI, домашнего адреса и банковских данных.'],['y','Всё, включая налоговую анкету (шифр.).'],['p','Рабочие контакты и график своих людей.'],['y','Свой профиль, правит контакты и экстренный контакт.'],['p','Имя, роль и рабочий контакт в приложении.']]],
+ ['Навыки и обучение','матрица навыков, уроки, допуски',0,[['y','Матрица навыков, Журнал обучения, назначение уроков.'],['y','Всё.'],['y','По своим людям; назначает обучение (роль manager).'],['y','Свои уроки, допуски и сертификаты.'],['p','Только «кто может обучать станции» – чтобы найти напарника.']]],
+ ['Планы развития','PDP, цели, check-in',0,[['y','Все планы, цели и check-in; может предложить цель.'],['y','Всё.'],['p','Цели и прогресс своих людей, без заметок HR.'],['y','Свой план; отмечает шаги, просит обратную связь.'],['n','Не видят.']]],
+ ['Общая повестка 1:1','темы, договорённости',0,[['y','Свои 1:1: повестка, договорённости, итоги.'],['p','Договорённости и статус; полный текст – если участник встречи.'],['p','Только встречи, где он участник.'],['y','Свои встречи; добавляет темы заранее.'],['n','Не видят.']]],
+ ['Личные заметки','видимость «Только я»',0,[['y','Только свои – как автор. Чужие личные заметки HR не видит.'],['b','Только break-glass: причина обязательна, доступ на 24 ч, запись в журнал, автор получает уведомление.'],['n','Только свои собственные.'],['n','Не видит в CRM. Но по DSAR заметка о человеке может быть ему выдана – писать факты, не ярлыки.'],['n','Нет.']]],
+ ['Заметки HR','видимость «HR + основатель»',0,[['y','Все заметки с этой видимостью.'],['y','Все заметки с этой видимостью.'],['n','Нет.'],['n','В CRM нет; по DSAR – выдаются.'],['n','Нет.']]],
+ ['Заметки «+ руководитель»','видимость «+ руководитель»',0,[['y','Все.'],['y','Все.'],['y','Только по своим людям.'],['n','В CRM нет; по DSAR – выдаются.'],['n','Нет.']]],
+ ['Ответы пульса','оценка после смены и комментарии',0,[['p','Отдельные ответы и комментарии – никто. HR видит агрегаты от 5 человек и личный тренд оценки 0–10 (сотрудник об этом знает, экран «Что обо мне видит HR»).'],['p','Как HR: агрегаты от 5 и личный тренд, без комментариев по имени.'],['p','Только агрегат своей команды, если в срезе 5+ человек.'],['y','Свои оценки и свой тренд.'],['n','Нет.']]],
+ ['Комментарии eNPS','анонимный опрос',0,[['p','Только анонимно и только если ответили 5+; без срезов по командам.'],['p','Как HR.'],['p','Только балл компании.'],['n','Ответ не хранится под именем – даже свой.'],['n','Нет.']]],
+ ['Рабочие метрики без денег','букеты, доставки вовремя, опоздания, задачи',0,[['y','В штуках, днях и процентах – через отдельное узкое право HR.'],['y','Плюс денежные метрики в «Аналитика → Сотрудники».'],['p','По своей команде.'],['y','Свои – в приложении.'],['n','Нет (командная цель – общая, без имён).']]],
+ ['Документы','право на работу, водительские права',0,[['p','Статус и срок проверки; копии документов – только админ.'],['y','Всё, включая копии.'],['p','«Действует до» для курьеров (права).'],['y','Свои документы и сроки.'],['n','Нет.']]],
+ ['Причины отсутствия / здоровье','диагнозов не храним',0,[['p','Даты и тип: отпуск / болезнь / другое. Без диагнозов и справок.'],['p','Как HR; справки – вне CRM.'],['p','Только даты «не на смене» для графика.'],['y','Свои записи.'],['p','«Не на смене» без причины.']]],
+ ['Ставки, расчёты, бонусы','ставки смен, расчёты работников, бонус флористов',1,[['L','Запрещено на сервере + автотест. Не открывается ни через меню, ни через отчёты, ни через «Спроси у CRM».'],['y','Всё.'],['n','Нет.'],['p','Свои выписки в приложении.'],['n','Нет.']]],
+ ['Kassa и финансы','Kassa, финансы, возвраты, закупочные цены',1,[['L','Запрещено на сервере. Право нельзя выдать роли HR даже галочкой.'],['y','Всё.'],['n','Нет.'],['n','Нет.'],['n','Нет.']]],
+ ['Клиенты и суммы заказов','карточки клиентов, суммы заказов',1,[['L','Запрещено на сервере. В метриках – только штуки: букеты, доставки.'],['y','Всё.'],['p','По правам manager: заказы для работы.'],['p','Свои заказы на доске, без сумм.'],['n','Нет.']]]
+];
+const G={y:['check','Да'],p:['eye','частично'],n:['x','Нет'],L:['lock','Запрещено'],b:['shield','break-glass']};
+const LOG=[
+ {who:'Основатель',what:'Break-glass: личные заметки Nika Fedorova',when:'11 нояб, 14:02',why:'Жалоба – до 12 нояб 14:00',bg:1},
+ {who:'Eva Marin (HR)',what:'Карточка Nika Fedorova → Заметки',when:'11 нояб, 09:12',why:'Подготовка к 1:1'},
+ {who:'Eva Marin (HR)',what:'Попытка: ставка Ruslan Tairov',when:'10 нояб, 17:42',why:'Отказано – финансы',deny:1},
+ {who:'Eva Marin (HR)',what:'Спроси у CRM · HR: «Кого давно не благодарили?»',when:'10 нояб, 17:40',why:'Запрос HR-режима'},
+ {who:'Eva Marin (HR)',what:'Экспорт «Аналитики людей» в CSV',when:'10 нояб, 16:05',why:'Отказано – экспорт для HR выключен',deny:1},
+ {who:'Irina Petrova (руководитель)',what:'Заметки «+ руководитель» – Jake Wilson',when:'30 окт, 18:20',why:'Свой сотрудник'},
+ {who:'Daria Lis',what:'Запрос своих данных (DSAR)',when:'3 нояб, 12:10',why:'Ответ до 3 дек'},
+ {who:'Основатель',what:'Квартальная ревизия доступов',when:'1 окт, 10:00',why:'2 права сняты, 0 лишних ролей'}
+];
+const st={f:'all',vis:'mgr',check:{dpia:false,notice:false,dsar:true,ret:false,idta:false,ai:true,ico:false}};
+const ORDER=['shared','mgr','hr','priv'];
+const cell=(c,i,j)=>{const [g,l]=G[c[0]];return `<button class="cl ${c[0]}" data-r="${i}" data-c="${j}" title="${H.esc(c[1])}">${ic(g)}${c[0]==='p'||c[0]==='b'?`<span>${l}</span>`:''}</button>`};
+const roleCol=()=>App.role==='admin'?1:App.role==='hr'?0:-1;
+
+function matrix(){
+ const hc=roleCol();
+ return `<div class="ovx"><table class="mx"><thead><tr><th>Категория данных</th>${ROLES.map(([k,t],j)=>`<th class="${j===hc?'hl':''}">${t}</th>`).join('')}</tr></thead><tbody>
+ ${M.map((r,i)=>`<tr class="${r[2]?'fin':''}"><td>${r[0]}<small>${r[1]}</small></td>${r[3].map((c,j)=>`<td class="${j===hc?'hl':''}">${cell(c,i,j)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+ <div class="lg">${Object.entries(G).map(([k,[g,l]])=>`<span class="${k}" style="color:${k==='y'?'var(--ok)':k==='p'?'var(--warn)':k==='L'?'var(--accent-dark)':k==='b'?'var(--info)':'var(--grey)'}">${ic(g)}${l}</span>`).join('')}<span>Красная черта слева – деньги</span><span>Клик по ячейке – правило</span></div>`;
+}
+function cellSheet(i,j){
+ const r=M[i],c=r[3][j],[g,l]=G[c[0]];
+ const chipK={y:'ok',p:'warn',n:'line',L:'bad',b:'info'}[c[0]];
+ let extra='';
+ if(c[0]==='L')extra=`<div class="lockbox" style="margin-top:14px">${ic('lock')}<div><b style="font-weight:500;color:var(--ink)">Как закрыто</b><br>Запрет на сервере для роли HR, проверка на каждом адресе и отдельные HR-выборки без денежных данных. Автотест обходит все страницы и запросы приложения и падает, если HR получает хоть одну цифру о деньгах.</div></div>`;
+ if(c[0]==='b')extra=`<div class="callout info" style="margin-top:14px">Break-glass – исключение, а не способ работы: причина обязательна, срок 24 ч, автор заметки получает уведомление, запись видна в журнале.</div><div style="margin-top:12px"><button class="btn ${App.role==='admin'?'pr':''}" id="ac-bg" ${App.role==='admin'?'':'disabled'}>${ic('shield')}Запросить break-glass</button>${App.role==='admin'?'':'<div class="muted sm" style="margin-top:6px">Доступно только основателю. Переключитесь на роль «Админ».</div>'}</div>`;
+ if(r[0].includes('Личные')||r[0].includes('Заметки'))extra+=`<p class="sm muted" style="margin-top:12px">DSAR: всё, что написано о человеке, может быть выдано ему. Пишите факты и договорённости, не ярлыки и диагнозы.</p>`;
+ App.sheet(r[0],`<div class="eyebrow">${ROLES[j][1]}</div><div class="row" style="margin:8px 0 12px">${H.chip(ic(g)+l,chipK)}</div><p>${c[1]}</p>
+ <div class="hr-line"></div><table class="t"><tbody><tr><td class="muted sm">Где проверяется</td><td class="sm">${c[0]==='L'?'Сервер: запрет + автотест':c[0]==='n'?'Сервер: запрос будет отклонён':'Сервер: правило по роли и связи «руководитель – сотрудник»'}</td></tr><tr><td class="muted sm">В журнале</td><td class="sm">${['p','y','b'].includes(c[0])&&j<3?'Да – каждое открытие':c[0]==='L'||c[0]==='n'?'Да – каждая попытка':'Нет'}</td></tr></tbody></table>${extra}`);
+ const b=document.getElementById('ac-bg');if(b)b.addEventListener('click',breakGlass);
+}
+function breakGlass(){
+ App.modal('Break-glass: личные заметки',`<p class="sm muted" style="margin-bottom:12px">Доступ к заметкам «Только я» другого автора. Автор получит уведомление, запись попадёт в журнал.</p>
+ <label class="f">Чьи заметки</label><select class="sel" id="bg-who">${D.people.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select>
+ <label class="f" style="margin-top:12px">Причина</label><select class="sel" id="bg-why"><option>Жалоба</option><option>Расследование нарушения</option><option>Запрос DSAR</option><option>Безопасность человека</option></select>
+ <label class="f" style="margin-top:12px">Комментарий</label><textarea class="ta" id="bg-cm" placeholder="Обязательно: что именно и зачем"></textarea>
+ <div class="callout" style="margin-top:12px">Доступ на 24 часа, только чтение.</div>`,`<button class="btn" data-close>Отмена</button><button class="btn pr" id="bg-ok">${ic('shield')}Открыть на 24 ч</button>`);
+ document.getElementById('bg-ok').addEventListener('click',()=>{const cm=document.getElementById('bg-cm').value.trim();if(!cm){App.toast('Комментарий обязателен');return}
+  const p=P(document.getElementById('bg-who').value),w=document.getElementById('bg-why').value;
+  HRX.audit.unshift({who:'Основатель',what:'Break-glass: личные заметки '+p.name,when:'сегодня, 10:31',why:w+' – до 12 нояб 10:31',bg:1});
+  App.close();App.toast('Доступ открыт на 24 ч – автор уведомлён, запись в журнале');if(App.cur==='access')App.go('access',{},false)});
+}
+function logRows(){
+ const all=[...HRX.audit,...LOG].filter(x=>st.f==='all'||(st.f==='deny'&&x.deny)||(st.f==='bg'&&x.bg));
+ return all.length?all.map(x=>`<tr><td><b style="font-weight:500">${H.esc(x.who)}</b></td><td>${H.esc(x.what)}</td><td class="num" style="white-space:nowrap">${x.when}</td><td>${x.deny?H.chip(ic('lock')+H.esc(x.why),'bad'):x.bg?H.chip(ic('shield')+H.esc(x.why),'info'):`<span class="sm muted">${H.esc(x.why)}</span>`}</td></tr>`).join(''):`<tr><td colspan="4" class="empty">Нет записей</td></tr>`;
+}
+function visDemo(){
+ const i=ORDER.indexOf(st.vis);
+ return `<div><div class="row" style="flex-wrap:wrap;gap:8px"><span class="eyebrow">Пример</span>${H.vis(st.vis)}<span class="muted sm">Eva Marin · 5 нояб · Nika Fedorova</span></div><p style="margin-top:8px;font-size:13.5px">Переделка свадебного букета – не та гамма. Заказ был срочный, взяла сверх своей смены.</p></div>
+ <div><label class="f">Видимость</label><select class="sel" id="ac-vis">${ORDER.map((k,j)=>`<option value="${k}" ${k===st.vis?'selected':''} ${j<i?'disabled':''}>${['Видит сотрудник','+ руководитель','HR + основатель','Только я'][j]}${j<i?' – нельзя расширить':''}</option>`).join('')}</select><div class="muted sm" style="margin-top:6px">После сохранения – только сузить.</div><button class="btn s ghost" id="ac-vreset" style="margin-top:6px">Сбросить пример</button></div>`;
+}
+function checklist(){
+ const I=[
+  ['dpia','DPIA до запуска','Оценка рисков: заметки, сигналы, пунктуальность, AI-сводки. Если не делаем – письменно, почему.','Основатель'],
+  ['notice','Уведомление сотрудникам о данных','Простым языком: что собираем, зачем, кто видит, какие сигналы считаем (ICO: мониторинг – только открыто).','HR'],
+  ['dsar','Процесс DSAR','Срок – месяц. Заметки о человеке выдаются ему – писать факты; данные третьих лиц – закрыть.','HR'],
+  ['ret','Сроки хранения','Заметки 1:1 – решить (предложение: 2 года после ухода); записи об отпусках – 6 лет (ERA 2025, с 06.04.2026).','Основатель'],
+  ['idta','IDTA для HR вне UK','Если HR работает из страны вне списка adequacy UK (например, Грузия) – нужен IDTA или Addendum к SCC + оценка рисков трансфера.','Основатель'],
+  ['ai','AI: гарантии по ст. 22A–22D','Сотрудник знает про AI, может оспорить, решает человек. Без распознавания эмоций (EU AI Act, ст. 5).','HR + разработка'],
+  ['ico','Договор с HR-подрядчиком','Конфиденциальность, обработка данных по поручению, возврат и удаление данных при окончании.','Основатель']
+ ];
+ const done=I.filter(x=>st.check[x[0]]).length;
+ return `<div class="row" style="margin-bottom:8px">${H.bar(done/I.length*100,'ok')}<span class="sm muted" style="white-space:nowrap">${done} из ${I.length}</span></div>`+I.map(([k,t,d,o])=>`<div class="ck ${st.check[k]?'on':''}" data-ck="${k}"><span class="bx">${st.check[k]?ic('check'):''}</span><div><b>${t}</b><small>${d}</small></div><span class="own">${H.chip(o,'line')}</span></div>`).join('');
+}
+
+App.reg('access',{
+ title:'Доступы и журнал',
+ render(el){
+  const hr=App.role==='hr';
+  el.innerHTML=`<div class="scr-h"><div><div class="eyebrow">Контроль</div><h1>Доступы и журнал</h1><div class="sub">Кто что видит в HR-данных, и кто что открывал. Роли меняет только основатель.</div></div>
+  <div class="acts"><button class="btn" data-toast="${hr?'Управлять ролями может только основатель – урок Personio':'Роли и права – «Настройки → Команда»'}">${ic('users')}Роли и права</button></div></div>
+  ${App.role==='admin'?`<div class="callout info ac-sec">Вы смотрите как админ: ваша колонка выделена. Личные заметки других авторов – только через break-glass.</div>`:`<div class="callout ac-sec">Вы смотрите как HR: ваша колонка выделена. Деньги закрыты на сервере – их нельзя открыть ни отчётом, ни запросом.</div>`}
+  <div class="card ac-sec"><div class="ch"><h3>Матрица доступа</h3><div class="r">${H.chip('новое','info')}</div></div><div class="cb" id="ac-mx">${matrix()}</div></div>
+  <div class="card ac-sec"><div class="ch"><h3>Уровни видимости заметок</h3><div class="r">${H.chip('новое','info')}</div></div><div class="cb">
+   <div class="grid g4">${[
+    ['priv','Только автор. Даже основатель – только break-glass с причиной, на 24 ч, в журнале.','Для черновых наблюдений до 1:1'],
+    ['hr','HR и основатель. Руководитель не видит.','Риски, конфиденциальные запросы'],
+    ['mgr','HR, основатель и прямой руководитель человека.','Рабочие эпизоды: смены, заказы'],
+    ['shared','Сотрудник видит в приложении.','Договорённости 1:1, похвала']
+   ].map(([k,t,w])=>`<div class="lv">${H.vis(k)}<p>${t}</p><div class="who">${w}</div></div>`).join('')}</div>
+   <div class="demo" id="ac-demo">${visDemo()}</div></div></div>
+  <div class="card ac-sec"><div class="ch"><h3>Журнал доступа</h3><div class="r"><div class="seg" id="ac-f"><button data-f="all" class="${st.f==='all'?'on':''}">Все</button><button data-f="deny" class="${st.f==='deny'?'on':''}">Отказы</button><button data-f="bg" class="${st.f==='bg'?'on':''}">Break-glass</button></div>
+   <button class="btn s" id="ac-exp" ${hr?'disabled title="Экспорт журнала для HR выключен"':''}>${ic('file')}Экспорт</button></div></div>
+   <div class="ovx"><table class="t"><thead><tr><th>Кто</th><th>Что открыл</th><th>Когда</th><th>Причина / итог</th></tr></thead><tbody id="ac-log">${logRows()}</tbody></table></div>
+   <div class="cb muted sm">Журнал нельзя править или удалить. ${hr?'HR не выгружает журнал и данные – только основатель.':'Хранится 2 года.'}</div></div>
+  <div class="ac-sec"><div class="eyebrow" style="margin-bottom:8px">Технические правила</div><div class="grid g3">${[
+   ['lock','Финансы закрыты на сервере','Запрет на сервере + автотест по всем страницам и запросам, а не только скрытый пункт меню.'],
+   ['users','HR не управляет ролями','Право менять роли открывает зарплаты – урок Personio. Роли меняет только основатель.'],
+   ['file','Отчёты не обходят права','Экспорт, «Спроси у CRM», уведомления и письма проходят те же проверки прав, что и экраны.'],
+   ['chart','Аналитика HR – отдельное узкое право','Только люди и рабочие метрики. Общее право на аналитику (в нём бонусы, маржа, суммы) роли HR не выдаётся.'],
+   ['clock','Ревизия доступов раз в квартал','Основатель подтверждает список прав; лишнее снимается. Следующая – 1 янв.']
+  ].map(([i,t,d])=>`<div class="tr"><h4>${ic(i)}${t}</h4><p>${d}</p></div>`).join('')}<div class="tr"><h4>${ic('code')}Отдельная роль HR</h4><p>Новая роль с узким доступом «только свой раздел» – по образцу роли бухгалтера, которая видит только Kassa и свои задачи.</p></div></div></div>
+  <div class="card ac-sec"><div class="ch"><h3>UK: что нужно до запуска</h3><div class="r">${H.chip('не юрконсультация','line')}</div></div><div class="cb" id="ac-ck">${checklist()}</div></div>`;
+  el.querySelector('#ac-mx').addEventListener('click',e=>{const b=e.target.closest('.cl');if(b)cellSheet(+b.dataset.r,+b.dataset.c)});
+  el.querySelector('#ac-f').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;st.f=b.dataset.f;el.querySelectorAll('#ac-f button').forEach(x=>x.classList.toggle('on',x===b));el.querySelector('#ac-log').innerHTML=logRows()});
+  el.querySelector('#ac-exp').addEventListener('click',()=>App.toast('Журнал выгружен (CSV) – выгрузка тоже записана в журнал'));
+  el.querySelector('#ac-ck').addEventListener('click',e=>{const c=e.target.closest('[data-ck]');if(!c)return;st.check[c.dataset.ck]=!st.check[c.dataset.ck];el.querySelector('#ac-ck').innerHTML=checklist()});
+  const bindDemo=()=>{el.querySelector('#ac-vis').addEventListener('change',e=>{const v=e.target.value;if(ORDER.indexOf(v)<ORDER.indexOf(st.vis)){App.toast('Расширить нельзя – создайте новую заметку');return}st.vis=v;el.querySelector('#ac-demo').innerHTML=visDemo();bindDemo();App.toast('Видимость сужена – изменение в журнале')});
+   el.querySelector('#ac-vreset').addEventListener('click',()=>{st.vis='mgr';el.querySelector('#ac-demo').innerHTML=visDemo();bindDemo()})};
+  bindDemo();
+ },
+ notes:`<h4>Что это</h4><p>Матрица «категория данных × роль», уровни видимости заметок, журнал доступа и чек-лист UK до запуска.</p>
+<h4>Зачем HR</h4><p>HR – внешний подрядчик: людям важно знать, что она видит и чего не видит. Это основа доверия к 1:1 и заметкам.</p>
+<h4>Откуда идея</h4><p><span class="src">HiBob</span><span class="src">Personio</span><span class="src">Rippling</span><span class="src">Lattice</span><span class="src">15Five</span><span class="src">ICO</span></p><p>Три оси: чьи данные × какие поля × какие действия. Компенсация – отдельный домен; приватные заметки не видят даже админы.</p>
+<h4>Данные из нашей CRM</h4><ul><li>Отдельной роли HR в CRM пока нет – вводим новую роль и набор HR-прав.</li><li>Закрыть: финансы и Kassa, возвраты, закупочные цены, общее право на аналитику (в нём деньги), расчёты работников, бонус флористов, ставки смен.</li><li>Журнал HR-действий уже ведётся – добавить запись каждого чтения.</li></ul>
+<h4>Доступы</h4><p>Пульс: отдельные ответы и комментарии не видит никто. HR видит личный тренд оценки, чтобы рано заметить усталость, – сотрудник знает об этом из приложения.</p>
+<h4>Приоритет</h4><p><span class="pri p1">MVP</span> до запуска роли</p>`
+});
+})();
+</script>
