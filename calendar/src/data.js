@@ -45,7 +45,7 @@ function peaks(y){
     list.push({key:'mothering-'+y,title:'Mothering Sunday',dates:[ms],blackout:[addDays(ms,-14),addDays(ms,3)],cutoffs:[{d:addDays(ms,-1),t:'Последний день приёма заказов'}]});
     list.push({key:'women-'+y,title:'8 марта',dates:[w8],blackout:[addDays(w8,-14),addDays(w8,3)],cutoffs:[{d:D(y,3,7),t:'Последний день приёма заказов'}]});
   }
-  list.push({key:'christmas-'+y,title:'Рождество',dates:[D(y,12,25)],blackout:[D(y,12,14),D(y,12,24)],cutoffs:[{d:D(y,12,18),t:'Cut-off: доставка по стране'},{d:D(y,12,24),t:'Cut-off: доставка по Лондону'}]});
+  list.push({key:'christmas-'+y,title:'Рождество',dates:[D(y,12,25)],blackout:[D(y,12,14),D(y,12,28)],cutoffs:[{d:D(y,12,18),t:'Cut-off: доставка по стране'},{d:D(y,12,24),t:'Cut-off: доставка по Лондону'}]});
   list.forEach(p=>{p.milestones=MS_TPL.map(m=>({...m,d:addDays(p.dates[0],m.off),id:p.key+':'+m.k}))});
   return list;
 }
