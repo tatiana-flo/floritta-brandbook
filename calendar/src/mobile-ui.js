@@ -207,10 +207,10 @@ function openRef(r){
   })[r.type](r);
 }
 function shMeeting(r){
-  const s=SERIES.find(x=>x.id===r.series),d0=fromIso(r.date),sug=blackoutOf(d0)?suggestMove(d0):null,mv=S.moves[r.id],d=mv==='moved'?sug:d0,att=S.attend[r.id]||(S.attend[r.id]={});
+  const s=SERIES.find(x=>x.id===r.series),d0=fromIso(r.date),sug=busyOf(d0)?suggestMove(d0):null,mv=S.moves[r.id],d=mv==='moved'?sug:d0,att=S.attend[r.id]||(S.attend[r.id]={});
   shMeeting.last=r;
   sheet({eyebrow:`${s.aud} · ${s.ruleText.toLowerCase()}`,title:s.title,body:`
-    ${sug&&!mv?`<div class="callout" style="margin-bottom:16px"><b>Встреча попала на пиковое окно.</b><br>Предложен перенос на ${fmtDW(sug)}, ${s.time}. ${lead()?'':'Решение принимает HR или владелец.'}${lead()?`<div style="display:flex;gap:8px;margin-top:10px"><button class="btn --xs" data-move="moved" data-id="${r.id}">Перенести</button><button class="btn --xs --ghost" data-move="kept" data-id="${r.id}">Оставить</button></div>`:''}</div>`:''}
+    ${sug&&!mv?`<div class="callout" style="margin-bottom:16px"><b>Встреча попала на неделю пика.</b><br>Предложен перенос на ${fmtDW(sug)}, ${s.time}. ${lead()?'':'Решение принимает HR или владелец.'}${lead()?`<div style="display:flex;gap:8px;margin-top:10px"><button class="btn --xs" data-move="moved" data-id="${r.id}">Перенести</button><button class="btn --xs --ghost" data-move="kept" data-id="${r.id}">Оставить</button></div>`:''}</div>`:''}
     <dl class="kv"><dt>Когда</dt><dd><b>${fmtDW(d)}</b><br>${s.time}–${hm(mins(s.time)+s.dur)} по Лондону</dd><dt>Где</dt><dd>${s.format}</dd><dt>Ведёт</dt><dd>${s.host}</dd>${s.paid?'<dt>Оплата</dt><dd>Оплачивается. На смене – в студии, вне смены – онлайн, время попадает в график часами.</dd>':''}</dl>
     <button class="btn --secondary --block" style="margin-top:16px" data-toast="Открывается Google Meet">Подключиться к Meet</button>
     <div class="hr"></div><span class="caps">Повестка</span><pre class="dg">${AGENDA}</pre>
