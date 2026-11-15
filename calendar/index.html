@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Floritta CRM · календарь команды</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../crm/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS (Floritta Brandbook 2026-11 · site palette · square) ============ */
+:root{
+  --paper:#fdfdfd; --ink:#1e1a17; --graphite:#5c5450; --grey:#8b8378; --light:#cecece; --hair:#e6e6e6; --silver:#f2f2f4;
+  --accent:#b4595f; --accent-dark:#9a474c; --accent-bg:#f3e1e1;
+  --sel:#1e1a17; --sel-h:#5c5450; --on-sel:#fff;
+  --f-display:"Cormorant Infant",Georgia,serif; --f-body:"Jost","Helvetica Neue",Arial,sans-serif;
+  --btn-h:40px; --btn-h-s:32px; --row-h:44px; --input-h:36px; --sidebar-w:232px; --topbar-h:56px; --notes-w:330px; --pad:24px;
+  --ls-btn:.12em; --ls-caps:.04em; --ls-eyebrow:.14em;
+  --m-fast:160ms; --m-base:280ms; --m-ease:cubic-bezier(.22,1,.36,1);
+  --shadow-sheet:-12px 0 40px rgba(30,26,23,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;border-radius:0}
+html,body{height:100%}
+body{font-family:var(--f-body);font-weight:300;font-size:14px;line-height:1.45;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;overflow:hidden}
+b,strong{font-weight:500}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+input,select,textarea{font:inherit;color:inherit}
+svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.s{width:14px;height:14px}
+.num{font-variant-numeric:tabular-nums}
+
+/* ============ LAYOUT ============ */
+.app{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr) var(--notes-w);height:100vh}
+.app.no-notes{grid-template-columns:var(--sidebar-w) minmax(0,1fr) 0}
+.app.no-notes .notes{display:none}
+.sidebar{border-right:1px solid var(--hair);display:flex;flex-direction:column;min-height:0}
+.sidebar .logo{height:var(--topbar-h);display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--hair);flex:none}
+.sidebar .logo img{height:18px}
+.sidebar nav{flex:1;overflow-y:auto;padding:12px 10px;scrollbar-width:none}
+.sb-group{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);padding:16px 10px 6px}
+.sb-item{display:flex;align-items:center;gap:12px;width:100%;height:36px;padding:0 10px;font-size:14px;color:var(--graphite)}
+.sb-item:hover{background:var(--silver);color:var(--ink)}
+.sb-item.on{background:var(--sel);color:var(--on-sel)}
+.sb-foot{border-top:1px solid var(--hair);padding:12px 14px;display:flex;align-items:center;gap:10px;flex:none}
+.sb-foot b{display:block;font-size:13px}.sb-foot small{font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.06em}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;overflow:clip}
+.topbar{height:var(--topbar-h);display:flex;align-items:center;gap:12px;padding:0 var(--pad);border-bottom:1px solid var(--hair);flex:none}
+.topbar .ttl{font-family:var(--f-display);font-weight:300;font-size:28px;line-height:1;letter-spacing:.01em;white-space:nowrap}
+.sp{flex:1}
+.roles{display:inline-flex;border:1px solid var(--light);height:var(--btn-h-s)}
+.roles button{padding:0 12px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border-right:1px solid var(--light);white-space:nowrap}
+.roles button:last-child{border-right:0}
+.roles button.on{background:var(--sel);color:var(--on-sel)}
+.subnav{display:flex;gap:4px;padding:0 var(--pad);border-bottom:1px solid var(--hair);flex:none;overflow-x:auto;scrollbar-width:none}
+.subnav button{height:44px;padding:0 12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.subnav button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.view{flex:1;min-height:0;overflow-y:auto;padding:var(--pad);scrollbar-width:thin;scrollbar-color:var(--light) transparent}
+.ib{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.ib:hover{background:var(--silver)}
+
+/* ============ NOTES ============ */
+.notes{border-left:1px solid var(--hair);background:var(--silver);overflow:auto;min-width:0}
+.notes .nh{height:var(--topbar-h);display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--hair);position:sticky;top:0;background:var(--silver);z-index:2}
+.notes .nh b{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:400}
+.notes .nb{padding:18px 20px 40px;font-size:13px;color:var(--graphite)}
+.notes h4{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--ink);font-weight:500;margin:18px 0 6px}
+.notes h4:first-child{margin-top:0}
+.notes p{margin:0 0 8px}.notes ul{margin:0 0 8px 16px}.notes li{margin:0 0 4px}
+.notes .st{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;margin-right:4px;border:1px solid var(--light);background:var(--paper);color:var(--graphite)}
+.notes .st.ink{background:var(--ink);border-color:var(--ink);color:#fff}
+.notes-toggle{position:fixed;right:16px;bottom:16px;z-index:40;height:32px;padding:0 14px;background:var(--ink);color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:none;align-items:center}
+.app.no-notes ~ .notes-toggle{display:inline-flex}
+
+/* ============ COMPONENTS (as crm/src/shell.html) ============ */
+.h1{font-family:var(--f-display);font-weight:300;font-size:32px;line-height:1.05;letter-spacing:.01em}
+.h2{font-family:var(--f-display);font-weight:300;font-size:26px;line-height:1.08}
+.h3{font-family:var(--f-display);font-weight:400;font-size:21px;line-height:1.15}
+.h4{font-weight:500;font-size:15px;line-height:1.3}
+.caps{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;font-weight:400;color:var(--grey)}
+.sm{font-size:13px}.xs{font-size:12px}.muted{color:var(--grey)}.soft{color:var(--graphite)}.accent{color:var(--accent)}
+.row{display:flex;align-items:center;gap:12px}.col{display:flex;flex-direction:column;gap:8px}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb8{margin-bottom:8px}.mb16{margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:var(--btn-h);padding:0 18px;font-size:13px;font-weight:400;letter-spacing:var(--ls-btn);text-transform:uppercase;border:1px solid var(--sel);background:var(--sel);color:var(--on-sel);transition:background var(--m-fast),border-color var(--m-fast);white-space:nowrap;text-align:center}
+.btn:hover{background:var(--sel-h);border-color:var(--sel-h)}
+.btn.--secondary{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.--secondary:hover{background:var(--silver)}
+.btn.--ghost{background:transparent;border-color:var(--light);color:var(--ink)}
+.btn.--ghost:hover{border-color:var(--sel);background:transparent}
+.btn.--sm{height:var(--btn-h-s);padding:0 12px;font-size:11.5px;letter-spacing:.1em}
+.btn.--block{width:100%}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.textbtn{font-size:12px;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ink);border-bottom:1px solid var(--light);padding-bottom:1px}
+.textbtn:hover{border-color:var(--ink)}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label,.lbl{font-size:12px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey)}
+.input,.select,.textarea{height:var(--input-h);width:100%;padding:0 10px;border:1px solid var(--light);background:var(--paper);color:var(--ink);font-size:14px;outline:none;font-weight:300}
+.textarea{height:auto;min-height:72px;padding:8px 10px;resize:vertical;line-height:1.4}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--sel)}
+.check{display:inline-flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;user-select:none}
+.check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1px solid var(--light);background:var(--paper);display:grid;place-items:center;flex:none}
+.check input:checked{background:var(--sel);border-color:var(--sel)}
+.check input:checked::after{content:"";width:10px;height:6px;border-left:1.5px solid var(--paper);border-bottom:1.5px solid var(--paper);transform:translateY(-1px) rotate(-45deg)}
+.seg-ctl{display:inline-flex;border:1px solid var(--light);height:var(--btn-h-s)}
+.seg-ctl button{padding:0 12px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border-right:1px solid var(--light);white-space:nowrap}
+.seg-ctl button:last-child{border-right:0}
+.seg-ctl button.on{background:var(--sel);color:var(--on-sel)}
+.seg-ctl button:hover:not(.on){background:var(--silver)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:1px solid var(--light);font-size:13px;color:var(--ink);white-space:nowrap;background:var(--paper)}
+.chip:hover{border-color:var(--grey)}
+.chip.on{background:var(--sel);border-color:var(--sel);color:var(--on-sel)}
+.chip .n{font-size:11px;color:var(--grey)}.chip.on .n{color:var(--on-sel);opacity:.85}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;height:20px;padding:0 7px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--silver);color:var(--graphite);font-weight:400;white-space:nowrap}
+.tag.--ink{background:var(--sel);color:var(--on-sel)}.tag.--accent{background:var(--accent);color:#fff}.tag.--line{background:transparent;box-shadow:inset 0 0 0 1px var(--light)}
+.tag.--soft{background:var(--accent-bg);color:var(--accent-dark)}
+.card{border:1px solid var(--hair);background:var(--paper);padding:16px;min-width:0}
+.card .caps{display:block;margin-bottom:6px}
+.callout{border-left:2px solid var(--accent);padding:10px 14px;background:var(--accent-bg);color:var(--accent-dark);font-size:13px}
+.callout.--plain{border-color:var(--ink);background:var(--silver);color:var(--graphite)}
+.kv{display:grid;grid-template-columns:130px minmax(0,1fr);gap:6px 14px;font-size:13.5px}
+.kv dt{color:var(--grey)}.kv dd{min-width:0}
+.hr{height:1px;background:var(--hair);margin:16px 0}
+.avatar{width:28px;height:28px;background:var(--silver);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex:none;border:1px solid var(--hair)}
+.avatar.--l{width:40px;height:40px;font-size:14px}
+.scrim{position:absolute;inset:0;background:rgba(30,26,23,.28);z-index:50;opacity:0;pointer-events:none;transition:opacity var(--m-base) var(--m-ease)}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;top:0;right:0;bottom:0;width:560px;max-width:100%;background:var(--paper);z-index:51;display:flex;flex-direction:column;transform:translateX(100%);transition:transform var(--m-base) var(--m-ease);box-shadow:var(--shadow-sheet)}
+.sheet.on{transform:none}
+.sheet .sh-head{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--hair);flex:none;min-height:60px}
+.sheet .sh-body{overflow-y:auto;padding:20px;flex:1;min-height:0}
+.sheet .sh-foot{padding:12px 20px;border-top:1px solid var(--hair);flex:none;display:flex;gap:8px;align-items:center}
+.sh-tabs{display:flex;gap:4px;padding:0 20px;border-bottom:1px solid var(--hair);overflow-x:auto;scrollbar-width:none;flex:none}
+.sh-tabs button{height:40px;padding:0 10px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.sh-tabs button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;font-size:13px;z-index:60;transition:all var(--m-base) var(--m-ease);pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ============ CALENDAR ============ */
+.cal-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.cal-head .per{font-family:var(--f-display);font-weight:300;font-size:26px;min-width:210px}
+.cal-layers{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.banner{display:flex;align-items:center;gap:14px;border:1px solid var(--accent);padding:12px 16px;margin-bottom:16px;flex-wrap:wrap}
+.banner .big{font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1;color:var(--accent)}
+.my{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.day{border-top:1px solid var(--hair);display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:12px 0}
+.day:first-child{border-top:0;padding-top:0}
+.day .d b{display:block;font-family:var(--f-display);font-weight:300;font-size:30px;line-height:1}
+.day .d small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.day.today .d b{color:var(--ink)}.day.today .d small{color:var(--ink);font-weight:500}
+.day.peak .d b{color:var(--accent)}
+.ev{display:flex;align-items:center;gap:10px;min-height:36px;padding:5px 10px;width:100%;border-left:2px solid var(--light);background:var(--paper)}
+.ev+.ev{margin-top:4px}
+.ev:hover{background:var(--silver)}
+.ev .tm{width:86px;flex:none;font-size:12.5px;color:var(--graphite);font-variant-numeric:tabular-nums}
+.ev .tx{flex:1;min-width:0}
+.ev .tx b{display:block;font-weight:400;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev .tx small{display:block;font-size:12px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev svg.i{color:var(--graphite)}
+/* layers differ by ink / silver tone, icon and label – not by colour; accent only for peak, blackout, late */
+.ev.l-meeting{border-left-color:var(--ink)}
+.ev.l-booking{border-left-color:var(--ink);background:var(--ink);color:#fff}
+.ev.l-booking:hover{background:var(--graphite)}
+.ev.l-booking .tm,.ev.l-booking .tx small,.ev.l-booking svg.i{color:#e6e6e6}
+.ev.l-booking.busy{background:var(--paper);color:var(--grey);border:1px dashed var(--light);border-left:2px solid var(--light)}
+.ev.l-booking.busy .tm,.ev.l-booking.busy svg.i{color:var(--grey)}
+.ev.l-delivery{background:var(--silver);border-left-color:var(--graphite)}
+.ev.l-delivery:hover{background:var(--hair)}
+.ev.l-shift{border-left-color:var(--light);color:var(--graphite)}
+.ev.l-leave{border:1px dashed var(--light);border-left:2px solid var(--grey);color:var(--graphite)}
+.ev.l-birthday,.ev.l-hr{border-left-color:var(--hair)}
+.ev.l-commercial{border-left-color:var(--grey)}
+.ev.l-commercial.peak{border-left-color:var(--accent);background:var(--accent-bg);color:var(--accent-dark)}
+.ev.l-commercial.peak svg.i,.ev.l-commercial.peak .tm,.ev.l-commercial.peak .tx small{color:var(--accent-dark)}
+.ev.alert{border-left-color:var(--accent)}
+.side-card{border:1px solid var(--hair);padding:16px;margin-bottom:16px}
+.side-card.peak{border-color:var(--accent)}
+.side-card>.caps,.sh-body>.caps{display:block;margin-bottom:6px}
+.ms{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--hair);font-size:13px}
+.ms:first-of-type{border-top:0}
+.ms .bx{width:16px;height:16px;border:1px solid var(--light);flex:none;display:grid;place-items:center}
+.ms.done .bx{background:var(--ink);border-color:var(--ink)}
+.ms.done .bx::after{content:"";width:8px;height:5px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:translateY(-1px) rotate(-45deg)}
+.ms.done span.t{color:var(--grey);text-decoration:line-through}
+.ms.late span.w{color:var(--accent)}
+.ms span.t{flex:1;min-width:0}.ms span.w{font-size:12px;color:var(--grey);white-space:nowrap}
+/* month */
+.month{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-left:1px solid var(--hair);border-top:1px solid var(--hair)}
+.month .wd{font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);padding:8px;border-right:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.cell{min-height:112px;padding:6px 6px 8px;border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);display:flex;flex-direction:column;gap:3px;min-width:0;cursor:pointer}
+.cell:hover{background:var(--silver)}
+.cell.out{background:var(--silver)}.cell.out .dn{color:var(--light)}
+.cell .dn{font-size:13px;display:flex;align-items:center;gap:6px;justify-content:space-between}
+.cell.today .dn b{background:var(--ink);color:#fff;padding:0 6px;font-weight:400}
+.cell.peak{box-shadow:inset 0 2px 0 var(--accent)}
+.cell.peak .dn b{color:var(--accent)}
+.cell .bl{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.mini{font-size:11.5px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:1px 4px;border-left:2px solid var(--light)}
+.mini.l-meeting{border-left-color:var(--ink)}
+.mini.l-booking{background:var(--ink);color:#fff;border-left-color:var(--ink)}
+.mini.l-booking.busy{background:none;color:var(--grey);border-left-color:var(--light)}
+.mini.l-delivery{background:var(--silver);border-left-color:var(--graphite)}
+.mini.l-commercial.peak{background:var(--accent-bg);color:var(--accent-dark);border-left-color:var(--accent)}
+.mini.l-shift,.mini.l-leave,.mini.l-birthday,.mini.l-hr{color:var(--graphite)}
+.more{font-size:11px;color:var(--grey);padding-left:6px}
+/* week */
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-left:1px solid var(--hair);border-top:1px solid var(--hair)}
+.wcol{border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);min-height:420px;min-width:0}
+.wcol .wh{padding:8px 10px;border-bottom:1px solid var(--hair);display:flex;align-items:baseline;gap:8px}
+.wcol .wh b{font-family:var(--f-display);font-weight:300;font-size:26px;line-height:1}
+.wcol .wh small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.wcol .wh{flex-wrap:wrap}.wcol .wh .bl{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);width:100%}.wcol.today .wh .bl{color:#fff}
+.wcol.today .wh{background:var(--ink);color:#fff}.wcol.today .wh small{color:#e6e6e6}
+.wcol.peak .wh b{color:var(--accent)}.wcol.today.peak .wh b{color:#fff}
+.wcol .wb{padding:6px;display:flex;flex-direction:column;gap:4px}
+.wev{padding:6px 8px;border-left:2px solid var(--light);font-size:12.5px;min-width:0;width:100%}
+.wev:hover{background:var(--silver)}
+.wev b{display:block;font-weight:400;overflow:hidden;text-overflow:ellipsis}
+.wev small{display:block;font-size:11px;color:var(--grey)}
+.wev.l-meeting{border-left-color:var(--ink)}
+.wev.l-booking{background:var(--ink);color:#fff;border-left-color:var(--ink)}.wev.l-booking small{color:#e6e6e6}
+.wev.l-booking.busy{background:none;color:var(--grey);border:1px dashed var(--light);border-left:2px solid var(--light)}.wev.l-booking.busy small{color:var(--grey)}
+.wev.l-delivery{background:var(--silver);border-left-color:var(--graphite)}
+.wev.l-commercial.peak{background:var(--accent-bg);color:var(--accent-dark);border-left-color:var(--accent)}.wev.l-commercial.peak small{color:var(--accent-dark)}
+.wev.l-leave{border:1px dashed var(--light);border-left:2px solid var(--grey)}
+/* booking */
+.host{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:1px solid var(--hair);margin-bottom:8px}
+.host:hover{border-color:var(--ink)}
+.host .t{flex:1;min-width:0}.host .t b{display:block;font-weight:400;font-size:15px}.host .t small{display:block;font-size:12px;color:var(--grey)}
+.slots-day{margin-bottom:14px}
+.slots{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.slot{height:36px;min-width:72px;padding:0 12px;border:1px solid var(--light);font-size:14px;text-align:center;font-variant-numeric:tabular-nums}
+.slot:hover{border-color:var(--ink)}
+.slot.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.slot[disabled]{color:var(--light);border-style:dashed;cursor:not-allowed;text-decoration:line-through}
+.steps{display:flex;gap:6px;margin-bottom:16px}
+.steps i{flex:1;height:2px;background:var(--hair)}.steps i.on{background:var(--ink)}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th{text-align:left;font-weight:400;font-size:11px;letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--grey);height:34px;padding:0 8px;border-bottom:1px solid var(--hair);white-space:nowrap}
+table.t td{height:40px;padding:4px 8px;border-bottom:1px solid var(--hair);vertical-align:middle}
+pre.dg{font-family:var(--f-body);font-size:13px;white-space:pre-wrap;background:var(--silver);padding:14px;line-height:1.5}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1280px){.app{grid-template-columns:var(--sidebar-w) minmax(0,1fr) 0}.app .notes{display:none}.notes-toggle{display:inline-flex}.app.notes-open .notes{display:block;position:fixed;right:0;top:0;bottom:0;width:min(340px,100vw);z-index:45;box-shadow:var(--shadow-sheet)}}
+@media (max-width:900px){
+  body{overflow:auto}
+  .app{display:block;height:auto}
+  .sidebar{display:none}
+  .topbar{height:auto;flex-wrap:wrap;padding:10px 16px}
+  .subnav{padding:0 16px}
+  .view{overflow:visible;padding:16px}
+  .my{grid-template-columns:minmax(0,1fr)}
+  .g2{grid-template-columns:minmax(0,1fr)}
+  .week{grid-template-columns:minmax(0,1fr)}.wcol{min-height:0}
+  .cell{min-height:64px}.cell .mini{display:none}.cell .more{display:none}
+  .cell .dots{display:flex}
+  .sheet{position:fixed;width:100%}.scrim{position:fixed}
+  .ev .tm{width:70px}
+}
+.cell .dots{display:none;gap:3px;flex-wrap:wrap}
+.cell .dots i{width:6px;height:6px;background:var(--ink)}.cell .dots i.pk{background:var(--accent)}.cell .dots i.sf{background:var(--light)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="logo"><svg height="18" role="img" aria-label="Floritta" viewBox="0 0 287 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 31.5729H6.38147V21.6984L14.445 21.6952V16.0586H6.38147V6.06354H21.1473V0.423767H0V31.5729Z" fill="#231F20"/>
+<path d="M41.2413 0.423767H34.8599V31.5729H56.0072V25.9331H41.2413V0.423767Z" fill="#231F20"/>
+<path d="M86.6116 0C77.6795 0 70.5688 6.78402 70.5688 16C70.5688 25.216 77.6795 32 86.6116 32C95.5438 32 102.654 25.216 102.654 16C102.654 6.78402 95.5438 0 86.6116 0ZM86.6116 26.2689C80.9594 26.2689 77.1318 21.8223 77.1318 16C77.1318 10.1777 80.9594 5.73105 86.6116 5.73105C92.2639 5.73105 96.0915 10.1777 96.0915 16C96.0915 21.8223 92.2639 26.2689 86.6116 26.2689Z" fill="#231F20"/>
+<path d="M158.526 6.05027V31.5857H164.907V0.410492H158.526V6.05027Z" fill="#231F20"/>
+<path d="M182.648 0.410492V6.05351H191.49V31.5857H194.682H197.871V6.05351H206.712V0.410492H194.682H182.648Z" fill="#231F20"/>
+<path d="M222.664 0.410492V6.05351H231.506V31.5857H234.695H237.884V6.05351H246.725V0.410492H234.695H222.664Z" fill="#231F20"/>
+<path d="M279.725 31.7226H286.424L272.251 0.27356H271.703L258.075 31.7226H264.227L265.977 27.4749H277.929L279.722 31.7226H279.725ZM268.304 21.8351L271.885 13.1472L275.551 21.8351H268.3H268.304Z" fill="#231F20"/>
+<path d="M135.923 10.9467C135.923 8.03883 134.75 5.40476 132.854 3.50093C130.958 1.59384 128.342 0.413727 125.451 0.413727H114.614L117.738 5.90028H125.088C126.476 5.90028 127.73 6.46425 128.637 7.38031C129.545 8.29311 130.109 9.55472 130.109 10.95C130.109 12.1171 129.713 13.1929 129.052 14.047C128.135 15.2336 126.702 15.9964 125.092 15.9964H123.526L126.631 21.4145L132.455 31.5759H139.099L131.992 19.1749C134.39 17.245 135.923 14.2784 135.923 10.95V10.9467Z" fill="#231F20"/>
+</svg>
+</div>
+    <nav id="sb"></nav>
+    <div class="sb-foot"><span class="avatar" id="me-av"></span><div><b id="me-name"></b><small id="me-role"></small></div></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="ttl">Задачи</div>
+      <span class="sp"></span>
+      <span class="caps">Смотреть как</span>
+      <div class="roles" id="roles"></div>
+    </div>
+    <div class="subnav">
+      <button data-toast="Экран «Сегодня» – уже есть в CRM">Сегодня</button>
+      <button data-toast="Экран «Все задачи» – уже есть в CRM">Все задачи</button>
+      <button class="on">Календарь</button>
+      <button data-toast="Экран «Люди» – уже есть в CRM">Люди</button>
+      <button data-toast="Экран «Зоны» – уже есть в CRM">Зоны</button>
+    </div>
+    <div class="view" id="view"></div>
+    <div class="scrim" id="scrim"></div>
+    <aside class="sheet" id="sheet"></aside>
+  </main>
+  <aside class="notes"><div class="nh"><b>Заметки к прототипу</b><span class="sp"></span><button class="textbtn" id="notes-hide">Скрыть</button></div><div class="nb" id="notes"></div></aside>
+</div>
+<button class="notes-toggle" id="notes-toggle">Заметки</button>
+<div class="toast" id="toast"></div>
+<script>
+/* ===== Календарь команды – демо-данные и расчёт дат. Имена, поставщики и события вымышлены. ===== */
+const pad=n=>String(n).padStart(2,'0');
+const D=(y,m,d)=>new Date(y,m-1,d,12);
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fromIso=s=>{const[a,b,c]=s.split('-').map(Number);return D(a,b,c)};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const dow=d=>(d.getDay()+6)%7; // 0 = понедельник
+const daysBetween=(a,b)=>Math.round((b-a)/864e5);
+const WD=['пн','вт','ср','чт','пт','сб','вс'];
+const WDF=['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'];
+const MON=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const MONN=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const fmtD=d=>`${d.getDate()} ${MON[d.getMonth()]}`;
+const fmtS=d=>`${d.getDate()} ${MON[d.getMonth()].slice(0,3)}`;
+const fmtDW=d=>`${WD[dow(d)]}, ${fmtD(d)}`;
+const plural=(n,a,b,c)=>{const m=n%100,k=n%10;return m>10&&m<20?c:k===1?a:k>1&&k<5?b:c};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const TODAY=D(2026,11,15);
+
+/* ---------- даты считаются кодом ---------- */
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return D(y,mo,da)}
+function orthodoxEaster(y){const a=y%4,b=y%7,c=y%19,d=(19*c+15)%30,e=(2*a+4*b-d+34)%7,mo=Math.floor((d+e+114)/31),da=((d+e+114)%31)+1;return addDays(D(y,mo,da),13)}
+function nthWd(y,m,wd,n){let d=D(y,m,1);while(dow(d)!==wd)d=addDays(d,1);return addDays(d,7*(n-1))}
+function lastWd(y,m,wd){let d=D(y,m+1,0);while(dow(d)!==wd)d=addDays(d,-1);return d}
+function bankHolidays(y){
+  const e=easter(y),out=[];
+  let ny=D(y,1,1);if(dow(ny)===5)ny=D(y,1,3);else if(dow(ny)===6)ny=D(y,1,2);
+  out.push([ny,'New Year’s Day'],[addDays(e,-2),'Good Friday'],[addDays(e,1),'Easter Monday'],[nthWd(y,5,0,1),'Early May bank holiday'],[lastWd(y,5,0),'Spring bank holiday'],[lastWd(y,8,0),'Summer bank holiday']);
+  const x=dow(D(y,12,25));
+  if(x===5)out.push([D(y,12,27),'Christmas Day (перенос)'],[D(y,12,28),'Boxing Day (перенос)']);
+  else if(x===6)out.push([D(y,12,26),'Boxing Day'],[D(y,12,27),'Christmas Day (перенос)']);
+  else if(x===4)out.push([D(y,12,25),'Christmas Day'],[D(y,12,28),'Boxing Day (перенос)']);
+  else out.push([D(y,12,25),'Christmas Day'],[D(y,12,26),'Boxing Day']);
+  return out;
+}
+/* пики: даты, окно запрета отпусков, cut-off. Окна и смещения вех – настройки, здесь значения по умолчанию */
+const MS_TPL=[{k:'content',t:'Контент и промо',off:-35,owner:'Маркетинг'},{k:'pack',t:'Упаковка и расходники',off:-28,owner:'Закупки'},{k:'flowers',t:'Заказ цветов у поставщиков',off:-21,owner:'Закупки'},{k:'shifts',t:'Усиление смен',off:-14,owner:'Управляющая студией'},{k:'couriers',t:'Дополнительные курьеры',off:-7,owner:'Менеджер смены'}];
+const msDone={'christmas-2026:content':true};
+function peaks(y){
+  const ms=addDays(easter(y),-21),w8=D(y,3,8),list=[];
+  list.push({key:'valentine-'+y,title:'День святого Валентина',dates:[D(y,2,14)],blackout:[D(y,2,14),D(y,2,14)],cutoffs:[{d:D(y,2,13),t:'Последний день приёма заказов на 14.02'}]});
+  if(Math.abs(daysBetween(ms,w8))<=3){const a=ms<w8?ms:w8,b=ms<w8?w8:ms;
+    list.push({key:'march-'+y,title:'Mothering Sunday + 8 марта',double:true,dates:[ms,w8].sort((p,q)=>p-q),blackout:[a,b],cutoffs:[{d:addDays(a,-1),t:'Последний день приёма заказов на оба дня'}]});
+  }else{
+    list.push({key:'mothering-'+y,title:'Mothering Sunday',dates:[ms],blackout:[ms,ms],cutoffs:[{d:addDays(ms,-1),t:'Последний день приёма заказов'}]});
+    list.push({key:'women-'+y,title:'8 марта',dates:[w8],blackout:[w8,w8],cutoffs:[{d:D(y,3,7),t:'Последний день приёма заказов'}]});
+  }
+  list.push({key:'christmas-'+y,title:'Рождество',dates:[D(y,12,25)],blackout:[D(y,12,14),D(y,12,24)],cutoffs:[{d:D(y,12,18),t:'Cut-off: доставка по стране'},{d:D(y,12,24),t:'Cut-off: доставка по Лондону'}]});
+  list.forEach(p=>{p.milestones=MS_TPL.map(m=>({...m,d:addDays(p.dates[0],m.off),id:p.key+':'+m.k}))});
+  return list;
+}
+const allPeaks=()=>[...peaks(2026),...peaks(2027),...peaks(2028)];
+function blackoutOf(d){const t=iso(d);return allPeaks().find(p=>iso(p.blackout[0])<=t&&t<=iso(p.blackout[1]))||null}
+function isPeakDay(d){const t=iso(d);return allPeaks().some(p=>p.dates.some(x=>iso(x)===t))}
+function nextPeak(from){return allPeaks().filter(p=>p.dates[p.dates.length-1]>=from).sort((a,b)=>a.dates[0]-b.dates[0])[0]}
+/* остальные коммерческие даты: уровень влияния по умолчанию (калибровка по истории заказов – этап v3) */
+function commercial(y){
+  const e=easter(y),bf=addDays(nthWd(y,11,3,4),1);
+  return [
+    [D(y,1,7),'Православное Рождество','notable'],[e,'Пасха','notable'],[orthodoxEaster(y),'Православная Пасха','notable'],
+    [nthWd(y,6,6,3),'Father’s Day','notable'],[D(y,10,5),'День учителя','bg'],[D(y,10,31),'Halloween','notable'],[D(y,11,5),'Bonfire Night','bg'],
+    [bf,'Black Friday','high'],[addDays(bf,3),'Cyber Monday','notable'],[nthWd(y,12,5,1),'Small Business Saturday','notable'],[D(y,12,31),'Новый год','high'],
+  ];
+}
+const LEVEL={peak:'Пик',high:'Высокий',notable:'Заметный',bg:'Фон'};
+
+/* ---------- люди и роли ---------- */
+const ROLES={
+  florist:{name:'Mila Novak',label:'Флорист',shift:{wd:[0,2,4,5],from:'08:00',to:'16:00'}},
+  manager:{name:'Denis Orlov',label:'Менеджер',shift:{wd:[0,1,2,3,4],from:'09:00',to:'18:00'}},
+  hr:{name:'Irina Petrova',label:'HR',host:'hr'},
+  owner:{name:'Владелец',label:'Владелец',host:'owner'},
+};
+const HOSTS=[
+  {id:'hr',name:'Irina Petrova',role:'HR / People Partner',busy:'HR занят',windows:[{wd:1,from:'14:00',to:'17:00'},{wd:3,from:'14:00',to:'17:00'}],slot:30,buf:10,format:'Студия SE1 или Google Meet',ahead:21,cancel:12},
+  {id:'owner',name:'Владелец',role:'Основатель',busy:'Владелец занят',windows:[{wd:2,from:'16:00',to:'18:00'}],slot:30,buf:0,format:'Google Meet',ahead:21,cancel:24},
+  {id:'ops',name:'Vera Kuznets',role:'Операционный руководитель',busy:'Vera Kuznets занята',windows:[{wd:0,from:'12:00',to:'14:00'},{wd:3,from:'16:30',to:'18:00'}],slot:30,buf:0,format:'Google Meet',ahead:14,cancel:12},
+  {id:'studio',name:'Eva Marin',role:'Управляющая студией',busy:'Eva Marin занята',windows:[{wd:1,from:'08:30',to:'10:00'},{wd:5,from:'15:00',to:'16:30'}],slot:30,buf:0,format:'Студия SE1',ahead:14,cancel:12},
+];
+const host=id=>HOSTS.find(h=>h.id===id);
+const mins=t=>{const[h,m]=t.split(':').map(Number);return h*60+m};
+const hm=n=>`${pad(Math.floor(n/60))}:${pad(n%60)}`;
+const initials=n=>n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+
+/* ---------- состояние (меняется кликами) ---------- */
+const S={
+  role:'florist',view:'my',cursor:D(2026,11,1),weekStart:D(2026,11,16),
+  layers:new Set(['meeting','commercial','delivery','booking','leave','shift','birthday','hr']),
+  bookings:[
+    {id:1,host:'hr',d:'2026-11-17',t:'14:40',by:'Polina Sokol',topic:'График на декабрь'},
+    {id:2,host:'hr',d:'2026-11-19',t:'14:00',by:'Jake Wilson',topic:''},
+    {id:3,host:'owner',d:'2026-11-18',t:'16:30',by:'Kira Belova',topic:'Идея по свадебному направлению'},
+    {id:4,host:'studio',d:'2026-11-17',t:'09:00',by:'Daria Lis',topic:''},
+  ],
+  talk:[{host:'hr',by:'Yana Kim',topic:'',d:'2026-11-14'}],
+  rsvp:{},moves:{},attend:{},agreements:{},minutes:{},
+  icalRev:1,
+};
+const me=()=>ROLES[S.role];
+
+/* ---------- встречи команды ---------- */
+const SERIES=[
+  {id:'fl',title:'Встреча флористов',aud:'Флористы',who:['florist','hr','owner'],rule:{f:'W',int:2,anchor:'2026-11-18'},ruleText:'Каждые 2 недели, среда',time:'15:00',dur:45,format:'Гибрид: студия SE1 + Google Meet',paid:true,host:'Eva Marin',people:['Mila Novak','Polina Sokol','Daria Lis','Kira Belova','Yana Kim']},
+  {id:'on',title:'Встреча онлайн-команды',aud:'Менеджеры и поддержка',who:['manager','hr','owner'],rule:{f:'W',int:2,anchor:'2026-11-19'},ruleText:'Каждые 2 недели, четверг',time:'11:00',dur:45,format:'Google Meet',paid:false,host:'Vera Kuznets',people:['Denis Orlov','Alina Moroz','Nika Fedorova','Artem Gromov']},
+  {id:'all',title:'Общая встреча команды',aud:'Вся команда',who:['florist','manager','hr','owner'],rule:{f:'M',nth:1,wd:1},ruleText:'Раз в месяц, первый вторник',time:'16:00',dur:60,format:'Гибрид: студия SE1 + Google Meet',paid:false,host:'Владелец',people:['Mila Novak','Polina Sokol','Daria Lis','Kira Belova','Yana Kim','Denis Orlov','Alina Moroz','Nika Fedorova','Artem Gromov','Jake Wilson']},
+];
+const AGENDA='1. Что получилось за две недели\n2. Что мешает работе\n3. Новое в ассортименте и CRM\n4. Ближайший пик: кто что готовит\n5. Вопросы команды';
+function occurrences(s,from,to){
+  const out=[];
+  if(s.rule.f==='W'){let d=fromIso(s.rule.anchor);while(d<=to){if(d>=from)out.push(d);d=addDays(d,7*s.rule.int)}}
+  else{let y=from.getFullYear(),m=from.getMonth()+1;for(let i=0;i<40;i++){const d=nthWd(y,m,s.rule.wd,s.rule.nth);if(d>to)break;if(d>=from)out.push(d);m++;if(m>12){m=1;y++}}}
+  return out;
+}
+/* встреча попала в пиковое окно: система предлагает дату, человек подтверждает – молча не переносим */
+function suggestMove(d){let a=addDays(d,-7);if(a>TODAY&&!blackoutOf(a))return a;let b=addDays(d,7);while(blackoutOf(b))b=addDays(b,7);return b}
+
+/* ---------- поставки (без цен и сумм) ---------- */
+const POS=[
+  {code:'PO-1184',d:'2026-11-17',sup:'Dutch Bloom BV',what:'Розы, эвкалипт, хризантема – 14 позиций',st:'В пути'},
+  {code:'PO-1187',d:'2026-11-20',sup:'Pack & Ribbon Ltd',what:'Коробки, лента, тишью',st:'Заказано'},
+  {code:'PO-1190',d:'2026-11-24',sup:'Dutch Bloom BV',what:'Амариллис, илекс, гиперикум – 11 позиций',st:'Заказано'},
+  {code:'PO-1196',d:'2026-12-04',sup:'Evergreen Farm',what:'Рождественская зелень: нобилис, ель, омела',st:'Заказано'},
+  {code:'PO-1203',d:'2026-12-11',sup:'Dutch Bloom BV',what:'Рождественская партия – 22 позиции',st:'Черновик'},
+  {code:'PO-1262',d:'2027-02-10',sup:'Dutch Bloom BV',what:'Красная роза, тюльпан – партия к 14 февраля',st:'Черновик'},
+  {code:'PO-1288',d:'2027-03-04',sup:'Dutch Bloom BV',what:'Тюльпан, мимоза, ранункулюс – партия к 7–8 марта',st:'Черновик'},
+];
+const REGULAR=[{wd:1,sup:'Dutch Bloom BV',what:'Регулярная поставка цветов'},{wd:4,sup:'Dutch Bloom BV',what:'Регулярная поставка цветов'}];
+
+/* ---------- отпуска, дни рождения, HR-даты ---------- */
+const LEAVES=[{name:'Polina Sokol',team:'Флористы',from:'2026-11-23',to:'2026-11-27'},{name:'Denis Orlov',team:'Менеджеры',from:'2026-12-01',to:'2026-12-03'},{name:'Kira Belova',team:'Флористы',from:'2027-03-15',to:'2027-03-19'}];
+const BDAYS=[{name:'Kira Belova',md:'11-21',k:'День рождения'},{name:'Jake Wilson',md:'12-09',k:'День рождения'},{name:'Mila Novak',md:'11-30',k:'2 года в Floritta'},{name:'Alina Moroz',md:'03-12',k:'День рождения'}];
+const HRDATES=[{d:'2026-11-19',t:'День рождения – Daria Lis',s:'Команде не показываем: нет согласия'},{d:'2026-11-20',t:'Конец испытательного срока – Yana Kim',s:'Онбординг и даты'},{d:'2026-11-26',t:'Check-in 30 дней – Artem Gromov',s:'Онбординг и даты'},{d:'2026-12-02',t:'Истекает right to work – курьер',s:'Документы',alert:true}];
+
+/* ---------- сбор событий под зрителя ---------- */
+function events(from,to){
+  const r=S.role,out=[],f=iso(from),t=iso(to),inR=d=>{const x=iso(d);return x>=f&&x<=t};
+  const push=e=>{if(S.layers.has(e.layer))out.push(e)};
+  // встречи
+  SERIES.filter(s=>s.who.includes(r)).forEach(s=>occurrences(s,addDays(from,-14),addDays(to,14)).forEach(d0=>{
+    const id=s.id+':'+iso(d0);let d=d0,need=false;const sug=blackoutOf(d0)?suggestMove(d0):null;
+    if(sug){if(S.moves[id]==='moved')d=sug;else if(S.moves[id]!=='kept')need=true}
+    if(!inR(d))return;
+    push({d:iso(d),tm:s.time,end:hm(mins(s.time)+s.dur),layer:'meeting',title:s.title,sub:need?`Попала на пиковое окно – предложен перенос на ${fmtD(sug)}`:s.format,alert:need,ref:{type:'meeting',id,series:s.id,date:iso(d0)}});
+  }));
+  // коммерческий календарь
+  for(let y=from.getFullYear();y<=to.getFullYear();y++){
+    peaks(y).forEach(p=>{
+      p.dates.forEach(d=>{if(inR(d))push({d:iso(d),layer:'commercial',cls:'peak',title:p.double?`${iso(d)===iso(addDays(easter(y),-21))?'Mothering Sunday':'8 марта'} – двойной пик`:p.title,sub:blackoutOf(d)?'Пик · отпуск закрыт':'Пик продаж',ref:{type:'peak',key:p.key}})});
+      p.cutoffs.forEach(c=>{if(inR(c.d))push({d:iso(c.d),layer:'commercial',cls:'peak',title:c.t,sub:p.title,ref:{type:'peak',key:p.key}})});
+      if(r==='manager'||r==='owner')p.milestones.forEach(m=>{if(inR(m.d))push({d:iso(m.d),layer:'commercial',title:`Веха: ${m.t}`,sub:`${p.title} · ${m.owner}`,alert:m.d<TODAY&&!msDone[m.id],ref:{type:'peak',key:p.key}})});
+    });
+    commercial(y).forEach(([d,title,lv])=>{if(inR(d))push({d:iso(d),layer:'commercial',title,sub:`Влияние на продажи: ${LEVEL[lv].toLowerCase()}`,ref:{type:'date',title,lv,d:iso(d)}})});
+    bankHolidays(y).forEach(([d,title])=>{if(inR(d))push({d:iso(d),layer:'commercial',title:`Bank holiday – ${title}`,sub:'Банковский выходной, Англия и Уэльс',ref:{type:'date',title:'Bank holiday – '+title,lv:'bg',d:iso(d)}})});
+  }
+  // поставки: флористы, менеджеры, владелец
+  if(r!=='hr'){
+    POS.forEach(p=>{const d=fromIso(p.d);if(inR(d))push({d:p.d,layer:'delivery',title:`Поставка – ${p.sup}`,sub:r==='florist'?`Приёмка и обработка · ${p.what}`:`${p.st} · ${p.what}`,ref:{type:'delivery',code:p.code}})});
+    for(let d=new Date(from);d<=to;d=addDays(d,1))REGULAR.forEach(g=>{if(dow(d)===g.wd&&!POS.some(p=>p.d===iso(d)&&p.sup===g.sup))push({d:iso(d),layer:'delivery',title:`${g.what} – ${g.sup}`,sub:'По расписанию поставщика',ref:{type:'regular',d:iso(d),sup:g.sup}})});
+  }
+  // 1:1: свои видны целиком, чужие – только «занят»
+  S.bookings.forEach(b=>{const d=fromIso(b.d);if(!inR(d))return;const h=host(b.host),end=hm(mins(b.t)+h.slot);
+    if(b.by===me().name)push({d:b.d,tm:b.t,end,layer:'booking',title:`1:1 – ${h.name}`,sub:h.format,ref:{type:'booking',id:b.id}});
+    else if(me().host===b.host)push({d:b.d,tm:b.t,end,layer:'booking',title:`1:1 – ${b.by}`,sub:b.topic?`Тема: ${b.topic}`:'Тема не указана',ref:{type:'booking',id:b.id}});
+    else push({d:b.d,tm:b.t,end,layer:'booking',cls:'busy',title:h.busy,sub:'Подробности скрыты',ref:{type:'busy',host:b.host}});
+  });
+  // отпуска: без типа и причины
+  LEAVES.forEach(l=>{for(let d=fromIso(l.from);d<=fromIso(l.to);d=addDays(d,1))if(inR(d))push({d:iso(d),layer:'leave',title:l.name===me().name?'Мой отпуск':`В отпуске – ${l.name}`,sub:l.team,ref:{type:'leave',name:l.name,from:l.from,to:l.to}})});
+  // мои смены
+  const sh=me().shift;
+  if(sh)for(let d=new Date(from);d<=to;d=addDays(d,1))if(sh.wd.includes(dow(d))&&!isMyLeave(d))push({d:iso(d),tm:sh.from,end:sh.to,layer:'shift',title:'Моя смена',sub:'Студия SE1',ref:{type:'shift',d:iso(d)}});
+  // дни рождения и годовщины – только по согласию
+  for(let y=from.getFullYear();y<=to.getFullYear();y++)BDAYS.forEach(b=>{const d=fromIso(`${y}-${b.md}`);if(inR(d))push({d:iso(d),layer:'birthday',title:`${b.k} – ${b.name}`,sub:'Показано с согласия сотрудника',ref:{type:'bday',name:b.name,k:b.k}})});
+  // HR-даты – только HR и владелец
+  if(r==='hr'||r==='owner')HRDATES.forEach(h=>{if(inR(fromIso(h.d)))push({d:h.d,layer:'hr',title:h.t,sub:h.s,alert:h.alert,ref:{type:'hr',t:h.t,s:h.s}})});
+  return out.sort((a,b)=>a.d.localeCompare(b.d)||(a.tm||'').localeCompare(b.tm||''));
+}
+function isMyLeave(d){const t=iso(d);return LEAVES.some(l=>l.name===me().name&&l.from<=t&&t<=l.to)}
+function onShift(d,time,dur){const sh=me().shift;if(!sh||!sh.wd.includes(dow(d))||isMyLeave(d))return false;const a=mins(time),b=a+dur;return a<mins(sh.to)&&b>mins(sh.from)}
+/* свободные слоты адресата: окна → слоты, занятые скрыты, слоты на смене сотрудника недоступны */
+function slotsFor(h){
+  const days=[];
+  for(let d=addDays(TODAY,1);daysBetween(TODAY,d)<=h.ahead;d=addDays(d,1)){
+    if(blackoutOf(d))continue;
+    const list=[];
+    h.windows.filter(w=>w.wd===dow(d)).forEach(w=>{for(let a=mins(w.from);a+h.slot<=mins(w.to);a+=h.slot+h.buf){const t=hm(a);
+      if(S.bookings.some(b=>b.host===h.id&&b.d===iso(d)&&b.t===t))continue;
+      list.push({t,shift:onShift(d,t,h.slot)});
+    }});
+    if(list.length)days.push({d,list});
+  }
+  return days;
+}
+const LAYERS=[
+  {k:'meeting',t:'Встречи',ic:'users'},{k:'commercial',t:'Праздники и пики',ic:'flag'},{k:'delivery',t:'Поставки',ic:'truck',roles:['florist','manager','owner']},
+  {k:'booking',t:'1:1',ic:'chat'},{k:'leave',t:'Отпуска',ic:'sun'},{k:'shift',t:'Мои смены',ic:'clock',roles:['florist','manager']},
+  {k:'birthday',t:'Дни рождения',ic:'gift'},{k:'hr',t:'HR-даты',ic:'lock',roles:['hr','owner']},
+];
+
+/* ===== Календарь команды – экраны и панели ===== */
+const IC={
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.5a5 5 0 0 1 6 5.5"/>',
+  flag:'<path d="M5 21V4h11l-1.5 3.5L16 11H5"/>',truck:'<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4z"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',gift:'<rect x="3" y="9" width="18" height="12"/><path d="M3 13h18M12 9v12M12 9c-2-4-6-4-6-1s4 1 6 1zM12 9c2-4 6-4 6-1s-4 1-6 1z"/>',
+  lock:'<rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',calendar:'<rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  close:'<path d="M6 6l12 12M18 6L6 18"/>',back:'<path d="M15 5l-7 7 7 7"/>',chev:'<path d="m9 6 6 6-6 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',check:'<path d="m5 12 5 5L20 7"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+  alert:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>',
+};
+const ic=(n,s)=>`<svg class="i${s?' s':''}" viewBox="0 0 24 24">${IC[n]||''}</svg>`;
+const LIC={meeting:'users',commercial:'flag',delivery:'truck',booking:'chat',leave:'sun',shift:'clock',birthday:'gift',hr:'lock'};
+const $=id=>document.getElementById(id);
+const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2600)};
+const canManage=()=>S.role==='hr'||S.role==='owner';
+let REFS=[];const refAttr=r=>{REFS.push(r);return `data-ref="${REFS.length-1}"`};
+
+/* ---------- оболочка ---------- */
+function shell(){
+  const sb=[['','Сегодня'],['Работа'],['','Заказы'],['','Сообщения'],['','Доставка'],['','Клиенты'],['','Каталог'],['','Склад'],['Команда'],['on','Задачи'],['','Команда'],['','Обучение'],['Рост'],['','Маркетинг'],['','Аналитика'],['','Система']];
+  $('sb').innerHTML=sb.map(x=>x.length===1?`<div class="sb-group">${x[0]}</div>`:`<button class="sb-item ${x[0]}" ${x[0]?'':'data-toast="Другие разделы CRM в этом прототипе не открываются"'}>${x[1]}</button>`).join('');
+  $('roles').innerHTML=Object.entries(ROLES).map(([k,v])=>`<button class="${k===S.role?'on':''}" data-role="${k}">${v.label}</button>`).join('');
+  $('me-av').textContent=initials(me().name);$('me-name').textContent=me().name;$('me-role').textContent=me().label;
+}
+function render(){
+  REFS=[];shell();
+  const layers=LAYERS.filter(l=>!l.roles||l.roles.includes(S.role));
+  const views=[['my','Мой календарь'],['week','Неделя'],['month','Месяц'],['list','14 дней']];
+  const per=S.view==='month'?`${MONN[S.cursor.getMonth()]} ${S.cursor.getFullYear()}`:S.view==='week'?`${fmtD(S.weekStart)} – ${fmtD(addDays(S.weekStart,6))}`:`${fmtD(TODAY)} – ${fmtD(addDays(TODAY,13))}`;
+  const nav=S.view==='month'||S.view==='week';
+  $('view').innerHTML=`
+  <div class="cal-head">
+    <div class="seg-ctl">${views.map(([k,t])=>`<button class="${S.view===k?'on':''}" data-view="${k}">${t}</button>`).join('')}</div>
+    ${nav?`<button class="ib" data-nav="-1" title="Назад">${ic('back')}</button>`:''}
+    <div class="per">${per}</div>
+    ${nav?`<button class="ib" data-nav="1" title="Вперёд">${ic('chev')}</button><button class="textbtn" data-nav="0">Сегодня</button>`:''}
+    <button class="textbtn" data-jump="2027-03">К двойному пику 7–8 марта 2027</button>
+    <span class="sp"></span>
+    <button class="btn --sm" data-act="book">${ic('chat',1)} Записаться на 1:1</button>
+    ${me().host?`<button class="btn --sm --secondary" data-act="host">Мои слоты и записи</button>`:''}
+    <button class="btn --sm --ghost" data-act="leave">Отпуск</button>
+    <button class="btn --sm --ghost" data-act="ical">${ic('link',1)} iCal</button>
+    ${canManage()?`<button class="btn --sm --ghost" data-act="settings">${ic('cog',1)} Настройки</button>`:''}
+  </div>
+  <div class="cal-layers">${layers.map(l=>`<button class="chip ${S.layers.has(l.k)?'on':''}" data-layer="${l.k}">${ic(l.ic,1)} ${l.t}</button>`).join('')}</div>
+  ${S.view==='my'?viewMy():S.view==='week'?viewWeek():S.view==='month'?viewMonth():viewList()}`;
+  $('notes').innerHTML=NOTES;
+}
+const evRow=e=>`<button class="ev l-${e.layer} ${e.cls||''} ${e.alert?'alert':''}" ${refAttr(e.ref)}>${ic(LIC[e.layer])}<span class="tm num">${e.tm?`${e.tm}–${e.end}`:'весь день'}</span><span class="tx"><b>${esc(e.title)}</b><small>${esc(e.sub||'')}</small></span>${e.alert?'<span class="tag --accent">внимание</span>':''}</button>`;
+function dayBlocks(list,from,n){
+  let h='';
+  for(let i=0;i<n;i++){const d=addDays(from,i),k=iso(d),evs=list.filter(e=>e.d===k);
+    if(!evs.length&&k!==iso(TODAY))continue;
+    h+=`<div class="day ${k===iso(TODAY)?'today':''} ${isPeakDay(d)?'peak':''}"><div class="d"><b class="num">${d.getDate()}</b><small>${k===iso(TODAY)?'сегодня':WD[dow(d)]+' · '+MON[d.getMonth()].slice(0,3)}</small></div><div>${evs.map(evRow).join('')||'<span class="muted sm">Событий нет</span>'}</div></div>`;
+  }
+  return h||'<p class="muted">На эти дни событий нет.</p>';
+}
+
+/* ---------- мой календарь ---------- */
+function viewMy(){
+  const list=events(TODAY,addDays(TODAY,13)).filter(e=>!(e.layer==='leave'&&e.title!=='Мой отпуск')&&e.cls!=='busy');
+  const p=nextPeak(TODAY),left=daysBetween(TODAY,p.dates[0]);
+  const nm=events(TODAY,addDays(TODAY,40)).find(e=>e.layer==='meeting');
+  const nd=S.role==='hr'?null:events(TODAY,addDays(TODAY,40)).find(e=>e.layer==='delivery'&&e.ref.type==='delivery');
+  const mine=S.bookings.filter(b=>b.by===me().name&&b.d>=iso(TODAY));
+  const inbox=me().host?S.bookings.filter(b=>b.host===me().host&&b.d>=iso(TODAY)):[];
+  return `<div class="my"><div>${dayBlocks(list,TODAY,14)}</div><div>
+    <div class="side-card peak"><span class="caps">Ближайший пик</span>
+      <div class="row" style="align-items:flex-end;gap:14px"><div class="h1 accent num">${left}</div><div class="sm soft" style="padding-bottom:4px">${plural(left,'день','дня','дней')} до пика<br><b>${p.title}</b> · ${p.dates.map(fmtD).join(' и ')}</div></div>
+      <div class="mt16">${p.cutoffs.map(c=>`<div class="ms"><span class="t"><b>${c.t}</b></span><span class="w num">${fmtDW(c.d)}</span></div>`).join('')}
+      <div class="ms"><span class="t">Отпуск закрыт</span><span class="w num">${fmtD(p.blackout[0])}${iso(p.blackout[0])!==iso(p.blackout[1])?' – '+fmtD(p.blackout[1]):''}</span></div></div>
+      <button class="textbtn mt16" ${refAttr({type:'peak',key:p.key})}>Вехи подготовки</button>
+    </div>
+    <div class="side-card"><span class="caps">Запись на 1:1</span>
+      ${mine.length?mine.map(b=>`<div class="mt8"><b>${fmtDW(fromIso(b.d))}, ${b.t}</b><div class="sm soft">${host(b.host).name} · ${host(b.host).role}</div><button class="textbtn mt8" ${refAttr({type:'booking',id:b.id})}>Перенести или отменить</button></div>`).join('<div class="hr"></div>'):'<p class="sm soft mt8">Записей нет. Выберите, с кем поговорить, и свободное время – три нажатия.</p>'}
+      ${inbox.length?`<div class="hr"></div><span class="caps">Ко мне записаны</span>${inbox.map(b=>`<button class="ev l-meeting" ${refAttr({type:'booking',id:b.id})}><span class="tm num">${fmtS(fromIso(b.d))} ${b.t}</span><span class="tx"><b>${b.by}</b><small>${b.topic?esc(b.topic):'Тема не указана'}</small></span></button>`).join('')}`:''}
+      <button class="btn --sm --block mt16" data-act="book">Записаться</button>
+    </div>
+    ${nm?`<div class="side-card"><span class="caps">Ближайшая встреча</span><b>${nm.title}</b><div class="sm soft">${fmtDW(fromIso(nm.d))}, ${nm.tm}–${nm.end}</div><div class="row mt16"><button class="btn --sm ${S.rsvp[nm.ref.id]==='yes'?'':'--secondary'}" data-rsvp="yes" data-id="${nm.ref.id}">Буду</button><button class="btn --sm ${S.rsvp[nm.ref.id]==='no'?'':'--ghost'}" data-rsvp="no" data-id="${nm.ref.id}">Не смогу</button><span class="sp"></span><button class="textbtn" ${refAttr(nm.ref)}>Открыть</button></div></div>`:''}
+    ${nd?`<div class="side-card"><span class="caps">Ближайшая поставка</span><b>${nd.title.replace('Поставка – ','')}</b><div class="sm soft">${fmtDW(fromIso(nd.d))}</div><div class="sm mt8">${esc(POS.find(x=>x.code===nd.ref.code).what)}</div><button class="textbtn mt16" ${refAttr(nd.ref)}>Подробнее</button></div>`:''}
+  </div></div>`;
+}
+function viewList(){return dayBlocks(events(TODAY,addDays(TODAY,13)),TODAY,14)}
+
+/* ---------- неделя ---------- */
+function viewWeek(){
+  const list=events(S.weekStart,addDays(S.weekStart,6));let h='<div class="week">';
+  for(let i=0;i<7;i++){const d=addDays(S.weekStart,i),k=iso(d),evs=list.filter(e=>e.d===k);
+    h+=`<div class="wcol ${k===iso(TODAY)?'today':''} ${isPeakDay(d)?'peak':''}"><div class="wh"><b class="num">${d.getDate()}</b><small>${WD[i]}</small>${blackoutOf(d)?'<span class="bl">отпуск закрыт</span>':''}</div><div class="wb">${evs.map(e=>`<button class="wev l-${e.layer} ${e.cls||''}" ${refAttr(e.ref)}><b>${esc(e.title)}</b><small>${e.tm?`${e.tm}–${e.end}`:esc(e.sub||'')}</small></button>`).join('')}</div></div>`;
+  }
+  return h+'</div>';
+}
+
+/* ---------- месяц ---------- */
+function viewMonth(){
+  const y=S.cursor.getFullYear(),m=S.cursor.getMonth(),first=D(y,m+1,1),start=addDays(first,-dow(first));
+  const list=events(start,addDays(start,41));
+  const pk=allPeaks().find(p=>p.double&&p.dates[0].getFullYear()===y&&p.dates[0].getMonth()===m);
+  let h=pk?`<div class="banner"><div class="big num">${pk.dates.map(d=>d.getDate()).join(' + ')}</div><div style="flex:1;min-width:220px"><b>Двойной пик: ${pk.title}</b><div class="sm soft">Mothering Sunday – ${fmtDW(pk.dates[0])}, 8 марта – ${fmtDW(pk.dates[1])}. Двое суток без паузы: вехи подготовки стоят задачами, отпуск на эти дни закрыт.</div></div><button class="btn --sm --secondary" ${refAttr({type:'peak',key:pk.key})}>Вехи подготовки</button></div>`:'';
+  h+='<div class="month">'+WD.map(w=>`<div class="wd">${w}</div>`).join('');
+  for(let i=0;i<42;i++){const d=addDays(start,i),k=iso(d),evs=list.filter(e=>e.d===k),out=d.getMonth()!==m;
+    h+=`<div class="cell ${out?'out':''} ${k===iso(TODAY)?'today':''} ${isPeakDay(d)?'peak':''}" data-day="${k}"><div class="dn"><b class="num">${d.getDate()}</b>${blackoutOf(d)?'<span class="bl">отпуск закрыт</span>':''}</div>${evs.slice(0,3).map(e=>`<div class="mini l-${e.layer} ${e.cls||''}">${e.tm?e.tm+' ':''}${esc(e.title)}</div>`).join('')}${evs.length>3?`<div class="more">ещё ${evs.length-3}</div>`:''}<div class="dots">${evs.slice(0,6).map(e=>`<i class="${e.cls==='peak'?'pk':e.layer==='shift'?'sf':''}"></i>`).join('')}</div></div>`;
+  }
+  return h+'</div><div class="row mt16 xs muted" style="flex-wrap:wrap"><span class="tag --soft">пик</span> акцентный цвет – только пик, cut-off и запрет отпусков <span class="tag --ink">1:1</span> моя запись <span class="tag --line">занято</span> чужая запись без подробностей <span class="tag">поставка</span></div>';
+}
+
+/* ---------- панель ---------- */
+function sheet(o){
+  $('sheet').innerHTML=`<div class="sh-head">${o.back?`<button class="ib" data-act="${o.back}">${ic('back')}</button>`:''}<div style="flex:1;min-width:0">${o.eyebrow?`<div class="caps">${o.eyebrow}</div>`:''}<div class="h2">${o.title}</div></div><button class="ib" data-close>${ic('close')}</button></div>${o.tabs||''}<div class="sh-body">${o.body}</div>${o.foot?`<div class="sh-foot">${o.foot}</div>`:''}`;
+  $('sheet').classList.add('on');$('scrim').classList.add('on');
+}
+const closeSheet=()=>{$('sheet').classList.remove('on');$('scrim').classList.remove('on')};
+function openRef(r){
+  ({meeting:sheetMeeting,peak:sheetPeak,delivery:sheetDelivery,booking:sheetBookingView,busy:sheetBusy,
+    regular:r=>sheet({eyebrow:'Поставка по расписанию',title:r.sup,body:`<dl class="kv"><dt>Когда</dt><dd>${fmtDW(fromIso(r.d))}</dd><dt>Что</dt><dd>Регулярная поставка цветов</dd><dt>Откуда</dt><dd>Дни поставщика заданы в настройках календаря</dd></dl><div class="callout --plain mt16">В день поставки флористы видят «приёмка и обработка» – место в холодильнике и время в смене планируются заранее.</div>`}),
+    date:r=>sheet({eyebrow:'Коммерческий календарь',title:r.title,body:`<dl class="kv"><dt>Дата</dt><dd>${fmtDW(fromIso(r.d))}</dd><dt>Влияние</dt><dd>${LEVEL[r.lv]}</dd><dt>Откуда</dt><dd>Дата считается кодом на любой год</dd></dl><p class="sm soft mt16">Уровень влияния сейчас задан по умолчанию. На этапе v3 он считается по истории заказов CRM. Суммы в календаре не показываются – только уровень.</p>`}),
+    leave:r=>sheet({eyebrow:'Отсутствие',title:r.name===me().name?'Мой отпуск':r.name,body:`<dl class="kv"><dt>Даты</dt><dd>${fmtD(fromIso(r.from))} – ${fmtD(fromIso(r.to))}</dd><dt>Статус</dt><dd>В отпуске</dd></dl><div class="callout --plain mt16">Команда видит только факт «в отпуске». Тип и причина отсутствия видны HR в разделе «Документы и отсутствия».</div>`}),
+    shift:r=>sheet({eyebrow:'График',title:'Моя смена',body:`<dl class="kv"><dt>Когда</dt><dd>${fmtDW(fromIso(r.d))}, ${me().shift.from}–${me().shift.to}</dd><dt>Где</dt><dd>Студия SE1</dd></dl><p class="sm soft mt16">Смены берутся из экрана «График». Здесь они только показываются; на время смены слоты 1:1 недоступны.</p>`,foot:'<button class="btn --sm --ghost" data-toast="Открывается экран «График» – уже есть в CRM">Открыть график</button>'}),
+    bday:r=>sheet({eyebrow:r.k,title:r.name,body:`<div class="callout --plain">Показано, потому что сотрудник сам разрешил это в настройках признания. Возраст не показывается никогда.</div>`}),
+    hr:r=>sheet({eyebrow:'HR-дата',title:r.t,body:`<dl class="kv"><dt>Раздел</dt><dd>${r.s}</dd><dt>Кто видит</dt><dd>Только HR и владелец</dd></dl>`,foot:'<button class="btn --sm --ghost" data-toast="Открывается HR-календарь – уже есть в CRM">Открыть в HR</button>'}),
+  })[r.type](r);
+}
+
+/* ---------- встреча ---------- */
+function sheetMeeting(r){
+  const s=SERIES.find(x=>x.id===r.series),d0=fromIso(r.date),sug=blackoutOf(d0)?suggestMove(d0):null,mv=S.moves[r.id],d=mv==='moved'?sug:d0;
+  const att=S.attend[r.id]||(S.attend[r.id]={}),ag=S.agreements[r.id]||(S.agreements[r.id]=[]);
+  const lead=canManage();
+  const offShift=n=>n.length%2===0; // демо: часть флористов вне смены
+  sheet({eyebrow:`${s.aud} · ${s.ruleText}`,title:s.title,body:`
+    ${sug&&!mv?`<div class="callout mb16"><b>Встреча попала на пиковое окно (${blackoutOf(d0).title}).</b><br>Система предлагает перенос на ${fmtDW(sug)}, ${s.time}. Молча встреча не переносится.${lead?`<div class="row mt8"><button class="btn --sm" data-move="moved" data-id="${r.id}">Перенести на ${fmtD(sug)}</button><button class="btn --sm --ghost" data-move="kept" data-id="${r.id}">Оставить как есть</button></div>`:'<div class="mt8 xs">Решение принимает HR или владелец.</div>'}</div>`:''}
+    <dl class="kv"><dt>Когда</dt><dd><b>${fmtDW(d)}, ${s.time}–${hm(mins(s.time)+s.dur)}</b> по Лондону</dd><dt>Где</dt><dd>${s.format}</dd><dt>Ссылка</dt><dd><button class="textbtn" data-toast="Открывается Google Meet">Подключиться к Meet</button></dd><dt>Ведёт</dt><dd>${s.host}</dd><dt>Участники</dt><dd>${s.people.length} – все из группы «${s.aud}». Новый сотрудник группы попадает в серию сам.</dd>${s.paid?'<dt>Оплата</dt><dd>Встреча оплачивается. Кто на смене – в студии, кто вне смены – онлайн; им время встречи попадает в график часами.</dd>':''}</dl>
+    <div class="row mt16"><span class="caps">Вы придёте?</span><button class="btn --sm ${S.rsvp[r.id]==='yes'?'':'--secondary'}" data-rsvp="yes" data-id="${r.id}">Буду</button><button class="btn --sm ${S.rsvp[r.id]==='no'?'':'--ghost'}" data-rsvp="no" data-id="${r.id}">Не смогу</button></div>
+    <div class="hr"></div><span class="caps">Повестка</span><pre class="dg mt8">${AGENDA}</pre>
+    ${lead?`<div class="hr"></div><span class="caps">Явка</span><table class="t mt8"><tr><th>Сотрудник</th><th>Ответ</th><th>Был</th><th>Часы в график</th></tr>${s.people.map((n,i)=>`<tr><td>${n}</td><td class="muted">${['буду','буду','нет ответа','не смогу','буду'][i%5]}</td><td><label class="check"><input type="checkbox" data-att="${r.id}" data-n="${n}" ${att[n]?'checked':''}></label></td><td class="num">${s.paid&&att[n]&&offShift(n)?`${s.dur} мин · вне смены`:s.paid&&att[n]?'на смене':'–'}</td></tr>`).join('')}</table>
+    <div class="hr"></div><div class="field"><label>Протокол</label><textarea class="textarea" placeholder="Коротко: что решили">${esc(S.minutes[r.id]||'')}</textarea></div>
+    <div class="mt16"><span class="caps">Договорённости → задачи</span>${ag.map(a=>`<div class="ms"><span class="t">${esc(a.t)}</span><span class="w">${a.o} · до ${a.due}</span><span class="tag --line">задача создана</span></div>`).join('')}
+    <div class="grid g2 mt8"><input class="input" id="ag-t" placeholder="Что сделать"><select class="select" id="ag-o">${s.people.map(n=>`<option>${n}</option>`).join('')}</select></div><div class="row mt8"><input class="input" id="ag-d" type="date" value="${iso(addDays(d,7))}" style="max-width:170px"><button class="btn --sm --secondary" data-ag="${r.id}">Добавить задачу</button></div></div>`:''}`,
+    foot:lead?'<button class="btn --sm" data-toast="Протокол и явка сохранены">Сохранить</button><span class="sp"></span><span class="xs muted">Явку и протокол ведёт ведущий, HR или владелец</span>':''});
+  sheetMeeting.last=r;
+}
+
+/* ---------- пик ---------- */
+function sheetPeak(r){
+  const p=allPeaks().find(x=>x.key===r.key),edit=S.role==='manager'||S.role==='owner';
+  sheet({eyebrow:p.double?'Двойной пик':'Пик продаж',title:p.title,body:`
+    <dl class="kv"><dt>${p.dates.length>1?'Даты':'Дата'}</dt><dd><b>${p.dates.map(fmtDW).join(' и ')}</b> ${p.dates[0].getFullYear()}</dd>${p.cutoffs.map(c=>`<dt>Cut-off</dt><dd>${fmtDW(c.d)} – ${c.t}</dd>`).join('')}<dt>Отпуск закрыт</dt><dd>${fmtD(p.blackout[0])}${iso(p.blackout[0])!==iso(p.blackout[1])?' – '+fmtD(p.blackout[1]):''}. Больничный и отгул по семейным обстоятельствам не блокируются.</dd></dl>
+    ${p.double?'<div class="callout mt16">Mothering Sunday и 8 марта идут подряд: воскресенье и понедельник. Смены, курьеры и закупка планируются на оба дня сразу.</div>':''}
+    <div class="hr"></div><span class="caps">Вехи подготовки – каждая стоит задачей</span>
+    <div class="mt8">${p.milestones.map(m=>{const done=!!msDone[m.id],late=!done&&m.d<TODAY;return `<div class="ms ${done?'done':''} ${late?'late':''}"><button class="bx" ${edit?`data-ms="${m.id}" data-key="${p.key}"`:''} title="${edit?'Отметить':'Отмечает ответственный'}"></button><span class="t">${m.t}<br><small class="muted">${m.owner} · за ${-m.off} ${plural(-m.off,'день','дня','дней')}</small></span><span class="w num">${late?'просрочено · ':''}${fmtDW(m.d)}</span></div>`}).join('')}</div>
+    <p class="xs muted mt16">Смещения вех и ответственные задаются в настройках. Суммы закупок и выручка в календаре не показываются.</p>`,
+    foot:`<button class="btn --sm --ghost" data-toast="Открывается список задач с фильтром по этому пику">Задачи пика</button>`});
+  sheetPeak.last=r;
+}
+function sheetDelivery(r){
+  const p=POS.find(x=>x.code===r.code);
+  sheet({eyebrow:`Поставка · ${p.code}`,title:p.sup,body:`<dl class="kv"><dt>Ожидается</dt><dd><b>${fmtDW(fromIso(p.d))}</b></dd><dt>Что везут</dt><dd>${p.what}</dd><dt>Статус</dt><dd>${p.st}</dd></dl>
+    <div class="callout --plain mt16">${S.role==='florist'?'В этот день на смене – приёмка и обработка. Подготовьте место в холодильнике.':'Флористы видят этот день как «приёмка и обработка».'}</div>
+    <p class="xs muted mt16">Цены и суммы закупок в календаре не показываются никому. Они остаются на складе у тех, у кого есть доступ.</p>`,
+    foot:'<button class="btn --sm --secondary" data-toast="Открывается экран «Ожидается» на складе – уже есть в CRM">Открыть в «Ожидается»</button>'});
+}
+function sheetBusy(r){const h=host(r.host);sheet({eyebrow:'1:1',title:h.busy,body:`<div class="callout --plain">У ${h.name} в это время личная встреча. С кем и о чём – видят только двое: сотрудник и тот, к кому он записался. Руководитель о записи не узнаёт.</div><p class="sm soft mt16">Так же запись выглядит в чужой iCal-ленте: «занято», без имён и темы.</p>`})}
+
+/* ---------- запись на 1:1: три нажатия ---------- */
+let BK={};
+function sheetBook(step){
+  if(step===1||!step){BK={};
+    return sheet({eyebrow:'Запись на 1:1 · шаг 1 из 3',title:'С кем поговорить',body:`<div class="steps"><i class="on"></i><i></i><i></i></div>
+      ${HOSTS.filter(h=>h.name!==me().name).map(h=>{const n=slotsFor(h).reduce((a,x)=>a+x.list.filter(s=>!s.shift).length,0),has=S.bookings.some(b=>b.host===h.id&&b.by===me().name&&b.d>=iso(TODAY));return `<button class="host" data-host="${h.id}" ${has?'data-has="1"':''}><span class="avatar --l">${initials(h.name)}</span><span class="t"><b>${h.name}</b><small>${h.role} · ${h.format}</small></span><span class="xs muted">${has?'вы уже записаны':n+' '+plural(n,'слот','слота','слотов')}</span>${ic('chev')}</button>`}).join('')}
+      <div class="hr"></div><button class="textbtn" data-act="talk">Хочу поговорить, без даты</button>
+      <p class="xs muted mt16">Тему и сам факт встречи видят только вы и тот, к кому вы записались. Срочный вопрос или жалоба – не через календарь: <button class="textbtn" data-toast="Открывается политика обращений и жалоб в HR-модуле">порядок обращений</button>.</p>`});
+  }
+  const h=host(BK.host);
+  if(step===2){const days=slotsFor(h);
+    return sheet({back:'book',eyebrow:'Шаг 2 из 3 · время по Лондону',title:h.name,body:`<div class="steps"><i class="on"></i><i class="on"></i><i></i></div>
+      ${days.length?days.map(x=>`<div class="slots-day"><span class="caps">${fmtDW(x.d)}</span><div class="slots">${x.list.map(s=>`<button class="slot num" ${s.shift?'disabled title="В это время у вас смена"':`data-slot="${iso(x.d)} ${s.t}"`}>${s.t}</button>`).join('')}</div></div>`).join(''):'<p class="muted">Свободных слотов нет. Оставьте запрос «без даты».</p>'}
+      <p class="xs muted mt16">Встреча ${h.slot} минут. Зачёркнутые слоты выпадают на вашу смену. Занятые слоты не показываются. Запись открыта на ${h.ahead} ${plural(h.ahead,'день','дня','дней')} вперёд.</p>`});
+  }
+  const[d,t]=BK.slot.split(' ');
+  sheet({back:'book2',eyebrow:'Шаг 3 из 3',title:'Подтвердите запись',body:`<div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+    <dl class="kv"><dt>С кем</dt><dd><b>${h.name}</b> · ${h.role}</dd><dt>Когда</dt><dd><b>${fmtDW(fromIso(d))}, ${t}–${hm(mins(t)+h.slot)}</b></dd><dt>Где</dt><dd>${h.format}</dd></dl>
+    <div class="field mt16"><label>Тема – по желанию</label><textarea class="textarea" id="bk-topic" placeholder="Можно оставить пустым"></textarea><span class="xs muted">Тему увидит только ${h.name}.</span></div>
+    <p class="xs muted mt16">Напомним за день и за час. Перенести или отменить можно не позже чем за ${h.cancel} ${plural(h.cancel,'час','часа','часов')} до встречи.</p>`,
+    foot:'<button class="btn" data-act="book-ok">Записаться</button>'});
+}
+function sheetBookingView(r){
+  const b=S.bookings.find(x=>x.id===r.id),h=host(b.host),mine=b.by===me().name;
+  sheet({eyebrow:'1:1',title:mine?h.name:b.by,body:`<dl class="kv"><dt>Когда</dt><dd><b>${fmtDW(fromIso(b.d))}, ${b.t}–${hm(mins(b.t)+h.slot)}</b></dd><dt>Где</dt><dd>${h.format}</dd><dt>Тема</dt><dd>${b.topic?esc(b.topic):'<span class="muted">не указана</span>'}</dd></dl>
+    <div class="callout --plain mt16">Эту запись видят двое: ${b.by===me().name?'вы':b.by} и ${h.name===me().name?'вы':h.name}. Остальные видят «${h.busy}».</div>`,
+    foot:`<button class="btn --sm --secondary" data-rebook="${b.id}">Перенести</button><button class="btn --sm --ghost" data-cancel="${b.id}">Отменить запись</button>`});
+}
+function sheetTalk(){
+  sheet({back:'book',eyebrow:'Без даты',title:'Хочу поговорить',body:`<div class="field"><label>С кем</label><select class="select" id="tk-h">${HOSTS.filter(h=>h.name!==me().name).map(h=>`<option value="${h.id}">${h.name} – ${h.role}</option>`).join('')}</select></div><div class="field mt16"><label>О чём – по желанию</label><textarea class="textarea"></textarea></div><p class="xs muted mt16">Адресат получит запрос и сам предложит время. Запрос видите только вы и он.</p>`,foot:'<button class="btn" data-act="talk-ok">Отправить запрос</button>'});
+}
+/* ---------- адресат: слоты и записи ---------- */
+function sheetHost(){
+  const h=host(me().host),inbox=S.bookings.filter(b=>b.host===h.id&&b.d>=iso(TODAY)),talk=S.talk.filter(x=>x.host===h.id);
+  sheet({eyebrow:h.role,title:'Мои слоты и записи',body:`
+    <span class="caps">Окна доступности</span>
+    <table class="t mt8"><tr><th>Когда</th><th>Время</th><th>Слот</th><th>Буфер</th><th></th></tr>${h.windows.map(w=>`<tr><td>Каждый ${WDF[w.wd]}</td><td class="num">${w.from}–${w.to}</td><td class="num">${h.slot} мин</td><td class="num">${h.buf} мин</td><td><button class="textbtn" data-toast="Окно удалено – уже сделанные записи остаются">Убрать</button></td></tr>`).join('')}</table>
+    <div class="grid g2 mt16"><div class="field"><label>День</label><select class="select"><option>Каждую неделю: понедельник</option><option>Каждую неделю: вторник</option><option>Один раз: выбрать дату</option></select></div><div class="field"><label>Время</label><div class="row"><input class="input" type="time" value="10:00"><input class="input" type="time" value="12:00"></div></div>
+    <div class="field"><label>Длительность и буфер</label><div class="row"><select class="select"><option>30 мин</option><option>45 мин</option><option>60 мин</option></select><select class="select"><option>без буфера</option><option>10 мин</option><option>15 мин</option></select></div></div><div class="field"><label>Формат</label><select class="select"><option>Студия SE1</option><option>Google Meet</option></select></div></div>
+    <div class="row mt16"><button class="btn --sm --secondary" data-toast="Окно добавлено – слоты появились у сотрудников">Добавить окно</button><span class="xs muted">Открыто на ${h.ahead} ${plural(h.ahead,'день','дня','дней')} вперёд · отмена не позже ${h.cancel} ч</span></div>
+    <div class="hr"></div><span class="caps">Записаны ко мне</span>
+    ${inbox.length?inbox.map(b=>`<button class="ev l-meeting mt8" ${refAttr({type:'booking',id:b.id})}><span class="tm num">${fmtS(fromIso(b.d))} ${b.t}</span><span class="tx"><b>${b.by}</b><small>${b.topic?esc(b.topic):'Тема не указана'}</small></span></button>`).join(''):'<p class="sm muted mt8">Пока никто не записан.</p>'}
+    <div class="hr"></div><span class="caps">Хотят поговорить, без даты</span>
+    ${talk.length?talk.map(x=>`<div class="ms"><span class="t"><b>${x.by}</b><br><small class="muted">запрос от ${fmtD(fromIso(x.d))}</small></span><button class="btn --sm --ghost" data-toast="Сотруднику ушло предложение времени">Предложить время</button></div>`).join(''):'<p class="sm muted mt8">Запросов нет.</p>'}`});
+}
+/* ---------- отпуск: жёсткий запрет на пики ---------- */
+function sheetLeave(){
+  sheet({eyebrow:'Команда → Отпуск',title:'Заявка на отсутствие',body:`
+    <div class="field"><label>Тип</label><select class="select" id="lv-type"><option value="holiday">Ежегодный отпуск</option><option value="sick">Больничный</option><option value="dep">Отгул по семейным обстоятельствам</option><option value="unpaid">За свой счёт</option></select></div>
+    <div class="grid g2 mt16"><div class="field"><label>С</label><input class="input" type="date" id="lv-from" value="2027-03-05"></div><div class="field"><label>По</label><input class="input" type="date" id="lv-to" value="2027-03-09"></div></div>
+    <div id="lv-msg" class="mt16"></div>
+    <div class="hr"></div><span class="caps">Дни, когда отпуск закрыт</span>
+    ${allPeaks().filter(p=>p.blackout[1]>=TODAY).slice(0,4).map(p=>`<div class="ms"><span class="t">${p.title}</span><span class="w num">${fmtD(p.blackout[0])}${iso(p.blackout[0])!==iso(p.blackout[1])?' – '+fmtD(p.blackout[1]):''} ${p.blackout[0].getFullYear()}</span></div>`).join('')}
+    <p class="xs muted mt16">Правило записано в политике отпусков и известно заранее. Запрет касается только ежегодного отпуска: больничный и отгул по семейным обстоятельствам оформляются в любой день.</p>`,
+    foot:'<button class="btn" id="lv-send" data-act="leave-ok">Отправить заявку</button>'});
+  checkLeave();
+}
+function checkLeave(){
+  const ty=$('lv-type').value,a=$('lv-from').value,b=$('lv-to').value,box=$('lv-msg'),btn=$('lv-send');if(!a||!b){return}
+  let hit=null;for(let d=fromIso(a);d<=fromIso(b);d=addDays(d,1)){const p=blackoutOf(d);if(p){hit=p;break}}
+  if(ty==='holiday'&&hit){box.innerHTML=`<div class="callout"><b>На эти даты отпуск не оформляется.</b><br>${hit.title}: отпуск закрыт ${fmtD(hit.blackout[0])}${iso(hit.blackout[0])!==iso(hit.blackout[1])?' – '+fmtD(hit.blackout[1]):''}. Выберите другие дни.</div>`;btn.disabled=true}
+  else if(hit){box.innerHTML='<div class="callout --plain">Даты попадают на пик, но этот тип отсутствия не блокируется.</div>';btn.disabled=false}
+  else{box.innerHTML='';btn.disabled=false}
+}
+/* ---------- iCal ---------- */
+function sheetIcal(){
+  const tok='k7f3'+'•'.repeat(18)+['q9','x2','m5'][S.icalRev%3];
+  sheet({eyebrow:'Только чтение',title:'Подписка iCal',body:`
+    <p class="sm soft">Личная ссылка показывает ваш календарь в Google Calendar или Apple Calendar. Обратно из них в CRM ничего не записывается.</p>
+    <div class="field mt16"><label>Моя ссылка</label><div class="row"><input class="input num" readonly value="https://app.floritta.ai/calendar/ical/${tok}.ics"><button class="btn --sm --secondary" data-toast="Ссылка скопирована">Копировать</button></div></div>
+    <div class="row mt8"><button class="textbtn" data-act="ical-rotate">Перевыпустить ссылку</button><span class="xs muted">старая перестанет работать</span></div>
+    <div class="hr"></div><span class="caps">Что попадает в ленту</span>
+    <div class="ms"><span class="t">Мои смены, встречи команды, мои записи на 1:1</span><span class="w">полностью</span></div>
+    <div class="ms"><span class="t">Пики, cut-off, банковские выходные, поставки</span><span class="w">название и дата</span></div>
+    <div class="ms"><span class="t">Тема моей записи на 1:1</span><span class="w">не передаётся</span></div>
+    <div class="ms"><span class="t">Чужие записи на 1:1</span><span class="w">«занято»</span></div>
+    <div class="ms"><span class="t">Суммы, причины отсутствий, HR-заметки</span><span class="w">никогда</span></div>`});
+}
+/* ---------- настройки (HR и владелец) ---------- */
+let ST='meet';
+function sheetSettings(){
+  const tabs=[['meet','Встречи'],['peak','Пики и отпуска'],['hosts','Адресаты 1:1'],['sup','Поставки'],['dig','Дайджест']];
+  const p=nextPeak(TODAY),wk=events(D(2026,11,16),D(2026,11,22));
+  const body={
+    meet:`${SERIES.map(s=>`<div class="card mb16"><div class="row"><b style="flex:1">${s.title}</b>${s.paid?'<span class="tag --line">оплачивается</span>':''}</div><div class="grid g2 mt8"><div class="field"><label>Повторение</label><select class="select"><option>${s.ruleText}</option><option>Каждую неделю</option><option>Раз в месяц</option></select></div><div class="field"><label>Время и длительность</label><div class="row"><input class="input" type="time" value="${s.time}"><select class="select"><option>${s.dur} мин</option><option>30 мин</option><option>60 мин</option></select></div></div><div class="field"><label>Участники</label><select class="select"><option>${s.aud} – по группе графика</option></select></div><div class="field"><label>Ведёт</label><select class="select"><option>${s.host}</option></select></div></div><div class="xs muted mt8">${s.format} · ссылка Meet задаётся один раз на серию</div></div>`).join('')}<p class="xs muted">День, время и длительность – данные, а не код. Если встреча попадает на пиковое окно, система предлагает перенос и ждёт подтверждения.</p>`,
+    peak:`<span class="caps">Когда отпуск закрыт</span><table class="t mt8"><tr><th>Пик</th><th>Окно</th><th></th></tr><tr><td>День святого Валентина</td><td class="num">14 февраля</td><td><button class="textbtn" data-toast="Окно можно расширить, например 12–14 февраля">Изменить</button></td></tr><tr><td>Mothering Sunday + 8 марта</td><td class="num">оба дня и дни между ними</td><td><button class="textbtn" data-toast="Окно меняется здесь">Изменить</button></td></tr><tr><td>Рождество</td><td class="num">14–24 декабря</td><td><button class="textbtn" data-toast="Окно меняется здесь">Изменить</button></td></tr></table>
+      <div class="callout --plain mt16">Запрет жёсткий и только для ежегодного отпуска. Больничный и отгул по семейным обстоятельствам не блокируются – это право по закону.</div>
+      <div class="hr"></div><span class="caps">Вехи подготовки</span><table class="t mt8"><tr><th>Веха</th><th>За сколько дней</th><th>Ответственный</th></tr>${MS_TPL.map(m=>`<tr><td>${m.t}</td><td><input class="input num" style="width:70px" value="${-m.off}"></td><td>${m.owner}</td></tr>`).join('')}</table><p class="xs muted mt8">Каждая веха автоматически становится задачей ответственному.</p>`,
+    hosts:`<p class="sm soft">К этим людям сотрудник может записаться сам. Каждый открывает свои свободные часы.</p><div class="mt16">${HOSTS.map(h=>`<div class="ms"><span class="avatar">${initials(h.name)}</span><span class="t"><b>${h.name}</b><br><small class="muted">${h.role}</small></span><span class="w">${h.id==='hr'?'по роли HR – автоматически':'<button class="textbtn" data-toast="Адресат убран из списка">убрать</button>'}</span></div>`).join('')}</div><div class="row mt16"><select class="select"><option>Добавить сотрудника…</option><option>Denis Orlov – менеджер</option><option>Alina Moroz – поддержка</option></select><button class="btn --sm --secondary" data-toast="Адресат добавлен">Добавить</button></div><p class="xs muted mt16">Все с ролью HR попадают в список сами. Остальных выбирает владелец.</p>`,
+    sup:`<span class="caps">Регулярные дни поставок</span><table class="t mt8"><tr><th>Поставщик</th><th>День</th><th>Что</th><th></th></tr>${REGULAR.map(g=>`<tr><td>${g.sup}</td><td>${WDF[g.wd]}</td><td>${g.what}</td><td><button class="textbtn" data-toast="День убран">Убрать</button></td></tr>`).join('')}</table><button class="btn --sm --secondary mt16" data-toast="Форма: поставщик, день недели, что везут">Добавить день</button><p class="xs muted mt16">Разовые поставки берутся со склада из «Ожидается» сами. Здесь – только повторяющиеся дни.</p>`,
+    dig:`<div class="grid g2"><div class="field"><label>Когда</label><div class="row"><select class="select"><option>Понедельник</option></select><input class="input" type="time" value="09:00"></div></div><div class="field"><label>Куда</label><select class="select"><option>Общий чат команды</option></select></div></div>
+      <div class="mt16"><span class="caps">Так выглядит сообщение</span><pre class="dg mt8"><b>Неделя 16–22 ноября</b>
+
+Встречи
+${wk.filter(e=>e.layer==='meeting').map(e=>`· ${fmtDW(fromIso(e.d))}, ${e.tm} – ${e.title}`).join('\n')||'· на этой неделе встреч нет'}
+
+Поставки
+${POS.filter(x=>x.d>='2026-11-16'&&x.d<='2026-11-22').map(x=>`· ${fmtDW(fromIso(x.d))} – ${x.sup}`).join('\n')}
+
+Ближайший пик
+· ${p.title}, ${fmtD(p.dates[0])} – через ${daysBetween(D(2026,11,16),p.dates[0])} ${plural(daysBetween(D(2026,11,16),p.dates[0]),'день','дня','дней')}
+${p.milestones.filter(m=>m.d>=D(2026,11,16)&&m.d<=D(2026,11,29)).map(m=>`· веха: ${m.t} – до ${fmtD(m.d)}`).join('\n')}</pre></div><p class="xs muted mt8">В дайджесте нет имён, личных данных и сумм.</p>`,
+  };
+  sheet({eyebrow:'HR и владелец',title:'Настройки календаря',tabs:`<div class="sh-tabs">${tabs.map(([k,t])=>`<button class="${ST===k?'on':''}" data-st="${k}">${t}</button>`).join('')}</div>`,body:body[ST],foot:'<button class="btn --sm" data-toast="Настройки сохранены">Сохранить</button>'});
+}
+function sheetDay(k){
+  const d=fromIso(k),evs=events(d,d),p=blackoutOf(d);
+  sheet({eyebrow:WDF[dow(d)],title:fmtD(d)+' '+d.getFullYear(),body:`${p?`<div class="callout mb16">${p.title}: отпуск на этот день закрыт.</div>`:''}${evs.map(evRow).join('')||'<p class="muted">Событий нет.</p>'}`});
+}
+
+/* ---------- заметки ---------- */
+const NOTES=`
+<h4>Что это</h4><p>Вкладка «Календарь» в разделе «Задачи». Одно место, где каждый видит встречи, пики продаж, поставки, свои смены и отпуска – и сам записывается на 1:1.</p>
+<h4>Как смотреть</h4><ul><li>Переключатель «Смотреть как» вверху: флорист, менеджер, HR, владелец – видно, что скрыто от каждого.</li><li>Запись на 1:1 – три нажатия: с кем, время, «Записаться».</li><li>«К двойному пику» – март 2027: Mothering Sunday 7-го и 8 марта подряд.</li><li>«Отпуск» – заявка на 5–9 марта 2027 не проходит.</li></ul>
+<h4>Уже есть в CRM – переиспользуем</h4><ul><li>HR-календарь и его источники дат</li><li>График смен и группы</li><li>Отпуска и журнал отсутствий</li><li>Склад «Ожидается»</li><li>Задачи – для вех и договорённостей</li><li>Согласие на показ дня рождения</li></ul>
+<h4>Новое</h4><ul><li>Серии встреч команды, явка, протокол</li><li>Слоты и самозапись на 1:1 к четырём адресатам</li><li>Коммерческий календарь: пики, cut-off, вехи</li><li>Запрет ежегодного отпуска на пики</li><li>Личная iCal-лента, дайджест недели</li></ul>
+<h4>Кто что видит</h4><ul><li><b>Запись на 1:1</b> – только двое. Остальным «занято».</li><li><b>Отпуск</b> – команде только факт, без типа и причины.</li><li><b>Поставки</b> – флористы, менеджеры, владелец. Без цен.</li><li><b>HR-даты</b> – HR и владелец.</li><li><b>Дни рождения</b> – только с согласия, без возраста.</li><li>Денег в календаре нет.</li></ul>
+<h4>Этапы</h4><p><span class="st ink">MVP</span> всё, что на этом экране.</p><p><span class="st">v2</span> лимит одновременных отсутствий, обучение с записью, онбординг для самого сотрудника, экран в приложении Floritta Team.</p><p><span class="st">v3</span> уровень влияния дат по истории заказов, проверки помещения с журналом.</p>
+<h4>Данные</h4><p>Имена, поставщики и события вымышлены. Даты праздников и банковских выходных считаются настоящим расчётом.</p>`;
+
+/* ---------- события ---------- */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button,[data-day],[data-close]');if(!el)return;const ds=el.dataset;
+  if(el.id==='notes-hide'){$('app').classList.add('no-notes');$('app').classList.remove('notes-open');return}
+  if(el.id==='notes-toggle'){$('app').classList.remove('no-notes');$('app').classList.toggle('notes-open');return}
+  if('close' in ds)return closeSheet();
+  if(ds.toast)return toast(ds.toast);
+  if(ds.role){S.role=ds.role;closeSheet();return render()}
+  if(ds.view){S.view=ds.view;return render()}
+  if(ds.layer){S.layers.has(ds.layer)?S.layers.delete(ds.layer):S.layers.add(ds.layer);return render()}
+  if(ds.nav!==undefined){const n=+ds.nav;if(S.view==='month')S.cursor=n?D(S.cursor.getFullYear(),S.cursor.getMonth()+1+n,1):D(2026,11,1);else S.weekStart=n?addDays(S.weekStart,7*n):D(2026,11,16);return render()}
+  if(ds.jump){S.view='month';S.cursor=D(2027,3,1);return render()}
+  if(ds.ref!==undefined)return openRef(REFS[+ds.ref]);
+  if(ds.day)return sheetDay(ds.day);
+  if(ds.rsvp){S.rsvp[ds.id]=ds.rsvp;toast(ds.rsvp==='yes'?'Отмечено: буду':'Отмечено: не смогу');render();if($('sheet').classList.contains('on')&&sheetMeeting.last)sheetMeeting(sheetMeeting.last);return}
+  if(ds.move){S.moves[ds.id]=ds.move;toast(ds.move==='moved'?'Встреча перенесена – участники получили уведомление':'Встреча оставлена на прежней дате');render();return sheetMeeting(sheetMeeting.last)}
+  if(ds.ag){const t=$('ag-t').value.trim();if(!t)return toast('Напишите, что сделать');S.agreements[ds.ag].push({t,o:$('ag-o').value,due:fmtD(fromIso($('ag-d').value))});toast('Задача создана и назначена');return sheetMeeting(sheetMeeting.last)}
+  if(ds.ms){msDone[ds.ms]=!msDone[ds.ms];render();return sheetPeak(sheetPeak.last)}
+  if(ds.host){if(ds.has)return toast('К этому человеку у вас уже есть запись – перенесите или отмените её');BK.host=ds.host;return sheetBook(2)}
+  if(ds.slot){BK.slot=ds.slot;return sheetBook(3)}
+  if(ds.rebook){const b=S.bookings.find(x=>x.id===+ds.rebook);S.bookings=S.bookings.filter(x=>x!==b);BK={host:b.host};render();toast('Выберите новое время');return sheetBook(2)}
+  if(ds.cancel){S.bookings=S.bookings.filter(x=>x.id!==+ds.cancel);closeSheet();render();return toast('Запись отменена – слот снова свободен')}
+  if(ds.st){ST=ds.st;return sheetSettings()}
+  const act={book:()=>sheetBook(1),book2:()=>sheetBook(2),host:sheetHost,leave:sheetLeave,ical:sheetIcal,settings:sheetSettings,talk:sheetTalk,
+    'book-ok':()=>{const[d,t]=BK.slot.split(' ');S.bookings.push({id:Date.now(),host:BK.host,d,t,by:me().name,topic:$('bk-topic').value.trim()});closeSheet();S.view='my';render();toast(`Вы записаны: ${fmtD(fromIso(d))}, ${t}. Напомним за день и за час`)},
+    'talk-ok':()=>{S.talk.push({host:$('tk-h').value,by:me().name,topic:'',d:iso(TODAY)});closeSheet();toast('Запрос отправлен – вам предложат время')},
+    'leave-ok':()=>{closeSheet();toast('Заявка отправлена на согласование')},
+    'ical-rotate':()=>{S.icalRev++;sheetIcal();toast('Новая ссылка готова, старая отключена')},
+  }[ds.act];
+  if(act)act();
+});
+document.addEventListener('change',e=>{
+  if(['lv-type','lv-from','lv-to'].includes(e.target.id))checkLeave();
+  if(e.target.dataset.att){(S.attend[e.target.dataset.att]||(S.attend[e.target.dataset.att]={}))[e.target.dataset.n]=e.target.checked;sheetMeeting(sheetMeeting.last)}
+});
+$('scrim').addEventListener('click',closeSheet);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+render();
+
+</script>
+</body>
+</html>
