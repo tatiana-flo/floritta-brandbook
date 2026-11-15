@@ -371,7 +371,7 @@ const LEVEL={peak:'Пик',high:'Высокий',notable:'Заметный',bg:'
 
 /* ---------- люди и роли ---------- */
 const ROLES={
-  florist:{name:'Mila Novak',label:'Флорист',shift:{wd:[0,2,4,5],from:'08:00',to:'16:00'}},
+  florist:{name:'Mila Novak',label:'Флорист',shift:{wd:[0,3,4,6],from:'08:00',to:'16:00'}},
   manager:{name:'Denis Orlov',label:'Менеджер',shift:{wd:[0,1,2,3,4],from:'09:00',to:'18:00'}},
   hr:{name:'Irina Petrova',label:'HR',host:'hr'},
   owner:{name:'Владелец',label:'Владелец',host:'owner'},
@@ -397,8 +397,8 @@ const S={
     {id:3,host:'owner',d:'2026-11-18',t:'16:30',by:'Kira Belova',topic:'Идея по свадебному направлению'},
     {id:4,host:'studio',d:'2026-11-17',t:'09:00',by:'Daria Lis',topic:''},
   ],
-  talk:[{host:'hr',by:'Yana Kim',topic:'',d:'2026-11-14'}],
-  rsvp:{},moves:{},attend:{},agreements:{},minutes:{},
+  talk:[{host:'hr',by:'Yana Kim',topic:'Хочу обсудить переход на полную ставку',d:'2026-11-14'}],
+  rsvp:{},moves:{},attend:{},agreements:{},minutes:{},clock:{on:true,brk:false},topics:{},offers:{},
   icalRev:1,
 };
 const me=()=>ROLES[S.role];
@@ -480,6 +480,14 @@ function events(from,to){
   return out.sort((a,b)=>a.d.localeCompare(b.d)||(a.tm||'').localeCompare(b.tm||''));
 }
 function isMyLeave(d){const t=iso(d);return LEAVES.some(l=>l.name===me().name&&l.from<=t&&t<=l.to)}
+const NOW_MIN=10*60+30;
+const fmtH=m=>`${Math.floor(m/60)} ч${m%60?` ${m%60} мин`:''}`;
+function shiftInfo(d){const sh=me().shift;if(!sh||!sh.wd.includes(dow(d))||isMyLeave(d))return null;const plan=mins(sh.to)-mins(sh.from),k=iso(d),t=iso(TODAY),base={plan,from:sh.from,to:sh.to};
+  if(k<t)return{...base,state:'done',fact:plan+[-10,5,0,10,-5][d.getDate()%5]};
+  if(k===t)return{...base,state:S.clock.on?'on':'closed',since:hm(mins(sh.from)-2),fact:NOW_MIN-mins(sh.from)+2};
+  return{...base,state:'plan',fact:null}}
+function paidMeetings(from,to){const out=[];if(S.role!=='florist')return out;SERIES.filter(s=>s.paid).forEach(s=>occurrences(s,from,to).forEach(d=>{if(!onShift(d,s.time,s.dur)&&!blackoutOf(d))out.push({d,dur:s.dur,title:s.title})}));return out}
+function weekHours(mon){let plan=0,fact=0;for(let i=0;i<7;i++){const x=shiftInfo(addDays(mon,i));if(x){plan+=x.plan;if(x.fact)fact+=x.fact}}return{plan,fact,meet:paidMeetings(mon,addDays(mon,6)).reduce((a,x)=>a+x.dur,0)}}
 function onShift(d,time,dur){const sh=me().shift;if(!sh||!sh.wd.includes(dow(d))||isMyLeave(d))return false;const a=mins(time),b=a+dur;return a<mins(sh.to)&&b>mins(sh.from)}
 /* свободные слоты адресата: окна → слоты, занятые скрыты, слоты на смене сотрудника недоступны */
 function slotsFor(h){
@@ -619,7 +627,7 @@ function openRef(r){
     regular:r=>sheet({eyebrow:'Поставка по расписанию',title:r.sup,body:`<dl class="kv"><dt>Когда</dt><dd>${fmtDW(fromIso(r.d))}</dd><dt>Что</dt><dd>Регулярная поставка цветов</dd><dt>Откуда</dt><dd>Дни поставщика заданы в настройках календаря</dd></dl><div class="callout --plain mt16">В день поставки флористы видят «приёмка и обработка» – место в холодильнике и время в смене планируются заранее.</div>`}),
     date:r=>sheet({eyebrow:'Коммерческий календарь',title:r.title,body:`<dl class="kv"><dt>Дата</dt><dd>${fmtDW(fromIso(r.d))}</dd><dt>Влияние</dt><dd>${LEVEL[r.lv]}</dd><dt>Откуда</dt><dd>Дата считается кодом на любой год</dd></dl><p class="sm soft mt16">Уровень влияния сейчас задан по умолчанию. На этапе v3 он считается по истории заказов CRM. Суммы в календаре не показываются – только уровень.</p>`}),
     leave:r=>sheet({eyebrow:'Отсутствие',title:r.name===me().name?'Мой отпуск':r.name,body:`<dl class="kv"><dt>Даты</dt><dd>${fmtD(fromIso(r.from))} – ${fmtD(fromIso(r.to))}</dd><dt>Статус</dt><dd>В отпуске</dd></dl><div class="callout --plain mt16">Команда видит только факт «в отпуске». Тип и причина отсутствия видны HR в разделе «Документы и отсутствия».</div>`}),
-    shift:r=>sheet({eyebrow:'График',title:'Моя смена',body:`<dl class="kv"><dt>Когда</dt><dd>${fmtDW(fromIso(r.d))}, ${me().shift.from}–${me().shift.to}</dd><dt>Где</dt><dd>Студия SE1</dd></dl><p class="sm soft mt16">Смены берутся из экрана «График». Здесь они только показываются; на время смены слоты 1:1 недоступны.</p>`,foot:'<button class="btn --sm --ghost" data-toast="Открывается экран «График» – уже есть в CRM">Открыть график</button>'}),
+    shift:r=>sheet({eyebrow:'График',title:'Моя смена',body:`<dl class="kv"><dt>Когда</dt><dd>${fmtDW(fromIso(r.d))}, ${me().shift.from}–${me().shift.to}</dd><dt>Где</dt><dd>Студия SE1</dd><dt>Часы</dt><dd>${(x=>x.fact?`${fmtH(x.fact)} отработано из ${fmtH(x.plan)}`:`${fmtH(x.plan)} по плану`)(shiftInfo(fromIso(r.d)))}</dd></dl><p class="sm soft mt16">Смены берутся из экрана «График». Здесь они только показываются; на время смены слоты 1:1 недоступны.</p>`,foot:'<button class="btn --sm --ghost" data-toast="Открывается экран «График» – уже есть в CRM">Открыть график</button>'}),
     bday:r=>sheet({eyebrow:r.k,title:r.name,body:`<div class="callout --plain">Показано, потому что сотрудник сам разрешил это в настройках признания. Возраст не показывается никогда.</div>`}),
     hr:r=>sheet({eyebrow:'HR-дата',title:r.t,body:`<dl class="kv"><dt>Раздел</dt><dd>${r.s}</dd><dt>Кто видит</dt><dd>Только HR и владелец</dd></dl>`,foot:'<button class="btn --sm --ghost" data-toast="Открывается HR-календарь – уже есть в CRM">Открыть в HR</button>'}),
   })[r.type](r);
@@ -670,7 +678,7 @@ let BK={};
 function sheetBook(step){
   if(step===1||!step){BK={};
     return sheet({eyebrow:'Запись на 1:1 · шаг 1 из 3',title:'С кем поговорить',body:`<div class="steps"><i class="on"></i><i></i><i></i></div>
-      ${HOSTS.filter(h=>h.name!==me().name).map(h=>{const n=slotsFor(h).reduce((a,x)=>a+x.list.filter(s=>!s.shift).length,0),has=S.bookings.some(b=>b.host===h.id&&b.by===me().name&&b.d>=iso(TODAY));return `<button class="host" data-host="${h.id}" ${has?'data-has="1"':''}><span class="avatar --l">${initials(h.name)}</span><span class="t"><b>${h.name}</b><small>${h.role} · ${h.format}</small></span><span class="xs muted">${has?'вы уже записаны':n+' '+plural(n,'слот','слота','слотов')}</span>${ic('chev')}</button>`}).join('')}
+      ${HOSTS.filter(h=>h.name!==me().name).map(h=>{const n=slotsFor(h).reduce((a,x)=>a+x.list.filter(s=>!s.shift).length,0),has=S.bookings.some(b=>b.host===h.id&&b.by===me().name&&!b.regular&&b.d>=iso(TODAY));return `<button class="host" data-host="${h.id}" ${has?'data-has="1"':''}><span class="avatar --l">${initials(h.name)}</span><span class="t"><b>${h.name}</b><small>${h.role} · ${h.format}</small></span><span class="xs muted">${has?'вы уже записаны':n+' '+plural(n,'слот','слота','слотов')}</span>${ic('chev')}</button>`}).join('')}
       <div class="hr"></div><button class="textbtn" data-act="talk">Хочу поговорить, без даты</button>
       <p class="xs muted mt16">Тему и сам факт встречи видят только вы и тот, к кому вы записались. Срочный вопрос или жалоба – не через календарь: <button class="textbtn" data-toast="Открывается политика обращений и жалоб в HR-модуле">порядок обращений</button>.</p>`});
   }
@@ -694,7 +702,7 @@ function sheetBookingView(r){
     foot:`<button class="btn --sm --secondary" data-rebook="${b.id}">Перенести</button><button class="btn --sm --ghost" data-cancel="${b.id}">Отменить запись</button>`});
 }
 function sheetTalk(){
-  sheet({back:'book',eyebrow:'Без даты',title:'Хочу поговорить',body:`<div class="field"><label>С кем</label><select class="select" id="tk-h">${HOSTS.filter(h=>h.name!==me().name).map(h=>`<option value="${h.id}">${h.name} – ${h.role}</option>`).join('')}</select></div><div class="field mt16"><label>О чём – по желанию</label><textarea class="textarea"></textarea></div><p class="xs muted mt16">Адресат получит запрос и сам предложит время. Запрос видите только вы и он.</p>`,foot:'<button class="btn" data-act="talk-ok">Отправить запрос</button>'});
+  sheet({back:'book',eyebrow:'Без даты',title:'Хочу поговорить',body:`<div class="field"><label>С кем</label><select class="select" id="tk-h">${HOSTS.filter(h=>h.name!==me().name).map(h=>`<option value="${h.id}">${h.name} – ${h.role}</option>`).join('')}</select></div><div class="field mt16"><label>О чём хотите поговорить</label><textarea class="textarea" id="tk-t" placeholder="Одной-двумя фразами – чтобы к разговору подготовились"></textarea><span class="xs muted">Обязательное поле. Увидит только адресат.</span></div><p class="xs muted mt16">Адресат получит запрос и сам предложит время. Запрос видите только вы и он.</p>`,foot:'<button class="btn" id="tk-send" data-act="talk-ok" disabled>Отправить запрос</button>'});
 }
 /* ---------- адресат: слоты и записи ---------- */
 function sheetHost(){
@@ -708,7 +716,7 @@ function sheetHost(){
     <div class="hr"></div><span class="caps">Записаны ко мне</span>
     ${inbox.length?inbox.map(b=>`<button class="ev l-meeting mt8" ${refAttr({type:'booking',id:b.id})}><span class="tm num">${fmtS(fromIso(b.d))} ${b.t}</span><span class="tx"><b>${b.by}</b><small>${b.topic?esc(b.topic):'Тема не указана'}</small></span></button>`).join(''):'<p class="sm muted mt8">Пока никто не записан.</p>'}
     <div class="hr"></div><span class="caps">Хотят поговорить, без даты</span>
-    ${talk.length?talk.map(x=>`<div class="ms"><span class="t"><b>${x.by}</b><br><small class="muted">запрос от ${fmtD(fromIso(x.d))}</small></span><button class="btn --sm --ghost" data-toast="Сотруднику ушло предложение времени">Предложить время</button></div>`).join(''):'<p class="sm muted mt8">Запросов нет.</p>'}`});
+    ${talk.length?talk.map(x=>`<div class="ms"><span class="t"><b>${x.by}</b> · <span class="muted">${fmtD(fromIso(x.d))}</span><br><small>${esc(x.topic)}</small></span><button class="btn --sm --ghost" data-toast="Сотруднику ушло предложение времени">Предложить время</button></div>`).join(''):'<p class="sm muted mt8">Запросов нет.</p>'}`});
 }
 /* ---------- отпуск: жёсткий запрет на пики ---------- */
 function sheetLeave(){
@@ -811,12 +819,13 @@ document.addEventListener('click',e=>{
   if(ds.st){ST=ds.st;return sheetSettings()}
   const act={book:()=>sheetBook(1),book2:()=>sheetBook(2),host:sheetHost,leave:sheetLeave,ical:sheetIcal,settings:sheetSettings,talk:sheetTalk,
     'book-ok':()=>{const[d,t]=BK.slot.split(' ');S.bookings.push({id:Date.now(),host:BK.host,d,t,by:me().name,topic:$('bk-topic').value.trim()});closeSheet();S.view='my';render();toast(`Вы записаны: ${fmtD(fromIso(d))}, ${t}. Напомним за день и за час`)},
-    'talk-ok':()=>{S.talk.push({host:$('tk-h').value,by:me().name,topic:'',d:iso(TODAY)});closeSheet();toast('Запрос отправлен – вам предложат время')},
+    'talk-ok':()=>{S.talk.push({host:$('tk-h').value,by:me().name,topic:$('tk-t').value.trim(),d:iso(TODAY)});closeSheet();toast('Запрос отправлен – вам предложат время')},
     'leave-ok':()=>{closeSheet();toast('Заявка отправлена на согласование')},
     'ical-rotate':()=>{S.icalRev++;sheetIcal();toast('Новая ссылка готова, старая отключена')},
   }[ds.act];
   if(act)act();
 });
+document.addEventListener('input',e=>{if(e.target.id==='tk-t')$('tk-send').disabled=e.target.value.trim().length<5});
 document.addEventListener('change',e=>{
   if(['lv-type','lv-from','lv-to'].includes(e.target.id))checkLeave();
   if(e.target.dataset.att){(S.attend[e.target.dataset.att]||(S.attend[e.target.dataset.att]={}))[e.target.dataset.n]=e.target.checked;sheetMeeting(sheetMeeting.last)}

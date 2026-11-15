@@ -66,7 +66,7 @@ const LEVEL={peak:'Пик',high:'Высокий',notable:'Заметный',bg:'
 
 /* ---------- люди и роли ---------- */
 const ROLES={
-  florist:{name:'Mila Novak',label:'Флорист',shift:{wd:[0,2,4,5],from:'08:00',to:'16:00'}},
+  florist:{name:'Mila Novak',label:'Флорист',shift:{wd:[0,3,4,6],from:'08:00',to:'16:00'}},
   manager:{name:'Denis Orlov',label:'Менеджер',shift:{wd:[0,1,2,3,4],from:'09:00',to:'18:00'}},
   hr:{name:'Irina Petrova',label:'HR',host:'hr'},
   owner:{name:'Владелец',label:'Владелец',host:'owner'},
@@ -92,8 +92,8 @@ const S={
     {id:3,host:'owner',d:'2026-11-18',t:'16:30',by:'Kira Belova',topic:'Идея по свадебному направлению'},
     {id:4,host:'studio',d:'2026-11-17',t:'09:00',by:'Daria Lis',topic:''},
   ],
-  talk:[{host:'hr',by:'Yana Kim',topic:'',d:'2026-11-14'}],
-  rsvp:{},moves:{},attend:{},agreements:{},minutes:{},
+  talk:[{host:'hr',by:'Yana Kim',topic:'Хочу обсудить переход на полную ставку',d:'2026-11-14'}],
+  rsvp:{},moves:{},attend:{},agreements:{},minutes:{},clock:{on:true,brk:false},topics:{},offers:{},
   icalRev:1,
 };
 const me=()=>ROLES[S.role];
@@ -175,6 +175,14 @@ function events(from,to){
   return out.sort((a,b)=>a.d.localeCompare(b.d)||(a.tm||'').localeCompare(b.tm||''));
 }
 function isMyLeave(d){const t=iso(d);return LEAVES.some(l=>l.name===me().name&&l.from<=t&&t<=l.to)}
+const NOW_MIN=10*60+30;
+const fmtH=m=>`${Math.floor(m/60)} ч${m%60?` ${m%60} мин`:''}`;
+function shiftInfo(d){const sh=me().shift;if(!sh||!sh.wd.includes(dow(d))||isMyLeave(d))return null;const plan=mins(sh.to)-mins(sh.from),k=iso(d),t=iso(TODAY),base={plan,from:sh.from,to:sh.to};
+  if(k<t)return{...base,state:'done',fact:plan+[-10,5,0,10,-5][d.getDate()%5]};
+  if(k===t)return{...base,state:S.clock.on?'on':'closed',since:hm(mins(sh.from)-2),fact:NOW_MIN-mins(sh.from)+2};
+  return{...base,state:'plan',fact:null}}
+function paidMeetings(from,to){const out=[];if(S.role!=='florist')return out;SERIES.filter(s=>s.paid).forEach(s=>occurrences(s,from,to).forEach(d=>{if(!onShift(d,s.time,s.dur)&&!blackoutOf(d))out.push({d,dur:s.dur,title:s.title})}));return out}
+function weekHours(mon){let plan=0,fact=0;for(let i=0;i<7;i++){const x=shiftInfo(addDays(mon,i));if(x){plan+=x.plan;if(x.fact)fact+=x.fact}}return{plan,fact,meet:paidMeetings(mon,addDays(mon,6)).reduce((a,x)=>a+x.dur,0)}}
 function onShift(d,time,dur){const sh=me().shift;if(!sh||!sh.wd.includes(dow(d))||isMyLeave(d))return false;const a=mins(time),b=a+dur;return a<mins(sh.to)&&b>mins(sh.from)}
 /* свободные слоты адресата: окна → слоты, занятые скрыты, слоты на смене сотрудника недоступны */
 function slotsFor(h){
