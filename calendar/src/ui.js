@@ -124,12 +124,12 @@ function openRef(r){
 
 /* ---------- встреча ---------- */
 function sheetMeeting(r){
-  const s=SERIES.find(x=>x.id===r.series),d0=fromIso(r.date),sug=blackoutOf(d0)?suggestMove(d0):null,mv=S.moves[r.id],d=mv==='moved'?sug:d0;
+  const s=SERIES.find(x=>x.id===r.series),d0=fromIso(r.date),sug=busyOf(d0)?suggestMove(d0):null,mv=S.moves[r.id],d=mv==='moved'?sug:d0;
   const att=S.attend[r.id]||(S.attend[r.id]={}),ag=S.agreements[r.id]||(S.agreements[r.id]=[]);
   const lead=canManage();
   const offShift=n=>n.length%2===0; // демо: часть флористов вне смены
   sheet({eyebrow:`${s.aud} · ${s.ruleText}`,title:s.title,body:`
-    ${sug&&!mv?`<div class="callout mb16"><b>Встреча попала на пиковое окно (${blackoutOf(d0).title}).</b><br>Система предлагает перенос на ${fmtDW(sug)}, ${s.time}. Молча встреча не переносится.${lead?`<div class="row mt8"><button class="btn --sm" data-move="moved" data-id="${r.id}">Перенести на ${fmtD(sug)}</button><button class="btn --sm --ghost" data-move="kept" data-id="${r.id}">Оставить как есть</button></div>`:'<div class="mt8 xs">Решение принимает HR или владелец.</div>'}</div>`:''}
+    ${sug&&!mv?`<div class="callout mb16"><b>Встреча попала на неделю пика (${busyOf(d0).title}).</b><br>Система предлагает перенос на ${fmtDW(sug)}, ${s.time}. Молча встреча не переносится.${lead?`<div class="row mt8"><button class="btn --sm" data-move="moved" data-id="${r.id}">Перенести на ${fmtD(sug)}</button><button class="btn --sm --ghost" data-move="kept" data-id="${r.id}">Оставить как есть</button></div>`:'<div class="mt8 xs">Решение принимает HR или владелец.</div>'}</div>`:''}
     <dl class="kv"><dt>Когда</dt><dd><b>${fmtDW(d)}, ${s.time}–${hm(mins(s.time)+s.dur)}</b> по Лондону</dd><dt>Где</dt><dd>${s.format}</dd><dt>Ссылка</dt><dd><button class="textbtn" data-toast="Открывается Google Meet">Подключиться к Meet</button></dd><dt>Ведёт</dt><dd>${s.host}</dd><dt>Участники</dt><dd>${s.people.length} – все из группы «${s.aud}». Новый сотрудник группы попадает в серию сам.</dd>${s.paid?'<dt>Оплата</dt><dd>Встреча оплачивается. Кто на смене – в студии, кто вне смены – онлайн; им время встречи попадает в график часами.</dd>':''}</dl>
     <div class="row mt16"><span class="caps">Вы придёте?</span><button class="btn --sm ${S.rsvp[r.id]==='yes'?'':'--secondary'}" data-rsvp="yes" data-id="${r.id}">Буду</button><button class="btn --sm ${S.rsvp[r.id]==='no'?'':'--ghost'}" data-rsvp="no" data-id="${r.id}">Не смогу</button></div>
     <div class="hr"></div><span class="caps">Повестка</span><pre class="dg mt8">${AGENDA}</pre>

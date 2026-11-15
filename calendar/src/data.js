@@ -38,12 +38,12 @@ const MS_TPL=[{k:'content',t:'Контент и промо',off:-35,owner:'Ма�
 const msDone={'christmas-2026:content':true};
 function peaks(y){
   const ms=addDays(easter(y),-21),w8=D(y,3,8),list=[];
-  list.push({key:'valentine-'+y,title:'День святого Валентина',dates:[D(y,2,14)],blackout:[D(y,2,14),D(y,2,14)],cutoffs:[{d:D(y,2,13),t:'Последний день приёма заказов на 14.02'}]});
+  list.push({key:'valentine-'+y,title:'День святого Валентина',dates:[D(y,2,14)],blackout:[addDays(D(y,2,14),-14),addDays(D(y,2,14),3)],cutoffs:[{d:D(y,2,13),t:'Последний день приёма заказов на 14.02'}]});
   if(Math.abs(daysBetween(ms,w8))<=3){const a=ms<w8?ms:w8,b=ms<w8?w8:ms;
-    list.push({key:'march-'+y,title:'Mothering Sunday + 8 марта',double:true,dates:[ms,w8].sort((p,q)=>p-q),blackout:[a,b],cutoffs:[{d:addDays(a,-1),t:'Последний день приёма заказов на оба дня'}]});
+    list.push({key:'march-'+y,title:'Mothering Sunday + 8 марта',double:true,dates:[ms,w8].sort((p,q)=>p-q),blackout:[addDays(a,-14),addDays(b,3)],cutoffs:[{d:addDays(a,-1),t:'Последний день приёма заказов на оба дня'}]});
   }else{
-    list.push({key:'mothering-'+y,title:'Mothering Sunday',dates:[ms],blackout:[ms,ms],cutoffs:[{d:addDays(ms,-1),t:'Последний день приёма заказов'}]});
-    list.push({key:'women-'+y,title:'8 марта',dates:[w8],blackout:[w8,w8],cutoffs:[{d:D(y,3,7),t:'Последний день приёма заказов'}]});
+    list.push({key:'mothering-'+y,title:'Mothering Sunday',dates:[ms],blackout:[addDays(ms,-14),addDays(ms,3)],cutoffs:[{d:addDays(ms,-1),t:'Последний день приёма заказов'}]});
+    list.push({key:'women-'+y,title:'8 марта',dates:[w8],blackout:[addDays(w8,-14),addDays(w8,3)],cutoffs:[{d:D(y,3,7),t:'Последний день приёма заказов'}]});
   }
   list.push({key:'christmas-'+y,title:'Рождество',dates:[D(y,12,25)],blackout:[D(y,12,14),D(y,12,24)],cutoffs:[{d:D(y,12,18),t:'Cut-off: доставка по стране'},{d:D(y,12,24),t:'Cut-off: доставка по Лондону'}]});
   list.forEach(p=>{p.milestones=MS_TPL.map(m=>({...m,d:addDays(p.dates[0],m.off),id:p.key+':'+m.k}))});
@@ -51,6 +51,8 @@ function peaks(y){
 }
 const allPeaks=()=>[...peaks(2026),...peaks(2027),...peaks(2028)];
 function blackoutOf(d){const t=iso(d);return allPeaks().find(p=>iso(p.blackout[0])<=t&&t<=iso(p.blackout[1]))||null}
+/* «занятые» дни для встреч и записи на 1:1 уже окна отпуска: неделя перед пиком, сам пик и даты последних заказов */
+function busyOf(d){const t=iso(d);return allPeaks().find(p=>(iso(addDays(p.dates[0],-7))<=t&&t<=iso(p.dates[p.dates.length-1]))||p.cutoffs.some(c=>iso(c.d)===t))||null}
 function isPeakDay(d){const t=iso(d);return allPeaks().some(p=>p.dates.some(x=>iso(x)===t))}
 function nextPeak(from){return allPeaks().filter(p=>p.dates[p.dates.length-1]>=from).sort((a,b)=>a.dates[0]-b.dates[0])[0]}
 /* остальные коммерческие даты: уровень влияния по умолчанию (калибровка по истории заказов – этап v3) */
@@ -112,7 +114,7 @@ function occurrences(s,from,to){
   return out;
 }
 /* встреча попала в пиковое окно: система предлагает дату, человек подтверждает – молча не переносим */
-function suggestMove(d){let a=addDays(d,-7);if(a>TODAY&&!blackoutOf(a))return a;let b=addDays(d,7);while(blackoutOf(b))b=addDays(b,7);return b}
+function suggestMove(d){let a=addDays(d,-7);if(a>TODAY&&!busyOf(a))return a;let b=addDays(d,7);while(busyOf(b))b=addDays(b,7);return b}
 
 /* ---------- поставки (без цен и сумм) ---------- */
 const POS=[
@@ -137,10 +139,10 @@ function events(from,to){
   const push=e=>{if(S.layers.has(e.layer))out.push(e)};
   // встречи
   SERIES.filter(s=>s.who.includes(r)).forEach(s=>occurrences(s,addDays(from,-14),addDays(to,14)).forEach(d0=>{
-    const id=s.id+':'+iso(d0);let d=d0,need=false;const sug=blackoutOf(d0)?suggestMove(d0):null;
+    const id=s.id+':'+iso(d0);let d=d0,need=false;const sug=busyOf(d0)?suggestMove(d0):null;
     if(sug){if(S.moves[id]==='moved')d=sug;else if(S.moves[id]!=='kept')need=true}
     if(!inR(d))return;
-    push({d:iso(d),tm:s.time,end:hm(mins(s.time)+s.dur),layer:'meeting',title:s.title,sub:need?`Попала на пиковое окно – предложен перенос на ${fmtD(sug)}`:s.format,alert:need,ref:{type:'meeting',id,series:s.id,date:iso(d0)}});
+    push({d:iso(d),tm:s.time,end:hm(mins(s.time)+s.dur),layer:'meeting',title:s.title,sub:need?`Попала на неделю пика – предложен перенос на ${fmtD(sug)}`:s.format,alert:need,ref:{type:'meeting',id,series:s.id,date:iso(d0)}});
   }));
   // коммерческий календарь
   for(let y=from.getFullYear();y<=to.getFullYear();y++){
@@ -181,14 +183,14 @@ function shiftInfo(d){const sh=me().shift;if(!sh||!sh.wd.includes(dow(d))||isMyL
   if(k<t)return{...base,state:'done',fact:plan+[-10,5,0,10,-5][d.getDate()%5]};
   if(k===t)return{...base,state:S.clock.on?'on':'closed',since:hm(mins(sh.from)-2),fact:NOW_MIN-mins(sh.from)+2};
   return{...base,state:'plan',fact:null}}
-function paidMeetings(from,to){const out=[];if(S.role!=='florist')return out;SERIES.filter(s=>s.paid).forEach(s=>occurrences(s,from,to).forEach(d=>{if(!onShift(d,s.time,s.dur)&&!blackoutOf(d))out.push({d,dur:s.dur,title:s.title})}));return out}
+function paidMeetings(from,to){const out=[];if(S.role!=='florist')return out;SERIES.filter(s=>s.paid).forEach(s=>occurrences(s,from,to).forEach(d=>{if(!onShift(d,s.time,s.dur)&&!busyOf(d))out.push({d,dur:s.dur,title:s.title})}));return out}
 function weekHours(mon){let plan=0,fact=0;for(let i=0;i<7;i++){const x=shiftInfo(addDays(mon,i));if(x){plan+=x.plan;if(x.fact)fact+=x.fact}}return{plan,fact,meet:paidMeetings(mon,addDays(mon,6)).reduce((a,x)=>a+x.dur,0)}}
 function onShift(d,time,dur){const sh=me().shift;if(!sh||!sh.wd.includes(dow(d))||isMyLeave(d))return false;const a=mins(time),b=a+dur;return a<mins(sh.to)&&b>mins(sh.from)}
 /* свободные слоты адресата: окна → слоты, занятые скрыты, слоты на смене сотрудника недоступны */
 function slotsFor(h){
   const days=[];
   for(let d=addDays(TODAY,1);daysBetween(TODAY,d)<=h.ahead;d=addDays(d,1)){
-    if(blackoutOf(d))continue;
+    if(busyOf(d))continue;
     const list=[];
     h.windows.filter(w=>w.wd===dow(d)).forEach(w=>{for(let a=mins(w.from);a+h.slot<=mins(w.to);a+=h.slot+h.buf){const t=hm(a);
       if(S.bookings.some(b=>b.host===h.id&&b.d===iso(d)&&b.t===t))continue;
