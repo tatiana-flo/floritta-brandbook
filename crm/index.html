@@ -24,6 +24,8 @@
   --pad:24px;
   --shadow-sheet:-12px 0 40px rgba(30,26,23,.14); --shadow-float:0 8px 28px rgba(30,26,23,.14); --shadow-pop:0 6px 24px rgba(30,26,23,.16);
   --stage-bg:#ececee;
+  /* chart scale (Stage + viz, 17.11.2026): tones of ink only – ink #1e1a17 · graphite #5c5450 · grey #8b8378 (fills only, too light for text) · light #cecece; tracks – hair / silver */
+  --viz-1:var(--ink); --viz-2:var(--graphite); --viz-3:var(--grey); --viz-4:var(--light); --viz-track:var(--hair); --viz-track-soft:var(--silver);
 }
 [data-theme="ink"]{
   --paper:#1b1816; --paper-2:#211d1a; --ink:#f2f2f4; --graphite:#c9c1b5; --grey:#8b8378; --light:#4a433d; --hair:#2f2a26; --silver:#2a2522;
@@ -486,6 +488,238 @@ svg.i,.i svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1
 .spark{display:flex;align-items:flex-end;gap:2px;height:24px}
 .spark i{width:4px;background:var(--light)}.spark i.on{background:var(--sel)}
 .scr-body::-webkit-scrollbar{width:8px}.scr-body::-webkit-scrollbar-thumb{background:var(--light)}
+
+/* ============ STAGE + VIZ · the Delivery look (CRM release v2026.11.17-delivery-stage, 17.11.2026) ============
+   1:1 port of floritta-crm resources/css/app.css «Stage + viz» and resources/js/components/v2/viz/*.tsx:
+   the same v2- class names, brandbook tokens in place of the CRM theme names
+   (--bg → --paper, --panel → --silver, --line → --hair, --line-soft → --silver, --ink-faint / --ink-soft → --graphite,
+   --v2-danger → --accent, --font-serif → --f-display, --v2-input-h → --input-h).
+   The CRM breakpoints 640 / 1024 / 1280 are the stand sizes here: Phone 390 / iPad 1024 / MacBook 1440 (= the CRM's ≥1280).
+   Chart scale – tones of ink only (--viz-1…4 in :root); no rose, ochre or green fills. Status colours (--ok, --warn,
+   --accent) only as text, a dot or a thin mark where the number itself is a status. Guide: src/DELIVERY_STAGE.md. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.v2-tnum{font-variant-numeric:tabular-nums lining-nums}
+/* Stage. The screen body turns silver when it holds a Stage (CRM: main:has(.v2-stage)), so a screen without one keeps every pixel. */
+.scr-body:has(>.v2-stage:not(.v2-stage--inline)){background:var(--silver)}
+.v2-stage{display:flex;flex-direction:column;gap:24px;min-width:0;padding-bottom:12px}
+.v2-stage--fill{flex:1;min-height:0;padding-bottom:0}
+.v2-stage--inline{padding:24px;background:var(--silver)}
+.v2-stagehead{display:flex;flex-direction:column;gap:14px;min-width:0}
+.v2-stagehead__meta{margin:0;font-size:13px;line-height:18px;color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-stagehead__row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 16px}
+.v2-stagehead__controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 12px;min-width:0}
+.v2-stagehead__controls .field .input{width:160px}
+.v2-stagehead__actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto}
+/* One height for the whole row of controls: a button or a segmented control next to a field is as tall as the field. */
+.v2-stagehead__row .btn,.v2-stagehead__row .seg{height:var(--input-h)}
+.v2-stagehead__row .seg{margin:0;background:var(--paper)}
+.v2-stagehead__row .seg button{height:100%;padding:0 12px}
+.v2-stagenote{display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 10px;padding:12px 16px 12px 14px;border:1px solid var(--hair);border-left:2px solid var(--graphite);background:var(--paper);font-size:13px;line-height:1.45;color:var(--graphite)}
+.v2-stagenote--warn{border-left-color:var(--warn)}
+.v2-stagenote--alert{border-left-color:var(--accent)}
+.v2-stagenote--ok{border-left-color:var(--ok)}
+.v2-stagenote svg.i{width:16px;height:16px;margin-top:1px;color:var(--graphite)}
+.v2-stagenote__body{flex:1 1 220px;min-width:0}
+.v2-stagenote__action{flex:none;margin-left:auto}
+/* StageGrid: 12 columns, 24 gap; a child takes the row unless it carries v2-span-3…9 (iPad and up) / v2-span-xl-3…8 (MacBook). */
+.v2-stagegrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;min-width:0}
+.v2-stagegrid>*{grid-column:span 12}
+.v2-stagegrid>.v2-span-3{grid-column:span 3}.v2-stagegrid>.v2-span-4{grid-column:span 4}.v2-stagegrid>.v2-span-5{grid-column:span 5}.v2-stagegrid>.v2-span-6{grid-column:span 6}
+.v2-stagegrid>.v2-span-7{grid-column:span 7}.v2-stagegrid>.v2-span-8{grid-column:span 8}.v2-stagegrid>.v2-span-9{grid-column:span 9}
+.v2-stagegrid>.v2-span-xl-3{grid-column:span 3}.v2-stagegrid>.v2-span-xl-4{grid-column:span 4}.v2-stagegrid>.v2-span-xl-5{grid-column:span 5}
+.v2-stagegrid>.v2-span-xl-6{grid-column:span 6}.v2-stagegrid>.v2-span-xl-7{grid-column:span 7}.v2-stagegrid>.v2-span-xl-8{grid-column:span 8}
+[data-size="ipad"] .v2-stagegrid>[class*="v2-span-xl-"]{grid-column:span 12}
+[data-size="ipad"] .v2-stagegrid>.v2-span-3{grid-column:span 3}[data-size="ipad"] .v2-stagegrid>.v2-span-4{grid-column:span 4}[data-size="ipad"] .v2-stagegrid>.v2-span-5{grid-column:span 5}
+[data-size="ipad"] .v2-stagegrid>.v2-span-6{grid-column:span 6}[data-size="ipad"] .v2-stagegrid>.v2-span-7{grid-column:span 7}[data-size="ipad"] .v2-stagegrid>.v2-span-8{grid-column:span 8}
+[data-size="ipad"] .v2-stagegrid>.v2-span-9{grid-column:span 9}
+[data-size="phone"] .v2-stagegrid{grid-template-columns:minmax(0,1fr)}
+[data-size="phone"] .v2-stagegrid>*,[data-size="phone"] .v2-stagegrid>[class*="v2-span-"]{grid-column:auto}
+
+/* StatStrip: one paper block, columns parted by inset hairlines. The grid is pulled 1px up and left under an overflow
+   clip, so the first column's rule and the first row's rule are cut off whatever the column count. */
+.v2-statstrip{overflow:hidden;border:1px solid var(--hair);background:var(--paper)}
+.v2-statstrip__grid{display:grid;grid-template-columns:repeat(var(--v2-stat-cols,4),minmax(0,1fr));margin:-1px 0 0 -1px}
+[data-size="ipad"] .v2-statstrip__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* Five or six figures on the iPad sit three in a row (2 + 2 + 1 left a lone figure on half a row). */
+[data-size="ipad"] .v2-statstrip__grid:is([data-cols="5"],[data-cols="6"]){grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-size="phone"] .v2-statstrip__grid{grid-template-columns:minmax(0,1fr)}
+.v2-stat{position:relative;display:flex;flex-direction:column;gap:8px;min-width:0;padding:21px 24px 20px 25px;border:0;background:none;color:var(--ink);font:inherit;text-align:left;text-decoration:none}
+.v2-stat::before{content:"";position:absolute;left:0;top:21px;bottom:20px;width:1px;background:var(--hair)}
+.v2-stat::after{content:"";position:absolute;top:0;left:25px;right:24px;height:1px;background:var(--hair)}
+.v2-stat--action{cursor:pointer;transition:background-color var(--m-fast)}
+.v2-stat--action:hover{background:color-mix(in srgb,var(--silver) 50%,var(--paper))}
+.v2-stat:focus-visible{outline-offset:-2px}
+.v2-stat__label{display:flex;align-items:center;gap:8px;min-width:0;font-size:12px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite)}
+.v2-stat__name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v2-stat__mark{width:6px;height:6px;flex:none;border-radius:50%;background:var(--warn)}
+.v2-stat__mark--alert{background:var(--accent)}
+.v2-stat__value{display:flex;align-items:baseline;gap:6px;min-width:0;font-family:var(--f-display);font-weight:300;font-size:36px;line-height:40px;letter-spacing:.01em;font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
+.v2-stat__unit{font-family:var(--f-body);font-size:13px;line-height:16px;letter-spacing:0;color:var(--graphite)}
+.v2-stat__sub{font-size:12.5px;line-height:16px;color:var(--graphite);font-variant-numeric:tabular-nums}
+[data-size="phone"] .v2-stat{padding:17px 16px 16px 17px}
+[data-size="phone"] .v2-stat::before{display:none}
+[data-size="phone"] .v2-stat::after{left:17px;right:16px}
+[data-size="phone"] .v2-stat__value{font-size:30px;line-height:34px}
+/* Delta: good news – --ok text; bad news – plain ink with its sign and words (never a red fill); no change – graphite. */
+.v2-delta{font-size:12.5px;line-height:16px;color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-delta--good{color:var(--ok)}
+.v2-delta--bad{color:var(--ink)}
+
+/* DataCard: serif title, grey sub line, quiet action on the right, a conclusion line under a hairline. */
+.v2-datacard{display:flex;flex-direction:column;min-width:0;border:1px solid var(--hair);background:var(--paper)}
+.v2-datacard__head{display:flex;align-items:flex-start;gap:16px;padding:20px 24px 0}
+.v2-datacard__titles{flex:1;min-width:0}
+.v2-datacard__title{margin:0;font-family:var(--f-display);font-weight:300;font-size:24px;line-height:28px;letter-spacing:.01em;color:var(--ink)}
+.v2-datacard__sub{margin:2px 0 0;font-size:12.5px;line-height:18px;color:var(--graphite)}
+.v2-datacard__action{display:flex;flex:none;align-items:center;gap:12px;min-height:28px}
+.v2-datacard__body{flex:1;min-width:0;padding:16px 24px 24px}
+.v2-datacard--headless>.v2-datacard__body{padding-top:24px}
+.v2-datacard--flush>.v2-datacard__body{padding:12px 0 0}
+.v2-datacard--flush.v2-datacard--headless>.v2-datacard__body{padding-top:0}
+.v2-datacard__foot{margin:0;padding:14px 24px 16px;border-top:1px solid var(--hair);font-size:13px;line-height:1.45;color:var(--graphite)}
+/* A flush card carries a table edge to edge: its outer cells take the card's 24px gutter. */
+.v2-datacard--flush .tbl th:first-child,.v2-datacard--flush .tbl td:first-child{padding-left:24px}
+.v2-datacard--flush .tbl th:last-child,.v2-datacard--flush .tbl td:last-child{padding-right:24px}
+.v2-datacard--flush .tbl tbody tr:last-child td{border-bottom:0}
+[data-size="phone"] .v2-datacard__head{padding:16px 16px 0}
+[data-size="phone"] .v2-datacard__body,[data-size="phone"] .v2-datacard--flush>.v2-datacard__body{padding:14px 16px 16px}
+[data-size="phone"] .v2-datacard--headless>.v2-datacard__body,[data-size="phone"] .v2-datacard--flush.v2-datacard--headless>.v2-datacard__body{padding-top:16px}
+[data-size="phone"] .v2-datacard__foot{padding:12px 16px 14px}
+[data-size="phone"] .v2-datacard--flush .tbl th:first-child,[data-size="phone"] .v2-datacard--flush .tbl td:first-child{padding-left:0}
+[data-size="phone"] .v2-datacard--flush .tbl th:last-child,[data-size="phone"] .v2-datacard--flush .tbl td:last-child{padding-right:0}
+.v2-quietlink{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:none;color:var(--graphite);font-family:var(--f-body);font-size:12.5px;font-weight:300;line-height:18px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.v2-quietlink:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.v2-quietlink:disabled{opacity:.4;cursor:not-allowed;text-decoration:none}
+.v2-quietlink svg.i{width:14px;height:14px}
+.v2-viz-empty{margin:0;padding:12px 0;font-size:13px;color:var(--graphite)}
+
+/* The scale: data-fill 1–4 = ink, graphite, grey, light; 5–6 exist so a fifth and a sixth share are still told apart. */
+.v2-viz-fill[data-fill="1"]{background:var(--viz-1)}
+.v2-viz-fill[data-fill="2"]{background:var(--viz-2)}
+.v2-viz-fill[data-fill="3"]{background:var(--viz-3)}
+.v2-viz-fill[data-fill="4"]{background:var(--viz-4)}
+.v2-viz-fill[data-fill="5"]{background:var(--viz-track);box-shadow:inset 0 0 0 1px var(--viz-4)}
+.v2-viz-fill[data-fill="6"]{background:repeating-linear-gradient(135deg,var(--viz-3) 0 1px,var(--paper) 1px 4px);box-shadow:inset 0 0 0 1px var(--viz-4)}
+.v2-legend{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0;padding:0;list-style:none;font-size:12.5px;line-height:18px;color:var(--graphite)}
+.v2-legend__item{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.v2-legend__swatch{width:10px;height:10px;flex:none}
+.v2-legend__swatch--dot{border-radius:50%}
+.v2-legend__swatch--hollow{border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--viz-4)}
+.v2-legend__value{color:var(--ink);font-variant-numeric:tabular-nums}
+.v2-legend__share{color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-legend--rows{flex-direction:column;flex-wrap:nowrap;gap:0;font-size:13.5px}
+.v2-legend--rows .v2-legend__item{display:flex;min-height:34px;border-top:1px solid var(--hair)}
+.v2-legend--rows .v2-legend__label{flex:1;min-width:0;color:var(--ink)}
+.v2-legend--rows .v2-legend__share{min-width:4ch;text-align:right}
+
+/* Ring: on its own it keeps its size; in a RingRow it gives way, so three rings still stand in one line of a narrow block. */
+.v2-ringrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:24px 12px;justify-items:center;align-items:start}
+.v2-ring{display:inline-flex;flex-direction:column;align-items:center;gap:12px;min-width:0;text-align:center}
+.v2-ring__dial{position:relative;flex:none;width:var(--v2-ring-size,112px);height:var(--v2-ring-size,112px)}
+.v2-ringrow>.v2-ring{display:flex;width:100%}
+.v2-ringrow>.v2-ring>.v2-ring__dial{width:min(100%,var(--v2-ring-size,112px));height:auto;aspect-ratio:1/1}
+.v2-ring__dial svg{display:block;width:100%;height:100%;transform:rotate(-90deg)}
+.v2-ring__track{fill:none;stroke:var(--viz-track)}
+.v2-ring__arc{fill:none;stroke:var(--viz-1)}
+.v2-ring--ok .v2-ring__arc{stroke:var(--ok)}
+.v2-ring--warn .v2-ring__arc{stroke:var(--warn)}
+.v2-ring__center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:0 13%}
+.v2-ring__label{font-family:var(--f-display);font-weight:300;font-size:26px;line-height:1;letter-spacing:.01em;color:var(--ink);font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
+.v2-ring__sub{max-width:100%;font-size:11px;line-height:13px;color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-ring--sm .v2-ring__label{font-size:16px}
+.v2-ring--lg .v2-ring__label{font-size:34px}
+.v2-ring__caption{max-width:22ch;font-size:12.5px;line-height:17px;color:var(--graphite)}
+
+/* BarList / SlopeList: rows share the columns of the list through subgrid. Each list is its own size container,
+   so the stacked layout comes from the width of the block the list stands in, not from the screen. */
+.v2-barlist-wrap,.v2-slopelist-wrap{container-type:inline-size;width:100%;min-width:0}
+.v2-barlist{display:grid;grid-template-columns:fit-content(46%) minmax(72px,1fr) auto;column-gap:16px;margin:0;padding:0;list-style:none;font-size:13.5px}
+.v2-barlist--rank{grid-template-columns:auto fit-content(46%) minmax(72px,1fr) auto}
+.v2-barlist--sub{grid-template-columns:fit-content(30%) fit-content(34%) minmax(72px,1fr) auto}
+.v2-barlist--rank.v2-barlist--sub{grid-template-columns:auto fit-content(30%) fit-content(34%) minmax(72px,1fr) auto}
+.v2-barlist__row{display:grid;grid-template-columns:subgrid;grid-column:1/-1;align-items:center;min-height:34px;padding:4px 0;border-top:1px solid var(--hair)}
+.v2-barlist__rank{min-width:1.6em;font-size:12px;color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-barlist__name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);text-decoration:none}
+a.v2-barlist__name:hover{text-decoration:underline;text-underline-offset:3px}
+.v2-barlist__sub{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-barlist__track{display:block;height:8px;background:var(--viz-track-soft)}
+.v2-barlist__fill{display:block;height:100%;min-width:2px;background:var(--viz-1)}
+.v2-barlist__fill--rest{background:var(--viz-3)}
+.v2-barlist__value{text-align:right;white-space:nowrap;color:var(--ink);font-variant-numeric:tabular-nums}
+.v2-slopelist{display:grid;grid-template-columns:fit-content(36%) minmax(96px,1fr) auto auto auto;column-gap:16px;margin:0;padding:0;list-style:none;font-size:13.5px}
+.v2-slopelist__row{display:grid;grid-template-columns:subgrid;grid-column:1/-1;align-items:center;min-height:34px;padding:4px 0;border-top:1px solid var(--hair)}
+.v2-slopelist__label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.v2-slopelist__track{position:relative;display:block;height:14px;margin:0 6px}
+.v2-slopelist__track::before{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:1px;background:var(--viz-track)}
+.v2-slopelist__line{position:absolute;top:50%;height:2px;margin-top:-1px;background:var(--viz-1)}
+.v2-slopelist__dot{position:absolute;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%}
+.v2-slopelist__dot--prev{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--viz-4)}
+.v2-slopelist__dot--now{background:var(--viz-1)}
+.v2-slopelist__prev{text-align:right;white-space:nowrap;color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-slopelist__now{text-align:right;white-space:nowrap;color:var(--ink);font-variant-numeric:tabular-nums}
+.v2-slopelist__delta{min-width:3ch;text-align:right;white-space:nowrap}
+@container (max-width:379px){
+  /* Narrow block: name and figure on the first line, the grey note under the name, the bar across the row. */
+  .v2-barlist,.v2-barlist--sub{grid-template-columns:minmax(0,1fr) auto;column-gap:10px}
+  .v2-barlist--rank,.v2-barlist--rank.v2-barlist--sub{grid-template-columns:auto minmax(0,1fr) auto}
+  .v2-barlist__row{padding:8px 0}
+  .v2-barlist__sub{grid-column:1/-1;grid-row:2}
+  .v2-barlist--rank .v2-barlist__sub{grid-column:2/-1}
+  .v2-barlist__track{grid-column:1/-1;grid-row:3;margin-top:6px}
+}
+@container (max-width:339px){
+  .v2-slopelist{grid-template-columns:minmax(0,1fr) auto auto auto;column-gap:10px}
+  .v2-slopelist__row{padding:8px 0}
+  .v2-slopelist__track{grid-column:1/-1;grid-row:2;margin-top:6px}
+}
+
+/* Columns: one column in ink (this month, the peak), the rest light; figures on top, labels below. */
+.v2-columns{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);column-gap:12px;min-width:0}
+.v2-columns--dense{column-gap:3px}
+.v2-columns__col{display:flex;flex-direction:column;align-items:center;min-width:0}
+.v2-columns__plot{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:100%;border-bottom:1px solid var(--viz-track)}
+.v2-columns__value{font-size:11.5px;line-height:18px;white-space:nowrap;color:var(--graphite);font-variant-numeric:tabular-nums}
+/* 18px stay free above the tallest column for its figure; --v2-col is the column's share of the scale (0..1). */
+.v2-columns__bar{width:100%;max-width:48px;height:calc((100% - 18px) * var(--v2-col,0));background:var(--viz-4)}
+.v2-columns__col--on .v2-columns__value{color:var(--ink)}
+.v2-columns__col--on .v2-columns__bar{background:var(--viz-1)}
+.v2-columns__label{max-width:100%;height:14px;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;line-height:14px;color:var(--graphite);font-variant-numeric:tabular-nums}
+
+/* SparkArea: the line and the wash stretch with the block (non-scaling stroke); dots are HTML so they stay round. */
+.v2-spark{min-width:0}
+.v2-spark__plot{position:relative;margin:4px 5px 0}
+.v2-spark__plot svg{display:block;width:100%;height:100%;overflow:visible}
+.v2-spark__area{fill:var(--viz-1);fill-opacity:.07;stroke:none}
+.v2-spark__line{fill:none;stroke:var(--viz-1);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.v2-spark__dot{position:absolute;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--viz-1)}
+.v2-spark__dot--last{background:var(--viz-1)}
+.v2-spark__axis{position:relative;height:14px;margin:10px 5px 0;font-size:11.5px;line-height:14px;color:var(--graphite);font-variant-numeric:tabular-nums}
+.v2-spark__tick{position:absolute;top:0;white-space:nowrap;transform:translateX(-50%)}
+.v2-spark__tick--first{transform:translateX(-5px)}
+.v2-spark__tick--last{transform:translateX(calc(-100% + 5px))}
+
+/* ShareBar: one bar split into shares, dark to light in the order given. */
+.v2-sharebar{display:flex;flex-direction:column;gap:14px;min-width:0}
+.v2-sharebar__bar{display:flex;gap:2px;height:12px;background:var(--viz-track-soft)}
+.v2-sharebar__bar--filled{background:none}
+.v2-sharebar__seg{display:block;min-width:2px;height:100%}
+
+/* HeatCells: five steps of ink on paper (ink on steps 1–3, paper on 4–5). */
+.v2-heat-wrap{min-width:0;overflow-x:auto}
+.v2-heat{width:100%;border-collapse:separate;border-spacing:2px;table-layout:fixed;font-size:11.5px}
+.v2-heat th{padding:2px 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:11px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
+.v2-heat th[scope="row"]{padding-left:0;text-align:left}
+.v2-heat td{height:28px;padding:0;text-align:center;color:var(--ink);background:var(--viz-track-soft);font-variant-numeric:tabular-nums}
+.v2-heat thead td{height:auto;background:none}
+.v2-heat td[data-step="1"],.v2-heat__steps i[data-step="1"]{background:color-mix(in srgb,var(--viz-1) 10%,var(--paper))}
+.v2-heat td[data-step="2"],.v2-heat__steps i[data-step="2"]{background:color-mix(in srgb,var(--viz-1) 24%,var(--paper))}
+.v2-heat td[data-step="3"],.v2-heat__steps i[data-step="3"]{background:color-mix(in srgb,var(--viz-1) 42%,var(--paper))}
+.v2-heat td[data-step="4"],.v2-heat__steps i[data-step="4"]{background:color-mix(in srgb,var(--viz-1) 64%,var(--paper))}
+.v2-heat td[data-step="5"],.v2-heat__steps i[data-step="5"]{background:color-mix(in srgb,var(--viz-1) 90%,var(--paper))}
+.v2-heat td[data-step="4"],.v2-heat td[data-step="5"]{color:var(--paper)}
+.v2-heat__scale{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11.5px;color:var(--graphite)}
+.v2-heat__steps{display:inline-flex;gap:2px}
+.v2-heat__steps i{display:block;width:14px;height:10px;background:var(--viz-track-soft)}
 </style>
 </head>
 <body>
@@ -2689,6 +2923,43 @@ section.t10 .stage-empty{margin-left:auto}
   <div id="dr-rl-nav"></div>
   <div class="scr-head" id="dr-rl-head"></div>
   <div class="scr-body" id="dr-rl-body"></div>
+</section>
+<!-- 15-delivery-stage.html -->
+<style>
+/* ===== 15-stage · Delivery in the new look (Stage + viz) – CRM release v2026.11.17-delivery-stage, 17.11.2026 =====
+   Components: VIZ.* in shell.html (port of floritta-crm components/v2/viz). Only screen-local helpers below. */
+.ds-intro{max-width:760px;margin:0 0 20px;font-size:13.5px;color:var(--graphite)}
+.ds-intro b{color:var(--ink);font-weight:400}
+.ds-sec{font-family:var(--f-display);font-weight:300;font-size:28px;line-height:1.1;margin:36px 0 6px}
+.ds-sec:first-child{margin-top:0}
+.ds-figure{font-family:var(--f-display);font-weight:300;font-size:32px;line-height:1;letter-spacing:.01em;font-variant-numeric:tabular-nums lining-nums}
+.ds-mt12{margin-top:12px}
+.ds-gap20{gap:20px}
+.ds-list{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5}
+.ds-list li{margin:0 0 6px}
+.ds-list b{font-weight:400;color:var(--ink)}
+.ds-list code,.ds-tok code{font-size:12px;color:var(--graphite)}
+.ds-sw{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+[data-size="phone"] .ds-sw{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ds-sw>div{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;color:var(--graphite)}
+.ds-sw>div i{display:block;height:44px;border:1px solid var(--hair)}
+.ds-sw>div b{font-weight:400;color:var(--ink);font-size:12.5px}
+.ds-tok{width:100%;border-collapse:collapse;font-size:13px}
+.ds-tok td{padding:7px 0;border-top:1px solid var(--hair);vertical-align:top}
+.ds-tok td:first-child{width:46%;padding-right:12px}
+.ds-dont li::marker{content:"× "}
+.ds-do li::marker{content:"✓ "}
+</style>
+
+<!-- Stage / viz – the component gallery (CRM: /preview, section «Stage / viz»; pages/v2/Preview.tsx) + the rules of docs/redesign/DELIVERY_STAGE.md -->
+<section class="scr" id="s-delivery-stage-kit" data-nav="Stage / viz – components" data-group="Delivery · new look (17.11)" data-title="Delivery" data-sub="Stage / viz · components" data-roles="owner manager" data-parent="delivery">
+  <div class="scr-body" id="ds-kit-body"></div>
+</section>
+
+<!-- CO₂ in the Stage look – the model report screen of the Delivery redesign (CRM: pages/v2/Delivery/Co2.tsx, registry DLRS-073–078) -->
+<section class="scr dr-scr" id="s-delivery-co2-stage" data-nav="CO₂ – new look" data-group="Delivery · new look (17.11)" data-title="Delivery" data-sub="CO₂ footprint" data-roles="owner manager" data-parent="delivery">
+  <div id="ds-co-nav"></div>
+  <div class="scr-body" id="ds-co-body"></div>
 </section>
 <!-- 16-analytics-2.html -->
 <!-- 16-analytics-2 · reports 17–31 · shared runtime A16 lives in 16-analytics.html -->
@@ -5562,7 +5833,7 @@ const App=(()=>{
   const URLS=Object.assign({
     today:"/today",dashboard:"/dashboard","day-close":"/day-close",
     orders:"/orders","all-orders":"/all-orders","order-new":"/orders/new","order-create":"/orders/create","order-card":"/orders/{id}",production:"/production/board","production-preorders":"/production/preorders","production-peak-day":"/production/peak-day","production-shifts":"/production/shifts",workshops:"/workshops","workshops-form":"/workshops/create","workshops-session":"/workshops/sessions/{id}","workshops-type":"/workshops/types/{id}","bouquet-builder":"/constructor","ready-now":"/ready-now","shop-floor":"/shop-floor","bouquet-photos":"/bouquet-photos",
-    delivery:"/delivery/dispatch","couriers-today":"/delivery/couriers/today","delivery-exceptions":"/delivery/exceptions","delivery-dpd":"/delivery/dpd","delivery-tracking":"/delivery/tracking","delivery-couriers":"/delivery/couriers","delivery-idle":"/delivery/idle","delivery-pod":"/delivery/pod","delivery-routes":"/delivery/routes","delivery-route":"/delivery/routes/{id}","delivery-presence":"/delivery/presence","delivery-courier-pay":"/delivery/couriers/pay","delivery-eta":"/delivery/eta-accuracy","delivery-zones":"/delivery/zones","delivery-consents":"/delivery/consents","delivery-exports":"/delivery/exports","delivery-shipping":"/delivery/shipping","delivery-freelance":"/delivery/freelance","delivery-freelance-analytics":"/delivery/freelance/analytics","delivery-heatmap":"/delivery/heatmap","delivery-co2":"/delivery/co2","delivery-relay":"/delivery/relay/carriers",
+    delivery:"/delivery/dispatch","couriers-today":"/delivery/couriers/today","delivery-exceptions":"/delivery/exceptions","delivery-dpd":"/delivery/dpd","delivery-tracking":"/delivery/tracking","delivery-couriers":"/delivery/couriers","delivery-idle":"/delivery/idle","delivery-pod":"/delivery/pod","delivery-routes":"/delivery/routes","delivery-route":"/delivery/routes/{id}","delivery-presence":"/delivery/presence","delivery-courier-pay":"/delivery/couriers/pay","delivery-eta":"/delivery/eta-accuracy","delivery-zones":"/delivery/zones","delivery-stage-kit":"/preview","delivery-co2-stage":"/delivery/co2","delivery-consents":"/delivery/consents","delivery-exports":"/delivery/exports","delivery-shipping":"/delivery/shipping","delivery-freelance":"/delivery/freelance","delivery-freelance-analytics":"/delivery/freelance/analytics","delivery-heatmap":"/delivery/heatmap","delivery-co2":"/delivery/co2","delivery-relay":"/delivery/relay/carriers",
     "driver-deliveries":"/driver/deliveries","driver-runs":"/driver/runs","driver-run":"/driver/runs/{id}","driver-order":"/driver/orders/{id}","driver-scan":"/driver/scan","driver-consent":"/driver/consent",
     inbox:"/comms/inbox","comms-scripts":"/comms/scripts","flora-facts":"/comms/facts","flora-autonomy":"/comms/flora/autonomy","facts-review":"/comms/facts-review",occasions:"/comms/occasions",subscriptions:"/comms/subscriptions",subscribers:"/comms/subscribers","sub-images":"/comms/subscription-images","email-templates":"/comms/email-templates","emails-log":"/comms/emails-log",broadcasts:"/comms/broadcasts",forms:"/comms/forms",feedback:"/comms/feedback",nps:"/comms/nps",
     customers:"/comms/customers","customers-due":"/comms/customers/due","customer-form":"/comms/customers/create","customer-card":"/comms/customers/{id}",
@@ -5894,6 +6165,145 @@ const App=(()=>{
     SEC,sectionOf,canSee,screenAllowed,urlOf,FLAGS,limited,togglePin,boardDate,markDirty,demoState,errorPage,flash,courierEvents,tripConfirm,advicePanel,refreshNow,lightbox,closeLightbox,usage,worktime,muteAlarm,openEvent,_tripDone,access:()=>state.access};
 })();
 window.App=App;
+</script>
+<script>
+/* ============ STAGE + VIZ · HTML helpers (17.11.2026) ============
+   The components of floritta-crm resources/js/components/v2/viz/*.tsx (release v2026.11.17-delivery-stage) as string
+   builders for the static screens of this prototype: the same markup, class names and prop names, so a screen drawn
+   here reads 1:1 as the React page. Every builder takes one props object; `children` is an HTML string or an array.
+   Labels and texts are HTML written by the screen; numbers go through the same helpers as in the CRM
+   (en-GB grouping in every language, a real minus, nothing to divide by → a dash, never NaN). */
+window.VIZ=(()=>{
+  const esc=App.esc,icon=App.icon,DASH="–",MINUS="−";
+  const kids=c=>Array.isArray(c)?c.filter(x=>x!==false&&x!=null).join(""):(c??"");
+  const cn=(...a)=>a.filter(Boolean).join(" ");
+  const has=v=>v!==undefined&&v!==null&&v!=="";
+  const isNum=v=>typeof v==="number"&&Number.isFinite(v);
+  const clamp01=v=>Math.min(1,Math.max(0,v));
+  const textOf=n=>typeof n==="number"?String(n):typeof n==="string"?n.replace(/<[^>]*>/g,"").replace(/&amp;/g,"&").trim():"";
+  const attr=(k,v)=>has(v)?` ${k}="${esc(v)}"`:"";
+  /* format.ts */
+  const share=(part,whole)=>!isNum(part)||!isNum(whole)||whole<=0?null:clamp01(part/whole);
+  const ratio=(v,max)=>!isNum(v)||!isNum(max)||max<=0||v<=0?0:clamp01(v/max);
+  const cssPercent=f=>`${Math.round(f*10000)/100}%`;
+  const maxOf=vals=>vals.reduce((m,v)=>isNum(v)&&v>m?v:m,0);
+  const formatNumber=(v,digits=0,maxDigits=digits)=>isNum(v)?new Intl.NumberFormat("en-GB",{minimumFractionDigits:digits,maximumFractionDigits:Math.max(digits,maxDigits)}).format(v):DASH;
+  const formatPercent=(v,digits=0)=>isNum(v)?`${formatNumber(v*100,digits)}%`:DASH;
+  const formatSigned=(v,format=abs=>formatNumber(abs))=>!isNum(v)?DASH:v===0?format(0):`${v>0?"+":MINUS}${format(Math.abs(v))}`;
+  const empty=(t,cls)=>`<p class="${cn("v2-viz-empty",cls)}">${t??"Nothing here yet"}</p>`;
+  /* a click target: go – a screen id of this prototype (the CRM's Inertia href), onClick – a JS string */
+  const act=p=>p.go?` onclick="App.go('${esc(p.go)}')"`:p.onClick?` onclick="${esc(p.onClick)}"`:"";
+
+  /* Stage.tsx */
+  const stage=({fill=false,inline=false,cls,id,children})=>`<div class="${cn("v2-stage",fill&&"v2-stage--fill",inline&&"v2-stage--inline",cls)}"${attr("id",id)}>${kids(children)}</div>`;
+  const stageHead=({meta,children,actions,cls})=>{
+    if(!has(meta)&&!has(kids(children))&&!has(kids(actions)))return"";
+    const c=kids(children),a=kids(actions);
+    return `<div class="${cn("v2-stagehead",cls)}">${has(meta)?`<p class="v2-stagehead__meta">${meta}</p>`:""}${c||a?`<div class="v2-stagehead__row">${c?`<div class="v2-stagehead__controls">${c}</div>`:""}${a?`<div class="v2-stagehead__actions">${a}</div>`:""}</div>`:""}</div>`};
+  const stageGrid=({cls,children})=>`<div class="${cn("v2-stagegrid",cls)}">${kids(children)}</div>`;
+  const NOTE_TONE={neutral:"",warn:"v2-stagenote--warn",alert:"v2-stagenote--alert",ok:"v2-stagenote--ok"};
+  const stageNote=({tone="neutral",icon:ic,action,cls,children})=>`<div class="${cn("v2-stagenote",NOTE_TONE[tone],cls)}" role="note" data-tone="${tone}">${ic?icon(ic):""}<div class="v2-stagenote__body">${kids(children)}</div>${has(action)?`<div class="v2-stagenote__action">${action}</div>`:""}</div>`;
+
+  /* DataCard.tsx */
+  let uid=0;
+  const dataCard=({title,sub,action,footnote,flush=false,as="section",cls,id,children})=>{
+    const tid="v2dc-"+(++uid),head=has(title)||has(sub)||has(action);
+    return `<${as} class="${cn("v2-datacard",flush&&"v2-datacard--flush",!head&&"v2-datacard--headless",cls)}"${has(title)?` aria-labelledby="${tid}"`:""}${attr("id",id)}>`+
+      (head?`<div class="v2-datacard__head"><div class="v2-datacard__titles">${has(title)?`<h2 id="${tid}" class="v2-datacard__title">${title}</h2>`:""}${has(sub)?`<p class="v2-datacard__sub">${sub}</p>`:""}</div>${has(action)?`<div class="v2-datacard__action">${action}</div>`:""}</div>`:"")+
+      `<div class="v2-datacard__body">${kids(children)}</div>${has(footnote)?`<p class="v2-datacard__foot">${footnote}</p>`:""}</${as}>`};
+  const quietLink=p=>{const inner=(p.icon?icon(p.icon):"")+kids(p.children);
+    if(p.href)return `<a class="${cn("v2-quietlink",p.cls)}" href="${esc(p.href)}"${p.download?" download":""}${p.target?` target="${esc(p.target)}" rel="noopener noreferrer"`:""}>${inner}</a>`;
+    return `<button type="button" class="${cn("v2-quietlink",p.cls)}"${act(p)}${p.disabled?" disabled":""}>${inner}</button>`};
+
+  /* Delta.tsx – good news green text, bad news plain ink with its sign, no change grey */
+  const delta=({text,value,format,suffix,dir,good,lowerIsBetter=false,cls})=>{
+    const d=dir??(isNum(value)?(value>0?"up":value<0?"down":"flat"):"flat");
+    const verdict=good===true?"good":good===false?"bad":d==="flat"?"flat":(d==="up")!==lowerIsBetter?"good":"bad";
+    return `<span class="${cn("v2-delta",verdict==="good"&&"v2-delta--good",verdict==="bad"&&"v2-delta--bad",cls)}" data-dir="${d}" data-verdict="${verdict}">${text??formatSigned(value,format)}${suffix??""}</span>`};
+
+  /* StatStrip.tsx – instead of KPI tiles; tone = a dot at the label, never a fill */
+  const stat=it=>{const clickable=it.go||it.onClick,cls=cn("v2-stat",clickable&&"v2-stat--action");
+    const inner=`<span class="v2-stat__label"><span class="v2-stat__name"${attr("title",textOf(it.label))}>${it.label}</span>${it.tone?`<span class="${cn("v2-stat__mark",it.tone==="alert"&&"v2-stat__mark--alert")}" data-tone="${it.tone}"${attr("title",it.toneLabel)}>${it.toneLabel?`<span class="sr-only">${esc(it.toneLabel)}</span>`:""}</span>`:""}</span>`+
+      `<span class="v2-stat__value"><span>${it.value}</span>${has(it.unit)?`<span class="v2-stat__unit">${it.unit}</span>`:""}</span>`+
+      (has(it.sub)?`<span class="v2-stat__sub">${it.sub}</span>`:"")+(it.delta?delta(it.delta):"");
+    return clickable?`<button type="button" class="${cls}"${act(it)}>${inner}</button>`:`<div class="${cls}">${inner}</div>`};
+  const statStrip=({items,cols,ariaLabel,cls})=>{if(!items||!items.length)return"";const c=cols??(items.length<=6?items.length:4);
+    return `<div class="${cn("v2-statstrip",cls)}" role="group"${attr("aria-label",ariaLabel)}><div class="v2-statstrip__grid" data-cols="${c}" style="--v2-stat-cols:${c}">${items.map(stat).join("")}</div></div>`};
+
+  /* Ring.tsx – hairline track, ink arc from 12 o'clock, the figure in serif in the centre */
+  const ring=({value,size=112,label,sub,caption,tone="ink",ariaLabel,cls})=>{
+    const v=isNum(value)?clamp01(value):null,shown=label??formatPercent(v),small=size<88,capT=textOf(caption);
+    const spoken=ariaLabel??([capT,textOf(shown),textOf(sub)].filter(Boolean).join(", ")||formatPercent(v));
+    return `<div class="${cn("v2-ring",small&&"v2-ring--sm",size>=144&&"v2-ring--lg",tone==="ok"&&"v2-ring--ok",tone==="warn"&&"v2-ring--warn",cls)}"><div class="v2-ring__dial" style="--v2-ring-size:${size}px" role="img" aria-label="${esc(spoken)}"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="v2-ring__track" cx="50" cy="50" r="46" stroke-width="8"/>${v!==null&&v>0?`<circle class="v2-ring__arc" cx="50" cy="50" r="46" stroke-width="8" pathLength="100" stroke-dasharray="${Math.round(v*10000)/100} 100"/>`:""}</svg><div class="v2-ring__center" aria-hidden="true"><span class="v2-ring__label">${shown}</span>${has(sub)&&!small?`<span class="v2-ring__sub">${sub}</span>`:""}</div></div>${has(caption)?`<div class="v2-ring__caption"${!ariaLabel&&capT?' aria-hidden="true"':""}>${caption}</div>`:""}</div>`};
+  const ringRow=({cls,children})=>`<div class="${cn("v2-ringrow",cls)}">${kids(children)}</div>`;
+
+  /* BarList.tsx – order is the caller's; emphasis = how many first rows in ink, the rest grey */
+  const barList=({rows,max,rank=false,emphasis,ariaLabel,emptyText,cls})=>{
+    if(!rows.length)return empty(emptyText,cls);
+    const top=max??maxOf(rows.map(r=>r.value)),withSub=rows.some(r=>has(r.sub)),L=rank?"ol":"ul";
+    return `<div class="${cn("v2-barlist-wrap",cls)}"><${L} class="${cn("v2-barlist",rank&&"v2-barlist--rank",withSub&&"v2-barlist--sub")}"${attr("aria-label",ariaLabel)}>`+rows.map((r,i)=>{const part=ratio(r.value,top);
+      return `<li class="v2-barlist__row">${rank?`<span class="v2-barlist__rank" aria-hidden="true">${i+1}</span>`:""}${r.go?`<a class="v2-barlist__name" href="#${esc(r.go)}" onclick="App.go('${esc(r.go)}');return false">${r.label}</a>`:`<span class="v2-barlist__name">${r.label}</span>`}${withSub?`<span class="v2-barlist__sub"${attr("title",textOf(r.sub))}>${r.sub??""}</span>`:""}<span class="v2-barlist__track" aria-hidden="true">${part>0?`<span class="${cn("v2-barlist__fill",emphasis!==undefined&&i>=emphasis&&"v2-barlist__fill--rest")}" style="width:${cssPercent(part)}"></span>`:""}</span><span class="v2-barlist__value">${r.display??formatNumber(r.value)}</span></li>`}).join("")+`</${L}></div>`};
+
+  /* SlopeList.tsx – hollow dot = was, filled = now, then both figures and the signed change */
+  const slopeList=({rows,min,max,lowerIsBetter=false,formatDelta,prevLabel,nowLabel,ariaLabel,emptyText,cls})=>{
+    if(!rows.length)return empty(emptyText,cls);
+    const vals=rows.flatMap(r=>[r.prev,r.now]).filter(isNum),lo=min??Math.min(0,...vals),hi=max??Math.max(lo,...vals);
+    const at=v=>hi>lo?clamp01((v-lo)/(hi-lo)):0;
+    return `<div class="${cn("v2-slopelist-wrap",cls)}"><ul class="v2-slopelist"${attr("aria-label",ariaLabel)}>`+rows.map(r=>{
+      const a=isNum(r.prev)?at(r.prev):null,b=isNum(r.now)?at(r.now):null,ch=isNum(r.prev)&&isNum(r.now)?r.now-r.prev:null;
+      return `<li class="v2-slopelist__row"><span class="v2-slopelist__label">${r.label}</span><span class="v2-slopelist__track" aria-hidden="true">${a!==null&&b!==null&&a!==b?`<span class="v2-slopelist__line" style="left:${cssPercent(Math.min(a,b))};width:${cssPercent(Math.abs(b-a))}"></span>`:""}${a!==null?`<span class="v2-slopelist__dot v2-slopelist__dot--prev" style="left:${cssPercent(a)}"></span>`:""}${b!==null?`<span class="v2-slopelist__dot v2-slopelist__dot--now" style="left:${cssPercent(b)}"></span>`:""}</span><span class="v2-slopelist__prev">${prevLabel?`<span class="sr-only">${esc(prevLabel)} </span>`:""}${r.displayPrev??formatNumber(r.prev)}</span><span class="v2-slopelist__now">${nowLabel?`<span class="sr-only">${esc(nowLabel)} </span>`:""}${r.displayNow??formatNumber(r.now)}</span>${delta({cls:"v2-slopelist__delta",value:ch,format:formatDelta,lowerIsBetter})}</li>`}).join("")+`</ul></div>`};
+
+  /* Columns.tsx – one column in ink (highlight: a key or 'last'), the rest light */
+  const columns=({items,highlight,height=160,max,showValues,labelEvery,ariaLabel,emptyText,cls})=>{
+    if(!items.length)return empty(emptyText,cls);
+    const top=max??maxOf(items.map(i=>i.value)),onKey=highlight==="last"?items[items.length-1].key:highlight;
+    const values=showValues??(items.length<=12?true:"highlight"),every=Math.max(1,labelEvery??(items.length<=16?1:Math.ceil(items.length/8)));
+    const shown=i=>i.display??formatNumber(i.value);
+    const spoken=[ariaLabel,items.map(i=>`${textOf(i.label)} ${textOf(shown(i))}`.trim()).join(", ")].filter(Boolean).join(": ");
+    return `<div class="${cn("v2-columns",items.length>16&&"v2-columns--dense",cls)}" role="img" aria-label="${esc(spoken)}">`+items.map((it,i)=>{const on=it.key===onKey;
+      return `<div class="${cn("v2-columns__col",on&&"v2-columns__col--on")}"${on?' data-on="true"':""} aria-hidden="true"><div class="v2-columns__plot" style="height:${height}px">${values===true||(values==="highlight"&&on)?`<span class="v2-columns__value">${shown(it)}</span>`:""}<span class="v2-columns__bar" style="--v2-col:${Math.round(ratio(it.value,top)*10000)/10000}"></span></div><span class="v2-columns__label">${i%every===0||on?it.label:""}</span></div>`}).join("")+`</div>`};
+
+  /* SparkArea.tsx – one series, a line with a soft wash, round points, the last one filled */
+  const sparkArea=({points,height=72,labels=false,zero=false,dots,ariaLabel,emptyText,cls})=>{
+    const s=points.filter(p=>isNum(p.value));if(!s.length)return empty(emptyText,cls);
+    const vals=s.map(p=>p.value),lo=zero?Math.min(0,...vals):Math.min(...vals),hi=Math.max(...vals),n=s.length,PAD=8;
+    const x=i=>n===1?50:(i/(n-1))*100,y=v=>hi>lo?PAD+(1-(v-lo)/(hi-lo))*(100-2*PAD):50;
+    const line=s.map((p,i)=>`${i===0?"M":"L"}${x(i).toFixed(2)} ${y(p.value).toFixed(2)}`).join(" "),area=n>1?`${line} L100 100 L0 100 Z`:"";
+    const withDots=dots??n<=16,step=labels===true?Math.max(1,Math.ceil(n/6)):typeof labels==="number"?Math.max(1,Math.floor(labels)):0;
+    const ticked=i=>step>0&&(i===n-1||(i%step===0&&n-1-i>=step/2));
+    const spoken=[ariaLabel,s.map(p=>`${p.label} ${p.display??formatNumber(p.value)}`).join(", ")].filter(Boolean).join(": ");
+    return `<div class="${cn("v2-spark",cls)}" role="img" aria-label="${esc(spoken)}"><div class="v2-spark__plot" style="height:${height}px" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">${area?`<path class="v2-spark__area" d="${area}"/>`:""}${n>1?`<path class="v2-spark__line" d="${line}"/>`:""}</svg>`+
+      s.map((p,i)=>withDots||i===n-1?`<span class="${cn("v2-spark__dot",i===n-1&&"v2-spark__dot--last")}" style="left:${cssPercent(x(i)/100)};top:${cssPercent(y(p.value)/100)}"></span>`:"").join("")+`</div>`+
+      (step>0?`<div class="v2-spark__axis" aria-hidden="true">${s.map((p,i)=>ticked(i)?`<span class="${cn("v2-spark__tick",n>1&&i===0&&"v2-spark__tick--first",n>1&&i===n-1&&"v2-spark__tick--last")}" style="left:${cssPercent(x(i)/100)}">${esc(p.label)}</span>`:"").join("")}</div>`:"")+`</div>`};
+
+  /* Legend.tsx – fill steps 1 ink · 2 graphite · 3 grey · 4 light (5 hairline tint, 6 hatch – only to tell a 5th/6th share apart) */
+  const fillOf=i=>Math.min(6,Math.max(1,Math.floor(i)+1));
+  const legend=({rows=false,ariaLabel,cls,children})=>`<ul class="${cn("v2-legend",rows&&"v2-legend--rows",cls)}"${attr("aria-label",ariaLabel)}>${kids(children)}</ul>`;
+  const legendItem=({fill=1,shape="square",label,value,share:sh,cls})=>`<li class="${cn("v2-legend__item",cls)}"><span class="${cn("v2-legend__swatch",shape==="hollow"?"v2-legend__swatch--hollow":"v2-viz-fill",shape==="dot"&&"v2-legend__swatch--dot")}"${shape==="hollow"?"":` data-fill="${fill}"`} aria-hidden="true"></span><span class="v2-legend__label">${label}</span>${has(value)?`<span class="v2-legend__value">${value}</span>`:""}${has(sh)?`<span class="v2-legend__share">${sh}</span>`:""}</li>`;
+
+  /* ShareBar.tsx – segments dark → light in the order given (sort by size, keep to four, fold the tail into «Other») */
+  const shareBar=({segments,legend:lg="inline",percent=true,ariaLabel,emptyText,cls})=>{
+    if(!segments.length)return empty(emptyText,cls);
+    const size=s=>isNum(s.value)&&s.value>0?s.value:0,total=segments.reduce((t,s)=>t+size(s),0),shown=s=>s.display??formatNumber(s.value);
+    const spoken=[ariaLabel,segments.map(s=>`${textOf(s.label)} ${textOf(shown(s))} (${formatPercent(share(size(s),total))})`).join(", ")].filter(Boolean).join(": ");
+    return `<div class="${cn("v2-sharebar",cls)}" role="${lg?"group":"img"}"${attr("aria-label",lg?ariaLabel:spoken)}><div class="${cn("v2-sharebar__bar",total>0&&"v2-sharebar__bar--filled")}" aria-hidden="true">${total>0?segments.map((s,i)=>size(s)>0?`<span class="v2-sharebar__seg v2-viz-fill" data-fill="${fillOf(i)}" style="flex-grow:${size(s)};flex-basis:0"></span>`:"").join(""):""}</div>`+
+      (lg?legend({rows:lg==="rows",children:segments.map((s,i)=>legendItem({fill:fillOf(i),label:s.label,value:shown(s),share:percent?formatPercent(share(size(s),total)):undefined}))}):"")+`</div>`};
+
+  /* HeatCells.tsx – a real table; values[rowKey][colKey], a missing cell is «no data»; five steps of ink */
+  const heatStep=(v,max)=>!isNum(v)||v<=0||!isNum(max)||max<=0?0:Math.min(5,Math.max(1,Math.ceil((v/max)*5)));
+  const heatCells=({rows,cols,values,max,format=v=>formatNumber(v),showValues=false,cellTitle,scale,labelWidth=56,ariaLabel,emptyText,cls})=>{
+    if(!rows.length||!cols.length)return empty(emptyText,cls);
+    const cell=(r,c)=>{const v=values[r.key]?.[c.key];return isNum(v)?v:null};
+    const top=max??maxOf(rows.flatMap(r=>cols.map(c=>cell(r,c)))),nameOf=a=>a.title??textOf(a.label);
+    return `<div class="${cn("v2-heat-wrap",cls)}"><table class="v2-heat"${attr("aria-label",ariaLabel)}><colgroup><col style="width:${labelWidth}px">${cols.map(()=>"<col>").join("")}</colgroup>`+
+      `<thead><tr><td></td>${cols.map(c=>`<th scope="col"${attr("title",c.title)}>${c.label}</th>`).join("")}</tr></thead><tbody>`+
+      rows.map(r=>`<tr><th scope="row"${attr("title",r.title)}>${r.label}</th>${cols.map(c=>{const v=cell(r,c),t=v===null?DASH:format(v);
+        return `<td data-step="${heatStep(v,top)}" title="${esc(cellTitle?cellTitle(r,c,v):`${nameOf(r)} · ${nameOf(c)}: ${t}`)}">${showValues?(v===null?"":t):`<span class="sr-only">${t}</span>`}</td>`}).join("")}</tr>`).join("")+`</tbody></table>`+
+      (scale?`<div class="v2-heat__scale" aria-hidden="true"><span>${scale.low}</span><span class="v2-heat__steps"><i data-step="1"></i><i data-step="2"></i><i data-step="3"></i><i data-step="4"></i><i data-step="5"></i></span><span>${scale.high}</span></div>`:"")+`</div>`};
+
+  return {stage,stageHead,stageGrid,stageNote,dataCard,quietLink,statStrip,delta,ring,ringRow,barList,slopeList,columns,sparkArea,shareBar,heatCells,legend,legendItem,fillOf,heatStep,
+    share,ratio,cssPercent,maxOf,formatNumber,formatPercent,formatSigned,isNum,textOf,DASH};
+})();
 </script>
 <script>
 /* ---- 01 · Today – demo data (fictional) ---- */
@@ -10464,6 +10874,134 @@ window.mount_delivery_relay=function(params){const $=App.$;if(params&&params.tab
   $("#dr-rl-head").innerHTML=`<div class="seg-ctl"><button class="${DR.rl.tab==="carriers"?"on":""}" onclick="DRX.rlTab('carriers')">Courier partners</button><button class="${DR.rl.tab==="tracking"?"on":""}" onclick="DRX.rlTab('tracking')">Courier statuses</button><button class="${DR.rl.tab==="reliability"?"on":""}" onclick="DRX.rlTab('reliability')">Reliability</button></div><span class="sm muted">Uber Direct · native screens replace the old Relay iframe</span>`;
   $("#dr-rl-body").innerHTML=DRX.rlBody()};
 ["delivery-freelance","delivery-freelance-analytics","delivery-heatmap","delivery-co2","delivery-relay"].forEach(id=>document.addEventListener("orders",()=>{if(App.state.current===id)window["mount_"+id.replace(/-/g,"_")](App.state.params)}));
+</script>
+<script>
+/* ===== 15-stage · demo data (fictional, as everything in this prototype) ===== */
+window.DS=window.DS||{co2:{from:"2026-07-22",to:"2026-10-20"}};
+const DS_POSTCODES=[
+ {key:"SE1",label:"SE1",sub:"Southwark",value:44},{key:"SE16",label:"SE16",sub:"Rotherhithe",value:31},{key:"EC2",label:"EC2",sub:"Moorgate",value:27},{key:"E1",label:"E1",sub:"Shoreditch",value:24},
+ {key:"SE17",label:"SE17",sub:"Walworth",value:22},{key:"EC1",label:"EC1",sub:"Clerkenwell",value:19},{key:"SE11",label:"SE11",sub:"Kennington",value:18},{key:"E14",label:"E14",sub:"Canary Wharf",value:17}];
+const DS_SLOPE=[{key:"SE1",label:"SE1",prev:39,now:44},{key:"SE16",label:"SE16",prev:22,now:31},{key:"EC2",label:"EC2",prev:24,now:27},{key:"E1",label:"E1",prev:22,now:24},
+ {key:"SE11",label:"SE11",prev:19,now:18},{key:"E14",label:"E14",prev:11,now:17},{key:"SW11",label:"SW11",prev:13,now:12},{key:"N7",label:"N7",prev:null,now:6}];
+const DS_MONTHS=[{key:"may",label:"May",value:212},{key:"jun",label:"Jun",value:229},{key:"jul",label:"Jul",value:240},{key:"aug",label:"Aug",value:261},{key:"sep",label:"Sep",value:298},{key:"oct",label:"Oct",value:320}];
+const DS_ON_TIME=[["May",.91],["Jun",.93],["Jul",.9],["Aug",.94],["Sep",.93],["Oct",.96]].map(([label,value])=>({label,value,display:Math.round(value*100)+"%"}));
+const DS_VEHICLES=[{key:"car",label:"Car / van",drops:148,km:1904.2,grams:323714},{key:"scooter",label:"Scooter",drops:96,km:811.5,grams:56805},{key:"bike",label:"Bicycle",drops:61,km:302.4,grams:0},{key:"walker",label:"On foot",drops:15,km:21.9,grams:0}];
+const DS_DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>({key:d,label:d}));
+const DS_WINDOWS=["8","10","12","14","16","18","20"].map(h=>({key:h,label:h,title:`${h}:00–${Number(h)+2}:00`}));
+const DS_HEAT=Object.fromEntries(DS_DAYS.map((d,di)=>[d.key,Object.fromEntries(DS_WINDOWS.map((w,wi)=>[w.key,Math.max(0,Math.round(9-Math.abs(wi-3)*2.4+(di>=4?di-2:0)-(di===6?5:0)))]))]));
+/* CO₂ – the same period and figures as the old CO₂ screen (DR_CO2), in the shape of the CRM props: byCategory sorted by CO₂, largest first */
+const DS_CO2=[{category:"car",drops:62,km:318.4,grams:41200},{category:"scooter",drops:23,km:96.1,grams:6700},{category:"other",drops:2,km:9.8,grams:1100},
+ {category:"bike",drops:88,km:201,grams:0},{category:"walker",drops:14,km:12.3,grams:0},{category:"unknown",drops:11,km:0,grams:0}];
+const DS_VEHICLE={unknown:"Courier not recorded",car:"Car / van",scooter:"Scooter",bike:"Bicycle",walker:"On foot",other:"Other"};
+const DS_FD=d=>new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"Europe/London"}).format(new Date(d+"T12:00:00Z"));
+
+/* ===== Stage / viz – gallery and rules ===== */
+window.mount_delivery_stage_kit=function(){
+  const V=VIZ,ic=App.icon,say=t=>`App.toast('${t}')`;
+  const gallery=V.stage({inline:true,children:[
+    V.stageHead({meta:"1–30 October 2026 · 320 drops · by delivery day",
+      actions:V.quietLink({icon:"download",onClick:say("Export CSV"),children:"export CSV"}),
+      children:`<div class="field"><label>From</label><input class="input" type="date" value="2026-10-01"></div><div class="field"><label>To</label><input class="input" type="date" value="2026-10-30"></div>`+
+        `<div class="seg" role="group" aria-label="Day basis"><button class="on" onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===this))">By delivery day</button><button onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===this))">By order day</button></div>`+
+        `<button class="btn" onclick="${say("Show 1 Oct – 30 Oct")}">Show</button>`}),
+    V.stageNote({tone:"warn",icon:"info",action:V.quietLink({onClick:say("Open the addresses"),children:"open the addresses"}),children:"Measured 312 of 320 delivered drops – the rest have no coordinates yet."}),
+    V.statStrip({ariaLabel:"October in figures",items:[
+      {key:"drops",label:"Drops",value:"320",delta:{text:"+7.4% vs September",dir:"up"},onClick:say("Stat · drops – a column can be a filter or a link")},
+      {key:"areas",label:"Areas reached",value:"36 of 120",delta:{text:"+2 areas",dir:"up"}},
+      {key:"cost",label:"Cost per drop",value:"£4.70",delta:{text:"−£0.20 vs September",dir:"down",good:true}},
+      {key:"late",label:"Late",value:"6",sub:"1.9% of drops",delta:{text:"+2 vs September",dir:"up",good:false},tone:"alert",toneLabel:"Above the target"}]}),
+    V.stageGrid({children:[
+      V.dataCard({cls:"v2-span-5",title:"Top postcodes",sub:"drops for the period",action:V.quietLink({onClick:say("Export postcodes"),children:"export CSV"}),footnote:"The first four postcodes are almost half of all drops.",
+        children:V.barList({rank:true,emphasis:3,ariaLabel:"Top postcodes",rows:DS_POSTCODES})}),
+      V.dataCard({cls:"v2-span-7",title:"September → October",sub:"hollow dot – was, filled – now",footnote:"E14 grew by half. SE11 and SW11 are the only ones that slipped.",
+        children:V.slopeList({ariaLabel:"Drops by postcode, September to October",prevLabel:"was",nowLabel:"now",rows:DS_SLOPE})+V.legend({cls:"mt16",children:[V.legendItem({shape:"hollow",label:"September"}),V.legendItem({shape:"dot",label:"October"})]})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-4",title:"How far we drive",sub:"from the studio in SE1",footnote:"More than half of everything lands inside the first ring.",
+        children:V.ringRow({children:[V.ring({value:V.share(176,320),sub:"176 of 320",caption:"within 3 km"}),V.ring({value:V.share(297,320),sub:"297 of 320",caption:"within 6 km"}),V.ring({value:V.share(307,320),sub:"307 of 320",caption:"on time",tone:"ok"})]})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-4",title:"Six months in a row",sub:"drops by month, October highlighted",children:V.columns({ariaLabel:"Drops by month",highlight:"last",items:DS_MONTHS})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-4",title:"On time",sub:"six months, on its own scale",
+        children:`<div class="row" style="align-items:baseline;gap:12px"><span class="ds-figure">96%</span>${V.delta({value:3,format:a=>a+" pts",suffix:" vs September"})}</div>`+V.sparkArea({cls:"ds-mt12",ariaLabel:"On-time share by month",labels:true,points:DS_ON_TIME})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-5",title:"What carries the drops",sub:"drops by the courier's vehicle",children:V.shareBar({legend:"rows",ariaLabel:"Drops by vehicle",segments:DS_VEHICLES.map(v=>({key:v.key,label:v.label,value:v.drops}))})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-7",title:"When the drops go out",sub:"weekday × two-hour window, darker – more drops",children:V.heatCells({ariaLabel:"Drops by weekday and window",rows:DS_DAYS,cols:DS_WINDOWS,values:DS_HEAT,showValues:true,scale:{low:"fewer",high:"more"}})}),
+      V.dataCard({flush:true,cls:"v2-span-7",title:"By vehicle",sub:"a table sits flush in its block",footnote:"Estimate: straight-line distance scaled to road distance, times the vehicle's emission rate.",
+        children:`<table class="tbl" aria-label="By vehicle"><thead><tr><th>Vehicle</th><th class="num">Drops</th><th class="num">Distance (km)</th><th class="num">CO₂</th></tr></thead><tbody>${DS_VEHICLES.map(r=>`<tr><td>${r.label}</td><td class="num">${V.formatNumber(r.drops)}</td><td class="num">${V.formatNumber(r.km,0,2)}</td><td class="num">${V.formatNumber(r.grams/1000,1)} kg</td></tr>`).join("")}</tbody></table>`}),
+      V.dataCard({cls:"v2-span-5",title:"Empty and zero",sub:"what the charts show when there is nothing to show",
+        children:V.ringRow({children:[V.ring({value:V.share(0,0),size:88,caption:"nothing to divide by"}),V.ring({value:0,size:88,caption:"zero"}),V.ring({value:.4,size:64,caption:"small"})]})+
+          `<div class="mt16">${V.shareBar({ariaLabel:"All zeros",segments:[{key:"a",label:"Own couriers",value:0},{key:"b",label:"Uber Direct",value:0}]})}</div>`+
+          `<div class="mt16">${V.barList({rows:[],emptyText:"No drops in this period."})}</div>`+
+          `<div class="row ds-gap20 mt16">${[V.delta({value:12}),V.delta({value:-4}),V.delta({value:-4,lowerIsBetter:true,suffix:" late"}),V.delta({value:0}),V.delta({value:null})].join("")}</div>`})]})]});
+
+  /* the rules – docs/redesign/DELIVERY_STAGE.md of the CRM, shortened; the full text – crm/src/DELIVERY_STAGE.md */
+  const sw=(name,hex,note)=>`<div><i style="background:${hex}"></i><b>${name}</b><span>${hex}</span>${note?`<span>${note}</span>`:""}</div>`;
+  const rules=V.stage({inline:true,children:V.stageGrid({children:[
+    V.dataCard({cls:"v2-span-6",title:"Анатомия экрана",sub:"порядок сверху вниз всегда один, шаг между блоками 24 px",
+      footnote:"Сайдбар, верхняя строка и вкладки раздела – дело оболочки. Своя шапка, свои вкладки и свой поиск на странице не рисуются.",
+      children:`<ol class="ds-list"><li><b>Stage</b> – серебряная подложка на всю рабочую область, один на страницу.</li><li><b>StageHead</b> – серая мета-строка (период · объём · основа счёта), под ней период и фильтры слева, действия и экспорт справа.</li><li><b>StageNote</b> – плашки-условия (неполные данные, выключенная функция): бумага, волосяная рамка, тонкая метка слева, без заливки.</li><li><b>StatStrip</b> – полоса показателей вместо плиток KPI.</li><li><b>StageGrid</b> из <b>DataCard</b> – 12 колонок, ширина блока – класс <code>v2-span-3…9</code> (и <code>v2-span-xl-*</code> для широкого экрана).</li><li>Таблица – в <b>DataCard flush</b>, от края до края.</li></ol>`}),
+    V.dataCard({cls:"v2-span-6",title:"Рабочий экран ≠ отчётный",sub:"графики только из данных, которые страница уже получает",
+      footnote:"Нет данных – нет графика. Производные (доля, среднее на доставку) считать можно, запрашивать новое – нет.",
+      children:`<ul class="ds-list"><li><b>Отчётные</b> – ETA, зарплата курьеров, простои, CO₂, тепловая карта, надёжность, аналитика фриланса: графики рядом с таблицами, таблицы остаются.</li><li><b>Рабочие</b> – доска отправки, курьеры сегодня, исключения, фриланс-работы, кабинет курьера: Stage + StageHead + StatStrip (счётчики, кликабельные колонки-фильтры) и рабочие списки, <b>без декоративных графиков</b>.</li><li>Заголовок страницы прежний – как в меню; человеческий язык – в заголовках блоков и строках-выводах.</li><li>Ни одна цифра, фильтр, кнопка или пустое состояние старой страницы не теряются.</li></ul>`}),
+    V.dataCard({cls:"v2-span-7",title:"Цвет графиков – только чернила",sub:"шкала --viz-1…4 из палитры брендбука; дорожки – hair и silver",
+      footnote:"Выделение = один элемент чернилами, остальные светлые. Цветов данных из макета аналитики (роза, охра, зелёный) нет – решение владельца 17.11.2026: «максимально всё по брендбуку».",
+      children:`<div class="ds-sw">${sw("--viz-1","#1e1a17","ink")}${sw("--viz-2","#5c5450","graphite")}${sw("--viz-3","#8b8378","grey · только заливка")}${sw("--viz-4","#cecece","light")}${sw("--viz-track","#e6e6e6","hair")}${sw("--viz-track-soft","#f2f2f4","silver")}</div>`+
+        `<div class="mt16">${V.heatCells({rows:[{key:"s",label:"Heat"}],cols:[1,2,3,4,5].map(n=>({key:String(n),label:"step "+n})),values:{s:{1:1,2:2,3:3,4:4,5:5}},showValues:true,labelWidth:48,ariaLabel:"Five steps of ink"})}</div>`+
+        `<ul class="ds-list mt16"><li>Статусные цвета (<code>--ok</code>, <code>--warn</code>, <code>--accent</code>) – только текст, точка или тонкая метка и только там, где число само статус (опоздания, сбои, ожидание).</li><li>Розовой, охряной, зелёной и красной заливки нет нигде – ни у блока, ни у строки, ни у графика. Падение – знак минус и слово.</li><li>Delta: хорошее – зелёным текстом, плохое – чернилами со знаком, ноль – серым.</li></ul>`}),
+    V.dataCard({cls:"v2-span-5",title:"Делай / не делай",
+      children:`<ul class="ds-list ds-do"><li>Собирать страницу только из viz и общих компонентов.</li><li>Каждому блоку – заголовок простыми словами и серую строку «что и как посчитано»; вывод (footnote) – только честно вычисленный.</li><li>Пустое состояние: полоса с нулями + блок с EmptyState, графики и таблицу не рисовать.</li><li>Проверять три ширины: 1440, 1024, 390.</li></ul>`+
+        `<ul class="ds-list ds-dont mt16"><li>Не рисовать графики на рабочих экранах и «для красоты»; не дублировать одну цифру тремя графиками.</li><li>Не класть Stage в обёртку с фоном, не ставить второй Stage, не ставить v2-span-* вне StageGrid.</li><li>Не добавлять цвета, скругления, тени, курсив, градиенты; не красить строку или блок в статус.</li><li>Не менять заголовок страницы, URL, права, тексты подтверждений.</li></ul>`}),
+    V.dataCard({cls:"v2-span-12",title:"Типографика и плотность",sub:"даёт сам компонент – руками не подгонять",
+      children:`<table class="ds-tok"><tbody><tr><td>Заголовок блока (DataCard)</td><td>Cormorant Infant 300, 24 / 28</td></tr><tr><td>Цифра полосы (StatStrip)</td><td>Cormorant Infant 300, 36 / 40 (30 на телефоне), табличные цифры</td></tr><tr><td>Подписи полосы, шапки таблиц</td><td>Jost, капс 12, разрядка .14em, graphite</td></tr><tr><td>Текст, строки списков</td><td>Jost 300, 13–13.5; серые строки 12.5 graphite</td></tr><tr><td>Отступы</td><td>внутри блока 24 (16 на телефоне), между блоками 24; строка таблицы 44 (compact – 36)</td></tr><tr><td>Форма</td><td>радиус 0, линии 1 px, теней нет</td></tr><tr><td>Числа</td><td>по-британски во всех языках: 4,845 · 14,440.7 · 55% · −1 (настоящий минус); нечего делить – «–», никогда NaN</td></tr></tbody></table>`})]})});
+
+  App.$("#ds-kit-body").innerHTML=
+    `<p class="ds-intro">The look of the <b>Delivery</b> section since 17.11.2026 (CRM release <b>v2026.11.17-delivery-stage</b>): the page lies on silver, paper blocks on it, a strip of figures, quiet charts in tones of ink. Components – <code>components/v2/viz</code>, rules – <code>docs/redesign/DELIVERY_STAGE.md</code>; here they are <code>VIZ.*</code> in shell.html with the same class names. On a real page the Stage paints the whole working area – see «CO₂ – new look»; here it is inline.</p>`+
+    `<h2 class="ds-sec">Components</h2><p class="ds-intro">Stage · StageHead · StageNote · StatStrip · StageGrid · DataCard · QuietLink · Ring / RingRow · BarList · SlopeList · Columns · SparkArea · ShareBar · HeatCells · Legend · Delta</p>${gallery}`+
+    `<h2 class="ds-sec">Правила</h2><p class="ds-intro">Коротко из руководства CRM для сборщиков экранов. Полный текст – <code>crm/src/DELIVERY_STAGE.md</code> в этом репозитории.</p>${rules}`;
+};
+
+/* ===== CO₂ – new look (pages/v2/Delivery/Co2.tsx): same props, URL and query as the old page; the figures in one strip,
+   the same data also drawn – three shares as rings, CO₂ by vehicle as bars, drops by vehicle as one split bar ===== */
+window.mount_delivery_co2_stage=function(){
+  const $=App.$,V=VIZ,ic=App.icon,flags=window.DR?DR.flags:{geoPartial:true,empty:false};
+  if(window.DRX)DRX.nav($("#ds-co-nav"),"co2");
+  const byCategory=flags.empty?[]:DS_CO2;
+  const drops=byCategory.reduce((s,r)=>s+r.drops,0),totalKm=byCategory.reduce((s,r)=>s+r.km,0),totalGrams=byCategory.reduce((s,r)=>s+r.grams,0);
+  const zeroEmissionDrops=byCategory.filter(r=>r.category==="bike"||r.category==="walker").reduce((s,r)=>s+r.drops,0);
+  const coverage={measured:drops,delivered:drops+(flags.geoPartial&&drops?9:0)};
+  const kg=g=>V.formatNumber(g/1000,1),km=v=>V.formatNumber(v,0,2),vehicle=c=>DS_VEHICLE[c]||c;
+  const unmeasured=coverage.delivered-coverage.measured,zeroShare=V.share(zeroEmissionDrops,drops);
+  const knownDrops=byCategory.reduce((s,r)=>r.category==="unknown"?s:s+r.drops,0),top=byCategory[0],topShare=top?V.share(top.grams,totalGrams):null;
+  const ofTotal=(p,t)=>`${V.formatNumber(p)} of ${V.formatNumber(t)}`;
+  const hint="Estimate: straight-line shop→drop distance scaled to road distance, times the vehicle's emission rate.";
+  const r=DS.co2;
+  const body=V.stage({children:[
+    V.stageHead({meta:`${DS_FD(r.from)} – ${DS_FD(r.to)} · measured drops: ${V.formatNumber(drops)} · by delivery date`,
+      children:`<div class="field"><label for="ds-co-from">From</label><input class="input" type="date" id="ds-co-from" value="${r.from}"></div><div class="field"><label for="ds-co-to">To</label><input class="input" type="date" id="ds-co-to" value="${r.to}"></div><button class="btn" onclick="DSX.applyCo2()">Show</button>`}),
+    unmeasured>0?V.stageNote({tone:"warn",icon:"info",children:`Measured ${V.formatNumber(coverage.measured)} of ${V.formatNumber(coverage.delivered)} delivered drops – the rest have no coordinates yet.`}):"",
+    V.statStrip({ariaLabel:"The period in figures",items:[
+      {key:"drops",label:"Drops",value:V.formatNumber(drops),sub:`of ${V.formatNumber(coverage.delivered)} delivered`},
+      {key:"km",label:"Distance (km)",value:km(totalKm),sub:drops>0?`${V.formatNumber(totalKm/drops,1)} km per drop`:undefined},
+      {key:"total",label:"CO₂",value:kg(totalGrams),unit:"kg",sub:drops>0?`${V.formatNumber(totalGrams/drops)} g per drop`:undefined,tone:totalGrams>0?"warn":undefined,toneLabel:"There are emissions in this period"},
+      {key:"zero",label:"Zero-emission",value:V.formatNumber(zeroEmissionDrops),sub:`${V.formatPercent(zeroShare??0)} of measured drops`}]}),
+    byCategory.length===0
+      ?V.dataCard({footnote:hint,children:`<div class="empty">${ic("globe")}<div class="h3">Nothing measurable in this period yet.</div></div>`})
+      :V.stageGrid({children:[
+        V.dataCard({cls:"v2-span-5",title:"How clean the drops are",sub:"shares for the chosen period",footnote:"Zero-emission means a bicycle or on foot. A drop is measured when its address has coordinates.",
+          children:V.ringRow({children:[
+            V.ring({value:zeroShare,sub:ofTotal(zeroEmissionDrops,drops),caption:"Zero-emission"}),
+            V.ring({value:V.share(coverage.measured,coverage.delivered),sub:ofTotal(coverage.measured,coverage.delivered),caption:"Measured"}),
+            V.ring({value:V.share(knownDrops,drops),sub:ofTotal(knownDrops,drops),caption:"Vehicle recorded"})]})}),
+        V.dataCard({cls:"v2-span-7",title:"CO₂ by vehicle",sub:"kilograms for the period, the largest first",
+          footnote:topShare!==null?`${vehicle(top.category)} – ${V.formatPercent(topShare)} of all CO₂ in the period.`:"No emissions in this period.",
+          children:V.barList({ariaLabel:"CO₂ by vehicle",emphasis:1,rows:byCategory.map(x=>({key:x.category,label:vehicle(x.category),value:x.grams,display:`${kg(x.grams)} kg`}))})}),
+        V.dataCard({cls:"v2-span-5",title:"What carries the drops",sub:"measured drops by the courier's vehicle",
+          children:V.shareBar({legend:"rows",ariaLabel:"What carries the drops",segments:[...byCategory].sort((a,b)=>b.drops-a.drops).map(x=>({key:x.category,label:vehicle(x.category),value:x.drops}))})}),
+        V.dataCard({flush:true,cls:"v2-span-7",title:"By vehicle",sub:"drops, distance and CO₂ for each kind",footnote:hint,
+          children:`<table class="tbl" aria-label="By vehicle"><thead><tr><th>Vehicle</th><th class="num">Drops</th><th class="num">Distance (km)</th><th class="num">CO₂</th></tr></thead><tbody>${byCategory.map(x=>`<tr><td>${vehicle(x.category)}</td><td class="num">${V.formatNumber(x.drops)}</td><td class="num">${km(x.km)}</td><td class="num">${kg(x.grams)} kg</td></tr>`).join("")}</tbody></table>`})]})]});
+  $("#ds-co-body").innerHTML=body;
+};
+window.DSX={
+  /* From / To + Show reload the page with ?from&to (CRM: router.get('/delivery/co2', {from, to})); reversed dates are swapped */
+  applyCo2(){let a=App.$("#ds-co-from").value,b=App.$("#ds-co-to").value;if(!a||!b){App.toast("Unreadable date – period kept");return}
+    if(a>b){[a,b]=[b,a];App.toast("From was later than To – dates swapped")}DS.co2={from:a,to:b};App.remount();App.toast("Period "+DS_FD(a)+" – "+DS_FD(b)+" · /delivery/co2?from="+a+"&to="+b)}
+};
 </script>
 <script>
 /* ===== 16-2 · Analytics reports 17–31 (demo data fictional) ===== */
