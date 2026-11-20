@@ -1,0 +1,165 @@
+<style>
+/* ===== 15-stage · Delivery in the new look (Stage + viz) – CRM release v2026.11.17-delivery-stage, 17.11.2026 =====
+   Components: VIZ.* in shell.html (port of floritta-crm components/v2/viz). Only screen-local helpers below. */
+.ds-intro{max-width:760px;margin:0 0 20px;font-size:13.5px;color:var(--graphite)}
+.ds-intro b{color:var(--ink);font-weight:400}
+.ds-sec{font-family:var(--f-display);font-weight:300;font-size:28px;line-height:1.1;margin:36px 0 6px}
+.ds-sec:first-child{margin-top:0}
+.ds-figure{font-family:var(--f-display);font-weight:300;font-size:32px;line-height:1;letter-spacing:.01em;font-variant-numeric:tabular-nums lining-nums}
+.ds-mt12{margin-top:12px}
+.ds-gap20{gap:20px}
+.ds-list{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5}
+.ds-list li{margin:0 0 6px}
+.ds-list b{font-weight:400;color:var(--ink)}
+.ds-list code,.ds-tok code{font-size:12px;color:var(--graphite)}
+.ds-sw{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+[data-size="phone"] .ds-sw{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ds-sw>div{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;color:var(--graphite)}
+.ds-sw>div i{display:block;height:44px;border:1px solid var(--hair)}
+.ds-sw>div b{font-weight:400;color:var(--ink);font-size:12.5px}
+.ds-tok{width:100%;border-collapse:collapse;font-size:13px}
+.ds-tok td{padding:7px 0;border-top:1px solid var(--hair);vertical-align:top}
+.ds-tok td:first-child{width:46%;padding-right:12px}
+.ds-dont li::marker{content:"× "}
+.ds-do li::marker{content:"✓ "}
+</style>
+
+<!-- Stage / viz – the component gallery (CRM: /preview, section «Stage / viz»; pages/v2/Preview.tsx) + the rules of docs/redesign/DELIVERY_STAGE.md -->
+<section class="scr" id="s-delivery-stage-kit" data-nav="Stage / viz – components" data-group="Delivery · new look (17.11)" data-title="Delivery" data-sub="Stage / viz · components" data-roles="owner manager" data-parent="delivery">
+  <div class="scr-body" id="ds-kit-body"></div>
+</section>
+
+<!-- CO₂ in the Stage look – the model report screen of the Delivery redesign (CRM: pages/v2/Delivery/Co2.tsx, registry DLRS-073–078) -->
+<section class="scr dr-scr" id="s-delivery-co2-stage" data-nav="CO₂ – new look" data-group="Delivery · new look (17.11)" data-title="Delivery" data-sub="CO₂ footprint" data-roles="owner manager" data-parent="delivery">
+  <div id="ds-co-nav"></div>
+  <div class="scr-body" id="ds-co-body"></div>
+</section>
+
+<script>
+/* ===== 15-stage · demo data (fictional, as everything in this prototype) ===== */
+window.DS=window.DS||{co2:{from:"2026-07-22",to:"2026-10-20"}};
+const DS_POSTCODES=[
+ {key:"SE1",label:"SE1",sub:"Southwark",value:44},{key:"SE16",label:"SE16",sub:"Rotherhithe",value:31},{key:"EC2",label:"EC2",sub:"Moorgate",value:27},{key:"E1",label:"E1",sub:"Shoreditch",value:24},
+ {key:"SE17",label:"SE17",sub:"Walworth",value:22},{key:"EC1",label:"EC1",sub:"Clerkenwell",value:19},{key:"SE11",label:"SE11",sub:"Kennington",value:18},{key:"E14",label:"E14",sub:"Canary Wharf",value:17}];
+const DS_SLOPE=[{key:"SE1",label:"SE1",prev:39,now:44},{key:"SE16",label:"SE16",prev:22,now:31},{key:"EC2",label:"EC2",prev:24,now:27},{key:"E1",label:"E1",prev:22,now:24},
+ {key:"SE11",label:"SE11",prev:19,now:18},{key:"E14",label:"E14",prev:11,now:17},{key:"SW11",label:"SW11",prev:13,now:12},{key:"N7",label:"N7",prev:null,now:6}];
+const DS_MONTHS=[{key:"may",label:"May",value:212},{key:"jun",label:"Jun",value:229},{key:"jul",label:"Jul",value:240},{key:"aug",label:"Aug",value:261},{key:"sep",label:"Sep",value:298},{key:"oct",label:"Oct",value:320}];
+const DS_ON_TIME=[["May",.91],["Jun",.93],["Jul",.9],["Aug",.94],["Sep",.93],["Oct",.96]].map(([label,value])=>({label,value,display:Math.round(value*100)+"%"}));
+const DS_VEHICLES=[{key:"car",label:"Car / van",drops:148,km:1904.2,grams:323714},{key:"scooter",label:"Scooter",drops:96,km:811.5,grams:56805},{key:"bike",label:"Bicycle",drops:61,km:302.4,grams:0},{key:"walker",label:"On foot",drops:15,km:21.9,grams:0}];
+const DS_DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>({key:d,label:d}));
+const DS_WINDOWS=["8","10","12","14","16","18","20"].map(h=>({key:h,label:h,title:`${h}:00–${Number(h)+2}:00`}));
+const DS_HEAT=Object.fromEntries(DS_DAYS.map((d,di)=>[d.key,Object.fromEntries(DS_WINDOWS.map((w,wi)=>[w.key,Math.max(0,Math.round(9-Math.abs(wi-3)*2.4+(di>=4?di-2:0)-(di===6?5:0)))]))]));
+/* CO₂ – the same period and figures as the old CO₂ screen (DR_CO2), in the shape of the CRM props: byCategory sorted by CO₂, largest first */
+const DS_CO2=[{category:"car",drops:62,km:318.4,grams:41200},{category:"scooter",drops:23,km:96.1,grams:6700},{category:"other",drops:2,km:9.8,grams:1100},
+ {category:"bike",drops:88,km:201,grams:0},{category:"walker",drops:14,km:12.3,grams:0},{category:"unknown",drops:11,km:0,grams:0}];
+const DS_VEHICLE={unknown:"Courier not recorded",car:"Car / van",scooter:"Scooter",bike:"Bicycle",walker:"On foot",other:"Other"};
+const DS_FD=d=>new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"Europe/London"}).format(new Date(d+"T12:00:00Z"));
+
+/* ===== Stage / viz – gallery and rules ===== */
+window.mount_delivery_stage_kit=function(){
+  const V=VIZ,ic=App.icon,say=t=>`App.toast('${t}')`;
+  const gallery=V.stage({inline:true,children:[
+    V.stageHead({meta:"1–30 October 2026 · 320 drops · by delivery day",
+      actions:V.quietLink({icon:"download",onClick:say("Export CSV"),children:"export CSV"}),
+      children:`<div class="field"><label>From</label><input class="input" type="date" value="2026-10-01"></div><div class="field"><label>To</label><input class="input" type="date" value="2026-10-30"></div>`+
+        `<div class="seg" role="group" aria-label="Day basis"><button class="on" onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===this))">By delivery day</button><button onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===this))">By order day</button></div>`+
+        `<button class="btn" onclick="${say("Show 1 Oct – 30 Oct")}">Show</button>`}),
+    V.stageNote({tone:"warn",icon:"info",action:V.quietLink({onClick:say("Open the addresses"),children:"open the addresses"}),children:"Measured 312 of 320 delivered drops – the rest have no coordinates yet."}),
+    V.statStrip({ariaLabel:"October in figures",items:[
+      {key:"drops",label:"Drops",value:"320",delta:{text:"+7.4% vs September",dir:"up"},onClick:say("Stat · drops – a column can be a filter or a link")},
+      {key:"areas",label:"Areas reached",value:"36 of 120",delta:{text:"+2 areas",dir:"up"}},
+      {key:"cost",label:"Cost per drop",value:"£4.70",delta:{text:"−£0.20 vs September",dir:"down",good:true}},
+      {key:"late",label:"Late",value:"6",sub:"1.9% of drops",delta:{text:"+2 vs September",dir:"up",good:false},tone:"alert",toneLabel:"Above the target"}]}),
+    V.stageGrid({children:[
+      V.dataCard({cls:"v2-span-5",title:"Top postcodes",sub:"drops for the period",action:V.quietLink({onClick:say("Export postcodes"),children:"export CSV"}),footnote:"The first four postcodes are almost half of all drops.",
+        children:V.barList({rank:true,emphasis:3,ariaLabel:"Top postcodes",rows:DS_POSTCODES})}),
+      V.dataCard({cls:"v2-span-7",title:"September → October",sub:"hollow dot – was, filled – now",footnote:"E14 grew by half. SE11 and SW11 are the only ones that slipped.",
+        children:V.slopeList({ariaLabel:"Drops by postcode, September to October",prevLabel:"was",nowLabel:"now",rows:DS_SLOPE})+V.legend({cls:"mt16",children:[V.legendItem({shape:"hollow",label:"September"}),V.legendItem({shape:"dot",label:"October"})]})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-4",title:"How far we drive",sub:"from the studio in SE1",footnote:"More than half of everything lands inside the first ring.",
+        children:V.ringRow({children:[V.ring({value:V.share(176,320),sub:"176 of 320",caption:"within 3 km"}),V.ring({value:V.share(297,320),sub:"297 of 320",caption:"within 6 km"}),V.ring({value:V.share(307,320),sub:"307 of 320",caption:"on time",tone:"ok"})]})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-4",title:"Six months in a row",sub:"drops by month, October highlighted",children:V.columns({ariaLabel:"Drops by month",highlight:"last",items:DS_MONTHS})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-4",title:"On time",sub:"six months, on its own scale",
+        children:`<div class="row" style="align-items:baseline;gap:12px"><span class="ds-figure">96%</span>${V.delta({value:3,format:a=>a+" pts",suffix:" vs September"})}</div>`+V.sparkArea({cls:"ds-mt12",ariaLabel:"On-time share by month",labels:true,points:DS_ON_TIME})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-5",title:"What carries the drops",sub:"drops by the courier's vehicle",children:V.shareBar({legend:"rows",ariaLabel:"Drops by vehicle",segments:DS_VEHICLES.map(v=>({key:v.key,label:v.label,value:v.drops}))})}),
+      V.dataCard({cls:"v2-span-6 v2-span-xl-7",title:"When the drops go out",sub:"weekday × two-hour window, darker – more drops",children:V.heatCells({ariaLabel:"Drops by weekday and window",rows:DS_DAYS,cols:DS_WINDOWS,values:DS_HEAT,showValues:true,scale:{low:"fewer",high:"more"}})}),
+      V.dataCard({flush:true,cls:"v2-span-7",title:"By vehicle",sub:"a table sits flush in its block",footnote:"Estimate: straight-line distance scaled to road distance, times the vehicle's emission rate.",
+        children:`<table class="tbl" aria-label="By vehicle"><thead><tr><th>Vehicle</th><th class="num">Drops</th><th class="num">Distance (km)</th><th class="num">CO₂</th></tr></thead><tbody>${DS_VEHICLES.map(r=>`<tr><td>${r.label}</td><td class="num">${V.formatNumber(r.drops)}</td><td class="num">${V.formatNumber(r.km,0,2)}</td><td class="num">${V.formatNumber(r.grams/1000,1)} kg</td></tr>`).join("")}</tbody></table>`}),
+      V.dataCard({cls:"v2-span-5",title:"Empty and zero",sub:"what the charts show when there is nothing to show",
+        children:V.ringRow({children:[V.ring({value:V.share(0,0),size:88,caption:"nothing to divide by"}),V.ring({value:0,size:88,caption:"zero"}),V.ring({value:.4,size:64,caption:"small"})]})+
+          `<div class="mt16">${V.shareBar({ariaLabel:"All zeros",segments:[{key:"a",label:"Own couriers",value:0},{key:"b",label:"Uber Direct",value:0}]})}</div>`+
+          `<div class="mt16">${V.barList({rows:[],emptyText:"No drops in this period."})}</div>`+
+          `<div class="row ds-gap20 mt16">${[V.delta({value:12}),V.delta({value:-4}),V.delta({value:-4,lowerIsBetter:true,suffix:" late"}),V.delta({value:0}),V.delta({value:null})].join("")}</div>`})]})]});
+
+  /* the rules – docs/redesign/DELIVERY_STAGE.md of the CRM, shortened; the full text – crm/src/DELIVERY_STAGE.md */
+  const sw=(name,hex,note)=>`<div><i style="background:${hex}"></i><b>${name}</b><span>${hex}</span>${note?`<span>${note}</span>`:""}</div>`;
+  const rules=V.stage({inline:true,children:V.stageGrid({children:[
+    V.dataCard({cls:"v2-span-6",title:"Анатомия экрана",sub:"порядок сверху вниз всегда один, шаг между блоками 24 px",
+      footnote:"Сайдбар, верхняя строка и вкладки раздела – дело оболочки. Своя шапка, свои вкладки и свой поиск на странице не рисуются.",
+      children:`<ol class="ds-list"><li><b>Stage</b> – серебряная подложка на всю рабочую область, один на страницу.</li><li><b>StageHead</b> – серая мета-строка (период · объём · основа счёта), под ней период и фильтры слева, действия и экспорт справа.</li><li><b>StageNote</b> – плашки-условия (неполные данные, выключенная функция): бумага, волосяная рамка, тонкая метка слева, без заливки.</li><li><b>StatStrip</b> – полоса показателей вместо плиток KPI.</li><li><b>StageGrid</b> из <b>DataCard</b> – 12 колонок, ширина блока – класс <code>v2-span-3…9</code> (и <code>v2-span-xl-*</code> для широкого экрана).</li><li>Таблица – в <b>DataCard flush</b>, от края до края.</li></ol>`}),
+    V.dataCard({cls:"v2-span-6",title:"Рабочий экран ≠ отчётный",sub:"графики только из данных, которые страница уже получает",
+      footnote:"Нет данных – нет графика. Производные (доля, среднее на доставку) считать можно, запрашивать новое – нет.",
+      children:`<ul class="ds-list"><li><b>Отчётные</b> – ETA, зарплата курьеров, простои, CO₂, тепловая карта, надёжность, аналитика фриланса: графики рядом с таблицами, таблицы остаются.</li><li><b>Рабочие</b> – доска отправки, курьеры сегодня, исключения, фриланс-работы, кабинет курьера: Stage + StageHead + StatStrip (счётчики, кликабельные колонки-фильтры) и рабочие списки, <b>без декоративных графиков</b>.</li><li>Заголовок страницы прежний – как в меню; человеческий язык – в заголовках блоков и строках-выводах.</li><li>Ни одна цифра, фильтр, кнопка или пустое состояние старой страницы не теряются.</li></ul>`}),
+    V.dataCard({cls:"v2-span-7",title:"Цвет графиков – только чернила",sub:"шкала --viz-1…4 из палитры брендбука; дорожки – hair и silver",
+      footnote:"Выделение = один элемент чернилами, остальные светлые. Цветов данных из макета аналитики (роза, охра, зелёный) нет – решение владельца 17.11.2026: «максимально всё по брендбуку».",
+      children:`<div class="ds-sw">${sw("--viz-1","#1e1a17","ink")}${sw("--viz-2","#5c5450","graphite")}${sw("--viz-3","#8b8378","grey · только заливка")}${sw("--viz-4","#cecece","light")}${sw("--viz-track","#e6e6e6","hair")}${sw("--viz-track-soft","#f2f2f4","silver")}</div>`+
+        `<div class="mt16">${V.heatCells({rows:[{key:"s",label:"Heat"}],cols:[1,2,3,4,5].map(n=>({key:String(n),label:"step "+n})),values:{s:{1:1,2:2,3:3,4:4,5:5}},showValues:true,labelWidth:48,ariaLabel:"Five steps of ink"})}</div>`+
+        `<ul class="ds-list mt16"><li>Статусные цвета (<code>--ok</code>, <code>--warn</code>, <code>--accent</code>) – только текст, точка или тонкая метка и только там, где число само статус (опоздания, сбои, ожидание).</li><li>Розовой, охряной, зелёной и красной заливки нет нигде – ни у блока, ни у строки, ни у графика. Падение – знак минус и слово.</li><li>Delta: хорошее – зелёным текстом, плохое – чернилами со знаком, ноль – серым.</li></ul>`}),
+    V.dataCard({cls:"v2-span-5",title:"Делай / не делай",
+      children:`<ul class="ds-list ds-do"><li>Собирать страницу только из viz и общих компонентов.</li><li>Каждому блоку – заголовок простыми словами и серую строку «что и как посчитано»; вывод (footnote) – только честно вычисленный.</li><li>Пустое состояние: полоса с нулями + блок с EmptyState, графики и таблицу не рисовать.</li><li>Проверять три ширины: 1440, 1024, 390.</li></ul>`+
+        `<ul class="ds-list ds-dont mt16"><li>Не рисовать графики на рабочих экранах и «для красоты»; не дублировать одну цифру тремя графиками.</li><li>Не класть Stage в обёртку с фоном, не ставить второй Stage, не ставить v2-span-* вне StageGrid.</li><li>Не добавлять цвета, скругления, тени, курсив, градиенты; не красить строку или блок в статус.</li><li>Не менять заголовок страницы, URL, права, тексты подтверждений.</li></ul>`}),
+    V.dataCard({cls:"v2-span-12",title:"Типографика и плотность",sub:"даёт сам компонент – руками не подгонять",
+      children:`<table class="ds-tok"><tbody><tr><td>Заголовок блока (DataCard)</td><td>Cormorant Infant 300, 24 / 28</td></tr><tr><td>Цифра полосы (StatStrip)</td><td>Cormorant Infant 300, 36 / 40 (30 на телефоне), табличные цифры</td></tr><tr><td>Подписи полосы, шапки таблиц</td><td>Jost, капс 12, разрядка .14em, graphite</td></tr><tr><td>Текст, строки списков</td><td>Jost 300, 13–13.5; серые строки 12.5 graphite</td></tr><tr><td>Отступы</td><td>внутри блока 24 (16 на телефоне), между блоками 24; строка таблицы 44 (compact – 36)</td></tr><tr><td>Форма</td><td>радиус 0, линии 1 px, теней нет</td></tr><tr><td>Числа</td><td>по-британски во всех языках: 4,845 · 14,440.7 · 55% · −1 (настоящий минус); нечего делить – «–», никогда NaN</td></tr></tbody></table>`})]})});
+
+  App.$("#ds-kit-body").innerHTML=
+    `<p class="ds-intro">The look of the <b>Delivery</b> section since 17.11.2026 (CRM release <b>v2026.11.17-delivery-stage</b>): the page lies on silver, paper blocks on it, a strip of figures, quiet charts in tones of ink. Components – <code>components/v2/viz</code>, rules – <code>docs/redesign/DELIVERY_STAGE.md</code>; here they are <code>VIZ.*</code> in shell.html with the same class names. On a real page the Stage paints the whole working area – see «CO₂ – new look»; here it is inline.</p>`+
+    `<h2 class="ds-sec">Components</h2><p class="ds-intro">Stage · StageHead · StageNote · StatStrip · StageGrid · DataCard · QuietLink · Ring / RingRow · BarList · SlopeList · Columns · SparkArea · ShareBar · HeatCells · Legend · Delta</p>${gallery}`+
+    `<h2 class="ds-sec">Правила</h2><p class="ds-intro">Коротко из руководства CRM для сборщиков экранов. Полный текст – <code>crm/src/DELIVERY_STAGE.md</code> в этом репозитории.</p>${rules}`;
+};
+
+/* ===== CO₂ – new look (pages/v2/Delivery/Co2.tsx): same props, URL and query as the old page; the figures in one strip,
+   the same data also drawn – three shares as rings, CO₂ by vehicle as bars, drops by vehicle as one split bar ===== */
+window.mount_delivery_co2_stage=function(){
+  const $=App.$,V=VIZ,ic=App.icon,flags=window.DR?DR.flags:{geoPartial:true,empty:false};
+  if(window.DRX)DRX.nav($("#ds-co-nav"),"co2");
+  const byCategory=flags.empty?[]:DS_CO2;
+  const drops=byCategory.reduce((s,r)=>s+r.drops,0),totalKm=byCategory.reduce((s,r)=>s+r.km,0),totalGrams=byCategory.reduce((s,r)=>s+r.grams,0);
+  const zeroEmissionDrops=byCategory.filter(r=>r.category==="bike"||r.category==="walker").reduce((s,r)=>s+r.drops,0);
+  const coverage={measured:drops,delivered:drops+(flags.geoPartial&&drops?9:0)};
+  const kg=g=>V.formatNumber(g/1000,1),km=v=>V.formatNumber(v,0,2),vehicle=c=>DS_VEHICLE[c]||c;
+  const unmeasured=coverage.delivered-coverage.measured,zeroShare=V.share(zeroEmissionDrops,drops);
+  const knownDrops=byCategory.reduce((s,r)=>r.category==="unknown"?s:s+r.drops,0),top=byCategory[0],topShare=top?V.share(top.grams,totalGrams):null;
+  const ofTotal=(p,t)=>`${V.formatNumber(p)} of ${V.formatNumber(t)}`;
+  const hint="Estimate: straight-line shop→drop distance scaled to road distance, times the vehicle's emission rate.";
+  const r=DS.co2;
+  const body=V.stage({children:[
+    V.stageHead({meta:`${DS_FD(r.from)} – ${DS_FD(r.to)} · measured drops: ${V.formatNumber(drops)} · by delivery date`,
+      children:`<div class="field"><label for="ds-co-from">From</label><input class="input" type="date" id="ds-co-from" value="${r.from}"></div><div class="field"><label for="ds-co-to">To</label><input class="input" type="date" id="ds-co-to" value="${r.to}"></div><button class="btn" onclick="DSX.applyCo2()">Show</button>`}),
+    unmeasured>0?V.stageNote({tone:"warn",icon:"info",children:`Measured ${V.formatNumber(coverage.measured)} of ${V.formatNumber(coverage.delivered)} delivered drops – the rest have no coordinates yet.`}):"",
+    V.statStrip({ariaLabel:"The period in figures",items:[
+      {key:"drops",label:"Drops",value:V.formatNumber(drops),sub:`of ${V.formatNumber(coverage.delivered)} delivered`},
+      {key:"km",label:"Distance (km)",value:km(totalKm),sub:drops>0?`${V.formatNumber(totalKm/drops,1)} km per drop`:undefined},
+      {key:"total",label:"CO₂",value:kg(totalGrams),unit:"kg",sub:drops>0?`${V.formatNumber(totalGrams/drops)} g per drop`:undefined,tone:totalGrams>0?"warn":undefined,toneLabel:"There are emissions in this period"},
+      {key:"zero",label:"Zero-emission",value:V.formatNumber(zeroEmissionDrops),sub:`${V.formatPercent(zeroShare??0)} of measured drops`}]}),
+    byCategory.length===0
+      ?V.dataCard({footnote:hint,children:`<div class="empty">${ic("globe")}<div class="h3">Nothing measurable in this period yet.</div></div>`})
+      :V.stageGrid({children:[
+        V.dataCard({cls:"v2-span-5",title:"How clean the drops are",sub:"shares for the chosen period",footnote:"Zero-emission means a bicycle or on foot. A drop is measured when its address has coordinates.",
+          children:V.ringRow({children:[
+            V.ring({value:zeroShare,sub:ofTotal(zeroEmissionDrops,drops),caption:"Zero-emission"}),
+            V.ring({value:V.share(coverage.measured,coverage.delivered),sub:ofTotal(coverage.measured,coverage.delivered),caption:"Measured"}),
+            V.ring({value:V.share(knownDrops,drops),sub:ofTotal(knownDrops,drops),caption:"Vehicle recorded"})]})}),
+        V.dataCard({cls:"v2-span-7",title:"CO₂ by vehicle",sub:"kilograms for the period, the largest first",
+          footnote:topShare!==null?`${vehicle(top.category)} – ${V.formatPercent(topShare)} of all CO₂ in the period.`:"No emissions in this period.",
+          children:V.barList({ariaLabel:"CO₂ by vehicle",emphasis:1,rows:byCategory.map(x=>({key:x.category,label:vehicle(x.category),value:x.grams,display:`${kg(x.grams)} kg`}))})}),
+        V.dataCard({cls:"v2-span-5",title:"What carries the drops",sub:"measured drops by the courier's vehicle",
+          children:V.shareBar({legend:"rows",ariaLabel:"What carries the drops",segments:[...byCategory].sort((a,b)=>b.drops-a.drops).map(x=>({key:x.category,label:vehicle(x.category),value:x.drops}))})}),
+        V.dataCard({flush:true,cls:"v2-span-7",title:"By vehicle",sub:"drops, distance and CO₂ for each kind",footnote:hint,
+          children:`<table class="tbl" aria-label="By vehicle"><thead><tr><th>Vehicle</th><th class="num">Drops</th><th class="num">Distance (km)</th><th class="num">CO₂</th></tr></thead><tbody>${byCategory.map(x=>`<tr><td>${vehicle(x.category)}</td><td class="num">${V.formatNumber(x.drops)}</td><td class="num">${km(x.km)}</td><td class="num">${kg(x.grams)} kg</td></tr>`).join("")}</tbody></table>`})]})]});
+  $("#ds-co-body").innerHTML=body;
+};
+window.DSX={
+  /* From / To + Show reload the page with ?from&to (CRM: router.get('/delivery/co2', {from, to})); reversed dates are swapped */
+  applyCo2(){let a=App.$("#ds-co-from").value,b=App.$("#ds-co-to").value;if(!a||!b){App.toast("Unreadable date – period kept");return}
+    if(a>b){[a,b]=[b,a];App.toast("From was later than To – dates swapped")}DS.co2={from:a,to:b};App.remount();App.toast("Period "+DS_FD(a)+" – "+DS_FD(b)+" · /delivery/co2?from="+a+"&to="+b)}
+};
+</script>
